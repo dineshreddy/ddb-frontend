@@ -48,20 +48,20 @@ limitations under the License.
         <div class="well">
             <div class="profile-nav">
                 <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
-                <div class="fr profile-links">
-                    <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
-                        <g:message code="ddbnext.Favorites" /> (${favoritesCount})
-                    </a>
-                    <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-                        <g:message code="ddbnext.Change_Password_Link" />
-                    </a>
-                    <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete')}">
-                        <g:message code="ddbnext.User.Delete_Account" />
-                    </a>
-                </div>
+            </div>
+            <div class="profile-links bt-white">
+                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
+                    <g:message code="ddbnext.Favorites" /> (${favoritesCount})
+                </a>
+                <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
+                    <g:message code="ddbnext.Change_Password_Link" />
+                </a>
+                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete')}">
+                    <g:message code="ddbnext.User.Delete_Account" />
+                </a>
             </div>
 
-            <div class="control-group bt-white">
+            <div class="control-group">
               <label class="control-label"><g:message code="ddbnext.Username" /></label>
               <div class="controls">
                 <div class="input-prepend">

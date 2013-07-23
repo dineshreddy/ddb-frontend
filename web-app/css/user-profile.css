@@ -25,7 +25,8 @@
 }
 
 #user-profile-form .profile-title, #user-profile-form .profile-links{
-  display: inline-block;
+  text-align: right;
+  margin-bottom: 10px;
 }
 
 #user-profile-form .profile-link {

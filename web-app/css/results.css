@@ -400,7 +400,8 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .extra .types .video {
   background-position: 0 -19px;
 }
-.search-results .results-list .summary .extra .types .Institution{
+
+.search-results .results-list .summary .extra .types .Institution {
   background-position: 0 -190px;
 }
 
