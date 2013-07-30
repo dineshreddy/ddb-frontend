@@ -1232,77 +1232,77 @@ function searchResultsInitializer(){
       new HovercardInfoItem($(this));
     });
   }
-};
 
-/**
- * AJAX request to check if a result hit is already stored in the list of favorites.
- *
- * Install a click event handler to add a result hit to the list of favorites.
- */
-function checkFavorites() {
-  var itemIds = [];
+  /**
+   * AJAX request to check if a result hit is already stored in the list of favorites.
+   *
+   * Install a click event handler to add a result hit to the list of favorites.
+   */
+  function checkFavorites() {
+    var itemIds = [];
 
-  // collect all item ids on the page
-  $(".search-results .summary-main .persist").each(function() {
-    itemIds.push(extractItemId($(this).attr("href")));
-  });
+    // collect all item ids on the page
+    $(".search-results .summary-main .persist").each(function() {
+      itemIds.push(extractItemId($(this).attr("href")));
+    });
 
-  // check if a result hit is already stored in the list of favorites
-  $.ajax({
-      type: "POST",
-      url: jsContextPath + "/apis/favorites/_get",
-      contentType : "application/json",
-      data: JSON.stringify(itemIds),
-      success: function(favoriteItemIds) {
-        $.each(itemIds, function(index, itemId) {
-          var div = $("#favorite-" + itemId);
+    // check if a result hit is already stored in the list of favorites
+    $.ajax({
+        type: "POST",
+        url: jsContextPath + "/apis/favorites/_get",
+        contentType : "application/json",
+        data: JSON.stringify(itemIds),
+        success: function(favoriteItemIds) {
+          $.each(itemIds, function(index, itemId) {
+            var div = $("#favorite-" + itemId);
 
-          if ($.inArray(itemId, favoriteItemIds) >= 0) {
-            disableFavorite(div);
-          }
-          else {
-            div.click(function() {
-              // add a result hit to the list of favorites
-              $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
-                $("#favorite-confirmation").modal("show");
+            if ($.inArray(itemId, favoriteItemIds) >= 0) {
+              disableFavorite(div);
+            }
+            else {
+              div.click(function() {
                 disableFavorite(div);
+                // add a result hit to the list of favorites
+                $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                  $("#favorite-confirmation").modal("show");
+                });
               });
-            });
-          }
-        });
-      }
-  });
-}
-
-/**
- * Disable a favorite button.
- *
- * @param div DIV element which handles the favorite event
- */
-function disableFavorite(div) {
-  div.unbind("click");
-  div.removeAttr("title");
-  div.removeClass("add-to-favorites");
-  div.addClass("added-to-favorites");
-}
-
-/**
- * Extract the item id from the given URL.
- *
- * @param url the URL containing the item id
- *
- * @returns item id
- */
-function extractItemId(url) {
-  var result = null;
-  var parts = url.split("/");
-
-  result = parts[parts.length - 1];
-  
-  var queryParameters = result.indexOf("?");
-  
-  if (queryParameters >= 0) {
-    result = result.substring(0, queryParameters);
+            }
+          });
+        }
+    });
   }
-  return result;
-}
+
+  /**
+   * Disable a favorite button.
+   *
+   * @param div DIV element which handles the favorite event
+   */
+  function disableFavorite(div) {
+    div.unbind("click");
+    div.removeAttr("title");
+    div.removeClass("add-to-favorites");
+    div.addClass("added-to-favorites");
+  }
+
+  /**
+   * Extract the item id from the given URL.
+   *
+   * @param url the URL containing the item id
+   *
+   * @returns item id
+   */
+  function extractItemId(url) {
+    var result = null;
+    var parts = url.split("/");
+
+    result = parts[parts.length - 1];
+    
+    var queryParameters = result.indexOf("?");
+    
+    if (queryParameters >= 0) {
+      result = result.substring(0, queryParameters);
+    }
+    return result;
+  }
+};
