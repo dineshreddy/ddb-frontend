@@ -20,7 +20,9 @@ limitations under the License.
 ></g:set>
 <html>
 <head>
-<title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of" /> - <g:message
+    code="ddbnext.Deutsche_Digitale_Bibliothek"
+  /></title>
 <meta name="page" content="favorites" />
 <meta name="layout" content="main" />
 </head>
@@ -34,11 +36,9 @@ limitations under the License.
       </div>
       <div class="print-header">
         <h3>
-          <g:message code="ddbnext.Favorites_List_Of_Printed" 
-                     args="${[userName, dateString]}" 
-                     default="ddbnext.Favorites_List_Of"/>
+          <g:message code="ddbnext.Favorites_List_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Favorites_List_Of" />
         </h3>
-          <%--
+        <%--
           <div class="page-info">
             <span class="results-overall-index">1-2 </span> 
             <span><g:message code="ddbnext.Of" /> </span> 
@@ -72,20 +72,18 @@ limitations under the License.
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled">
           <g:each in="${allFolders}">
-            <li class="bookmarks-list bt bb bl br">
-              <span class="h3"> ${it.title.capitalize()} </span>
-              <span class="bookmarks-list-number"> ${resultsNumber}</span>
-              <g:if test="${resultsNumber > 0}"> 
-                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
-                  <i class="icon-envelope"></i>
+            <li class="bookmarks-list bt bb bl br"><span class="h3"> ${it.title.capitalize()}
+            </span> <span class="bookmarks-list-number"> ${resultsNumber}</span> <g:if test="${resultsNumber > 0}">
+                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
+                  class="icon-envelope"
+                ></i>
                 </a>
-              </g:if>
-              <g:else>
-                <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}>
-                  <i class="icon-envelope"></i>
+              </g:if> <g:else>
+                <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
+                  class="icon-envelope"
+                ></i>
                 </a>
-              </g:else>
-            </li>
+              </g:else></li>
           </g:each>
         </ul>
       </div>
@@ -93,18 +91,14 @@ limitations under the License.
         <g:if test="${flash.message}">
           <div class="messages-container">
             <ul class="unstyled">
-              <li>
-                <i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span>
-              </li>
+              <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
             </ul>
           </div>
         </g:if>
         <g:if test="${flash.email_error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li>
-                <i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span>
-              </li>
+              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span></li>
             </ul>
           </div>
         </g:if>
@@ -115,38 +109,37 @@ limitations under the License.
                 <button type="submit" class="submit">
                   <span><g:message code="ddbnext.Delete"></g:message></span>
                 </button>
-                <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
-              </div>
-              <div class="results-sorter">
-                <div class="row">
-                  <div class="span6">
-                    <span><input type="checkbox" class="select-all" id="checkall"></span> 
-                    <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
-                     <span> <a href="${urlsForOrder["desc"]}"><i class="icon-arrow-up"></i></a> <a href="${urlsForOrder["asc"]}"><i class="icon-arrow-down"></i></a>
-                    </span>
-                  </div>
-                  <div class="span3 added-on">
-                    <span><g:message code="ddbnext.Added_On"></g:message></span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="favorites-results">
-              <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
-            </div>
           </g:form>
-        </g:if>
-        <g:else>
-          <div class="messages-container">
-            <ul class="unstyled">
-              <li>
-                <span><g:message code="ddbnext.no_favorites" /></span>
-              </li>
-            </ul>
+          <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+      </div>
+      <div class="results-sorter">
+        <div class="row">
+          <div class="span6">
+            <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+            <span> <a href="${urlsForOrder["desc"]}"><i class="icon-arrow-up"></i></a> <a href="${urlsForOrder["asc"]}"><i
+                class="icon-arrow-down"
+              ></i></a>
+            </span>
           </div>
-        </g:else>
+          <div class="span3 added-on">
+            <span><g:message code="ddbnext.Added_On"></g:message></span>
+          </div>
+        </div>
       </div>
     </div>
+    <div class="favorites-results">
+      <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
+    </div>
+    </g:if>
+    <g:else>
+      <div class="messages-container">
+        <ul class="unstyled">
+          <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+        </ul>
+      </div>
+    </g:else>
+  </div>
+  </div>
   </div>
   <g:if test="${resultsNumber > 0}">
     <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -171,18 +164,22 @@ limitations under the License.
       </div>
     </div>
   </g:if>
-  
-  
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="msDeleteFavoritesLabel"><g:message code="ddbnext.delete_favorites" /></h3>
+      <h3 id="msDeleteFavoritesLabel">
+        <g:message code="ddbnext.delete_favorites" />
+      </h3>
     </div>
     <div class="modal-body">
-      <p> <g:message code="ddbnext.delete_favorites_succ" /></p>
+      <p>
+        <g:message code="ddbnext.delete_favorites_succ" />
+      </p>
     </div>
     <div class="modal-footer">
-      <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
+      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+        <g:message code="ddbnext.Close" />
+      </button>
     </div>
   </div>
 </body>

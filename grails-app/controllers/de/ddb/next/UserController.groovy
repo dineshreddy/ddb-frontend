@@ -159,10 +159,10 @@ class UserController {
                 sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
                 def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
                 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"asc"])]
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
                 if (params.order=="asc"){
                     allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
-                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
+                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc"])
                     urlsForOrder["asc"]="#"
                 }else{
                     params.order="desc"
@@ -737,7 +737,7 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                //user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
                 log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
