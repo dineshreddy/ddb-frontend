@@ -180,10 +180,11 @@ class UserController {
                     try {
                         sendMail {
                             to params.email
-                            from configurationService.getFavoritesSendMailFrom()
+                            from configurationService.getFavoritesSendMailFrom() 
+                            replyTo getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: all,dateString: dateTime])
+                            model:[results: allResultsOrdered,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
