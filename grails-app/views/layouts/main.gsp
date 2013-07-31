@@ -53,6 +53,12 @@ limitations under the License.
     <g:render template="/jsVariables" />
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
+    
+    <script>
+        $('#header-menu-btn').click(function(event) {
+            console.log('menu btn clicked');
+        });
+    </script>
     <g:piwik />
   </body>
 </html>
