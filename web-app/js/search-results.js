@@ -62,6 +62,7 @@ function historyManager(path){
     historyedited = true;
   }else{
     globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
+    window.location = path;
   }
 }
 
@@ -514,6 +515,12 @@ function searchResultsInitializer(){
       async: true,
       url: url+'&reqType=ajax',
       success: function(data){
+        
+        historyManager(url);
+        if(!historySupport){
+          return;
+        }
+        
         $('.search-results-list').fadeOut('fast', function(){
         var JSONresponse = data;
         if(JSONresponse.numberOfResults==0){
@@ -554,7 +561,7 @@ function searchResultsInitializer(){
           $(".page-nav .prev-page").addClass("off");
           $(".page-nav .first-page").addClass("off");
         }
-        historyManager(url);
+
         $('.search-results-list').fadeIn('fast');
         
         divSearchResultsOverlayImg.remove();
