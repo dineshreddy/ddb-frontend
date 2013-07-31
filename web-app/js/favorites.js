@@ -34,14 +34,74 @@ $(function() {
       }
       $("#form-search-header .query").val(queryString);
     }
-
+    
+    $('.page-filter select').change(function(){
+      var url = jsContextPath + "/user/favorites/?rows="+this.value;
+      var order = getParam("order");
+      if ( order  ) {
+        url = url + "&order="+order;
+      }
+      window.location.href=url;
+      return false;
+    });
+    
     $('#checkall').checkAll('#slaves input:checkbox', {
       reportTo: function () {
         var prefix = this.prop('checked') ? 'un' : '';
         this.next().text(prefix + 'check all');
       }
     });	
+    
     updateNavigationUrl();
+    
+    $('.page-input').removeClass('off');   
+    $('.page-nonjs').addClass("off");
+    
+    $('.page-input').keyup(function(e){
+      if(e.keyCode == 13) {
+        if (/^[0-9]+$/.test(this.value)) {
+          if (parseInt(this.value) <= 0) {
+              this.value = 1;
+          }
+          else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+              this.value = $('.result-pages-count').text();
+          }
+        }
+        else {
+          this.value = 1;
+        }
+        $('.page-input').attr('value', this.value);
+        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows")),new Array('rows', getParam("rows")),new Array('order', getParam("order")));
+        var newUrl = addParamToUrl(paramsArray,null, paramsArray);
+        window.location.href=newUrl;
+
+      }
+    });
+    
+    function addParamToUrl(arrayParamVal, path, urlString){
+      console.log(urlString);
+      var currentUrl = jsContextPath + "/user/favorites/";
+      var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
+        re = /([^&=]+)=([^&]*)/g, m;
+      while (m = re.exec(queryString)) {
+          var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+          if (queryParameters[decodedKey] == null) {
+              queryParameters[decodedKey] = new Array();
+          }
+          queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+      }
+      $.each(arrayParamVal, function(key, value){
+        queryParameters[value[0]] = value[1];
+      });
+      var tmp = jQuery.param(queryParameters, true);
+      if (path == null) {
+        return window.location.pathname+'?'+tmp;
+      }
+      else {
+        return path+'?'+tmp;
+      }
+    }
+    
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
