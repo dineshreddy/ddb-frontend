@@ -578,7 +578,7 @@ function searchResultsInitializer(){
         divSearchResultsOverlayModal.remove();
         
         var error_GeneralError =  messages.ddbnext.An_Error_Occured;
-        var errorContainer = $(document.createElement('div'));
+        var errorContainer = ($('.search-results-list').find('.errors-container').length>0)?$('.search-results-list').find('.errors-container'):$(document.createElement('div'));
         var errorIcon = $(document.createElement('i'));
         errorContainer.addClass('errors-container');
         errorIcon.addClass('icon-exclamation-sign');
