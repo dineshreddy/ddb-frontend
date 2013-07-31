@@ -188,7 +188,7 @@ class UserController {
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
-                        log.info "This is the mail error "+ e
+                        log.info "An error occurred sending the email "+ e.getMessage()
                         flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
                     }
                 }
@@ -208,6 +208,7 @@ class UserController {
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
+                    rows: rows,
                     userName: userName,
                     dateString: dateTime,
                     urlsForOrder:urlsForOrder

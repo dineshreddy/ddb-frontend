@@ -34,7 +34,14 @@ $(function() {
       }
       $("#form-search-header .query").val(queryString);
     }
-
+    $('.page-filter select').change(function(){
+      var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
+      var url = jsContextPath + "/user/favorites/?rows="+this.value;
+      window.location.href=url;
+      console.log("I have some event for you "+ this.value);
+      return false;
+    });
+    
     $('#checkall').checkAll('#slaves input:checkbox', {
       reportTo: function () {
         var prefix = this.prop('checked') ? 'un' : '';

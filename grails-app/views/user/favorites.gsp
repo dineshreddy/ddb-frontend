@@ -52,11 +52,11 @@ limitations under the License.
           </div>
           --%>
       </div>
-      <div class="span4 results-paginator-options off">
+      <div class="span4 results-paginator-options">
         <div class="page-filter">
           <label><g:message code="ddbnext.SearchResultsPagination_Display" /></label> <span> <select class="select">
               <g:each in="${resultsPaginatorOptions.pageFilter}">
-                <option value="${it}" <g:if test="${resultsPaginatorOptions.pageFilterSelected == it}">selected</g:if>>
+                <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
                   ${it}
                 </option>
               </g:each>
