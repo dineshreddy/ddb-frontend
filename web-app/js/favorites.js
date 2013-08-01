@@ -25,16 +25,6 @@ $(function() {
       $('#favoritesModal').modal({remote: $(this).attr("href")})
     });
 
-    // Fix for back-button problem with the searchfield: DDBNEXT-389
-    if($.browser.msie){
-      var queryCache = $("#querycache");
-      var queryString = "";
-      if(queryCache.length > 0){
-        queryString = queryCache.val();
-      }
-      $("#form-search-header .query").val(queryString);
-    }
-    
     $('.page-filter select').change(function(){
       var url = jsContextPath + "/user/favorites/?rows="+this.value;
       var order = getParam("order");
@@ -44,27 +34,27 @@ $(function() {
       window.location.href=url;
       return false;
     });
-    
+
     $('#checkall').checkAll('#slaves input:checkbox', {
       reportTo: function () {
         var prefix = this.prop('checked') ? 'un' : '';
         this.next().text(prefix + 'check all');
       }
     });	
-    
+
     updateNavigationUrl();
-    
+
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
-    
+
     $('.page-input').keyup(function(e){
       if(e.keyCode == 13) {
         if (/^[0-9]+$/.test(this.value)) {
           if (parseInt(this.value) <= 0) {
-              this.value = 1;
+            this.value = 1;
           }
           else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-              this.value = $('.result-pages-count').text();
+            this.value = $('.result-pages-count').text();
           }
         }
         else {
@@ -77,18 +67,18 @@ $(function() {
 
       }
     });
-    
+
     function addParamToUrl(arrayParamVal, path, urlString){
       console.log(urlString);
       var currentUrl = jsContextPath + "/user/favorites/";
       var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
-        re = /([^&=]+)=([^&]*)/g, m;
+          re = /([^&=]+)=([^&]*)/g, m;
       while (m = re.exec(queryString)) {
-          var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
-          if (queryParameters[decodedKey] == null) {
-              queryParameters[decodedKey] = new Array();
-          }
-          queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+        if (queryParameters[decodedKey] == null) {
+          queryParameters[decodedKey] = new Array();
+        }
+        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
       }
       $.each(arrayParamVal, function(key, value){
         queryParameters[value[0]] = value[1];
@@ -101,38 +91,47 @@ $(function() {
         return path+'?'+tmp;
       }
     }
-    
+
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      var body = {
-        ids : selected
-      }
-      jQuery.ajax({
-        type : 'POST',
-        contentType : "application/json; charset=utf-8",
-        traditional : true,
-        url : jsContextPath + "/apis/favorites/_delete",
-        data : JSON.stringify(body),
-        dataType : "json",
-        success : function(data) {
-          $('#msDeleteFavorites').modal();
-          window.setTimeout('location.reload()', 1500);
+      $('#totalNrSelectedObjects').html(selected.length);
+      $('#confirm-dialog').modal('show');
+      $('#id-confirm').click(function() {
+        var selected = new Array();
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('value'));
+        });
+        var body = {
+            ids : selected
         }
-      });
-      $('#slaves input:checked').each(function() {
-        selected.push($(this).attr('checked', false));
-      });
 
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/_delete",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            $('#msDeleteFavorites').modal();
+
+          }
+        });
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('checked', false));
+        });
+        $('#confirm-dialog').modal('hide');
+      });
       return false;
     });
-    
 
-    $(document).on("click", "#btnSubmit", function(){ 
-      console.log("TODO Email Validation HERE");
-    }); 
+    $('#deletedFavoritesBtnClose').click(function(){
+      $('#msDeleteFavorites').modal('hide');
+      window.setTimeout('location.reload()', 1000);
+    });
 
   }
 

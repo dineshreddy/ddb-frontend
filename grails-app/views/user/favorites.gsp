@@ -177,9 +177,43 @@ limitations under the License.
       </p>
     </div>
     <div class="modal-footer">
-      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message code="ddbnext.Close" />
-      </button>
+      <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
+    </div>
+  </div>
+  
+  <div class="modal hide fade" id="confirm-dialog">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      <h3>
+        <g:message code="ddbnext.delete_confirmation" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <g:message code="ddbnext.delete_favorites_dialog" />
+      <span id="totalNrSelectedObjects"></span>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+        data-dismiss="modal"
+      ><g:message code="ddbnext.No" /></a>
+    </div>
+  </div>
+  
+  <div class="modal hide fade" id="noSelection">
+    <div class="modal-header">
+      <a class="close" data-dismiss="modal">×</a>
+      <h3>
+        <g:message code="ddbnext.delete_confirmation" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      CAnnot delete any item. None selected <g:message code="ddbnext.delete_favorites_dialog" />
+      <span id="totalNrSelectedObjects"></span>
+    </div>
+    <div class="modal-footer">
+      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+        data-dismiss="modal"
+      ><g:message code="ddbnext.No" /></a>
     </div>
   </div>
 </body>
