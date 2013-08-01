@@ -180,6 +180,7 @@
 
     getFirstLetter: function() {
       var hash = window.location.hash.substring(1);
+      console.log('hash is>>>' + hash + '<<<');
       if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
         return '';
       } else {
@@ -210,6 +211,9 @@
     },
 
     filter: function(institutionList, sectors, firstLetter) {
+      console.log('filtering...' + institutionList.length);
+      console.log('sectors...' + sectors.length);
+      console.log('firstLetter...' + firstLetter);
       // reset the view to empty.
       var $listItems = $('li.institution-listitem');
       $listItems.css('display', 'none');
@@ -277,6 +281,7 @@
         When no sector selected _and_ one of the first letter is selected.
         e.g. sector = [], index = 'C'
         */
+        console.log('show by first letter: ' + firstLetter);
         ddb.showByFirstLetter(firstLetter);
       } else {
         // the last case: sectors.length === 0 && firstLetter === ''.
@@ -416,8 +421,10 @@
 
         if (history.pushState) {
           history.pushState({}, '', $this.attr('href'));
+          // TODO for android 2.3.3 we have to pass the clicked first letter.
           ddb.applyFilter();
-        } else {
+        }
+        else {
           // TODO: test on IE8,9
           window.location.hash = this.hash;
           window.location.reload(false);
