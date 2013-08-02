@@ -33,16 +33,23 @@ class FacetsController {
 
 
     def facetsList() {
-        def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
+        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+        
+        urlQuery["query"] = (params.query)?params.query:""
+        urlQuery["sort"] = "count_desc"
+        
+        println urlQuery
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl(),'/apis/search', false, urlQuery)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+params.name, false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
-        def resultsItems = apiResponse.getResponse().facets
+        
+        println "####"+apiResponse.getResponse()
+        def resultsItems = apiResponse.getResponse()
 
-        def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
+        def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():310
 
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
