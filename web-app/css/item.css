@@ -106,6 +106,7 @@
 
 .favorite-actions.favorite-add {
   background-position: -2px -140px;
+  cursor: pointer;
 }
 .favorite-actions.favorite-add:hover {
   //background-position: -2px -100px;
@@ -116,7 +117,7 @@
   pointer-events: none;
 }
 .favorite-actions.favorite-selected:hover {
-  background-position: -2px -60px;
+  //background-position: -2px -60px;
 }
 
 .modal-body {
@@ -144,7 +145,7 @@
 }
 .item-nav .first-item a {
   padding-left: 14px;
-  background-position: left -20px;
+  background-position: left -21px;
 }
 .item-nav .prev-item {
   margin-right: 5px;
@@ -152,12 +153,12 @@
 .item-nav .prev-item a {
   padding-left: 14px;
   padding-right: 5px;
-  background-position: left -60px;
+  background-position: left -61px;
 }
 .item-nav .next-item a {
   padding-right: 14px;
   padding-left: 5px;
-background-position: right -40px;
+  background-position: right -41px;
 }
 .item-nav .next-item {
   margin-left: 5px;
@@ -170,7 +171,7 @@ background-position: right -40px;
 }
 .item-nav .last-item a {
   padding-right: 14px;
-  background-position: right 0px;
+  background-position: right -1px;
 }
 .item-nav .items-overall-index {
   margin-right: 10px;

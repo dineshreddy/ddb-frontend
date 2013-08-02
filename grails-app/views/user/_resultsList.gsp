@@ -34,7 +34,12 @@ limitations under the License.
                 <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
               </g:link>
             </h2>
-            <div class="subtitle">${it.preview.subtitle}</div>
+            <div class="subtitle">
+              <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
+                ${it.preview.subtitle}
+              </g:if>
+              
+            </div>
           </div>
           <div class="extra">
             <g:mediaTypesListRender mediaTypesArray="${it.preview.media}"></g:mediaTypesListRender>

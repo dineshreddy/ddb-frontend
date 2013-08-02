@@ -15,16 +15,16 @@
  */
 package de.ddb.next
 
-import java.lang.reflect.Array;
+import java.lang.reflect.Array
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.sun.org.apache.bcel.internal.generic.RETURN
 
-import de.ddb.next.beans.User;
+import de.ddb.next.beans.User
 
-import org.springframework.context.NoSuchMessageException;
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.context.NoSuchMessageException
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.exception.ItemNotFoundException
 
@@ -39,7 +39,7 @@ class ItemController {
     def grailsLinkGenerator
     def configurationService
     def messageSource
-    def bookmarksService;
+    def bookmarksService
 
     private def getUserFromSession() {
         def result
@@ -51,36 +51,36 @@ class ItemController {
     }
 
     private def isFavorite(pId) {
-        def vResult = null;
+        def vResult = null
         def User user = getUserFromSession()
         if (user != null) {
             def favorites = bookmarksService.findFavoritesByItemIds(user.getId(), [pId])
-            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites;
+            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites
             if (favorites && (favorites.size() > 0)) {
-                vResult = response.SC_FOUND;
+                vResult = response.SC_FOUND
             }
             else {
-                vResult = response.SC_NOT_FOUND;
+                vResult = response.SC_NOT_FOUND
             }
         }
         else {
             vResult = response.SC_UNAUTHORIZED
         }
         log.info "isFavorite ${pId} returns: " + vResult
-        return vResult;
+        return vResult
     }
 
     def delFavorite(pId) {
-        boolean vResult = false;
+        boolean vResult = false
         log.info "non-JavaScript: delFavorite " + pId
         def User user = getUserFromSession()
         if (user != null) {
             // Bug: DDBNEXT-626: if (bookmarksService.deleteFavorites(user.getId(), [pId])) {
-            bookmarksService.deleteFavorites(user.getId(), [pId]);
-            def isFavorite = isFavorite(pId);
+            bookmarksService.deleteFavorites(user.getId(), [pId])
+            def isFavorite = isFavorite(pId)
             if (isFavorite == response.SC_NOT_FOUND) {
                 log.info "non-JavaScript: delFavorite " + pId + " - success!"
-                vResult = true;
+                vResult = true
             }
             else {
                 log.info "non-JavaScript: delFavorite " + pId + " - failed..."
@@ -89,17 +89,17 @@ class ItemController {
         else {
             log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
         }
-        return vResult;
+        return vResult
     }
 
     def addFavorite(pId) {
-        boolean vResult = false;
+        boolean vResult = false
         log.info "non-JavaScript: addFavorite " + pId
         def User user = getUserFromSession()
         if (user != null) {
             if (bookmarksService.addFavorite(user.getId(), pId)) {
                 log.info "non-JavaScript: addFavorite " + pId + " - success!"
-                vResult = true;
+                vResult = true
             }
             else {
                 log.info "non-JavaScript: addFavorite " + pId + " - failed..."
@@ -108,7 +108,7 @@ class ItemController {
         else {
             log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
         }
-        return vResult;
+        return vResult
     }
 
     def findById() {
@@ -122,14 +122,14 @@ class ItemController {
                 throw new ItemNotFoundException()
             }
 
-            def isFavorite = isFavorite(id);
-            log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn);
+            def isFavorite = isFavorite(id)
+            log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
             if (params.reqActn) {
                 if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
-                    isFavorite = response.SC_FOUND;
+                    isFavorite = response.SC_FOUND
                 }
                 else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
-                    isFavorite = response.SC_NOT_FOUND;
+                    isFavorite = response.SC_NOT_FOUND
                 }
             }
 
@@ -298,7 +298,7 @@ class ItemController {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@ns3:resource"].toString()
+            def licenseId = item.item.license["@ns2:resource"].toString()
 
             def propertyId = convertUriToProperties(licenseId)
 

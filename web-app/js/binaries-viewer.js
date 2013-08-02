@@ -22,7 +22,6 @@ $(document).ready(function() {
       var id = $(videoDiv).attr("id");
       var width = $(videoDiv).data("jwplayer-width");
       var height = $(videoDiv).data("jwplayer-height");
-      height = height - 32; // Temporary workaround
       var file = $(videoDiv).data("jwplayer-file");
       var image = $(videoDiv).data("jwplayer-image");
       

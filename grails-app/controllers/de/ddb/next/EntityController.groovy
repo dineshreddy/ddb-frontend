@@ -23,6 +23,11 @@ class EntityController {
 
     def index() {
 
+        //---- Temporarily removed access to the entity page: DDBNEXT-618 ------
+        redirect(uri: "/")
+        return
+        //----------------------------------------------------------------------
+
         def entityId = params.id
         def rows = params.rows
         def offset = params.offset

@@ -159,10 +159,10 @@ class UserController {
                 sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
                 def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
                 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"asc"])]
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
                 if (params.order=="asc"){
                     allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
-                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:20,order:"desc"])
+                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc"])
                     urlsForOrder["asc"]="#"
                 }else{
                     params.order="desc"
@@ -180,14 +180,15 @@ class UserController {
                     try {
                         sendMail {
                             to params.email
-                            from configurationService.getFavoritesSendMailFrom()
+                            from configurationService.getFavoritesSendMailFrom() 
+                            replyTo getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: all,dateString: dateTime])
+                            model:[results: allResultsOrdered,dateString: dateTime])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
-                        log.info "This is the mail error "+ e
+                        log.info "An error occurred sending the email "+ e.getMessage()
                         flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
                     }
                 }
@@ -207,6 +208,7 @@ class UserController {
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],
+                    rows: rows,
                     userName: userName,
                     dateString: dateTime,
                     urlsForOrder:urlsForOrder
