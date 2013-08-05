@@ -20,6 +20,8 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 class Bookmark {
 
+    public enum Type { CULTURAL_ITEM, INSTITUTION, ENTITY }
+
     String bookmarkId
     String userId
     String itemId

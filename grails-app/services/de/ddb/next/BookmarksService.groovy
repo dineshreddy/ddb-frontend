@@ -22,6 +22,7 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
+import de.ddb.next.beans.Bookmark.Type
 
 
 /**
@@ -151,7 +152,7 @@ class BookmarksService {
      * @param itemID    the ID of the DDB cultural item.
      * @return          the created bookmark ID.
      */
-    def saveBookmark(userId, folderId, itemId) {
+    def saveBookmark(userId, folderId, itemId, type = Type.CULTURAL_ITEM) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
 
         def bookmarkId
@@ -160,7 +161,8 @@ class BookmarksService {
              user: userId,
              folder: folderId,
              item: itemId,
-             createdAt: new Date().getTime()
+             createdAt: new Date().getTime(),
+             type: type
            ]
 
            response.success = { resp, json ->
@@ -224,7 +226,7 @@ class BookmarksService {
      */
     def deleteBookmarks(userId, bookmarkIdList) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
-        println("#####"+bookmarkIdList);
+        println("#####"+bookmarkIdList)
         http.request(Method.POST, ContentType.JSON) { req ->
             def reqBody = ''
             bookmarkIdList.each { id ->
@@ -239,7 +241,7 @@ class BookmarksService {
         }
     }
 
-    def addFavorite(userId, itemId) {
+    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM) {
         def favoriteFolderId = getFavoritesFolderId(userId)
 
         def foundItemIdList = findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
@@ -248,7 +250,7 @@ class BookmarksService {
           return null
         }
 
-        def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId)
+        def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId, type)
         log.info "Add a bookmark ${bookmarkId} in Favorites"
         return bookmarkId
     }
