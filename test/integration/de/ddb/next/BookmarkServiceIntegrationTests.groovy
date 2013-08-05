@@ -86,22 +86,22 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     }
 
     @Test void shouldFindFoldersByTitle() {
-       log.info "the bookmark service should find folders by its title."
-       def userId = UUID.randomUUID() as String
+        log.info "the bookmark service should find folders by its title."
+        def userId = UUID.randomUUID() as String
 
-       def folderId = bookmarksService.newFolder(userId, BookmarksService.FAVORITES, BookmarksService.IS_PUBLIC)
-       log.info "the bookmark service created a ${BookmarksService.FAVORITES} folder(${folderId}) for a user(${userId})"
+        def folderId = bookmarksService.newFolder(userId, BookmarksService.FAVORITES, BookmarksService.IS_PUBLIC)
+        log.info "the bookmark service created a ${BookmarksService.FAVORITES} folder(${folderId}) for a user(${userId})"
 
-       def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
-       log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+        def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+        log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
 
-       if(!favFolderList) {
-           favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
-           log.info "Second try, the user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
-       }
+        if(!favFolderList) {
+            favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.FAVORITES)
+            log.info "Second try, the user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
+        }
 
-       assert favFolderList.size() == 1
-       assertEquals favFolderList[0].folderId, folderId
+        assert favFolderList.size() == 1
+        assertEquals favFolderList[0].folderId, folderId
     }
 
     @Test void shouldGetAllUserFavorites() {
@@ -208,6 +208,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "The user ${userId} just added an institution ${institutionId} to their Favorites folder(favoriteId)"
 
         def favoriteForInstitution = bookmarksService.findFavoriteByItemId(userId, institutionId)
+        log.info("fav is: ${favoriteForInstitution }")
         assert favoriteForInstitution.itemId == institutionId
         assert favoriteForInstitution.type == Type.INSTITUTION
     }

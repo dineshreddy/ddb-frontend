@@ -20,11 +20,21 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 class Bookmark {
 
-    public enum Type { CULTURAL_ITEM, INSTITUTION, ENTITY }
-
     String bookmarkId
     String userId
     String itemId
     Date creationDate
+    Type type
 
+    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type) {
+        this.bookmarkId =bookmarkId
+        this.userId = userId
+        this.itemId = itemId
+        this.creationDate = creationDate
+        this.type = type
+    }
+
+    public enum Type {
+        CULTURAL_ITEM, INSTITUTION, ENTITY
+    }
 }

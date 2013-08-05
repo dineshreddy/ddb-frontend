@@ -56,16 +56,16 @@ class BookmarksService {
         log.info "creating a new folder with the title: ${title}"
         def folderId
         http.request(Method.POST, ContentType.JSON) { req ->
-           body = [
-             user: userId,
-             title : title,
-             isPublic : isPublic
-           ]
+            body = [
+                user: userId,
+                title : title,
+                isPublic : isPublic
+            ]
 
-           response.success = { resp, json ->
-               folderId = json._id
-               refresh()
-           }
+            response.success = { resp, json ->
+                folderId = json._id
+                refresh()
+            }
         }
 
         folderId
@@ -86,21 +86,21 @@ class BookmarksService {
     def findAllFolders(userId) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
         http.request(Method.GET, ContentType.JSON) { req ->
-           response.success = { resp, json ->
-               def resultList = json.hits.hits
-               def folderList = []
-               resultList.each { it ->
+            response.success = { resp, json ->
+                def resultList = json.hits.hits
+                def folderList = []
+                resultList.each { it ->
                     def folder = new Folder(
-                       folderId: it._id,
-                       userId: it._source.user,
-                       title: it._source.title,
-                       isPublic: it._source.isPublic
-                   )
-                   folderList.add(folder)
-               }
-               return folderList
-           }
-       }
+                            folderId: it._id,
+                            userId: it._source.user,
+                            title: it._source.title,
+                            isPublic: it._source.isPublic
+                            )
+                    folderList.add(folder)
+                }
+                return folderList
+            }
+        }
     }
 
     /* TODO: refactor this one
@@ -123,25 +123,25 @@ class BookmarksService {
     def findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
         log.info "find bookmarks for the user (${userId}) in the folder ${folderId}"
         def http = new HTTPBuilder(
-            "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
+                "${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}%20&size=${size}")
         http.request(Method.GET, ContentType.JSON) { req ->
 
-           response.success = { resp, json ->
-               def all = []
-               def resultList = json.hits.hits
-               resultList.each { it ->
-                   def bookmark = new Bookmark(
-                        bookmarkId: it._id,
-                        userId: it._source.user,
-                        itemId: it._source.item,
-                        creationDate: new Date(it._source.createdAt.toLong())
-                   )
-                   all.add(bookmark)
-               }
-               all
-           }
+            response.success = { resp, json ->
+                def all = []
+                def resultList = json.hits.hits
+                resultList.each { it ->
+                    def bookmark = new Bookmark(
+                            bookmarkId: it._id,
+                            userId: it._source.user,
+                            itemId: it._source.item,
+                            creationDate: new Date(it._source.createdAt.toLong())
+                            )
+                    all.add(bookmark)
+                }
+                all
+            }
 
-       }
+        }
     }
 
     /**
@@ -157,19 +157,19 @@ class BookmarksService {
 
         def bookmarkId
         http.request(Method.POST, ContentType.JSON) { req ->
-           body = [
-             user: userId,
-             folder: folderId,
-             item: itemId,
-             createdAt: new Date().getTime(),
-             type: type
-           ]
+            body = [
+                user: userId,
+                folder: folderId,
+                item: itemId,
+                createdAt: new Date().getTime(),
+                type: type
+            ]
 
-           response.success = { resp, json ->
-               bookmarkId = json._id
-               log.info "Bookmark ${bookmarkId} is created."
-               refresh()
-           }
+            response.success = { resp, json ->
+                bookmarkId = json._id
+                log.info "Bookmark ${bookmarkId} is created."
+                refresh()
+            }
         }
         bookmarkId
     }
@@ -179,11 +179,11 @@ class BookmarksService {
 
         log.info "refreshing index ddb..."
         http.request(Method.POST, ContentType.JSON) { req ->
-           response.success = { resp, json ->
-               log.info "Response: ${json}"
-               log.info "finished refreshing index ddb."
-           }
-       }
+            response.success = { resp, json ->
+                log.info "Response: ${json}"
+                log.info "finished refreshing index ddb."
+            }
+        }
     }
 
     /**
@@ -199,11 +199,11 @@ class BookmarksService {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
-              filter: [
-                terms: [
-                  item: itemIdList
+                filter: [
+                    terms: [
+                        item: itemIdList
+                    ]
                 ]
-              ]
             ]
 
             response.success = { resp, json ->
@@ -235,8 +235,8 @@ class BookmarksService {
 
             body = reqBody
             response.success = {
-              refresh()
-              return true
+                refresh()
+                return true
             }
         }
     }
@@ -246,8 +246,8 @@ class BookmarksService {
 
         def foundItemIdList = findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
         if(foundItemIdList.size()>0) {
-          log.warn('The item ID (itemId) is already in the Favorites')
-          return null
+            log.warn('The item ID (itemId) is already in the Favorites')
+            return null
         }
 
         def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId, type)
@@ -263,32 +263,32 @@ class BookmarksService {
         http.request(Method.POST, ContentType.JSON) { req ->
 
             body = [
-              filter: [
-                term: [
-                  title: title
+                filter: [
+                    term: [
+                        title: title
+                    ]
                 ]
-              ]
             ]
 
-           response.success = { resp, json ->
-               log.info json
-               def resultList = json.hits.hits
-               def all = []
-               resultList.each { it ->
-                   def folder = new Folder(
-                        folderId: it._id,
-                        userId: it._source.user,
-                        title: it._source.title,
-                        isPublic: it._source.isPublic
-                   )
+            response.success = { resp, json ->
+                log.info json
+                def resultList = json.hits.hits
+                def all = []
+                resultList.each { it ->
+                    def folder = new Folder(
+                            folderId: it._id,
+                            userId: it._source.user,
+                            title: it._source.title,
+                            isPublic: it._source.isPublic
+                            )
 
-                   all.add(folder)
-               }
+                    all.add(folder)
+                }
 
-               log.info "found #folder: ${all.size()} with the title ${title}"
-               return all
-           }
-       }
+                log.info "found #folder: ${all.size()} with the title ${title}"
+                return all
+            }
+        }
     }
 
     def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
@@ -345,11 +345,11 @@ class BookmarksService {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
-              filter: [
-                terms: [
-                  item: itemIdList
+                filter: [
+                    terms: [
+                        item: itemIdList
+                    ]
                 ]
-              ]
             ]
 
             response.success = { resp, json ->
@@ -365,37 +365,36 @@ class BookmarksService {
     }
 
     def findFavoriteByItemId(userId, itemId) {
-      log.info "itemId: ${itemId}"
+        log.info "itemId: ${itemId}"
 
-      def folderId = getFavoritesFolderId(userId)
+        def folderId = getFavoritesFolderId(userId)
 
-      def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
-      http.request(Method.POST, ContentType.JSON) { req ->
-          body = [
-            filter: [
-              terms: [
-                item: [itemId]
-              ]
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+        http.request(Method.POST, ContentType.JSON) { req ->
+            body = [
+                filter: [
+                    terms: [
+                        item: [itemId]]
+                ]
             ]
-          ]
 
-          response.success = { resp, json ->
-              log.info "response as application/json: ${json}"
-              def all = [] //as Set
+            response.success = { resp, json ->
+                log.info "response as application/json: ${json}"
+                def all = [] //as Set
+                def resultList = json.hits.hits
 
-              def resultList = json.hits.hits
-              resultList.each { it ->
-                  def bookmark = new Bookmark(
-                       bookmarkId: it._id,
-                       userId: it._source.user,
-                       itemId: it._source.item,
-                       creationDate: new Date(it._source.createdAt.toLong())
-                  )
-                  all.add(bookmark)
-              }
-              assert all.size() <= 1
-              all[0]
-          }
-      }
+                resultList.each { it ->
+                    def bookmark = new Bookmark(
+                            it._id,
+                            it._source.user,
+                            it._source.item,
+                            new Date(it._source.createdAt.toLong()),
+                            it._source.type as Bookmark.Type)
+                    all.add(bookmark)
+                }
+                assert all.size() <= 1
+                all[0]
+            }
+        }
     }
 }
