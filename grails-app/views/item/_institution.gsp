@@ -77,9 +77,11 @@ limitations under the License.
                         <div class="modal-body">
                             <p><g:message code="ddbnext.Added_To_Favorites"/></p>
                         </div>
+                        <%-- 
                         <div class="modal-footer">
                             <button id="modal-btn-ok" class="btn-padding" data-dismiss="modal">OK</button>
                         </div>
+                        --%>
                     </div>
                 </g:isLoggedIn>
                 

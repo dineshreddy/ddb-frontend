@@ -53,6 +53,9 @@
         //var JSONresponse = jQuery.parseJSON(data.responseText);
         jElemFavorite.attr("data-actn", "DELETE");
         $("#favorite-confirmation").modal("show");
+        window.setTimeout(function(){
+          $("#favorite-confirmation").modal("hide");
+        }, 3000);
         break;
       case 400:
         // -- bad request

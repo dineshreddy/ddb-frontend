@@ -1286,6 +1286,9 @@ function searchResultsInitializer(){
                 // add a result hit to the list of favorites
                 $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
                   $("#favorite-confirmation").modal("show");
+                  window.setTimeout(function(){
+                    $("#favorite-confirmation").modal("hide");
+                  }, 3000);
                 });
               });
             }
