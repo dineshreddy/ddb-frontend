@@ -22,7 +22,7 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.Bookmark.Type
+import de.ddb.next.beans.Type
 
 
 /**
@@ -388,7 +388,7 @@ class BookmarksService {
                             it._source.user,
                             it._source.item,
                             new Date(it._source.createdAt.toLong()),
-                            it._source.type as Bookmark.Type)
+                            it._source.type as Type)
                     all.add(bookmark)
                 }
                 assert all.size() <= 1
