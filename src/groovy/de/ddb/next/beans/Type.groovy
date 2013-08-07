@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans;
+package de.ddb.next.beans
+
 
 /**
  * @author chh
- * 
+ *
  */
-enum Type {
+public enum Type {
     CULTURAL_ITEM, INSTITUTION, ENTITY
 }

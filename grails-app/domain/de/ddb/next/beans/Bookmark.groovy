@@ -17,6 +17,8 @@ package de.ddb.next.beans
 
 import groovy.transform.ToString
 
+import de.ddb.next.beans.Type
+
 @ToString(includeNames=true)
 class Bookmark {
 
