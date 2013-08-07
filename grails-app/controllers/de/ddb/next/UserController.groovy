@@ -189,9 +189,9 @@ class UserController {
                             to emails.toArray()
                             from configurationService.getFavoritesSendMailFrom()
                             replyTo getUserFromSession().getEmail()
-                            subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                            subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered,dateString: dateTime])
+                            model:[results: allResultsOrdered,dateString: dateTime,userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
@@ -232,7 +232,7 @@ class UserController {
         def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
         dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
-        render(view: "sendfavorites", model: [results: results, dateString:dateTime])
+        render(view: "sendfavorites", model: [results: results, userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),dateString:dateTime])
     }
 
     /* end favorites methods */
