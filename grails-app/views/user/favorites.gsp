@@ -112,20 +112,18 @@ limitations under the License.
           </g:form>
           <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
       </div>
+
+
       <div class="results-sorter">
-        <div class="row">
-          <div class="span6">
             <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
             <span> <a href="${urlsForOrder["desc"]}"><i class="icon-arrow-up"></i></a> <a href="${urlsForOrder["asc"]}"><i
                 class="icon-arrow-down"
               ></i></a>
             </span>
-          </div>
-          <div class="span3 added-on">
-            <span><g:message code="ddbnext.Added_On"></g:message></span>
-          </div>
-        </div>
+            <span class="favorite-dateheader"><g:message code="ddbnext.Added_On"></g:message></span>
       </div>
+
+
     </div>
     <div class="favorites-results">
       <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>

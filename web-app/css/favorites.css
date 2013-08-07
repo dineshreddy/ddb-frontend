@@ -133,6 +133,11 @@ hr {
   text-align:right;
 }
 
+.results-sorter .favorite-dateheader{
+  float:right;
+  margin-right:10px;
+}
+
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
   margin-top:3px;
 }
@@ -408,7 +413,8 @@ hr {
 }
 
 @media (max-width: 767px) {
-  .favorites-results .results-list .summary .information {
+  .favorites-results .results-list .summary .information,
+  .favorites-results-content .pages-overall-index {
      display: none;
    }
 }
