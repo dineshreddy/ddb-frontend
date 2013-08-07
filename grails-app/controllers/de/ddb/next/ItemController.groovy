@@ -278,18 +278,18 @@ class ItemController {
                 reqParameters.id = resultsItems.results["docs"][1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
-        }
 
-        //generate link back to search-result. Calculate Offset.
-        def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
-        def offset = 0
-        if (reqParameters["hitNumber"] && reqParameters["rows"]) {
-            offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
+            //generate link back to search-result. Calculate Offset.
+            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
+            def offset = 0
+            if (reqParameters["rows"]) {
+                offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
+            }
+            searchGetParameters["offset"] = offset
+            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
+            searchResultParameters["searchResultUri"] = searchResultUri
+            searchResultParameters["searchParametersMap"] = reqParameters
         }
-        searchGetParameters["offset"] = offset
-        searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
-        searchResultParameters["searchResultUri"] = searchResultUri
-        searchResultParameters["searchParametersMap"] = reqParameters
 
         return searchResultParameters
     }
