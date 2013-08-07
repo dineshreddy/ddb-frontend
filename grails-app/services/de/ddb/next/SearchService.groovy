@@ -252,15 +252,21 @@ class SearchService {
      * @return String title
      */
     def trimTitle(String title, int length){
-        def matches
         def matchesMatch = title =~ /(?m)<match>(.*?)<\/match>/
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
         def index = cleanTitle.length() > length ? cleanTitle.substring(0,length).lastIndexOf(" ") : -1
         def tmpTitle = index >= 0 ? cleanTitle.substring(0,index) + "..." : cleanTitle
+        def replacedMatches = []
+        StringBuilder replacementsRegex = new StringBuilder("(")
         if(matchesMatch.size()>0){
             matchesMatch.each{
-                tmpTitle = tmpTitle.replaceAll(Pattern.quote(it[1]), "<strong>"+it[1]+"</strong>")
+                if (replacementsRegex.size() > 1) {
+                    replacementsRegex.append("|")
+                }
+                replacementsRegex.append(Pattern.quote(it[1]))
             }
+            replacementsRegex.append(")")
+            tmpTitle = tmpTitle.replaceAll(replacementsRegex.toString(), '<strong>$1</strong>')
         }
         return tmpTitle
     }
