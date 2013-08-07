@@ -17,7 +17,7 @@ package de.ddb.next
 
 import groovy.json.JsonSlurper
 
-import java.util.Map;
+import java.util.Map
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 import org.springframework.context.i18n.LocaleContextHolder
 
@@ -41,7 +41,7 @@ class SearchService {
 
     //Autowire the grails application bean
     def grailsApplication
-    
+
     def configurationService
 
     //CharacterEncoding of query-String
@@ -355,6 +355,47 @@ class SearchService {
         }
         return urlQuery
     }
+    
+    /**
+     * Generate Map that can be used to call Autocomplete and Search Facets on Search-Server
+     *
+     * @param reqParameters
+     * @return Map with keys used for Search on Search-Server
+     */
+    def convertQueryParametersToSearchFacetsParameters(Map reqParameters) {
+        def urlQuery = [:]
+        def numbersRangeRegex = /^[0-9]+$/
+        
+        if (reqParameters["searchQuery"]!=null && reqParameters["searchQuery"].length()>0){
+            urlQuery["searchQuery"] = getMapElementOfUnsureType(reqParameters, "searchQuery", "*")
+        }else{
+            urlQuery["searchQuery"] = "*"
+        }
+
+        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
+            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
+        }else{
+            urlQuery["query"] = "*"
+        }
+
+        //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
+        //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
+        if(reqParameters["facetValues[]"]){
+            urlQuery = this.getFacets(reqParameters, urlQuery,"facet", 0)
+        }
+
+        if(reqParameters.get("facets[]")){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains(reqParameters.get("facets[]")))
+                urlQuery["facet"].add(reqParameters.get("facets[]"))
+        }
+
+        if(reqParameters["sortDesc"] != null && ((reqParameters["sortDesc"]== "true") || (reqParameters["sortDesc"]== "false"))){
+            urlQuery["sortDesc"] = getMapElementOfUnsureType(reqParameters, "sortDesc", "")
+        }
+        
+        return urlQuery
+    }
 
     /**
      * Utility-method to fix a groovy-inconvenience. Parameter map values can either be a single String or
@@ -448,34 +489,21 @@ class SearchService {
      * @param numberOfElements number of elements to return
      * @return List of Map
      */
-    def getSelectedFacetValues(List facets, String fctName, int numberOfElements, String matcher, Locale locale){
+    def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
+        
+        println facets
 
-        facets.each{
-            if(it.field==fctName){
-                int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
-                for(int i=0;i<max;i++){
-                    //Check if facet value has to be filtered
-                    boolean filterFacet = false
-                    for(int k=0; k<allFacetFilters.size(); k++){
-                        if(fctName == allFacetFilters[k].facetName && it.facetValues[i].value.toString() == allFacetFilters[k].filter){
-                            filterFacet = true
-                            break;
-                        }
-                    }
-
-                    if(!filterFacet){
-                        if(matcher && this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
-                            def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
-                            def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
-                            localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                            res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
-                        }else if(!matcher)
-                            res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
-                    }
-                }
-            }
+        int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
+        for(int i=0;i<max;i++){
+            if(matcher && this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
+                def localizedValue = this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString())
+                def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
+                localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
+                res.values.add([value: facets.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+            }else if(!matcher)
+                res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
         }
         return res
     }
@@ -527,7 +555,7 @@ class SearchService {
                 reqParameters[entry.key] = entry.value
             }
         }
-        Map paramMap = getSearchCookieParameters(reqParameters);
+        Map paramMap = getSearchCookieParameters(reqParameters)
         def jSonObject = new JSONObject()
         for (entry in paramMap) {
             if (entry.value instanceof String[]) {
@@ -660,5 +688,24 @@ class SearchService {
             return false
         }
     }
+
+    def checkAndReplaceMediaTypeImages(def searchResult){
+        searchResult.results.docs.each {
+            def preview = it.preview
+            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
+                def mediaTypes = []
+                if(preview.media instanceof String){
+                    mediaTypes.add(preview.media)
+                }else{
+                    mediaTypes.addAll(preview.media)
+                }
+                def mediaType = mediaTypes[0]
+                def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
+            }
+        }
+        return searchResult
+    }
+
 
 }

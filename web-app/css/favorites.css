@@ -275,9 +275,15 @@ hr {
 .favorites-results .results-list .summary .extra .types .video {
   background-position: 0 -19px;
 }
-.favorites-results .results-list .summary .extra .types .Institution{
+
+.favorites-results .results-list .summary .extra .types .institution {
   background-position: 0 -190px;
 }
+
+.favorites-results .results-list .summary .extra .types .unknown {
+  background-position: 0 0px;
+}
+
 
 .favorites-results .results-list .summary-main {
   min-height: 74px;
