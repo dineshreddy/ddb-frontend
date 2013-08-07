@@ -40,40 +40,17 @@ class ItemController {
     def configurationService
     def messageSource
     def bookmarksService
-
-    private def getUserFromSession() {
-        def result
-        def HttpSession session = request.getSession(false)
-        if (session != null) {
-            result = session.getAttribute(User.SESSION_USER)
-        }
-        return result
-    }
+    def sessionService
 
     private def isFavorite(pId) {
-        def vResult = null
-        def User user = getUserFromSession()
-        if (user != null) {
-            def favorites = bookmarksService.findFavoritesByItemIds(user.getId(), [pId])
-            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites
-            if (favorites && (favorites.size() > 0)) {
-                vResult = response.SC_FOUND
-            }
-            else {
-                vResult = response.SC_NOT_FOUND
-            }
-        }
-        else {
-            vResult = response.SC_UNAUTHORIZED
-        }
-        log.info "isFavorite ${pId} returns: " + vResult
-        return vResult
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        return bookmarksService.isFavorite(pId, user)
     }
 
     def delFavorite(pId) {
         boolean vResult = false
         log.info "non-JavaScript: delFavorite " + pId
-        def User user = getUserFromSession()
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
             // Bug: DDBNEXT-626: if (bookmarksService.deleteFavorites(user.getId(), [pId])) {
             bookmarksService.deleteFavorites(user.getId(), [pId])
@@ -95,7 +72,7 @@ class ItemController {
     def addFavorite(pId) {
         boolean vResult = false
         log.info "non-JavaScript: addFavorite " + pId
-        def User user = getUserFromSession()
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
             if (bookmarksService.addFavorite(user.getId(), pId)) {
                 log.info "non-JavaScript: addFavorite " + pId + " - success!"

@@ -14,12 +14,16 @@
  * limitations under the License.
  */
 package de.ddb.next
+import javax.servlet.http.HttpSession
+
 import grails.converters.JSON
 
 import org.apache.commons.logging.LogFactory
 
-import groovy.json.JsonSlurper;
-import groovyx.net.http.ContentType;
+import de.ddb.next.beans.User
+
+import groovy.json.JsonSlurper
+import groovyx.net.http.ContentType
 import groovyx.net.http.Method
 
 class InstitutionController {
@@ -28,6 +32,8 @@ class InstitutionController {
 
     def institutionService
     def configurationService
+    def bookmarksService
+    def sessionService
 
     def show() {
         def allInstitution = institutionService.findAll()
@@ -57,38 +63,49 @@ class InstitutionController {
         render institutionService.findAll() as JSON
     }
 
-
     def showInstitutionsTreeByItemId() {
-        def id = params.id;
-        def itemId = id;
-        def vApiInstitution = new ApiInstitution();
-        log.debug("read insitution by item id: ${id}");
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl());
+        def id = params.id
+        def itemId = id
+
+        def isFavorite = isFavorite(id)
+        log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
+        if (params.reqActn) {
+            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
+                isFavorite = response.SC_FOUND
+            }
+            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
+                isFavorite = response.SC_NOT_FOUND
+            }
+        }
+
+        def vApiInstitution = new ApiInstitution()
+        log.debug("read insitution by item id: ${id}")
+        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
         def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
         if (selectedOrgXML) {
             selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
-            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}");
+            log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
-                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}");
+                    log.error("ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}")
                     forward controller: 'error', action: "ERROR: id:${id} != OrgParent.id:${jsonOrgParentHierarchy[0].id}"
                 }
             }
             else if (jsonOrgParentHierarchy.size() > 1) {
-                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id;
+                itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
-            log.debug("root itemId = ${itemId}");
+            log.debug("root itemId = ${itemId}")
             def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
             def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0;
+            int countObjectsForProv = 0
             if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
                 try {
                     countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
                 }
                 catch (NumberFormatException ex) {
-                    countObjectsForProv = -1;
+                    countObjectsForProv = -1
                 }
             }
 
@@ -98,11 +115,58 @@ class InstitutionController {
             }else{
                 organisationLogo = selectedOrgXML.logo
             }
-            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl])
+            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl, isFavorite: isFavorite])
         }
         else {
             forward controller: 'error', action: "notFound"
         }
 
     }
+
+    private def isFavorite(pId) {
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        return bookmarksService.isFavorite(pId, user)
+    }
+
+    def delFavorite(pId) {
+        boolean vResult = false
+        log.info "non-JavaScript: delFavorite " + pId
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        if (user != null) {
+            // Bug: DDBNEXT-626: if (bookmarksService.deleteFavorites(user.getId(), [pId])) {
+            bookmarksService.deleteFavorites(user.getId(), [pId])
+            def isFavorite = isFavorite(pId)
+            if (isFavorite == response.SC_NOT_FOUND) {
+                log.info "non-JavaScript: delFavorite " + pId + " - success!"
+                vResult = true
+            }
+            else {
+                log.info "non-JavaScript: delFavorite " + pId + " - failed..."
+            }
+        }
+        else {
+            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
+        }
+        return vResult
+    }
+
+    def addFavorite(pId) {
+        boolean vResult = false
+        log.info "non-JavaScript: addFavorite " + pId
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        if (user != null) {
+            if (bookmarksService.addFavorite(user.getId(), pId)) {
+                log.info "non-JavaScript: addFavorite " + pId + " - success!"
+                vResult = true
+            }
+            else {
+                log.info "non-JavaScript: addFavorite " + pId + " - failed..."
+            }
+        }
+        else {
+            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
+        }
+        return vResult
+    }
+
 }
