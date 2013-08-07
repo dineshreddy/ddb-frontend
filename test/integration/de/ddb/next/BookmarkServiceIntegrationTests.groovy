@@ -4,7 +4,7 @@ import static org.junit.Assert.*
 
 import org.junit.*
 
-import de.ddb.next.beans.Type
+import de.ddb.next.Type
 
 
 

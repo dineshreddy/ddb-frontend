@@ -22,7 +22,7 @@ import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.Type
+import de.ddb.next.Type
 
 
 /**
