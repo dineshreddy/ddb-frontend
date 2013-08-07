@@ -16,6 +16,8 @@
 package de.ddb.next
 
 
+import javax.servlet.http.HttpServletResponse
+
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
@@ -396,4 +398,24 @@ class BookmarksService {
             }
         }
     }
+
+    def isFavorite(pId, user) {
+        def vResult = null
+        if (user != null) {
+            def favorites = findFavoritesByItemIds(user.getId(), [pId])
+            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites
+            if (favorites && (favorites.size() > 0)) {
+                vResult = HttpServletResponse.SC_FOUND
+            }
+            else {
+                vResult = HttpServletResponse.SC_NOT_FOUND
+            }
+        }
+        else {
+            vResult = HttpServletResponse.SC_UNAUTHORIZED
+        }
+        log.info "isFavorite ${pId} returns: " + vResult
+        return vResult
+    }
+
 }

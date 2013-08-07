@@ -16,7 +16,7 @@ limitations under the License.
 <div class="row item-detail">
   <div class="span12 institution">
     <div class="row">
-    
+
         <div class="span9">
             <div><g:message code="ddbnext.Institution" /></div>
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
@@ -24,10 +24,11 @@ limitations under the License.
             </g:link>
             <a class="institution-link" href="${institution.url}">${institution.url}</a>
         </div>
+
         <div class="span3">
             <img alt="${institution.name}" src="${institutionImage}"/>
         </div>
-        
+
         <div class="span9">
             <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
@@ -46,7 +47,6 @@ limitations under the License.
             </g:if>
         </div>
         <div class="span3">
-        
             <div class="favorite">
                 
                 <%--  
