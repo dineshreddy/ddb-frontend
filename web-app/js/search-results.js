@@ -374,10 +374,17 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
@@ -447,10 +454,17 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
