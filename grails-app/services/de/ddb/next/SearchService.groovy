@@ -17,7 +17,7 @@ package de.ddb.next
 
 import groovy.json.JsonSlurper
 
-import java.util.Map;
+import java.util.Map
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 import org.springframework.context.i18n.LocaleContextHolder
 
@@ -41,7 +41,7 @@ class SearchService {
 
     //Autowire the grails application bean
     def grailsApplication
-    
+
     def configurationService
 
     //CharacterEncoding of query-String
@@ -461,7 +461,7 @@ class SearchService {
                     for(int k=0; k<allFacetFilters.size(); k++){
                         if(fctName == allFacetFilters[k].facetName && it.facetValues[i].value.toString() == allFacetFilters[k].filter){
                             filterFacet = true
-                            break;
+                            break
                         }
                     }
 
@@ -527,7 +527,7 @@ class SearchService {
                 reqParameters[entry.key] = entry.value
             }
         }
-        Map paramMap = getSearchCookieParameters(reqParameters);
+        Map paramMap = getSearchCookieParameters(reqParameters)
         def jSonObject = new JSONObject()
         for (entry in paramMap) {
             if (entry.value instanceof String[]) {
@@ -660,5 +660,24 @@ class SearchService {
             return false
         }
     }
+
+    def checkAndReplaceMediaTypeImages(def searchResult){
+        searchResult.results.docs.each {
+            def preview = it.preview
+            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
+                def mediaTypes = []
+                if(preview.media instanceof String){
+                    mediaTypes.add(preview.media)
+                }else{
+                    mediaTypes.addAll(preview.media)
+                }
+                def mediaType = mediaTypes[0]
+                def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
+            }
+        }
+        return searchResult
+    }
+
 
 }
