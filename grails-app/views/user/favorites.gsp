@@ -166,7 +166,7 @@ limitations under the License.
   </g:if>
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <span title="<g:message code="ddbnext.Close" />"  data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="msDeleteFavoritesLabel">
         <g:message code="ddbnext.delete_favorites" />
       </h3>
@@ -183,7 +183,7 @@ limitations under the License.
   
   <div class="modal hide fade" id="confirm-dialog">
     <div class="modal-header">
-      <a class="close" data-dismiss="modal">×</a>
+      <span title="<g:message code="ddbnext.Close" />"  data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3>
         <g:message code="ddbnext.delete_confirmation" />
       </h3>
@@ -201,13 +201,13 @@ limitations under the License.
   
   <div class="modal hide fade" id="noSelection">
     <div class="modal-header">
-      <a class="close" data-dismiss="modal">×</a>
+    <span title="<g:message code="ddbnext.Close" />"  data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3>
         <g:message code="ddbnext.delete_confirmation" />
       </h3>
     </div>
     <div class="modal-body">
-      CAnnot delete any item. None selected <g:message code="ddbnext.delete_favorites_dialog" />
+      <g:message code="ddbnext.delete_favorites_dialog" />
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">

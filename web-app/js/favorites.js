@@ -107,7 +107,6 @@ $(function() {
         var body = {
             ids : selected
         }
-
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -116,8 +115,8 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            $('#msDeleteFavorites').modal();
-
+            //$('#msDeleteFavorites').modal();
+            window.setTimeout('location.reload()', 500);
           }
         });
         $('#slaves input:checked').each(function() {
