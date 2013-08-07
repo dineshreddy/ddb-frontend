@@ -738,7 +738,7 @@ class UserController {
                 user.setLastname(lastName)
                 user.setPassword(null)
                 user.setOpenIdUser(true)
-                //user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
                 log.info(user.toString())
 
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
