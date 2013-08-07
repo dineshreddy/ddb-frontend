@@ -960,6 +960,7 @@ function searchResultsInitializer(){
               this.buildStructure();
               this.fctManager.fetchFacetValues(this);
               this.opened = true;
+              this.parentMainElement.find('.input-search-fct').focus();
             }else if(this.opened) this.close();
         }else if(element.attr('class') == 'h3' && this.opened){
             this.close();
