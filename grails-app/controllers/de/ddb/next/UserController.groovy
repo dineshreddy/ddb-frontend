@@ -115,6 +115,7 @@ class UserController {
                 rows = params.rows.toInteger()
             }
             def String result = favoritesPageService.getFavorites()
+
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
@@ -142,11 +143,11 @@ class UserController {
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
                 lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-                
+
                 if (totalPages.toFloat()<page.toFloat()){
                     params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
                     if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                        lastPgOffset=20;
+                        lastPgOffset=20
                     }
                     page=totalPages
                 }
@@ -157,8 +158,8 @@ class UserController {
                 //Default ordering is newest on top == DESC
                 allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
                 sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
-                def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
-                
+                def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
+
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
                 if (params.order=="asc"){
                     allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
@@ -167,7 +168,7 @@ class UserController {
                 }else{
                     params.order="desc"
                 }
-                
+
                 if (params.offset){
                     resultsItems=allResultsWithDate.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
@@ -175,12 +176,12 @@ class UserController {
                     params.offset=0
                     resultsItems=allResultsWithDate.take( rows)
                 }
-                
+
                 if (request.method=="POST"){
                     try {
                         sendMail {
                             to params.email
-                            from configurationService.getFavoritesSendMailFrom() 
+                            from configurationService.getFavoritesSendMailFrom()
                             replyTo getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",

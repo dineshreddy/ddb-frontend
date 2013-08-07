@@ -257,6 +257,7 @@ hr {
   margin: 0 4px 0 0;
   text-indent: -999em;
   margin-top: 12px;
+  padding-left: 0px;
   background: url("../images/icons/result_types.png") no-repeat center top;
 }
 
@@ -275,7 +276,7 @@ hr {
 .favorites-results .results-list .summary .extra .types .video {
   background-position: 0 -19px;
 }
-.favorites-results .results-list .summary .extra .types .Institution{
+.favorites-results .results-list .summary .extra .types .institution {
   background-position: 0 -190px;
 }
 

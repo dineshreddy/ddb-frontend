@@ -20,7 +20,7 @@ limitations under the License.
 
     <g:set var="controller" value="item" />
     <g:set var="action" value="findById" />
-    <g:if test="${it.preview.category == 'Institution'}">
+    <g:if test="${it.category == 'Institution'}">
         <g:set var="controller" value="institution" />
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
