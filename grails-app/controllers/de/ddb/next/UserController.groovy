@@ -178,9 +178,15 @@ class UserController {
                 }
 
                 if (request.method=="POST"){
+                    def List emails = []
+                    if (params.email.contains(',')){
+                        emails=params.email.tokenize(',')
+                    }else{
+                        emails.add(params.email)
+                    }
                     try {
                         sendMail {
-                            to params.email
+                            to emails.toArray()
                             from configurationService.getFavoritesSendMailFrom()
                             replyTo getUserFromSession().getEmail()
                             subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
