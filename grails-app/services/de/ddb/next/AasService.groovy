@@ -17,7 +17,7 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
-import groovyjarjarcommonscli.MissingArgumentException;
+import groovyjarjarcommonscli.MissingArgumentException
 import groovyx.net.http.Method
 
 import org.apache.commons.lang.StringUtils
@@ -43,7 +43,7 @@ class AasService {
     private static final log = LogFactory.getLog(this)
 
     private static final String PERSON_URI = "/aas/persons/"
-    
+
     private static final String ID_FIELD = "id"
 
     private static final String NICKNAME_FIELD = "nickname"
@@ -77,7 +77,7 @@ class AasService {
      * @return person as JSON object
      */
     public User login(String id, String password) {
-        String auth = id + ":" + password;
+        String auth = id + ":" + password
         def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
         if(apiResponse.isOk()){
             def aasResponse = apiResponse.getResponse()
@@ -195,19 +195,19 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject getPersonJson(
-                            String nickname, 
-                            String title, 
-                            String salutation, 
-                            String surName,
-                            String foreName,
-                            String telephoneNumber,
-                            String faxNumber,
-                            String email,
-                            String pswd,
-                            String confirmationLink,
-                            String confirmationTemplate,
-                            String confirmationSubject) throws MissingArgumentException {
-        
+            String nickname,
+            String title,
+            String salutation,
+            String surName,
+            String foreName,
+            String telephoneNumber,
+            String faxNumber,
+            String email,
+            String pswd,
+            String confirmationLink,
+            String confirmationTemplate,
+            String confirmationSubject) throws MissingArgumentException {
+
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(nickname)) {
             jsonObject.put(NICKNAME_FIELD, nickname)
@@ -255,8 +255,8 @@ class AasService {
      * @return change password as JSON object
      */
     public JSONObject getChangePasswordJson(
-                            String pswd) throws MissingArgumentException {
-        
+            String pswd) throws MissingArgumentException {
+
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(pswd)) {
             jsonObject.put(PASSWORD_FIELD, pswd)
@@ -277,11 +277,11 @@ class AasService {
      * @return update email as JSON object
      */
     public JSONObject getUpdateEmailJson(
-                            String email,
-                            String confirmationLink,
-                            String confirmationTemplate,
-                            String confirmationSubject) throws MissingArgumentException {
-        
+            String email,
+            String confirmationLink,
+            String confirmationTemplate,
+            String confirmationSubject) throws MissingArgumentException {
+
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(email)) {
             jsonObject.put(EMAIL_FIELD, email)
@@ -313,10 +313,10 @@ class AasService {
      * @return reset password as JSON object
      */
     public JSONObject getResetPasswordJson(
-                            String confirmationLink,
-                            String confirmationTemplate,
-                            String confirmationSubject) throws MissingArgumentException {
-        
+            String confirmationLink,
+            String confirmationTemplate,
+            String confirmationSubject) throws MissingArgumentException {
+
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(confirmationLink)) {
             jsonObject.put(CONFIRMATION_LINK_FIELD, confirmationLink)
@@ -354,7 +354,7 @@ class AasService {
             apiResponse = ApiConsumer.delete(configurationService.getAasUrl(), url, true)
         }
         else {
-            throw new BackendErrorException("No method for request defined");
+            throw new BackendErrorException("No method for request defined")
         }
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
