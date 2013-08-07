@@ -280,7 +280,7 @@ compress {
 
 grails {
     mail {
-        host = "relay.fiz-karlsruhe.de"
+        host = "relay.fiz-karlsruhe.de"        
         port = 25
     }
 }

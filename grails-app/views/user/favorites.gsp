@@ -155,7 +155,7 @@ limitations under the License.
             <blockquote>
               <br />
               <div class="favorites-results">
-                <g:message code="ddbnext.favorites_email_body" args="${[dateString]}" default="ddbnext.Favorites_List_Of" />
+                <g:message code="ddbnext.favorites_email_body" args="${[userName,dateString]}" default="ddbnext.Favorites_List_Of" />
               </div>
               <br />
             </blockquote>
