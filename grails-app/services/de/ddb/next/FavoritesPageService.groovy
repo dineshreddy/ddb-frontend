@@ -37,7 +37,15 @@ class FavoritesPageService {
     }
 
     def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        return [firstPg:createFavoritesLinkNavigation(0,rows,order),prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,order)]
+        def first = createFavoritesLinkNavigation(0,rows,order)
+        if (offset<rows){
+            first=null
+        }
+        def last = createFavoritesLinkNavigation(lastPgOffset,rows,order)
+        if (offset>=lastPgOffset){
+            last=null
+        }
+        return [firstPg:first,prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:last]
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
