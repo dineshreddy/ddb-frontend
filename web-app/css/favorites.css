@@ -424,3 +424,12 @@ hr {
 .print-header {
   display: none;
 }
+.deleteBtn{
+	min-height: 15px;
+	margin-top: 10px;
+}
+.deleteContainer {
+  overflow:hidden;
+  display:block;
+  margin-bottom: -10px;
+}

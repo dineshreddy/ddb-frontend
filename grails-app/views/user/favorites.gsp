@@ -103,39 +103,45 @@ limitations under the License.
           </div>
         </g:if>
         <g:if test="${resultsNumber > 0}">
-          <g:form id="favorites-remove" name="favorites-remove">
-            <div class="favorites-results-controls">
+          <div class="favorites-results-controls">
+            <div class="deleteContainer row">
+              <div class="deleteBtn span1">
+                <g:form id="favorites-remove" name="favorites-remove">
+                  <button type="submit" class="submit" title="<g:message code="ddbnext.Delete"/>">
+                    <span><g:message code="ddbnext.Delete"></g:message></span>
+                  </button>
+                </g:form>
+              </div>
               <div class="results-pagination">
-                <button type="submit" class="submit" title="<g:message code="ddbnext.Delete"/>">
-                  <span><g:message code="ddbnext.Delete"></g:message></span>
-                </button>
-          </g:form>
-          <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
-      </div>
-      <div class="results-sorter">
-        <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
-        <span class="favorite-dateheader"> <g:message code="ddbnext.Added_On"></g:message> <span> <g:if test="${params.order== 'desc'}">
-              <a href="${urlsForOrder["asc"]}"><g:img dir="images/icons" file="asc.gif" /></a>
-            </g:if> <g:else>
-              <a href="${urlsForOrder["desc"]}"><g:img dir="images/icons" file="desc.gif" /></a>
-            </g:else>
-        </span>
-        </span>
+                <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+              </div>
+            </div>
+            <div class="results-sorter">
+              <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+              <span class="favorite-dateheader"> <g:message code="ddbnext.Added_On"></g:message> <span> <g:if
+                    test="${params.order== 'desc'}"
+                  >
+                    <a href="${urlsForOrder["asc"]}"><g:img dir="images/icons" file="asc.gif" /></a>
+                  </g:if> <g:else>
+                    <a href="${urlsForOrder["desc"]}"><g:img dir="images/icons" file="desc.gif" /></a>
+                  </g:else>
+              </span>
+              </span>
+            </div>
+          </div>
+          <div class="favorites-results">
+            <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
+          </div>
+        </g:if>
+        <g:else>
+          <div class="messages-container">
+            <ul class="unstyled">
+              <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+            </ul>
+          </div>
+        </g:else>
       </div>
     </div>
-    <div class="favorites-results">
-      <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
-    </div>
-    </g:if>
-    <g:else>
-      <div class="messages-container">
-        <ul class="unstyled">
-          <li><span><g:message code="ddbnext.no_favorites" /></span></li>
-        </ul>
-      </div>
-    </g:else>
-  </div>
-  </div>
   </div>
   <g:if test="${resultsNumber > 0}">
     <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
