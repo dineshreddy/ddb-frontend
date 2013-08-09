@@ -104,13 +104,13 @@ limitations under the License.
         </g:if>
         <g:if test="${resultsNumber > 0}">
           <div class="favorites-results-controls">
-            <div class="deleteContainer row">
-              <div class="deleteBtn span1">
-                <g:form id="favorites-remove" name="favorites-remove">
+            <div class="deleteContainer">
+              <div class="deleteBtn">
+                <span><g:form id="favorites-remove" name="favorites-remove">
                   <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites"/>">
                     <span><g:message code="ddbnext.Delete"></g:message></span>
                   </button>
-                </g:form>
+                </g:form></span>
               </div>
               <div class="results-pagination">
                 <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>

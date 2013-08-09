@@ -138,6 +138,15 @@ hr {
   margin-right:10px;
 }
 
+.favorites-results-controls .results-pagination{
+  float:right;
+  margin-right:10px;
+}
+
+.favorites-results-controls .deleteBtn{
+  float:left;
+}
+
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
   margin-top:3px;
 }
@@ -410,12 +419,26 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
+   .bookmarks-container .bookmarks-list-envelope {
+        padding-right: 10px;
+   }
+   .bookmarks-container .bookmarks-list-number {
+        padding-right: 50px;
+   }
 }
 
 @media (max-width: 767px) {
   .favorites-results .results-list .summary .information,
-  .favorites-results-content .pages-overall-index {
+  .favorites-results-content .pages-overall-index,
+  .results-pagination .first-page,
+  .results-pagination .last-page {
      display: none;
+   }
+  .page-nav .br {
+    border-right: 0px;
+   }
+  .page-nav .bl {
+    border-left: 0px;
    }
 }
 
