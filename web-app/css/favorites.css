@@ -108,7 +108,7 @@ hr {
   font-size: 0.938em;
 }
 
-#favorites-remove .favorites-results-controls .submit{
+#favorites-remove .submit{
   margin-top:8px;
   margin-left: 0;
 }
@@ -446,10 +446,6 @@ hr {
 
 .print-header {
   display: none;
-}
-.deleteBtn{
-	min-height: 15px;
-	margin-top: 10px;
 }
 .deleteContainer {
   overflow:hidden;
