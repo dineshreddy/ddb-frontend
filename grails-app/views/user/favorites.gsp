@@ -198,9 +198,9 @@ limitations under the License.
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
         data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></a>
+      ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
   <div class="modal hide fade" id="noSelection">
@@ -215,9 +215,9 @@ limitations under the License.
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
         data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></a>
+      ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
 </body>

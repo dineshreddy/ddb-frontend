@@ -18,10 +18,6 @@ limitations under the License.
 <div style="margin-top:20px; margin-bottom:20px">
 <g:message code="ddbnext.send_favorites_email_body_pre" 
              args="${[userName]}" /><br />
-
-  "<g:message code="ddbnext.favorites_email_body" 
-             args="${[dateString]}" 
-             default="ddbnext.Favorites_List_Of"/>"
 </div>
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
