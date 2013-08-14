@@ -75,12 +75,12 @@ limitations under the License.
             <li class="bookmarks-list bt bb bl br"><span class="h3"> ${it.title.capitalize()}
             </span> <span class="bookmarks-list-number"> ${resultsNumber}</span> <g:if test="${resultsNumber > 0}">
                 <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
-                  class="icon-envelope"
+                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
                 ></i>
                 </a>
               </g:if> <g:else>
                 <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
-                  class="icon-envelope"
+                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
                 ></i>
                 </a>
               </g:else></li>
