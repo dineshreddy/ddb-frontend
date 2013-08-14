@@ -72,7 +72,10 @@ limitations under the License.
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled">
           <g:each in="${allFolders}">
-            <li class="bookmarks-list bt bb bl br"><span class="h3"> ${it.title.capitalize()}
+            <li class="bookmarks-list bt bb bl br">
+              <span class="h3"> 
+                <g:if test="${it.title.capitalize()=="Favorites"}"><g:message code="ddbnext.All_Favorites" /></g:if>
+                <g:else>${it.title.capitalize()}</g:else>
             </span> <span class="bookmarks-list-number"> ${resultsNumber}</span> <g:if test="${resultsNumber > 0}">
                 <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
                   class="icon-envelope"
