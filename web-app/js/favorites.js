@@ -17,6 +17,8 @@
 $(function() {
 
   if (jsPageName == "favorites") {
+    $('.page-input').removeClass('off');   
+    $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
@@ -43,9 +45,6 @@ $(function() {
     });	
 
     updateNavigationUrl();
-
-    $('.page-input').removeClass('off');   
-    $('.page-nonjs').addClass("off");
 
     $('.page-input').keyup(function(e){
       if(e.keyCode == 13) {
