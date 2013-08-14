@@ -121,9 +121,9 @@ limitations under the License.
               <span class="favorite-dateheader"> <g:message code="ddbnext.Added_On"></g:message> <span> <g:if
                     test="${params.order== 'desc'}"
                   >
-                    <a href="${urlsForOrder["asc"]}"><g:img dir="images/icons" file="asc.gif" /></a>
+                    <a href="${urlsForOrder["asc"]}"><g:img dir="images/icons" file="asc.gif" class="orderList" /></a>
                   </g:if> <g:else>
-                    <a href="${urlsForOrder["desc"]}"><g:img dir="images/icons" file="desc.gif" /></a>
+                    <a href="${urlsForOrder["desc"]}"><g:img dir="images/icons" file="desc.gif" class="orderList" /></a>
                   </g:else>
               </span>
               </span>
