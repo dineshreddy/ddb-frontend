@@ -547,7 +547,13 @@ class UserController {
             if (!errors.isEmpty()) {
                 params.errors = errors
             }
-            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+
+            def String result = favoritesPageService.getFavorites()
+            List items = JSON.parse(result) as List
+            def favoritesCount = items.length()
+
+            //render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
