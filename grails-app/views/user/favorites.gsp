@@ -110,7 +110,7 @@ limitations under the License.
             <div class="deleteContainer row">
               <div class="deleteBtn span1">
                 <g:form id="favorites-remove" name="favorites-remove">
-                  <button type="submit" class="submit" title="<g:message code="ddbnext.Delete"/>">
+                  <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites" />">
                     <span><g:message code="ddbnext.Delete"></g:message></span>
                   </button>
                 </g:form>
