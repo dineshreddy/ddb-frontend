@@ -24,7 +24,7 @@ limitations under the License.
   </head>
 
 <body>
-  <div class="container row">
+  <div class="container confirmation">
     <g:if test="${errors != null && errors.size()>0}">
       <g:renderErrors errors="${errors}"></g:renderErrors>
     </g:if>

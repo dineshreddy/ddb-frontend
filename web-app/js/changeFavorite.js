@@ -55,7 +55,7 @@
         $("#favorite-confirmation").modal("show");
         window.setTimeout(function(){
           $("#favorite-confirmation").modal("hide");
-        }, 3000);
+        }, 1500);
         break;
       case 400:
         // -- bad request

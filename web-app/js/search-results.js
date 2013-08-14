@@ -1289,7 +1289,7 @@ function searchResultsInitializer(){
                   $("#favorite-confirmation").modal("show");
                   window.setTimeout(function(){
                     $("#favorite-confirmation").modal("hide");
-                  }, 3000);
+                  }, 1500);
                 });
               });
             }
