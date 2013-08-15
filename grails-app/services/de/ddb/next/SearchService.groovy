@@ -355,7 +355,7 @@ class SearchService {
         }
         return urlQuery
     }
-    
+
     /**
      * Generate Map that can be used to call Autocomplete and Search Facets on Search-Server
      *
@@ -365,7 +365,7 @@ class SearchService {
     def convertQueryParametersToSearchFacetsParameters(Map reqParameters) {
         def urlQuery = [:]
         def numbersRangeRegex = /^[0-9]+$/
-        
+
         if (reqParameters["searchQuery"]!=null && reqParameters["searchQuery"].length()>0){
             urlQuery["searchQuery"] = getMapElementOfUnsureType(reqParameters, "searchQuery", "*")
         }else{
@@ -393,7 +393,7 @@ class SearchService {
         if(reqParameters["sortDesc"] != null && ((reqParameters["sortDesc"]== "true") || (reqParameters["sortDesc"]== "false"))){
             urlQuery["sortDesc"] = getMapElementOfUnsureType(reqParameters, "sortDesc", "")
         }
-        
+
         return urlQuery
     }
 
@@ -492,7 +492,7 @@ class SearchService {
     def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
-        
+
         println facets
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
@@ -692,7 +692,7 @@ class SearchService {
     def checkAndReplaceMediaTypeImages(def searchResult){
         searchResult.results.docs.each {
             def preview = it.preview
-            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
+            if(preview.thumbnail == null || preview.thumbnail instanceof net.sf.json.JSONNull || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
                 def mediaTypes = []
                 if(preview.media instanceof String){
                     mediaTypes.add(preview.media)
