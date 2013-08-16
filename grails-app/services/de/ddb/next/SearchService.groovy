@@ -692,7 +692,11 @@ class SearchService {
     def checkAndReplaceMediaTypeImages(def searchResult){
         searchResult.results.docs.each {
             def preview = it.preview
-            if(preview.thumbnail == null || preview.thumbnail instanceof net.sf.json.JSONNull || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
+            if(preview.thumbnail == null ||
+            preview.thumbnail instanceof net.sf.json.JSONNull ||
+            preview.thumbnail.toString().trim().isEmpty()
+            // || preview.thumbnail.toString().startsWith("http://content") //commented because this will also hide valid institution logos
+            ){
                 def mediaTypes = []
                 if(preview.media instanceof String){
                     mediaTypes.add(preview.media)
