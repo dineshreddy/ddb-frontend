@@ -694,8 +694,9 @@ class SearchService {
             def preview = it.preview
             if(preview.thumbnail == null ||
             preview.thumbnail instanceof net.sf.json.JSONNull ||
-            preview.thumbnail.toString().trim().isEmpty()
-            // || preview.thumbnail.toString().startsWith("http://content") //commented because this will also hide valid institution logos
+            preview.thumbnail.toString().trim().isEmpty() ||
+            (preview.thumbnail.toString().startsWith("http://content") &&
+            preview.thumbnail.toString().contains("/placeholder/search_result_"))
             ){
                 def mediaTypes = []
                 if(preview.media instanceof String){
