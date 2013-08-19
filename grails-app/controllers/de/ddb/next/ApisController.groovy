@@ -15,27 +15,24 @@
  */
 package de.ddb.next
 
-import net.sf.json.JSONNull
-
 import grails.converters.JSON
+
 import java.text.SimpleDateFormat
+
+import net.sf.json.JSONNull
 
 class ApisController {
 
     def apisService
     def configurationService
 
-    def search(){
-
+    def search() {
         def resultList = [:]
         def facets = []
         def highlightedTerms = []
         def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
-        def slurper = new XmlSlurper()
-
-        slurper.setKeepWhitespace(true)
 
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
         if(!apiResponse.isOk()){
@@ -50,10 +47,10 @@ class ApisController {
             String subtitle
             def thumbnail
             def media = []
-            
+
             title = (it.title instanceof JSONNull)?"":it.title
             subtitle = (it.subtitle instanceof JSONNull)?"":it.subtitle
-            
+
             thumbnail = (it.thumbnail instanceof JSONNull)?"":it.thumbnail
             if(!(it.media instanceof JSONNull)){
                 it.media.split (",").each{ media.add(it) }
@@ -70,12 +67,29 @@ class ApisController {
             docs.add(tmpResult)
         }
         resultList["facets"] = jsonResp.facets
+        resultList["facets"] = removeNullValue(resultList["facets"])
         resultList["highlightedTerms"] = jsonResp.highlightedTerms
         resultList["correctedQuery"] = jsonResp.correctedQuery
-        resultList["results"] = [name:jsonResp.results.name,docs:docs,numberOfDocs:jsonResp.results.numberOfDocs]
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
-        render (contentType:"text/json"){resultList}
+        resultList["results"] = [ name:jsonResp.results.name,
+            docs:docs,
+            numberOfDocs:jsonResp.results.numberOfDocs]
+        render resultList as JSON
+    }
+
+    def removeNullValue(facets) {
+        facets.each {
+            if(it.facetValues.size()) {
+                it.facetValues.each { facetVal ->
+                    if(facetVal.value instanceof JSONNull) {
+                        log.info "null...."
+                        facetVal.value = ''
+                    }
+                }
+            }
+        }
+        facets
     }
 
     def institutionsmap(){
@@ -134,9 +148,9 @@ class ApisController {
 
     def staticFiles() {
         def apiResponse = ApiConsumer.getBinaryStreaming(
-            configurationService.getStaticUrl(), 
-            '/static/' + getFileNamePath(), 
-            response.outputStream)
+                configurationService.getStaticUrl(),
+                '/static/' + getFileNamePath(),
+                response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
@@ -151,7 +165,7 @@ class ApisController {
         response.setHeader("Content-Disposition", "inline; filename=" + ('/static/' + getFileNamePath()).tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
-            }
+    }
     /**
      *  Format RFC 2822 date
      *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
@@ -159,10 +173,10 @@ class ApisController {
      */
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
-        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z";
-        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale());
+        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z"
+        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale())
         String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
-        Date date = format.parse(tomorrowString);
+        Date date = format.parse(tomorrowString)
         return date
     }
     private def getFileNamePath() {

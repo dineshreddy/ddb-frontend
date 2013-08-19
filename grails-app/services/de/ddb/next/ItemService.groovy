@@ -15,16 +15,15 @@
  */
 package de.ddb.next
 
-import net.sf.json.JSONNull;
+import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-import org.ccil.cowan.tagsoup.Parser;
-import groovyx.net.http.HTTPBuilder
+import org.ccil.cowan.tagsoup.Parser
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -76,41 +75,13 @@ class ItemService {
 
         def title = shortenTitle(id, item)
 
-        def fields = xml.item.fields.field.findAll()
+        def displayFieldsTag = xml.item.fields.findAll{ it.@usage.text().contains('display') }
+        def fields = displayFieldsTag[0].field.findAll()
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
             'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
 
-    }
-
-    private getItemTitle(id) {
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-
-        /* TODO remove this hack, once the server deliver the right content
-         type*/
-        http.parser.'application/json' = http.parser.'text/html'
-
-        final def componentsPath = "/access/" + id + "/components/"
-        final def titlePath = componentsPath + "title"
-
-        http.request( GET) { req ->
-            uri.path = titlePath
-
-            response.success = { resp, html ->
-                log.info "getItemTitle(): Current request uri: 200, "+uri
-
-                return html
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
-        }
     }
 
     private shortenTitle(id, item) {
@@ -171,27 +142,14 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
-
-        def http = new HTTPBuilder(configurationService.getBackendUrl())
-        ApiConsumer.setProxy(http, configurationService.getBackendUrl())
-        http.parser.'application/json' = http.parser.'application/xml'
-        final def binariesPath= "/access/" + id + "/components/binaries"
-
-        http.request( GET) { req ->
-            uri.path = binariesPath
-
-            response.success = { resp, xml ->
-                log.info "fetchBinaryList(): Current request uri: 200, "+uri
-                def binaries = xml
-                return binaries.binary.list()
-            }
-
-            response.'404' = { return '404' }
-
-            //TODO: handle other failure such as '500'
-            response.failure = { resp -> log.warn """
-                Unexpected error: ${resp.statusLine.statusCode} : ${resp.statusLine.reasonPhrase}
-                """ }
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/access/" + id + "/components/binaries")
+        if (apiResponse.isOk()) {
+            def binaries = apiResponse.getResponse()
+            return binaries.binary.list()
+        }
+        else {
+            log.error "fetchBinaryList: XML file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
     }
 
@@ -241,23 +199,23 @@ class ItemService {
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 }
                 else if(path.contains(PREVIEW)) {
                     htmlStrip = z.'@name'
                     binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(THUMBNAIL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(FULL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 }
             }
             if(binaryMap.'checkValue'){

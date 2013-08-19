@@ -15,10 +15,12 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.BadRequestException
-import groovy.json.JsonSlurper
-import org.springframework.web.servlet.support.RequestContextUtils;
+import groovy.json.*
+import groovyx.net.http.HTTPBuilder
 
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import de.ddb.next.exception.BadRequestException
 
 class SearchController {
 
@@ -76,7 +78,7 @@ class SearchController {
             }
 
             //Replacing the mediatype images when not coming from backend server
-            resultsItems = checkAndReplaceMediaTypeImages(resultsItems)
+            resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
@@ -149,28 +151,13 @@ class SearchController {
         catch (BadRequestException e) {
             //BadRequestException corresponds to 400-Error,
             //in this case will be caused by invalid query-syntax
-            List<String> errors = []
+            log.error("Bad Request: ${e.getMessage()}")
+            def errors = []
             errors.add("ddbnext.Error_Invalid_Search_Query")
             render(view: "/message/message", model: [errors: errors])
         }
     }
 
-    def checkAndReplaceMediaTypeImages(def searchResult){
-        searchResult.results.docs.each {
-            def preview = it.preview
-            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
-                def mediaTypes = []
-                if(preview.media instanceof String){
-                    mediaTypes.add(preview.media)
-                }else{
-                    mediaTypes.addAll(preview.media)
-                }
-                def mediaType = mediaTypes[0]
-                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
-            }
-        }
-        return searchResult
-    }
 
     def informationItem(){
         def informationItem = ApiConsumer.getXml(configurationService.getBackendUrl() ,'/access/'+params.id+'/components/indexing-profile').getResponse()

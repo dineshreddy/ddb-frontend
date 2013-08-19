@@ -93,12 +93,22 @@ limitations under the License.
               --%>
             </div>
             <div class="view-type-switch">
+              <!--[if lt IE 9]>
+              <div class="ie8-version">
+              <![endif]-->
               <div>
                 <button id="view-list" type="button" class="<g:if test='${viewType != 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
               </div>
+              <!--[if lt IE 9]>
+              </div>
+              <div class="ie8-version">
+              <![endif]-->
               <div>
                 <button id="view-grid" type="button" class="<g:if test='${viewType == 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
               </div>
+              <!--[if lt IE 9]>
+              </div>
+              <![endif]-->
             </div>
           </div>
         </div>

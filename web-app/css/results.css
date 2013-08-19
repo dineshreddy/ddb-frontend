@@ -117,7 +117,7 @@
 
 .page-nav .first-page a{
   padding-left: 14px;
-  background-position: left -20px;
+  background-position: left -21px;
 }
 
 .page-nav .prev-page , .flyout-page-nav .prev-page {
@@ -127,13 +127,13 @@
 .page-nav .prev-page a, .flyout-page-nav .prev-page a {
   padding-left: 14px;
   padding-right: 5px;
-  background-position: left -60px;
+  background-position: left -61px;
 }
 
 .page-nav .next-page a, .flyout-page-nav .next-page a {
   padding-right: 14px;
   padding-left: 5px;
-  background-position: right -40px;
+  background-position: right -41px;
 }
 
 .page-nav .next-page, .flyout-page-nav .next-page {
@@ -142,7 +142,7 @@
 
 .page-nav .last-page a {
   padding-right: 14px;
-  background-position: right 0px;
+  background-position: right -1px;
 }
 
 .page-nav .page-input {
@@ -239,27 +239,33 @@
   margin: -24px 0 0 0;
 }
 
-.view-type-switch #view-list:hover:before{
+.view-type-switch #view-list:hover:before {
   margin: -24px 0 0 -24px;
 }
 
-.view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before
-  {
+.view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before {
   margin: -24px 0 0 -48px;
+}
+
+.view-type-switch .ie8-version #view-list.selected:before,.view-type-switch .ie8-version #view-list.selected:hover:before,.view-type-switch .ie8-version #view-list.selected:focus:before {
+  margin: -24px 0 0 0;
 }
 
 .view-type-switch #view-grid:before {
   margin: 0;
 }
 
-.view-type-switch #view-grid:hover:before{
+.view-type-switch #view-grid:hover:before {
   margin: 0 0 0 -24px;
 }
 
-.view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before{
+.view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before {
   margin: 0 0 0 -48px;
 }
 
+.view-type-switch .ie8-version #view-grid.selected:before,.view-type-switch .ie8-version #view-grid.selected:hover:before,.view-type-switch .ie8-version #view-grid.selected:focus:before {
+  margin: 0;
+}
 
 input[type="checkbox"],input[type="radio"] {
   margin-right: 6px;
@@ -394,7 +400,13 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .extra .types .video {
   background-position: 0 -19px;
 }
-.search-results .results-list .summary .extra .types .Institution{
+
+.search-results .results-list .summary .extra .types .unknown {
+  background-position: 0 0px;
+}
+
+.search-results .results-list .summary .extra .types .Institution,
+.search-results .results-list .summary .extra .types .institution {
   background-position: 0 -190px;
 }
 

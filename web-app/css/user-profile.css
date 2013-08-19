@@ -13,27 +13,67 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.profile-input {
+#user-profile-form .profile-input {
   height: 30px !important;
   padding: 4px 6px !important;
 }
 
-.profile-title {
-  font-size: 1.375em;
-}
-
-.profile-nav {
+#user-profile-form .profile-nav {
   margin-bottom: 20px;
   line-height: 40px;
-  border-bottom: 1px solid #e5e5e5;
   display: block;
 }
 
-.profile-title, .profile-links{
-    display: inline-block;
+#user-profile-form .profile-title, #user-profile-form .profile-links{
+  text-align: right;
+  margin-bottom: 10px;
 }
 
-.profile-link {
-    margin-left: 30px !important;
+#user-profile-form .profile-link {
+  margin-left: 30px !important;
 }
 
+#user-profile-form .checkbox-label {
+  padding-top: 8px;
+}
+
+#user-profile-form .control-group.bt-white, 
+#password-change-form .control-group.bt-white, 
+#password-reset-form .control-group.bt-white {
+  padding-top: 30px;
+}
+
+#user-profile-form .profile-links {
+  padding-top: 10px;
+}
+
+/* responsive design */
+
+@media (max-width: 1199px) {
+  #user-profile-form label.checkbox-label {
+    width: 60%;
+  }
+  #user-profile-form .controls.checkbox label.error {
+    margin-top: 4px;
+    margin-left: -216px;
+  }
+}
+
+@media (max-width: 767px) {
+  #user-profile-form label.checkbox-label {
+    width: 36%;
+  }
+}
+
+@media (max-width: 480px) {
+  #user-profile-form .controls.checkbox {
+    margin-left: 0;
+  }
+  #user-profile-form .controls.checkbox label.error {
+    margin-top: -14px;
+    margin-left: 4px;
+  }
+  #newsletter {
+    margin: 0 0 0;
+  }
+}

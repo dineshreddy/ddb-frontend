@@ -1,6 +1,6 @@
 <%--
 Copyright (C) 2013 FIZ Karlsruhe
- 
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -25,11 +25,11 @@ limitations under the License.
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
-      <button type="button" class="btn btn-navbar"
-        data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span> <span class="icon-bar"></span> <span
-          class="icon-bar"></span> <span class="icon-bar"
-          style="visibility: hidden;"></span>
+      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar" style="visibility: hidden;"></span>
       </button>
       <g:link uri="/" class="brand"
         title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
@@ -49,42 +49,39 @@ limitations under the License.
                 <g:message code="ddbnext.Go_Button" />
               </button>
             </g:form></li>
-          <li class=""><g:link controller="content"
-              params="[dir: 'about']">
+
+          <li class="<g:isMappingActive context="${params}"
+              testif="${[[controller: "content", dir: "about"]]}">active</g:isMappingActive>">
+            <g:link controller="content" params="[dir: 'about']">
               <g:message code="ddbnext.AboutUs" />
             </g:link>
             <ul class="nav">
-              <li class=""><g:link controller="content"
-                  params="[dir: 'news']">
-                  <g:message code="ddbnext.News" />
-                </g:link></li>
-              <li class=""><g:link controller="institution"
-                  action="show" fragment="list">
-                  <g:message code="ddbnext.Institutions" />
-                </g:link></li>
-              <li class=""><g:link controller="content"
-                  params="[dir: 'ddb']">
-                  <g:message code="ddbnext.Participate" />
-                </g:link></li>
-              <li class=""><g:link controller="content"
-                  params="[dir: 'competence-network']">
-                  <g:message code="ddbnext.CompetenceNetwork" />
-                </g:link></li>
-            </ul></li>
-          <li class=""><g:link controller="content"
-              params="[dir: 'help']">
-              <g:message code="ddbnext.Help" />
-            </g:link>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'news']"><g:message code="ddbnext.News" /></g:link>
+              </li>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active</g:isMappingActive>">
+                <g:link controller="institution" action="show" fragment="list"><g:message code="ddbnext.Institutions" /></g:link>
+              </li>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'ddb']"><g:message code="ddbnext.Participate" /></g:link>
+              </li>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'competence-network']"><g:message code="ddbnext.CompetenceNetwork" /></g:link>
+              </li>
+            </ul><!-- /end of .nav -->
+          </li>
+          <li class="<g:isMappingActive context="${params}"
+            testif="${[[controller: "content", dir: "help"]]}">active</g:isMappingActive>">
+            <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
             <ul class="nav">
-              <li class=""><g:link controller="content"
-                  params="[dir: 'faq']">
-                  <g:message code="ddbnext.Faq" />
-                </g:link></li>
-              <li class=""><g:link controller="content"
-                  params="[dir: 'tutorial']">
-                  <g:message code="ddbnext.Tutorial" />
-                </g:link></li>
-            </ul></li>            
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'faq']"><g:message code="ddbnext.Faq" /></g:link>
+              </li>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "tutorial"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'tutorial']"><g:message code="ddbnext.Tutorial" /></g:link>
+              </li>
+            </ul>
+          </li><!-- /end of help -->
             <g:isLoggedIn>
               <li class="">
                 <g:link controller="user" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
@@ -96,8 +93,8 @@ limitations under the License.
                     <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
                   </li>
                 </ul>
-              </li>            
-            </g:isLoggedIn>            
+              </li>
+            </g:isLoggedIn>
             <li class=""><a>
               <g:message code="ddbnext.ChangeLanguage" />
             </a>
@@ -111,7 +108,7 @@ limitations under the License.
                 <g:languageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message code="ddbnext.language_en" />
                 </g:languageLink>
-              </li>              
+              </li>
             </ul>
           </li>
           <li class="">
@@ -119,7 +116,7 @@ limitations under the License.
               <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
             </g:isNotLoggedIn>
             <g:isLoggedIn>
-              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<g:getUserName />)</g:link>              
+              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<g:getUserName />)</g:link>
             </g:isLoggedIn>
           </li>
         </ul>
@@ -241,6 +238,11 @@ limitations under the License.
                           <g:message code="ddbnext.Profile" />
                         </g:link>
                       </li>
+                      <li class="">
+                        <g:link controller="user" action="doLogout">
+                          <g:message code="ddbnext.Logout" />
+                        </g:link>
+                      </li>
                     </ul>
                   </li>
                 </g:isLoggedIn>
@@ -255,7 +257,7 @@ limitations under the License.
             </g:isNotLoggedIn>
             <g:isLoggedIn>
               <div class="login-wrapper">
-                <g:message code="ddbnext.You_are_currently_logged_in_as" /> 
+                <g:message code="ddbnext.You_are_currently_logged_in_as" />
                 <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link><div class="login-dropdown"></div>
                 <ul class="selector logout">
                   <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
@@ -298,11 +300,11 @@ limitations under the License.
                       <![endif]-->
                 </button>
                 <span class="contextual-help hidden-phone hidden-tablet"
-                  title="<g:message code="ddbnext.Search_Hint" 
-                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                  title="<g:message code="ddbnext.Search_Hint"
+                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}"
                           default="ddbnext.Search_Hint"/>"
-                  data-content="<g:message code="ddbnext.Search_Hint" 
-                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
+                  data-content="<g:message code="ddbnext.Search_Hint"
+                          args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-simple']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}"
                           default="ddbnext.Search_Hint"/>">
                 </span>
                 <g:link class="link-adv-search"

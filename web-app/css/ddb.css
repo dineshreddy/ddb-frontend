@@ -1269,6 +1269,11 @@ select {
   background-position: 0px -90px;
 }
 
+.profile-input {
+  height: 30px !important;
+  padding: 4px 6px !important;
+}
+
 .tooltip {
   color: #999;
   position: absolute;
@@ -1343,7 +1348,24 @@ select {
 .nopointer {
   cursor: default !important;
 }
-.tooltip .arrow{
+
+.form-horizontal label {
+  cursor: default;
+}
+
+.form-horizontal .controls.checkbox {
+  margin-left: 190px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.form-horizontal label.checkbox-label {
+  width: 75%;
+  float: none;
+  text-align: left;
+}
+
+.tooltip .arrow {
   background: url("../images/icons/tooltip.png") -11px -12px no-repeat;
   width: 17px;
   height: 9px;
@@ -1374,6 +1396,18 @@ select {
 
   h3,h3 a {
     font-size: 1em;
+  }
+}
+
+@media (max-width: 979px) {
+  .form-horizontal .input-prepend {
+    white-space: normal;
+  }
+  .form-horizontal .control-label {
+    width: 170px;
+  }
+  .form-horizontal label.error {
+    margin-left: 0;
   }
 }
 /* responsive genaral rules - end */

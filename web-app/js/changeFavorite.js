@@ -16,13 +16,14 @@
 
   $("#idFavorite").parent().click(function(event) {
     event.preventDefault();
-    changeFavoriteState(this.href);
+    changeFavoriteState();
     return false;
     
   });
   
-  function changeFavoriteState(url) {
+  function changeFavoriteState() {
     var jElemFavorite = $("#idFavorite");
+    disableFavorite(jElemFavorite.parent());
     var vActn = jElemFavorite.attr("data-actn");
     var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
     var request = $.ajax({
@@ -51,9 +52,10 @@
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
         jElemFavorite.attr("data-actn", "DELETE");
-        jElemFavorite.parent().removeClass("favorite-add");
-        jElemFavorite.parent().addClass("favorite-selected");
         $("#favorite-confirmation").modal("show");
+        window.setTimeout(function(){
+          $("#favorite-confirmation").modal("hide");
+        }, 1500);
         break;
       case 400:
         // -- bad request
@@ -97,4 +99,15 @@
         alert("Bad response: status: " + data.status);
         break;
     }
+  }
+
+  /**
+   * Disable a favorite button.
+   *
+   * @param link LINK element which handles the favorite event
+   */
+  function disableFavorite(link) {
+    link.unbind("click");
+    link.removeClass("favorite-add");
+    link.addClass("favorite-selected");
   }

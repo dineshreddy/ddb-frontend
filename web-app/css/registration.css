@@ -18,17 +18,8 @@
   padding-right: 10px;
 }
 
-.reg-input {
-  height: 30px !important;
-  padding: 4px 6px !important;
-}
-
 #registration-form .bt {
   border-top: solid 1px #fff;
-}
-
-#registration-form label {
-  cursor: default;
 }
 
 #registration-form label.error {
@@ -39,19 +30,8 @@
   width: 465px;
 }
 
-#registration-form label.checkbox-label {
-  width: 620px;
-  float: none;
-  text-align: left;
-}
-
 #registration-form label.checkbox-label a {
   text-decoration:underline;
-}
-
-#registration-form .controls.checkbox {
-  margin-left: 190px;
-  display: inline-block;
 }
 
 #registration-form .controls.checkbox label.error {
@@ -80,4 +60,34 @@
 
 .well {
   background-color: #EFEBE8;
+}
+
+/* responsive design */
+
+@media (max-width: 1199px) {
+  #registration-form label.checkbox-label {
+    width: 60%;
+  }
+  #registration-form .controls.checkbox label.error {
+    margin-top: 4px;
+    margin-left: -216px;
+  }
+}
+
+@media (max-width: 767px) {
+  #registration-form label.checkbox-label {
+    width: 46%;
+  }
+}
+@media (max-width: 480px) {
+  #registration-form .controls.checkbox {
+    margin-left: 0;
+  }
+  #registration-form .controls.checkbox label.error {
+    margin-top: -14px;
+    margin-left: 4px;
+  }
+  #termOfUse {
+    margin: 0 0 0;
+  }
 }

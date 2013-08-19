@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import groovyx.net.http.HTTPBuilder
-
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -34,15 +32,11 @@ class InstitutionService {
     def configurationService
 
     def findAll() {
-        def cortexHostPort = configurationService.getBackendUrl()
-
-        def http = new HTTPBuilder(cortexHostPort)
-        ApiConsumer.setProxy(http, cortexHostPort)
-
         def totalInstitution = 0
         def allInstitutions = [data: [:], total: totalInstitution]
-
-        http.get(path: '/institutions') { resp, institutionList->
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/institutions')
+        if (apiResponse.isOk()) {
+            def institutionList = apiResponse.getResponse()
             def institutionByFirstChar = buildIndex()
 
             institutionList.each { it ->
@@ -68,8 +62,10 @@ class InstitutionService {
 
             allInstitutions.data = institutionByFirstChar
             allInstitutions.total = getTotal(institutionList)
-
-            return allInstitutions
+        }
+        else {
+            log.error "findAll: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
 
         return allInstitutions

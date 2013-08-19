@@ -21,7 +21,7 @@ limitations under the License.
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
     <meta name="description" content="Deutsche Digitale Bibliothek" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
@@ -53,6 +53,12 @@ limitations under the License.
     <g:render template="/jsVariables" />
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
+    
+    <script>
+        $('#header-menu-btn').click(function(event) {
+            console.log('menu btn clicked');
+        });
+    </script>
     <g:piwik />
   </body>
 </html>

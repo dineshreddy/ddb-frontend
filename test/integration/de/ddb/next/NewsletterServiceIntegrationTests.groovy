@@ -1,12 +1,14 @@
 package de.ddb.next
 
 import static org.junit.Assert.*
+import groovy.util.GroovyTestCase
 
 import org.junit.*
 
+import de.ddb.next.NewsletterService
 import de.ddb.next.beans.User
 
-class NewsletterServiceIntegrationTests {
+class NewsletterServiceIntegrationTests extends GroovyTestCase {
 
     def newsletterService
 

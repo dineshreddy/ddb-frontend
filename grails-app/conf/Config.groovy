@@ -135,6 +135,7 @@ ddb.binary.url="http://localhost/binary/"
 ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
 ddb.backend.url="http://localhost/backend:9998/"
+ddb.backend.apikey=""
 ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
 ddb.dnb.url="http://d-nb.info"
@@ -150,7 +151,7 @@ ddb.session.timeout=1800 // in sec -> 30min
 
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
-ddb.favorites.sendmailfrom = "do-not-reply@ddb.de"
+ddb.favorites.sendmailfrom = "do-not-reply@deutsche-digitale-bibliothek.de"
 ddb.favorites.basedomain="http://dev.escidoc.org"
 
 // The grails.serverURL is required for the PDF rendering plugin.
@@ -279,7 +280,7 @@ compress {
 
 grails {
     mail {
-        host = "relay.fiz-karlsruhe.de"
+        host = "relay.fiz-karlsruhe.de"        
         port = 25
     }
 }

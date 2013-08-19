@@ -14,15 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <ul class="results-list unstyled" id="slaves">
-  <g:set var="pageHitCounter" value="${0}"/>
   <g:set var="offset" value="${0}"/>
   <g:set var="index" value="${0}"/>
   <g:each in="${results}" >
-    <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
-    <g:set var="hitNumber" value="${offset + pageHitCounter}"/>
+
     <g:set var="controller" value="item" />
     <g:set var="action" value="findById" />
-    <g:if test="${it.preview.category == 'Institution'}">
+    <g:if test="${it.category == 'Institution'}">
         <g:set var="controller" value="institution" />
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
@@ -32,18 +30,23 @@ limitations under the License.
           <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
-              <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
+              <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
                 <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
               </g:link>
             </h2>
-            <div class="subtitle">${it.preview.subtitle}</div>
+            <div class="subtitle">
+              <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
+                ${it.preview.subtitle}
+              </g:if>
+              
+            </div>
           </div>
           <div class="extra">
             <g:mediaTypesListRender mediaTypesArray="${it.preview.media}"></g:mediaTypesListRender>
           </div>
         </div>
         <div class="span2 thumbnail">
-          <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id, hitNumber: hitNumber]">
+          <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
             <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
           </g:link>
         </div>

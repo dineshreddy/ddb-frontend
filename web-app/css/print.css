@@ -33,7 +33,7 @@ footer, .footer,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count,
 .group-operator, .add-group-button,
 #first-letter-index li,
-.institutionlist .span3, .institutionlist .multiselect-container, .institutionlist #filter-title, .institutionlist .multiselect,
+.institutionlist .span3, .institutionlist .multiselect-container, .institutionlist .filter-title, .institutionlist .multiselect,
 #articles-prev, #articles-next, .link-adv-search, .contextual-help,
 #divOSM .sliderStyle-vertical, #divOSM .mapHome,
 #mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome,
@@ -188,7 +188,7 @@ footer, .footer,
 }
 .item-detail .institution .span9 {
   display: inline-block;
-  width: 470px;
+  width: 450px;
 }
 .item-detail .institution .span3 {
   display: inline-block;
@@ -301,7 +301,6 @@ footer, .footer,
 .institution-item-page .institution-listitem {
   list-style: square;
 }
-
 .institution-item-page .institution {
   border-width: 0 0 2px 0 !important;
   height: 120px;
@@ -320,7 +319,6 @@ footer, .footer,
 }
 .institution-item-page .institution .span3 img {
   display: block;
-  margin-right:0px;
 }
 .institution-item-page .institution h2 {
   margin-top: 0px;
@@ -345,31 +343,40 @@ footer, .footer,
   .favorites-results .item {
     display: block;
     margin-left: -40px;
-    min-height: 140px;
+    min-height: 150px;
     width: 650px !important;
     page-break-inside: avoid;
   }
-  .results-sorter .span6 {
+  .favorites-results-controls .results-sorter .span6 {
     display: inline-block;
     width: 500px;
+    padding-left: 5px;
   }
-  .results-sorter .added-on {
+  .favorites-results-controls .results-sorter .added-on {
     display: inline-block;
     width: 110px;
   }
   .favorites-results .summary-main-wrapper {
-    width: 380px;
+    width: 340px;
     position: absolute;
   }
   .favorites-results .thumbnail {
     width: 160px;
     position: absolute;
-    margin-left: 360px !important;
+    margin-left: 340px !important;
   }
   .favorites-results .created-at {
     width: 160px;
     position: absolute;
     margin-left: 505px !important;
     margin-top: 10px;
+  }
+  .favorites-results .results-list .summary-main-wrapper .title a {
+    font-weight: normal;
+  }
+  .favorites-results-controls .results-sorter {
+    background: #efebe8;
+    -webkit-print-color-adjust: exact;
+    line-height: 28px;
   }
 /* Favorites list page - end */

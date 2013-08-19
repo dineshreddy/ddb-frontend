@@ -132,10 +132,10 @@ class ConfigurationService {
     public String getSelfBaseUrl(){
         def baseUrl = grailsApplication.config.ddb?.self?.base?.url
         if(!baseUrl){
-            throw new ConfigurationException("getPasswordResetLink(): Configuration entry does not exist -> ddb.self.base.url")
+            throw new ConfigurationException("getSelfBaseUrl(): Configuration entry does not exist -> ddb.self.base.url")
         }
         if(!(baseUrl instanceof String)){
-            throw new ConfigurationException("getPasswordResetLink(): ddb.self.base.url is not a String")
+            throw new ConfigurationException("getSelfBaseUrl(): ddb.self.base.url is not a String")
         }
         return baseUrl
     }
@@ -155,9 +155,9 @@ class ConfigurationService {
     public String getCreateConfirmationLink(){
         return getConfirmBase() + "?type=create"
     }
-    
+
     public String getFavoritesSendMailFrom(){
-        def email = grailsApplication.config.ddb?.favorites.sendmailfrom
+        def email = grailsApplication.config.ddb?.favorites?.sendmailfrom
         if(!email){
             throw new ConfigurationException("getFavoritesSendMailFrom(): Configuration entry does not exist -> ddb.favorites.sendmailfrom  ")
         }
@@ -165,6 +165,17 @@ class ConfigurationService {
             throw new ConfigurationException("getFavoritesSendMailFrom(): ddb.favorites.sendmailfrom  is not a String")
         }
         return email
+    }
+
+    public String getFavoritesBasedomain(){
+        def favoritesBaseDomain = grailsApplication.config.ddb?.favorites?.basedomain
+        if(!favoritesBaseDomain){
+            throw new ConfigurationException("getFavoritesBasedomain(): Configuration entry does not exist -> ddb.favorites.basedomain ")
+        }
+        if(!(favoritesBaseDomain instanceof String)){
+            throw new ConfigurationException("getFavoritesBasedomain(): ddb.favorites.basedomain is not a String")
+        }
+        return favoritesBaseDomain
     }
 
     public List getFacetsFilter(){
@@ -245,11 +256,6 @@ class ConfigurationService {
         return loadbalancerHeaderValue
     }
 
-
-    /*
-     ddb.advancedSearch.defaultOffset=0
-     ddb.advancedSearch.defaultRows=20
-     */
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
@@ -362,6 +368,11 @@ class ConfigurationService {
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.dnb.url = " + getDnbUrl()
+        log.info "ddb.bookmark.url = " + getBookmarkUrl()
+        log.info "ddb.newsletter.url = " + getNewsletterUrl()
+        log.info "ddb.self.base.url = " + getSelfBaseUrl()
+        log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
+        log.info "ddb.favorites.basedomain = " + getFavoritesBasedomain()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()

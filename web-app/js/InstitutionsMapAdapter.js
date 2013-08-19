@@ -98,7 +98,9 @@ var InstitutionsMapAdapter = (function($, undefined) {
         $('#first-letter-index').removeClass('off');
 
         $('#view-institution-list').addClass('selected');
+        $('#view-institution-list').attr("disabled","disabled");
         $('#view-institution-map').removeClass('selected');
+        $('#view-institution-map').removeAttr('disabled');
 
         $('#main-container').removeClass('map');
         $('#main-container').addClass('list');
@@ -113,7 +115,9 @@ var InstitutionsMapAdapter = (function($, undefined) {
         $('#first-letter-index').addClass('off');
 
         $('#view-institution-map').addClass('selected');
+        $('#view-institution-map').attr('disabled','disabled');
         $('#view-institution-list').removeClass('selected');
+        $('#view-institution-list').removeAttr('disabled');
 
         $('#main-container').addClass('map');
         $('#main-container').removeClass('list');

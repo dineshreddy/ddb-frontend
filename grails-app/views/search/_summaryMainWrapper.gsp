@@ -20,7 +20,11 @@ limitations under the License.
       <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
       </g:link>
     </h2>
-    <div class="subtitle">${item.preview.subtitle}</div>
+    <div class="subtitle">
+      <g:if test="${(item.preview?.subtitle != null) && (item.preview?.subtitle?.toString() != "null")}">
+        ${item.preview.subtitle}
+      </g:if>
+    </div>
     <ul class="matches unstyled">
       <li class="matching-item">
         <span>

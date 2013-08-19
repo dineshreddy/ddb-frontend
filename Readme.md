@@ -56,9 +56,10 @@ A list of some predefined variables is set below:
     ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+    ddb.backend.apikey=                                                             (put a valid API key here or leave it empty)
     ddb.aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
-	  ddb.logging.folder=/opt/ddb/logs
-	  ddb.tracking.piwikfile=/opt/ddb/tracking.txt
+    ddb.logging.folder=/opt/ddb/logs
+    ddb.tracking.piwikfile=/opt/ddb/tracking.txt
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0

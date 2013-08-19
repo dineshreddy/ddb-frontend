@@ -62,6 +62,7 @@ function historyManager(path){
     historyedited = true;
   }else{
     globalUrl = (path.indexOf('?')>-1)?path.split('?')[1]:path;
+    window.location = path;
   }
 }
 
@@ -373,15 +374,24 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
     $('#view-list').addClass('selected');
+    $('#view-list').attr("disabled","disabled");
     $('#view-grid').removeClass('selected');
+    $('#view-grid').removeAttr('disabled');
     $('.search-results').fadeOut('fast', function(){
       $('.results-list .summary').addClass('row');
       $('.summary-main-wrapper').addClass('span7');
@@ -444,16 +454,25 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
     var newTitle = $('.summary-main .title a').title;
     $('#view-list').removeClass('selected');
+    $('#view-list').removeAttr('disabled');
     $('#view-grid').addClass('selected');
+    $('#view-grid').attr("disabled","disabled");
     $('.search-results').fadeOut('fast', function(){
       $('.results-list .summary').removeClass('row');
       $('.summary-main-wrapper').removeClass('span7');
@@ -510,6 +529,12 @@ function searchResultsInitializer(){
       async: true,
       url: url+'&reqType=ajax',
       success: function(data){
+        
+        historyManager(url);
+        if(!historySupport){
+          return;
+        }
+        
         $('.search-results-list').fadeOut('fast', function(){
         var JSONresponse = data;
         if(JSONresponse.numberOfResults==0){
@@ -550,7 +575,7 @@ function searchResultsInitializer(){
           $(".page-nav .prev-page").addClass("off");
           $(".page-nav .first-page").addClass("off");
         }
-        historyManager(url);
+
         $('.search-results-list').fadeIn('fast');
         
         divSearchResultsOverlayImg.remove();
@@ -567,7 +592,7 @@ function searchResultsInitializer(){
         divSearchResultsOverlayModal.remove();
         
         var error_GeneralError =  messages.ddbnext.An_Error_Occured;
-        var errorContainer = $(document.createElement('div'));
+        var errorContainer = ($('.search-results-list').find('.errors-container').length>0)?$('.search-results-list').find('.errors-container'):$(document.createElement('div'));
         var errorIcon = $(document.createElement('i'));
         errorContainer.addClass('errors-container');
         errorIcon.addClass('icon-exclamation-sign');
@@ -935,6 +960,7 @@ function searchResultsInitializer(){
               this.buildStructure();
               this.fctManager.fetchFacetValues(this);
               this.opened = true;
+              this.parentMainElement.find('.input-search-fct').focus();
             }else if(this.opened) this.close();
         }else if(element.attr('class') == 'h3' && this.opened){
             this.close();
@@ -1228,77 +1254,81 @@ function searchResultsInitializer(){
       new HovercardInfoItem($(this));
     });
   }
-};
 
-/**
- * AJAX request to check if a result hit is already stored in the list of favorites.
- *
- * Install a click event handler to add a result hit to the list of favorites.
- */
-function checkFavorites() {
-  var itemIds = [];
+  /**
+   * AJAX request to check if a result hit is already stored in the list of favorites.
+   *
+   * Install a click event handler to add a result hit to the list of favorites.
+   */
+  function checkFavorites() {
+    var itemIds = [];
 
-  // collect all item ids on the page
-  $(".search-results .summary-main .persist").each(function() {
-    itemIds.push(extractItemId($(this).attr("href")));
-  });
+    // collect all item ids on the page
+    $(".search-results .summary-main .persist").each(function() {
+      itemIds.push(extractItemId($(this).attr("href")));
+    });
 
-  // check if a result hit is already stored in the list of favorites
-  $.ajax({
-      type: "POST",
-      url: jsContextPath + "/apis/favorites/_get",
-      contentType : "application/json",
-      data: JSON.stringify(itemIds),
-      success: function(favoriteItemIds) {
-        $.each(itemIds, function(index, itemId) {
-          var div = $("#favorite-" + itemId);
+    // check if a result hit is already stored in the list of favorites
+    $.ajax({
+        type: "POST",
+        url: jsContextPath + "/apis/favorites/_get",
+        contentType : "application/json",
+        data: JSON.stringify(itemIds),
+        success: function(favoriteItemIds) {
+          $.each(itemIds, function(index, itemId) {
+            var div = $("#favorite-" + itemId);
 
-          if ($.inArray(itemId, favoriteItemIds) >= 0) {
-            disableFavorite(div);
-          }
-          else {
-            div.click(function() {
-              // add a result hit to the list of favorites
-              $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
-                $("#favorite-confirmation").modal("show");
+            if ($.inArray(itemId, favoriteItemIds) >= 0) {
+              disableFavorite(div);
+            }
+            else {
+              div.click(function() {
                 disableFavorite(div);
+                // add a result hit to the list of favorites
+                $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                  $("#favorite-confirmation").modal("show");
+                  window.setTimeout(function(){
+                    $("#favorite-confirmation").modal("hide");
+                  }, 1500);
+                });
               });
-            });
-          }
-        });
-      }
-  });
-}
-
-/**
- * Disable a favorite button.
- *
- * @param div DIV element which handles the favorite event
- */
-function disableFavorite(div) {
-  div.unbind("click");
-  div.removeAttr("title");
-  div.removeClass("add-to-favorites");
-  div.addClass("added-to-favorites");
-}
-
-/**
- * Extract the item id from the given URL.
- *
- * @param url the URL containing the item id
- *
- * @returns item id
- */
-function extractItemId(url) {
-  var result = null;
-  var parts = url.split("/");
-
-  result = parts[parts.length - 1];
-  
-  var queryParameters = result.indexOf("?");
-  
-  if (queryParameters >= 0) {
-    result = result.substring(0, queryParameters);
+            }
+          });
+        }
+    });
   }
-  return result;
-}
+
+  /**
+   * Disable a favorite button.
+   *
+   * @param div DIV element which handles the favorite event
+   */
+  function disableFavorite(div) {
+    div.unbind("click");
+    div.removeAttr("title");
+    div.removeClass("add-to-favorites");
+    div.addClass("added-to-favorites");
+    div.attr('title',$('#titleDelete').val());
+  }
+
+  /**
+   * Extract the item id from the given URL.
+   *
+   * @param url the URL containing the item id
+   *
+   * @returns item id
+   */
+  function extractItemId(url) {
+    var result = null;
+    var parts = url.split("/");
+
+    result = parts[parts.length - 1];
+    
+    var queryParameters = result.indexOf("?");
+    
+    if (queryParameters >= 0) {
+      result = result.substring(0, queryParameters);
+    }
+    return result;
+  }
+};

@@ -23,7 +23,6 @@ import groovy.json.JsonLexer;
 import groovy.json.JsonSlurper;
 import groovy.json.JsonToken;
 import groovyx.net.http.ContentType;
-import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
 class ApiInstitution {

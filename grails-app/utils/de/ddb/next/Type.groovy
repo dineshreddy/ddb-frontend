@@ -13,26 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.beans
+package de.ddb.next
 
-import groovy.transform.ToString
 
-import de.ddb.next.Type
-
-@ToString(includeNames=true)
-class Bookmark {
-
-    String bookmarkId
-    String userId
-    String itemId
-    Date creationDate
-    Type type
-
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type) {
-        this.bookmarkId =bookmarkId
-        this.userId = userId
-        this.itemId = itemId
-        this.creationDate = creationDate
-        this.type = type
-    }
+/**
+ * @author chh
+ *
+ */
+public enum Type {
+    CULTURAL_ITEM, INSTITUTION, ENTITY
 }

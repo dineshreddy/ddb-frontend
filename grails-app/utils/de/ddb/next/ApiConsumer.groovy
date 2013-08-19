@@ -182,6 +182,13 @@ class ApiConsumer {
                 setAuthHeader(http)
             }
 
+            // send API key
+            def grailsApplication = Holders.getGrailsApplication()
+            if (grailsApplication.config.ddb.backend.url == baseUrl && grailsApplication.config.ddb.backend.apikey) {
+                optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="'
+                     + grailsApplication.config.ddb.backend.apikey + '"')
+            }
+
             http.request(method, content) { req ->
 
                 if (requestBody != null) {

@@ -37,9 +37,12 @@ limitations under the License.
       <div class="modal-body">
         <p><g:message code="ddbnext.Added_To_Favorites"/></p>
       </div>
+      <input type="hidden" name="titleDelete" id="titleDelete" value="<g:message code="ddbnext.favorites_already_saved"/>">
+      <%-- 
       <div class="modal-footer">
         <button id="modal-btn-ok" class="btn-padding" data-dismiss="modal">OK</button>
       </div>
+      --%>
     </div>
   </g:isLoggedIn>
 </div>

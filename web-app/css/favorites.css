@@ -32,19 +32,19 @@ hr {
   background-color: #efebe8;
 }
 
-.bookmarks-list a.h3 {
+.bookmarks-list a.h3, .bookmarks-list span.h3 {
   color: #3e3a37;
   font-size: 1.063em;
 }
 
-.bookmarks-lists a.h3 {
+.bookmarks-lists a.h3, .bookmarks-lists span.h3 {
   color: #3e3a37;
   text-decoration: none;
   text-overflow: ellipsis;
   overflow: hidden;
 }
 
-.bookmarks-list>a.h3 {
+.bookmarks-list>a.h3, .bookmarks-list>span.h3 {
   z-index: 10;
   display: block;
   padding: 0 35% 0 10px;
@@ -82,7 +82,7 @@ hr {
   background-color: #efebe8;
 }
 
-.results-paginator-options {
+.favorites-results-container .results-paginator-options {
   text-align:right;
 }
 
@@ -104,7 +104,11 @@ hr {
   display:block;
 }
 
-#favorites-remove .favorites-results-controls .submit{
+.favorites-results-controls .page-nav {
+  font-size: 0.938em;
+}
+
+#favorites-remove .submit{
   margin-top:8px;
   margin-left: 0;
 }
@@ -113,6 +117,7 @@ hr {
   background: #efebe8;
   overflow: hidden;
   line-height: 28px;
+  font-size: 0.938em;
 }
 
 .results-sorter .select-all {
@@ -126,6 +131,20 @@ hr {
 
 .results-sorter .added-on{
   text-align:right;
+}
+
+.results-sorter .favorite-dateheader{
+  float:right;
+  margin-right:10px;
+}
+
+.favorites-results-controls .results-pagination{
+  float:right;
+  margin-right:10px;
+}
+
+.favorites-results-controls .deleteBtn{
+  float:left;
 }
 
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
@@ -232,6 +251,7 @@ hr {
 
 .favorites-results .results-list .created-at{
   text-align:right;
+  font-size: 0.938em;
 }
 
 .favorites-results .results-list .created-at div{
@@ -269,13 +289,23 @@ hr {
 .favorites-results .results-list .summary .extra .types .video {
   background-position: 0 -19px;
 }
-.favorites-results .results-list .summary .extra .types .Institution{
+
+.favorites-results .results-list .summary .extra .types .institution {
   background-position: 0 -190px;
 }
+
+.favorites-results .results-list .summary .extra .types .unknown {
+  background-position: 0 0px;
+}
+
 
 .favorites-results .results-list .summary-main {
   min-height: 74px;
   margin-left: 36px;
+}
+
+.favorites-results-container .messages-container {
+  margin-top: 7px;
 }
 
 .remove-item-check {
@@ -380,16 +410,35 @@ hr {
   margin-left: -17px;
 }
 
+#sendbookmarks.cursor-pointer {
+  cursor: pointer;
+}
+
 /* responsive */
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
+   .bookmarks-container .bookmarks-list-envelope {
+        padding-right: 10px;
+   }
+   .bookmarks-container .bookmarks-list-number {
+        padding-right: 50px;
+   }
 }
 
 @media (max-width: 767px) {
-  .favorites-results .results-list .summary .information {
+  .favorites-results .results-list .summary .information,
+  .favorites-results-content .pages-overall-index,
+  .results-pagination .first-page,
+  .results-pagination .last-page {
      display: none;
+   }
+  .page-nav .br {
+    border-right: 0px;
+   }
+  .page-nav .bl {
+    border-left: 0px;
    }
 }
 
@@ -397,4 +446,12 @@ hr {
 
 .print-header {
   display: none;
+}
+.deleteContainer {
+  overflow:hidden;
+  display:block;
+  margin-bottom: -10px;
+}
+.orderList{
+	margin:10px 0 10px 3px;
 }
