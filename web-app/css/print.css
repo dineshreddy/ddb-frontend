@@ -188,7 +188,7 @@ footer, .footer,
 }
 .item-detail .institution .span9 {
   display: inline-block;
-  width: 470px;
+  width: 450px;
 }
 .item-detail .institution .span3 {
   display: inline-block;
@@ -301,7 +301,6 @@ footer, .footer,
 .institution-item-page .institution-listitem {
   list-style: square;
 }
-
 .institution-item-page .institution {
   border-width: 0 0 2px 0 !important;
   height: 120px;
@@ -320,7 +319,6 @@ footer, .footer,
 }
 .institution-item-page .institution .span3 img {
   display: block;
-  margin-right:0px;
 }
 .institution-item-page .institution h2 {
   margin-top: 0px;
