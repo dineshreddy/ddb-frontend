@@ -15,15 +15,14 @@
  */
 package de.ddb.next
 
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
 import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
+import org.ccil.cowan.tagsoup.Parser
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
-
-import static groovyx.net.http.ContentType.*
-import static groovyx.net.http.Method.*
-import org.ccil.cowan.tagsoup.Parser
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
