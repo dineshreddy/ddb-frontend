@@ -16,8 +16,9 @@
 
 package de.ddb.next
 
-import de.ddb.next.exception.ConfigurationException
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
+
+import de.ddb.next.exception.ConfigurationException
 
 /**
  * Service for accessing the configuration.
@@ -256,6 +257,17 @@ class ConfigurationService {
         return loadbalancerHeaderValue
     }
 
+    public String getGrailsMailHost(){
+        def grailsMailHost = grailsApplication.config.grails?.mail?.host
+        if(!grailsMailHost){
+            throw new ConfigurationException("getGrailsMailHost(): Configuration entry does not exist -> grails.mail.host")
+        }
+        if(!(grailsMailHost instanceof String)){
+            throw new ConfigurationException("getGrailsMailHost(): grails.mail.host is not a String")
+        }
+        return grailsMailHost
+    }
+
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
@@ -360,6 +372,24 @@ class ConfigurationService {
         return timeout
     }
 
+    public int getGrailsMailPort() {
+        def grailsMailPort = grailsApplication.config.grails?.mail?.port?.toString()
+        if(!grailsMailPort){
+            throw new ConfigurationException("getGrailsMailPort(): Configuration entry does not exist -> grails.mail.port")
+        }
+        if(!(grailsMailPort instanceof String)){
+            throw new ConfigurationException("getGrailsMailPort(): grails.mail.port is not a String")
+        }
+        try {
+            grailsMailPort = Integer.parseInt(grailsMailPort)
+        }
+        catch (NumberFormatException e) {
+            throw new ConfigurationException("getGrailsMailPort(): grails.mail.port is not an Integer")
+        }
+        return grailsMailPort
+    }
+
+
     public def logConfigurationSettings() {
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
@@ -385,5 +415,7 @@ class ConfigurationService {
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
+        log.info "grails.mail.host = " + getGrailsMailHost()
+        log.info "grails.mail.port = " + getGrailsMailPort()
     }
 }
