@@ -107,7 +107,13 @@ ddb {
             filter = [
                 [facetName:'language_fct', filter:'term:unknown' ],
                 [facetName:'language_fct', filter:'term:termunknown'],
-                [facetName:'keywords_fct', filter:'null']
+                [facetName:'keywords_fct', filter:'null'],
+                [facetName:'provider_fct', filter:'null'],
+                [facetName:'affiliate_fct', filter:'null'],
+                [facetName:'type_fct', filter:'null'],
+                [facetName:'sector_fct', filter:'null'],
+                [facetName:'place_fct', filter:'null'],
+                [facetName:'time_fct', filter:'null']
             ]
         }
     }
