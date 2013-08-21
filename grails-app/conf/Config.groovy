@@ -147,7 +147,7 @@ ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
-ddb.session.timeout=1800 // in sec -> 30min
+ddb.session.timeout=3600 // in sec -> 60min
 
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
@@ -280,7 +280,7 @@ compress {
 
 grails {
     mail {
-        host = "relay.fiz-karlsruhe.de"        
+        host = "relay.fiz-karlsruhe.de"
         port = 25
     }
 }
