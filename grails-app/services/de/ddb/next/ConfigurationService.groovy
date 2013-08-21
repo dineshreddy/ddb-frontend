@@ -268,6 +268,17 @@ class ConfigurationService {
         return grailsMailHost
     }
 
+    public String getBackendApikey(){
+        def backendApikey = grailsApplication.config.ddb?.backend?.apikey
+        if(!backendApikey){
+            throw new ConfigurationException("getBackendApikey(): Configuration entry does not exist -> ddb.backend.apikey")
+        }
+        if(!(backendApikey instanceof String)){
+            throw new ConfigurationException("getBackendApikey(): ddb.backend.apikey is not a String")
+        }
+        return backendApikey
+    }
+
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
@@ -417,5 +428,6 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
+        //log.info "ddb.backend.apikey = " + getBackendApikey()
     }
 }
