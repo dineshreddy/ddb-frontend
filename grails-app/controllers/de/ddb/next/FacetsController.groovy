@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.support.RequestContextUtils
 
 
 /**
@@ -34,19 +34,16 @@ class FacetsController {
 
     def facetsList() {
         def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
-        
+
         urlQuery["query"] = (params.query)?params.query:""
         urlQuery["sort"] = "count_desc"
-        
-        println urlQuery
 
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+params.name, false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
-        
-        println "####"+apiResponse.getResponse()
+
         def resultsItems = apiResponse.getResponse()
 
         def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():310
