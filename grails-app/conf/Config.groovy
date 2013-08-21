@@ -148,10 +148,9 @@ ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
 ddb.session.timeout=3600 // in sec -> 60min
-
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
-ddb.favorites.sendmailfrom = "do-not-reply@deutsche-digitale-bibliothek.de"
+ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.basedomain="http://dev.escidoc.org"
 
 // The grails.serverURL is required for the PDF rendering plugin.
