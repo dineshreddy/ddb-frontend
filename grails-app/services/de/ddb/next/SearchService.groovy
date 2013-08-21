@@ -490,17 +490,27 @@ class SearchService {
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
 
-        println facets
-
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
-            if(matcher && this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
-                def localizedValue = this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString())
-                def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
-                localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                res.values.add([value: facets.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
-            }else if(!matcher)
-                res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+
+            //Check if facet value has to be filtered
+            boolean filterFacet = false
+            for(int k=0; k<allFacetFilters.size(); k++){
+                if(fctName == allFacetFilters[k].facetName && facets.facetValues[i].value.toString() == allFacetFilters[k].filter){
+                    filterFacet = true
+                    break
+                }
+            }
+
+            if(!filterFacet){
+                if(matcher && this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
+                    def localizedValue = this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString())
+                    def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
+                    localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                }else if(!matcher)
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+            }
         }
         return res
     }
