@@ -15,11 +15,11 @@
  */
 package de.ddb.next
 
-import de.ddb.next.beans.User
-
 import grails.converters.JSON
 
 import javax.servlet.http.HttpSession
+
+import de.ddb.next.beans.User
 
 class FavoritesController {
 
