@@ -16,15 +16,15 @@
 package de.ddb.next
 
 
-import javax.servlet.http.HttpServletResponse
-
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+
+import javax.servlet.http.HttpServletResponse
+
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.Type
 
 
 /**
@@ -239,6 +239,7 @@ class BookmarksService {
                 refresh()
                 return true
             }
+
         }
     }
 
