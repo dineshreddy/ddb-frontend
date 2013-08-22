@@ -19,7 +19,6 @@ import grails.converters.*
 
 import javax.servlet.http.HttpSession
 
-import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
@@ -650,6 +649,8 @@ class UserController {
 
         String discoveryUrl = ""
 
+        setProxy()
+
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
         if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
@@ -669,7 +670,6 @@ class UserController {
             return
         }
 
-        setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager()
@@ -683,6 +683,7 @@ class UserController {
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
         authReq.addExtension(fetch)
+
 
         // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
@@ -733,6 +734,7 @@ class UserController {
                     )
                     return
                 }
+
 
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
 
@@ -793,6 +795,7 @@ class UserController {
         }
 
     }
+
 
     private boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
