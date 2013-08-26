@@ -33,25 +33,54 @@ class FacetsController {
 
 
     def facetsList() {
-        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
 
-        urlQuery["query"] = (params.query)?params.query:""
-        urlQuery["sort"] = "count_desc"
+        def facetName = params.name
+        def facetQuery = params.query
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+params.name, false, urlQuery)
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
+        def facetValues
+
+        // Key based facet value -> Search filtering must be done in the frontend
+        if(facetName == "time_fct" || facetName == "sector_fct" || facetName == "language_fct" || facetName == "type_fct"){
+
+            def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
+
+            //resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
+            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(request)
+            }
+
+            def resultsItems = apiResponse.getResponse().facets
+
+            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
+
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+            facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, numberOfElements, facetQuery, locale)
+
+        }else{
+
+            def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+            urlQuery["query"] = (facetQuery)?facetQuery:""
+            urlQuery["sort"] = "count_desc"
+
+            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(request)
+            }
+
+            def resultsItems = apiResponse.getResponse()
+
+            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():1000
+
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, numberOfElements, facetQuery, locale)
         }
-
-        def resultsItems = apiResponse.getResponse()
-
-        def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():310
-
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def facetValues = searchService.getSelectedFacetValues(resultsItems, params.name, numberOfElements, params.query, locale)
 
         render (contentType:"text/json"){facetValues}
     }
+
 }
