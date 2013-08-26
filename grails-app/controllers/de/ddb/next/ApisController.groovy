@@ -75,6 +75,14 @@ class ApisController {
         resultList["results"] = [ name:jsonResp.results.name,
             docs:docs,
             numberOfDocs:jsonResp.results.numberOfDocs]
+
+        // Fix for Bug DDBNEXT-740: search for "null" causes 500 exception
+        for(int i=0; i<resultList["highlightedTerms"].size(); i++) {
+            if(resultList["highlightedTerms"][i] == "null") {
+                resultList["highlightedTerms"][i] = "<null>"
+            }
+        }
+
         render resultList as JSON
     }
 
