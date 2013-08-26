@@ -99,7 +99,7 @@ limitations under the License.
           </div>
           <label class="checkbox-label control-label">
             <g:message code="ddbnext.I_Have_Read" 
-                       args="${['<a href="' + createLink(controller:"content", params:[dir:'terms']) + '">','</a>','<a href="' + createLink(controller:"content", params:[dir:'privacy']) + '">','</a>']}" 
+                       args="${['<b><a href="' + createLink(controller:"content", params:[dir:'terms']) + '">','</a></b>','<b><a href="' + createLink(controller:"content", params:[dir:'privacy/personal_data']) + '">','</a></b>']}" 
                        default="ddbnext.I_Have_Read"/>*
           </label>
         </div>
