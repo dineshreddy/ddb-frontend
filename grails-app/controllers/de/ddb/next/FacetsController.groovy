@@ -38,11 +38,12 @@ class FacetsController {
         def facetQuery = params.query
 
         def facetValues
+        def maxResults = 301
 
         // Key based facet value -> Search filtering must be done in the frontend
         if(facetName == "time_fct" || facetName == "sector_fct" || facetName == "language_fct" || facetName == "type_fct"){
 
-            def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params)
+            def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
             //resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
@@ -53,7 +54,14 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse().facets
 
-            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
+            //def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
+            def numberOfElements = 0
+            if(resultsItems.size() < maxResults){
+                numberOfElements = resultsItems.size()
+            }else{
+                numberOfElements = maxResults
+                resultsItems = resultsItems.subList(0,301)
+            }
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
@@ -73,7 +81,7 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse()
 
-            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():1000
+            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():maxResults
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
