@@ -17,12 +17,14 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
-import org.ccil.cowan.tagsoup.Parser
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.codehaus.groovy.grails.web.util.WebUtils
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -60,15 +62,12 @@ class ItemService {
         //def institution= xml.institution
         def institution= xml.item.institution
 
-        Parser tagsoupParser = new Parser()
-        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
-
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
         if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
-            institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+            institutionLogoUrl = filterOutSurroundingTag(xml.item.institution.logo.toString())
         }
 
-        String originUrl = slurper.parseText(xml.item.origin.toString()).text()
+        String originUrl = filterOutSurroundingTag(xml.item.origin.toString())
 
         def item = xml.item
 
@@ -288,5 +287,16 @@ class ItemService {
 
         // parse
         assert xml instanceof groovy.util.slurpersupport.GPathResult
+    }
+
+    private String filterOutSurroundingTag(String text){
+        Pattern pattern = Pattern.compile("<.*>(.+?)</.*>")
+        Matcher matcher = pattern.matcher(text)
+        matcher.find()
+        String out = text
+        try{
+            out = matcher.group(1)
+        }catch(Exception e){}
+        return out
     }
 }
