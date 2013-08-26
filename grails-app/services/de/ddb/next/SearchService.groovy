@@ -391,6 +391,9 @@ class SearchService {
             urlQuery["sortDesc"] = getMapElementOfUnsureType(reqParameters, "sortDesc", "")
         }
 
+        //We ask for a maximum of 301 facets
+        urlQuery["facet.limit"] = 301
+
         return urlQuery
     }
 
@@ -706,8 +709,8 @@ class SearchService {
             }
         }
 
-        //We ask for a maximum of 310 facets
-        urlQuery["facet.limit"] = 310
+        //We ask for a maximum of 1000 facets
+        urlQuery["facet.limit"] = 1000
 
         return urlQuery
     }
