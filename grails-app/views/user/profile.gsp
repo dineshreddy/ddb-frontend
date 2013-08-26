@@ -101,6 +101,7 @@ limitations under the License.
               </div>
             </div>
 
+            <%-- Commented out temporarily by request from Gerke, see DDBNEXT-751
             <div class="control-group">
               <div class="controls checkbox">
                 <div class="input-prepend">
@@ -109,6 +110,7 @@ limitations under the License.
               </div>
               <label class="checkbox-label control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
             </div>
+            --%>
 
             <div class="control-group">
               <label class="control-label"></label>
