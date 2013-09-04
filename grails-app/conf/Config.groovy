@@ -164,7 +164,7 @@ ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
-ddb.favorites.basedomain="http://dev.escidoc.org"
+ddb.favorites.basedomain="http://localhost:8080"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
