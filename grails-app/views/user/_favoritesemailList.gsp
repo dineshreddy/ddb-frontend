@@ -50,9 +50,11 @@ limitations under the License.
                 length="${ 100 }"></g:truncateItemTitle>
             </g:link>
           </h2>
-          <div>
-            ${it.preview.subtitle}
-          </div>
+          <g:if test="${!(it.preview.subtitle instanceof net.sf.json.JSONNull)}">
+            <div>
+              ${it.preview.subtitle}
+            </div>
+          </g:if>
         </td>
         <td width="170px" style="padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
