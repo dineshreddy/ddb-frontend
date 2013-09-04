@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%! import org.codehaus.groovy.grails.validation.routines.UrlValidator %> 
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <div style="margin-top:20px; margin-bottom:20px">
@@ -58,8 +59,14 @@ limitations under the License.
         </td>
         <td width="170px" style="padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
-            <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
-                 alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
+              <!-- institution logos still point to the content server -->
+              <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            </g:if>
+            <g:else>
+              <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+                   alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            </g:else>
           </g:link>
         </td>
       </tr>
