@@ -125,12 +125,17 @@ environments {
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
-
     }
     production {
         grails.logging.jul.usebridge = false
         grails.config.locations = [
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
+        ]
+    }
+    test {
+        grails.logging.jul.usebridge = true
+        grails.config.locations = [
+            "file:${userHome}/.grails/${appName}.properties"
         ]
     }
     println "read properties from " + grails.config.locations[0]
