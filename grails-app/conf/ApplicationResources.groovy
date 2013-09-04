@@ -16,7 +16,7 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
-        dependsOn "images, cssscreen, cssprint, javascript"
+        dependsOn "images, cssscreen, cssprint, javascript, autocomplete"
     }
 
     images {  resource url:'/images/favicon.ico' }
