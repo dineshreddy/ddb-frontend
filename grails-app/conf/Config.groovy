@@ -133,6 +133,7 @@ environments {
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
         ]
     }
+    println "read properties from " + grails.config.locations[0]
 }
 
 //DDB SPECIFIC Configuration variables
