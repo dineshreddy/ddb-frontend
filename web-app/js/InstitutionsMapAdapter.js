@@ -26,10 +26,10 @@ var mapInitialized = false;
 var InstitutionsMapAdapter = (function($, undefined) {
     'use strict';
 
-    var osmTileServer = "openstreetmap.org";
+    //var osmTileServer = "openstreetmap.org";
     //var osmTileServer = "opencyclemap.org/cycle";
 
-    //var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
+    var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
     var osmTileset = ['http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://c.tile.' + osmTileServer + '/${z}/${x}/${y}.png'];
