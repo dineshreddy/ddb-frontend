@@ -63,7 +63,7 @@ limitations under the License.
            <div class="span9">
            </div>
             <div class="span3">
-              <div class="favorite">
+              <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
                   
                 <%--  
                 <g:isNotLoggedIn>
@@ -84,7 +84,7 @@ limitations under the License.
                   </g:if>
                   <g:else>
                     <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
-                      <span data-itemid="${selectedItemId}" data-actn="POST" title="<g:message code='ddbnext.Add_To_Favorites' />" id="idFavorite" >
+                      <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite" >
                         <g:message code="ddbnext.favorit" />
                       </span>
                     </g:link>
