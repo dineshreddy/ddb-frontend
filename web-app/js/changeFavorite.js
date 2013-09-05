@@ -110,4 +110,5 @@
     link.unbind("click");
     link.removeClass("favorite-add");
     link.addClass("favorite-selected");
+    link.parent().attr('title', messages.ddbnext.favorites_already_saved);
   }

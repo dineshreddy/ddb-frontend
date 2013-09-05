@@ -62,47 +62,33 @@ limitations under the License.
            
            <div class="span9">
            </div>
-            <div class="span3">
-              <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
-                  
-                <%--  
-                <g:isNotLoggedIn>
-                  <g:link controller="user" class="favorite-actions">
-                    <span title="<g:message code='ddbnext.stat_010' />">
-                      <g:message code="ddbnext.favorit" />
-                    </span>
-                  </g:link>
-                </g:isNotLoggedIn>
-                --%>
-                <g:isLoggedIn>
-                  <g:if test="${(isFavorite == 302) }">
-                    <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
-                      <span data-itemid="${selectedItemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
-                        <g:message code="ddbnext.favorit" />
-                      </span>
-                    </g:link>
-                  </g:if>
-                  <g:else>
-                    <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
-                      <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite" >
-                        <g:message code="ddbnext.favorit" />
-                      </span>
-                    </g:link>
-                  </g:else>
-                  <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-body">
-                      <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                    </div>
-                    <%-- 
-                    <div class="modal-footer">
-                      <button id="modal-btn-ok" class="btn-padding" data-dismiss="modal">OK</button>
-                    </div>
-                    --%>
-                  </div>
-                </g:isLoggedIn>                
-              </div>
-            </div>
-           
+           <div class="span3">
+             <g:isLoggedIn>
+               <g:if test="${(isFavorite == 302) }">
+                 <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
+                   <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
+                     <span data-itemid="${selectedItemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                       <g:message code="ddbnext.favorit" />
+                     </span>
+                   </g:link>
+                 </div>
+               </g:if>
+               <g:else>
+                 <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
+                   <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
+                     <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite" >
+                       <g:message code="ddbnext.favorit" />
+                     </span>
+                   </g:link>
+                 </div>
+               </g:else>
+               <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                 <div class="modal-body">
+                   <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+                 </div>
+               </div>
+             </g:isLoggedIn>                
+           </div>
          </div>
        </div>
      </div>

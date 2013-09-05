@@ -1308,7 +1308,7 @@ function searchResultsInitializer(){
     div.removeAttr("title");
     div.removeClass("add-to-favorites");
     div.addClass("added-to-favorites");
-    div.attr('title',$('#titleDelete').val());
+    div.attr('title', messages.ddbnext.favorites_already_saved);
   }
 
   /**
