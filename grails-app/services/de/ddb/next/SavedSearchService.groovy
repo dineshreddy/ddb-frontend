@@ -21,4 +21,10 @@ package de.ddb.next
  */
 class SavedSearchService {
 
+    def configurationService
+    def transactional = false
+
+    def saveSearch(userId, queryString) {
+        null
+    }
 }
