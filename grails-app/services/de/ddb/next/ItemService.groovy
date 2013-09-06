@@ -15,15 +15,16 @@
  */
 package de.ddb.next
 
-import net.sf.json.JSONNull;
+import static groovyx.net.http.ContentType.*
+import static groovyx.net.http.Method.*
+
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.codehaus.groovy.grails.web.util.WebUtils;
-
-import static groovyx.net.http.ContentType.*
-import static groovyx.net.http.Method.*
-import org.ccil.cowan.tagsoup.Parser;
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -61,21 +62,19 @@ class ItemService {
         //def institution= xml.institution
         def institution= xml.item.institution
 
-        Parser tagsoupParser = new Parser()
-        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
-
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
         if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
-            institutionLogoUrl = slurper.parseText(xml.item.institution.logo.toString()).text()
+            institutionLogoUrl = filterOutSurroundingTag(xml.item.institution.logo.toString())
         }
 
-        String originUrl = slurper.parseText(xml.item.origin.toString()).text()
+        String originUrl = filterOutSurroundingTag(xml.item.origin.toString())
 
         def item = xml.item
 
         def title = shortenTitle(id, item)
 
-        def fields = xml.item.fields.field.findAll()
+        def displayFieldsTag = xml.item.fields.findAll{ it.@usage.text().contains('display') }
+        def fields = displayFieldsTag[0].field.findAll()
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
@@ -198,23 +197,23 @@ class ItemService {
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 }
                 else if(path.contains(PREVIEW)) {
                     htmlStrip = z.'@name'
                     binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(THUMBNAIL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(FULL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'checkValue' = "1";
+                    binaryMap.'checkValue' = "1"
                 }
             }
             if(binaryMap.'checkValue'){
@@ -288,5 +287,16 @@ class ItemService {
 
         // parse
         assert xml instanceof groovy.util.slurpersupport.GPathResult
+    }
+
+    private String filterOutSurroundingTag(String text){
+        Pattern pattern = Pattern.compile("<.*>(.+?)</.*>")
+        Matcher matcher = pattern.matcher(text)
+        matcher.find()
+        String out = text
+        try{
+            out = matcher.group(1)
+        }catch(Exception e){}
+        return out
     }
 }

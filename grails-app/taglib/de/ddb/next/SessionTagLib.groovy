@@ -50,7 +50,7 @@ class SessionTagLib {
         def isLoggedIn = isUserInSession()
 
         if(isLoggedIn){
-            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getUsername()
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getFirstnameAndLastnameOrNickname()
         }else{
             out << ""
         }

@@ -238,6 +238,11 @@ limitations under the License.
                           <g:message code="ddbnext.Profile" />
                         </g:link>
                       </li>
+                      <li class="">
+                        <g:link controller="user" action="doLogout">
+                          <g:message code="ddbnext.Logout" />
+                        </g:link>
+                      </li>
                     </ul>
                   </li>
                 </g:isLoggedIn>

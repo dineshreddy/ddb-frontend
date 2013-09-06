@@ -115,6 +115,7 @@ class UserController {
                 rows = params.rows.toInteger()
             }
             def String result = favoritesPageService.getFavorites()
+
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
@@ -142,11 +143,11 @@ class UserController {
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
                 def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
                 lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-                
+
                 if (totalPages.toFloat()<page.toFloat()){
                     params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
                     if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                        lastPgOffset=20;
+                        lastPgOffset=20
                     }
                     page=totalPages
                 }
@@ -157,8 +158,8 @@ class UserController {
                 //Default ordering is newest on top == DESC
                 allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
                 sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
-                def allResultsOrdered = allResultsWithDate; //Used in the send-favorites listing
-                
+                def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
+
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
                 if (params.order=="asc"){
                     allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
@@ -167,7 +168,7 @@ class UserController {
                 }else{
                     params.order="desc"
                 }
-                
+
                 if (params.offset){
                     resultsItems=allResultsWithDate.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
@@ -175,16 +176,22 @@ class UserController {
                     params.offset=0
                     resultsItems=allResultsWithDate.take( rows)
                 }
-                
+
                 if (request.method=="POST"){
+                    def List emails = []
+                    if (params.email.contains(',')){
+                        emails=params.email.tokenize(',')
+                    }else{
+                        emails.add(params.email)
+                    }
                     try {
                         sendMail {
-                            to params.email
-                            from configurationService.getFavoritesSendMailFrom() 
+                            to emails.toArray()
+                            from configurationService.getFavoritesSendMailFrom()
                             replyTo getUserFromSession().getEmail()
-                            subject "DDB Favorites / "+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                            subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered,dateString: dateTime])
+                            model:[results: allResultsOrdered,dateString: dateTime,userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
@@ -225,7 +232,7 @@ class UserController {
         def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
         dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
-        render(view: "sendfavorites", model: [results: results, dateString:dateTime])
+        render(view: "sendfavorites", model: [results: results, userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),dateString:dateTime])
     }
 
     /* end favorites methods */
@@ -540,7 +547,13 @@ class UserController {
             if (!errors.isEmpty()) {
                 params.errors = errors
             }
-            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+
+            def String result = favoritesPageService.getFavorites()
+            List items = JSON.parse(result) as List
+            def favoritesCount = items.length()
+
+            //render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -637,6 +650,8 @@ class UserController {
 
         String discoveryUrl = ""
 
+        setProxy()
+
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
         if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
@@ -656,7 +671,6 @@ class UserController {
             return
         }
 
-        setProxy()
 
         log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
         ConsumerManager manager = new ConsumerManager()
@@ -670,6 +684,7 @@ class UserController {
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
         authReq.addExtension(fetch)
+
 
         // Leave DDB for login on OpenID-provider
         redirect(url: authReq.getDestinationUrl(true))
@@ -720,6 +735,7 @@ class UserController {
                     )
                     return
                 }
+
 
                 log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
 
@@ -780,6 +796,7 @@ class UserController {
         }
 
     }
+
 
     private boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)

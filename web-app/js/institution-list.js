@@ -179,11 +179,17 @@
     },
 
     getFirstLetter: function() {
-      var hash = window.location.hash.substring(1);
-      if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
-        return '';
-      } else {
-        return hash;
+      var hashValue = $('#first-letter-index')
+                        .find('li.active')
+                        .find('a')
+                        .attr('href');
+      if(hashValue) {
+        var hash = hashValue.substring(1);
+        if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
+          return '';
+        } else {
+          return hash;
+        }
       }
     },
 
@@ -416,8 +422,10 @@
 
         if (history.pushState) {
           history.pushState({}, '', $this.attr('href'));
+          // TODO for android 2.3.3 we have to pass the clicked first letter.
           ddb.applyFilter();
-        } else {
+        }
+        else {
           // TODO: test on IE8,9
           window.location.hash = this.hash;
           window.location.reload(false);

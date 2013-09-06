@@ -374,10 +374,17 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
@@ -447,10 +454,17 @@ function searchResultsInitializer(){
       if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
         newTitle = jQuery.trim($(value).html());
       }else{
+        var replacementsRegex = new StringBuilder();
+        replacementsRegex.append("(");
         $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = svalue.innerHTML.replace('(','').replace(')','').replace('[','').replace(']','').replace('{','').replace('}','');
-          newTitle = newTitle.replace(new RegExp(tmpSvalueText, 'gi'),'<strong>'+tmpSvalueText+'</strong>'); 
+          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+          if (replacementsRegex.getLength() > 1) {
+            replacementsRegex.append("|");
+          }
+          replacementsRegex.append(tmpSvalueText);
         });
+        replacementsRegex.append(")");
+        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
       }
       value.innerHTML = newTitle;
     });
@@ -946,6 +960,7 @@ function searchResultsInitializer(){
               this.buildStructure();
               this.fctManager.fetchFacetValues(this);
               this.opened = true;
+              this.parentMainElement.find('.input-search-fct').focus();
             }else if(this.opened) this.close();
         }else if(element.attr('class') == 'h3' && this.opened){
             this.close();
@@ -1272,6 +1287,9 @@ function searchResultsInitializer(){
                 // add a result hit to the list of favorites
                 $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
                   $("#favorite-confirmation").modal("show");
+                  window.setTimeout(function(){
+                    $("#favorite-confirmation").modal("hide");
+                  }, 1500);
                 });
               });
             }
@@ -1290,6 +1308,7 @@ function searchResultsInitializer(){
     div.removeAttr("title");
     div.removeClass("add-to-favorites");
     div.addClass("added-to-favorites");
+    div.attr('title', messages.ddbnext.favorites_already_saved);
   }
 
   /**

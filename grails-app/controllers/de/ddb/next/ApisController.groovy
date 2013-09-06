@@ -73,8 +73,17 @@ class ApisController {
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
         resultList["results"] = [ name:jsonResp.results.name,
-                                  docs:docs,
-                                  numberOfDocs:jsonResp.results.numberOfDocs]
+            docs:docs,
+            numberOfDocs:jsonResp.results.numberOfDocs]
+
+
+        // Fix for Bug DDBNEXT-740: search for "null" causes 500 exception
+        for(int i=0; i<resultList["highlightedTerms"].size(); i++) {
+            if(resultList["highlightedTerms"][i] == "null") {
+                resultList["highlightedTerms"][i] = "<null>"
+            }
+        }
+
         render resultList as JSON
     }
 
@@ -148,9 +157,9 @@ class ApisController {
 
     def staticFiles() {
         def apiResponse = ApiConsumer.getBinaryStreaming(
-            configurationService.getStaticUrl(),
-            '/static/' + getFileNamePath(),
-            response.outputStream)
+                configurationService.getStaticUrl(),
+                '/static/' + getFileNamePath(),
+                response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
@@ -165,7 +174,7 @@ class ApisController {
         response.setHeader("Content-Disposition", "inline; filename=" + ('/static/' + getFileNamePath()).tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
-            }
+    }
     /**
      *  Format RFC 2822 date
      *  @parameters daysfromtoday, how many days from today do you want the date to be shifted

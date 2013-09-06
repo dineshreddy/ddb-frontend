@@ -78,7 +78,7 @@ class SearchController {
             }
 
             //Replacing the mediatype images when not coming from backend server
-            resultsItems = checkAndReplaceMediaTypeImages(resultsItems)
+            resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
@@ -158,22 +158,6 @@ class SearchController {
         }
     }
 
-    def checkAndReplaceMediaTypeImages(def searchResult){
-        searchResult.results.docs.each {
-            def preview = it.preview
-            if(preview.thumbnail == null || preview.thumbnail.toString().trim().isEmpty() || preview.thumbnail.toString().startsWith("http://content")){
-                def mediaTypes = []
-                if(preview.media instanceof String){
-                    mediaTypes.add(preview.media)
-                }else{
-                    mediaTypes.addAll(preview.media)
-                }
-                def mediaType = mediaTypes[0]
-                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
-            }
-        }
-        return searchResult
-    }
 
     def informationItem(){
         def informationItem = ApiConsumer.getXml(configurationService.getBackendUrl() ,'/access/'+params.id+'/components/indexing-profile').getResponse()

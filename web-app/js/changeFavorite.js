@@ -53,6 +53,9 @@
         //var JSONresponse = jQuery.parseJSON(data.responseText);
         jElemFavorite.attr("data-actn", "DELETE");
         $("#favorite-confirmation").modal("show");
+        window.setTimeout(function(){
+          $("#favorite-confirmation").modal("hide");
+        }, 1500);
         break;
       case 400:
         // -- bad request
@@ -107,4 +110,5 @@
     link.unbind("click");
     link.removeClass("favorite-add");
     link.addClass("favorite-selected");
+    link.parent().attr('title', messages.ddbnext.favorites_already_saved);
   }

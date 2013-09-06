@@ -21,6 +21,7 @@ import groovy.json.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+
 import de.ddb.next.beans.User
 
 /**

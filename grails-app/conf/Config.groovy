@@ -106,7 +106,14 @@ ddb {
         facets {
             filter = [
                 [facetName:'language_fct', filter:'term:unknown' ],
-                [facetName:'language_fct', filter:'term:termunknown']
+                [facetName:'language_fct', filter:'term:termunknown'],
+                [facetName:'keywords_fct', filter:'null'],
+                [facetName:'provider_fct', filter:'null'],
+                [facetName:'affiliate_fct', filter:'null'],
+                [facetName:'type_fct', filter:'null'],
+                [facetName:'sector_fct', filter:'null'],
+                [facetName:'place_fct', filter:'null'],
+                [facetName:'time_fct', filter:'null']
             ]
         }
     }
@@ -118,7 +125,6 @@ environments {
         grails.config.locations = [
             "file:${userHome}/.grails/${appName}.properties"
         ]
-
     }
     production {
         grails.logging.jul.usebridge = false
@@ -126,6 +132,13 @@ environments {
             "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
         ]
     }
+    test {
+        grails.logging.jul.usebridge = true
+        grails.config.locations = [
+            "file:${userHome}/.grails/${appName}.properties"
+        ]
+    }
+    println "read properties from " + grails.config.locations[0]
 }
 
 //DDB SPECIFIC Configuration variables
@@ -139,20 +152,19 @@ ddb.backend.apikey=""
 ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
 ddb.dnb.url="http://d-nb.info"
-ddb.bookmark.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
-ddb.newsletter.url="http://whvmescidev6.fiz-karlsruhe.de:9200"
+ddb.bookmark.url="http://localhost:9200"
+ddb.newsletter.url="http://localhost:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
-ddb.session.timeout=1800 // in sec -> 30min
-
+ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
-ddb.favorites.sendmailfrom = "do-not-reply@deutsche-digitale-bibliothek.de"
-ddb.favorites.basedomain="http://dev.escidoc.org"
+ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
+ddb.favorites.basedomain="http://localhost:8080"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
@@ -280,7 +292,7 @@ compress {
 
 grails {
     mail {
-        host = "relay.fiz-karlsruhe.de"
+        host = "localhost"
         port = 25
     }
 }

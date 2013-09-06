@@ -47,6 +47,9 @@
   padding-top: 10px;
 }
 
+#user-profile-form .privacylink {
+  text-decoration: underline;
+}
 /* responsive design */
 
 @media (max-width: 1199px) {

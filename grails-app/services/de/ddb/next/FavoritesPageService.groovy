@@ -4,8 +4,8 @@ import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.List;
-import java.util.Locale;
+import java.util.List
+import java.util.Locale
 
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
@@ -18,7 +18,7 @@ class FavoritesPageService {
     def grailsApplication
     def searchService
     def configurationService
-    
+
 
     def getFavorites() {
         def User user = getUserFromSession()
@@ -31,19 +31,27 @@ class FavoritesPageService {
             return null
         }
     }
-    
+
     private User getUserFromSession() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
-    
+
     def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        return [firstPg:createFavoritesLinkNavigation(0,rows,order),prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:createFavoritesLinkNavigation(lastPgOffset,rows,order)]
+        def first = createFavoritesLinkNavigation(0,rows,order)
+        if (offset<rows){
+            first=null
+        }
+        def last = createFavoritesLinkNavigation(lastPgOffset,rows,order)
+        if (offset>=lastPgOffset){
+            last=null
+        }
+        return [firstPg:first,prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:last]
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
     }
-    
+
     def private formatDate(items,String id,Locale locale) {
         def newDate
         def oldDate
@@ -57,12 +65,12 @@ class FavoritesPageService {
                 DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
                 def Date javaDate = oldFormat.parse(favItems.creationDate)
                 newDate = newFormat.format(javaDate)
-                oldDate = favItems.creationDate;
+                oldDate = favItems.creationDate
             }
         }
         return [newdate:newDate.toString(),oldDate:oldDate]
     }
-    
+
     /**
      * Retrieve from Backend the Metadata for the items retrieved from the favorites list
      * @param items
@@ -108,9 +116,13 @@ class FavoritesPageService {
             apiResponse.throwException(request)
         }
         def resultsItems = apiResponse.getResponse()
+
+        //Replacing the mediatype images when not coming from backend server
+        resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
+
         return resultsItems["results"]["docs"]
     }
-    
+
     def private getAllFoldersPerUser(){
         def User user = getUserFromSession()
         if (user != null) {
@@ -121,7 +133,7 @@ class FavoritesPageService {
             return null
         }
     }
-    
+
     private List addDateToFavResults(allRes, List items, Locale locale) {
         def all = []
         def temp = []

@@ -15,11 +15,11 @@
  */
 package de.ddb.next
 
-import de.ddb.next.beans.User
-
 import grails.converters.JSON
 
 import javax.servlet.http.HttpSession
+
+import de.ddb.next.beans.User
 
 class FavoritesController {
 
@@ -62,11 +62,12 @@ class FavoritesController {
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.deleteFavorites(user.getId(), request.JSON)) {
+            if(request.JSON == null || request.JSON.ids.size() == 0){
+                result = response.SC_OK
+            }else if (bookmarksService.deleteFavorites(user.getId(), request.JSON)) {
                 result = response.SC_OK
             }
-        }
-        else {
+        } else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "deleteFavorites returns " + result

@@ -72,15 +72,18 @@ limitations under the License.
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled">
           <g:each in="${allFolders}">
-            <li class="bookmarks-list bt bb bl br"><span class="h3"> ${it.title.capitalize()}
+            <li class="bookmarks-list bt bb bl br">
+              <span class="h3"> 
+                <g:if test="${it.title.capitalize()=="Favorites"}"><g:message code="ddbnext.All_Favorites" /></g:if>
+                <g:else>${it.title.capitalize()}</g:else>
             </span> <span class="bookmarks-list-number"> ${resultsNumber}</span> <g:if test="${resultsNumber > 0}">
                 <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
-                  class="icon-envelope"
+                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
                 ></i>
                 </a>
               </g:if> <g:else>
                 <a class="bookmarks-list-envelope" id="sendbookmarks" ${createLink(controller:'user',action:'sendfavorites')}> <i
-                  class="icon-envelope"
+                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
                 ></i>
                 </a>
               </g:else></li>
@@ -103,70 +106,76 @@ limitations under the License.
           </div>
         </g:if>
         <g:if test="${resultsNumber > 0}">
-          <g:form id="favorites-remove" name="favorites-remove">
-            <div class="favorites-results-controls">
+          <div class="favorites-results-controls">
+            <div class="deleteContainer row">
+              <div class="deleteBtn span1">
+                <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
+                  <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites" />">
+                    <span><g:message code="ddbnext.Delete"></g:message></span>
+                  </button>
+                </g:form>
+              </div>
               <div class="results-pagination">
-                <button type="submit" class="submit">
-                  <span><g:message code="ddbnext.Delete"></g:message></span>
-                </button>
-          </g:form>
-          <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
-      </div>
-      <div class="results-sorter">
-        <div class="row">
-          <div class="span6">
-            <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
-            <span> <a href="${urlsForOrder["desc"]}"><i class="icon-arrow-up"></i></a> <a href="${urlsForOrder["asc"]}"><i
-                class="icon-arrow-down"
-              ></i></a>
-            </span>
+                <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+              </div>
+            </div>
+            <div class="results-sorter">
+              <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+              <span class="favorite-dateheader"> <g:message code="ddbnext.Added_On"></g:message> <span> <g:if
+                    test="${params.order== 'desc'}"
+                  >
+                    <a href="${urlsForOrder["asc"]}"><g:img dir="images/icons" file="asc.gif" class="orderList" /></a>
+                  </g:if> <g:else>
+                    <a href="${urlsForOrder["desc"]}"><g:img dir="images/icons" file="desc.gif" class="orderList" /></a>
+                  </g:else>
+              </span>
+              </span>
+            </div>
           </div>
-          <div class="span3 added-on">
-            <span><g:message code="ddbnext.Added_On"></g:message></span>
+          <div class="favorites-results">
+            <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
           </div>
-        </div>
+        </g:if>
+        <g:else>
+          <div class="messages-container">
+            <ul class="unstyled">
+              <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+            </ul>
+          </div>
+        </g:else>
       </div>
     </div>
-    <div class="favorites-results">
-      <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
-    </div>
-    </g:if>
-    <g:else>
-      <div class="messages-container">
-        <ul class="unstyled">
-          <li><span><g:message code="ddbnext.no_favorites" /></span></li>
-        </ul>
-      </div>
-    </g:else>
-  </div>
-  </div>
   </div>
   <g:if test="${resultsNumber > 0}">
     <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3>
+          <g:message code="ddbnext.send_favorites" />
+        </h3>
+      </div>
       <div class="modal-body">
         <form method="POST" id="sendFavorites">
           <fieldset>
-            <legend>
-              <g:message code="ddbnext.send_favorites" />
-            </legend>
-            <label><g:message code="ddbnext.Email" /></label> <input type="text" placeholder="Contact Email" type="email" name="email" required>
-            <div class="favorites-results">
-              <g:favoritesEmailResultsRender results="${allResultsOrdered}"></g:favoritesEmailResultsRender>
-            </div>
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message code="ddbnext.Close" />
-            </button>
-            <button class="btn-padding" type="submit" id="btnSubmit">
-              <g:message code="ddbnext.send_now" />
-            </button>
+            <input type="text" placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required><br /> <small
+              class="muted"
+            ><g:message code="ddbnext.send_favorites_more_recipients" /></small><br />
           </fieldset>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+          <g:message code="ddbnext.Close" />
+        </button>
+        <button class="btn-padding" type="submit" id="btnSubmit">
+          <g:message code="ddbnext.send_now" />
+        </button>
         </form>
       </div>
     </div>
   </g:if>
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="msDeleteFavoritesLabel">
         <g:message code="ddbnext.delete_favorites" />
       </h3>
@@ -180,10 +189,9 @@ limitations under the License.
       <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
     </div>
   </div>
-  
   <div class="modal hide fade" id="confirm-dialog">
     <div class="modal-header">
-      <a class="close" data-dismiss="modal">×</a>
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3>
         <g:message code="ddbnext.delete_confirmation" />
       </h3>
@@ -193,27 +201,26 @@ limitations under the License.
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
         data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></a>
+      ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
-  
   <div class="modal hide fade" id="noSelection">
     <div class="modal-header">
-      <a class="close" data-dismiss="modal">×</a>
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3>
         <g:message code="ddbnext.delete_confirmation" />
       </h3>
     </div>
     <div class="modal-body">
-      CAnnot delete any item. None selected <g:message code="ddbnext.delete_favorites_dialog" />
+      <g:message code="ddbnext.delete_favorites_dialog" />
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <a href="#" class="btn btn-danger" id="id-confirm"><g:message code="ddbnext.Yes" /> </a> <a href="#" class="btn btn-cancel"
+      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
         data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></a>
+      ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
 </body>

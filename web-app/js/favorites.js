@@ -17,6 +17,8 @@
 $(function() {
 
   if (jsPageName == "favorites") {
+    $('.page-input').removeClass('off');   
+    $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
@@ -43,9 +45,6 @@ $(function() {
     });	
 
     updateNavigationUrl();
-
-    $('.page-input').removeClass('off');   
-    $('.page-nonjs').addClass("off");
 
     $('.page-input').keyup(function(e){
       if(e.keyCode == 13) {
@@ -107,7 +106,6 @@ $(function() {
         var body = {
             ids : selected
         }
-
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -116,8 +114,8 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            $('#msDeleteFavorites').modal();
-
+            //$('#msDeleteFavorites').modal();
+            window.setTimeout('location.reload()', 500);
           }
         });
         $('#slaves input:checked').each(function() {
@@ -148,11 +146,17 @@ function updateNavigationUrl(){
     $(".page-nav .first-page").addClass("off");
   }
 
-  var offset_endPg = $(".last-page").find('a').attr("href").match(/offset=([0-9]+)/);
-  var offset_nextPg = $(".next-page").find('a').attr("href").match(/offset=([0-9]+)/);
-  if (parseInt(offset_nextPg[1])>parseInt(offset_endPg[1])){
-    $(".page-nav .next-page").addClass("off");
-    $(".page-nav .last-page").addClass("off");
+  try{
+    var offset_endPg = $(".last-page").find('a').attr("href").match(/offset=([0-9]+)/);
+    var offset_nextPg = $(".next-page").find('a').attr("href").match(/offset=([0-9]+)/);
+    if(offset_endPg && offset_nextPg){
+      if (parseInt(offset_nextPg[1])>parseInt(offset_endPg[1])){
+        $(".page-nav .next-page").addClass("off");
+        $(".page-nav .last-page").addClass("off");
+      }
+    }
+  }catch(e){
+    // TODO: the endPg / nextPg throws errors on empty favorites list
   }
 }
 
