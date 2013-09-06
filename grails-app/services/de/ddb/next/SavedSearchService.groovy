@@ -15,6 +15,12 @@
  */
 package de.ddb.next
 
+import groovy.json.*
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
+import groovyx.net.http.Method
+
+
 /**
  * @author chh
  *
@@ -24,7 +30,39 @@ class SavedSearchService {
     def configurationService
     def transactional = false
 
-    def saveSearch(userId, queryString) {
-        null
+    def saveSearch(userId, queryString, title = null, description = null) {
+        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch")
+
+        def savedSearchId
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+            body = [
+                user: userId,
+                queryString: queryString,
+                title: title,
+                description: description,
+                createdAt: new Date().getTime()
+            ]
+
+            response.success = { resp, json ->
+                savedSearchId = json._id
+                log.info "Saved Search with the ID ${savedSearchId} is created."
+                refresh()
+            }
+        }
+        savedSearchId
+    }
+
+    // TODO: move to a util class.
+    private refresh() {
+        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/_refresh")
+
+        log.info "refreshing index ddb..."
+        http.request(Method.POST, ContentType.JSON) { req ->
+            response.success = { resp, json ->
+                log.info "Response: ${json}"
+                log.info "finished refreshing index ddb."
+            }
+        }
     }
 }

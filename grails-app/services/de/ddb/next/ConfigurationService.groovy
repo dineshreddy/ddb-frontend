@@ -108,6 +108,7 @@ class ConfigurationService {
         return url
     }
 
+
     public String getBookmarkUrl(){
         def url = grailsApplication.config.ddb?.bookmark?.url
         if(!url){
@@ -126,6 +127,17 @@ class ConfigurationService {
         }
         if(!(url instanceof String)){
             throw new ConfigurationException("getNewsletterUrl(): ddb.newsletter.url is not a String")
+        }
+        return url
+    }
+
+    public String getElasticSearchUrl(){
+        def url = grailsApplication.config.ddb?.elasticsearch?.url
+        if(!url){
+            throw new ConfigurationException("getElasticSearchUrl(): Configuration entry does not exist -> ddb.elasticsearch.url ")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getElasticSearchUrl(): ddb.elasticsearch.url is not a String")
         }
         return url
     }
