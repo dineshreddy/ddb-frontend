@@ -86,6 +86,22 @@ class SavedSearchService {
         }
     }
 
+    def deleteSavedSearch(userId, savedSearchIdList) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/savedSearch/_bulk")
+        http.request(Method.POST, ContentType.JSON) { req ->
+            def reqBody = ''
+            savedSearchIdList.each { id ->
+                reqBody = reqBody + '{ "delete" : { "_index" : "ddb", "_type" : "savedSearch", "_id" : "' + id + '" } }\n'
+            }
+
+            body = reqBody
+            response.success = {
+                refresh()
+                return true
+            }
+        }
+    }
+
     // TODO: move to a util class.
     private refresh() {
         def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/_refresh")

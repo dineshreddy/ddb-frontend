@@ -38,7 +38,7 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
 
     @Test
     void shouldFindAllSavedSearchesByUserId() {
-        log.info "should retrieve saved user search"
+        log.info "should find all saved searches by user ID"
 
         def userId = UUID.randomUUID() as String
         def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
@@ -51,5 +51,32 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
 
         def results = savedSearchService.findSavedSearchByUserId(userId)
         assert results.size() == 2
+    }
+
+    @Test
+    void shouldDeleteSavedSearches() {
+        log.info "should delete saved search by IDs"
+
+
+        def userId = UUID.randomUUID() as String
+        def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
+        assert goetheSavedSearchId != null
+
+        def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related')
+        assert mozartSavedSearchId != null
+
+
+        def results = savedSearchService.findSavedSearchByUserId(userId)
+        assert results.size() == 2
+
+        savedSearchService.deleteSavedSearch(userId,
+                [
+                    goetheSavedSearchId,
+                    mozartSavedSearchId
+                ])
+
+        assert savedSearchService.findSavedSearchByUserId(userId).size() == 0
     }
 }
