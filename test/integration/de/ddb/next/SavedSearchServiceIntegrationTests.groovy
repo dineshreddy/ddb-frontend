@@ -37,15 +37,19 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
     }
 
     @Test
-    void shouldRetrieveSavedSearch() {
+    void shouldFindAllSavedSearchesByUserId() {
         log.info "should retrieve saved user search"
 
         def userId = UUID.randomUUID() as String
-        def queryString = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
+        assert goetheSavedSearchId != null
 
-        def savedSearchId = savedSearchService.saveSearch(userId, queryString, 'Goethe Related', 'All things related to Goethe')
-        assert savedSearchId  != null
+        def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related')
+        assert mozartSavedSearchId != null
 
-        log.info "The user ${userId} just saved search with the query string: ${queryString}, savedSearchId ${savedSearchId}"
+        def results = savedSearchService.findSavedSearchByUserId(userId)
+        assert results.size() == 2
     }
 }
