@@ -68,19 +68,14 @@ limitations under the License.
               <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active</g:isMappingActive>">
                 <g:link controller="content" params="[dir: 'competence-network']"><g:message code="ddbnext.CompetenceNetwork" /></g:link>
               </li>
+              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active</g:isMappingActive>">
+                <g:link controller="content" params="[dir: 'faq']"><g:message code="ddbnext.Faq" /></g:link>
+              </li>
             </ul><!-- /end of .nav -->
           </li>
           <li class="<g:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</g:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
-            <ul class="nav">
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active</g:isMappingActive>">
-                <g:link controller="content" params="[dir: 'faq']"><g:message code="ddbnext.Faq" /></g:link>
-              </li>
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "tutorial"]]}">active</g:isMappingActive>">
-                <g:link controller="content" params="[dir: 'tutorial']"><g:message code="ddbnext.Tutorial" /></g:link>
-              </li>
-            </ul>
           </li><!-- /end of help -->
             <g:isLoggedIn>
               <li class="">
@@ -165,7 +160,7 @@ limitations under the License.
                   </ul>
                 </li>
                 <li
-                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"]]}">active-default</g:isMappingActive>">
+                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
                   <g:link controller="content" params="[dir: 'about']">
                     <g:message code="ddbnext.AboutUs" />
                   </g:link>
@@ -196,28 +191,19 @@ limitations under the License.
                         <g:message code="ddbnext.CompetenceNetwork" />
                       </g:link>
                     </li>
-                  </ul>
-                </li>
-                <li
-                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"],[controller: "content", dir: "faq"],[controller: "content", dir: "tutorial"]]}">active-default</g:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'help']">
-                    <g:message code="ddbnext.Help" />
-                  </g:link>
-                  <ul>
                     <li
                       class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
                       <g:link controller="content" params="[dir: 'faq']">
                         <g:message code="ddbnext.Faq" />
                       </g:link>
                     </li>
-                    <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "tutorial"]]}">active-default</g:isMappingActive>">
-                      <g:link controller="content"
-                        params="[dir: 'tutorial']">
-                        <g:message code="ddbnext.Tutorial" />
-                      </g:link>
-                    </li>
                   </ul>
+                </li>
+                <li
+                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"]]}">active-default</g:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'help']">
+                    <g:message code="ddbnext.Help" />
+                  </g:link>
                 </li>
                 <g:isLoggedIn>
                   <li
