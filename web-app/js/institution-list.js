@@ -179,18 +179,18 @@
     },
 
     getFirstLetter: function() {
+      var result = '';
       var hashValue = $('#first-letter-index')
                         .find('li.active')
                         .find('a')
                         .attr('href');
       if(hashValue) {
-        var hash = hashValue.substring(1);
-        if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
-          return '';
-        } else {
-          return hash;
+        var hash = hashValue.substring(1).toLowerCase();
+        if (hash !== '' && hash !== 'all' && hash !== 'list') {
+          result = hash;
         }
       }
+      return result;
     },
 
     /*
