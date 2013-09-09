@@ -85,6 +85,9 @@ limitations under the License.
                     <g:link controller="user" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                   </li>
                   <li class="">
+                    <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Saved_Searches" /></g:link>
+                  </li>
+                  <li class="">
                     <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
                   </li>
                 </ul>
@@ -207,7 +210,7 @@ limitations under the License.
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
+                    class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "savedsearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
                     <g:link controller="user" action="favorites">
                       <g:message code="ddbnext.MyDDB" />
                     </g:link>
@@ -216,6 +219,12 @@ limitations under the License.
                         class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"]]}">active-default</g:isMappingActive>">
                         <g:link controller="user" action="favorites">
                           <g:message code="ddbnext.Favorites" />
+                        </g:link>
+                      </li>
+                      <li
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "savedsearches"]]}">active-default</g:isMappingActive>">
+                        <g:link controller="user" action="savedsearches">
+                          <g:message code="ddbnext.Saved_Searches" />
                         </g:link>
                       </li>
                       <li
