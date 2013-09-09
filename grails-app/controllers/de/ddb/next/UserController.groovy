@@ -362,7 +362,7 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index")
         }
     }
 

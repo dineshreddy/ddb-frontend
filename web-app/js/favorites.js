@@ -97,7 +97,7 @@ $(function() {
         selected.push($(this).attr('value'));
       });
       $('#totalNrSelectedObjects').html(selected.length);
-      $('#confirm-dialog').modal('show');
+      $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
@@ -121,7 +121,7 @@ $(function() {
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('checked', false));
         });
-        $('#confirm-dialog').modal('hide');
+        $('#favoritesDeleteConfirmDialog').modal('hide');
       });
       return false;
     });
