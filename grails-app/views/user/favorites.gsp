@@ -189,24 +189,7 @@ limitations under the License.
       <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
     </div>
   </div>
-  <div class="modal hide fade" id="confirm-dialog">
-    <div class="modal-header">
-      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-      <h3>
-        <g:message code="ddbnext.delete_confirmation" />
-      </h3>
-    </div>
-    <div class="modal-body">
-      <g:message code="ddbnext.delete_favorites_dialog" />
-      <span id="totalNrSelectedObjects"></span>
-    </div>
-    <div class="modal-footer">
-      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
-        data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></button>
-    </div>
-  </div>
-  <div class="modal hide fade" id="noSelection">
+  <div class="modal hide fade" id="favoritesDeleteConfirmDialog">
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3>

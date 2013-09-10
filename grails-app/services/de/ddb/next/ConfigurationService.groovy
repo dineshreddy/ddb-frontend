@@ -268,17 +268,20 @@ class ConfigurationService {
         return grailsMailHost
     }
 
+    /**
+     * Get the authorization key to access restricted API calls.
+     *
+     * This property is optional. Leave it blank if you do not want to set an API key.
+     *
+     * @return the authorization key
+     */
     public String getBackendApikey(){
         def backendApikey = grailsApplication.config.ddb?.backend?.apikey
-        if(!backendApikey){
-            throw new ConfigurationException("getBackendApikey(): Configuration entry does not exist -> ddb.backend.apikey")
-        }
         if(!(backendApikey instanceof String)){
             throw new ConfigurationException("getBackendApikey(): ddb.backend.apikey is not a String")
         }
         return backendApikey
     }
-
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
@@ -406,6 +409,7 @@ class ConfigurationService {
         log.info "ddb.static.url = " + getStaticUrl()
         log.info "ddb.apis.url = " + getApisUrl()
         log.info "ddb.backend.url = " + getBackendUrl()
+        log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.dnb.url = " + getDnbUrl()
@@ -428,6 +432,5 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
-        //log.info "ddb.backend.apikey = " + getBackendApikey()
     }
 }

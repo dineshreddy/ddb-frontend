@@ -42,7 +42,7 @@ To run Selenium tests use the command
 
 #### External Configurations
 In case additional configurations are needed, then the following apply:
-In development mode the external configuration is located on: $USER_HOME/.grails/$appname.properties 
+In development and test mode the external configuration is located on: $USER_HOME/.grails/$appname.properties 
 In Production Mode: /grails/app-config/$appname.properties
 
 ####Proxy configuration 
@@ -57,17 +57,35 @@ A list of some predefined variables is set below:
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
     ddb.backend.apikey=                                                             (put a valid API key here or leave it empty)
-    ddb.aas.url="http://whddbapp10.fiz-karlsruhe.de:8081"
-    ddb.logging.folder=/opt/ddb/logs
+    ddb.aas.url=http://ddbaas1-t1.deutsche-digitale-bibliothek.de:8081
+    ddb.culturegraph.url=http://hub.culturegraph.org
+    ddb.dnb.url=http://d-nb.info
+    ddb.bookmark.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
+    ddb.newsletter.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
+    ddb.self.base.url=http://localhost:8080
+
+    ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
+    ddb.favorites.basedomain=http://localhost:9090
+
+    ddb.backend.facets.filter="[[facetName:language_fct, filter:term:unknown], [facetName:language_fct, filter:term:termunknown], [facetName:keywords_fct, filter:null], [facetName:provider_fct, filter:null], [facetName:affiliate_fct, filter:null], [facetName:type_fct, filter:null], [facetName:sector_fct, filter:null], [facetName:place_fct, filter:null], [facetName:time_fct, filter:null]]"
+
     ddb.tracking.piwikfile=/opt/ddb/tracking.txt
+    grails.views.gsp.encoding=UTF-8
+    grails.mime.types['html'][0]=text/html
+
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
-    ddb.session.timeout=1800
+    ddb.session.timeout=3600
+
+    ddb.logging.folder=/opt/ddb/logs
+
     ddb.loadbalancer.header.name="nid"
     ddb.loadbalancer.header.value="-1"
     
+    grails.mail.host=localhost
+    grails.mail.port=1025
 
 ####Tomcat configuration
 The tomcat configuration in the server.xml must ensure, that the used Connector must contain a valid URIEncoding tag.
