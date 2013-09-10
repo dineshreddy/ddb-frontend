@@ -79,4 +79,6 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
 
         assert savedSearchService.findSavedSearchByUserId(userId).size() == 0
     }
+
+    // TODO: shouldUpdateSavedSearch
 }

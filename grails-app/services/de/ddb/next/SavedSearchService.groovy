@@ -57,7 +57,7 @@ class SavedSearchService {
     def findSavedSearchByUserId(userId, size = DEFAULT_SIZE ) {
         log.info "find saved searches for the user (${userId})"
         def http = new HTTPBuilder(
-                "${configurationService.getBookmarkUrl()}/ddb/savedSearch/_search?q=user:${userId}")
+                "${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_search?q=user:${userId}")
         http.request(Method.GET, ContentType.JSON) { req ->
 
             response.success = { resp, json ->
@@ -87,7 +87,7 @@ class SavedSearchService {
     }
 
     def deleteSavedSearch(userId, savedSearchIdList) {
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/savedSearch/_bulk")
+        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_bulk")
         http.request(Method.POST, ContentType.JSON) { req ->
             def reqBody = ''
             savedSearchIdList.each { id ->
@@ -114,4 +114,5 @@ class SavedSearchService {
             }
         }
     }
+
 }
