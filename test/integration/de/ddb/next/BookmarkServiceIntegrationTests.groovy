@@ -214,4 +214,20 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert favoriteForInstitution.itemId == institutionId
         assert favoriteForInstitution.type == Type.INSTITUTION
     }
+
+    @Test void shouldSaveCulturalItemInFolderFooAndBar() {
+        log.info "should save cultural item in folder fooAndBar"
+        // should add a cultural item to user's favorite list.
+        def userId = UUID.randomUUID() as String
+        def institutionId = UUID.randomUUID() as String
+        // if the user don't have a favorite list, then the service should create it.
+        def favoriteId = bookmarksService.addFavorite(userId, institutionId, Type.INSTITUTION)
+        assert favoriteId != null
+        log.info "The user ${userId} just added an institution ${institutionId} to their Favorites folder(favoriteId)"
+
+        def favoriteForInstitution = bookmarksService.findFavoriteByItemId(userId, institutionId)
+        log.info("fav is: ${favoriteForInstitution }")
+        assert favoriteForInstitution.itemId == institutionId
+        assert favoriteForInstitution.type == Type.INSTITUTION
+    }
 }

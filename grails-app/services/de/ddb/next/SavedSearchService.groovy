@@ -27,6 +27,7 @@ import groovyx.net.http.Method
  */
 class SavedSearchService {
 
+    public static final def DEFAULT_SIZE = 9999
     def configurationService
     def transactional = false
 
@@ -51,6 +52,54 @@ class SavedSearchService {
             }
         }
         savedSearchId
+    }
+
+    def findSavedSearchByUserId(userId, size = DEFAULT_SIZE ) {
+        log.info "find saved searches for the user (${userId})"
+        def http = new HTTPBuilder(
+                "${configurationService.getBookmarkUrl()}/ddb/savedSearch/_search?q=user:${userId}")
+        http.request(Method.GET, ContentType.JSON) { req ->
+
+            response.success = { resp, json ->
+                def all = []
+                def resultList = json.hits.hits
+                resultList.each { it ->
+
+                    def savedSearch = [:]
+                    savedSearch['id'] = it._id
+                    savedSearch['user'] = it._source.user
+                    savedSearch['title'] = it._source.title
+                    savedSearch['description'] = it._source.description
+                    savedSearch['queryString'] = it._source.queryString
+
+                    all.add(savedSearch)
+
+                    log.info "it: ${it}"
+                    log.info "Saved Search ID: ${it._id}"
+                    log.info "user: ${it._source.user}"
+                    log.info "title: ${it._source.title}"
+                    log.info "description: ${it._source.description}"
+                    log.info "query string: ${it._source.queryString}"
+                }
+                all
+            }
+        }
+    }
+
+    def deleteSavedSearch(userId, savedSearchIdList) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/savedSearch/_bulk")
+        http.request(Method.POST, ContentType.JSON) { req ->
+            def reqBody = ''
+            savedSearchIdList.each { id ->
+                reqBody = reqBody + '{ "delete" : { "_index" : "ddb", "_type" : "savedSearch", "_id" : "' + id + '" } }\n'
+            }
+
+            body = reqBody
+            response.success = {
+                refresh()
+                return true
+            }
+        }
     }
 
     // TODO: move to a util class.
