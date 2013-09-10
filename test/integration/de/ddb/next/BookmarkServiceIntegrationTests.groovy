@@ -4,8 +4,6 @@ import static org.junit.Assert.*
 
 import org.junit.*
 
-import de.ddb.next.Type
-
 
 
 
@@ -29,7 +27,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def isPublic = true
         return bookmarksService.newFolder(userId, folderTitle, isPublic)
     }
-
 
     @Test void shouldGetAllFolders() {
         createNewFolder()
@@ -72,7 +69,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def foundBookmarkedItems = bookmarksService.findBookmarkedItems(userId, [itemId])
         assert foundBookmarkedItems.size() > 0
     }
-
 
     // Favorites
     @Test void shouldAddItemToUserFavorite() {

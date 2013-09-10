@@ -243,21 +243,10 @@ class BookmarksService {
         }
     }
 
-    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM) {
-        def favoriteFolderId = getFavoritesFolderId(userId)
-
-        def foundItemIdList = findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
-        if(foundItemIdList.size()>0) {
-            log.warn('The item ID (itemId) is already in the Favorites')
-            return null
-        }
-
-        def bookmarkId = saveBookmark(userId, favoriteFolderId, itemId, type)
-        log.info "Add a bookmark ${bookmarkId} in Favorites"
-        return bookmarkId
+    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = null) {
+        return saveBookmark(userId, folderId, itemId, type)
     }
 
-    // TODO this is _broken_, sometimes it finds more than one folders with the title favorites for a user.
     def findFoldersByTitle(userId, title) {
         log.info "finding a folder with the title ${title} for the user: ${userId}"
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/_search?q=user:${userId}")
@@ -294,8 +283,30 @@ class BookmarksService {
     }
 
     def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
-        def favoriteFolderId = getFavoritesFolderId(userId)
-        return findBookmarksByFolderId(userId, favoriteFolderId, size)
+        // TODO remove this line, there is no favorites folder.
+        // def favoriteFolderId = getFavoritesFolderId(userId)
+        //return findBookmarksByFolderId(userId, favoriteFolderId, size)
+
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}&size=${DEFAULT_SIZE}")
+        http.request(Method.POST, ContentType.JSON) { req ->
+            response.success = { resp, json ->
+                log.info "response as application/json: ${json}"
+                def all = [] //as Set
+                def resultList = json.hits.hits
+
+                resultList.each { it ->
+                    def bookmark = new Bookmark(
+                            it._id,
+                            it._source.user,
+                            it._source.item,
+                            new Date(it._source.createdAt.toLong()),
+                            it._source.type as Type)
+                    all.add(bookmark)
+                }
+                all
+            }
+        }
+
     }
 
     def deleteFavorites(userId, itemIds) {
@@ -315,36 +326,20 @@ class BookmarksService {
     }
 
     def findFavoritesByItemIds(userId, itemIdList) {
-        def favoriteFolderId = getFavoritesFolderId(userId)
-        log.info "fav: ${favoriteFolderId}"
         log.info "itemIdList ${itemIdList}"
-        return findBookmarkedItemsInFolder(userId, itemIdList, favoriteFolderId)
-    }
-
-    def getFavoritesFolderId(userId) {
-        def favoritesFolderList = findFoldersByTitle(userId, BookmarksService.FAVORITES)
-
-        assert favoritesFolderList.size() <= 1 :"There must be max one folder with the title Favorites"
-
-        def favoritesFolderId
-        if(favoritesFolderList.size() > 0) {
-            favoritesFolderId  = favoritesFolderList[0].folderId
-        } else {
-            /* The user does not have a 'Favorites' folder, create a folder with
-             * the title 'Favorites'
-             */
-            log.info "The user(${userId}) does not have a 'Favorites' folder, the service is creating it."
-            favoritesFolderId = newFolder(userId,FAVORITES, IS_PUBLIC)
-            log.info "New Favorites Folder is created and has the ID: ${favoritesFolderId}"
-        }
-        favoritesFolderId
+        return findBookmarkedItemsInFolder(userId, itemIdList )
     }
 
     // TODO refactor this method, duplicate with findFavoritesByItemIds
-    def findBookmarkedItemsInFolder(userId, itemIdList, folderId) {
+    def findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
         log.info "itemIdList ${itemIdList}"
 
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+        def http
+        if(folderId) {
+            http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+        } else {
+            http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}&size=${DEFAULT_SIZE}")
+        }
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
                 filter: [
@@ -366,12 +361,16 @@ class BookmarksService {
         }
     }
 
-    def findFavoriteByItemId(userId, itemId) {
+    def findFavoriteByItemId(userId, itemId, folderId=null) {
         log.info "itemId: ${itemId}"
 
-        def folderId = getFavoritesFolderId(userId)
+        def http
+        if(folderId) {
+            http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
+        } else {
+            http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}&size=${DEFAULT_SIZE}")
+        }
 
-        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}%20AND%20folder:${folderId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
                 filter: [
