@@ -253,7 +253,7 @@ limitations under the License.
               </g:isNotLoggedIn>
               <g:isLoggedIn>
                 <div class="login-wrapper">
-                  <g:message code="ddbnext.You_are_currently_logged_in_as" />
+                  <span style="vertical-align:top;"><g:message code="ddbnext.You_are_currently_logged_in_as" /></span>
                   <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link>
                   <div class="login-dropdown"></div>
                   <ul class="selector logout">
