@@ -433,6 +433,13 @@ header .login-wrapper,.header .login-wrapper {
 
 header .login-username,.header .login-username {
   display: inline-block;
+  max-width: 8em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+header .status-bar, .header .status-bar {
+  white-space: nowrap;
 }
 
 header .login-dropdown,.header .login-dropdown {

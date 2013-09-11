@@ -245,34 +245,37 @@ limitations under the License.
             </div>
           </div>
           <div class="span5 toolbar">
-            <g:isNotLoggedIn>
-              <div class="login-wrapper">
-                <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
-              </div>
-            </g:isNotLoggedIn>
-            <g:isLoggedIn>
-              <div class="login-wrapper">
-                <g:message code="ddbnext.You_are_currently_logged_in_as" />
-                <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link><div class="login-dropdown"></div>
-                <ul class="selector logout">
-                  <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
+            <div class="status-bar">
+              <g:isNotLoggedIn>
+                <div class="login-wrapper">
+                  <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+                </div>
+              </g:isNotLoggedIn>
+              <g:isLoggedIn>
+                <div class="login-wrapper">
+                  <g:message code="ddbnext.You_are_currently_logged_in_as" />
+                  <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link>
+                  <div class="login-dropdown"></div>
+                  <ul class="selector logout">
+                    <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
+                  </ul>
+                </div>
+              </g:isLoggedIn>
+              <div class="header-spacer"></div>
+              <div class="language-wrapper">
+                <a href="#"> <g:currentLanguage />
+                </a>
+                <ul class="selector language">
+                  <li><g:languageLink params="${params}" locale="de"
+                      islocaleclass="nopointer">
+                      <g:message code="ddbnext.language_de" />
+                    </g:languageLink></li>
+                    <li><g:languageLink params="${params}" locale="en"
+                      islocaleclass="nopointer">
+                      <g:message code="ddbnext.language_en" />
+                    </g:languageLink></li>
                 </ul>
               </div>
-            </g:isLoggedIn>
-            <div class="header-spacer"></div>
-            <div class="language-wrapper">
-              <a href="#"> <g:currentLanguage />
-              </a>
-              <ul class="selector language">
-                <li><g:languageLink params="${params}" locale="de"
-                    islocaleclass="nopointer">
-                    <g:message code="ddbnext.language_de" />
-                  </g:languageLink></li>
-                <li><g:languageLink params="${params}" locale="en"
-                    islocaleclass="nopointer">
-                    <g:message code="ddbnext.language_en" />
-                  </g:languageLink></li>
-              </ul>
             </div>
             <div class="search-header hidden-phone">
               <g:form method="get" role="search" id="form-search-header"
