@@ -52,7 +52,7 @@ class BookmarksService {
      * @param isPublic  boolean flag to mark if a folder should be public visible.
      * @return          the newly created folder ID.
      */
-    def newFolder(userId, title, isPublic) {
+    def newFolder(userId, title, isPublic, description = null) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
 
         log.info "creating a new folder with the title: ${title}"
@@ -61,6 +61,7 @@ class BookmarksService {
             body = [
                 user: userId,
                 title : title,
+                description: description,
                 isPublic : isPublic
             ]
 
@@ -93,10 +94,11 @@ class BookmarksService {
                 def folderList = []
                 resultList.each { it ->
                     def folder = new Folder(
-                            folderId: it._id,
-                            userId: it._source.user,
-                            title: it._source.title,
-                            isPublic: it._source.isPublic
+                            it._id,
+                            it._source.user,
+                            it._source.title,
+                            it._source.description,
+                            it._source.isPublic
                             )
                     folderList.add(folder)
                 }
@@ -243,7 +245,7 @@ class BookmarksService {
         }
     }
 
-    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = null) {
+    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = []) {
         return saveBookmark(userId, folderId, itemId, type)
     }
 
@@ -267,10 +269,11 @@ class BookmarksService {
                 def all = []
                 resultList.each { it ->
                     def folder = new Folder(
-                            folderId: it._id,
-                            userId: it._source.user,
-                            title: it._source.title,
-                            isPublic: it._source.isPublic
+                            it._id,
+                            it._source.user,
+                            it._source.title,
+                            it._source.description,
+                            it._source.isPublic
                             )
 
                     all.add(folder)
@@ -418,4 +421,11 @@ class BookmarksService {
         return vResult
     }
 
+    /*
+     * Given a list of bookmark ID, update its folder values to [folderId]
+     *
+     * bookmarkIds, list of bookmarks to update
+     * folderIds, list of folderId as input
+     */
+    def updateFavorites(List<String> bookmarkIds, List<String> folderIds) {}
 }

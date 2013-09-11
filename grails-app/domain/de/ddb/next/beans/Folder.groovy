@@ -19,8 +19,18 @@ import groovy.transform.ToString
 
 @ToString(includeNames=true)
 class Folder {
+
     String folderId
     String userId
     String title
+    String description
     boolean isPublic = false
+
+    public Folder(String folderId, String userId, String title, String description, boolean isPublic) {
+        this.folderId = folderId
+        this.userId = userId
+        this.title = title
+        this.description= description
+        this.isPublic = isPublic
+    }
 }
