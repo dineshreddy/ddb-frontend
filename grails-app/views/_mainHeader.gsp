@@ -163,7 +163,7 @@ limitations under the License.
                   </ul>
                 </li>
                 <li
-                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
+                  class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
                   <g:link controller="content" params="[dir: 'about']">
                     <g:message code="ddbnext.AboutUs" />
                   </g:link>

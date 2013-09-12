@@ -1383,6 +1383,10 @@ select {
   background-color: #fff;
 }
 
+.keep-in-front {
+  z-index: 99;
+}
+
 /* responsive genaral rules */
 @media (max-width: 767px) {
   body {
