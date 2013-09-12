@@ -137,7 +137,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "the bookmark service should find favorites by item IDs."
         def userId = UUID.randomUUID() as String
 
-        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
+        def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YIn84O2mBlSiassU1aNYIysA'
         log.info "adding item ${firstItemId} to the folder Favorite."
         def firstFavId = bookmarksService.addFavorite(userId, firstItemId)
 
@@ -213,8 +213,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     // TODO: problem Favorites VS Bookmarks?
     // @Test void shouldSaveFavoritesWithOptionalTitleOrDescription() { assert false }
-
-    @Test void shouldFindFavoritesByUserIdAndFolderId() { assert false }
+    // @Test void shouldFindFavoritesByUserIdAndFolderId() { assert false }
 
     @Test void shouldCreateNewFolderWithDescription() {
         def userId = UUID.randomUUID() as String
@@ -229,22 +228,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "folder's description ${folders[0].description}"
     }
 
-    @Test void shouldUpdateFavorites() {
-        log.info "should add item to the user's Favorites"
-        // should add a cultural item to user's favorite list.
-        def userId = UUID.randomUUID() as String
-        def itemId = UUID.randomUUID() as String
-        // if the user don't have a favorite list, then the service should create it.
-
-        def folderTitle= 'Favorites-' + new Date().getTime().toString()
-        def isPublic = true
-        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic)
-        def favoriteId = bookmarksService.addFavorite(userId, itemId, folderId)
-        assert favoriteId != null
-        log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
-        bookmarksService.updateFavorites([favoriteId], [folderId])
-        assert false
-    }
 
     @Test void shouldFindFavoriteById() {
         def userId = UUID.randomUUID() as String
@@ -253,11 +236,33 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
         def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic)
-        def favoriteId = bookmarksService.addFavorite(userId, itemId, folderId)
+        def favoriteId = bookmarksService.addFavorite(userId, itemId, Type.CULTURAL_ITEM, [folderId])
+
         assert favoriteId != null
-        log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
+        log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId ${favoriteId}"
 
         def favorite = bookmarksService.findFavoriteById(favoriteId)
         assert favorite.bookmarkId == favoriteId
     }
+
+    @Test void shouldCopyFavoritesToFolders() {
+        log.info "should save institution as user's Favorites"
+
+        // TODO: create a favorite that not belongs to any folder, i.e. folder: [].
+        def userId = UUID.randomUUID() as String
+        def itemId = UUID.randomUUID() as String
+        def favoriteId = bookmarksService.addFavorite(userId, itemId, Type.CULTURAL_ITEM)
+
+        // TODO: create a folder
+        def folderTitle= 'Favorites-' + new Date().getTime().toString()
+        def isPublic = true
+        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic)
+
+        // TODO: copy the favorite to the new folder, i.e., folder: [${folderId}]
+        bookmarksService.copyFavoritesToFolders([favoriteId], [folderId])
+        def found = bookmarksService.findFavoriteById(favoriteId)
+        log.info "found: ${found.bookmarkId}"
+        assert found.folders.size() == 1
+    }
+
 }

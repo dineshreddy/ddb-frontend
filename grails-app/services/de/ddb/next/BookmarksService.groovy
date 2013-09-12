@@ -137,7 +137,9 @@ class BookmarksService {
                             bookmarkId: it._id,
                             userId: it._source.user,
                             itemId: it._source.item,
-                            creationDate: new Date(it._source.createdAt.toLong())
+                            creationDate: new Date(it._source.createdAt.toLong()),
+                            type: it._source.type as Type,
+                            folders: it._source.folder
                             )
                     all.add(bookmark)
                 }
@@ -248,15 +250,12 @@ class BookmarksService {
      *
      */
     def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = []) {
-        // TODO: remove this code, there is no precreated folder with the name "Favorites", either the user store
-        // the bookmark in a folder they created _or_ the bookmark will be _not_ stored in any folder.
-
         def foundItemIdList =  findFavoritesByItemIds(userId, [itemId])
-//findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
         if(foundItemIdList.size()>0) {
             log.warn('The item ID (itemId) is already in the Favorites')
             return null
         }
+        log.info "type: ${type}"
         return saveBookmark(userId, folderId, itemId, type)
     }
 
@@ -310,7 +309,8 @@ class BookmarksService {
                             it._source.user,
                             it._source.item,
                             new Date(it._source.createdAt.toLong()),
-                            it._source.type as Type)
+                            it._source.type as Type,
+                            it._source.folder)
                     all.add(bookmark)
                 }
                 all
@@ -400,7 +400,8 @@ class BookmarksService {
                             it._source.user,
                             it._source.item,
                             new Date(it._source.createdAt.toLong()),
-                            it._source.type as Type)
+                            it._source.type as Type,
+                            it._source.folder)
                     all.add(bookmark)
                 }
                 assert all.size() <= 1
@@ -434,19 +435,47 @@ class BookmarksService {
      * bookmarkIds, list of bookmarks to update
      * folderIds, list of folderId as input
      */
-    def updateFavorites(List<String> favoriteIds, List<String> folderIds) {}
+    def copyFavoritesToFolders(List<String> favoriteIds, List<String> folderIds) {
+        log.info "id: ${favoriteIds[0]}"
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+           /**
+            *  NOTE: the return carriage is important after each line. See Also:
+            *  [_bulk endopint fails when on single index]
+            *  (http://elasticsearch-users.115913.n3.nabble.com/bulk-endopint-fails-when-on-single-index-td4030411.html)
+            */
+            def reqBody = '''{ "update" : {"_id" : "'''+ favoriteIds[0] + '''", "_type" : "bookmark", "_index" : "ddb"} }
+                   { "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ["red", "green"] } }
+                    '''
+
+           log.info "body:\n ${reqBody}"
+           body = reqBody
+
+            response.success = { resp, json ->
+              log.info "copyFavs: json.took"
+              refresh()
+            }
+
+            response.'500' = { resp ->
+                log.error  "${resp.data}"
+            }
+        }
+    }
 
     def findFavoriteById(favoriteId) {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/${favoriteId}")
 
         http.request(Method.GET, ContentType.JSON) { req ->
-            response.success = { resp, json ->
-                return new Bookmark(
-                    bookmarkId: json._id,
-                    userId: json._source.user,
-                    itemId: json._source.item,
-                    creationDate: new Date(json._source.createdAt.toLong())
-                 )
+            response.success = { resp, it->
+              return  new Bookmark(
+                            it._id,
+                            it._source.user,
+                            it._source.item,
+                            new Date(it._source.createdAt.toLong()),
+                            it._source.type as Type,
+                            it._source.folder
+                            )
             }
         }
     }
