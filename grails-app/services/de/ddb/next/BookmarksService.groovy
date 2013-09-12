@@ -248,6 +248,15 @@ class BookmarksService {
      *
      */
     def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = []) {
+        // TODO: remove this code, there is no precreated folder with the name "Favorites", either the user store
+        // the bookmark in a folder they created _or_ the bookmark will be _not_ stored in any folder.
+
+        def foundItemIdList =  findFavoritesByItemIds(userId, [itemId])
+//findBookmarkedItemsInFolder(userId,[itemId], favoriteFolderId)
+        if(foundItemIdList.size()>0) {
+            log.warn('The item ID (itemId) is already in the Favorites')
+            return null
+        }
         return saveBookmark(userId, folderId, itemId, type)
     }
 
