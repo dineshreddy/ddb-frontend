@@ -30,7 +30,6 @@ import de.ddb.next.beans.Folder
 /**
  * Set of Methods that encapsulate REST-calls to the BookmarksService
  *
- * @author mih
  * @author crh
  *
  */
@@ -144,7 +143,6 @@ class BookmarksService {
                 }
                 all
             }
-
         }
     }
 
@@ -160,6 +158,7 @@ class BookmarksService {
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
 
         def bookmarkId
+        //TODO: folder Id, now an array
         http.request(Method.POST, ContentType.JSON) { req ->
             body = [
                 user: userId,
@@ -245,6 +244,9 @@ class BookmarksService {
         }
     }
 
+    /**
+     *
+     */
     def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = []) {
         return saveBookmark(userId, folderId, itemId, type)
     }
@@ -286,10 +288,6 @@ class BookmarksService {
     }
 
     def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
-        // TODO remove this line, there is no favorites folder.
-        // def favoriteFolderId = getFavoritesFolderId(userId)
-        //return findBookmarksByFolderId(userId, favoriteFolderId, size)
-
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_search?q=user:${userId}&size=${DEFAULT_SIZE}")
         http.request(Method.POST, ContentType.JSON) { req ->
             response.success = { resp, json ->
@@ -427,5 +425,20 @@ class BookmarksService {
      * bookmarkIds, list of bookmarks to update
      * folderIds, list of folderId as input
      */
-    def updateFavorites(List<String> bookmarkIds, List<String> folderIds) {}
+    def updateFavorites(List<String> favoriteIds, List<String> folderIds) {}
+
+    def findFavoriteById(favoriteId) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/${favoriteId}")
+
+        http.request(Method.GET, ContentType.JSON) { req ->
+            response.success = { resp, json ->
+                return new Bookmark(
+                    bookmarkId: json._id,
+                    userId: json._source.user,
+                    itemId: json._source.item,
+                    creationDate: new Date(json._source.createdAt.toLong())
+                 )
+            }
+        }
+    }
 }
