@@ -183,11 +183,7 @@ class ApiConsumer {
             }
 
             // send API key
-            def grailsApplication = Holders.getGrailsApplication()
-            if (grailsApplication.config.ddb.backend.url == baseUrl && grailsApplication.config.ddb.backend.apikey) {
-                optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="'
-                     + grailsApplication.config.ddb.backend.apikey + '"')
-            }
+            setApiKey(optionalHeaders, baseUrl)
 
             http.request(method, content) { req ->
 
@@ -454,6 +450,14 @@ class ApiConsumer {
         return path
     }
 
+    static def setApiKey(optionalHeaders, baseUrl) {
+        def grailsApplication = Holders.getGrailsApplication()
+        if (grailsApplication.config.ddb.backend.url == baseUrl && grailsApplication.config.ddb.backend.apikey) {
+            optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="'
+                 + grailsApplication.config.ddb.backend.apikey + '"')
+        }
+    }
+
     static def setAuthHeader(http){
         try {
             HttpServletRequest request = WebUtils.retrieveGrailsWebRequest().getCurrentRequest()
@@ -468,5 +472,4 @@ class ApiConsumer {
             log.error "setAuthHeader(): Could not get haeder-data from session"
         }
     }
-
 }
