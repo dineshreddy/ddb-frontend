@@ -246,7 +246,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     }
 
     @Test void shouldCopyFavoritesToFolders() {
-        log.info "should save institution as user's Favorites"
+        log.info "should copy more than one favorites to more than one folder."
 
         // create a favorite that not belongs to any folder, i.e. folder: [].
         def userId = UUID.randomUUID() as String
@@ -264,4 +264,20 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert found.folders.size() == 2
     }
 
+    @Test void shouldChangeFolderTitleOrDescription() {
+        log.info "should change folder's title or its description."
+
+        def userId = UUID.randomUUID() as String
+        def folderTitle = 'foo'
+        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC)
+        log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
+
+        def newTitle = "bar"
+        def newDescription = "new desc"
+
+        bookmarksService.updateFolder(folderId, newTitle)//, newDescription )
+        def updatedFolder = bookmarksService.findFolderById(folderId)
+        assert updatedFolder.title == newTitle
+        assert updatedFolder.description == newDescription
+    }
 }

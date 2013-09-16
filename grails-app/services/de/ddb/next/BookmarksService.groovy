@@ -451,16 +451,10 @@ class BookmarksService {
                     '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
             }
 
-           log.info "body:\n ${reqBody}"
            body = reqBody
 
             response.success = { resp, json ->
-              log.info "copyFavs: json.took"
               refresh()
-            }
-
-            response.'500' = { resp ->
-                log.error  "${resp.data}"
             }
         }
     }
@@ -485,4 +479,57 @@ class BookmarksService {
             }
         }
     }
+
+
+    def findFolderById(folderId) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/${folderId}")
+
+        http.request(Method.GET, ContentType.JSON) { req ->
+            response.success = { resp, it->
+                return new Folder(
+                    it._id,
+                    it._source.user,
+                    it._source.title,
+                    it._source.description,
+                    it._source.isPublic
+                    )
+            }
+        }
+    }
+
+    def updateFolder(folderId, newTitle, newDescription = null) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/${folderId}/_update")
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+            /*
+            {
+                "doc" : {
+                  "title": "foo",
+                  "description": "bar"
+                }
+            }
+            */
+            if(newDescription) {
+               body = '''{
+                            "doc" : {
+                              "title": "''' + newTitle + '''",
+                              "description": "''' + newDescription + '''"
+                            }
+                         }
+                      '''
+            } else {
+               body = '''{
+                            "doc" : {
+                              "title": "''' + newTitle + '''"
+                            }
+                         }
+                      '''
+            }
+
+            response.success = { resp, json ->
+              refresh()
+            }
+        }
+    }
 }
+
