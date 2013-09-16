@@ -51,6 +51,7 @@ class UserController {
     def searchService
     def newsletterService
     def favoritesPageService
+    def savedSearchesService
 
     LinkGenerator grailsLinkGenerator
 
@@ -227,7 +228,6 @@ class UserController {
         }
     }
 
-
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
@@ -236,6 +236,71 @@ class UserController {
     }
 
     /* end favorites methods */
+
+    def deleteSavedSearches() {
+        println "XXX deleteSavedSearches"
+    }
+
+    def getSavedSearches() {
+        if (isUserLoggedIn()) {
+            def savedSearches = savedSearchesService.getSavedSearches()
+            def offset = params.offset ? params.offset.toInteger() : 0
+            def rows = params.rows ? params.rows.toInteger() : 20
+            def totalPages = (savedSearches.size() / rows).toInteger()
+
+            if (totalPages * rows < savedSearches.size()) {
+                totalPages++
+            }
+            if (!params.order) {
+                params.order = "desc"
+            }
+            render(view: "savedsearches", model: [
+                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                numberOfResults: savedSearches.size(),
+                page: offset / rows + 1,
+                rows: rows,
+                totalPages: totalPages,
+                results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
+                userName: session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+            ])
+        }
+        else {
+            redirect(controller: "user", action: "index")
+        }
+    }
+
+    def sendSavedSearches() {
+        if (isUserLoggedIn()) {
+            def List emails = []
+
+            if (params.email.contains(',')) {
+                emails = params.email.tokenize(',')
+            } else {
+                emails.add(params.email)
+            }
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo getUserFromSession().getEmail()
+                    subject g.message(code: "ddbnext.Savedsearches_Of", args: [
+                        getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    ])
+                    body(view: "_savedSearchesEmailBody", model: [
+                        results: savedSearchesService.getSavedSearches(),
+                        userName: getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    ])
+                }
+                flash.message = "ddbnext.favorites_email_was_sent_succ"
+            } catch (e) {
+                log.info "An error occurred sending the email "+ e.getMessage()
+                flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
+            }
+            redirect(controller: "user", action: "getSavedSearches")
+        } else {
+            redirect(controller: "user", action: "index")
+        }
+    }
 
     def registration() {
         render(view: "registration", model: [])
