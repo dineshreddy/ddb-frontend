@@ -316,7 +316,6 @@ class BookmarksService {
                 all
             }
         }
-
     }
 
     def deleteFavorites(userId, itemIds) {
@@ -436,7 +435,6 @@ class BookmarksService {
      * folderIds, list of folderId as input
      */
     def copyFavoritesToFolders(List<String> favoriteIds, List<String> folderIds) {
-        log.info "id: ${favoriteIds[0]}"
         def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
 
         http.request(Method.POST, ContentType.JSON) { req ->
@@ -531,5 +529,27 @@ class BookmarksService {
             }
         }
     }
-}
 
+    def removeFavoritesFromFolder(favoriteIds, folderId) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark/_bulk")
+
+        http.request(Method.POST, ContentType.JSON) { req ->
+           /**
+            *  NOTE: the return carriage is important after each line. See Also:
+            *  [_bulk endopint fails when on single index]
+            *  (http://elasticsearch-users.115913.n3.nabble.com/bulk-endopint-fails-when-on-single-index-td4030411.html)
+            */
+            def reqBody = ''
+            favoriteIds.each { it ->
+               reqBody = reqBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
+                    '{ "script" : "ctx._source.folder.remove(otherFolder);", "params" : { "otherFolder" : "' + folderId + '"} }\n'
+            }
+
+           body = reqBody
+
+            response.success = { resp, json ->
+              refresh()
+            }
+        }
+    }
+}

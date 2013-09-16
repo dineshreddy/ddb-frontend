@@ -73,10 +73,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     // Favorites
     @Test void shouldAddItemToUserFavorite() {
         log.info "should add item to the user's Favorites"
-        // should add a cultural item to user's favorite list.
+
         def userId = UUID.randomUUID() as String
         def itemId = UUID.randomUUID() as String
-        // if the user don't have a favorite list, then the service should create it.
         def favoriteId = bookmarksService.addFavorite(userId, itemId)
         assert favoriteId != null
 
@@ -275,9 +274,38 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def newTitle = "bar"
         def newDescription = "new desc"
 
-        bookmarksService.updateFolder(folderId, newTitle)//, newDescription )
+        bookmarksService.updateFolder(folderId, newTitle, newDescription)
         def updatedFolder = bookmarksService.findFolderById(folderId)
         assert updatedFolder.title == newTitle
         assert updatedFolder.description == newDescription
+    }
+
+    @Test void shouldRemoveFavoritesFromFolder() {
+        log.info "should remove a few favorites from a folder."
+
+        def userId = UUID.randomUUID() as String
+        def folderTitle = 'foo'
+        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC)
+        log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
+
+        def itemId = UUID.randomUUID() as String
+        def otherItemId = UUID.randomUUID() as String
+
+        // create two favorites
+        def favoriteId = bookmarksService.addFavorite(userId, itemId, Type.CULTURAL_ITEM, [folderId])
+        def otherFavoriteId = bookmarksService.addFavorite(userId, otherItemId, Type.CULTURAL_ITEM, [folderId])
+
+        def favorites = bookmarksService.findFavoritesByUserId(userId)
+        favorites.each { it ->
+            assert it.folders[0] == folderId
+        }
+
+        bookmarksService.removeFavoritesFromFolder([favoriteId, otherFavoriteId], folderId)
+
+        def favorite = bookmarksService.findFavoriteById(favoriteId)
+        assert favorite.folders.size() == 0
+
+        def otherFavorite = bookmarksService.findFavoriteById(otherFavoriteId)
+        assert otherFavorite.folders.size() == 0
     }
 }
