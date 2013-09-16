@@ -60,36 +60,14 @@ $(function() {
           this.value = 1;
         }
         $('.page-input').attr('value', this.value);
-        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows")),new Array('rows', getParam("rows")),new Array('order', getParam("order")));
-        var newUrl = addParamToUrl(paramsArray,null, paramsArray);
+        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows", 20)),
+                                    new Array('rows', getParam("rows", 20)),
+                                    new Array('order', getParam("order")));
+        var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray);
         window.location.href=newUrl;
 
       }
     });
-
-    function addParamToUrl(arrayParamVal, path, urlString){
-      console.log(urlString);
-      var currentUrl = jsContextPath + "/user/favorites/";
-      var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
-          re = /([^&=]+)=([^&]*)/g, m;
-      while (m = re.exec(queryString)) {
-        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
-        if (queryParameters[decodedKey] == null) {
-          queryParameters[decodedKey] = new Array();
-        }
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
-      }
-      $.each(arrayParamVal, function(key, value){
-        queryParameters[value[0]] = value[1];
-      });
-      var tmp = jQuery.param(queryParameters, true);
-      if (path == null) {
-        return window.location.pathname+'?'+tmp;
-      }
-      else {
-        return path+'?'+tmp;
-      }
-    }
 
     $('#favorites-remove').submit(function() {
       var selected = new Array();
@@ -135,6 +113,28 @@ $(function() {
 
 });
 
+function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
+  var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
+      re = /([^&=]+)=([^&]*)/g, m;
+  while (m = re.exec(queryString)) {
+    var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+    if (queryParameters[decodedKey] == null) {
+      queryParameters[decodedKey] = new Array();
+    }
+    queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+  }
+  $.each(arrayParamVal, function(key, value){
+    queryParameters[value[0]] = value[1];
+  });
+  var tmp = jQuery.param(queryParameters, true);
+  if (path == null) {
+    return window.location.pathname+'?'+tmp;
+  }
+  else {
+    return path+'?'+tmp;
+  }
+}
+
 function updateNavigationUrl(){
   $.urlParam = function(name){
     var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -170,4 +170,13 @@ function getParam( name )
     return "";
   else
     return results[1];
+}
+
+function getParamWithDefault(name, defaultValue) {
+  var result = getParam(name);
+
+  if (result == "") {
+    result = defaultValue;
+  }
+  return result;
 }
