@@ -445,9 +445,11 @@ class BookmarksService {
             *  [_bulk endopint fails when on single index]
             *  (http://elasticsearch-users.115913.n3.nabble.com/bulk-endopint-fails-when-on-single-index-td4030411.html)
             */
-            def reqBody = '''{ "update" : {"_id" : "'''+ favoriteIds[0] + '''", "_type" : "bookmark", "_index" : "ddb"} }
-                   { "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ["red", "green"] } }
-                    '''
+            def reqBody = ''
+            favoriteIds.each { it ->
+               reqBody = reqBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
+                    '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
+            }
 
            log.info "body:\n ${reqBody}"
            body = reqBody
@@ -461,6 +463,10 @@ class BookmarksService {
                 log.error  "${resp.data}"
             }
         }
+    }
+
+    private def surroundWithQuotes(stringInList) {
+        stringInList.collect { it ->  '"' + it + '"'}
     }
 
     def findFavoriteById(favoriteId) {

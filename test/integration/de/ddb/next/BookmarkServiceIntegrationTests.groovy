@@ -248,21 +248,20 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     @Test void shouldCopyFavoritesToFolders() {
         log.info "should save institution as user's Favorites"
 
-        // TODO: create a favorite that not belongs to any folder, i.e. folder: [].
+        // create a favorite that not belongs to any folder, i.e. folder: [].
         def userId = UUID.randomUUID() as String
         def itemId = UUID.randomUUID() as String
         def favoriteId = bookmarksService.addFavorite(userId, itemId, Type.CULTURAL_ITEM)
 
-        // TODO: create a folder
-        def folderTitle= 'Favorites-' + new Date().getTime().toString()
-        def isPublic = true
-        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic)
+        // create two folders
+        def folderId = createNewFolder()
+        def otherFolderId = createNewFolder()
 
-        // TODO: copy the favorite to the new folder, i.e., folder: [${folderId}]
-        bookmarksService.copyFavoritesToFolders([favoriteId], [folderId])
+        // copy the favorite to the new folder, i.e., folder: [${folderId}]
+        bookmarksService.copyFavoritesToFolders([favoriteId], [folderId, otherFolderId])
         def found = bookmarksService.findFavoriteById(favoriteId)
         log.info "found: ${found.bookmarkId}"
-        assert found.folders.size() == 1
+        assert found.folders.size() == 2
     }
 
 }
