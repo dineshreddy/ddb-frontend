@@ -321,16 +321,22 @@ class BookmarksService {
     def deleteFavorites(userId, itemIds) {
         def bookmarkIds = []
         def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
-        log.info "favs: ${allFavorites}"
         allFavorites.each { it ->
-            log.info "fav: ${it}"
             if(it.itemId  in itemIds.ids) {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
-
         log.info "delete favorites for the items ${itemIds}"
         log.info "delete favorites with the bookmarkIds ${bookmarkIds}"
+        return deleteBookmarks(userId, bookmarkIds)
+    }
+
+    def deleteAllUserFavorites(userId) {
+        def bookmarkIds = []
+        def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
+        allFavorites.each { it ->
+            bookmarkIds.add(it.bookmarkId)
+        }
         return deleteBookmarks(userId, bookmarkIds)
     }
 
@@ -493,11 +499,9 @@ class BookmarksService {
                     )
             }
 
-            /*
             response.'404' = {
                 null
             }
-            */
         }
     }
 
