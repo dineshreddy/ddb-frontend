@@ -91,6 +91,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableListView = function() {
+        window.location.hash='list';
         $('#institution-map').addClass('off');
         $('#institution-list').removeClass('off');
 
@@ -108,6 +109,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableMapView = function() {
+        window.location.hash='map';
         $('#institution-list').addClass('off');
         $('#institution-map').removeClass('off');
 
