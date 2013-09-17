@@ -27,12 +27,14 @@ class Bookmark {
     String itemId
     Date creationDate
     Type type
+    Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type) {
+    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, Collection folders) {
         this.bookmarkId =bookmarkId
         this.userId = userId
         this.itemId = itemId
         this.creationDate = creationDate
         this.type = type
+        this.folders = folders
     }
 }
