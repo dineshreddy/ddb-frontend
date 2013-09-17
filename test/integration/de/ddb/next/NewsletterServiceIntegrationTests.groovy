@@ -12,6 +12,7 @@ class NewsletterServiceIntegrationTests extends GroovyTestCase {
 
     def newsletterService
 
+    @Ignore("Newsletter feature is disabled temporary.")
     @Test
     void shouldAddUserAsSubscriber() {
         User user = new User(email: 'john.doe@example.com')
@@ -21,6 +22,7 @@ class NewsletterServiceIntegrationTests extends GroovyTestCase {
         assert newsletterService.isSubscriber(user) == true
     }
 
+    @Ignore("Newsletter feature is disabled temporary.")
     @Test
     void shouldRemoveUserAsSubscriber() {
         User user = new User(email: 'john.doe@example.com')
@@ -33,6 +35,7 @@ class NewsletterServiceIntegrationTests extends GroovyTestCase {
         assert newsletterService.isSubscriber(user) == false
     }
 
+    @Ignore("Newsletter feature is disabled temporary.")
     @Test
     void shouldReturnFalseIfUserIsNotSubscriber() {
         User user = new User(email: 'john.doe@example.com')

@@ -154,6 +154,7 @@ ddb.culturegraph.url="http://hub.culturegraph.org"
 ddb.dnb.url="http://d-nb.info"
 ddb.bookmark.url="http://localhost:9200"
 ddb.newsletter.url="http://localhost:9200"
+ddb.elasticsearch.url="http://localhost:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
 ddb.advancedSearch.searchGroupCount=3
