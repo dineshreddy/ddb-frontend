@@ -249,14 +249,14 @@ class BookmarksService {
     /**
      *
      */
-    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderId = []) {
+    def addFavorite(userId, itemId, type = Type.CULTURAL_ITEM, folderIdList = []) {
         def foundItemIdList =  findFavoritesByItemIds(userId, [itemId])
         if(foundItemIdList.size()>0) {
             log.warn('The item ID (itemId) is already in the Favorites')
             return null
         }
         log.info "type: ${type}"
-        return saveBookmark(userId, folderId, itemId, type)
+        return saveBookmark(userId, folderIdList, itemId, type)
     }
 
     def findFoldersByTitle(userId, title) {
