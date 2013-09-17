@@ -22,7 +22,7 @@ limitations under the License.
           <input type="checkbox" name="id[${index++}]" value="${search.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
-              <a class="persist" href="${request.contextPath + '/search?' + search.query.queryString}" title="${truncateHovercardTitle(title: search.label, length: 350)}">
+              <a class="persist" href="${request.contextPath + '/search?' + (search.query.queryString).encodeAsHTML()}" title="${truncateHovercardTitle(title: search.label, length: 350)}">
                 <g:truncateItemTitle title="${search.label}" length="${100}"/>
               </a>
             </h2>
