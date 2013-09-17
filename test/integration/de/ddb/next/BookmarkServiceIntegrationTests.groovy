@@ -308,4 +308,16 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def otherFavorite = bookmarksService.findFavoriteById(otherFavoriteId)
         assert otherFavorite.folders.size() == 0
     }
+
+    void shouldDeleteFolder() {
+        // TODO create a folder
+        def folderId = createNewFolder()
+        def aNewFolder = bookmarksService.findFolderById(folderId)
+        assert aNewFolder.folderId == folderId
+        // TODO delete it
+        bookmarksService.deleteFolder(folderId)
+        // TODO fetch it, assert it is not there.
+        def folder = bookmarksService.findFolderById(folderId)
+        assert folder == null
+    }
 }

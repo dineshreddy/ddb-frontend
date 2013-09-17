@@ -492,6 +492,12 @@ class BookmarksService {
                     it._source.isPublic
                     )
             }
+
+            /*
+            response.'404' = {
+                null
+            }
+            */
         }
     }
 
@@ -549,6 +555,16 @@ class BookmarksService {
 
             response.success = { resp, json ->
               refresh()
+            }
+        }
+    }
+
+    def deleteFolder(folderId) {
+        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder/${folderId}")
+
+        http.request(Method.DELETE, ContentType.JSON) { req ->
+            response.success = { resp, json ->
+                log.info "Is folder with the ID ${folderId} deleted(true/false)? ${json.ok}"
             }
         }
     }
