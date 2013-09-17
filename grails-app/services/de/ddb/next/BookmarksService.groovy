@@ -310,7 +310,7 @@ class BookmarksService {
                             it._source.item,
                             new Date(it._source.createdAt.toLong()),
                             it._source.type as Type,
-                            it._source.folder)
+                            [it._source.folder])
                     all.add(bookmark)
                 }
                 all
