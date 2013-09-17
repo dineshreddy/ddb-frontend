@@ -44,7 +44,7 @@ class SearchQuery {
 
     @ToString(includeNames=true)
 
-    class QueryTerm {
+    class QueryTerm implements Serializable {
         final String key
         final String value
 
