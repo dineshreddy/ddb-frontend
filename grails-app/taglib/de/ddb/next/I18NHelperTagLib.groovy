@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.support.RequestContextUtils
 
 /**
  * Taglib for I18N issues.
@@ -76,6 +76,7 @@ class I18NHelperTagLib {
         if(isLocale){
             out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
         }else{
+            fixParams(attrs)
             def linkUrl = createLink("url": attrs.params)
             def cleanedParams = attrs.params.clone()
             def directory = attrs.params?.dir
@@ -98,7 +99,7 @@ class I18NHelperTagLib {
             def paramString = "?"
             cleanedParams.each {
                 if (it.value instanceof String[]) {
-                    it.value.each { a -> 
+                    it.value.each { a ->
                         paramString += it.key + "=" + a + "&"
                     }
                 }
@@ -110,6 +111,18 @@ class I18NHelperTagLib {
                 paramString = paramString.substring(0, paramString.length()-1)
             }
             out << "<a href=\""+(linkUrl+paramString).encodeAsHTML()+"\" >"+body()+"</a>"
+        }
+    }
+
+    /**
+     * Workaround for http://jira.grails.org/browse/GRAILS-9742
+     */
+    private def fixParams(attrs) {
+        try {
+            if (attrs?.params?.action) {
+                attrs.params.action = attrs.params.action.GET
+            }
+        } catch (MissingPropertyException e) {
         }
     }
 }

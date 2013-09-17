@@ -135,6 +135,11 @@ class UrlMappings {
             action="favorites"
         }
 
+        "/user/savedsearches" {
+            controller="user"
+            action=[GET: "getSavedSearches", POST: "sendSavedSearches", DELETE: "deleteSavedSearches"]
+        }
+
         "/user/confirm/$id/$token" {
             controller="user"
             action="confirm"

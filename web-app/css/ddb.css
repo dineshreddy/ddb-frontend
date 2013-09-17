@@ -433,6 +433,13 @@ header .login-wrapper,.header .login-wrapper {
 
 header .login-username,.header .login-username {
   display: inline-block;
+  max-width: 8em;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+header .status-bar, .header .status-bar {
+  white-space: nowrap;
 }
 
 header .login-dropdown,.header .login-dropdown {
@@ -441,6 +448,7 @@ header .login-dropdown,.header .login-dropdown {
   height: 15px;
   background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
   cursor: pointer;
+  vertical-align: top;
 }
 
 header .header-spacer,.header .header-spacer {
@@ -578,6 +586,7 @@ header .header-spacer,.header .header-spacer {
   position: relative;
   display: inline-block;
   cursor: pointer;
+  vertical-align: top;
 }
 
 .language-wrapper .nopointer {
@@ -1372,6 +1381,10 @@ select {
   position: absolute;
   top: -9px;
   background-color: #fff;
+}
+
+.keep-in-front {
+  z-index: 99;
 }
 
 /* responsive genaral rules */

@@ -76,7 +76,7 @@ public static List<String> validatorPassword(String password, String cpassword) 
 public static List<String> validatorRegistration(String username, String firstname, String lastname, String email, String password, String cpassword) {
     List<String> errors = []
     if (StringUtils.isBlank(username) || username.length() < 2) {
-        errors.add("ddbnext.Error_Valid_Username")
+        errors.add("ddbnext.Error_Username_Empty")
     }
     if (!validatorEmail(email)) {
         errors.add("ddbnext.Error_Valid_Email_Address")
