@@ -321,5 +321,16 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert folder == null
     }
 
-    @Test void shouldDeleteAllUserFavorites() { assert false }
+    @Test void shouldDeleteAllUserFavorites() {
+        def userId = UUID.randomUUID() as String
+
+        def favoriteId = bookmarksService.addFavorite(userId, UUID.randomUUID() as String, Type.CULTURAL_ITEM)
+        def otherFavId = bookmarksService.addFavorite(userId, UUID.randomUUID() as String, Type.CULTURAL_ITEM)
+
+        bookmarksService.deleteAllUserFavorites(userId)
+
+        def userFavs = bookmarksService.findFavoritesByUserId(userId)
+
+        assert userFavs.size() == 0
+    }
 }
