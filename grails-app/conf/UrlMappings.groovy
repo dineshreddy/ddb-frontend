@@ -80,6 +80,26 @@ class UrlMappings {
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
         }
 
+        "/apis/savedsearches/" {
+            controller="savedsearches"
+            action="getSavedSearches"
+        }
+
+        "/apis/savedsearches/_delete" {
+            controller="savedsearches"
+            action=[POST: "deleteSavedSearches"]
+        }
+
+        "/apis/savedsearches/_get" {
+            controller="savedsearches"
+            action=[POST: "filterSavedSearches"]
+        }
+
+        "/apis/savedsearches/$id" {
+            controller="savedsearches"
+            action=[GET: "getSavedSearch", POST: "addSavedSearch", DELETE: "deleteSavedSearch"]
+        }
+
         "/about-us/institutions" {
             controller="institution"
             action="show"
