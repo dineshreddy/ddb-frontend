@@ -28,8 +28,8 @@ limitations under the License.
       <g:message code="ddbnext.Savedsearches_Of" args="${[userName]}" default="ddbnext.Savedsearches_Of"/>
       - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/>
     </title>
-    <meta name="page" content="savedsearches"/>
-    <meta name="layout" content="main"/>
+    <meta name="page" content="savedsearches"></meta>
+    <meta name="layout" content="main"></meta>
   </head>
   <body>
     <div class="favorites-results-container">
@@ -65,7 +65,7 @@ limitations under the License.
             <li class="bookmarks-list bt bb bl br">
               <span class="h3"><g:message code="ddbnext.All_Savedsearches"/></span>
               <span class="bookmarks-list-number"> ${numberOfResults}</span>
-              <a class="bookmarks-list-envelope" id="sendsavedsearches">
+              <a class="bookmarks-list-envelope" id="sendSavedSearches">
                 <i class="icon-envelope" title="<g:message code='ddbnext.Send_Savedsearches'/>"></i>
               </a>
             </li>
@@ -94,7 +94,7 @@ limitations under the License.
             <div class="favorites-results-controls">
               <div class="deleteContainer row">
                 <div class="deleteBtn span1">
-                  <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
+                  <g:form id="deleteSavedSearches" method="POST" name="deleteSavedSearches" mapping="delSavedSearches">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Savedsearches"/>">
                       <span><g:message code="ddbnext.Delete"/></span>
                     </button>
@@ -140,15 +140,15 @@ limitations under the License.
       </div>
     </div>
 
-    <div id="savedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-         aria-hidden="true">
+    <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+         aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code='ddbnext.Close'/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3>
+        <h3 id="sendSavedSearchesLabel">
           <g:message code="ddbnext.Send_Savedsearches"/>
         </h3>
       </div>
-      <form method="POST" id="sendSavedSearches">
+      <form method="POST">
         <div class="modal-body">
           <fieldset>
             <input placeholder="<g:message code='ddbnext.send_favorites_email'/>" type="email" name="email" required>
@@ -168,47 +168,26 @@ limitations under the License.
       </form>
     </div>
 
-  <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1"
-    role="dialog" aria-labelledby="msDeleteFavoritesLabel"
-    aria-hidden="true">
-    <div class="modal-header">
-      <span title="<g:message code="ddbnext.Close" />"
-        data-dismiss="modal" class="fancybox-toolbar-close"></span>
-      <h3 id="msDeleteFavoritesLabel">
-        <g:message code="ddbnext.delete_favorites" />
-      </h3>
+    <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+         aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3 id="deleteSavedSearchesLabel">
+          <g:message code="ddbnext.delete_confirmation"/>
+        </h3>
+      </div>
+      <div class="modal-body">
+        <g:message code="ddbnext.Delete_Savedsearches_Dialog"/>
+        <span id="totalNrSelectedObjects"></span>
+      </div>
+      <div class="modal-footer">
+        <button class="submit" id="id-confirm">
+          <g:message code="ddbnext.Yes"/>
+        </button>
+        <button class="submit" data-dismiss="modal">
+          <g:message code="ddbnext.No"/>
+        </button>
+      </div>
     </div>
-    <div class="modal-body">
-      <p>
-        <g:message code="ddbnext.delete_favorites_succ" />
-      </p>
-    </div>
-    <div class="modal-footer">
-      <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message
-          code="ddbnext.Close" /></a>
-    </div>
-  </div>
-
-  <div class="modal hide fade" id="favoritesDeleteConfirmDialog">
-    <div class="modal-header">
-      <span title="<g:message code="ddbnext.Close" />"
-        data-dismiss="modal" class="fancybox-toolbar-close"></span>
-      <h3>
-        <g:message code="ddbnext.delete_confirmation" />
-      </h3>
-    </div>
-    <div class="modal-body">
-      <g:message code="ddbnext.delete_favorites_dialog" />
-      <span id="totalNrSelectedObjects"></span>
-    </div>
-    <div class="modal-footer">
-      <button class="submit" id="id-confirm">
-        <g:message code="ddbnext.Yes" />
-      </button>
-      <button class="submit" data-dismiss="modal">
-        <g:message code="ddbnext.No" />
-      </button>
-    </div>
-  </div>
-</body>
+  </body>
 </html>

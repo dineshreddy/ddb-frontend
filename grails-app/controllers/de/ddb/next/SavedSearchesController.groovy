@@ -23,14 +23,14 @@ import de.ddb.next.beans.User
 
 class SavedSearchesController {
 
-    def bookmarksService
+    def savedSearchService
 
     def addSavedSearch() {
-        log.info "addSavedSearch " + params.id
+        log.info "addSavedSearch " + params.query + ", " + params.title
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.addFavorite(user.getId(), params.id)) {
+            if (savedSearchService.saveSearch(user.getId(), params.query, params.title)) {
                 result = response.SC_CREATED
             }
         }
@@ -41,23 +41,8 @@ class SavedSearchesController {
         render(status: result)
     }
 
-    def deleteSavedSearch() {
-        log.info "deleteSavedSearch " + params.id
-        def result = response.SC_NOT_FOUND
-        def User user = getUserFromSession()
-        if (user != null) {
-            if (bookmarksService.deleteFavorites(user.getId(), [params.ids])) {
-                result = response.SC_NO_CONTENT
-            }
-        }
-        else {
-            result = response.SC_UNAUTHORIZED
-        }
-        log.info "deleteSavedSearch returns " + result
-        render(status: result)
-    }
-
     def deleteSavedSearches() {
+        println "XXX"
         log.info "deleteSavedSearches " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
@@ -65,7 +50,7 @@ class SavedSearchesController {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
-            else if (bookmarksService.deleteFavorites(user.getId(), request.JSON)) {
+            else if (savedSearchService.deleteSavedSearch(user.getId(), request.JSON)) {
                 result = response.SC_OK
             }
         }
@@ -76,41 +61,11 @@ class SavedSearchesController {
         render(status: result)
     }
 
-    def filterSavedSearches() {
-        log.info "filterSavedSearches " + request.JSON
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findFavoritesByItemIds(user.getId(), request.JSON)
-            log.info "filterSavedSearches returns " + result
-            render(result as JSON)
-        }
-        else {
-            log.info "filterSavedSearches returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
-        }
-    }
-
-    def getSavedSearch() {
-        log.info "getSavedSearch " + params.id
-        def result = response.SC_NOT_FOUND
-        def User user = getUserFromSession()
-        if (user != null) {
-            def bookmark = bookmarksService.findFavoriteByItemId(user.getId(), params.id)
-            log.info "getSavedSearch returns " + bookmark
-            render(bookmark as JSON)
-        }
-        else {
-            result = response.SC_UNAUTHORIZED
-        }
-        log.info "getSavedSearch returns " + result
-        render(status: result)
-    }
-
     def getSavedSearches() {
         log.info "getSavedSearches"
         def User user = getUserFromSession()
         if (user != null) {
-            def result = bookmarksService.findFavoritesByUserId(user.getId())
+            def result = savedSearchService.findSavedSearchByUserId(user.getId())
             log.info "getSavedSearches returns " + result
             render(result as JSON)
         }

@@ -237,10 +237,6 @@ class UserController {
 
     /* end favorites methods */
 
-    def deleteSavedSearches() {
-        println "XXX deleteSavedSearches"
-    }
-
     def getSavedSearches() {
         if (isUserLoggedIn()) {
             def savedSearches = savedSearchesService.getSavedSearches()
