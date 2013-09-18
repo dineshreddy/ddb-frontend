@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:truncateItemTitle title="${title}" length="${binaryList?271:351}"></g:truncateItemTitle> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
@@ -26,7 +26,7 @@ limitations under the License.
   <g:render template="institution" />
   <div class="row item-detail item-content">
     <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
-      <h2>${title}</h2>
+      <h2><g:truncateItemTitle title="${title}" length="${binaryList?271:351}"></g:truncateItemTitle></h2>
       <g:render template="fields" />
       <g:render template="rights" />
       <g:render template="license" />
