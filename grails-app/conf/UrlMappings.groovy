@@ -60,7 +60,7 @@ class UrlMappings {
             action="findById"
         }
 
-        "/apis/favorites/" {
+        "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
         }
@@ -80,24 +80,19 @@ class UrlMappings {
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
         }
 
-        "/apis/savedsearches/" {
+        "/apis/savedsearches" {
             controller="savedsearches"
             action="getSavedSearches"
         }
 
-        "/apis/savedsearches/_delete" {
-            controller="savedsearches"
-            action=[POST: "deleteSavedSearches"]
-        }
-
-        "/apis/savedsearches/_get" {
-            controller="savedsearches"
-            action=[POST: "filterSavedSearches"]
-        }
-
         "/apis/savedsearches/$id" {
             controller="savedsearches"
-            action=[GET: "getSavedSearch", POST: "addSavedSearch", DELETE: "deleteSavedSearch"]
+            action=[POST: "addSavedSearch"]
+        }
+
+        name delSavedSearches: "/apis/savedsearches/_delete" {
+            controller="savedsearches"
+            action=[POST: "deleteSavedSearches"]
         }
 
         "/about-us/institutions" {
@@ -157,7 +152,7 @@ class UrlMappings {
 
         "/user/savedsearches" {
             controller="user"
-            action=[GET: "getSavedSearches", POST: "sendSavedSearches", DELETE: "deleteSavedSearches"]
+            action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
         }
 
         "/user/confirm/$id/$token" {

@@ -17,28 +17,16 @@ package de.ddb.next.beans
 
 import groovy.transform.ToString
 
-class SearchQuery {
-    final String queryString
-    final Collection<String> queryMap
+@ToString(includeNames=true)
 
-    public SearchQuery(String queryString) {
-        this.queryString = queryString
-        this.queryMap = queryString.split('&').collect {new SearchQueryTerm(it)}
-    }
+class SearchQueryTerm {
+    final String key
+    final String value
 
-    /**
-     * Return the value of the parameter "query"
-     *
-     * @return value for "query"
-     */
-    public String getQuery() {
-        def result
+    public SearchQueryTerm(String termString) {
+        def termParts = termString.split('=')
 
-        queryMap.each {
-            if (it.key == "query") {
-                result = it.value
-            }
-        }
-        return result
+        this.key = termParts[0]
+        this.value = termParts[1]? URLDecoder.decode(termParts[1], "UTF-8") : null
     }
 }

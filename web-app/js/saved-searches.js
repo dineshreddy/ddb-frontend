@@ -24,9 +24,9 @@ $(function() {
       $(this).blur();
     });
 
-    $("#sendsavedsearches").click(function(event) {
+    $("#sendSavedSearches").click(function(event) {
       event.preventDefault();
-      $('#savedSearchesModal').modal({remote: $(this).attr("href")});
+      $('#sendSavedSearchesModal').modal({remote: $(this).attr("href")});
     });
 
     $('.page-filter select').change(function() {
@@ -60,6 +60,41 @@ $(function() {
 
         window.location.href = addParamToUrl(jsContextPath + "/user/savedsearches/", paramsArray, null, paramsArray);
       }
+    });
+
+    $('#deleteSavedSearches').submit(function() {
+      var selected = new Array();
+      $('#slaves input:checked').each(function() {
+        selected.push($(this).attr('value'));
+      });
+      $('#totalNrSelectedObjects').html(selected.length);
+      $('#deleteSavedSearchesModal').modal('show');
+      $('#id-confirm').click(function() {
+        var selected = new Array();
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('value'));
+        });
+        var body = {
+            ids : selected
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/savedsearches/_delete",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+          console.log("sent " + JSON.stringify(body));
+            window.setTimeout('location.reload()', 500);
+          }
+        });
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('checked', false));
+        });
+        $('#deleteSavedSearchesModal').modal('hide');
+      });
+      return false;
     });
   }
 });
