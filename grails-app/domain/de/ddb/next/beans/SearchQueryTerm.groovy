@@ -20,13 +20,17 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 
 class SearchQueryTerm {
-    final String key
-    final String value
+    final String name
+    final Collection<String> values = []
 
     public SearchQueryTerm(String termString) {
         def termParts = termString.split('=')
 
-        this.key = termParts[0]
-        this.value = termParts[1]? URLDecoder.decode(termParts[1], "UTF-8") : null
+        if (termParts.size() > 0) {
+            this.name = termParts[0]
+            if (termParts.size() > 1) {
+                this.values.add(termParts[1])
+            }
+        }
     }
 }

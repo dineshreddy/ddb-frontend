@@ -22,24 +22,33 @@ limitations under the License.
           <input type="checkbox" name="id[${index++}]" value="${search.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
-              <a class="persist" href="${request.contextPath + '/search?' + (search.query.queryString).encodeAsHTML()}" title="${truncateHovercardTitle(title: search.label, length: 350)}">
+              <a class="persist" href="${request.contextPath + '/search?' + (search.queryString).encodeAsHTML()}"
+                 title="${truncateHovercardTitle(title: search.label, length: 350)}">
                 <g:truncateItemTitle title="${search.label}" length="${100}"/>
               </a>
             </h2>
             <div class="subtitle">
               <g:set var="facetValues" value=""/>
-              <g:each var="mapEntry" in="${search.query.queryMap}">
-                <g:if test="${mapEntry.key.startsWith("facetValues")}">
-                  <g:set var="index" value="${mapEntry.value.indexOf('=')}"/>
-                  <g:set var="facetName" value="${mapEntry.value.substring(0, index)}"/>
-                  <g:set var="rawFacetValue" value="${mapEntry.value.substring(index + 1)}"/>
-                  <g:set var="translatedFacetKey" value="ddbnext.type_fct_${rawFacetValue}"/>
-                  <g:set var="translatedFacetValue" value="${message(code: translatedFacetKey)}"/>
-                  <g:set var="facetValue" value="${translatedFacetValue != translatedFacetKey ? translatedFacetValue : rawFacetValue}"/>
-                  <g:set var="facetValues" value="${facetValues + '; <span class=\"bold\">' + message(code: 'ddbnext.facet_' + facetName) + ':</span> ' + facetValue}"/>
+              <g:each var="mapEntry" in="${search.queryMap}">
+                <g:if test="${mapEntry.key == "facetValues[]"}">
+                  <g:each var="searchQueryTerm" in="${mapEntry.value}">
+                    <g:set var="facetName" value="${searchQueryTerm.name}"/>
+                    <g:set var="facetValue" value=""/>
+                    <g:if test="${searchQueryTerm.values.size() > 0}">
+                      <g:each var="rawFacetValue" in="${searchQueryTerm.values}">
+                        <g:set var="translatedFacetKey" value="ddbnext.${facetName}_${rawFacetValue}"/>
+                        <g:set var="translatedFacetValue" value="${message(code: translatedFacetKey)}"/>
+                        <g:set var="facetValue" value="${facetValue + (facetValue != "" ? ", " : "") +
+                                    (translatedFacetValue != translatedFacetKey ? translatedFacetValue :
+                                    rawFacetValue)}"/>
+                      </g:each>
+                      <g:set var="facetValues" value="${facetValues + '; <span class=\"bold\">' +
+                                  message(code: 'ddbnext.facet_' + facetName) + ':</span> ' + facetValue}"/>
+                    </g:if>
+                  </g:each>
                 </g:if>
               </g:each>
-              <span class="bold"><g:message code="ddbnext.Search_term"/>:</span> ${search.query.query}${facetValues}
+              <span class="bold"><g:message code="ddbnext.Search_term"/>:</span> ${search.query}${facetValues}
             </div>
           </div>
         </div>

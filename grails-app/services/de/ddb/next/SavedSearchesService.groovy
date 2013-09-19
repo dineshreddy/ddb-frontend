@@ -1,31 +1,40 @@
 package de.ddb.next
 
 import de.ddb.next.beans.SavedSearch
-import de.ddb.next.beans.SearchQuery
 import de.ddb.next.beans.User
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
 
 class SavedSearchesService {
     def transactional = false
-    def bookmarksService
+    def savedSearchService
     def sessionService
     def grailsApplication
 
+    def boolean addSavedSearch(String userId, String title, String query) {
+        return savedSearchService.saveSearch(userId, query, title)
+    }
+
+    def boolean deleteSavedSearches(String userId, ids) {
+        def result = false
+
+        if(ids?.size() > 0) {
+            result = savedSearchService.deleteSavedSearch(userId, ids)
+        }
+        return result
+    }
+
     /**
-     * Get all saved searches from bookmark service.
+     * Get all saved searches from saved search service.
      *
      * @return list of SavedSearch objects
      */
-    def Collection<SavedSearch> getSavedSearches() {
+    def Collection<SavedSearch> getSavedSearches(String userId) {
         def result = []
-        def User user = getUserFromSession()
 
-        if (user != null) {
-            // def savedSearches = bookmarksService.findFavoritesByUserId(user.getId()) as JSON
-            for (int index = 1; index <= 30; index++) {
-                result += new SavedSearch(String.valueOf(index), "goethe " + index, new SearchQuery("query=goethe+weimar&facetValues%5B%5D=type_fct%3Dmediatype_002&facetValues%5B%5D=affiliate_fct%3DRietschel%2C+Ernst&offset=0"), new Date())
-            }
+        // def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
+        for (int index = 1; index <= 30; index++) {
+            result += new SavedSearch(String.valueOf(index), "goethe " + index, "query=goethe+weimar&facetValues%5B%5D=affiliate_fct%3DGoethe%2C+Johann+Wolfgang+von&facetValues%5B%5D=affiliate_fct%3DGerig%2C+Uwe+(Fotograf)&facetValues%5B%5D=type_fct%3Dmediatype_002&facetValues%5B%5D=keywords_fct%3DFotos&facetValues%5B%5D=time_fct%3Dtime_62100&facetValues%5B%5D=time_fct%3Dtime_62110&offset=10&rows=10", new Date())
         }
         return result
     }
@@ -47,10 +56,6 @@ class SavedSearchesService {
             result = savedSearches[offset..endIndex]
         }
         return result
-    }
-
-    def private User getUserFromSession() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
     def getPaginationUrls(int offset, int rows, String order, int totalPages) {
