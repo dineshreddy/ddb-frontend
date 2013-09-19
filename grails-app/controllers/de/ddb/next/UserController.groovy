@@ -237,9 +237,12 @@ class UserController {
 
     /* end favorites methods */
 
+    /* begin saved searches methods */
+
     def getSavedSearches() {
         if (isUserLoggedIn()) {
-            def savedSearches = savedSearchesService.getSavedSearches()
+            def user = getUserFromSession()
+            def savedSearches = savedSearchesService.getSavedSearches(user.getId())
             def offset = params.offset ? params.offset.toInteger() : 0
             def rows = params.rows ? params.rows.toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
@@ -257,7 +260,7 @@ class UserController {
                 rows: rows,
                 totalPages: totalPages,
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
-                userName: session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+                userName: user.getFirstnameAndLastnameOrNickname()
             ])
         }
         else {
@@ -267,6 +270,7 @@ class UserController {
 
     def sendSavedSearches() {
         if (isUserLoggedIn()) {
+            def user = getUserFromSession()
             def List emails = []
 
             if (params.email.contains(',')) {
@@ -280,11 +284,11 @@ class UserController {
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo getUserFromSession().getEmail()
                     subject g.message(code: "ddbnext.Savedsearches_Of", args: [
-                        getUserFromSession().getFirstnameAndLastnameOrNickname()
+                        user.getFirstnameAndLastnameOrNickname()
                     ])
                     body(view: "_savedSearchesEmailBody", model: [
-                        results: savedSearchesService.getSavedSearches(),
-                        userName: getUserFromSession().getFirstnameAndLastnameOrNickname()
+                        results: savedSearchesService.getSavedSearches(user.getId()),
+                        userName: user.getFirstnameAndLastnameOrNickname()
                     ])
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
@@ -297,6 +301,8 @@ class UserController {
             redirect(controller: "user", action: "index")
         }
     }
+
+    /* end saved searches methods */
 
     def registration() {
         render(view: "registration", model: [])

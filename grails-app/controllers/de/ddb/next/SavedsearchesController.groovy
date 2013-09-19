@@ -16,21 +16,18 @@
 package de.ddb.next
 
 import grails.converters.JSON
-
 import javax.servlet.http.HttpSession
-
 import de.ddb.next.beans.User
 
-class SavedSearchesController {
-
-    def savedSearchService
+class SavedsearchesController {
+    def savedSearchesService
 
     def addSavedSearch() {
         log.info "addSavedSearch " + params.query + ", " + params.title
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (savedSearchService.saveSearch(user.getId(), params.query, params.title)) {
+            if (savedSearchesService.saveSearch(user.getId(), params.title, params.query)) {
                 result = response.SC_CREATED
             }
         }
@@ -42,7 +39,6 @@ class SavedSearchesController {
     }
 
     def deleteSavedSearches() {
-        println "XXX"
         log.info "deleteSavedSearches " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
@@ -50,7 +46,7 @@ class SavedSearchesController {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
-            else if (savedSearchService.deleteSavedSearch(user.getId(), request.JSON)) {
+            else if (savedSearchesService.deleteSavedSearches(user.getId(), request.JSON)) {
                 result = response.SC_OK
             }
         }
@@ -65,7 +61,7 @@ class SavedSearchesController {
         log.info "getSavedSearches"
         def User user = getUserFromSession()
         if (user != null) {
-            def result = savedSearchService.findSavedSearchByUserId(user.getId())
+            def result = savedSearchesService.getSavedSearches(user.getId())
             log.info "getSavedSearches returns " + result
             render(result as JSON)
         }

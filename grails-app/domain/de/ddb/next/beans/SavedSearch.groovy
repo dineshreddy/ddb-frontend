@@ -20,15 +20,96 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 
 class SavedSearch {
-    final String id
-    final String label
-    final SearchQuery query
-    final Date creationDate
+    String id
+    String label
+    String queryString
+    Date creationDate
+    final Map<String, Collection<SearchQueryTerm>> queryMap
 
-    public SavedSearch(String id, String label, SearchQuery query, Date creationDate) {
+    public SavedSearch(String id, String label, String queryString, Date creationDate) {
         this.id = id
         this.label = label
-        this.query = query
+        this.queryString = reviseQueryString(queryString)
         this.creationDate = creationDate
+        queryMap = toMap(queryString)
+    }
+
+    /**
+     * Return the query string as collection
+     *
+     * @return query string as collection
+     */
+    public def String getQuery() {
+        def result
+
+        queryMap.each {
+            if (it.key == "query") {
+                result = it.value[0].name
+            }
+        }
+        return result
+    }
+
+    /**
+     * Remove paging attributes from the given query string.
+     *
+     * @return query string without paging attributes
+     */
+    private def String reviseQueryString(String queryString) {
+        def result = ""
+        def queryArray = queryString.split('&').findAll {!(it.startsWith("offset=") || it.startsWith("rows="))}
+
+        queryArray.each {
+            if (result.length() > 0) {
+                result += '&'
+            }
+            result += it
+        }
+        return result
+    }
+
+    /**
+     * parse query=something&facetValues[]=affiliate_fct:goethe&facetValues[]=affiliate_fct:gerig&facetValues[]=type_fct:mediatype_002
+     */
+    private def Map<String, SearchQueryTerm> toMap(String queryString) {
+        def result = [:]
+
+        // add empty list elements to get the correct order of the facet values
+        result.put("facetValues[]", [
+            new SearchQueryTerm("time_fct"),
+            new SearchQueryTerm("place_fct"),
+            new SearchQueryTerm("affiliate_fct"),
+            new SearchQueryTerm("keywords_fct"),
+            new SearchQueryTerm("language_fct"),
+            new SearchQueryTerm("type_fct"),
+            new SearchQueryTerm("sector_fct"),
+            new SearchQueryTerm("provider_fct")
+        ])
+
+        queryString.split('&').each {
+            def parameter = it.split('=')
+            def parameterName = URLDecoder.decode(parameter[0], "UTF-8")
+            def parameterValue = URLDecoder.decode(parameter[1], "UTF-8")
+            def term = new SearchQueryTerm(parameterValue)
+            def oldTerms = result.get(parameterName)
+
+            if (oldTerms) {
+                def termFound = false
+
+                oldTerms.each {
+                    if (term.name == it.name) {
+                        it.values.add(term.values[0])
+                        termFound = true
+                    }
+                }
+                if (!termFound) {
+                    oldTerms.add(term)
+                }
+            }
+            else {
+                result.put(parameterName, [term])
+            }
+        }
+        return result
     }
 }
