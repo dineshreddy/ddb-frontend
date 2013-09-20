@@ -13,18 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div style="margin-top:20px; margin-bottom:20px">
-  <g:message code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}"/>
-  <br/>
+<div style="margin-top: 20px; margin-bottom: 20px">
+  <g:message code="ddbnext.Send_Savedsearches_Email_Body_Pre"
+    args="${[userName]}" />
+  <br />
 </div>
-<table border="1" width="100%" style="margin-bottom:20px; border-spacing:0">
+<table border="1" width="100%"
+  style="margin-bottom: 20px; border-spacing: 0">
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf"/></th>
+        <th style="margin-top: 20px"><g:message
+            code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th style="margin-top:20px"><g:message code="ddbnext.Entity_Objects"/></th>
+        <th style="margin-top: 20px"><g:message
+            code="ddbnext.Entity_Objects" /></th>
       </g:else>
     </tr>
   </thead>
@@ -33,34 +37,17 @@ limitations under the License.
       <tr>
         <td height="130px" style="padding: 10px;">
           <h2>
-            <a style="color:#a5003b" href="${grailsApplication.config.ddb.favorites.basedomain + '/search?' +
+            <a style="color: #a5003b"
+              href="${grailsApplication.config.ddb.favorites.basedomain + '/search?' +
                (search.queryString).encodeAsHTML()}"
-               title="${truncateHovercardTitle(title: search.label, length: 350)}">
-              <g:truncateItemTitle title="${search.label}" length="${100}"/>
+              title="${truncateHovercardTitle(title: search.label, length: 350)}">
+              <g:truncateItemTitle title="${search.label}"
+                length="${100}" />
             </a>
           </h2>
           <div>
-            <g:set var="facetValues" value=""/>
-            <g:each var="mapEntry" in="${search.queryMap}">
-              <g:if test="${mapEntry.key == "facetValues[]"}">
-                <g:each var="searchQueryTerm" in="${mapEntry.value}">
-                  <g:set var="facetName" value="${searchQueryTerm.name}"/>
-                  <g:set var="facetValue" value=""/>
-                  <g:if test="${searchQueryTerm.values.size() > 0}">
-                    <g:each var="rawFacetValue" in="${searchQueryTerm.values}">
-                      <g:set var="translatedFacetKey" value="ddbnext.${facetName}_${rawFacetValue}"/>
-                      <g:set var="translatedFacetValue" value="${message(code: translatedFacetKey)}"/>
-                      <g:set var="facetValue" value="${facetValue + (facetValue != "" ? ", " : "") +
-                                  (translatedFacetValue != translatedFacetKey ? translatedFacetValue :
-                                  rawFacetValue)}"/>
-                    </g:each>
-                    <g:set var="facetValues" value="${facetValues + '; <span class=\"bold\">' +
-                                message(code: 'ddbnext.facet_' + facetName) + ':</span> ' + facetValue}"/>
-                  </g:if>
-                </g:each>
-              </g:if>
-            </g:each>
-            <span style="font-weight: bold"><g:message code="ddbnext.Search_term"/>:</span> ${search.query}${facetValues}
+            <g:render template="/user/savedSearchEntry"
+              model="['search':search]" />
           </div>
         </td>
       </tr>
