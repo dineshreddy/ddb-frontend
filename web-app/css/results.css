@@ -170,6 +170,10 @@
   margin-top: -3px;
 }
 
+.clear-filters {
+  margin-bottom: 12px;
+}
+
 .results-paginator-view {
   background: #efebe8;
   padding: 0px 12px 0px 12px;
@@ -829,4 +833,29 @@ input[type="checkbox"],input[type="radio"] {
 font-family: KarbidWeb, Calibri, Arial, sans-serif;
 font-size: 1.1em;
 color: #a5003b;
+}
+
+.add-to-saved-searches {
+  width: 19px;
+  height: 19px;
+  background: url("../images/icons/search_actions.png") no-repeat -3px -140px;
+  cursor: pointer;
+  padding-left: 3px;
+  float: left;
+}
+
+.added-to-saved-searches {
+  width: 19px;
+  height: 19px;
+  background: url("../images/icons/search_actions.png") no-repeat -3px -160px;
+  padding-left: 3px;
+  float: left;
+}
+
+#addToSavedSearchesAnchor {
+  cursor: pointer;
+}
+
+#addToSavedSearchesTitle {
+  width: 100%;
 }

@@ -85,7 +85,7 @@ limitations under the License.
                     <g:link controller="user" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                   </li>
                   <li class="">
-                    <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Saved_Searches" /></g:link>
+                    <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Searches" /></g:link>
                   </li>
                   <li class="">
                     <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
@@ -224,7 +224,7 @@ limitations under the License.
                       <li
                         class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</g:isMappingActive>">
                         <g:link controller="user" action="savedsearches">
-                          <g:message code="ddbnext.Saved_Searches" />
+                          <g:message code="ddbnext.Searches" />
                         </g:link>
                       </li>
                       <li

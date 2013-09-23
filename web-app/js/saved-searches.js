@@ -85,8 +85,7 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-          console.log("sent " + JSON.stringify(body));
-            window.setTimeout('location.reload()', 500);
+            window.setTimeout('window.location.reload()', 500);
           }
         });
         $('#slaves input:checked').each(function() {

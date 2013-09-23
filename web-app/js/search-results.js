@@ -52,6 +52,20 @@ $(function() {
         searchResultsInitializer();
       });
     }
+
+    $.ajax({
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      url: jsContextPath + "/apis/savedsearches/_get",
+      data: JSON.stringify({query: window.location.search.substring(1)})
+    }).done(function() {
+      // TODO deactivate saved searches button
+    });
+    
+    $('#addToSavedSearches').click(function() {
+      addToSavedSearches();
+    });
   }
 
 });
@@ -184,6 +198,50 @@ $.extend(HovercardInfoItem.prototype,{
     });
   }
 });
+
+function addToSavedSearches() {
+  $.urlParam = function(name) {
+    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results == null) {
+       return null;
+    }
+    else {
+       return results[1] || "";
+    }
+  }
+  $.truncateTitle = function(string) {
+    var result = "";
+    var words = string.split(/\s+/);
+    for (var index = 0; index < 3 && index < words.length; index++) {
+      if (result.length > 0) {
+        result += " ";
+      }
+      result += words[index];
+    }   
+    return result;
+  }
+  var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
+  // take only the first 3 words as title
+  $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
+  $("#addToSavedSearchesModal").modal("show");
+  $("#addToSavedSearchesConfirm").click(function(e) {
+    $("#addToSavedSearchesModal").modal("hide");
+    $.ajax({
+      type: "PUT",
+      contentType: "application/json",
+      dataType: "json",
+      url: jsContextPath + "/apis/savedsearches",
+      data: JSON.stringify({query: window.location.search.substring(1), title: $("#addToSavedSearchesTitle").val()})
+    }).done(function() {
+      $("#addToSavedSearches").unbind("click");
+      var div = $(".add-to-saved-searches");
+      div.removeClass("add-to-saved-searches");
+      div.addClass("added-to-saved-searches");
+      $("#addToSavedSearchesAnchor").addClass("off");
+      $("#addToSavedSearchesSpan").removeClass("off");
+    });
+  });
+}
 
 function searchResultsInitializer(){
   $('.results-paginator-options').removeClass('off');

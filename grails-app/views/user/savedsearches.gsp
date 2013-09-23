@@ -124,7 +124,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <g:render template="/user/savedsearch" bean="${it}"/>
+              <g:render template="savedsearch" bean="${it}"/>
             </div>
           </g:if>
           <g:else>

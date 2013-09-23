@@ -29,7 +29,7 @@ class SavedSearch {
     public SavedSearch(String id, String label, String queryString, Date creationDate) {
         this.id = id
         this.label = label
-        this.queryString = reviseQueryString(queryString)
+        this.queryString = queryString
         this.creationDate = creationDate
         queryMap = toMap(queryString)
     }
@@ -46,24 +46,6 @@ class SavedSearch {
             if (it.key == "query") {
                 result = it.value[0].name
             }
-        }
-        return result
-    }
-
-    /**
-     * Remove paging attributes from the given query string.
-     *
-     * @return query string without paging attributes
-     */
-    private def String reviseQueryString(String queryString) {
-        def result = ""
-        def queryArray = queryString.split('&').findAll {!(it.startsWith("offset=") || it.startsWith("rows="))}
-
-        queryArray.each {
-            if (result.length() > 0) {
-                result += '&'
-            }
-            result += it
         }
         return result
     }
@@ -89,25 +71,28 @@ class SavedSearch {
         queryString.split('&').each {
             def parameter = it.split('=')
             def parameterName = URLDecoder.decode(parameter[0], "UTF-8")
-            def parameterValue = URLDecoder.decode(parameter[1], "UTF-8")
-            def term = new SearchQueryTerm(parameterValue)
-            def oldTerms = result.get(parameterName)
 
-            if (oldTerms) {
-                def termFound = false
+            if (parameter.size() > 1) {
+                def parameterValue = URLDecoder.decode(parameter[1], "UTF-8")
+                def term = new SearchQueryTerm(parameterValue)
+                def oldTerms = result.get(parameterName)
 
-                oldTerms.each {
-                    if (term.name == it.name) {
-                        it.values.add(term.values[0])
-                        termFound = true
+                if (oldTerms) {
+                    def termFound = false
+
+                    oldTerms.each {
+                        if (term.name == it.name) {
+                            it.values.add(term.values[0])
+                            termFound = true
+                        }
+                    }
+                    if (!termFound) {
+                        oldTerms.add(term)
                     }
                 }
-                if (!termFound) {
-                    oldTerms.add(term)
+                else {
+                    result.put(parameterName, [term])
                 }
-            }
-            else {
-                result.put(parameterName, [term])
             }
         }
         return result

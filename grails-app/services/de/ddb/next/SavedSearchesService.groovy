@@ -12,7 +12,17 @@ class SavedSearchesService {
     def grailsApplication
 
     def boolean addSavedSearch(String userId, String title, String query) {
-        return savedSearchService.saveSearch(userId, query, title)
+        def queryString = ""
+        def parameters = query.split("&")
+        parameters.each {parameter ->
+            if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
+                if (queryString.size() > 0) {
+                    queryString += "&"
+                }
+                queryString += parameter
+            }
+        }
+        return savedSearchService.saveSearch(userId, queryString, title)
     }
 
     def boolean deleteSavedSearches(String userId, ids) {
@@ -31,12 +41,20 @@ class SavedSearchesService {
      */
     def Collection<SavedSearch> getSavedSearches(String userId) {
         def result = []
+        def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
 
-        // def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
-        for (int index = 1; index <= 30; index++) {
-            result += new SavedSearch(String.valueOf(index), "goethe " + index, "query=goethe+weimar&facetValues%5B%5D=affiliate_fct%3DGoethe%2C+Johann+Wolfgang+von&facetValues%5B%5D=affiliate_fct%3DGerig%2C+Uwe+(Fotograf)&facetValues%5B%5D=type_fct%3Dmediatype_002&facetValues%5B%5D=keywords_fct%3DFotos&facetValues%5B%5D=time_fct%3Dtime_62100&facetValues%5B%5D=time_fct%3Dtime_62110&offset=10&rows=10", new Date())
+        savedSearches.each {savedSearch ->
+            result.add(new SavedSearch(savedSearch.id, savedSearch.title, savedSearch.queryString,
+                    new Date(savedSearch.createdAt)))
         }
         return result
+    }
+
+    /**
+     * Check if a query is a saved search for the user.
+     */
+    def boolean isSavedSearch(String userId, String queryString) {
+        return savedSearchService.findSavedSearchByQueryString(userId, queryString).size() > 0
     }
 
     /**

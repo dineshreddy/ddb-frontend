@@ -55,15 +55,47 @@ limitations under the License.
           </g:each>
         </g:each>
       </div>
+
       <div class="keep-filters off">
         <label class="checkbox"> 
           <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
           <g:message code="ddbnext.Keep_filters"/>
         </label>
       </div>
-      <div>
-        <a href="${clearFilters.encodeAsHTML()}" class="clear-filters button"><g:message code="ddbnext.Clear_filters"/></a>
+
+      <div class="clear-filters">
+        <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
+
+      <g:isLoggedIn>
+        <div id="addToSavedSearches">
+          <div class="add-to-saved-searches"></div>
+          <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
+          <span id="addToSavedSearchesSpan" class="off"><g:message code="ddbnext.Save_Savedsearch"/></span>
+        </div>
+      
+        <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+           aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
+          <div class="modal-header">
+            <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+            <h3 id="addToSavedSearchesLabel">
+              <g:message code="ddbnext.Save_Savedsearch"/>
+            </h3>
+          </div>
+          <div class="modal-body">
+            <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
+            <div><input id="addToSavedSearchesTitle" type="text"></div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+              <g:message code="ddbnext.Close"/>
+            </button>
+            <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
+              <g:message code="ddbnext.Save"/>
+            </button>
+          </div>
+        </div>
+      </g:isLoggedIn>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">

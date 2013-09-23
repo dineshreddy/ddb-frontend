@@ -71,7 +71,42 @@ class SavedSearchService {
                     savedSearch['title'] = it._source.title
                     savedSearch['description'] = it._source.description
                     savedSearch['queryString'] = it._source.queryString
+                    savedSearch['createdAt'] = it._source.createdAt
+                    
+                    all.add(savedSearch)
 
+                    log.info "it: ${it}"
+                    log.info "Saved Search ID: ${it._id}"
+                    log.info "user: ${it._source.user}"
+                    log.info "title: ${it._source.title}"
+                    log.info "description: ${it._source.description}"
+                    log.info "query string: ${it._source.queryString}"
+                }
+                all
+            }
+        }
+    }
+
+    def findSavedSearchByQueryString(userId, queryString, size = DEFAULT_SIZE ) {
+        log.info "find saved searches for the user ${userId} and query ${queryString}"
+        def http = new HTTPBuilder(
+                "${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_search?q=user:" +
+                "${userId} AND queryString:${queryString}".encodeAsURL())
+        http.request(Method.GET, ContentType.JSON) { req ->
+
+            response.success = { resp, json ->
+                def all = []
+                def resultList = json.hits.hits
+                resultList.each { it ->
+
+                    def savedSearch = [:]
+                    savedSearch['id'] = it._id
+                    savedSearch['user'] = it._source.user
+                    savedSearch['title'] = it._source.title
+                    savedSearch['description'] = it._source.description
+                    savedSearch['queryString'] = it._source.queryString
+                    savedSearch['createdAt'] = it._source.createdAt
+                    
                     all.add(savedSearch)
 
                     log.info "it: ${it}"

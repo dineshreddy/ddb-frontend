@@ -82,17 +82,17 @@ class UrlMappings {
 
         "/apis/savedsearches" {
             controller="savedsearches"
-            action="getSavedSearches"
-        }
-
-        "/apis/savedsearches/$id" {
-            controller="savedsearches"
-            action=[POST: "addSavedSearch"]
+            action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
         }
 
         name delSavedSearches: "/apis/savedsearches/_delete" {
             controller="savedsearches"
             action=[POST: "deleteSavedSearches"]
+        }
+
+        "/apis/savedsearches/_get" {
+            controller="savedsearches"
+            action=[POST: "isSavedSearch"]
         }
 
         "/about-us/institutions" {

@@ -31,7 +31,7 @@ limitations under the License.
               </a>
             </h2>
             <div class="subtitle">
-              <g:render template="/user/savedSearchEntry"
+              <g:render template="savedSearchEntry"
                 model="['search':search]" />
             </div>
           </div>

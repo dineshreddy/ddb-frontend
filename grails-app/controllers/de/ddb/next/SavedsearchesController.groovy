@@ -23,11 +23,11 @@ class SavedsearchesController {
     def savedSearchesService
 
     def addSavedSearch() {
-        log.info "addSavedSearch " + params.query + ", " + params.title
+        log.info "addSavedSearch " + request?.JSON?.query + ", " + request?.JSON?.title
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (savedSearchesService.saveSearch(user.getId(), params.title, params.query)) {
+            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.title, request?.JSON?.query)) {
                 result = response.SC_CREATED
             }
         }
@@ -46,7 +46,7 @@ class SavedsearchesController {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
-            else if (savedSearchesService.deleteSavedSearches(user.getId(), request.JSON)) {
+            else if (savedSearchesService.deleteSavedSearches(user.getId(), request.JSON.ids)) {
                 result = response.SC_OK
             }
         }
@@ -67,6 +67,25 @@ class SavedsearchesController {
         }
         else {
             log.info "getSavedSearches returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
+    }
+
+    def isSavedSearch() {
+        log.info "isSavedSearch"
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query)
+            log.info "isSavedSearch returns " + result
+            if (result) {
+                render(status: response.SC_OK)
+            }
+            else {
+                render(status: response.SC_NOT_FOUND)
+            }
+        }
+        else {
+            log.info "isSavedSearch returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
         }
     }
