@@ -36,6 +36,12 @@
   padding-left: 22px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -40px;
 }
+
+.item-content a[href^="http"] {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
 .item-detail .institution {
   margin-top: 1em;
   margin-bottom: 1em;

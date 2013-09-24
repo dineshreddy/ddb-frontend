@@ -25,6 +25,7 @@ import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
