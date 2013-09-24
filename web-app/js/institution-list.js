@@ -51,6 +51,7 @@
       }
        return memo;
       }, []);
+      
     },
 
     filterDescendants: function(institution, memory, selectedSector, parentList) {
@@ -70,6 +71,7 @@
 
     findElements: function(list) {
       var idList = _.pluck(list, 'id');
+      
       return $('li.institution-listitem').filter(function() {
         var institutionId = $(this).data('institution-id');
         return _.contains(idList, $(this).data('institution-id'));
@@ -93,6 +95,7 @@
           JS-feature.*/
         });
       }
+
     },
 
     onPageLoad: function() {
@@ -136,26 +139,29 @@
         var $allHref = $('#first-letter-index a[href="#All"]');
         var $allLi = $allHref.parent();
         $allLi.addClass('active');
-        $allHref.css('color', '#a5003b');
+        $allHref.addClass('selected');
+        //$allHref.css('color', '#a5003b');
       } else {
         var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
         var $li = $aHref.parent();
 
         if ($li.hasClass('disabled')) {
-          $('#no-match-message').css('display', 'block');
+          //$('#no-match-message').css('display', 'block');
+          $('#no-match-message').addClass('visible');
           return false;
         }
         // style the selected index.
         $li.addClass('active');
-        // TODO: replace this with a class.
-        $aHref.css('color', '#a5003b');
+        $li.addClass('selected');
         // TODO: refactor this, a lot of duplicate code.
         // reset other indexes to the initial style.
         var $firstCharLinks = $('#first-letter-index a');
         var $otherLinks = $firstCharLinks.not($aHref);
         $otherLinks.parent().removeClass('active');
-        $otherLinks.removeAttr('style');
+        $otherLinks.removeClass('selected');
+        //$otherLinks.removeAttr('style');
       }
+      
       return true;
     },
 
@@ -184,12 +190,16 @@
                         .find('li.active')
                         .find('a')
                         .attr('href');
+      
       if(hashValue) {
         var hash = hashValue.substring(1).toLowerCase();
         if (hash !== '' && hash !== 'all' && hash !== 'list') {
           result = hash;
         }
       }
+      
+      result = result.toUpperCase();
+
       return result;
     },
 
@@ -197,6 +207,7 @@
     * get an array of selected sectors, for example: [sec_1, sec_3]
     */
     getSelectedSectors: function() {
+
       /*
        * Now we have two sector widgets. Based on the screen resolution,
        * we show either the checkboxes or multiselect.
@@ -208,7 +219,7 @@
       } else {
         var allSelectedSectors = $('.sector-facet input:checked');
       }
-
+      
       return _.reduce(allSelectedSectors, function(sectors, el) {
         sectors.push($(el).val());
         return sectors;
@@ -218,7 +229,8 @@
     filter: function(institutionList, sectors, firstLetter) {
       // reset the view to empty.
       var $listItems = $('li.institution-listitem');
-      $listItems.css('display', 'none');
+      //$listItems.css('display', 'none');
+      $listItems.addClass('off');
       $listItems.removeClass('highlight');
 
       var parentList = [];
@@ -294,22 +306,30 @@
 
         var $currentIndex = $('#first-letter-index');
         $currentIndex.html(ddb.$index.html());
+        
+        ddb.styleIndex('All');
       }
+      
     },
 
     filterBySectors: function(institutionList, sectors, parentList) {
-      return _.reduce(institutionList, function(memory, institution) {
+      var reduced = _.reduce(institutionList, function(memory, institution) {
         if (_.contains(sectors, institution.sector)) {
           memory.push(institution);
         }
         ddb.filterDescendants(institution, memory, sectors, parentList);
+        
         return memory;
       }, []);
+      
+      return reduced
     },
 
     showAll: function() {
-      $('#no-match-message').css('display', 'none');
-      $('li.institution-listitem').css('display', '');
+      //$('#no-match-message').css('display', 'none');
+      $('#no-match-message').addClass('off');
+      //$('li.institution-listitem').css('display', '');
+      $('li.institution-listitem').removeClass('off');
     },
 
     updateIndex: function(hasNoMember) {
@@ -326,6 +346,7 @@
           });
         });
       }
+      
     },
 
     // visible institutions are filtered institutions and their descendants.
@@ -335,14 +356,19 @@
       // view manipulation
       if (visibleInstitution.length) {
         // hide the 'no result' message
-        $msg.css('display', 'none');
+        //$msg.css('display', 'none');
+        $msg.addClass('off');
 
         ddb.findElements(filteredBySector).addClass('highlight');
         var $visible = ddb.findElements(visibleInstitution);
-        $visible.css('display', '');
+        //$visible.css('display', '');
+        $visible.removeClass('off');
       } else {
-        $msg.css('display', 'block');
+        //$msg.css('display', 'block');
+        $msg.removeClass('off');
+        $msg.addClass('visible');
       }
+      
     },
 
     // TODO: we should *not* this extra function. We can reuse the logic in
@@ -353,10 +379,11 @@
 
       // find all institutions match idList
       var $listItems = $('li.institution-listitem');
+      
       ddb.filteredEl = $listItems.filter(function() {
         return _.contains(idList, $(this).data('institution-id'));
       });
-
+      
       // find all first level institutions which are not start with
       // firstLetter
       var restKeys = _.chain(ddb.institutionsByFirstChar)
@@ -377,12 +404,14 @@
       });
 
       ddb.showAll();
-      ddb.restEl.css('display', 'none');
+      //ddb.restEl.css('display', 'none');
+      ddb.restEl.addClass('off');
       if (idList.length === 0) {
         var $msg = $('#no-match-message');
-        $msg.css('display', 'block');
+        //$msg.css('display', 'block');
+        $msg.addClass('visible');
       }
-
+      
       // update the indext with cache
       var $currentIndex = $('#first-letter-index');
       $currentIndex.html(ddb.$index.html());
@@ -393,7 +422,9 @@
       var $aHref = $('#first-letter-index a[href="' + '#' + firstLetter + '"]');
       $aHref.parent().addClass('active');
       // TODO: replace this with a class.
-      $aHref.css('color', '#a5003b');
+      //$aHref.css('color', '#a5003b');
+      $aHref.addClass('selected');
+      
     },
 
     onIndexClick: function() {
@@ -412,13 +443,15 @@
 
         // style the selected index.
         $li.addClass('active');
+        $this.addClass('selected');
         // TODO: replace this with a class.
-        $this.css('color', '#a5003b');
+        //$this.css('color', '#a5003b');
 
         // reset other indexes to the initial style.
         var $otherLinks = $firstCharLinks.not(this);
         $otherLinks.parent().removeClass('active');
-        $otherLinks.removeAttr('style');
+        //$otherLinks.removeAttr('style');
+        $otherLinks.removeClass('selected');
 
         if (history.pushState) {
           history.pushState({}, '', $this.attr('href'));
@@ -470,6 +503,7 @@
       ddb.$institutionList = institutionList.clone();
       ddb.getInstitutionsByFirstChar(ddb.onFilterSelect, ddb.onIndexClick, ddb.onPageLoad);
     }
+    
   });
 
 }());

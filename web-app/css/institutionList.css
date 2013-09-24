@@ -116,11 +116,7 @@ div.sector-facet>label:hover {
 }
 
 .selected {
-  color: #a5003b;
-}
-
-#no-match-message {
-  display: none;
+  color: #a5003b !important;
 }
 
 .visible {

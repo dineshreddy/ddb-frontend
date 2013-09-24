@@ -52,9 +52,13 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     Public.selectSectors = function() {
-        if(mapInitialized){
-          var sectors = _getSectorSelection();
-          InstitutionsMapController.selectSectors(sectors);
+        // DDBNEXT-515: Workaround for the timeouts in the institution list. 
+        // Only call this, when really on the map view!
+        if(!$('#institution-map').hasClass('off')){
+            if(mapInitialized){
+                var sectors = _getSectorSelection();          
+                InstitutionsMapController.selectSectors(sectors);
+            }
         }
     };
 
