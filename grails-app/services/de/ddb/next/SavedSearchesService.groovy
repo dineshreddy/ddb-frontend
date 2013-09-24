@@ -11,18 +11,8 @@ class SavedSearchesService {
     def sessionService
     def grailsApplication
 
-    def boolean addSavedSearch(String userId, String title, String query) {
-        def queryString = ""
-        def parameters = query.split("&")
-        parameters.each {parameter ->
-            if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
-                if (queryString.size() > 0) {
-                    queryString += "&"
-                }
-                queryString += parameter
-            }
-        }
-        return savedSearchService.saveSearch(userId, queryString, title)
+    def boolean addSavedSearch(String userId, String title, String queryString) {
+        return savedSearchService.saveSearch(userId, reviseQueryString(queryString), title)
     }
 
     def boolean deleteSavedSearches(String userId, ids) {
@@ -54,7 +44,7 @@ class SavedSearchesService {
      * Check if a query is a saved search for the user.
      */
     def boolean isSavedSearch(String userId, String queryString) {
-        return savedSearchService.findSavedSearchByQueryString(userId, queryString).size() > 0
+        return savedSearchService.findSavedSearchByQueryString(userId, reviseQueryString(queryString)).size() > 0
     }
 
     /**
@@ -95,10 +85,31 @@ class SavedSearchesService {
         ]
     }
 
-    def private String getPaginationUrl(int offset, int rows, String order) {
+    private def String getPaginationUrl(int offset, int rows, String order) {
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
 
         return g.createLink(controller:'user', action: 'savedsearches',
         params: [offset: offset, rows: rows, order: order])
+    }
+
+    /**
+     * Extract the relevant parameters from the given query string. Remove paging parameters.
+     *
+     * @param queryString complete query string
+     *
+     * @return revised query string
+     */
+    private def String reviseQueryString(String queryString) {
+        def result = ""
+        def parameters = queryString.split("&").sort()
+        parameters.each {parameter ->
+            if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
+                if (result.size() > 0) {
+                    result += "&"
+                }
+                result += parameter
+            }
+        }
+        return result
     }
 }

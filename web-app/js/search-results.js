@@ -44,30 +44,15 @@ $(function() {
         // It will be used as reference URL for all the ajax actions
         globalUrl = location.search.substring(1);
     }
-    
+
     searchResultsInitializer();
-    
+
     function stateManager(url){
       $('#main-container').load(url+' .search-results-container', function(){
         searchResultsInitializer();
       });
     }
-
-    $.ajax({
-      type: "POST",
-      contentType: "application/json",
-      dataType: "json",
-      url: jsContextPath + "/apis/savedsearches/_get",
-      data: JSON.stringify({query: window.location.search.substring(1)})
-    }).done(function() {
-      // TODO deactivate saved searches button
-    });
-    
-    $('#addToSavedSearches').click(function() {
-      addToSavedSearches();
-    });
   }
-
 });
 
 function historyManager(path){
@@ -199,51 +184,13 @@ $.extend(HovercardInfoItem.prototype,{
   }
 });
 
-function addToSavedSearches() {
-  $.urlParam = function(name) {
-    var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results == null) {
-       return null;
-    }
-    else {
-       return results[1] || "";
-    }
-  }
-  $.truncateTitle = function(string) {
-    var result = "";
-    var words = string.split(/\s+/);
-    for (var index = 0; index < 3 && index < words.length; index++) {
-      if (result.length > 0) {
-        result += " ";
-      }
-      result += words[index];
-    }   
-    return result;
-  }
-  var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
-  // take only the first 3 words as title
-  $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
-  $("#addToSavedSearchesModal").modal("show");
-  $("#addToSavedSearchesConfirm").click(function(e) {
-    $("#addToSavedSearchesModal").modal("hide");
-    $.ajax({
-      type: "PUT",
-      contentType: "application/json",
-      dataType: "json",
-      url: jsContextPath + "/apis/savedsearches",
-      data: JSON.stringify({query: window.location.search.substring(1), title: $("#addToSavedSearchesTitle").val()})
-    }).done(function() {
-      $("#addToSavedSearches").unbind("click");
-      var div = $(".add-to-saved-searches");
-      div.removeClass("add-to-saved-searches");
-      div.addClass("added-to-saved-searches");
-      $("#addToSavedSearchesAnchor").addClass("off");
-      $("#addToSavedSearchesSpan").removeClass("off");
-    });
-  });
-}
-
 function searchResultsInitializer(){
+  $(this).on("searchChange", function() {
+    setHovercardEvents();
+    checkFavorites();
+    checkSavedSearch();
+  });
+
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
@@ -251,9 +198,8 @@ function searchResultsInitializer(){
   $('.page-nonjs').addClass("off");
 //  $('.hovercard-info-item').removeClass('off');
 //  $('.hovercard-info-item').fadeOut('fast');
-  
-  setHovercardEvents();
-  checkFavorites();
+
+  $(this).trigger("searchChange");
 
   $('.page-filter select').change(function(){
     var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
@@ -639,9 +585,8 @@ function searchResultsInitializer(){
         divSearchResultsOverlayImg.remove();
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
-        
-        setHovercardEvents();
-        checkFavorites();
+
+        $(this).trigger("searchChange");
         });
       },
       error: function(){
@@ -874,7 +819,6 @@ function searchResultsInitializer(){
       element.remove();
       
       if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
-          
     },
     
     initializeFacetValuesDynamicSearch: function(inputSearchElement){
@@ -1313,6 +1257,45 @@ function searchResultsInitializer(){
     });
   }
 
+  function addToSavedSearches() {
+    $.urlParam = function(name) {
+      var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
+      if (results == null) {
+         return null;
+      }
+      else {
+         return results[1] || "";
+      }
+    }
+    $.truncateTitle = function(string) {
+      var result = "";
+      var words = string.split(/\s+/);
+      for (var index = 0; index < 3 && index < words.length; index++) {
+        if (result.length > 0) {
+          result += " ";
+        }
+        result += words[index];
+      }   
+      return result;
+    }
+    var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
+    // take only the first 3 words as title
+    $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
+    $("#addToSavedSearchesModal").modal("show");
+    $("#addToSavedSearchesConfirm").click(function(e) {
+      $("#addToSavedSearchesModal").modal("hide");
+      $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        dataType: "json",
+        url: jsContextPath + "/apis/savedsearches",
+        data: JSON.stringify({query: window.location.search.substring(1), title: $("#addToSavedSearchesTitle").val()})
+      }).done(function() {
+        disableSavedSearch($(".add-to-saved-searches"));
+      });
+    });
+  }
+
   /**
    * AJAX request to check if a result hit is already stored in the list of favorites.
    *
@@ -1357,6 +1340,23 @@ function searchResultsInitializer(){
   }
 
   /**
+   * Check if the current search string is already stored as a saved search.
+   */
+  function checkSavedSearch() {
+    $.ajax({
+      type: "POST",
+      contentType: "application/json",
+      dataType: "json",
+      url: jsContextPath + "/apis/savedsearches/_get",
+      data: JSON.stringify({query: window.location.search.substring(1)})
+    }).done(function() {
+      disableSavedSearch($(".add-to-saved-searches"));
+    }).fail(function() {
+      enableSavedSearch($(".added-to-saved-searches"));
+    });
+  }
+
+  /**
    * Disable a favorite button.
    *
    * @param div DIV element which handles the favorite event
@@ -1369,6 +1369,35 @@ function searchResultsInitializer(){
     div.attr('title', messages.ddbnext.favorites_already_saved);
   }
 
+  /**
+   * Disable the saved search button.
+   *
+   * @param div DIV element which handles the saved search event
+   */
+  function disableSavedSearch(div) {
+    $("#addToSavedSearches").unbind("click");
+    div.removeClass("add-to-saved-searches");
+    div.addClass("added-to-saved-searches");
+    $("#addToSavedSearchesAnchor").addClass("off");
+    $("#addToSavedSearchesSpan").removeClass("off");
+  }
+  
+  /**
+   * Enable the saved search button.
+   *
+   * @param div DIV element which handles the saved search event
+   */
+  function enableSavedSearch(div) {
+    $("#addToSavedSearches").unbind("click");
+    $("#addToSavedSearches").click(function() {
+      addToSavedSearches();
+    });
+    div.removeClass("added-to-saved-searches");
+    div.addClass("add-to-saved-searches");
+    $("#addToSavedSearchesSpan").addClass("off");
+    $("#addToSavedSearchesAnchor").removeClass("off");
+  }
+  
   /**
    * Extract the item id from the given URL.
    *
