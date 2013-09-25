@@ -185,6 +185,7 @@ class UserController {
 
                 if (request.method=="POST"){
                     def List emails = []
+
                     if (params.email.contains(',')){
                         emails=params.email.tokenize(',')
                     }else{
@@ -272,6 +273,7 @@ class UserController {
     }
 
     def sendSavedSearches() {
+        log.info "sendSavedSearches()"
         if (isUserLoggedIn()) {
             def user = getUserFromSession()
             def List emails = []
@@ -792,7 +794,7 @@ class UserController {
                 }
 
 
-                log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
+                //log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
                 //                getSessionObject(false)?.invalidate()

@@ -24,12 +24,12 @@ limitations under the License.
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
       </g:else>
-      <th width="170px"></th>
+      <th style="width: 170px;"></th>
     </tr>
   </thead>
   <tbody>
@@ -42,7 +42,7 @@ limitations under the License.
       </g:if>
       
       <tr>
-        <td width="70%" height="130px" style="padding: 10px;">
+        <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${grailsApplication.config.ddb.favorites.basedomain}"
               action="${ action }" params="[id: it.id]"
@@ -57,7 +57,7 @@ limitations under the License.
             </div>
           </g:if>
         </td>
-        <td width="170px" style="padding: 10px;">
+        <td style="width: 170px; padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
               <!-- institution logos still point to the content server -->
