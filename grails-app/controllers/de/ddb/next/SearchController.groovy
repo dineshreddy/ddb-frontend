@@ -117,8 +117,7 @@ class SearchController {
                     offset: params["offset"]
                 ]
                 render (contentType:"text/json"){jsonReturn}
-            }
-            else{
+            }else{
                 //We want to build the subfacets urls only if a main facet has been selected
                 def keepFiltersChecked = ""
                 if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
@@ -147,8 +146,7 @@ class SearchController {
                     keepFiltersChecked: keepFiltersChecked
                 ])
             }
-        }
-        catch (BadRequestException e) {
+        } catch (BadRequestException e) {
             //BadRequestException corresponds to 400-Error,
             //in this case will be caused by invalid query-syntax
             log.error("Bad Request: ${e.getMessage()}")
