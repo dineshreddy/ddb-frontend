@@ -57,9 +57,12 @@ class UserController {
 
     def index() {
 
-        render(view: "login", model: [
-            'loginStatus': LoginStatus.LOGGED_OUT]
-        )
+        def loginStatus = LoginStatus.LOGGED_OUT
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }
+
+        render(view: "login", model: ['loginStatus': loginStatus])
     }
 
     def doLogin() {
@@ -68,7 +71,10 @@ class UserController {
 
         // Only perform login, if user is not already logged in
         User user = null
-        if(!isUserLoggedIn()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+
+        } else if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -90,8 +96,7 @@ class UserController {
                 List<String> messages = []
                 messages.add("ddbnext.User.PasswordReset_Change")
                 redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
-            }
-            else {
+            } else {
                 redirect(controller: 'user', action: 'favorites')
             }
         }else{
@@ -222,8 +227,7 @@ class UserController {
                     urlsForOrder:urlsForOrder
                 ])
             }
-        }
-        else{
+        } else{
             redirect(controller:"user", action:"index")
         }
     }
@@ -262,8 +266,7 @@ class UserController {
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
-        }
-        else {
+        } else {
             redirect(controller: "user", action: "index")
         }
     }
@@ -320,23 +323,19 @@ class UserController {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
                 redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
-            }
-            catch (ConflictException e) {
+            } catch (ConflictException e) {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
                 String conflictField = e.getMessage().replaceFirst(".*?'(.*?)'.*", "\$1")
                 if (params.username.equals(conflictField)) {
                     errors.add("ddbnext.Conflict_User_Name")
-                }
-                else if (params.email.equals(conflictField)) {
+                } else if (params.email.equals(conflictField)) {
                     errors.add("ddbnext.Conflict_User_Email")
-                }
-                else {
+                } else {
                     errors.add("ddbnext.Conflict_User_Common")
                 }
                 render(view: "registration" , model: [errors: errors, messages: messages, params: params])
             }
-        }
-        else {
+        } else {
             render(view: "registration" , model: [errors: errors, messages: messages, params: params])
         }
     }
@@ -347,16 +346,14 @@ class UserController {
         if (params.errors != null) {
             if (params.errors instanceof String) {
                 errors.add(params.errors)
-            }
-            else {
+            } else {
                 errors.addAll(params.errors)
             }
         }
         if (params.messages != null) {
             if (params.messages instanceof String) {
                 messages.add(params.messages)
-            }
-            else {
+            } else {
                 messages.addAll(params.messages)
             }
         }
@@ -375,8 +372,7 @@ class UserController {
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
                 aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
                 messages.add("ddbnext.User.PasswordReset_Success")
-            }
-            catch (ItemNotFoundException e) {
+            } catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e
                 errors.add("ddbnext.Error_Username_Notfound")
             }
@@ -408,16 +404,14 @@ class UserController {
             if (params.errors != null) {
                 if (params.errors instanceof String) {
                     errors.add(params.errors)
-                }
-                else {
+                } else {
                     errors.addAll(params.errors)
                 }
             }
             if (params.messages != null) {
                 if (params.messages instanceof String) {
                     messages.add(params.messages)
-                }
-                else {
+                } else {
                     messages.addAll(params.messages)
                 }
             }
@@ -488,8 +482,7 @@ class UserController {
                         user.setLastname(params.lname)
                         aasService.updatePerson(user.getId(), aasUser)
                         messages.add("ddbnext.User.Profile_Update_Success")
-                    }
-                    catch (ConflictException e) {
+                    } catch (ConflictException e) {
                         log.error "Conflict: user with given data already exists. username:" + params.username, e
                         errors.add("ddbnext.Conflict_User_Name")
                     }
@@ -501,8 +494,7 @@ class UserController {
                         def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
                         aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbnext.User.Email_Update_Success")
-                    }
-                    catch (ConflictException e) {
+                    } catch (ConflictException e) {
                         user.setEmail(params.email)
                         log.error "Conflict: user with given data already exists. email:" + params.email, e
                         errors.add("ddbnext.Conflict_User_Email")
@@ -535,15 +527,13 @@ class UserController {
             if (params.newsletter) {
                 newsletterService.addSubscriber(user)
                 user.setNewsletterSubscribed(true)
-            }
-            else {
+            } else {
                 newsletterService.removeSubscriber(user)
                 user.setNewsletterSubscribed(false)
             }
 
             messages.add("ddbnext.User.Newsletter_Update_Success")
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error "fail to update newsletter subscription", e
             errors.add("fail to update newsletter subscription")
         }
@@ -564,16 +554,14 @@ class UserController {
             if (params.errors != null) {
                 if (params.errors instanceof String) {
                     errors.add(params.errors)
-                }
-                else {
+                } else {
                     errors.addAll(params.errors)
                 }
             }
             if (params.messages != null) {
                 if (params.messages instanceof String) {
                     messages.add(params.messages)
-                }
-                else {
+                } else {
                     messages.addAll(params.messages)
                 }
             }
@@ -641,8 +629,7 @@ class UserController {
             }
             try {
                 aasService.deletePerson(user.id)
-            }
-            catch (AuthorizationException e) {
+            } catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
             logoutUserFromSession()
@@ -658,16 +645,14 @@ class UserController {
         if (params.errors != null) {
             if (params.errors instanceof String) {
                 errors.add(params.errors)
-            }
-            else {
+            } else {
                 errors.addAll(params.errors)
             }
         }
         if (params.messages != null) {
             if (params.messages instanceof String) {
                 messages.add(params.messages)
-            }
-            else {
+            } else {
                 messages.addAll(params.messages)
             }
         }
@@ -685,11 +670,9 @@ class UserController {
             jsonuser = aasService.confirm(params.id, params.token)
             if (params.type.equals("emailupdate")) {
                 messages.add("ddbnext.User.Email_Confirm_Success")
-            }
-            else if (params.type.equals("passwordreset")) {
+            } else if (params.type.equals("passwordreset")) {
                 messages.add("ddbnext.User.Pwreset_Confirm_Success")
-            }
-            else if (params.type.equals("create")) {
+            } else if (params.type.equals("create")) {
                 messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
@@ -714,6 +697,7 @@ class UserController {
 
     def requestOpenIdLogin() {
         def provider = params.provider
+        def loginStatus = LoginStatus.AUTH_PROVIDER_REQUEST
 
         String discoveryUrl = ""
 
@@ -721,7 +705,9 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }else if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
@@ -732,9 +718,11 @@ class UserController {
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
-            render(view: "login", model: [
-                'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
-            )
+            loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
+        }
+
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST){
+            render(view: "login", model: ['loginStatus': loginStatus])
             return
         }
 
@@ -876,6 +864,14 @@ class UserController {
     private boolean logoutUserFromSession() {
         sessionService.removeSessionAttributeIfAvailable(User.SESSION_USER)
         sessionService.destroySession()
+    }
+
+    private boolean isCookiesActivated() {
+        if(request.getCookies() != null && request.getCookies().length > 0){
+            return true
+        }else{
+            return false
+        }
     }
 
 
