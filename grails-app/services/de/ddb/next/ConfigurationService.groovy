@@ -442,6 +442,7 @@ class ConfigurationService {
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
+        log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
     }

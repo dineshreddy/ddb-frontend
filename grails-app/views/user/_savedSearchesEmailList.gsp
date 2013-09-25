@@ -18,8 +18,7 @@ limitations under the License.
     args="${[userName]}" />
   <br />
 </div>
-<table border="1" width="100%"
-  style="margin-bottom: 20px; border-spacing: 0">
+<table border="1" style="width: 100%; margin-bottom: 20px; border-spacing: 0">
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
@@ -35,7 +34,7 @@ limitations under the License.
   <tbody>
     <g:each var="search" in="${results}">
       <tr>
-        <td height="130px" style="padding: 10px;">
+        <td style="height: 130px; padding: 10px;">
           <h2>
             <a style="color: #a5003b"
               href="${grailsApplication.config.ddb.favorites.basedomain + '/search?' +
