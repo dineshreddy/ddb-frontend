@@ -56,9 +56,12 @@ class UserController {
 
     def index() {
 
-        render(view: "login", model: [
-            'loginStatus': LoginStatus.LOGGED_OUT]
-        )
+        def loginStatus = LoginStatus.LOGGED_OUT
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }
+
+        render(view: "login", model: ['loginStatus': loginStatus])
     }
 
     def doLogin() {
@@ -67,7 +70,10 @@ class UserController {
 
         // Only perform login, if user is not already logged in
         User user = null
-        if(!isUserLoggedIn()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+
+        } else if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -647,6 +653,7 @@ class UserController {
 
     def requestOpenIdLogin() {
         def provider = params.provider
+        def loginStatus = LoginStatus.AUTH_PROVIDER_REQUEST
 
         String discoveryUrl = ""
 
@@ -654,7 +661,9 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }else if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
@@ -665,9 +674,11 @@ class UserController {
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
-            render(view: "login", model: [
-                'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
-            )
+            loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
+        }
+
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST){
+            render(view: "login", model: ['loginStatus': loginStatus])
             return
         }
 
@@ -737,7 +748,7 @@ class UserController {
                 }
 
 
-                log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
+                //log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
                 //                getSessionObject(false)?.invalidate()
@@ -809,6 +820,14 @@ class UserController {
     private boolean logoutUserFromSession() {
         sessionService.removeSessionAttributeIfAvailable(User.SESSION_USER)
         sessionService.destroySession()
+    }
+
+    private boolean isCookiesActivated() {
+        if(request.getCookies() != null && request.getCookies().length > 0){
+            return true
+        }else{
+            return false
+        }
     }
 
 
