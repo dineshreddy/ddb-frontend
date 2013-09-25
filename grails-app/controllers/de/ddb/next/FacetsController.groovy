@@ -54,18 +54,18 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse().facets
 
-            //def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
-            def numberOfElements = 0
-            if(resultsItems.size() < maxResults){
-                numberOfElements = resultsItems.size()
-            }else{
-                numberOfElements = maxResults
-                resultsItems = resultsItems.subList(0,301)
-            }
+            //            //def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
+            //            def numberOfElements = 0
+            //            if(resultsItems.size() < maxResults){
+            //                numberOfElements = resultsItems.size()
+            //            }else{
+            //                numberOfElements = maxResults
+            //                resultsItems = resultsItems.subList(0,301)
+            //            }
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-            facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, numberOfElements, facetQuery, locale)
+            facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
 
         }else{
 
@@ -81,11 +81,11 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse()
 
-            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():maxResults
+            //            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():maxResults
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, numberOfElements, facetQuery, locale)
+            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale)
         }
 
         render (contentType:"text/json"){facetValues}
