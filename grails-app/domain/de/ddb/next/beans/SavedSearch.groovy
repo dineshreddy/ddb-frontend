@@ -35,9 +35,9 @@ class SavedSearch {
     }
 
     /**
-     * Return the query string as collection
+     * Return the value of the parameter with the key "query" from the query string
      *
-     * @return query string as collection
+     * @return value of the parameter with the key "query" or null
      */
     public def String getQuery() {
         def result
