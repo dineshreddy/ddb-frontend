@@ -86,7 +86,8 @@ class SavedSearchesService {
     }
 
     private def String getPaginationUrl(int offset, int rows, String order) {
-        def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        def g = grailsApplication.mainContext.getBean
+        ('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
 
         return g.createLink(controller:'user', action: 'savedsearches',
         params: [offset: offset, rows: rows, order: order])
@@ -102,6 +103,7 @@ class SavedSearchesService {
     private def String reviseQueryString(String queryString) {
         def result = ""
         def parameters = queryString.split("&").sort()
+
         parameters.each {parameter ->
             if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
                 if (result.size() > 0) {
