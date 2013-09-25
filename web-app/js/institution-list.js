@@ -461,7 +461,7 @@
         else {
           // TODO: test on IE8,9
           window.location.hash = this.hash;
-          window.location.reload(false);
+          //window.location.reload(false);
         }
 
         return false;
