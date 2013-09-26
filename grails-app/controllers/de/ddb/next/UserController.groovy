@@ -143,6 +143,10 @@ class UserController {
                 def resultsItems
 
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+
+                // convertQueryParametersToSearchParameters modifies params
+                params.remove("query")
+
                 urlQuery["offset"]=0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
