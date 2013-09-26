@@ -56,7 +56,7 @@ class NewsletterService {
 
     def removeSubscriber(User user) {
         log.info "remove user ${user} as newsletter subscriber"
-        def apiResponse = ApiConsumer.delete(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
+        def apiResponse = ApiConsumer.deleteJson(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
         if(!apiResponse.isOk()){
             log.error "fail to add remove subscriber ${user.toString()}"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
