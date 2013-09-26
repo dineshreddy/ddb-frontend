@@ -39,6 +39,13 @@ $(function() {
       return false;
     });
 
+    $('#checkall').checkAll('#slaves input:checkbox', {
+      reportTo: function () {
+        var prefix = this.prop('checked') ? 'un' : '';
+        this.next().text(prefix + 'check all');
+      }
+    });	
+
     $('.page-input').keyup(function(e) {
       if (e.keyCode == 13) {
         if (/^[0-9]+$/.test(this.value)) {

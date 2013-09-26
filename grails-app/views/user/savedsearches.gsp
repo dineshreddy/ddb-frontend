@@ -28,8 +28,8 @@ limitations under the License.
       <g:message code="ddbnext.Savedsearches_Of" args="${[userName]}" default="ddbnext.Savedsearches_Of"/>
       - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/>
     </title>
-    <meta name="page" content="savedsearches"></meta>
-    <meta name="layout" content="main"></meta>
+    <meta name="page" content="savedsearches">
+    <meta name="layout" content="main">
   </head>
   <body>
     <div class="favorites-results-container">
@@ -66,7 +66,7 @@ limitations under the License.
               <span class="h3"><g:message code="ddbnext.All_Savedsearches"/></span>
               <span class="bookmarks-list-number"> ${numberOfResults}</span>
               <a class="bookmarks-list-envelope" id="sendSavedSearches">
-                <i class="icon-envelope" title="<g:message code='ddbnext.Send_Savedsearches'/>"></i>
+                <i class="icon-envelope" title="<g:message code="ddbnext.Send_Savedsearches"/>"></i>
               </a>
             </li>
           </ul>
@@ -105,22 +105,43 @@ limitations under the License.
                 </div>
               </div>
               <div class="results-sorter">
-              <!--               <span><input type="checkbox" class="select-all" -->
-              <%--                 id="checkall"></span> <span><g:message --%>
-              <%--                   code="ddbnext.HierarchyHelp_Leaf"></g:message></span> <span --%>
-              <%--                 class="favorite-dateheader"> <g:message --%>
-              <%--                   code="ddbnext.Added_On"></g:message> <span> <g:if --%>
-              <%--                     test="${params.order== 'desc'}"> --%>
-              <%--                     <a href="${urlsForOrder["asc"]}"><g:img --%>
-              <%--                         dir="images/icons" file="asc.gif" --%>
-              <%--                         class="orderList" /></a> --%>
-              <%--                   </g:if> <g:else> --%>
-              <%--                     <a href="${urlsForOrder["desc"]}"><g:img --%>
-              <%--                         dir="images/icons" file="desc.gif" --%>
-              <%--                         class="orderList" /></a> --%>
-              <%--                   </g:else> --%>
-              <!--               </span> -->
-<!--               </span> -->
+                <span><input type="checkbox" class="select-all" id="checkall"></span>
+                <span>
+                  <g:if test="${params.order == "desc"}">
+                    <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
+                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:if test="${params.criteria == "label"}">
+                        <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/></span>
+                      </g:if>
+                    </a>
+                  </g:if>
+                  <g:else>
+                    <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}">
+                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:if test="${params.criteria == "label"}">
+                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/></span>
+                      </g:if>
+                    </a>
+                  </g:else>
+                </span>
+                <span class="favorite-dateheader"> 
+                  <g:if test="${params.order == "desc"}">
+                    <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}">
+                      <g:message code="ddbnext.Added_On"/>
+                      <g:if test="${params.criteria == "creationDate"}">
+                        <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/></span>
+                      </g:if>
+                    </a>
+                  </g:if>
+                  <g:else>
+                    <a href="${(urlsForOrder["desc"] + "&criteria=creationDate").encodeAsHTML()}">
+                      <g:message code="ddbnext.Added_On"/>
+                      <g:if test="${params.criteria == "creationDate"}">
+                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/></span>
+                      </g:if>
+                    </a>
+                  </g:else>
+                </span>
               </div>
             </div>
             <div class="favorites-results">
@@ -143,7 +164,7 @@ limitations under the License.
     <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
          aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message code='ddbnext.Close'/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="sendSavedSearchesLabel">
           <g:message code="ddbnext.Send_Savedsearches"/>
         </h3>
@@ -151,7 +172,7 @@ limitations under the License.
       <form method="POST">
         <div class="modal-body">
           <fieldset>
-            <input placeholder="<g:message code='ddbnext.send_favorites_email'/>" type="email" name="email" required>
+            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" type="email" name="email" required>
             <br/>
             <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients"/></small>
             <br/>
