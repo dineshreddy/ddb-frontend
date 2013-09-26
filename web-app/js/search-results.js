@@ -699,6 +699,8 @@ function searchResultsInitializer(){
     // Initialize the structures for the pagination logic inside facets
     // flyoutWidget
     initPagination: function(){
+      this.currentPage = 1;
+      this.currentOffset = 0;
       var currObjInstance = this;
       if(Math.round((this.currentFacetValuesNotSelected.length)/10)>1){
         this.connectedflyoutWidget.paginationLiPrev.click(function(e){
@@ -844,6 +846,8 @@ function searchResultsInitializer(){
                   currObjInstance.connectedflyoutWidget.parentMainElement.find('.flyout-right-container').remove();
                   currObjInstance.connectedflyoutWidget.buildStructure();
                   currObjInstance.fetchFacetValues(null,inputValue);
+                  currObjInstance.currentPage = 1;
+                  currObjInstance.currentOffset = 0;
               }
               else{
                 return;
