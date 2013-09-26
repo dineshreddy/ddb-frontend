@@ -442,12 +442,20 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .summary .add-to-favorites {
   width: 19px;
+  background: url("../images/icons/search_actions.png") no-repeat 0 -140px;
   height: 19px;
   position: absolute;
   right: 0;
-  background: url("../images/icons/search_actions.png") no-repeat 0 -140px;
   margin-top: -15px;
   cursor: pointer;
+}
+
+
+@media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
+  .search-results .results-list .summary .add-to-favorites {
+    width: 40px;
+    background: url("../images/icons/search_actions.png") no-repeat 20px -140px;
+  }
 }
 
 .search-results .results-list .summary .added-to-favorites {

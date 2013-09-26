@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
+
 $(function() {
   if (jsPageName == "results") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
@@ -1321,9 +1322,8 @@ function searchResultsInitializer(){
 
             if ($.inArray(itemId, favoriteItemIds) >= 0) {
               disableFavorite(div);
-            }
-            else {
-              div.click(function() {
+            } else {
+              $(div).click(function() {
                 disableFavorite(div);
                 // add a result hit to the list of favorites
                 $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
