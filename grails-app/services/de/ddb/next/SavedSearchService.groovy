@@ -15,11 +15,9 @@
  */
 package de.ddb.next
 
-import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
+import grails.converters.JSON
 
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
  * @author chh
@@ -30,97 +28,113 @@ class SavedSearchService {
     def transactional = false
 
     def saveSearch(userId, queryString, title = null, description = null) {
-        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch")
-        def savedSearchId
+        def result = null
+        def baseUrl = configurationService.getElasticSearchUrl()
+        def path = "/ddb/savedSearch"
+        def postParameter = [
+            user: userId,
+            queryString: queryString,
+            title: title,
+            description: description,
+            createdAt: new Date().getTime()
+        ]
+        def ApiResponse apiResponse = ApiConsumer.postJson(baseUrl, path, false, postParameter as JSON)
 
-        http.request(Method.POST, ContentType.JSON) { req ->
-            body = [
-                user: userId,
-                queryString: queryString,
-                title: title,
-                description: description,
-                createdAt: new Date().getTime()
-            ]
-
-            response.success = { resp, json ->
-                savedSearchId = json._id
-                log.info "Saved Search with the ID ${savedSearchId} is created."
-                refresh()
-            }
+        if (apiResponse.isOk()) {
+            result = apiResponse.response._id
+            log.info "Saved Search with the ID ${result} is created."
+            refresh()
         }
-        savedSearchId
+        else {
+            log.error "saveSearch(): Could not post request to " + baseUrl + path
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return result
     }
 
     def findSavedSearchByUserId(userId) {
         log.info "find saved searches for the user (${userId})"
-        return findSavedSearch("q=user:${userId}")
+        return findSavedSearch([q: "user:${userId}"])
     }
 
     def findSavedSearchByQueryString(userId, queryString) {
         log.info "find saved searches for the user ${userId} and query ${queryString}"
-        return findSavedSearch("q=user:" + "${userId} AND queryString:${queryString}".encodeAsURL())
+        return findSavedSearch([q: "user:${userId} AND queryString:${queryString}"])
     }
 
-    private def findSavedSearch(String query) {
-        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_search?" + query)
+    private def findSavedSearch(Map<String, String> query) {
+        def baseUrl = configurationService.getElasticSearchUrl()
+        def path = "/ddb/savedSearch/_search"
+        def ApiResponse apiResponse = ApiConsumer.getJson(baseUrl, path, false, query)
 
-        http.request(Method.GET, ContentType.JSON) { req ->
-            response.success = { resp, json ->
-                def all = []
-                def resultList = json.hits.hits
+        if (apiResponse.isOk()) {
+            def all = []
+            def resultList = apiResponse.response.hits.hits
 
-                resultList.each { it ->
-                    def savedSearch = [:]
+            resultList.each { it ->
+                def savedSearch = [:]
 
-                    savedSearch['id'] = it._id
-                    savedSearch['user'] = it._source.user
-                    savedSearch['title'] = it._source.title
-                    savedSearch['description'] = it._source.description
-                    savedSearch['queryString'] = it._source.queryString
-                    savedSearch['createdAt'] = it._source.createdAt
+                savedSearch['id'] = it._id
+                savedSearch['user'] = it._source.user
+                savedSearch['title'] = it._source.title
+                savedSearch['description'] = it._source.description
+                savedSearch['queryString'] = it._source.queryString
+                savedSearch['createdAt'] = it._source.createdAt
 
-                    all.add(savedSearch)
+                all.add(savedSearch)
 
-                    log.info "it: ${it}"
-                    log.info "Saved Search ID: ${it._id}"
-                    log.info "user: ${it._source.user}"
-                    log.info "title: ${it._source.title}"
-                    log.info "description: ${it._source.description}"
-                    log.info "query string: ${it._source.queryString}"
-                }
-                all
+                log.info "it: ${it}"
+                log.info "Saved Search ID: ${it._id}"
+                log.info "user: ${it._source.user}"
+                log.info "title: ${it._source.title}"
+                log.info "description: ${it._source.description}"
+                log.info "query string: ${it._source.queryString}"
             }
+            all
+        }
+        else {
+            log.error "findSavedSearch(): Could not get saved searches from " + baseUrl + path
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
     }
 
-    def deleteSavedSearch(userId, savedSearchIdList) {
-        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_bulk")
+    def boolean deleteSavedSearch(userId, savedSearchIdList) {
+        def result = false
+        def baseUrl = configurationService.getElasticSearchUrl()
+        def path = "/ddb/savedSearch/_bulk"
+        def postParameter = ''
 
-        http.request(Method.POST, ContentType.JSON) { req ->
-            def reqBody = ''
-
-            savedSearchIdList.each { id ->
-                reqBody = reqBody + '{ "delete" : { "_index" : "ddb", "_type" : "savedSearch", "_id" : "' + id + '" } }\n'
-            }
-
-            body = reqBody
-            response.success = {
-                refresh()
-                return true
-            }
+        savedSearchIdList.each { id ->
+            postParameter += '{ "delete" : { "_index" : "ddb", "_type" : "savedSearch", "_id" : "' + id + '" } }\n'
         }
+
+        def ApiResponse apiResponse = ApiConsumer.postJson(baseUrl, path, false, postParameter)
+
+        if (apiResponse.isOk()) {
+            refresh()
+            result = true
+        }
+        else {
+            log.error "deleteSavedSearch(): Could not post request to " + baseUrl + path
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return result
     }
 
     // TODO: move to a util class.
     private refresh() {
-        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/_refresh")
-
         log.info "refreshing index ddb..."
-        http.request(Method.POST, ContentType.JSON) { req ->
-            response.success = { resp, json ->
-                log.info "Response: ${json}"
-                log.info "finished refreshing index ddb."
-            }
+
+        def baseUrl = configurationService.getElasticSearchUrl()
+        def path = "/ddb/_refresh"
+        def ApiResponse apiResponse = ApiConsumer.postJson(baseUrl, path, false, "")
+
+        if (apiResponse.isOk()) {
+            log.info "finished refreshing index ddb."
+        }
+        else {
+            log.error "refresh(): Could not post request to " + baseUrl + path
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
     }
 }

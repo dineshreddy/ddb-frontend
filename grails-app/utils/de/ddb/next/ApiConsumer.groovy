@@ -95,7 +95,7 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def postJson(String baseUrl, String path, boolean httpAuth = false, JSONObject postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+    static def postJson(String baseUrl, String path, boolean httpAuth = false, Object postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
         return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
     }
 
