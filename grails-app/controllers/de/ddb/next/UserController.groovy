@@ -251,12 +251,45 @@ class UserController {
             def offset = params.offset ? params.offset.toInteger() : 0
             def rows = params.rows ? params.rows.toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
+            def urlsForOrder
 
-            if (totalPages * rows < savedSearches.size()) {
-                totalPages++
+            if (!params.criteria) {
+                params.criteria = "creationDate"
             }
             if (!params.order) {
                 params.order = "desc"
+            }
+            if (params.criteria == "creationDate") {
+                if (params.order == "asc") {
+                    savedSearches.sort {a, b -> a.creationDate <=> b.creationDate}
+                }
+                else {
+                    savedSearches.sort {a, b -> b.creationDate <=> a.creationDate}
+                }
+            }
+            else {
+                if (params.order == "asc") {
+                    savedSearches.sort {a, b -> a.label <=> b.label}
+                }
+                else {
+                    savedSearches.sort {a, b -> b.label <=> a.label}
+                }
+            }
+            if (totalPages * rows < savedSearches.size()) {
+                totalPages++
+            }
+            if (params.order == "asc") {
+                urlsForOrder = [
+                    desc: g.createLink(controller: "user", action: "savedsearches",
+                    params: [offset: 0, rows: rows, order: "desc"]),
+                    asc: "#"
+                ]
+            } else {
+                urlsForOrder = [
+                    desc: "#",
+                    asc: g.createLink(controller: "user", action: "savedsearches",
+                    params: [offset: 0, rows: rows, order: "asc"])
+                ]
             }
             render(view: "savedsearches", model: [
                 paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
@@ -265,6 +298,7 @@ class UserController {
                 rows: rows,
                 totalPages: totalPages,
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
+                urlsForOrder: urlsForOrder,
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
         } else {
