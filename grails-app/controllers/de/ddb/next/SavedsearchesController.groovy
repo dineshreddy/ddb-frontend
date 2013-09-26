@@ -23,7 +23,7 @@ class SavedsearchesController {
     def savedSearchesService
 
     def addSavedSearch() {
-        log.info "addSavedSearch " + request?.JSON?.query + ", " + request?.JSON?.title
+        log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
@@ -39,7 +39,7 @@ class SavedsearchesController {
     }
 
     def deleteSavedSearches() {
-        log.info "deleteSavedSearches " + request.JSON
+        log.info "deleteSavedSearches(): " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
@@ -58,7 +58,7 @@ class SavedsearchesController {
     }
 
     def getSavedSearches() {
-        log.info "getSavedSearches"
+        log.info "getSavedSearches()"
         def User user = getUserFromSession()
         if (user != null) {
             def result = savedSearchesService.getSavedSearches(user.getId())
@@ -72,7 +72,7 @@ class SavedsearchesController {
     }
 
     def isSavedSearch() {
-        log.info "isSavedSearch"
+        log.info "isSavedSearch()"
         def User user = getUserFromSession()
         if (user != null) {
             def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query)

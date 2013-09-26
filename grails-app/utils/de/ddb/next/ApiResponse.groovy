@@ -1,9 +1,9 @@
 package de.ddb.next
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest
 
-import de.ddb.next.exception.BackendErrorException;
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.BackendErrorException
+import de.ddb.next.exception.ItemNotFoundException
 
 /**
  * Wrapper for all responses of the backend servers.
@@ -37,8 +37,9 @@ class ApiResponse {
     def exception
     def status
     def headers
+    def postBody
 
-    ApiResponse(calledUrl, method, content, response, duration, exception, status, headers){
+    ApiResponse(calledUrl, method, content, response, duration, exception, status, headers, postBody){
         this.calledUrl = calledUrl
         this.method = method
         this.content = content
@@ -47,6 +48,7 @@ class ApiResponse {
         this.exception = exception
         this.status = status
         this.headers = headers
+        this.postBody = postBody
     }
 
     def isOk() {
@@ -57,6 +59,9 @@ class ApiResponse {
         def out = "ApiResponse: " + status + " / " + duration + "ms / " + method + " / " + content + " / URL='" + calledUrl+"'"
         if(exception){
             out += " / Exception='" + exception.getMessage()+"'"
+        }
+        if(postBody){
+            out += " / postBody='" + postBody+"'"
         }
         return out
     }
