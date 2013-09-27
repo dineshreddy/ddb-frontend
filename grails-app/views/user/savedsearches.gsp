@@ -110,17 +110,27 @@ limitations under the License.
                   <g:if test="${params.order == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
                       <g:message code="ddbnext.HierarchyHelp_Leaf"/>
-                      <g:if test="${params.criteria == "label"}">
-                        <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/></span>
-                      </g:if>
+                      <span>
+                        <g:if test="${params.criteria == "label"}">
+                          <g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/>
+                        </g:if>
+                        <g:else>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                        </g:else>
+                      </span>
                     </a>
                   </g:if>
                   <g:else>
                     <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}">
                       <g:message code="ddbnext.HierarchyHelp_Leaf"/>
-                      <g:if test="${params.criteria == "label"}">
-                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/></span>
-                      </g:if>
+                      <span>
+                        <g:if test="${params.criteria == "label"}">
+                          <g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/>
+                        </g:if>
+                        <g:else>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                        </g:else>
+                      </span>
                     </a>
                   </g:else>
                 </span>
@@ -128,17 +138,27 @@ limitations under the License.
                   <g:if test="${params.order == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On"/>
-                      <g:if test="${params.criteria == "creationDate"}">
-                        <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/></span>
-                      </g:if>
+                      <span>
+                        <g:if test="${params.criteria == "creationDate"}">
+                          <g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/>
+                        </g:if>
+                        <g:else>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                        </g:else>
+                      </span>
                     </a>
                   </g:if>
                   <g:else>
                     <a href="${(urlsForOrder["desc"] + "&criteria=creationDate").encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On"/>
-                      <g:if test="${params.criteria == "creationDate"}">
-                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/></span>
-                      </g:if>
+                      <span>
+                        <g:if test="${params.criteria == "creationDate"}">
+                          <g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/>
+                        </g:if>
+                        <g:else>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                        </g:else>
+                      </span>
                     </a>
                   </g:else>
                 </span>
