@@ -296,12 +296,13 @@ class UserController {
                 ]
             }
             render(view: "savedsearches", model: [
-                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                dateString: g.formatDate(date: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
+                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 rows: rows,
                 totalPages: totalPages,
-                results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 urlsForOrder: urlsForOrder,
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
