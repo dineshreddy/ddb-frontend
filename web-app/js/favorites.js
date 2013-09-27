@@ -93,7 +93,7 @@ $(function() {
           dataType : "json",
           success : function(data) {
             //$('#msDeleteFavorites').modal();
-            window.setTimeout('location.reload()', 500);
+            window.setTimeout('location.reload();', 100);
           }
         });
         $('#slaves input:checked').each(function() {
@@ -106,7 +106,7 @@ $(function() {
 
     $('#deletedFavoritesBtnClose').click(function(){
       $('#msDeleteFavorites').modal('hide');
-      window.setTimeout('location.reload()', 1000);
+      window.setTimeout('location.reload();', 1000);
     });
 
   }

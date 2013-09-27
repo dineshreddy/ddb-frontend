@@ -95,19 +95,7 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def postJson(String baseUrl, String path, boolean httpAuth = false, Object postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
-    }
-
-    /**
-     * Sends a request to the backend by calling POST. The POST body is not required to be strict JSON. Also Json-like strings will do.
-     * @param baseUrl The base REST-server url
-     * @param path The path to the requested resource
-     * @param postParameter body of the POST-Request
-     * @param optionalHeaders Optional request headers to add to the request
-     * @return An ApiResponse object containing the server response
-     */
-    static def postJsonLax(String baseUrl, String path, boolean httpAuth = false, def postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
+    static def postJson(String baseUrl, String path, boolean httpAuth = false, postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
         return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
     }
 

@@ -172,7 +172,7 @@ class SavedSearchService {
         savedSearchIdList.each { id ->
             postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "savedSearch", "_id" : "' + id + '" } }\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJsonLax(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -195,7 +195,7 @@ class SavedSearchService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.postJsonLax(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()

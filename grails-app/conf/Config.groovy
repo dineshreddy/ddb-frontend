@@ -138,7 +138,7 @@ environments {
             "file:${userHome}/.grails/${appName}.properties"
         ]
     }
-    println "read properties from " + grails.config.locations[0]
+    println "| Read properties from " + grails.config.locations[0]
 }
 
 //DDB SPECIFIC Configuration variables
