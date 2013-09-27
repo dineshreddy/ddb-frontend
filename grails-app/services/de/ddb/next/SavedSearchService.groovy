@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 
+import grails.converters.JSON
 import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
@@ -54,13 +55,16 @@ class SavedSearchService {
         //        }
         //        savedSearchId
 
-        JSONObject postBody = new JSONObject()
-        postBody.put("user", userId)
-        postBody.put("queryString", queryString)
-        postBody.put("title", title)
-        postBody.put("description", description)
-        postBody.put("createdAt", new Date().getTime())
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch", false, postBody)
+
+        def postBody = [
+            user: userId,
+            queryString: queryString,
+            title: title,
+            description: description,
+            createdAt: new Date().getTime()
+        ]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -76,13 +80,13 @@ class SavedSearchService {
     def findSavedSearchByUserId(userId) {
         log.info "findSavedSearchByUserId(): find saved searches for the user (${userId})"
         //return findSavedSearch("q=user:${userId}")
-        return findSavedSearch(["q":"user:${userId}"])
+        return findSavedSearch(["q":"user:${userId}".encodeAsURL()])
     }
 
     def findSavedSearchByQueryString(userId, queryString) {
         log.info "findSavedSearchByQueryString(): find saved searches for the user ${userId} and query ${queryString}"
         //return findSavedSearch("q=user:" + "${userId} AND queryString:${queryString}".encodeAsURL())
-        return findSavedSearch(["q":"user:${userId} AND queryString:${queryString}"])
+        return findSavedSearch(["q":"user:${userId} AND queryString:${queryString}".encodeAsURL()])
     }
 
     private def findSavedSearch(def query) {
@@ -117,7 +121,7 @@ class SavedSearchService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_search", false, query)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()

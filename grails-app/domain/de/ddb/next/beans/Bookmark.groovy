@@ -29,12 +29,22 @@ class Bookmark {
     Type type
     Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, Collection folders) {
+    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders) {
         this.bookmarkId =bookmarkId
         this.userId = userId
         this.itemId = itemId
         this.creationDate = creationDate
         this.type = type
-        this.folders = folders
+        if(folders instanceof String){
+            String folderString = folders.toString()
+            if(folderString.startsWith("[")){
+                folderString = folderString.substring(1,folderString.length()-1)
+                this.folders = Arrays.asList(folderString.split(","))
+            }else{
+                this.folders = [folders]
+            }
+        }else{
+            this.folders = folders
+        }
     }
 }

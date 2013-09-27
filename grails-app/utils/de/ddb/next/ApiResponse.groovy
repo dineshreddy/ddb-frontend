@@ -61,7 +61,7 @@ class ApiResponse {
             out += " / Exception='" + exception.getMessage()+"'"
         }
         if(postBody){
-            out += " / postBody='" + postBody+"'"
+            out += " / postBody=" + postBody+""
         }
         return out
     }
