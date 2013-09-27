@@ -61,7 +61,7 @@ limitations under the License.
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
               <!-- institution logos still point to the content server -->
-              <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+              <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>"></img>
             </g:if>
             <g:else>
               <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
