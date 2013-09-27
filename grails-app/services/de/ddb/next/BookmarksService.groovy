@@ -24,6 +24,8 @@ import groovyx.net.http.Method
 
 import javax.servlet.http.HttpServletResponse
 
+import net.sf.json.JSONNull
+
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
@@ -57,6 +59,7 @@ class BookmarksService {
      */
     def newFolder(userId, title, isPublic, description = null) {
         log.info "newFolder(): creating a new folder with the title: ${title}"
+
         //        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/folder")
         //        def folderId
         //        http.request(Method.POST, ContentType.JSON) { req ->
@@ -75,12 +78,15 @@ class BookmarksService {
         //
         //        folderId
 
-        JSONObject postBody = new JSONObject()
-        postBody.put("user", userId)
-        postBody.put("title", title)
-        postBody.put("description", description)
-        postBody.put("isPublic", isPublic)
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder", false, postBody)
+        def postBody = [
+            user: userId,
+            title : title,
+            description: description,
+            isPublic : isPublic
+        ]
+        def postBodyAsJson = postBody as JSON
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder", false, postBodyAsJson)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -133,11 +139,16 @@ class BookmarksService {
             def resultList = response.hits.hits
             def folderList = []
             resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
+
                 def folder = new Folder(
                         it._id,
                         it._source.user,
                         it._source.title,
-                        it._source.description,
+                        description,
                         it._source.isPublic
                         )
                 folderList.add(folder)
@@ -187,7 +198,8 @@ class BookmarksService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, ["q":"${userId}%20AND%20folder:${folderId}%20", "size":"${size}"])
+        def query = ["q":"${userId} AND folder:${folderId}".encodeAsURL(), "size":"${size}"]
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -220,18 +232,20 @@ class BookmarksService {
     def saveBookmark(userId, folderId, itemId, type = Type.CULTURAL_ITEM) {
         log.info "saveBookmark()"
 
-        //def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
+        //        def http = new HTTPBuilder("${configurationService.getBookmarkUrl()}/ddb/bookmark")
         //
         //        def bookmarkId
         //        //TODO: folder Id, now an array
         //        http.request(Method.POST, ContentType.JSON) { req ->
-        //            body = [
+        //            def requestBody = [
         //                user: userId,
         //                folder: folderId,
         //                item: itemId,
         //                createdAt: new Date().getTime(),
         //                type: type
         //            ]
+        //            body = requestBody
+        //
         //
         //            response.success = { resp, json ->
         //                bookmarkId = json._id
@@ -242,13 +256,15 @@ class BookmarksService {
         //        bookmarkId
 
 
-        JSONObject postBody = new JSONObject()
-        postBody.put("user", userId)
-        postBody.put("folder", folderId)
-        postBody.put("item", itemId)
-        postBody.put("createdAt", new Date().getTime())
-        postBody.put("type", type)
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark", false, postBody)
+        def postBody = [
+            user: userId,
+            folder: folderId,
+            item: itemId,
+            createdAt: new Date().getTime(),
+            type: type.toString()
+        ]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -272,7 +288,7 @@ class BookmarksService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark", false, "")
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/_refresh", false, "")
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -313,15 +329,9 @@ class BookmarksService {
         //            }
         //        }
 
-        def postBody =
-                [
-                    filter: [
-                        terms: [
-                            item: itemIdList
-                        ]
-                    ]
-                ]
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, (postBody as JSON), ["q":"user:${userId}"])
+        def postBody = [filter: [terms: [item: itemIdList]]]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, ["q":"user:${userId}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -426,26 +436,24 @@ class BookmarksService {
         //            }
         //        }
 
-        def postBody =
-                [
-                    filter: [
-                        terms: [
-                            title: title
-                        ]
-                    ]
-                ]
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, (postBody as JSON), ["q":"user:${userId}"])
+        def postBody = [filter: [term: [title: title]]]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, postBody as JSON, ["q":"user:${userId}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             def all = []
             resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
                 def folder = new Folder(
                         it._id,
                         it._source.user,
                         it._source.title,
-                        it._source.description,
+                        description,
                         it._source.isPublic
                         )
 
@@ -498,9 +506,11 @@ class BookmarksService {
                         it._source.item,
                         new Date(it._source.createdAt.toLong()),
                         it._source.type as Type,
-                        it._source.folder as Collection)
+                        it._source.folder)
                 all.add(bookmark)
             }
+
+
             return all
         }
 
@@ -568,20 +578,14 @@ class BookmarksService {
 
         def queryParameter = [:]
         if(folderId) {
-            queryParameter = ["q":"user:${userId}%20AND%20folder:${folderId}","size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:${userId} AND folder:${folderId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         } else {
-            queryParameter = ["q":"user:${userId}","size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:${userId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         }
 
-        def postBody = [
-            filter: [
-                terms: [
-                    item: itemIdList
-                ]
-            ]
-        ]
+        def postBody = [filter: [terms: [item: itemIdList]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, (postBody as JSON), queryParameter)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, queryParameter, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -636,21 +640,14 @@ class BookmarksService {
 
         def queryParameter = [:]
         if(folderId) {
-            queryParameter = ["q":"user:${userId}%20AND%20folder:${folderId}","size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:${userId} AND folder:${folderId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         } else {
-            queryParameter = ["q":"user:${userId}","size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:${userId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         }
 
-        def postBody =
-                [
-                    filter: [
-                        terms: [
-                            item: [
-                                itemId]
-                        ]
-                    ]
-                ]
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, (postBody as JSON), queryParameter)
+        def postBody = [filter: [terms: [item: [itemId]]]]
+
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, queryParameter, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -665,7 +662,8 @@ class BookmarksService {
                         it._source.item,
                         new Date(it._source.createdAt.toLong()),
                         it._source.type as Type,
-                        it._source.folder)
+                        it._source.folder
+                        )
                 all.add(bookmark)
             }
             assert all.size() <= 1
@@ -800,11 +798,15 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
+            def description = "null"
+            if(!(response._source.description instanceof JSONNull) && (response._source.description != null)){
+                description = response._source.description
+            }
             Folder folder = new Folder(
                     response._id,
                     response._source.user,
                     response._source.title,
-                    response._source.description,
+                    description,
                     response._source.isPublic
                     )
             return folder
@@ -853,12 +855,14 @@ class BookmarksService {
 
         def postBody = ""
         if(newDescription) {
-            postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
+            //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
+            postBody = [doc: [title: newTitle, description: newDescription]]
         } else {
-            postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
+            //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
+            postBody = [doc: [title: newTitle]]
         }
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             refresh()
@@ -914,7 +918,7 @@ class BookmarksService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getAasUrl(), "/ddb/folder/${folderId}", false)
+        ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()

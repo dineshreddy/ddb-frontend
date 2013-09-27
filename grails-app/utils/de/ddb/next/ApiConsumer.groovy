@@ -68,11 +68,11 @@ class ApiConsumer {
      *      to true, the json-parser is explicitly overwritten with the text-parser.  
      * @return An ApiResponse object containing the server response
      */
-    static def getText(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false) {
+    static def getText(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], fixWrongContentTypeHeader = false, alreadyEncodedQuery = false) {
         if(fixWrongContentTypeHeader){
-            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, true, null)
+            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, true, null, alreadyEncodedQuery)
         }else{
-            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, null, httpAuth, optionalHeaders, false, null)
+            return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.TEXT, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
         }
     }
 
@@ -83,8 +83,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getJson(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, false, null)
+    static def getJson(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.JSON, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -95,8 +95,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def postJson(String baseUrl, String path, boolean httpAuth = false, postParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null)
+    static def postJson(String baseUrl, String path, boolean httpAuth = false, postParameter, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.POST, ContentType.JSON, postParameter.toString(), httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -107,8 +107,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def putJson(String baseUrl, String path, boolean httpAuth = false, JSONObject putParameter, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.PUT, ContentType.JSON, putParameter.toString(), httpAuth, optionalHeaders, false, null)
+    static def putJson(String baseUrl, String path, boolean httpAuth = false, putParameter, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.PUT, ContentType.JSON, putParameter.toString(), httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -119,8 +119,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def deleteJson(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.DELETE, ContentType.JSON, null, httpAuth, optionalHeaders, false, null)
+    static def deleteJson(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.DELETE, ContentType.JSON, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -130,8 +130,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getXml(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, null, httpAuth, optionalHeaders, false, null)
+    static def getXml(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.XML, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -141,8 +141,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getBinaryBlock(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, null)
+    static def getBinaryBlock(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
@@ -153,8 +153,8 @@ class ApiConsumer {
      * @param optionalHeaders Optional request headers to add to the request
      * @return An ApiResponse object containing the server response
      */
-    static def getBinaryStreaming(String baseUrl, String path, boolean httpAuth = false, OutputStream streamingOutputStream, optionalQueryParams = [:], optionalHeaders = [:]) {
-        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, streamingOutputStream)
+    static def getBinaryStreaming(String baseUrl, String path, boolean httpAuth = false, OutputStream streamingOutputStream, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, streamingOutputStream, alreadyEncodedQuery)
     }
 
     /**
@@ -171,7 +171,7 @@ class ApiConsumer {
      * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
      * @return An ApiResponse object containing the server response
      */
-    private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream) {
+    private static def requestServer(baseUrl, path, query, method, content, requestBody, boolean httpAuth = false, optionalHeaders, fixWrongContentTypeHeader, OutputStream streamingOutputStream, alreadyEncodedQuery = false) {
         def timestampStart = System.currentTimeMillis()
         path = checkContext(baseUrl, path)
 
@@ -196,7 +196,11 @@ class ApiConsumer {
                 }
 
                 uri.path = path
-                uri.query = query
+                if(!alreadyEncodedQuery){
+                    uri.query = query
+                }else{
+                    uri.setRawQuery(createQueryStringFromMap(query))
+                }
 
                 optionalHeaders.each { key, value ->
                     headers.put(key, value)
@@ -471,5 +475,18 @@ class ApiConsumer {
         } catch(Exception e) {
             log.error "setAuthHeader(): Could not get haeder-data from session"
         }
+    }
+
+    static String createQueryStringFromMap(query){
+        String out = ""
+        if(query){
+            query.each {
+                out += "&"+it.key+"="+it.value
+            }
+        }
+        if(out.startsWith("&")){
+            out = out.substring(1)
+        }
+        return out
     }
 }
