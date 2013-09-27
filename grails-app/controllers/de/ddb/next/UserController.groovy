@@ -457,11 +457,15 @@ class UserController {
                 }
             }
             //get favorites-count
-            def String result = favoritesPageService.getFavorites()
-            List items = JSON.parse(result) as List
-            def favoritesCount = items.length()
+            def String favoritesResult = favoritesPageService.getFavorites()
+            List favorites = JSON.parse(favoritesResult) as List
+            def favoritesCount = favorites.length()
 
-            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors:errors, messages: messages])
+            //get savedsearch-count
+            def savedSearchesResult = savedSearchesService.getSavedSearches()
+            def savedSearchesCount = savedSearchesResult.size()
+
+            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
             redirect(controller:"user", action:"index")

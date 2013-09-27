@@ -24,6 +24,18 @@ class SavedSearchesService {
         return result
     }
 
+    private User getUserFromSession() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
+
+    def getSavedSearches() {
+        def User user = getUserFromSession()
+        if (user != null) {
+            return getSavedSearches(user.getId())
+        }
+    }
+
+
     /**
      * Get all saved searches from saved search service.
      *
