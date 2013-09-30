@@ -18,6 +18,10 @@
   margin-left: 0;
 }
 
+#editSavedSearchTitle {
+  width: 100%;
+}
+
 #sendSavedSearches {
   cursor: pointer;
 }

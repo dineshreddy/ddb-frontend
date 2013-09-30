@@ -3,6 +3,7 @@ package de.ddb.next
 import de.ddb.next.beans.SavedSearch
 import de.ddb.next.beans.User
 import grails.converters.JSON
+import net.sf.json.JSONNull
 import org.codehaus.groovy.grails.web.json.*
 
 class SavedSearchesService {
@@ -46,7 +47,9 @@ class SavedSearchesService {
         def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
 
         savedSearches.each {savedSearch ->
-            result.add(new SavedSearch(savedSearch.id, savedSearch.title, savedSearch.queryString,
+            result.add(new SavedSearch(savedSearch.id,
+                    savedSearch.title.class != JSONNull ? savedSearch.title : "",
+                    savedSearch.queryString,
                     new Date(savedSearch.createdAt)))
         }
         return result
@@ -132,5 +135,9 @@ class SavedSearchesService {
             }
         }
         return result
+    }
+
+    def boolean updateSavedSearch(String userId, String id, String title, String queryString) {
+        return savedSearchService.updateSearch(userId, id, reviseQueryString(queryString), title)
     }
 }

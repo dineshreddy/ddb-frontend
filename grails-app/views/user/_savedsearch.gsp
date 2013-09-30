@@ -29,6 +29,11 @@ limitations under the License.
                 <g:truncateItemTitle title="${search.label}"
                   length="${100}" />
               </a>
+              <a id="${search.id}" class="edit-saved-search" data-label="${search.label}"
+                 data-querystring="${search.queryString}">
+                <i class="icon-edit" style="vertical-align:middle;"
+                   title="${message(code: 'ddbnext.Edit_Savedsearch')}"></i>
+              </a>
             </h2>
             <div class="subtitle">
               <g:render template="savedSearchEntry"

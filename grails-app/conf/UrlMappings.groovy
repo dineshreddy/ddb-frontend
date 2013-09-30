@@ -85,6 +85,11 @@ class UrlMappings {
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
         }
 
+        "/apis/savedsearches/$id" {
+            controller="savedsearches"
+            action=[PUT: "updateSavedSearch"]
+        }
+
         name delSavedSearches: "/apis/savedsearches/_delete" {
             controller="savedsearches"
             action=[POST: "deleteSavedSearches"]

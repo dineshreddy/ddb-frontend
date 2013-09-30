@@ -74,7 +74,6 @@ class SavedSearchService {
 
             return savedSearchId
         }
-
     }
 
     def findSavedSearchByUserId(userId) {
@@ -150,7 +149,6 @@ class SavedSearchService {
             }
             return all
         }
-
     }
 
     def deleteSavedSearch(userId, savedSearchIdList) {
@@ -182,7 +180,6 @@ class SavedSearchService {
             refresh()
             return true
         }
-
     }
 
     // TODO: move to a util class.
@@ -206,6 +203,27 @@ class SavedSearchService {
             log.info "Response: ${response}"
             log.info "finished refreshing index ddb."
         }
+    }
 
+    def updateSearch(userId, id, queryString, title = null, description = null) {
+        log.info "updateSearch()"
+        def putBody = [
+            user: userId,
+            queryString: queryString,
+            title: title,
+            description: description,
+            createdAt: new Date().getTime()
+        ]
+
+        ApiResponse apiResponse = ApiConsumer.putJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/" +
+                id, false, putBody as JSON)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def savedSearchId = response._id
+            log.info "Saved Search with the ID ${savedSearchId} is updated."
+            refresh()
+            return savedSearchId
+        }
     }
 }
