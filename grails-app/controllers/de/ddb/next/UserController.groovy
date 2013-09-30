@@ -349,7 +349,7 @@ class UserController {
     /* end saved searches methods */
 
     def registration() {
-        render(view: "registration", model: [])
+        render(view: "registration", model: [:])
     }
 
     def signup() {

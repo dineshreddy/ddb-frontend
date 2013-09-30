@@ -15,6 +15,9 @@
  */
 package de.ddb.next
 
+import javax.mail.internet.AddressException
+import javax.mail.internet.InternetAddress
+
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.validator.EmailValidator
 
@@ -31,7 +34,7 @@ public static List<String> validatorPasswordChange(String userPassword, String a
     if (!userPassword.equals(actualPassword)) {
         errors.add("ddbnext.Error_Password_Provided")
     }
-    errors.addAll(validatorPassword(newPassword, confirmNewPassword));
+    errors.addAll(validatorPassword(newPassword, confirmNewPassword))
     return errors
 }
 
@@ -55,7 +58,7 @@ public static List<String> validatorPassword(String password, String cpassword) 
         if (!password.equals(cpassword)) {
             errors.add("ddbnext.Error_Password_Match")
         }
-//        if (newPassword.trim().length() < 8 || !newPassword.find("[0-9]") ||!newPassword.find("[a-z]") || !newPassword.find("[A-Z]")) {
+        //        if (newPassword.trim().length() < 8 || !newPassword.find("[0-9]") ||!newPassword.find("[a-z]") || !newPassword.find("[A-Z]")) {
         if (password.trim().length() < 8) {
             errors.add("ddbnext.Error_Password_Rules")
         }
@@ -81,7 +84,7 @@ public static List<String> validatorRegistration(String username, String firstna
     if (!validatorEmail(email)) {
         errors.add("ddbnext.Error_Valid_Email_Address")
     }
-    errors.addAll(validatorPassword(password, cpassword));
+    errors.addAll(validatorPassword(password, cpassword))
     return errors
 }
 
@@ -91,13 +94,15 @@ public static List<String> validatorRegistration(String username, String firstna
  * @return true or false (valid or not)
  */
 public static validatorEmail(String email){
+    String encodedEmail = IDN.toASCII(email)
     EmailValidator emailValidator = EmailValidator.getInstance()
-    if (emailValidator.isValid(email)) {
+    if (emailValidator.isValid(encodedEmail)) {
         return true
     }
     else {
         return false
     }
+    boolean result = true
 }
 
 /**
