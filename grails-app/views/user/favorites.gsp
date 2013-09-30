@@ -125,13 +125,13 @@ limitations under the License.
                 <g:if test="${params.order== 'desc'}" >
                   <a href="${urlsForOrder["asc"].encodeAsHTML()}">
                     <g:message code="ddbnext.Added_On" />
-                    <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt=" order asc"/></span>
+                    <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/></span>
                   </a>
                 </g:if> 
                 <g:else>
                   <a href="${urlsForOrder["desc"].encodeAsHTML()}">
                     <g:message code="ddbnext.Added_On" />
-                    <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt=" order desc"/></span>
+                    <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
                   </a>
                 </g:else>
               </span>
