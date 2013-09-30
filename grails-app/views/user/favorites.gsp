@@ -115,6 +115,13 @@ limitations under the License.
                   </button>
                 </g:form>
               </div>
+              <div class="deleteBtn span1">
+                <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
+                  <button type="submit" class="submit" title="<g:message code="ddbnext.Copy_Favorites" />">
+                    <span><g:message code="ddbnext.Copy"></g:message></span>
+                  </button>
+                </g:form>
+              </div>
               <div class="results-pagination">
                 <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
               </div>
