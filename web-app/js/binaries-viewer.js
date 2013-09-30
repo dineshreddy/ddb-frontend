@@ -188,6 +188,7 @@ $(document).ready(function() {
         jwPlayerSetup(previewHref,previewUri);
       }
     $("div.binary-title span").text(title);
+    $("div.binary-title").attr("title",title);
   };
   function jwPlayerSetup(content,poster){
     if($("#binary-viewer").length==0)return;
