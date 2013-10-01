@@ -82,101 +82,101 @@
 }
 /*TODO find a solution for the conflict with fl and fr classes*/
 .floatLeft {
-    float: left;
+  float: left;
 }
 
 img.floatLeft, .inlineBox.floatLeft {
-    margin: 5px 15px 10px 0;
+  margin: 5px 15px 10px 0;
 }
 
 .floatRight {
-    float: right;
+  float: right;
 }
 
 img.floatRight, .inlineBox.floatRight {
     margin: 5px 0 10px 15px;
 }
 
-span.help-bc-active {
-    color: #A5003B;
+.help-bc-active {
+  color: #A5003B;
 }
 
 a.help-link:link, a.help-bc-link:link {
-    color: #3E3A37;
-    text-decoration: none;
+  color: #3E3A37;
+  text-decoration: none;
 }
 
 .link_up {
-    padding-left: 17px;
-    text-decoration: none !important;
-    background: url("../images/icons/list_arrow_plum_up.png") no-repeat -3px 6px;
+  padding-left: 17px;
+  text-decoration: none !important;
+  background: url("../images/icons/list_arrow_plum_up.png") no-repeat -3px 6px;
 }
 
 .link_down {
-    padding-left: 17px;
-    text-decoration: none !important;
-    background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 6px;
+  padding-left: 17px;
+  text-decoration: none !important;
+  background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 6px;
 }
 
 a.help-kw-link:link, a.help-kw-link-first:link {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 a.help-kw-link:hover, a.help-kw-link-first:hover, a.help-link:hover, a.help-bc-link:hover {
-    color: #A5003B;
-    text-decoration: underline;
+  color: #A5003B;
+  text-decoration: underline;
 }
 
 a.help-kw-link-first {
-    color: #3E3A37;
-    float: left;
-    padding: 0;
-    text-align: center;
-    width: 24px;
+  color: #3E3A37;
+  float: left;
+  padding: 0;
+  text-align: center;
+  width: 24px;
 }
 
 a.help-kw-link {
-    border-left: 1px solid #CCCCCC;
-    color: #3E3A37;
-    float: left;
-    padding: 0;
-    text-align: center;
-    width: 24px;
+  border-left: 1px solid #CCCCCC;
+  color: #3E3A37;
+  float: left;
+  padding: 0;
+  text-align: center;
+  width: 24px;
 }
 
-span.help-kw-nolink {
-    border-left: 1px solid #CCCCCC;
-    color: #878380;
-    float: left;
-    padding: 0;
-    text-align: center;
-    width: 24px;
+.help-kw-nolink {
+  border-left: 1px solid #CCCCCC;
+  color: #878380;
+  float: left;
+  padding: 0;
+  text-align: center;
+  width: 24px;
 }
 
 .help-breadcrumbs {
-    border-bottom: 2px solid #EFEBE8;
-    font-size: 0.875em;
-    padding-bottom: 10px;
+  border-bottom: 2px solid #EFEBE8;
+  font-size: 0.875em;
+  padding-bottom: 10px;
 }
 
 .help-keywords {
-    border-bottom: 2px solid #EFEBE8;
-    margin-top: 0;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    height: 20px;
+  border-bottom: 2px solid #EFEBE8;
+  margin-top: 0;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  height: 20px;
 }
 
-div#help-toc-left {
-    left: auto;
-    position: absolute;
-    width: 350px;
+#help-toc-left {
+  left: auto;
+  position: absolute;
+  width: 350px;
 }
 
-div#help-toc-right {
-    margin-left: 378px;
-    position: absolute;
-    width: 350px;
+#help-toc-right {
+  margin-left: 378px;
+  position: absolute;
+  width: 350px;
 }
 
 @media (max-width: 767px) {
@@ -192,14 +192,14 @@ div#help-toc-right {
     clear: auto;
     border-top: 1px solid rgb(233, 229, 226);
   }
-  div#help-toc-left {
+  #help-toc-left {
     position: static;
     width: 100%;
   }
-  div#help-toc-right {
-      margin-left: auto;
-      position: static;
-      width: 100%;
+  #help-toc-right {
+    margin-left: auto;
+    position: static;
+    width: 100%;
   }
 }
 
@@ -226,15 +226,15 @@ div#help-toc-right {
 .static-content-viewer-error {
   background-color: #FFFFFF !important;
   position: absolute;
-  top: 0px;
-  left: 0px;
+  top: 0;
+  left: 0;
   border: 1px solid #efebe8 !important;
 }
 
 .viewer-error-header {
   font-weight: bold !important;
   font-style: italic !important;
-  margin: 20px 20px 0px 20px !important;
+  margin: 20px 20px 0 20px !important;
 }
 
 .viewer-error-body {
