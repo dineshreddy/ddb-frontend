@@ -46,7 +46,7 @@ class SavedsearchesController {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
-            else if (savedSearchesService.deleteSavedSearches(user.getId(), request.JSON.ids)) {
+            else if (savedSearchesService.deleteSavedSearches(request.JSON.ids)) {
                 result = response.SC_OK
             }
         }
@@ -100,11 +100,10 @@ class SavedsearchesController {
     }
 
     def updateSavedSearch() {
-        log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.query + ", " + request?.JSON?.title
+        log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
         def User user = getUserFromSession()
         if (user != null) {
-            def result = savedSearchesService.updateSavedSearch(user.getId(), params.id, request?.JSON?.title,
-                    request?.JSON?.query)
+            def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
             log.info "updateSavedSearch returns " + result
             if (result) {
                 render(status: response.SC_OK)

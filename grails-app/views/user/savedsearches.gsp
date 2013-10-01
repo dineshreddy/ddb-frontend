@@ -251,7 +251,6 @@ limitations under the License.
         <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
         <div>
           <input id="editSavedSearchId" type="hidden">
-          <input id="editSavedSearchQueryString" type="hidden">
           <input id="editSavedSearchTitle" type="text">
         </div>
       </div>

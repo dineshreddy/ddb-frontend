@@ -105,7 +105,6 @@ $(function() {
 
     $(".edit-saved-search").click(function(event) {
       $("#editSavedSearchId").val($(this).attr("id"));
-      $("#editSavedSearchQueryString").val($(this).attr("data-querystring"));
       $("#editSavedSearchTitle").val($(this).attr("data-label"));
       $("#editSavedSearchModal").modal("show");
       $("#editSavedSearchConfirm").click(function(e) {
@@ -115,8 +114,7 @@ $(function() {
           contentType: "application/json",
           dataType: "json",
           url: jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
-          data: JSON.stringify({query: $("#editSavedSearchQueryString").val(),
-                                title: $("#editSavedSearchTitle").val()})
+          data: JSON.stringify({title: $("#editSavedSearchTitle").val()})
         }).done(function() {
           window.setTimeout('location.reload();', 100);
         });

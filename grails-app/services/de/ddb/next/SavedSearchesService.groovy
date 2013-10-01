@@ -16,26 +16,13 @@ class SavedSearchesService {
         return savedSearchService.saveSearch(userId, reviseQueryString(queryString), title)
     }
 
-    def boolean deleteSavedSearches(String userId, ids) {
+    def boolean deleteSavedSearches(ids) {
         def result = false
-
         if(ids?.size() > 0) {
-            result = savedSearchService.deleteSavedSearch(userId, ids)
+            result = savedSearchService.deleteSavedSearch(ids)
         }
         return result
     }
-
-    private User getUserFromSession() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-    }
-
-    def getSavedSearches() {
-        def User user = getUserFromSession()
-        if (user != null) {
-            return getSavedSearches(user.getId())
-        }
-    }
-
 
     /**
      * Get all saved searches from saved search service.
@@ -45,8 +32,7 @@ class SavedSearchesService {
     def Collection<SavedSearch> getSavedSearches(String userId) {
         def result = []
         def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
-
-        savedSearches.each {savedSearch ->
+        savedSearches.each { savedSearch ->
             result.add(new SavedSearch(savedSearch.id,
                     savedSearch.title.class != JSONNull ? savedSearch.title : "",
                     savedSearch.queryString,
@@ -77,7 +63,6 @@ class SavedSearchesService {
      */
     def Collection<SavedSearch> pageSavedSearches(Collection<SavedSearch> savedSearches, int offset, int rows) {
         def result = []
-
         if (offset >= 0 && savedSearches.size() > 0) {
             def endIndex = offset + rows - 1
 
@@ -93,7 +78,6 @@ class SavedSearchesService {
         def lastPageOffset = (totalPages - 1) * rows
         def first = getPaginationUrl(0, rows, order)
         def last = getPaginationUrl(lastPageOffset, rows, order)
-
         if (offset < rows) {
             first = null
         }
@@ -110,7 +94,6 @@ class SavedSearchesService {
 
     private def String getPaginationUrl(int offset, int rows, String order) {
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-
         return g.createLink(controller:'user', action: 'savedsearches',
         params: [offset: offset, rows: rows, order: order])
     }
@@ -125,8 +108,7 @@ class SavedSearchesService {
     private def String reviseQueryString(String queryString) {
         def result = ""
         def parameters = queryString.split("&").sort()
-
-        parameters.each {parameter ->
+        parameters.each { parameter ->
             if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
                 if (result.size() > 0) {
                     result += "&"
@@ -137,7 +119,7 @@ class SavedSearchesService {
         return result
     }
 
-    def boolean updateSavedSearch(String userId, String id, String title, String queryString) {
-        return savedSearchService.updateSearch(userId, id, reviseQueryString(queryString), title)
+    def boolean updateSavedSearch(String id, String title) {
+        return savedSearchService.updateSearch(id, title)
     }
 }

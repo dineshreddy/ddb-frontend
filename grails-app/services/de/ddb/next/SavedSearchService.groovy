@@ -22,7 +22,7 @@ import groovy.json.*
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-
+import net.sf.json.JSONNull
 
 /**
  * @author chh
@@ -151,7 +151,7 @@ class SavedSearchService {
         }
     }
 
-    def deleteSavedSearch(userId, savedSearchIdList) {
+    def deleteSavedSearch(savedSearchIdList) {
         log.info "deleteSavedSearch()"
 
         //        def http = new HTTPBuilder("${configurationService.getElasticSearchUrl()}/ddb/savedSearch/_bulk")
@@ -205,20 +205,30 @@ class SavedSearchService {
         }
     }
 
-    def updateSearch(userId, id, queryString, title = null, description = null) {
+    def getSearch(id) {
+        log.info "getSearch()"
+        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/" +
+                id, false)
+        if(apiResponse.isOk()) {
+            def response = apiResponse.getResponse()
+            log.info "Response: ${response}"
+            return response
+        }
+    }
+
+    def updateSearch(id, title = null) {
         log.info "updateSearch()"
+        def oldValue = getSearch(id)
         def putBody = [
-            user: userId,
-            queryString: queryString,
+            user: oldValue._source.user,
+            queryString: oldValue._source.queryString.class != JSONNull ? oldValue._source.queryString : null,
             title: title,
-            description: description,
-            createdAt: new Date().getTime()
+            description: oldValue._source.description.class != JSONNull ? oldValue._source.description : null,
+            createdAt: oldValue._source.createdAt.class != JSONNull ? oldValue._source.createdAt : null
         ]
-
-        ApiResponse apiResponse = ApiConsumer.putJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/" +
+        def ApiResponse apiResponse = ApiConsumer.putJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/" +
                 id, false, putBody as JSON)
-
-        if(apiResponse.isOk()){
+        if(apiResponse.isOk()) {
             def response = apiResponse.getResponse()
             def savedSearchId = response._id
             log.info "Saved Search with the ID ${savedSearchId} is updated."

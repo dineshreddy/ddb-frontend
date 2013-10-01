@@ -1284,8 +1284,13 @@ function searchResultsInitializer(){
       return result;
     }
     var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
-    // take only the first 3 words as title
-    $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
+    if (queryString.length == 0) {
+      $("#addToSavedSearchesTitle").val(messages.ddbnext.Savedsearch_Without_Filter);
+    }
+    else {
+      // take only the first 3 words as title
+      $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
+    }
     $("#addToSavedSearchesModal").modal("show");
     $("#addToSavedSearchesConfirm").click(function(e) {
       $("#addToSavedSearchesModal").modal("hide");
