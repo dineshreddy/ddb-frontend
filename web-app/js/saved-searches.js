@@ -109,14 +109,19 @@ $(function() {
       $("#editSavedSearchModal").modal("show");
       $("#editSavedSearchConfirm").click(function(e) {
         $("#editSavedSearchModal").modal("hide");
+        var title = $("#editSavedSearchTitle").val();
         $.ajax({
           type: "PUT",
           contentType: "application/json",
           dataType: "json",
           url: jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
-          data: JSON.stringify({title: $("#editSavedSearchTitle").val()})
+          data: JSON.stringify({title: title})
         }).done(function() {
-          window.setTimeout('location.reload();', 100);
+          var editAnchor = $("#" + $("#editSavedSearchId").val());
+          editAnchor.attr("data-label", title);
+          var anchor = editAnchor.prev("a");
+          anchor.text(title);
+          anchor.attr("title", title);
         });
       });
     });

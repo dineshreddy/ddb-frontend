@@ -40,7 +40,8 @@ footer, .footer,
 .favorites-results-container .bookmarks-container, .favorites-results-content .results-pagination, 
 .favorites-results-content .remove-item-check, .favorites-results-content .select-all, .favorites-results-head > .span8,
 .favorites-results-head hr, #favorite-confirmation, .item-detail .favorite, #favoritesModal, #msDeleteFavorites,
- #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal {
+ #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
+ #editSavedSearchModal {
   display: none;
 }
 
