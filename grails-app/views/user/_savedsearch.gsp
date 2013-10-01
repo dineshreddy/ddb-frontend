@@ -22,7 +22,7 @@ limitations under the License.
           <input type="checkbox" name="id[${index++}]"
             value="${search.id}" class="remove-item-check">
           <div class="summary-main">
-            <h2 class="title">
+            <h2 class="saved-search-title">
               <a class="persist"
                 href="${request.contextPath + '/search?' + (search.queryString).encodeAsHTML()}"
                 title="${truncateHovercardTitle(title: search.label, length: 350)}">
@@ -31,7 +31,7 @@ limitations under the License.
               </a>
               <a id="${search.id}" class="edit-saved-search" data-label="${search.label}"
                  data-querystring="${search.queryString}">
-                <i class="icon-edit" style="vertical-align:middle;"
+                <i class="icon-edit edit-saved-search-icon"
                    title="${message(code: 'ddbnext.Edit_Savedsearch')}"></i>
               </a>
             </h2>
