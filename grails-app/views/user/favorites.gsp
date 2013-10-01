@@ -74,20 +74,49 @@ limitations under the License.
           <g:each in="${allFolders}">
             <li class="bookmarks-list bt bb bl br">
               <span class="h3"> 
-                <g:if test="${it.title.capitalize()=="Favorites"}"><g:message code="ddbnext.All_Favorites" /></g:if>
-                <g:else>${it.title.capitalize()}</g:else>
-            </span> <span class="bookmarks-list-number"> ${resultsNumber}</span> <g:if test="${resultsNumber > 0}">
-                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> <i
-                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
-                ></i>
+                <g:if test="${it.folder.folderId != selectedFolderId }">
+                  <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}">
+                    <g:if test="${it.folder.title.capitalize()=="Favorites"}">
+                      <g:message code="ddbnext.All_Favorites" />
+                    </g:if>
+                    <g:else>
+                      ${it.folder.title.capitalize()}
+                    </g:else>
+                  </g:link>
+                </g:if>
+                <g:else>
+                  <b>
+                    <g:if test="${it.folder.title.capitalize()=="Favorites"}">
+                      <g:message code="ddbnext.All_Favorites" />
+                    </g:if>
+                    <g:else>
+                      ${it.folder.title.capitalize()}
+                    </g:else>
+                  </b>
+                </g:else>
+              </span> 
+              <span class="bookmarks-list-number"> ${it.count}</span> 
+              <g:if test="${it.count > 0}">
+                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> 
+                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
                 </a>
-              </g:if> <g:else>
-                <a class="bookmarks-list-envelope" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> <i
-                  class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />"
-                ></i>
+              </g:if> 
+              <g:else>
+                <a class="bookmarks-list-envelope" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> 
+                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
                 </a>
-              </g:else></li>
+              </g:else>
+            </li>
           </g:each>
+          <li class="">
+            <span class="h3">
+              <g:form id="favorites-create" method="POST" name="favorites-create" mapping="createFavorites">
+                <button type="submit" class="submit" title="<g:message code="ddbnext.Create_Favorites" />">
+                  <span><g:message code="ddbnext.Create_Favorites"></g:message></span>
+                </button>
+              </g:form>
+            </span>
+          </li> 
         </ul>
       </div>
       <div class="span9 favorites-results-content">
@@ -218,5 +247,30 @@ limitations under the License.
       ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
+  <div class="modal hide fade" id="favoritesCreateConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesCreateConfirmLabel" aria-hidden="true">
+    <div class="modal-header">
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <h3 id="favoritesCreateConfirmLabel">
+        <g:message code="ddbnext.Create_Favorites_Title" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <div>
+        <g:message code="ddbnext.Create_Favorites_Name" />*
+        <br />
+        <input type="text" class="favorites-create-title" id="favorites-create-name">
+      </div>
+      <div>
+        <g:message code="ddbnext.Create_Favorites_Description" />
+        <br />
+        <textarea rows="10" cols="20" id="favorites-create-description"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.Close" /></button>
+      <button class="submit" id="create-confirm"><g:message code="ddbnext.Save" /> </button> 
+    </div>
+  </div>
+  
 </body>
 </html>

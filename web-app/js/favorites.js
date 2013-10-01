@@ -103,6 +103,31 @@ $(function() {
       });
       return false;
     });
+    
+    $('#favorites-create').submit(function() {
+      $('#favoritesCreateConfirmDialog').modal('show');
+      $('#create-confirm').click(function() {
+        var body = {
+          title : $('#favorites-create-name').val() ,
+          description : $('#favorites-create-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/_create",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            //$('#msDeleteFavorites').modal();
+            window.setTimeout('location.reload();', 100);
+          }
+        });
+        $('#favoritesCreateConfirmDialog').modal('hide');
+      });
+      return false;
+    });
+    
 
     $('#deletedFavoritesBtnClose').click(function(){
       $('#msDeleteFavorites').modal('hide');
@@ -110,7 +135,7 @@ $(function() {
     });
 
   }
-
+  
 });
 
 function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
@@ -180,3 +205,6 @@ function getParamWithDefault(name, defaultValue) {
   }
   return result;
 }
+
+
+

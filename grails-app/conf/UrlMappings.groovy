@@ -19,7 +19,7 @@ class UrlMappings {
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
-        
+
         "/searchresults/$q?" {
             controller="search"
             action="results"
@@ -29,7 +29,7 @@ class UrlMappings {
             controller="facets"
             action="facetsList"
         }
-        
+
         "/informationitem/$id"{
             controller="search"
             action="informationItem"
@@ -68,6 +68,11 @@ class UrlMappings {
         name delFavorites: "/apis/favorites/_delete" {
             controller="favorites"
             action=[POST: "deleteFavorites"]
+        }
+
+        name createFavoritesFolder: "/apis/favorites/_create" {
+            controller="favorites"
+            action=[POST: "createFavoritesFolder"]
         }
 
         "/apis/favorites/_get" {
@@ -134,7 +139,7 @@ class UrlMappings {
             controller="user"
             action="registration"
         }
-        
+
         "/user/resetPassword" {
             controller="user"
             action="passwordResetPage"
@@ -145,7 +150,7 @@ class UrlMappings {
             action="profile"
         }
 
-        "/user/favorites" {
+        "/user/favorites/$id" {
             controller="user"
             action="favorites"
         }
