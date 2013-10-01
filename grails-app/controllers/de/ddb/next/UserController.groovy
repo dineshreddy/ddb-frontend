@@ -279,7 +279,7 @@ class UserController {
             def urlsForOrder
 
             if (!params.criteria) {
-                params.criteria = "creationDate"
+                params.criteria = "label"
             }
             if (!params.order) {
                 params.order = "desc"
@@ -294,10 +294,10 @@ class UserController {
             }
             else {
                 if (params.order == "asc") {
-                    savedSearches.sort {a, b -> a.label <=> b.label}
+                    savedSearches.sort {a, b -> a.label.toLowerCase() <=> b.label.toLowerCase()}
                 }
                 else {
-                    savedSearches.sort {a, b -> b.label <=> a.label}
+                    savedSearches.sort {a, b -> b.label.toLowerCase() <=> a.label.toLowerCase()}
                 }
             }
             if (totalPages * rows < savedSearches.size()) {
@@ -353,7 +353,8 @@ class UserController {
                     ])
                     body(view: "_savedSearchesEmailBody", model: [
                         results:
-                        savedSearchesService.getSavedSearches(user.getId()).sort {a, b -> a.label <=> b.label},
+                        savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
+                            b.label.toLowerCase() <=> a.label.toLowerCase()},
                         userName: user.getFirstnameAndLastnameOrNickname()
                     ])
                 }
