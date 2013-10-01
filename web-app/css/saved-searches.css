@@ -23,6 +23,7 @@
 }
 
 .edit-saved-search-icon {
+  cursor: pointer;
   vertical-align: middle;
 }
 
