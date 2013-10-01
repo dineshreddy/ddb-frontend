@@ -113,6 +113,17 @@ hr {
   margin-left: 0;
 }
 
+#favorites-copy .submit{
+  margin-top:8px;
+  margin-left: 0;
+}
+
+#favorites-create .submit{
+  margin-top:8px;
+  margin-left: 0;
+  width: 200px;
+}
+
 .results-sorter {
   background: #efebe8;
   overflow: hidden;
@@ -145,6 +156,7 @@ hr {
 
 .favorites-results-controls .deleteBtn{
   float:left;
+  margin-right: 10px;
 }
 
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
@@ -454,4 +466,22 @@ hr {
 }
 .orderList{
 	margin:10px 0 10px 3px;
+}
+
+#favoritesCreateConfirmDialog.modal{
+  width: 400px !important;
+  margin-left: -200px !important; 
+}
+
+#favoritesCreateConfirmDialog .modal-body div {
+  margin-bottom: 10px;
+}
+
+#favorites-create-name {
+  width: 100%;
+}
+
+#favorites-create-description {
+  width: 100%;
+  resize: none;
 }

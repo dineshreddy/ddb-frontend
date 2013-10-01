@@ -25,11 +25,36 @@ class FavoritesPageService {
         if (user != null) {
             def result = bookmarksService.findFavoritesByUserId(user.getId())
             return result as JSON
-        }
-        else {
+        } else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
             return null
         }
+    }
+
+    def getFavoritesOfFolder(folderId) {
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            return result as JSON
+        } else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            return null
+        }
+    }
+
+    def getMainFavoritesId() {
+        def id = null
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = bookmarksService.findAllFolders(user.getId())
+            result.each {
+                if(it.title == "favorites"){
+                    id = it.folderId
+                }
+            }
+        }
+        log.info "getMainFavoritesId returns " +id
+        return id
     }
 
     private User getUserFromSession() {

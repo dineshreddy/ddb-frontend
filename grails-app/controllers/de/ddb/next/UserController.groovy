@@ -120,7 +120,13 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-            def String result = favoritesPageService.getFavorites()
+
+            def folderId = favoritesPageService.getMainFavoritesId()
+            if(params.id){
+                folderId = params.id
+            }
+
+            def String result = favoritesPageService.getFavoritesOfFolder(folderId)
 
             List items = JSON.parse(result) as List
             def totalResults= items.length()
@@ -129,9 +135,23 @@ class UserController {
             dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
             def lastPgOffset=0
+
+            def allFoldersInformation = []
+            def allFolders = favoritesPageService.getAllFoldersPerUser()
+            allFolders.each {
+                def container = [:]
+                def String favoritesObject = favoritesPageService.getFavoritesOfFolder(it.folderId)
+                List favoritesOfFolder = JSON.parse(favoritesObject) as List
+                container["folder"] = it
+                container["count"] = favoritesOfFolder.size()
+                allFoldersInformation.add(container)
+            }
+
             if (totalResults <1){
                 render(view: "favorites", model: [
+                    selectedFolderId: folderId,
                     resultsNumber: totalResults,
+                    allFolders: allFoldersInformation,
                     userName: userName,
                     dateString: dateTime,
                     createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(0,0,"desc",0),
@@ -147,7 +167,7 @@ class UserController {
                 // convertQueryParametersToSearchParameters modifies params
                 params.remove("query")
 
-                urlQuery["offset"]=0
+                urlQuery["offset"] = 0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
@@ -214,11 +234,12 @@ class UserController {
                 render(view: "favorites", model: [
                     title: urlQuery["query"],
                     results: resultsItems,
-                    allResultsOrdered:allResultsOrdered,
-                    allFolders:favoritesPageService.getAllFoldersPerUser(),
+                    selectedFolderId: folderId,
+                    allResultsOrdered: allResultsOrdered,
+                    allFolders: allFoldersInformation,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    viewType:  urlQuery["viewType"],
+                    viewType: urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
                     resultsNumber: totalResults,
@@ -229,7 +250,7 @@ class UserController {
                     rows: rows,
                     userName: userName,
                     dateString: dateTime,
-                    urlsForOrder:urlsForOrder
+                    urlsForOrder: urlsForOrder
                 ])
             }
         } else{

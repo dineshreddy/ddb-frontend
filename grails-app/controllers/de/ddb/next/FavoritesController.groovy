@@ -33,8 +33,7 @@ class FavoritesController {
             if (bookmarksService.addFavorite(user.getId(), params.id)) {
                 result = response.SC_CREATED
             }
-        }
-        else {
+        } else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "addFavorite returns " + result
@@ -49,8 +48,7 @@ class FavoritesController {
             if (bookmarksService.deleteFavorites(user.getId(), [params.ids])) {
                 result = response.SC_NO_CONTENT
             }
-        }
-        else {
+        } else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "deleteFavorite returns " + result
@@ -81,8 +79,7 @@ class FavoritesController {
             def result = bookmarksService.findFavoritesByItemIds(user.getId(), request.JSON)
             log.info "filterFavorites returns " + result
             render(result as JSON)
-        }
-        else {
+        } else {
             log.info "filterFavorites returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
         }
@@ -96,8 +93,7 @@ class FavoritesController {
             def bookmark = bookmarksService.findFavoriteByItemId(user.getId(), params.id)
             log.info "getFavorite returns " + bookmark
             render(bookmark as JSON)
-        }
-        else {
+        } else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "getFavorite returns " + result
@@ -111,11 +107,29 @@ class FavoritesController {
             def result = bookmarksService.findFavoritesByUserId(user.getId())
             log.info "getFavorites returns " + result
             render(result as JSON)
-        }
-        else {
+        } else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
         }
+    }
+
+    def createFavoritesFolder() {
+        log.info "createFavoritesFolder " + request.JSON
+
+        def title = request.JSON.title
+        def description = request.JSON.description
+
+        def result = response.SC_BAD_REQUEST
+        def User user = getUserFromSession()
+        if (user != null) {
+            if (bookmarksService.newFolder(user.getId(), title, false, description)) {
+                result = response.SC_CREATED
+            }
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+        log.info "createFavoritesFolder returns " + result
+        render(status: result)
     }
 
     private def getUserFromSession() {
