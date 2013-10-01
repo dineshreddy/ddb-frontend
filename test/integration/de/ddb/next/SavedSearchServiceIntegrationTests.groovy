@@ -71,7 +71,7 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
         def results = savedSearchService.findSavedSearchByUserId(userId)
         assert results.size() == 2
 
-        savedSearchService.deleteSavedSearch(userId,
+        savedSearchService.deleteSavedSearch(
                 [
                     goetheSavedSearchId,
                     mozartSavedSearchId
