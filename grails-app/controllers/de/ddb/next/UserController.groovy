@@ -331,7 +331,8 @@ class UserController {
                         user.getFirstnameAndLastnameOrNickname()
                     ])
                     body(view: "_savedSearchesEmailBody", model: [
-                        results: savedSearchesService.getSavedSearches(user.getId()),
+                        results:
+                        savedSearchesService.getSavedSearches(user.getId()).sort {a, b -> a.label <=> b.label},
                         userName: user.getFirstnameAndLastnameOrNickname()
                     ])
                 }
