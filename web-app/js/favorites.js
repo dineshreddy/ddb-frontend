@@ -22,11 +22,8 @@ $(function() {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-    $("#sendbookmarks").click(function(event) {
-      event.preventDefault()
-      $('#favoritesModal').modal({remote: $(this).attr("href")})
-    });
-
+    
+    
     $('.page-filter select').change(function(){
       var url = jsContextPath + "/user/favorites/?rows="+this.value;
       var order = getParam("order");
@@ -69,6 +66,8 @@ $(function() {
       }
     });
 
+    
+    /** Delete favorites */
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
@@ -93,7 +92,7 @@ $(function() {
           dataType : "json",
           success : function(data) {
             //$('#msDeleteFavorites').modal();
-            window.setTimeout('location.reload();', 100);
+            window.setTimeout('location.reload();', 500);
           }
         });
         $('#slaves input:checked').each(function() {
@@ -103,36 +102,77 @@ $(function() {
       });
       return false;
     });
+
     
-    $('#favorites-create').submit(function() {
-      $('#favoritesCreateConfirmDialog').modal('show');
+    /** Send email */
+    $(".sendbookmarks").click(function(event) {
+      event.preventDefault();
+      $('#favoritesModal').modal('show');
+      return false;
+    });
+    
+    
+    /** Create folder */
+    $('#folder-create').submit(function() {
+      $('#folderCreateConfirmDialog').modal('show');
       $('#create-confirm').click(function() {
         var body = {
-          title : $('#favorites-create-name').val() ,
-          description : $('#favorites-create-description').val()
+          title : $('#folder-create-name').val() ,
+          description : $('#folder-create-description').val()
         }
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
           traditional : true,
-          url : jsContextPath + "/apis/favorites/_create",
+          url : jsContextPath + "/apis/favorites/folder/create",
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
             //$('#msDeleteFavorites').modal();
-            window.setTimeout('location.reload();', 100);
+            window.setTimeout('location.reload();', 500);
           }
         });
-        $('#favoritesCreateConfirmDialog').modal('hide');
+        $('#folderCreateConfirmDialog').modal('hide');
       });
       return false;
     });
     
+    
+    /** Delete folder */
+    $(".deletefolders").click(function(event) {
+      event.preventDefault()
+      $('#folderDeleteConfirmDialog').modal('show');
 
-    $('#deletedFavoritesBtnClose').click(function(){
-      $('#msDeleteFavorites').modal('hide');
-      window.setTimeout('location.reload();', 1000);
+      var folderId = $(this).attr('data-folder-id');
+      
+      $('#delete-confirm').click(function() {
+        var body = {
+          folderId : folderId,
+          deleteItems : $('#folder-delete-check').is(':checked')
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/delete",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            //$('#msDeleteFavorites').modal();
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderDeleteConfirmDialog').modal('hide');
+      });
+      return false;
+      
     });
+
+
+//    $('#deletedFavoritesBtnClose').click(function(){
+//      $('#msDeleteFavorites').modal('hide');
+//      window.setTimeout('location.reload();', 1000);
+//    });
 
   }
   

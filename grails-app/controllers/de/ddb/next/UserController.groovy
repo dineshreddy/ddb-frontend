@@ -58,7 +58,7 @@ class UserController {
     LinkGenerator grailsLinkGenerator
 
     def index() {
-
+        log.info "index()"
         def loginStatus = LoginStatus.LOGGED_OUT
         if(!isCookiesActivated()){
             loginStatus = LoginStatus.NO_COOKIES
@@ -117,6 +117,7 @@ class UserController {
 
     //TODO Refactor in a new service most of the assisting code
     def favorites(){
+        log.info "favorites()"
         if(isUserLoggedIn()){
             def rows=20 //default
             if (params.rows){
@@ -127,7 +128,7 @@ class UserController {
                 folderId = params.id
             }
             def String result = favoritesPageService.getFavoritesOfFolder(folderId)
-            def by = ORDER_DATE;
+            def by = ORDER_DATE
             if (params.by){
                 if (params.by.toString()==ORDER_TITLE)
                     by = params.by
@@ -152,6 +153,7 @@ class UserController {
                 container["count"] = favoritesOfFolder.size()
                 allFoldersInformation.add(container)
             }
+            allFoldersInformation = sortFolders(allFoldersInformation)
 
             if (totalResults <1){
                 render(view: "favorites", model: [
@@ -191,10 +193,9 @@ class UserController {
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
                 def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
-                
+
                 //Default ordering is newest on top == DESC
                 allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
-                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
                 def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
 
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
@@ -204,8 +205,8 @@ class UserController {
                         allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
                         urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
                     }else{
-                         allResultsWithDate=allResultsWithDate.sort{it.label.toLowerCase()}.reverse()
-                         urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
+                        allResultsWithDate=allResultsWithDate.sort{it.label.toLowerCase()}.reverse()
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }
                     urlsForOrder["asc"]="#"
                 }else{
@@ -238,7 +239,7 @@ class UserController {
                             replyTo getUserFromSession().getEmail()
                             subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered,dateString: dateTime,userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
+                            model:[results: allResultsOrdered, dateString: dateTime, userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
@@ -275,18 +276,53 @@ class UserController {
         }
     }
 
-    def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
-        def dateTime = new Date()
-        dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd MM yyyy')
-        render(view: "sendfavorites", model: [results: results, userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),dateString:dateTime])
+    private def sortFolders(allFoldersInformations){
+        def out = []
+        //Inefficient sort, but we are expecting only very few entries
+
+        //Go over all allFoldersInformations
+        for(int i=0; i<allFoldersInformations.size(); i++){
+            String insertTitle = allFoldersInformations[i].folder.title.toLowerCase()
+            //and find the right place to fit
+            if(out.size() == 0){
+                out.add(allFoldersInformations[i])
+            }else{
+                for(int j=0; j<out.size(); j++){
+                    String compareTitle = out[j].folder.title.toLowerCase()
+                    if(insertTitle.compareTo(compareTitle) < 0){
+                        out.add(j, allFoldersInformations[i])
+                        break
+                    } else if(j == out.size()-1){
+                        out.add(allFoldersInformations[i])
+                        break
+                    }
+                }
+            }
+        }
+        // find the "favorites" and put it first
+        for(int i=0; i<out.size(); i++){
+            String insertTitle = out[i].folder.title
+            if(insertTitle == "favorites"){
+                def favoritesEntry = out[i]
+                out.remove(i)
+                out.add(0, favoritesEntry)
+                break
+            }
+        }
+        //Check for empty titles
+        for(int i=0; i<out.size(); i++){
+            if(out[i].folder.title.trim().isEmpty()){
+                out[i].folder.title = "-"
+            }
+        }
+        return out
     }
 
-    /* end favorites methods */
 
     /* begin saved searches methods */
 
     def getSavedSearches() {
+        log.info "getSavedSearches()"
         if (isUserLoggedIn()) {
             def user = getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
@@ -389,10 +425,12 @@ class UserController {
     /* end saved searches methods */
 
     def registration() {
+        log.info "registration()"
         render(view: "registration", model: [:])
     }
 
     def signup() {
+        log.info "signup()"
         List<String> errors = []
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
@@ -422,6 +460,7 @@ class UserController {
     }
 
     def passwordResetPage() {
+        log.info "passwordResetPage()"
         List<String> errors = []
         List<String> messages = []
         if (params.errors != null) {
@@ -442,6 +481,7 @@ class UserController {
     }
 
     def passwordReset() {
+        log.info "passwordReset()"
         List<String> messages = []
         List<String> errors = []
         if (StringUtils.isBlank(params.username)) {
@@ -468,6 +508,7 @@ class UserController {
     }
 
     def profile() {
+        log.info "profile()"
         if(isUserLoggedIn()){
             User user = getUserFromSession().clone()
             if (params.username) {
@@ -513,6 +554,7 @@ class UserController {
     }
 
     def saveProfile() {
+        log.info "saveProfile()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -625,6 +667,7 @@ class UserController {
     }
 
     def passwordChangePage() {
+        log.info "passwordChangePage()"
         if(isUserLoggedIn()){
             User user = getUserFromSession()
             if (user.isOpenIdUser()) {
@@ -658,6 +701,7 @@ class UserController {
     }
 
     def passwordChange() {
+        log.info "passwordChange()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -701,6 +745,7 @@ class UserController {
     }
 
     def delete() {
+        log.info "delete()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -725,6 +770,7 @@ class UserController {
     }
 
     def confirmationPage() {
+        log.info "confirmationPage()"
         List<String> errors = []
         List<String> messages = []
         if (params.errors != null) {
@@ -745,6 +791,7 @@ class UserController {
     }
 
     def confirm() {
+        log.info "confirm()"
         if (StringUtils.isBlank(params.type)) {
             forward controller: "error", action: "serverError"
         }
@@ -781,6 +828,7 @@ class UserController {
     }
 
     def requestOpenIdLogin() {
+        log.info "requestOpenIdLogin()"
         def provider = params.provider
         def loginStatus = LoginStatus.AUTH_PROVIDER_REQUEST
 

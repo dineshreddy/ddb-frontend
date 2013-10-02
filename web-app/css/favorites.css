@@ -50,7 +50,7 @@ hr {
   padding: 0 35% 0 10px;
 }
 
-.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number{
+.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete {
   position:absolute;
   top:0;
   right:0;
@@ -58,11 +58,17 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  padding-right: 70px;
+  padding-right: 55px;
 }
 
-.bookmarks-list-envelope{
+.bookmarks-list-envelope {
+  margin-top: 1px;
   padding-right: 30px;
+}
+
+.bookmarks-list-delete {
+  margin-top: 3px;
+  padding-right: 5px;
 }
 
 .bookmarks-list-edit{
@@ -118,7 +124,7 @@ hr {
   margin-left: 0;
 }
 
-#favorites-create .submit{
+#folder-create .submit{
   margin-top:8px;
   margin-left: 0;
   width: 200px;
@@ -422,7 +428,7 @@ hr {
   margin-left: -17px;
 }
 
-#sendbookmarks.cursor-pointer {
+.sendbookmarks.cursor-pointer {
   cursor: pointer;
 }
 
@@ -477,11 +483,19 @@ hr {
   margin-bottom: 10px;
 }
 
-#favorites-create-name {
+#folder-create-name {
   width: 100%;
 }
 
-#favorites-create-description {
+#folder-create-description {
   width: 100%;
   resize: none;
+}
+
+.folder-delete-check {
+  margin-top: -4px !important;
+}
+
+.folder-delete-row {
+  margin-bottom: 20px;
 }

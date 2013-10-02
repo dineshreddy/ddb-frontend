@@ -923,6 +923,7 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "Is folder with the ID ${folderId} deleted(true/false)? ${response.ok}"
+            refresh()
         }
 
     }

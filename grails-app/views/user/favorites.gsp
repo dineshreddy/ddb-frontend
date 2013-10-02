@@ -76,7 +76,7 @@ limitations under the License.
               <span class="h3"> 
                 <g:if test="${it.folder.folderId != selectedFolderId }">
                   <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}">
-                    <g:if test="${it.folder.title.capitalize()=="Favorites"}">
+                    <g:if test="${it.folder.title == "favorites"}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
                     <g:else>
@@ -86,7 +86,7 @@ limitations under the License.
                 </g:if>
                 <g:else>
                   <b>
-                    <g:if test="${it.folder.title.capitalize()=="Favorites"}">
+                    <g:if test="${it.folder.title == "favorites"}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
                     <g:else>
@@ -95,24 +95,22 @@ limitations under the License.
                   </b>
                 </g:else>
               </span> 
-              <span class="bookmarks-list-number"> ${it.count}</span> 
-              <g:if test="${it.count > 0}">
-                <a class="bookmarks-list-envelope cursor-pointer" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> 
-                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
-                </a>
-              </g:if> 
-              <g:else>
-                <a class="bookmarks-list-envelope" id="sendbookmarks" href="${createLink(controller:'user',action:'sendfavorites')}"> 
-                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
-                </a>
-              </g:else>
+              <span class="bookmarks-list-number"> ${it.count}</span>
+              <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
+                <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
+              </a>
+              <g:if test="${it.folder.title != "favorites"}">
+                <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}">
+                  <i class="icon-remove" title="<g:message code="ddbnext.delete_favorites" />" ></i>
+                </g:link>
+              </g:if>
             </li>
           </g:each>
           <li class="">
             <span class="h3">
-              <g:form id="favorites-create" method="POST" name="favorites-create" mapping="createFavorites">
+              <g:form id="folder-create" method="POST" name="folder-create">
                 <button type="submit" class="submit" title="<g:message code="ddbnext.Create_Favorites" />">
-                  <span><g:message code="ddbnext.Create_Favorites"></g:message></span>
+                  <span><g:message code="ddbnext.Create_Folder"></g:message></span>
                 </button>
               </g:form>
             </span>
@@ -201,6 +199,8 @@ limitations under the License.
       </div>
     </div>
   </div>
+  
+  <%-- Modal "Send email" --%>
   <g:if test="${resultsNumber > 0}">
     <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="favoritesLabel" aria-hidden="true">
       <div class="modal-header">
@@ -212,9 +212,10 @@ limitations under the License.
       <form method="POST" id="sendFavorites">
         <div class="modal-body">
           <fieldset>
-            <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required><br /> <small
-              class="muted"
-            ><g:message code="ddbnext.send_favorites_more_recipients" /></small><br />
+            <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required>
+            <br /> 
+            <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients" /></small>
+            <br />
           </fieldset>
         </div>
         <div class="modal-footer">
@@ -228,6 +229,10 @@ limitations under the License.
       </form>
     </div>
   </g:if>
+  
+  
+  <%-- Modal "Delete Favorites" --%>
+  <%-- 
   <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
@@ -244,6 +249,9 @@ limitations under the License.
       <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
     </div>
   </div>
+  --%>
+  
+  <%-- Modal "Confirm favorites delete" --%>
   <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
@@ -261,23 +269,26 @@ limitations under the License.
       ><g:message code="ddbnext.No" /></button>
     </div>
   </div>
-  <div class="modal hide fade" id="favoritesCreateConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesCreateConfirmLabel" aria-hidden="true">
+  
+  
+  <%-- Modal "Create folder" --%>
+  <div class="modal hide fade" id="folderCreateConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderCreateConfirmLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-      <h3 id="favoritesCreateConfirmLabel">
-        <g:message code="ddbnext.Create_Favorites_Title" />
+      <h3 id="folderCreateConfirmLabel">
+        <g:message code="ddbnext.Create_Folder_Title" />
       </h3>
     </div>
     <div class="modal-body">
       <div>
-        <g:message code="ddbnext.Create_Favorites_Name" />*
+        <g:message code="ddbnext.Create_Folder_Name" />*
         <br />
-        <input type="text" class="favorites-create-title" id="favorites-create-name">
+        <input type="text" class="folder-create-title" id="folder-create-name"  required="required">
       </div>
       <div>
-        <g:message code="ddbnext.Create_Favorites_Description" />
+        <g:message code="ddbnext.Create_Folder_Description" />
         <br />
-        <textarea rows="10" cols="20" id="favorites-create-description"></textarea>
+        <textarea rows="10" cols="20" class="folder-create-description" id="folder-create-description"></textarea>
       </div>
     </div>
     <div class="modal-footer">
@@ -285,6 +296,33 @@ limitations under the License.
       <button class="submit" id="create-confirm"><g:message code="ddbnext.Save" /> </button> 
     </div>
   </div>
+  
+  
+  <%-- Modal "Delete folder" --%>
+  <div class="modal hide fade" id="folderDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderDeleteConfirmLabel" aria-hidden="true">
+    <div class="modal-header">
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <h3 id="folderDeleteConfirmLabel">
+        <g:message code="ddbnext.Delete_Folder_Title" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <div>
+        <div class="folder-delete-row">
+          <g:message code="ddbnext.Delete_Folder_Confirm" />
+        </div>
+        <div class="folder-delete-row">
+          <input type="checkbox" class="folder-delete-check" id="folder-delete-check"/>
+          <g:message code="ddbnext.Delete_Folder_Checkbox" />
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.Cancel" /></button>
+      <button class="submit" id="delete-confirm"><g:message code="ddbnext.Confirm_Short" /> </button> 
+    </div>
+  </div>
+
   
 </body>
 </html>

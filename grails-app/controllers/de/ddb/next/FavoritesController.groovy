@@ -124,11 +124,57 @@ class FavoritesController {
         if (user != null) {
             if (bookmarksService.newFolder(user.getId(), title, false, description)) {
                 result = response.SC_CREATED
+                flash.message = "ddbnext.favorites_folder_create_succ"
             }
         } else {
             result = response.SC_UNAUTHORIZED
         }
         log.info "createFavoritesFolder returns " + result
+        render(status: result)
+    }
+
+    def deleteFavoritesFolder() {
+        log.info "deleteFavoritesFolder " + request.JSON
+        boolean deleteItems = request.JSON.deleteItems
+        def folderId = request.JSON.folderId
+        def result = response.SC_BAD_REQUEST
+
+        def User user = getUserFromSession()
+        if (user != null) {
+            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
+
+            // 1) Check if the current user is really the owner of this folder, else deny
+            // 2) Check if the folder is a default favorites folder
+            boolean isFolderOfUser = false
+            boolean isDefaultFavoritesFolder = false
+            foldersOfUser.each {
+                if(it.folderId == folderId){
+                    isFolderOfUser = true
+                    if(it.title == "favorites"){
+                        isDefaultFavoritesFolder = true
+                    }
+                }
+            }
+            if(isFolderOfUser){
+                if(isDefaultFavoritesFolder){
+                    result = response.SC_FORBIDDEN
+
+                }else{
+                    if(deleteItems){
+                    }
+
+                    bookmarksService.deleteFolder(folderId)
+                    result = response.SC_OK
+                    flash.message = "ddbnext.favorites_folder_delete_succ"
+                }
+            } else {
+                result = response.SC_UNAUTHORIZED
+                flash.error = "ddbnext.favorites_folder_delete_unauth"
+            }
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+        log.info "deleteFavoritesFolder returns " + result
         render(status: result)
     }
 
