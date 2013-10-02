@@ -282,7 +282,7 @@ class UserController {
                 params.criteria = "label"
             }
             if (!params.order) {
-                params.order = "desc"
+                params.order = "asc"
             }
             if (params.criteria == "creationDate") {
                 if (params.order == "asc") {
@@ -354,7 +354,7 @@ class UserController {
                     body(view: "_savedSearchesEmailBody", model: [
                         results:
                         savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
-                            b.label.toLowerCase() <=> a.label.toLowerCase()},
+                            a.label.toLowerCase() <=> b.label.toLowerCase()},
                         userName: user.getFirstnameAndLastnameOrNickname()
                     ])
                 }
