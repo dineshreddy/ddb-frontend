@@ -43,6 +43,8 @@ class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
+    private final static String ORDER_TITLE = "title"
+    private final static String ORDER_DATE = "date"
 
     def aasService
     def sessionService
@@ -120,13 +122,18 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
+            def by = ORDER_DATE;
+            if (params.by){
+                if (params.by.toString()==ORDER_TITLE)
+                    by = params.by
+            }
             def String result = favoritesPageService.getFavorites()
 
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
             def dateTime = new Date()
-            dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
+            dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
             def lastPgOffset=0
             if (totalResults <1){
@@ -165,17 +172,28 @@ class UserController {
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
                 def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
+                
                 //Default ordering is newest on top == DESC
                 allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
                 sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
                 def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
+                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])]
                 if (params.order=="asc"){
-                    allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
-                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc"])
+                    if(by.toString()==ORDER_DATE){
+                        allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                    }else{
+                         allResultsWithDate=allResultsWithDate.sort{}.reverse()
+                         urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
+                    }
                     urlsForOrder["asc"]="#"
                 }else{
+                    if(by.toString()==ORDER_TITLE){
+                        urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
+                        allResultsWithDate.sort{}
+                    }
                     params.order="desc"
                 }
 
@@ -189,7 +207,6 @@ class UserController {
 
                 if (request.method=="POST"){
                     def List emails = []
-
                     if (params.email.contains(',')){
                         emails=params.email.tokenize(',')
                     }else{
@@ -212,7 +229,7 @@ class UserController {
                 }
 
                 render(view: "favorites", model: [
-                    title: urlQuery["query"],
+                    ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
                     allResultsOrdered:allResultsOrdered,
                     allFolders:favoritesPageService.getAllFoldersPerUser(),
@@ -229,6 +246,7 @@ class UserController {
                     rows: rows,
                     userName: userName,
                     dateString: dateTime,
+                    urlsForOrderTitle:urlsForOrderTitle,
                     urlsForOrder:urlsForOrder
                 ])
             }
@@ -240,7 +258,7 @@ class UserController {
     def sendfavorites(){
         def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
         def dateTime = new Date()
-        dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
+        dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd MM yyyy')
         render(view: "sendfavorites", model: [results: results, userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),dateString:dateTime])
     }
 
@@ -296,7 +314,7 @@ class UserController {
                 ]
             }
             render(view: "savedsearches", model: [
-                dateString: g.formatDate(date: new Date(), format: "dd.MM.yyyy"),
+                dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
                 paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),

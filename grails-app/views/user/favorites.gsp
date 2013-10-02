@@ -120,7 +120,21 @@ limitations under the License.
               </div>
             </div>
             <div class="results-sorter">
-              <span><input type="checkbox" class="select-all" id="checkall"></span> <span><g:message code="ddbnext.HierarchyHelp_Leaf"></g:message></span>
+              <span><input type="checkbox" class="select-all" id="checkall"></span> 
+              <span>
+              <g:if test="${params.order== 'desc'}" >
+                  <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
+                    <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
+                    <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/></span>
+                  </a>
+                </g:if> 
+                <g:else>
+                  <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
+                    <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
+                    <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
+                  </a>
+                </g:else>
+              </span>
               <span class="favorite-dateheader"> 
                 <g:if test="${params.order== 'desc'}" >
                   <a href="${urlsForOrder["asc"].encodeAsHTML()}">
