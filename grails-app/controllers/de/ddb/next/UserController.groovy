@@ -185,14 +185,14 @@ class UserController {
                         allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
                         urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
                     }else{
-                         allResultsWithDate=allResultsWithDate.sort{}.reverse()
+                         allResultsWithDate=allResultsWithDate.sort{it.label.toLowerCase()}.reverse()
                          urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }
                     urlsForOrder["asc"]="#"
                 }else{
                     if(by.toString()==ORDER_TITLE){
                         urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
-                        allResultsWithDate.sort{}
+                        allResultsWithDate.sort{it.label.toLowerCase()}
                     }
                     params.order="desc"
                 }
