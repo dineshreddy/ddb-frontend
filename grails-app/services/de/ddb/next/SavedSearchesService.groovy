@@ -1,10 +1,11 @@
 package de.ddb.next
 
+import net.sf.json.JSONNull
+
+import org.codehaus.groovy.grails.web.json.*
+
 import de.ddb.next.beans.SavedSearch
 import de.ddb.next.beans.User
-import grails.converters.JSON
-import net.sf.json.JSONNull
-import org.codehaus.groovy.grails.web.json.*
 
 class SavedSearchesService {
     def transactional = false
@@ -22,6 +23,18 @@ class SavedSearchesService {
             result = savedSearchService.deleteSavedSearch(ids)
         }
         return result
+    }
+
+    /**
+     * Get all saved searches from saved search service. This method is called from profile.gsp.
+     *
+     * @return list of SavedSearch objects
+     */
+    def getSavedSearches() {
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        if (user != null) {
+            return getSavedSearches(user.getId())
+        }
     }
 
     /**
