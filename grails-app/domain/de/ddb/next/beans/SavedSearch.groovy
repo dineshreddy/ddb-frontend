@@ -20,6 +20,8 @@ import groovy.transform.ToString
 @ToString(includeNames=true)
 
 class SavedSearch {
+    static SEARCH_PARAMETERS = [query: "", "facetValues[]": ""]
+
     String id
     String label
     String queryString
@@ -72,7 +74,7 @@ class SavedSearch {
             def parameter = it.split('=')
             def parameterName = URLDecoder.decode(parameter[0], "UTF-8")
 
-            if (parameter.size() > 1) {
+            if (parameter.size() > 1 && SEARCH_PARAMETERS.containsKey(parameterName)) {
                 def parameterValue = URLDecoder.decode(parameter[1], "UTF-8")
                 def term = new SearchQueryTerm(parameterValue)
                 def oldTerms = result.get(parameterName)
