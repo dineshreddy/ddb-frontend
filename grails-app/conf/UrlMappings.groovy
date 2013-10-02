@@ -70,11 +70,6 @@ class UrlMappings {
             action=[POST: "deleteFavorites"]
         }
 
-        //        name createFavoritesFolder: "/apis/favorites/_create" {
-        //            controller="favorites"
-        //            action=[POST: "createFavoritesFolder"]
-        //        }
-
         "/apis/favorites/folder/create" {
             controller="favorites"
             action="createFavoritesFolder"
@@ -88,6 +83,11 @@ class UrlMappings {
         "/apis/favorites/_get" {
             controller="favorites"
             action=[POST: "filterFavorites"]
+        }
+
+        "/apis/favorites/copy" {
+            controller="favorites"
+            action="copyFavorites"
         }
 
         "/apis/favorites/$id" {

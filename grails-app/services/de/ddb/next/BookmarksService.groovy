@@ -339,7 +339,7 @@ class BookmarksService {
 
             def items = [] as Set
             response.hits.hits.each { it ->
-                items.add(it._source.item)
+                items.add(it._id)
             }
             return items
         }

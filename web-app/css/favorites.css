@@ -499,3 +499,7 @@ hr {
 .folder-delete-row {
   margin-bottom: 20px;
 }
+
+.favorites-copy-selection {
+  width: 100%;
+}

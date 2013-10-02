@@ -219,12 +219,8 @@ limitations under the License.
           </fieldset>
         </div>
         <div class="modal-footer">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbnext.Close" />
-          </button>
-          <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now" />
-          </button>
+          <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message code="ddbnext.Close" /></button>
+          <button class="btn-padding" type="submit" id="btnSubmit"><g:message code="ddbnext.send_now" /></button>
         </div>
       </form>
     </div>
@@ -261,12 +257,38 @@ limitations under the License.
     </div>
     <div class="modal-body">
       <g:message code="ddbnext.delete_favorites_dialog" />
-      <span id="totalNrSelectedObjects"></span>
+      <span class="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /> </button> <button class="submit"
-        data-dismiss="modal"
-      ><g:message code="ddbnext.No" /></button>
+      <button class="submit" id="id-confirm"><g:message code="ddbnext.Yes" /></button> 
+      <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.No" /></button>
+    </div>
+  </div>
+
+
+  <%-- Modal "Favorites copy" --%>
+  <div class="modal hide fade" id="favoritesCopyDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesCopyLabel" aria-hidden="true">
+    <div class="modal-header">
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <h3 id="favoritesCopyLabel">
+        <g:message code="ddbnext.copy_confirmation" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <g:message code="ddbnext.copy_favorites_dialog" />
+      <span class="totalNrSelectedObjects"></span>
+      <br />
+      <select name="copyTargets" size="10" multiple="multiple" class="favorites-copy-selection">
+        <g:each in="${allFolders}">
+          <g:if test="${it.folder.folderId != selectedFolderId }" >
+            <option value="${it.folder.folderId}">${it.folder.title}</option>
+          </g:if>
+        </g:each>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.Close" /></button>
+      <button class="submit" id="copy-confirm"><g:message code="ddbnext.Save" /> </button> 
     </div>
   </div>
   

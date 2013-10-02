@@ -18,6 +18,7 @@ package de.ddb.next
 import grails.converters.JSON
 
 import javax.servlet.http.HttpSession
+import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16
 
 import de.ddb.next.beans.User
 
@@ -144,7 +145,7 @@ class FavoritesController {
             def foldersOfUser = bookmarksService.findAllFolders(user.getId())
 
             // 1) Check if the current user is really the owner of this folder, else deny
-            // 2) Check if the folder is a default favorites folder
+            // 2) Check if the folder is a default favorites folder -> if true, deny
             boolean isFolderOfUser = false
             boolean isDefaultFavoritesFolder = false
             foldersOfUser.each {
@@ -176,6 +177,28 @@ class FavoritesController {
         }
         log.info "deleteFavoritesFolder returns " + result
         render(status: result)
+    }
+
+    def copyFavorites() {
+        log.info "copyFavorites " + request.JSON
+        def itemIds = request.JSON.ids
+        def folderIds = request.JSON.folders
+
+        def result = response.SC_BAD_REQUEST
+
+        println "############################# 01 itemIds="+itemIds
+        def User user = getUserFromSession()
+        println "############################# 02 folderIds="+folderIds
+        def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
+        println "############################# 03 favoriteIds="+favoriteIds
+        if(bookmarksService.copyFavoritesToFolders(favoriteIds as List, folderIds as List)) {
+            result = response.SC_OK
+
+        }
+        println "############################# 04 "
+
+        render(status: result)
+
     }
 
     private def getUserFromSession() {
