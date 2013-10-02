@@ -514,7 +514,23 @@ function searchResultsInitializer(){
   $('.clear-filters').click(function(){
     removeSearchCookieParameter('facetValues[]');
   });
-  
+
+  function hideError() {
+	  $('.errors-container').remove();
+  }
+
+  function showError(errorHtml) {
+      var errorContainer = ($('.search-results-list').find('.errors-container').length > 0) ?
+    		  $('.search-results-list').find('.errors-container') : $(document.createElement('div'));
+      var errorIcon = $(document.createElement('i'));
+      errorContainer.addClass('errors-container');
+      errorIcon.addClass('icon-exclamation-sign');
+      errorContainer.html(errorHtml);
+      errorContainer.prepend(errorIcon);
+
+      $('.search-results-list').prepend(errorContainer);
+  }
+
   function fetchResultsList(url, errorCallback){
     
     var divSearchResultsOverlayModal = $(document.createElement('div'));
@@ -534,7 +550,6 @@ function searchResultsInitializer(){
       async: true,
       url: url+'&reqType=ajax',
       success: function(data){
-        
         historyManager(url);
         if(!historySupport){
           return;
@@ -595,15 +610,7 @@ function searchResultsInitializer(){
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
         
-        var error_GeneralError =  messages.ddbnext.An_Error_Occured;
-        var errorContainer = ($('.search-results-list').find('.errors-container').length>0)?$('.search-results-list').find('.errors-container'):$(document.createElement('div'));
-        var errorIcon = $(document.createElement('i'));
-        errorContainer.addClass('errors-container');
-        errorIcon.addClass('icon-exclamation-sign');
-        errorContainer.html(error_GeneralError);
-        errorContainer.prepend(errorIcon);
-        
-        $('.search-results-list').prepend(errorContainer);
+        showError(messages.ddbnext.An_Error_Occured);
         
         if(errorCallback){
           errorCallback();
@@ -1284,25 +1291,28 @@ function searchResultsInitializer(){
       return result;
     }
     var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
-    if (queryString.length == 0) {
-      $("#addToSavedSearchesTitle").val(messages.ddbnext.Savedsearch_Without_Filter);
-    }
-    else {
-      // take only the first 3 words as title
-      $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
-    }
+    // take only the first 3 words as title
+    $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
     $("#addToSavedSearchesModal").modal("show");
+    $("#addToSavedSearchesConfirm").unbind("click");
     $("#addToSavedSearchesConfirm").click(function(e) {
       $("#addToSavedSearchesModal").modal("hide");
-      $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        dataType: "json",
-        url: jsContextPath + "/apis/savedsearches",
-        data: JSON.stringify({query: window.location.search.substring(1), title: $("#addToSavedSearchesTitle").val()})
-      }).done(function() {
-        disableSavedSearch($(".add-to-saved-searches"));
-      });
+      var title = $("#addToSavedSearchesTitle").val();
+      if (title.length > 0) {
+    	hideError();
+        $.ajax({
+          type: "PUT",
+          contentType: "application/json",
+          dataType: "json",
+          url: jsContextPath + "/apis/savedsearches",
+          data: JSON.stringify({query: window.location.search.substring(1), title: title})
+        }).done(function() {
+          disableSavedSearch($(".add-to-saved-searches"));
+        });
+      }
+      else {
+        showError(messages.ddbnext.Savedsearch_Without_Title);
+      }
     });
   }
 

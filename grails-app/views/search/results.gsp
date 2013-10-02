@@ -83,6 +83,8 @@ limitations under the License.
             </h3>
           </div>
           <div class="modal-body">
+            <div><b><g:message code="ddbnext.Mandatory"/></b></div>
+            <br/>
             <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
             <div><input id="addToSavedSearchesTitle" type="text"></div>
           </div>
