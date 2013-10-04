@@ -400,8 +400,8 @@ class BookmarksService {
         }
         log.info "type: ${type}"
         if(folderIdList.size() == 0){
-            def favoritesFolderId = findFoldersByTitle(userId, "favorites")[0]
-            folderIdList.add(favoritesFolderId.folderId)
+            def favoritesFolder = findFoldersByTitle(userId, "favorites")[0]
+            folderIdList.add(favoritesFolder.folderId)
         }
         return saveBookmark(userId, folderIdList, itemId, type)
     }
@@ -527,7 +527,7 @@ class BookmarksService {
         def bookmarkIds = []
         def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
         allFavorites.each { it ->
-            if(it.itemId  in itemIds) {
+            if(it.itemId  in itemIds.ids) {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
@@ -699,14 +699,11 @@ class BookmarksService {
     }
 
     /*
-     * CAREFULL! This method is buggy. The item is not copied but moved, and currently it seems as it is just deleted!
-     * 
      * Given a list of bookmark ID, update its folder values to [folderId]
      *
      * bookmarkIds, list of bookmarks to update
      * folderIds, list of folderId as input
      */
-    @Deprecated
     def copyFavoritesToFolders(List<String> favoriteIds, List<String> folderIds) {
         log.info "copyFavoritesToFolders()"
 
