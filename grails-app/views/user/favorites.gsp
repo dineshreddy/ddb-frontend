@@ -31,7 +31,13 @@ limitations under the License.
     <div class="row favorites-results-head">
       <div class="span8">
         <h1>
-          <g:message code="ddbnext.Favorites_Header" />
+          <g:message code="ddbnext.Favorites_Header" /> 
+          <g:if test="${selectedFolderTitle == "favorites"}">
+            <g:message code="ddbnext.All_Favorites" /> 
+          </g:if>
+          <g:else>
+            ${selectedFolderTitle.capitalize()}
+          </g:else>
         </h1>
       </div>
       <div class="print-header">
@@ -72,7 +78,7 @@ limitations under the License.
       <div class="span3 bookmarks-container">
         <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolderId}">
           <g:each in="${allFolders}">
-            <li class="bookmarks-list bt bb bl br">
+            <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolderId }">selected-folder</g:if>">
               <span class="h3"> 
                 <g:if test="${it.folder.folderId != selectedFolderId }">
                   <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}">
@@ -256,7 +262,12 @@ limitations under the License.
       </h3>
     </div>
     <div class="modal-body">
-      <g:message code="ddbnext.delete_favorites_dialog" />
+      <g:if test="${selectedFolderTitle == "favorites"}">
+        <g:message code="ddbnext.delete_favorites_from_all_dialog" />
+      </g:if>
+      <g:else>
+        <g:message code="ddbnext.delete_favorites_dialog" />
+      </g:else>
       <span class="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">

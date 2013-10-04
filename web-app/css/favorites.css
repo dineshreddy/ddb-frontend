@@ -32,6 +32,10 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-list.selected-folder {
+  background-color: transparent !important;
+}
+
 .bookmarks-list a.h3, .bookmarks-list span.h3 {
   color: #3e3a37;
   font-size: 1.063em;

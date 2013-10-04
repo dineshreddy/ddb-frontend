@@ -54,6 +54,7 @@ class UserController {
     def newsletterService
     def favoritesPageService
     def savedSearchesService
+    def bookmarksService
 
     LinkGenerator grailsLinkGenerator
 
@@ -135,6 +136,7 @@ class UserController {
                     by = params.by
             }
 
+            def selectedFolder = bookmarksService.findFolderById(folderId)
 
             List items = JSON.parse(result) as List
             def totalResults= items.length()
@@ -159,6 +161,7 @@ class UserController {
             if (totalResults <1){
                 render(view: "favorites", model: [
                     selectedFolderId: folderId,
+                    selectedFolderTitle: selectedFolder.title,
                     mainFavoriteFolderId: mainFavoriteFolderId,
                     resultsNumber: totalResults,
                     allFolders: allFoldersInformation,
@@ -254,6 +257,7 @@ class UserController {
                     ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
                     selectedFolderId: folderId,
+                    selectedFolderTitle: selectedFolder.title,
                     mainFavoriteFolderId: mainFavoriteFolderId,
                     allResultsOrdered: allResultsOrdered,
                     allFolders: allFoldersInformation,
