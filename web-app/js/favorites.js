@@ -80,8 +80,10 @@ $(function() {
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
+        var folderId = $('#folder-list').attr('data-folder-selected')
         var body = {
-            ids : selected
+            ids : selected,
+            folderId: folderId
         }
         jQuery.ajax({
           type : 'POST',

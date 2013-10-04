@@ -70,7 +70,7 @@ limitations under the License.
     </div>
     <div class="row favorites-results-container">
       <div class="span3 bookmarks-container">
-        <ul class="bookmarks-lists unstyled">
+        <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolderId}">
           <g:each in="${allFolders}">
             <li class="bookmarks-list bt bb bl br">
               <span class="h3"> 
@@ -280,7 +280,7 @@ limitations under the License.
       <br />
       <select name="copyTargets" size="10" multiple="multiple" class="favorites-copy-selection">
         <g:each in="${allFolders}">
-          <g:if test="${it.folder.folderId != selectedFolderId }" >
+          <g:if test="${it.folder.folderId != selectedFolderId && it.folder.folderId != mainFavoriteFolderId}" >
             <option value="${it.folder.folderId}">${it.folder.title}</option>
           </g:if>
         </g:each>
