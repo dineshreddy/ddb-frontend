@@ -123,7 +123,8 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-            def folderId = favoritesPageService.getMainFavoritesId()
+            def mainFavoriteFolderId = favoritesPageService.getMainFavoritesFolderId()
+            def folderId = mainFavoriteFolderId
             if(params.id){
                 folderId = params.id
             }
@@ -158,6 +159,7 @@ class UserController {
             if (totalResults <1){
                 render(view: "favorites", model: [
                     selectedFolderId: folderId,
+                    mainFavoriteFolderId: mainFavoriteFolderId,
                     resultsNumber: totalResults,
                     allFolders: allFoldersInformation,
                     userName: userName,
@@ -252,6 +254,7 @@ class UserController {
                     ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
                     selectedFolderId: folderId,
+                    mainFavoriteFolderId: mainFavoriteFolderId,
                     allResultsOrdered: allResultsOrdered,
                     allFolders: allFoldersInformation,
                     isThumbnailFiltered: params.isThumbnailFiltered,

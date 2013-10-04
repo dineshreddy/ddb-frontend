@@ -73,15 +73,17 @@ $(function() {
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('#totalNrSelectedObjects').html(selected.length);
+      $('.totalNrSelectedObjects').html(selected.length);
       $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
+        var folderId = $('#folder-list').attr('data-folder-selected')
         var body = {
-            ids : selected
+            ids : selected,
+            folderId: folderId
         }
         jQuery.ajax({
           type : 'POST',
@@ -169,6 +171,48 @@ $(function() {
     });
 
 
+    /** Copy favorites */
+    $('#favorites-copy').submit(function() {
+      var selected = new Array();
+      $('#slaves input:checked').each(function() {
+        selected.push($(this).attr('value'));
+      });
+      $('.totalNrSelectedObjects').html(selected.length);
+      $('#favoritesCopyDialog').modal('show');
+      $('#copy-confirm').click(function() {
+        var selected = new Array();
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('value'));
+        });
+        
+        var selectedFolders = $('.favorites-copy-selection').val()
+        
+        var body = {
+            ids : selected,
+            folders: selectedFolders
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/copy",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            //$('#msDeleteFavorites').modal();
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('checked', false));
+        });
+        $('#favoritesCopyDialog').modal('hide');
+      });
+      return false;
+    });
+    
+    
+    
 //    $('#deletedFavoritesBtnClose').click(function(){
 //      $('#msDeleteFavorites').modal('hide');
 //      window.setTimeout('location.reload();', 1000);

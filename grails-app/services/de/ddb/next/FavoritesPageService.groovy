@@ -42,7 +42,7 @@ class FavoritesPageService {
         }
     }
 
-    def getMainFavoritesId() {
+    def getMainFavoritesFolderId() {
         def id = null
         def User user = getUserFromSession()
         if (user != null) {
@@ -53,7 +53,7 @@ class FavoritesPageService {
                 }
             }
         }
-        log.info "getMainFavoritesId returns " +id
+        log.info "getMainFavoritesFolderId returns " +id
         return id
     }
 
