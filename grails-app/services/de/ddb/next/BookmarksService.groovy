@@ -200,7 +200,7 @@ class BookmarksService {
         //            }
         //        }
 
-        def query = ["q":"${userId} AND folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
+        def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
@@ -333,7 +333,7 @@ class BookmarksService {
 
         def postBody = [filter: [terms: [item: itemIdList]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, ["q":"user:${userId}"])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -444,7 +444,7 @@ class BookmarksService {
 
         def postBody = [filter: [term: [title: title]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, postBody as JSON, ["q":"user:${userId}"])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -497,7 +497,7 @@ class BookmarksService {
         //            }
         //        }
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:${userId}", "size":"${DEFAULT_SIZE}"])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:\"${userId}\"", "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -584,9 +584,9 @@ class BookmarksService {
 
         def queryParameter = [:]
         if(folderId) {
-            queryParameter = ["q":"user:${userId} AND folder:\"${folderId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         } else {
-            queryParameter = ["q":"user:${userId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:\"${userId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         }
 
         def postBody = [filter: [terms: [item: itemIdList]]]
@@ -646,9 +646,9 @@ class BookmarksService {
 
         def queryParameter = [:]
         if(folderId) {
-            queryParameter = ["q":"user:${userId} AND folder:\"${folderId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         } else {
-            queryParameter = ["q":"user:${userId}".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
+            queryParameter = ["q":"user:\"${userId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
         }
 
         def postBody = [filter: [terms: [item: [itemId]]]]

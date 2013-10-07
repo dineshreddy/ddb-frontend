@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.List
 import java.util.Locale
 
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
 
@@ -19,7 +20,7 @@ class FavoritesPageService {
     def grailsApplication
     def searchService
     def configurationService
-
+    def messageSource
 
     def getFavorites() {
         def User user = getUserFromSession()
@@ -108,6 +109,7 @@ class FavoritesPageService {
         def queryItems
         def orQuery=""
         def allRes = []
+
         items.eachWithIndex() { it, i ->
             if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
                 orQuery=it.itemId
@@ -126,6 +128,35 @@ class FavoritesPageService {
                 allRes.add(item)
             }
         }
+
+        // Add empty items for all orphaned elasticsearch bookmarks
+        if(items.size() > allRes.size()){
+            def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+            def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_unknown.png").toString()
+            def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists",null, LocaleContextHolder.getLocale())
+
+            def foundItemIds = allRes.collect{ it.id }
+            items.each{
+                // item not found
+                if(!(it.itemId in foundItemIds)){
+
+                    def emptyDummyItem = [:]
+                    emptyDummyItem["id"] = it.itemId
+                    emptyDummyItem["view"] = []
+                    emptyDummyItem["label"] = label
+                    emptyDummyItem["latitude"] = ""
+                    emptyDummyItem["longitude"] = ""
+                    emptyDummyItem["category"] = "Kultur"
+                    emptyDummyItem["preview"] = [:]
+                    emptyDummyItem["preview"]["title"] = label
+                    emptyDummyItem["preview"]["subtitle"] = ""
+                    emptyDummyItem["preview"]["media"] = ["unknown"]
+                    emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
+                    allRes.add(emptyDummyItem)
+                }
+            }
+        }
+
         return allRes
     }
 
