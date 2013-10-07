@@ -175,27 +175,7 @@ $(document).ready(function() {
     
     if (author.toString().length>270){
         author = $.trim(author.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
-    }
-    
-    //append type to the author
-    if (author.toString().length>0){
-       var localizedtype = 'unknown';
-       
-       if (type == 'image') {
-    	   localizedtype = messages.ddbnext.Image;
-       } else if (type == 'audio') {
-    	   localizedtype = messages.ddbnext.Audio;
-       } else if (type == 'video') {
-    	   localizedtype = messages.ddbnext.Video;
-       }
-    	   
-       author = localizedtype() + ': ' + author;
     }    
-    
-    //append copyright symbol 
-    if (rights.toString().length>0){
-        rights = String.fromCharCode(169) + ' ' + rights;
-    }
     
     if (rights.toString().length>270){
         rights = $.trim(rights.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
