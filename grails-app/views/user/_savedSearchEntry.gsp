@@ -37,6 +37,5 @@ limitations under the License.
     </g:each>
   </g:if>
 </g:each>
-<span style="font-weight: bold"><g:message
-    code="ddbnext.Search_term" />:</span>
-${(search.query != null ? search.query : message(code: 'ddbnext.Savedsearch_Without_Filter')) + facetValues}
+<span style="font-weight: bold"><g:message code="ddbnext.Search_term" />:</span>
+${(search.query != null ? search.query : "*") + facetValues}
