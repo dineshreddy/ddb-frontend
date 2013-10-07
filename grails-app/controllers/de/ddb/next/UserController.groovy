@@ -124,8 +124,8 @@ class UserController {
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-            def mainFavoriteFolderId = favoritesPageService.getMainFavoritesFolderId()
-            def folderId = mainFavoriteFolderId
+            def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+            def folderId = mainFavoriteFolder.folderId
             if(params.id){
                 folderId = params.id
             }
@@ -137,6 +137,12 @@ class UserController {
             }
 
             def selectedFolder = bookmarksService.findFolderById(folderId)
+
+            // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
+            if(selectedFolder == null){
+                redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
+                return
+            }
 
             List items = JSON.parse(result) as List
             def totalResults= items.length()
@@ -160,9 +166,8 @@ class UserController {
 
             if (totalResults <1){
                 render(view: "favorites", model: [
-                    selectedFolderId: folderId,
-                    selectedFolderTitle: selectedFolder.title,
-                    mainFavoriteFolderId: mainFavoriteFolderId,
+                    selectedFolder: selectedFolder,
+                    mainFavoriteFolder: mainFavoriteFolder,
                     resultsNumber: totalResults,
                     allFolders: allFoldersInformation,
                     userName: userName,
@@ -256,9 +261,8 @@ class UserController {
                 render(view: "favorites", model: [
                     ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
-                    selectedFolderId: folderId,
-                    selectedFolderTitle: selectedFolder.title,
-                    mainFavoriteFolderId: mainFavoriteFolderId,
+                    selectedFolder: selectedFolder,
+                    mainFavoriteFolder: mainFavoriteFolder,
                     allResultsOrdered: allResultsOrdered,
                     allFolders: allFoldersInformation,
                     isThumbnailFiltered: params.isThumbnailFiltered,

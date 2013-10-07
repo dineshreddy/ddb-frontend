@@ -527,7 +527,7 @@ class BookmarksService {
         def bookmarkIds = []
         def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
         allFavorites.each { it ->
-            if(it.itemId  in itemIds.ids) {
+            if(it.itemId  in itemIds) {
                 bookmarkIds.add(it.bookmarkId)
             }
         }

@@ -1,4 +1,5 @@
 package de.ddb.next
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
@@ -42,19 +43,19 @@ class FavoritesPageService {
         }
     }
 
-    def getMainFavoritesFolderId() {
-        def id = null
+    def getMainFavoritesFolder() {
+        Folder folder = null
         def User user = getUserFromSession()
         if (user != null) {
             def result = bookmarksService.findAllFolders(user.getId())
             result.each {
                 if(it.title == "favorites"){
-                    id = it.folderId
+                    folder = it
                 }
             }
         }
-        log.info "getMainFavoritesFolderId returns " +id
-        return id
+        log.info "getMainFavoritesFolder returns " +folder
+        return folder
     }
 
     private User getUserFromSession() {

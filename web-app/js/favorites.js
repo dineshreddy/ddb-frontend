@@ -93,7 +93,6 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -130,7 +129,6 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -160,7 +158,6 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -199,7 +196,6 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -211,6 +207,39 @@ $(function() {
       return false;
     });
     
+
+    /** Edit folder */
+    $('.editfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var oldFolderTitle = $(this).attr('data-folder-title');
+      var oldFolderDescription = $(this).attr('data-folder-description');
+      $('#folder-edit-id').val(folderId);
+      $('#folder-edit-name').val(oldFolderTitle);
+      $('#folder-edit-description').val(oldFolderDescription);
+      
+      $('#folderEditConfirmDialog').modal('show');
+      $('#edit-confirm').click(function() {
+        var body = {
+          id : $('#folder-edit-id').val(),
+          title : $('#folder-edit-name').val(),
+          description : $('#folder-edit-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/edit",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderEditConfirmDialog').modal('hide');
+      });
+      return false;
+    });
     
     
 //    $('#deletedFavoritesBtnClose').click(function(){
