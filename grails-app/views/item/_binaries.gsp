@@ -57,6 +57,14 @@ limitations under the License.
   <div class="binary-title">
     <span></span>
   </div>
+  
+  <div class="binary-author">
+    <span></span>
+  </div>
+
+  <div class="binary-rights">
+    <span></span>
+  </div>
 
   <div class="tabs">
     <div role="tablist">
@@ -81,6 +89,8 @@ limitations under the License.
                 href="${it.preview.uri}"
                 data-content="${content}"
                 data-type="image"
+                data-author="${it.preview.author}"
+                data-rights="${it.preview.rights}"
                 <g:set var="type" value="image"/>
               </g:if>
               <g:elseif test="${it.orig.uri.video != ''}">
@@ -92,6 +102,8 @@ limitations under the License.
                 </g:else>
                 data-content="${it.orig.uri.video}"
                 data-type="video"
+                data-author="${it.orig.author}"
+                data-rights="${it.orig.rights}"                
                 <g:set var="type" value="video"/>
               </g:elseif>
               <g:elseif test="${it.orig.uri.audio != ''}">
@@ -103,6 +115,8 @@ limitations under the License.
                 </g:else>
                 data-content="${it.orig.uri.audio}"
                 data-type="audio"
+                data-author="${it.orig.author}"
+                data-rights="${it.orig.rights}"
                 <g:set var="type" value="audio"/>
               </g:elseif>
                 title="${(it.orig.title).encodeAsHTML()}">
@@ -168,7 +182,7 @@ limitations under the License.
           </g:else>
           <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" title="${(it.preview.title).encodeAsHTML()}">
+              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
                   <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
@@ -222,7 +236,7 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>  
-                 data-content="${it.orig.uri.video}" data-type="video" title="${(it.orig.title).encodeAsHTML()}">
+                 data-content="${it.orig.uri.video}"  data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="video" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
@@ -276,7 +290,7 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.audio}" data-type="audio" title="${(it.orig.title).encodeAsHTML()}">
+                 data-content="${it.orig.uri.audio}" data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="audio" title="${(it.orig.title).encodeAsHTML()}">
                 <div class="thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
