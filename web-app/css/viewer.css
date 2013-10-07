@@ -294,7 +294,7 @@ noscript .scroller {
   background-color:#fff;
   overflow:hidden;
 }
-.binary-title {
+.binary-title, .binary-author, .binary-rights {
   padding-top:7px;
   font-size: 0.938em;
   white-space: nowrap;

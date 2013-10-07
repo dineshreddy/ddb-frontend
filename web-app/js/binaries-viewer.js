@@ -166,9 +166,42 @@ $(document).ready(function() {
     var previewHref = $(a).attr("data-content");
     var type = $(a).attr("data-type");
     var title = $(a).find("span").text();
+    var author = $(a).attr("data-author");
+    var rights = $(a).attr("data-rights");
+    
     if (title.toString().length>270){
         title = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
+    
+    if (author.toString().length>270){
+        author = $.trim(author.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
+    }
+    
+    //append type to the author
+    if (author.toString().length>0){
+       var localizedtype = 'unknown';
+       
+       if (type == 'image') {
+    	   localizedtype = messages.ddbnext.Image;
+       } else if (type == 'audio') {
+    	   localizedtype = messages.ddbnext.Audio;
+       } else if (type == 'video') {
+    	   localizedtype = messages.ddbnext.Video;
+       }
+    	   
+       author = localizedtype() + ': ' + author;
+    }    
+    
+    //append copyright symbol 
+    if (rights.toString().length>0){
+        rights = String.fromCharCode(169) + ' ' + rights;
+    }
+    
+    if (rights.toString().length>270){
+        rights = $.trim(rights.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
+    }
+    
+    
     hideErrors();
     if(type=="image"){
       if($("#jwplayer-container"))
@@ -189,6 +222,12 @@ $(document).ready(function() {
       }
     $("div.binary-title span").text(title);
     $("div.binary-title").attr("title",title);
+    
+    $("div.binary-author span").text(author);
+    $("div.binary-author").attr("title",author);
+    
+    $("div.binary-rights span").text(rights);
+    $("div.binary-rights").attr("title",rights);
   };
   function jwPlayerSetup(content,poster){
     if($("#binary-viewer").length==0)return;
