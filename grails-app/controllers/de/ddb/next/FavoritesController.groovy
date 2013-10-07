@@ -83,22 +83,37 @@ class FavoritesController {
             itemIds = request.JSON.ids
             folderId = request.JSON.folderId
         }
-        def mainFavoriteFolderId = favoritesPageService.getMainFavoritesFolderId()
 
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            if(itemIds == null || itemIds.size() == 0) {
-                result = response.SC_OK
-            }else{
-                // Special case: if bookmarks are deleted in the main favorites folder -> delete them everywhere
-                if(folderId == mainFavoriteFolderId) {
-                    bookmarksService.deleteFavorites(user.getId(), itemIds)
-                }else{
-                    def favoriteIds = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
-                    bookmarksService.removeFavoritesFromFolder(favoriteIds, folderId)
+
+            // Check if the items all belong to the current user
+            boolean itemsAreOwnedByUser = true
+            def bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            def bookmarkIds = bookmarks.collect { it.itemId }
+            itemIds.each {
+                if(!(it in bookmarkIds)){
+                    itemsAreOwnedByUser = false
                 }
-                result = response.SC_OK
+            }
+
+            if(itemsAreOwnedByUser){
+                if(itemIds == null || itemIds.size() == 0) {
+                    result = response.SC_OK
+                }else{
+                    // Special case: if bookmarks are deleted in the main favorites folder -> delete them everywhere
+                    def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+                    if(folderId == mainFavoriteFolder.folderId) {
+                        bookmarksService.deleteFavorites(user.getId(), itemIds)
+                    }else{
+                        def favoriteIds = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
+                        bookmarksService.removeFavoritesFromFolder(favoriteIds, folderId)
+                    }
+                    result = response.SC_OK
+                }
+            }else{
+                result = response.SC_UNAUTHORIZED
             }
         } else {
             result = response.SC_UNAUTHORIZED
@@ -242,16 +257,30 @@ class FavoritesController {
         def User user = getUserFromSession()
         if (user != null) {
 
-            def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
-            folderIds.each { folderId ->
-                itemIds.each { itemId ->
-                    // Check if the item already exists in the list
-                    def favoriteId = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
-                    // if not -> add it
-                    if(favoriteId == null){
-                        bookmarksService.saveBookmark(user.getId(), [folderId], itemId, Type.CULTURAL_ITEM)
+            // Check if the folders to copy to are actually folders owned by this user (security)
+            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
+            boolean foldersOwnedByUser = true
+            def allFolderIds = foldersOfUser.collect { it.folderId }
+            folderIds.each {
+                if(!(it in allFolderIds)){
+                    foldersOwnedByUser = false
+                }
+            }
+
+            if(foldersOwnedByUser){
+                def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
+                folderIds.each { folderId ->
+                    itemIds.each { itemId ->
+                        // Check if the item already exists in the list
+                        def favoriteId = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
+                        // if not -> add it
+                        if(favoriteId == null){
+                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, Type.CULTURAL_ITEM)
+                        }
                     }
                 }
+            }else{
+                result = response.SC_UNAUTHORIZED
             }
 
             result = response.SC_OK
@@ -265,6 +294,44 @@ class FavoritesController {
         log.info "copyFavorites returns " + result
         render(status: result)
 
+    }
+
+    def editFavoritesFolder() {
+        log.info "editFavoritesFolder " + request.JSON
+        def id = request.JSON.id
+        def title = request.JSON.title
+        def description = request.JSON.description
+
+        def result = response.SC_BAD_REQUEST
+
+        def User user = getUserFromSession()
+        if (user != null) {
+
+            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
+
+            // 1) Check if the current user is really the owner of this folder, else deny
+            // 2) Check if the folder is a default favorites folder -> if true, deny
+            boolean isFolderOfUser = false
+            boolean isDefaultFavoritesFolder = false
+            foldersOfUser.each {
+                if(it.folderId == id){
+                    isFolderOfUser = true
+                    if(it.title == "favorites"){
+                        isDefaultFavoritesFolder = true
+                    }
+                }
+            }
+            if(isFolderOfUser && !isDefaultFavoritesFolder){
+                bookmarksService.updateFolder(id, title, description)
+                result = response.SC_OK
+                flash.message = "ddbnext.folder_edit_succ"
+            } else {
+                result = response.SC_UNAUTHORIZED
+            }
+        }
+
+        log.info "editFavoritesFolder returns " + result
+        render(status: result)
     }
 
     private def getUserFromSession() {

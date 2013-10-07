@@ -62,21 +62,21 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  padding-right: 55px;
+  margin-right: 75px;
 }
 
 .bookmarks-list-envelope {
   margin-top: 1px;
-  padding-right: 30px;
+  margin-right: 50px;
 }
 
 .bookmarks-list-delete {
   margin-top: 3px;
-  padding-right: 5px;
+  margin-right: 5px;
 }
 
 .bookmarks-list-edit{
-  padding-right: 10px;
+  margin-right: 25px;
 }
 
 .bookmarks-list-envelope i, .bookmarks-list-edit i{
@@ -487,11 +487,11 @@ hr {
   margin-bottom: 10px;
 }
 
-#folder-create-name {
+.folder-create-name, .folder-edit-name {
   width: 100%;
 }
 
-#folder-create-description {
+.folder-create-description, .folder-edit-description {
   width: 100%;
   resize: none;
 }

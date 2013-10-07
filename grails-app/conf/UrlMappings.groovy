@@ -80,6 +80,11 @@ class UrlMappings {
             action="deleteFavoritesFolder"
         }
 
+        "/apis/favorites/folder/edit" {
+            controller="favorites"
+            action="editFavoritesFolder"
+        }
+
         "/apis/favorites/_get" {
             controller="favorites"
             action=[POST: "filterFavorites"]

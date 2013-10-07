@@ -32,11 +32,11 @@ limitations under the License.
       <div class="span8">
         <h1>
           <g:message code="ddbnext.Favorites_Header" /> 
-          <g:if test="${selectedFolderTitle == "favorites"}">
+          <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
             <g:message code="ddbnext.All_Favorites" /> 
           </g:if>
           <g:else>
-            ${selectedFolderTitle.capitalize()}
+            ${selectedFolder.title.capitalize()}
           </g:else>
         </h1>
       </div>
@@ -76,13 +76,13 @@ limitations under the License.
     </div>
     <div class="row favorites-results-container">
       <div class="span3 bookmarks-container">
-        <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolderId}">
+        <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolder.folderId}">
           <g:each in="${allFolders}">
-            <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolderId }">selected-folder</g:if>">
+            <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
               <span class="h3"> 
-                <g:if test="${it.folder.folderId != selectedFolderId }">
+                <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                   <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}">
-                    <g:if test="${it.folder.title == "favorites"}">
+                    <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
                     <g:else>
@@ -92,7 +92,7 @@ limitations under the License.
                 </g:if>
                 <g:else>
                   <b>
-                    <g:if test="${it.folder.title == "favorites"}">
+                    <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
                     <g:else>
@@ -105,7 +105,10 @@ limitations under the License.
               <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
                 <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
               </a>
-              <g:if test="${it.folder.title != "favorites"}">
+              <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
+                <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" data-folder-title="${it.folder.title}" data-folder-description="${it.folder.description}">  
+                  <i class="icon-edit" title="<g:message code="ddbnext.Edit_Folder" />" ></i>
+                </a>
                 <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}">
                   <i class="icon-remove" title="<g:message code="ddbnext.delete_favorites" />" ></i>
                 </g:link>
@@ -218,7 +221,7 @@ limitations under the License.
       <form method="POST" id="sendFavorites">
         <div class="modal-body">
           <fieldset>
-            <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required>
+            <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required="required" />
             <br /> 
             <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients" /></small>
             <br />
@@ -262,7 +265,7 @@ limitations under the License.
       </h3>
     </div>
     <div class="modal-body">
-      <g:if test="${selectedFolderTitle == "favorites"}">
+      <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
         <g:message code="ddbnext.delete_favorites_from_all_dialog" />
       </g:if>
       <g:else>
@@ -282,16 +285,15 @@ limitations under the License.
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="favoritesCopyLabel">
-        <g:message code="ddbnext.copy_confirmation" />
+        <g:message code="ddbnext.Copy_Confirmation" />
       </h3>
     </div>
     <div class="modal-body">
-      <g:message code="ddbnext.copy_favorites_dialog" />
-      <span class="totalNrSelectedObjects"></span>
+      <g:message code="ddbnext.Copy_Favorites" />
       <br />
       <select name="copyTargets" size="10" multiple="multiple" class="favorites-copy-selection">
         <g:each in="${allFolders}">
-          <g:if test="${it.folder.folderId != selectedFolderId && it.folder.folderId != mainFavoriteFolderId}" >
+          <g:if test="${it.folder.folderId != selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}" >
             <option value="${it.folder.folderId}">${it.folder.title}</option>
           </g:if>
         </g:each>
@@ -316,7 +318,7 @@ limitations under the License.
       <div>
         <g:message code="ddbnext.Create_Folder_Name" />*
         <br />
-        <input type="text" class="folder-create-title" id="folder-create-name"  required="required">
+        <input type="text" class="folder-create-name" id="folder-create-name"  required="required" />
       </div>
       <div>
         <g:message code="ddbnext.Create_Folder_Description" />
@@ -353,6 +355,34 @@ limitations under the License.
     <div class="modal-footer">
       <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.Cancel" /></button>
       <button class="submit" id="delete-confirm"><g:message code="ddbnext.Confirm_Short" /> </button> 
+    </div>
+  </div>
+
+
+  <%-- Modal "Edit folder" --%>
+  <div class="modal hide fade" id="folderEditConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderEditConfirmLabel" aria-hidden="true">
+    <div class="modal-header">
+      <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <h3 id="folderEditConfirmLabel">
+        <g:message code="ddbnext.Edit_Folder" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <div>
+        <g:message code="ddbnext.Create_Folder_Name" />*
+        <br />
+        <input type="hidden" id="folder-edit-id" required="required" value="" />
+        <input type="text" class="folder-edit-name" id="folder-edit-name" required="required" value="" />
+      </div>
+      <div>
+        <g:message code="ddbnext.Create_Folder_Description" />
+        <br />
+        <textarea rows="10" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="submit" data-dismiss="modal" ><g:message code="ddbnext.Close" /></button>
+      <button class="submit" id="edit-confirm"><g:message code="ddbnext.Save" /> </button> 
     </div>
   </div>
 
