@@ -38,3 +38,7 @@
 #sendSavedSearches {
   cursor: pointer;
 }
+
+.favorites-results .results-list .persist {
+  display: inline-block;
+}

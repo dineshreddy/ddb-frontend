@@ -63,7 +63,7 @@ limitations under the License.
         <div class="span3 bookmarks-container">
           <ul class="bookmarks-lists unstyled">
             <li class="bookmarks-list bt bb bl br">
-              <span class="h3"><g:message code="ddbnext.All_Savedsearches"/></span>
+              <span class="h3"><g:message code="ddbnext.Searches"/></span>
               <span class="bookmarks-list-number"> ${numberOfResults}</span>
               <a class="bookmarks-list-envelope" id="sendSavedSearches">
                 <i class="icon-envelope" title="<g:message code="ddbnext.Send_Savedsearches"/>"></i>
@@ -109,7 +109,7 @@ limitations under the License.
                 <span>
                   <g:if test="${params.order == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
-                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:message code="ddbnext.Saved_Search"/>
                       <span>
                         <g:if test="${params.criteria == "label"}">
                           <g:img dir="images/icons" file="asc.gif" class="orderList"
@@ -124,7 +124,7 @@ limitations under the License.
                   </g:if>
                   <g:else>
                     <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}">
-                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:message code="ddbnext.Saved_Search"/>
                       <span>
                         <g:if test="${params.criteria == "label"}">
                           <g:img dir="images/icons" file="desc.gif" class="orderList"
