@@ -202,7 +202,8 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
+                def allResultsWithBookmark = favoritesPageService.addBookmarkToFavResults(allRes, items)
+                def allResultsWithDate = favoritesPageService.addDateToFavResults(allResultsWithBookmark, items, locale)
 
                 //Default ordering is newest on top == DESC
                 allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}

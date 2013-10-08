@@ -20,6 +20,8 @@ import grails.converters.JSON
 import javax.servlet.http.HttpSession
 import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16
 
+import org.ccil.cowan.tagsoup.Parser
+
 import de.ddb.next.beans.User
 
 class FavoritesController {
@@ -171,6 +173,9 @@ class FavoritesController {
         def title = request.JSON.title
         def description = request.JSON.description
 
+        title = sanitizeTextInput(title)
+        description = sanitizeTextInput(description)
+
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
@@ -298,9 +303,13 @@ class FavoritesController {
 
     def editFavoritesFolder() {
         log.info "editFavoritesFolder " + request.JSON
+
         def id = request.JSON.id
         def title = request.JSON.title
         def description = request.JSON.description
+
+        title = sanitizeTextInput(title)
+        description = sanitizeTextInput(description)
 
         def result = response.SC_BAD_REQUEST
 
@@ -328,11 +337,49 @@ class FavoritesController {
             } else {
                 result = response.SC_UNAUTHORIZED
             }
+        } else {
+            result = response.SC_UNAUTHORIZED
         }
 
         log.info "editFavoritesFolder returns " + result
         render(status: result)
     }
+
+    def setComment() {
+        log.info "setComment " + request.JSON
+
+        def id = request.JSON.id
+        def text = request.JSON.text
+
+        Parser tagsoupParser = new Parser()
+        XmlSlurper slurper = new XmlSlurper(tagsoupParser)
+        String cleanedText = slurper.parseText(text).text()
+        cleanedText = sanitizeTextInput(cleanedText)
+
+        def result = response.SC_BAD_REQUEST
+
+        def User user = getUserFromSession()
+        if (user != null) {
+
+            //            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
+            //
+            //            // 1) Check if the current user is really the owner of this bookmark, else deny
+            //            boolean isBookmarkOfUser = false
+            //            if(isBookmarkOfUser){
+            //            bookmarksService.updateFolder(id, title, description)
+            result = response.SC_OK
+            //            } else {
+            //                result = response.SC_UNAUTHORIZED
+            //            }
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+
+        log.info "setComment returns " + result
+        render(status: result)
+
+    }
+
 
     private def getUserFromSession() {
         def result
@@ -341,5 +388,16 @@ class FavoritesController {
             result = session.getAttribute(User.SESSION_USER)
         }
         return result
+    }
+
+    private String sanitizeTextInput(String input){
+        String output = ""
+        if(input != null) {
+            output = input
+            output = output.replaceAll("\\\"", "''")
+            output = output.replaceAll("´", "'")
+            output = output.replaceAll("`", "'")
+        }
+        return output
     }
 }
