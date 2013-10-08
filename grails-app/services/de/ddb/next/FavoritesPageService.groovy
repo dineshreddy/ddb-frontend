@@ -133,7 +133,7 @@ class FavoritesPageService {
         if(items.size() > allRes.size()){
             def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
             def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_unknown.png").toString()
-            def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists",null, LocaleContextHolder.getLocale())
+            def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
 
             def foundItemIds = allRes.collect{ it.id }
             items.each{
@@ -146,7 +146,7 @@ class FavoritesPageService {
                     emptyDummyItem["label"] = label
                     emptyDummyItem["latitude"] = ""
                     emptyDummyItem["longitude"] = ""
-                    emptyDummyItem["category"] = "Kultur"
+                    emptyDummyItem["category"] = "orphaned"
                     emptyDummyItem["preview"] = [:]
                     emptyDummyItem["preview"]["title"] = label
                     emptyDummyItem["preview"]["subtitle"] = ""
@@ -203,4 +203,22 @@ class FavoritesPageService {
         }
         return all
     }
+
+    private List addBookmarkToFavResults(allRes, List items) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = []
+            temp = searchItem
+            for(int i=0; i<items.size(); i++){
+                if(items.get(i).itemId == searchItem.id){
+                    temp["bookmark"]=items.get(i)
+                    break
+                }
+            }
+            all.add(temp)
+        }
+        return all
+    }
+
 }

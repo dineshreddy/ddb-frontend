@@ -507,3 +507,29 @@ hr {
 .favorites-copy-selection {
   width: 100%;
 }
+
+.favorites-results .results-list .comment .comment-container {
+  margin: 10px 10px 0px 35px;
+}
+
+.favorites-results .results-list .comment .comment-input {
+  width: 100%; 
+  height: 20px; 
+  resize: vertical;
+  padding: 2px;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+
+.favorites-results .results-list .comment .comment-text {
+  width: 100%;
+  padding: 2px;
+  border: 1px solid #EFEBE8;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+

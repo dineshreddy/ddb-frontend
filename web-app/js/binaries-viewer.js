@@ -38,7 +38,7 @@ $(document).ready(function() {
             playerDiv = $("#mediaspace");
           }
           if(playerDiv.length > 0) {
-            console.log(playerDiv);
+            //console.log(playerDiv);
             var errorDiv = $(document.createElement('div'));
             errorDiv.addClass('static-content-viewer-error');
             errorDiv.css('width', width+'px');

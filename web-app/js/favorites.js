@@ -240,12 +240,79 @@ $(function() {
       });
       return false;
     });
+
+    /** Open comment favorites */
+    $('.comment-text').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      $(textField).addClass("off");
+      $(inputField).removeClass("off");
+      $(buttonField).removeClass("off");
+      $(inputField).focus();
+      
+      inputField.animate({height: "100px"}, 200, function() {
+      });
+      
+      return false;
+    });
+
+    /** Cancel comment favorites */
+    $('.comment-cancel').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      inputField.animate({height: "20px"}, 200, function() {
+        $(textField).removeClass("off");
+        $(inputField).addClass("off");
+        $(buttonField).addClass("off");
+      });
+      
+      return false;
+    });
+
+    /** Save comment favorites */
+    $('.comment-save').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+
+      var body = {
+        id: bookmarksId,
+        text : $(inputField).val()
+      }
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/comment",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          
+          $(textField).text($(inputField).val());
+          
+          inputField.animate({height: "20px"}, 200, function() {
+            $(textField).removeClass("off");
+            $(inputField).addClass("off");
+            $(buttonField).addClass("off");
+          });
+          
+        }
+      });
+      
+      return false;
+    });
     
-    
-//    $('#deletedFavoritesBtnClose').click(function(){
-//      $('#msDeleteFavorites').modal('hide');
-//      window.setTimeout('location.reload();', 1000);
-//    });
+
 
   }
   

@@ -95,6 +95,11 @@ class UrlMappings {
             action="copyFavorites"
         }
 
+        "/apis/favorites/comment" {
+            controller="favorites"
+            action=[POST: "setComment"]
+        }
+
         "/apis/favorites/$id" {
             controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]

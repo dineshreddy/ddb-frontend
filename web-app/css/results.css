@@ -476,7 +476,7 @@ input[type="checkbox"],input[type="radio"] {
   cursor: default;
 }
 
-.results-list .item .summary {
+.results-list .item .summary, .results-list .item .comment {
   padding-bottom: 5px;
 }
 

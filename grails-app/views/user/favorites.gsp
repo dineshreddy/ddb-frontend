@@ -81,7 +81,7 @@ limitations under the License.
             <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
               <span class="h3"> 
                 <g:if test="${it.folder.folderId != selectedFolder.folderId }">
-                  <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}">
+                  <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${it.folder.description}">                  
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
@@ -92,12 +92,14 @@ limitations under the License.
                 </g:if>
                 <g:else>
                   <b>
-                    <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:message code="ddbnext.All_Favorites" />
-                    </g:if>
-                    <g:else>
-                      ${it.folder.title.capitalize()}
-                    </g:else>
+                    <a title="${it.folder.description}">
+                      <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                        <g:message code="ddbnext.All_Favorites" />
+                      </g:if>
+                      <g:else>
+                        ${it.folder.title.capitalize()}
+                      </g:else>
+                    </a>
                   </b>
                 </g:else>
               </span> 
