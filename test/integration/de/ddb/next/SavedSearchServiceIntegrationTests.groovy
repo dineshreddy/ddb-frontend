@@ -18,7 +18,10 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
         def savedSearchId = savedSearchService.saveSearch(userId, queryString)
         log.info "id: ${savedSearchId}"
         assert savedSearchId  != null
-
+        savedSearchService.deleteSavedSearch(
+                [
+                    savedSearchId
+                ])
         log.info "The user ${userId} just saved search with the query string: ${queryString}, savedSearchId ${savedSearchId}"
     }
 
@@ -32,7 +35,10 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
         def savedSearchId = savedSearchService.saveSearch(userId, queryString, 'Goethe Related', 'All things related to Goethe')
         log.info "id: ${savedSearchId}"
         assert savedSearchId  != null
-
+        savedSearchService.deleteSavedSearch(
+                [
+                    savedSearchId
+                ])
         log.info "The user ${userId} just saved search with the query string: ${queryString}, savedSearchId ${savedSearchId}"
     }
 
@@ -51,6 +57,11 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
 
         def results = savedSearchService.findSavedSearchByUserId(userId)
         assert results.size() == 2
+        savedSearchService.deleteSavedSearch(
+                [
+                    goetheSavedSearchId,
+                    mozartSavedSearchId
+                ])
     }
 
     @Test
