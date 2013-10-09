@@ -273,7 +273,15 @@ $(function() {
         $(inputField).addClass("off");
         $(buttonField).addClass("off");
       });
-      
+
+      var originalComment = $(textField).text().trim();
+      var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
+      if(originalComment == defaultMessage) {
+        $(inputField).val("");
+      }else{
+        $(inputField).val(originalComment.trim());
+      }
+
       return false;
     });
 
@@ -298,7 +306,12 @@ $(function() {
         dataType : "json",
         success : function(data) {
           
-          $(textField).text($(inputField).val());
+          var newInput = $(inputField).val();
+          if(newInput.trim()){
+            $(textField).text(newInput);
+          }else{
+            $(textField).text(messages.ddbnext.Favorites_Comment_Label);
+          }
           
           inputField.animate({height: "20px"}, 200, function() {
             $(textField).removeClass("off");
