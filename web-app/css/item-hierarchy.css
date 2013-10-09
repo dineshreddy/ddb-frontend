@@ -95,7 +95,7 @@
 .item-hierarchy-result li.node {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png")
-    no-repeat 7px 0px;
+    no-repeat 7px 0;
   min-height: 26px;
   padding: 17px 0 0 56px;
   position: relative;
@@ -104,7 +104,7 @@
 .item-hierarchy-result li.leaf {
   background:
     url("../images/bg/advanced_search_solid_joint_standard_top.png" )
-    no-repeat 7px 0px;
+    no-repeat 7px 0;
   min-height: 26px;
   padding: 17px 0 0 56px;
   position: relative;
@@ -114,13 +114,13 @@
 .item-hierarchy-result li.last {
   background:
     url("../images/bg/advanced_search_solid_joint_last_item.png")
-    no-repeat 7px 0px;
+    no-repeat 7px 0;
 }
 
 /* draw a dotted line */
 .item-hierarchy-result li.more-available {
   background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
-    scroll 7px 0px transparent;
+    scroll 7px 0 transparent;
   min-height: 26px;
 }
 
@@ -128,13 +128,13 @@
 .item-hierarchy-result li.leaf.more-available {
   background:
     url("../images/bg/advanced_search_solid_joint_break_top.png")
-    no-repeat -1px 0px;
+    no-repeat -1px 0;
 }
 
 /* draw a dotted line */
 .item-hierarchy-result li.node.more-hidden {
   background: url("../images/bg/advanced_search_dotted_joint.png")
-    no-repeat 7px 0px;
+    no-repeat 7px 0;
 }
 
 .item-hierarchy-result ul.has-name>li.node.more-hidden {
@@ -236,12 +236,12 @@
   margin-left: 10px;
   width: 20px;
   height: 20px;
-  background: url("../images/icons/tooltips.png") no-repeat 0px -120px;
+  background: url("../images/icons/tooltips.png") no-repeat 0 -120px;
 }
 
-.field-header .contextual-help:hover,.field-header .contextual-help:active,.field-header .contextual-help:focus
-  {
-  background-position: 0px -150px;
+.field-header .contextual-help:hover,.field-header .contextual-help:active,
+.field-header .contextual-help:focus {
+  background-position: 0 -150px;
 }
 
 .field-header .tooltip {
@@ -249,7 +249,7 @@
   color: #3e3a37;
 }
 
-@media ( max-width : 767px) {
+@media (max-width: 767px) {
   .item-hierarchy {
     display: none;
   }
