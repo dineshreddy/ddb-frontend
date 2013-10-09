@@ -22,7 +22,7 @@
   border-width: 0 0 2px 0;
 }
 .print-logo img {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 /* Removing unwanted elements */
@@ -63,7 +63,7 @@ footer, .footer,
 }
 .results-list.grid {
   width: 650px !important;
-  padding: 0px !important;
+  padding: 0 !important;
   margin-left: 5px !important;  
 }
 
@@ -77,7 +77,7 @@ footer, .footer,
 }
 
 .results-list.grid .thumbnail-wrapper {
-  margin-left: 0px !important;
+  margin-left: 0 !important;
   width: 214px !important;
 }
 
@@ -97,7 +97,7 @@ footer, .footer,
 
 
 .results-list.grid .item .thumbnail-wrapper {
-  margin-left: 0px;
+  margin-left: 0;
   position: relative;
 }
 .results-list.grid .item .summary-main-wrapper {
@@ -105,7 +105,7 @@ footer, .footer,
 }
 .search-results-list .thumbnail-wrapper {
   width: 160px;
-  top: 0px;
+  top: 0;
   position: absolute !important;
   margin-left: 490px !important;
 }
@@ -156,7 +156,7 @@ footer, .footer,
 
 .search-results-content .page-info-nav.grid {
   border: none !important;
-  padding-bottom: 0px !important;
+  padding-bottom: 0 !important;
 }
 
 .search-results-content .page-info-nav .results-label {
@@ -174,7 +174,7 @@ footer, .footer,
 
 /* Item detail-view page*/
 .item-detail .institution-name {
-  padding-left: 0px;
+  padding-left: 0;
   background-image: none;
 }
 .item-detail .institution {
@@ -204,13 +204,13 @@ footer, .footer,
   display: block;
 }
 .item-detail #previews-list {
-  padding-left: 0px;
+  padding-left: 0;
 }
 .item-detail .slide-viewer {
   font-size: 0.938em;
 }
 .item-detail .slide-viewer img {
-  margin-left: 0px;
+  margin-left: 0;
 }
 .item-detail.linkurl {
   font-size: 0.938em;
@@ -306,7 +306,7 @@ footer, .footer,
 .institution-item-page .institution {
   border-width: 0 0 2px 0 !important;
   height: 120px;
-  margin-top: 0px;
+  margin-top: 0;
 }
 .institution-item-page .institution .span9 {
   position: absolute;
@@ -323,8 +323,8 @@ footer, .footer,
   display: block;
 }
 .institution-item-page .institution h2 {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .institution-item-page .space {
   margin-right: 6px;

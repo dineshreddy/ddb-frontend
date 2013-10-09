@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 header, .header {
-  margin-bottom:0px !important;
+  margin-bottom:0 !important;
 }
 header .navigation-header-logo , .header .navigation-header-logo, header #form-search-header, .header #form-search-header{
   display:none;
@@ -23,7 +23,7 @@ header .navigation, .header .navigation {
   padding-top:10px;
 }
 header .toolbar, .header .toolbar {
-  margin-top:0px;
+  margin-top:0;
   margin-bottom: 15px;
 }
 .header .nav {

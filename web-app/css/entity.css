@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 .entity-page .icon-work {
-  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
 }
 
 .entity-page .icon-theme {
-  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
 }
 
 .entity-page .todo {
@@ -30,7 +30,7 @@
 }
 
 .entity-page .search-entity {
-  background: url(../images/icons/search.png) no-repeat -0px -145px;
+  background: url(../images/icons/search.png) no-repeat 0 -145px;
   min-height: 35px;
   padding: 0 0 0 35px;
 }
@@ -40,7 +40,7 @@
 }
 
 .entity-page .preview ul {
-  margin: 0px;
+  margin: 0;
   display: inline-block;
 }
 
@@ -93,10 +93,7 @@
 }
 
 .entity-page .preview-item-image img {
-  margin: 0px;
-}
-
-.entity-page .preview-item-label {
+  margin: 0;
 }
 
 .entity-page .objects {
@@ -104,12 +101,12 @@
 }
 
 .entity-page .popup-dialog-wrapper {
-  margin-left: 0px !important;
+  margin-left: 0 !important;
 }
 
 .entity-page .external-icon img {
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   width: 16px;
 }
 
