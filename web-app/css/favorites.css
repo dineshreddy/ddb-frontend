@@ -533,3 +533,6 @@ hr {
   color: #3e3a37;
 }
 
+.favorites-results .results-list .comment .comment-meta {
+  font-style: italic;
+}

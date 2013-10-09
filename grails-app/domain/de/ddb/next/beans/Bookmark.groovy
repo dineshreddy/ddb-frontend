@@ -30,10 +30,11 @@ class Bookmark {
     String itemId
     String description
     Date creationDate
+    Date updateDate
     Type type
     Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders, def description) {
+    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders, def description, def updateDate) {
         this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
@@ -43,6 +44,11 @@ class Bookmark {
             this.description = description.toString()
         }
         this.creationDate = creationDate
+        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
+            this.updateDate = creationDate
+        }else{
+            this.updateDate = new Date(updateDate.toLong())
+        }
         this.type = type
         if(folders instanceof String){
             String folderString = folders.toString()

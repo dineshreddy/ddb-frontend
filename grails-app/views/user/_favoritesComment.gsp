@@ -16,12 +16,21 @@ limitations under the License.
 
 <div class="comment-container">
   <div class="comment-text" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
-    <g:if test="${!item.bookmark.description.isEmpty()}">
-      ${item.bookmark.description.trim()}
-    </g:if>
-    <g:else>
-      <g:message code="ddbnext.Favorites_Comment_Label" />
-    </g:else>
+    <span class="comment-meta">
+    <%-- 
+      <g:if test="${!item.bookmark.description.isEmpty()}">
+        Kommentar von ${item.bookmark.updateDate}:
+      </g:if>
+    --%>
+    </span>
+    <span id="comment-text-dyn-${item.bookmark.bookmarkId}">
+      <g:if test="${!item.bookmark.description.isEmpty()}">
+        ${item.bookmark.description.trim()}
+      </g:if>
+      <g:else>
+        <g:message code="ddbnext.Favorites_Comment_Label" />
+      </g:else>
+    </span>
   </div>
   <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ><g:if test="${!item.bookmark.description.isEmpty()}">${item.bookmark.description.trim()}</g:if></textarea>
   <br />

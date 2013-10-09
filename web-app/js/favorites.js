@@ -246,6 +246,7 @@ $(function() {
       
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
       var inputField = $("#comment-input-"+bookmarksId);
       var buttonField = $("#comment-button-"+bookmarksId);
       
@@ -265,6 +266,7 @@ $(function() {
       
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
       var inputField = $("#comment-input-"+bookmarksId);
       var buttonField = $("#comment-button-"+bookmarksId);
       
@@ -274,7 +276,7 @@ $(function() {
         $(buttonField).addClass("off");
       });
 
-      var originalComment = $(textField).text().trim();
+      var originalComment = $(dynamicTextField).text().trim();
       var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
       if(originalComment == defaultMessage) {
         $(inputField).val("");
@@ -290,6 +292,7 @@ $(function() {
       
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
       var inputField = $("#comment-input-"+bookmarksId);
       var buttonField = $("#comment-button-"+bookmarksId);
 
@@ -308,9 +311,9 @@ $(function() {
           
           var newInput = $(inputField).val();
           if(newInput.trim()){
-            $(textField).text(newInput);
+            $(dynamicTextField).text(newInput);
           }else{
-            $(textField).text(messages.ddbnext.Favorites_Comment_Label);
+            $(dynamicTextField).text(messages.ddbnext.Favorites_Comment_Label);
           }
           
           inputField.animate({height: "20px"}, 200, function() {

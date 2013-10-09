@@ -155,7 +155,8 @@ class BookmarksService {
                         new Date(it._source.createdAt.toLong()),
                         it._source.type as Type,
                         it._source.folder,
-                        it._source.description
+                        it._source.description,
+                        it._source.updatedAt
                         )
                 all.add(bookmark)
             }
@@ -180,7 +181,8 @@ class BookmarksService {
             item: itemId,
             createdAt: new Date().getTime(),
             type: type.toString(),
-            description: description
+            description: description,
+            updatedAt: new Date().getTime()
         ]
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark", false, postBody as JSON)
@@ -324,7 +326,9 @@ class BookmarksService {
                         new Date(it._source.createdAt.toLong()),
                         it._source.type as Type,
                         it._source.folder,
-                        it._source.description)
+                        it._source.description,
+                        it._source.updatedAt
+                        )
                 all.add(bookmark)
             }
 
@@ -418,7 +422,9 @@ class BookmarksService {
                         new Date(it._source.createdAt.toLong()),
                         it._source.type as Type,
                         it._source.folder,
-                        it._source.description)
+                        it._source.description,
+                        it._source.updatedAt
+                        )
                 all.add(bookmark)
             }
             assert all.size() <= 1
@@ -487,7 +493,9 @@ class BookmarksService {
                     new Date(it._source.createdAt.toLong()),
                     it._source.type as Type,
                     it._source.folder,
-                    it._source.description)
+                    it._source.description,
+                    it._source.updatedAt
+                    )
             return bookmark
         }
 
@@ -538,7 +546,7 @@ class BookmarksService {
     def updateBookmark(favoriteId, newDescription) {
         log.info "updateBookmark()"
 
-        def postBody = [doc: [description: newDescription]]
+        def postBody = [doc: [description: newDescription, updatedAt: System.currentTimeMillis()]]
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${favoriteId}/_update", false, postBody as JSON)
 
