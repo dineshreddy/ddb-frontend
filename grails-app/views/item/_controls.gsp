@@ -24,7 +24,7 @@ limitations under the License.
           </a>
       </g:if> 
       <g:else>
-          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
+          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
       </g:else>
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
@@ -33,7 +33,10 @@ limitations under the License.
     <!-- search results navigation -->
     <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">
       <div class="span6 item-nav fr">
-          <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
+        <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
+      </div>
+      <div class="span6 item-nav-mob fr">
+        <g:itemDetailInfoNavMobRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavMobRender>
       </div>
     </g:if>
     <g:else>

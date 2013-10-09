@@ -185,6 +185,9 @@
 .fields, .rights {
   font-size: 0.938em;
 }
+.item-nav-mob{
+  display:none;
+}
 @media ( max-width : 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
@@ -199,6 +202,13 @@
   
   .object-controls .item-nav {
     text-align: left;
+  }
+  
+  .span6.item-nav.fr{
+    display:none
+  }
+  .item-nav-mob{
+    display:block;
   }
 }
 
