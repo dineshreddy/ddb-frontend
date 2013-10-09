@@ -24,7 +24,7 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="saved-search-title">
               <a class="persist"
-                href="${request.contextPath + '/search?' + (search.queryString).encodeAsHTML()}"
+                href="${request.contextPath + '/searchresults?' + (search.queryString).encodeAsHTML()}"
                 title="${truncateHovercardTitle(title: search.label, length: 350)}">
                 <g:truncateItemTitle title="${search.label}"
                   length="${100}" />
