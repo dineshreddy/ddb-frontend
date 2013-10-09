@@ -123,6 +123,9 @@ class SavedSearchesService {
         def parameters = queryString.split("&").sort()
         parameters.each { parameter ->
             if (parameter.startsWith("query=") || parameter.startsWith("facetValues")) {
+                if (parameter == "query=") {
+                    parameter = "query=*";
+                }
                 if (result.size() > 0) {
                     result += "&"
                 }
