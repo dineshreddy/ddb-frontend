@@ -22,6 +22,7 @@ import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16
 
 import org.ccil.cowan.tagsoup.Parser
 
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
 
 class FavoritesController {
@@ -280,7 +281,7 @@ class FavoritesController {
                         def favoriteId = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
                         // if not -> add it
                         if(favoriteId == null){
-                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, Type.CULTURAL_ITEM)
+                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM)
                         }
                     }
                 }
@@ -361,16 +362,18 @@ class FavoritesController {
         def User user = getUserFromSession()
         if (user != null) {
 
-            //            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
-            //
-            //            // 1) Check if the current user is really the owner of this bookmark, else deny
-            //            boolean isBookmarkOfUser = false
-            //            if(isBookmarkOfUser){
-            //            bookmarksService.updateFolder(id, title, description)
-            result = response.SC_OK
-            //            } else {
-            //                result = response.SC_UNAUTHORIZED
-            //            }
+            // 1) Check if the current user is really the owner of this bookmark, else deny
+            Bookmark bookmark = bookmarksService.findFavoriteById(id)
+            boolean isBookmarkOfUser = false
+            if(bookmark.userId == user.getId()){
+                isBookmarkOfUser = true
+            }
+            if(isBookmarkOfUser){
+                bookmarksService.updateBookmark(id, cleanedText)
+                result = response.SC_OK
+            } else {
+                result = response.SC_UNAUTHORIZED
+            }
         } else {
             result = response.SC_UNAUTHORIZED
         }

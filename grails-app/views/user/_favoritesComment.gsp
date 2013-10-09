@@ -16,10 +16,14 @@ limitations under the License.
 
 <div class="comment-container">
   <div class="comment-text" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
-    <g:message code="ddbnext.Favorites_Comment_Label" />
+    <g:if test="${!item.bookmark.description.isEmpty()}">
+      ${item.bookmark.description.trim()}
+    </g:if>
+    <g:else>
+      <g:message code="ddbnext.Favorites_Comment_Label" />
+    </g:else>
   </div>
-  
-  <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ></textarea>
+  <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ><g:if test="${!item.bookmark.description.isEmpty()}">${item.bookmark.description.trim()}</g:if></textarea>
   <br />
   <div class="comment-button off" id="comment-button-${item.bookmark.bookmarkId}">
     <g:form id="comment-save" method="POST" name="comment-save">
