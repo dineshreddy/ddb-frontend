@@ -41,7 +41,7 @@ class SavedSearch {
      *
      * @return value of the parameter with the key "query" or null
      */
-    public def String getQuery() {
+    def String getQuery() {
         def result
 
         queryMap.each {
