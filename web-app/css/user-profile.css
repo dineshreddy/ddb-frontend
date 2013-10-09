@@ -22,6 +22,7 @@
   width: 16px !important;
   height: 16px !important;
   background-color: transparent;
+  outline: none;
 }
 
 #user-profile-form .profile-nav {
