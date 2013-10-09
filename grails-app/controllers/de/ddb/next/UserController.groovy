@@ -95,6 +95,9 @@ class UserController {
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
+
+            createFavoritesFolderIfNotExisting(user)
+
             if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
                 List<String> messages = []
                 messages.add("ddbnext.User.PasswordReset_Change")
@@ -960,6 +963,8 @@ class UserController {
 
                 loginStatus = LoginStatus.SUCCESS
 
+                createFavoritesFolderIfNotExisting(user)
+
             }else {
                 log.info "doOpenIdLogin(): failure verification"
                 loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
@@ -1019,5 +1024,13 @@ class UserController {
         }
     }
 
+    private def createFavoritesFolderIfNotExisting(User user){
+        log.info "createFavoritesFolderIfNotExisting()"
+        def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+        if(mainFavoriteFolder == null){
+            def folderId = bookmarksService.newFolder(user.getId(), "favorites", false)
+            log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
+        }
+    }
 
 }
