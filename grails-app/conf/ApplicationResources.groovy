@@ -81,6 +81,7 @@ modules = {
         resource url:'/js/tooltip.js'
         resource url:'/js/json2.js'
         resource url:'/js/global-variables.js'
+        resource url:'/js/global-scripts.js'
         resource url:'/js/institution-list.js'
         resource url:'/js/start-page.js'
         resource url:'/js/item-hierarchy.js'

@@ -1453,3 +1453,12 @@ select {
   margin: 3px 5px 0 0;
 }
 /* messages - end */
+
+/* external links */
+
+a[href^="http"]:not(.no-external-link-icon) {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
+/* external links - end */
