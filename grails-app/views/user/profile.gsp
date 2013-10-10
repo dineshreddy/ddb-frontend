@@ -50,13 +50,16 @@ limitations under the License.
                 <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
             </div>
             <div class="profile-links bt-white">
-                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user",action: 'favorites', params:[:])}">
+                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user", action: 'favorites', params:[:])}">
                     <g:message code="ddbnext.Favorites" /> (${favoritesCount})
+                </a>
+                <a class="profile-link" title="<g:message code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
+                    <g:message code="ddbnext.Searches" /> (${savedSearchesCount})
                 </a>
                 <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
                     <g:message code="ddbnext.Change_Password_Link" />
                 </a>
-                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="${createLink(controller="user",action: 'delete')}">
+                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="#">
                     <g:message code="ddbnext.User.Delete_Account" />
                 </a>
             </div>
@@ -105,7 +108,7 @@ limitations under the License.
             <div class="control-group">
               <div class="controls checkbox">
                 <div class="input-prepend">
-                  <input type="checkbox" id="newsletter" class="profile-input" name="newsletter" ${newsletterCheck}>
+                  <input type="checkbox" id="newsletter" class="profile-checkbox" name="newsletter" ${newsletterCheck}>
                 </div>
               </div>
               <label class="checkbox-label control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>
@@ -125,5 +128,19 @@ limitations under the License.
           <li><a><g:message code="ddbnext.Enter_A_Valid_Email" /></a></li>
         </ul>
     </g:form>
-</body>
+    <div id="msDeleteAccount" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3>
+          <g:message code="ddbnext.delete_confirmation" />
+        </h3>
+      </div>
+      <div class="modal-body">
+        <g:message code="ddbnext.User.Really_Delete_Account" />
+      </div>
+      <div class="modal-footer">
+        <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message code="ddbnext.Ok" /></button>
+        <button class="submit" data-dismiss="modal"><g:message code="ddbnext.Cancel" /></button>
+    </div>
+  </body>
 </html>

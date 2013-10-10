@@ -1,4 +1,5 @@
 package de.ddb.next
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
 import org.codehaus.groovy.grails.web.json.*
@@ -7,6 +8,7 @@ import java.text.SimpleDateFormat
 import java.util.List
 import java.util.Locale
 
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
 
@@ -18,18 +20,43 @@ class FavoritesPageService {
     def grailsApplication
     def searchService
     def configurationService
-
+    def messageSource
 
     def getFavorites() {
         def User user = getUserFromSession()
         if (user != null) {
             def result = bookmarksService.findFavoritesByUserId(user.getId())
             return result as JSON
-        }
-        else {
+        } else {
             log.info "getFavorites returns " + response.SC_UNAUTHORIZED
             return null
         }
+    }
+
+    def getFavoritesOfFolder(folderId) {
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            return result as JSON
+        } else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            return null
+        }
+    }
+
+    def getMainFavoritesFolder() {
+        Folder folder = null
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = bookmarksService.findAllFolders(user.getId())
+            result.each {
+                if(it.title == "favorites"){
+                    folder = it
+                }
+            }
+        }
+        log.info "getMainFavoritesFolder returns " +folder
+        return folder
     }
 
     private User getUserFromSession() {
@@ -82,6 +109,7 @@ class FavoritesPageService {
         def queryItems
         def orQuery=""
         def allRes = []
+
         items.eachWithIndex() { it, i ->
             if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
                 orQuery=it.itemId
@@ -100,6 +128,35 @@ class FavoritesPageService {
                 allRes.add(item)
             }
         }
+
+        // Add empty items for all orphaned elasticsearch bookmarks
+        if(items.size() > allRes.size()){
+            def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+            def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_unknown.png").toString()
+            def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
+
+            def foundItemIds = allRes.collect{ it.id }
+            items.each{
+                // item not found
+                if(!(it.itemId in foundItemIds)){
+
+                    def emptyDummyItem = [:]
+                    emptyDummyItem["id"] = it.itemId
+                    emptyDummyItem["view"] = []
+                    emptyDummyItem["label"] = label
+                    emptyDummyItem["latitude"] = ""
+                    emptyDummyItem["longitude"] = ""
+                    emptyDummyItem["category"] = "orphaned"
+                    emptyDummyItem["preview"] = [:]
+                    emptyDummyItem["preview"]["title"] = label
+                    emptyDummyItem["preview"]["subtitle"] = ""
+                    emptyDummyItem["preview"]["media"] = ["unknown"]
+                    emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
+                    allRes.add(emptyDummyItem)
+                }
+            }
+        }
+
         return allRes
     }
 
@@ -146,4 +203,37 @@ class FavoritesPageService {
         }
         return all
     }
+
+    private List addBookmarkToFavResults(allRes, List items) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = []
+            temp = searchItem
+            for(int i=0; i<items.size(); i++){
+                if(items.get(i).itemId == searchItem.id){
+                    temp["bookmark"]=items.get(i)
+                    break
+                }
+            }
+            all.add(temp)
+        }
+        return all
+    }
+
+    private List addCurrentUserToFavResults(allRes, User user) {
+        def userJson = [:]
+        userJson["id"] = user.id
+        userJson["username"] = user.username
+        userJson["status"] = user.status
+        userJson["firstname"] = user.firstname
+        userJson["lastname"] = user.lastname
+        userJson["email"] = user.email
+
+        allRes.each { searchItem ->
+            searchItem["user"] = userJson
+        }
+        return allRes
+    }
+
 }

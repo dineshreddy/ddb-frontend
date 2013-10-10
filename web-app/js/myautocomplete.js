@@ -40,7 +40,7 @@ $(function() {
 			},
 			success : function(data) {
 			  response($.map(data, function(n,i) {
-			    console.log(n)
+			    //console.log(n)
 			    return {
 				  label : n.substring(0,45),
 				  value : n

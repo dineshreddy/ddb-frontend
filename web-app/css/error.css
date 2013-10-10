@@ -26,3 +26,13 @@
 .error p {
   font-family: Calibri,Arial,sans-serif;
 }
+
+.fullwidth-container {
+  padding: 0 !important;
+  margin: 5px 0 15px 35px !important;
+}
+
+.fullwidth-container > div {
+  padding: 10px;
+}
+

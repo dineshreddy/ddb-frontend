@@ -24,7 +24,12 @@ class BackendVersionTagLib {
         def apiResponse = ApiConsumer.getText(configurationService.getBackendUrl(), "/version")
         if(!apiResponse.isOk()){
             log.error "Text: text file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            out << "unknown"
+            return
+            // Don't throw an error here: if an error is thrown in this taglib,
+            // it will forward to the errorpage, where this taglib will get called again.
+            // This will cause an endless exception cycle and an uncatchable error.
+            // apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         String buildVersionAndNumber = apiResponse.getResponse()
         String buildVersion = buildVersionAndNumber

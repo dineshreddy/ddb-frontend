@@ -26,10 +26,10 @@ var mapInitialized = false;
 var InstitutionsMapAdapter = (function($, undefined) {
     'use strict';
 
-    var osmTileServer = "openstreetmap.org";
+    //var osmTileServer = "openstreetmap.org";
     //var osmTileServer = "opencyclemap.org/cycle";
 
-    //var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
+    var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
     var osmTileset = ['http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
                        'http://c.tile.' + osmTileServer + '/${z}/${x}/${y}.png'];
@@ -52,9 +52,13 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     Public.selectSectors = function() {
-        if(mapInitialized){
-          var sectors = _getSectorSelection();
-          InstitutionsMapController.selectSectors(sectors);
+        // DDBNEXT-515: Workaround for the timeouts in the institution list. 
+        // Only call this, when really on the map view!
+        if(!$('#institution-map').hasClass('off')){
+            if(mapInitialized){
+                var sectors = _getSectorSelection();          
+                InstitutionsMapController.selectSectors(sectors);
+            }
         }
     };
 
@@ -91,6 +95,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableListView = function() {
+        window.location.hash='list';
         $('#institution-map').addClass('off');
         $('#institution-list').removeClass('off');
 
@@ -108,6 +113,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     var _enableMapView = function() {
+        window.location.hash='map';
         $('#institution-list').addClass('off');
         $('#institution-map').removeClass('off');
 

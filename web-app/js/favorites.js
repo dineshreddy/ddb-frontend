@@ -22,11 +22,8 @@ $(function() {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-    $("#sendbookmarks").click(function(event) {
-      event.preventDefault()
-      $('#favoritesModal').modal({remote: $(this).attr("href")})
-    });
-
+    
+    
     $('.page-filter select').change(function(){
       var url = jsContextPath + "/user/favorites/?rows="+this.value;
       var order = getParam("order");
@@ -60,51 +57,33 @@ $(function() {
           this.value = 1;
         }
         $('.page-input').attr('value', this.value);
-        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows")),new Array('rows', getParam("rows")),new Array('order', getParam("order")));
-        var newUrl = addParamToUrl(paramsArray,null, paramsArray);
+        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows", 20)),
+                                    new Array('rows', getParam("rows", 20)),
+                                    new Array('order', getParam("order")));
+        var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray);
         window.location.href=newUrl;
 
       }
     });
 
-    function addParamToUrl(arrayParamVal, path, urlString){
-      console.log(urlString);
-      var currentUrl = jsContextPath + "/user/favorites/";
-      var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
-          re = /([^&=]+)=([^&]*)/g, m;
-      while (m = re.exec(queryString)) {
-        var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
-        if (queryParameters[decodedKey] == null) {
-          queryParameters[decodedKey] = new Array();
-        }
-        queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
-      }
-      $.each(arrayParamVal, function(key, value){
-        queryParameters[value[0]] = value[1];
-      });
-      var tmp = jQuery.param(queryParameters, true);
-      if (path == null) {
-        return window.location.pathname+'?'+tmp;
-      }
-      else {
-        return path+'?'+tmp;
-      }
-    }
-
+    
+    /** Delete favorites */
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('#totalNrSelectedObjects').html(selected.length);
-      $('#confirm-dialog').modal('show');
+      $('.totalNrSelectedObjects').html(selected.length);
+      $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
+        var folderId = $('#folder-list').attr('data-folder-selected')
         var body = {
-            ids : selected
+            ids : selected,
+            folderId: folderId
         }
         jQuery.ajax({
           type : 'POST',
@@ -114,26 +93,268 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
-            window.setTimeout('location.reload()', 500);
+            window.setTimeout('location.reload();', 500);
           }
         });
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('checked', false));
         });
-        $('#confirm-dialog').modal('hide');
+        $('#favoritesDeleteConfirmDialog').modal('hide');
       });
       return false;
     });
 
-    $('#deletedFavoritesBtnClose').click(function(){
-      $('#msDeleteFavorites').modal('hide');
-      window.setTimeout('location.reload()', 1000);
+    
+    /** Send email */
+    $(".sendbookmarks").click(function(event) {
+      event.preventDefault();
+      $('#favoritesModal').modal('show');
+      return false;
+    });
+    
+    
+    /** Create folder */
+    $('#folder-create').submit(function() {
+      $('#folderCreateConfirmDialog').modal('show');
+      $('#create-confirm').click(function() {
+        var body = {
+          title : $('#folder-create-name').val() ,
+          description : $('#folder-create-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/create",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderCreateConfirmDialog').modal('hide');
+      });
+      return false;
+    });
+    
+    
+    /** Delete folder */
+    $(".deletefolders").click(function(event) {
+      event.preventDefault()
+      $('#folderDeleteConfirmDialog').modal('show');
+
+      var folderId = $(this).attr('data-folder-id');
+      
+      $('#delete-confirm').click(function() {
+        var body = {
+          folderId : folderId,
+          deleteItems : $('#folder-delete-check').is(':checked')
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/delete",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderDeleteConfirmDialog').modal('hide');
+      });
+      return false;
+      
     });
 
-  }
 
+    /** Copy favorites */
+    $('#favorites-copy').submit(function() {
+      var selected = new Array();
+      $('#slaves input:checked').each(function() {
+        selected.push($(this).attr('value'));
+      });
+      $('.totalNrSelectedObjects').html(selected.length);
+      $('#favoritesCopyDialog').modal('show');
+      $('#copy-confirm').click(function() {
+        var selected = new Array();
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('value'));
+        });
+        
+        var selectedFolders = $('.favorites-copy-selection').val()
+        
+        var body = {
+            ids : selected,
+            folders: selectedFolders
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/copy",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('checked', false));
+        });
+        $('#favoritesCopyDialog').modal('hide');
+      });
+      return false;
+    });
+    
+
+    /** Edit folder */
+    $('.editfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var oldFolderTitle = $(this).attr('data-folder-title');
+      var oldFolderDescription = $(this).attr('data-folder-description');
+      $('#folder-edit-id').val(folderId);
+      $('#folder-edit-name').val(oldFolderTitle);
+      $('#folder-edit-description').val(oldFolderDescription);
+      
+      $('#folderEditConfirmDialog').modal('show');
+      $('#edit-confirm').click(function() {
+        var body = {
+          id : $('#folder-edit-id').val(),
+          title : $('#folder-edit-name').val(),
+          description : $('#folder-edit-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/edit",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderEditConfirmDialog').modal('hide');
+      });
+      return false;
+    });
+
+    /** Open comment favorites */
+    $('.comment-text').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      $(textField).addClass("off");
+      $(inputField).removeClass("off");
+      $(buttonField).removeClass("off");
+      $(inputField).focus();
+      
+      inputField.animate({height: "100px"}, 200, function() {
+      });
+      
+      return false;
+    });
+
+    /** Cancel comment favorites */
+    $('.comment-cancel').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      inputField.animate({height: "20px"}, 200, function() {
+        $(textField).removeClass("off");
+        $(inputField).addClass("off");
+        $(buttonField).addClass("off");
+      });
+
+      var originalComment = $(dynamicTextField).text().trim();
+      var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
+      if(originalComment == defaultMessage) {
+        $(inputField).val("");
+      }else{
+        $(inputField).val(originalComment.trim());
+      }
+
+      return false;
+    });
+
+    /** Save comment favorites */
+    $('.comment-save').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+
+      var body = {
+        id: bookmarksId,
+        text : $(inputField).val()
+      }
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/comment",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          
+          var newInput = $(inputField).val();
+          if(newInput.trim()){
+            $(dynamicTextField).text(newInput);
+          }else{
+            $(dynamicTextField).text(messages.ddbnext.Favorites_Comment_Label);
+          }
+          
+          inputField.animate({height: "20px"}, 200, function() {
+            $(textField).removeClass("off");
+            $(inputField).addClass("off");
+            $(buttonField).addClass("off");
+          });
+          
+        }
+      });
+      
+      return false;
+    });
+    
+
+
+  }
+  
 });
+
+function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
+  var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
+      re = /([^&=]+)=([^&]*)/g, m;
+  while (m = re.exec(queryString)) {
+    var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+    if (queryParameters[decodedKey] == null) {
+      queryParameters[decodedKey] = new Array();
+    }
+    queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+  }
+  $.each(arrayParamVal, function(key, value){
+    queryParameters[value[0]] = value[1];
+  });
+  var tmp = jQuery.param(queryParameters, true);
+  if (path == null) {
+    return window.location.pathname+'?'+tmp;
+  }
+  else {
+    return path+'?'+tmp;
+  }
+}
 
 function updateNavigationUrl(){
   $.urlParam = function(name){
@@ -171,3 +392,15 @@ function getParam( name )
   else
     return results[1];
 }
+
+function getParamWithDefault(name, defaultValue) {
+  var result = getParam(name);
+
+  if (result == "") {
+    result = defaultValue;
+  }
+  return result;
+}
+
+
+

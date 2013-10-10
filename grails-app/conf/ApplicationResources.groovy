@@ -16,7 +16,7 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
-        dependsOn "images, cssscreen, cssprint, javascript"
+        dependsOn "images, cssscreen, cssprint, javascript, autocomplete"
     }
 
     images {  resource url:'/images/favicon.ico' }
@@ -44,6 +44,7 @@ modules = {
         resource url:'/css/user-profile.css', bundle: 'screen'
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
+        resource url:'/css/saved-searches.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -95,6 +96,7 @@ modules = {
         resource url:'/js/passwordchange.js'
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
+        resource url:'/js/saved-searches.js'
     }
 
     autocomplete {

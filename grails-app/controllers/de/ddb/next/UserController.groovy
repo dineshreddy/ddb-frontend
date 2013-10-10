@@ -43,6 +43,8 @@ class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
+    private final static String ORDER_TITLE = "title"
+    private final static String ORDER_DATE = "date"
 
     def aasService
     def sessionService
@@ -51,14 +53,19 @@ class UserController {
     def searchService
     def newsletterService
     def favoritesPageService
+    def savedSearchesService
+    def bookmarksService
 
     LinkGenerator grailsLinkGenerator
 
     def index() {
+        log.info "index()"
+        def loginStatus = LoginStatus.LOGGED_OUT
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }
 
-        render(view: "login", model: [
-            'loginStatus': LoginStatus.LOGGED_OUT]
-        )
+        render(view: "login", model: ['loginStatus': loginStatus])
     }
 
     def doLogin() {
@@ -67,7 +74,10 @@ class UserController {
 
         // Only perform login, if user is not already logged in
         User user = null
-        if(!isUserLoggedIn()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+
+        } else if(!isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -85,12 +95,14 @@ class UserController {
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
+
+            createFavoritesFolderIfNotExisting(user)
+
             if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
                 List<String> messages = []
                 messages.add("ddbnext.User.PasswordReset_Change")
                 redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
-            }
-            else {
+            } else {
                 redirect(controller: 'user', action: 'favorites')
             }
         }else{
@@ -109,23 +121,60 @@ class UserController {
 
     //TODO Refactor in a new service most of the assisting code
     def favorites(){
+        log.info "favorites()"
         if(isUserLoggedIn()){
             def rows=20 //default
             if (params.rows){
                 rows = params.rows.toInteger()
             }
-            def String result = favoritesPageService.getFavorites()
+            def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+            def folderId = mainFavoriteFolder.folderId
+            if(params.id){
+                folderId = params.id
+            }
+            def String result = favoritesPageService.getFavoritesOfFolder(folderId)
+            def by = ORDER_DATE
+            if (params.by){
+                if (params.by.toString()==ORDER_TITLE)
+                    by = params.by
+            }
+
+            def user = getUserFromSession()
+
+            def selectedFolder = bookmarksService.findFolderById(folderId)
+
+            // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
+            if(selectedFolder == null){
+                redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
+                return
+            }
 
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
             def dateTime = new Date()
-            dateTime = g.formatDate(date: dateTime, format: 'dd.MM.yyyy')
+            dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
             def lastPgOffset=0
+
+            def allFoldersInformation = []
+            def allFolders = favoritesPageService.getAllFoldersPerUser()
+            allFolders.each {
+                def container = [:]
+                def String favoritesObject = favoritesPageService.getFavoritesOfFolder(it.folderId)
+                List favoritesOfFolder = JSON.parse(favoritesObject) as List
+                container["folder"] = it
+                container["count"] = favoritesOfFolder.size()
+                allFoldersInformation.add(container)
+            }
+            allFoldersInformation = sortFolders(allFoldersInformation)
+
             if (totalResults <1){
                 render(view: "favorites", model: [
+                    selectedFolder: selectedFolder,
+                    mainFavoriteFolder: mainFavoriteFolder,
                     resultsNumber: totalResults,
+                    allFolders: allFoldersInformation,
                     userName: userName,
                     dateString: dateTime,
                     createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(0,0,"desc",0),
@@ -137,7 +186,11 @@ class UserController {
                 def resultsItems
 
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                urlQuery["offset"]=0
+
+                // convertQueryParametersToSearchParameters modifies params
+                params.remove("query")
+
+                urlQuery["offset"] = 0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
@@ -154,27 +207,39 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                def allResultsWithDate = favoritesPageService.addDateToFavResults(allRes, items, locale)
-                //Default ordering is newest on top == DESC
-                allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
-                sessionService.setSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS, allResultsWithDate)
-                def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
+                def allResultsWithAdditionalInfo = favoritesPageService.addBookmarkToFavResults(allRes, items)
+                allResultsWithAdditionalInfo = favoritesPageService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
+                allResultsWithAdditionalInfo = favoritesPageService.addDateToFavResults(allResultsWithAdditionalInfo, items, locale)
 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc"])]
+                //Default ordering is newest on top == DESC
+                allResultsWithAdditionalInfo.sort{a,b-> b.serverDate<=>a.serverDate}
+                def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
+
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
+                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])]
                 if (params.order=="asc"){
-                    allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
-                    urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc"])
+                    if(by.toString()==ORDER_DATE){
+                        allResultsWithAdditionalInfo.sort{a,b-> a.serverDate<=>b.serverDate}
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                    }else{
+                        allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
+                    }
                     urlsForOrder["asc"]="#"
                 }else{
+                    if(by.toString()==ORDER_TITLE){
+                        urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
+                        allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
+                    }
                     params.order="desc"
                 }
 
                 if (params.offset){
-                    resultsItems=allResultsWithDate.drop(params.offset.toInteger())
+                    resultsItems=allResultsWithAdditionalInfo.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
                 }else{
                     params.offset=0
-                    resultsItems=allResultsWithDate.take( rows)
+                    resultsItems=allResultsWithAdditionalInfo.take( rows)
                 }
 
                 if (request.method=="POST"){
@@ -191,7 +256,7 @@ class UserController {
                             replyTo getUserFromSession().getEmail()
                             subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                             body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered,dateString: dateTime,userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
+                            model:[results: allResultsOrdered, dateString: dateTime, userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
                         }
                         flash.message = "ddbnext.favorites_email_was_sent_succ"
                     } catch (e) {
@@ -201,13 +266,15 @@ class UserController {
                 }
 
                 render(view: "favorites", model: [
-                    title: urlQuery["query"],
+                    ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
-                    allResultsOrdered:allResultsOrdered,
-                    allFolders:favoritesPageService.getAllFoldersPerUser(),
+                    selectedFolder: selectedFolder,
+                    mainFavoriteFolder: mainFavoriteFolder,
+                    allResultsOrdered: allResultsOrdered,
+                    allFolders: allFoldersInformation,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    viewType:  urlQuery["viewType"],
+                    viewType: urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
                     resultsNumber: totalResults,
@@ -218,30 +285,170 @@ class UserController {
                     rows: rows,
                     userName: userName,
                     dateString: dateTime,
+                    urlsForOrderTitle:urlsForOrderTitle,
                     urlsForOrder:urlsForOrder
                 ])
             }
-        }
-        else{
+        } else{
             redirect(controller:"user", action:"index")
         }
     }
 
+    private def sortFolders(allFoldersInformations){
+        def out = []
+        //Inefficient sort, but we are expecting only very few entries
 
-    def sendfavorites(){
-        def results = sessionService.getSessionAttributeIfAvailable(SESSION_FAVORITES_RESULTS)
-        def dateTime = new Date()
-        dateTime = g.formatDate(date: dateTime, format: 'dd MM yyyy')
-        render(view: "sendfavorites", model: [results: results, userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),dateString:dateTime])
+        //Go over all allFoldersInformations
+        for(int i=0; i<allFoldersInformations.size(); i++){
+            String insertTitle = allFoldersInformations[i].folder.title.toLowerCase()
+            //and find the right place to fit
+            if(out.size() == 0){
+                out.add(allFoldersInformations[i])
+            }else{
+                for(int j=0; j<out.size(); j++){
+                    String compareTitle = out[j].folder.title.toLowerCase()
+                    if(insertTitle.compareTo(compareTitle) < 0){
+                        out.add(j, allFoldersInformations[i])
+                        break
+                    } else if(j == out.size()-1){
+                        out.add(allFoldersInformations[i])
+                        break
+                    }
+                }
+            }
+        }
+        // find the "favorites" and put it first
+        for(int i=0; i<out.size(); i++){
+            String insertTitle = out[i].folder.title
+            if(insertTitle == "favorites"){
+                def favoritesEntry = out[i]
+                out.remove(i)
+                out.add(0, favoritesEntry)
+                break
+            }
+        }
+        //Check for empty titles
+        for(int i=0; i<out.size(); i++){
+            if(out[i].folder.title.trim().isEmpty()){
+                out[i].folder.title = "-"
+            }
+        }
+        return out
     }
 
-    /* end favorites methods */
+
+    /* begin saved searches methods */
+
+    def getSavedSearches() {
+        log.info "getSavedSearches()"
+        if (isUserLoggedIn()) {
+            def user = getUserFromSession()
+            def savedSearches = savedSearchesService.getSavedSearches(user.getId())
+            def offset = params.offset ? params.offset.toInteger() : 0
+            def rows = params.rows ? params.rows.toInteger() : 20
+            def totalPages = (savedSearches.size() / rows).toInteger()
+            def urlsForOrder
+
+            if (!params.criteria) {
+                params.criteria = "label"
+            }
+            if (!params.order) {
+                params.order = "asc"
+            }
+            if (params.criteria == "creationDate") {
+                if (params.order == "asc") {
+                    savedSearches.sort {a, b -> a.creationDate <=> b.creationDate}
+                }
+                else {
+                    savedSearches.sort {a, b -> b.creationDate <=> a.creationDate}
+                }
+            }
+            else {
+                if (params.order == "asc") {
+                    savedSearches.sort {a, b -> a.label.toLowerCase() <=> b.label.toLowerCase()}
+                }
+                else {
+                    savedSearches.sort {a, b -> b.label.toLowerCase() <=> a.label.toLowerCase()}
+                }
+            }
+            if (totalPages * rows < savedSearches.size()) {
+                totalPages++
+            }
+            if (params.order == "asc") {
+                urlsForOrder = [
+                    desc: g.createLink(controller: "user", action: "savedsearches",
+                    params: [offset: 0, rows: rows, order: "desc"]),
+                    asc: "#"
+                ]
+            } else {
+                urlsForOrder = [
+                    desc: "#",
+                    asc: g.createLink(controller: "user", action: "savedsearches",
+                    params: [offset: 0, rows: rows, order: "asc"])
+                ]
+            }
+            render(view: "savedsearches", model: [
+                dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
+                numberOfResults: savedSearches.size(),
+                page: offset / rows + 1,
+                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
+                rows: rows,
+                totalPages: totalPages,
+                urlsForOrder: urlsForOrder,
+                userName: user.getFirstnameAndLastnameOrNickname()
+            ])
+        } else {
+            redirect(controller: "user", action: "index")
+        }
+    }
+
+    def sendSavedSearches() {
+        log.info "sendSavedSearches()"
+        if (isUserLoggedIn()) {
+            def user = getUserFromSession()
+            def List emails = []
+
+            if (params.email.contains(',')) {
+                emails = params.email.tokenize(',')
+            } else {
+                emails.add(params.email)
+            }
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo getUserFromSession().getEmail()
+                    subject g.message(code: "ddbnext.Savedsearches_Of", args: [
+                        user.getFirstnameAndLastnameOrNickname()
+                    ])
+                    body(view: "_savedSearchesEmailBody", model: [
+                        results:
+                        savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
+                            a.label.toLowerCase() <=> b.label.toLowerCase()},
+                        userName: user.getFirstnameAndLastnameOrNickname()
+                    ])
+                }
+                flash.message = "ddbnext.favorites_email_was_sent_succ"
+            } catch (e) {
+                log.info "An error occurred sending the email "+ e.getMessage()
+                flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
+            }
+            redirect(controller: "user", action: "getSavedSearches")
+        } else {
+            redirect(controller: "user", action: "index")
+        }
+    }
+
+    /* end saved searches methods */
 
     def registration() {
-        render(view: "registration", model: [])
+        log.info "registration()"
+        render(view: "registration", model: [:])
     }
 
     def signup() {
+        log.info "signup()"
         List<String> errors = []
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
@@ -253,43 +460,38 @@ class UserController {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
                 redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
-            }
-            catch (ConflictException e) {
+            } catch (ConflictException e) {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
                 String conflictField = e.getMessage().replaceFirst(".*?'(.*?)'.*", "\$1")
                 if (params.username.equals(conflictField)) {
                     errors.add("ddbnext.Conflict_User_Name")
-                }
-                else if (params.email.equals(conflictField)) {
+                } else if (params.email.equals(conflictField)) {
                     errors.add("ddbnext.Conflict_User_Email")
-                }
-                else {
+                } else {
                     errors.add("ddbnext.Conflict_User_Common")
                 }
                 render(view: "registration" , model: [errors: errors, messages: messages, params: params])
             }
-        }
-        else {
+        } else {
             render(view: "registration" , model: [errors: errors, messages: messages, params: params])
         }
     }
 
     def passwordResetPage() {
+        log.info "passwordResetPage()"
         List<String> errors = []
         List<String> messages = []
         if (params.errors != null) {
             if (params.errors instanceof String) {
                 errors.add(params.errors)
-            }
-            else {
+            } else {
                 errors.addAll(params.errors)
             }
         }
         if (params.messages != null) {
             if (params.messages instanceof String) {
                 messages.add(params.messages)
-            }
-            else {
+            } else {
                 messages.addAll(params.messages)
             }
         }
@@ -297,6 +499,7 @@ class UserController {
     }
 
     def passwordReset() {
+        log.info "passwordReset()"
         List<String> messages = []
         List<String> errors = []
         if (StringUtils.isBlank(params.username)) {
@@ -308,8 +511,7 @@ class UserController {
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
                 aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
                 messages.add("ddbnext.User.PasswordReset_Success")
-            }
-            catch (ItemNotFoundException e) {
+            } catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e
                 errors.add("ddbnext.Error_Username_Notfound")
             }
@@ -324,6 +526,7 @@ class UserController {
     }
 
     def profile() {
+        log.info "profile()"
         if(isUserLoggedIn()){
             User user = getUserFromSession().clone()
             if (params.username) {
@@ -341,32 +544,35 @@ class UserController {
             if (params.errors != null) {
                 if (params.errors instanceof String) {
                     errors.add(params.errors)
-                }
-                else {
+                } else {
                     errors.addAll(params.errors)
                 }
             }
             if (params.messages != null) {
                 if (params.messages instanceof String) {
                     messages.add(params.messages)
-                }
-                else {
+                } else {
                     messages.addAll(params.messages)
                 }
             }
             //get favorites-count
-            def String result = favoritesPageService.getFavorites()
-            List items = JSON.parse(result) as List
-            def favoritesCount = items.length()
+            def String favoritesResult = favoritesPageService.getFavorites()
+            List favorites = JSON.parse(favoritesResult) as List
+            def favoritesCount = favorites.length()
 
-            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors:errors, messages: messages])
+            //get savedsearch-count
+            def savedSearchesResult = savedSearchesService.getSavedSearches()
+            def savedSearchesCount = savedSearchesResult.size()
+
+            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index")
         }
     }
 
     def saveProfile() {
+        log.info "saveProfile()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -421,8 +627,7 @@ class UserController {
                         user.setLastname(params.lname)
                         aasService.updatePerson(user.getId(), aasUser)
                         messages.add("ddbnext.User.Profile_Update_Success")
-                    }
-                    catch (ConflictException e) {
+                    } catch (ConflictException e) {
                         log.error "Conflict: user with given data already exists. username:" + params.username, e
                         errors.add("ddbnext.Conflict_User_Name")
                     }
@@ -434,8 +639,7 @@ class UserController {
                         def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
                         aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbnext.User.Email_Update_Success")
-                    }
-                    catch (ConflictException e) {
+                    } catch (ConflictException e) {
                         user.setEmail(params.email)
                         log.error "Conflict: user with given data already exists. email:" + params.email, e
                         errors.add("ddbnext.Conflict_User_Email")
@@ -468,21 +672,20 @@ class UserController {
             if (params.newsletter) {
                 newsletterService.addSubscriber(user)
                 user.setNewsletterSubscribed(true)
-            }
-            else {
+            } else {
                 newsletterService.removeSubscriber(user)
                 user.setNewsletterSubscribed(false)
             }
 
             messages.add("ddbnext.User.Newsletter_Update_Success")
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error "fail to update newsletter subscription", e
             errors.add("fail to update newsletter subscription")
         }
     }
 
     def passwordChangePage() {
+        log.info "passwordChangePage()"
         if(isUserLoggedIn()){
             User user = getUserFromSession()
             if (user.isOpenIdUser()) {
@@ -497,16 +700,14 @@ class UserController {
             if (params.errors != null) {
                 if (params.errors instanceof String) {
                     errors.add(params.errors)
-                }
-                else {
+                } else {
                     errors.addAll(params.errors)
                 }
             }
             if (params.messages != null) {
                 if (params.messages instanceof String) {
                     messages.add(params.messages)
-                }
-                else {
+                } else {
                     messages.addAll(params.messages)
                 }
             }
@@ -518,6 +719,7 @@ class UserController {
     }
 
     def passwordChange() {
+        log.info "passwordChange()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -561,6 +763,7 @@ class UserController {
     }
 
     def delete() {
+        log.info "delete()"
         if (isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
@@ -574,8 +777,7 @@ class UserController {
             }
             try {
                 aasService.deletePerson(user.id)
-            }
-            catch (AuthorizationException e) {
+            } catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
             logoutUserFromSession()
@@ -586,21 +788,20 @@ class UserController {
     }
 
     def confirmationPage() {
+        log.info "confirmationPage()"
         List<String> errors = []
         List<String> messages = []
         if (params.errors != null) {
             if (params.errors instanceof String) {
                 errors.add(params.errors)
-            }
-            else {
+            } else {
                 errors.addAll(params.errors)
             }
         }
         if (params.messages != null) {
             if (params.messages instanceof String) {
                 messages.add(params.messages)
-            }
-            else {
+            } else {
                 messages.addAll(params.messages)
             }
         }
@@ -608,6 +809,7 @@ class UserController {
     }
 
     def confirm() {
+        log.info "confirm()"
         if (StringUtils.isBlank(params.type)) {
             forward controller: "error", action: "serverError"
         }
@@ -618,11 +820,9 @@ class UserController {
             jsonuser = aasService.confirm(params.id, params.token)
             if (params.type.equals("emailupdate")) {
                 messages.add("ddbnext.User.Email_Confirm_Success")
-            }
-            else if (params.type.equals("passwordreset")) {
+            } else if (params.type.equals("passwordreset")) {
                 messages.add("ddbnext.User.Pwreset_Confirm_Success")
-            }
-            else if (params.type.equals("create")) {
+            } else if (params.type.equals("create")) {
                 messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
@@ -646,7 +846,9 @@ class UserController {
     }
 
     def requestOpenIdLogin() {
+        log.info "requestOpenIdLogin()"
         def provider = params.provider
+        def loginStatus = LoginStatus.AUTH_PROVIDER_REQUEST
 
         String discoveryUrl = ""
 
@@ -654,7 +856,9 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(!isCookiesActivated()){
+            loginStatus = LoginStatus.NO_COOKIES
+        }else if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
@@ -665,9 +869,11 @@ class UserController {
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
         }else{
-            render(view: "login", model: [
-                'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
-            )
+            loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
+        }
+
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST){
+            render(view: "login", model: ['loginStatus': loginStatus])
             return
         }
 
@@ -737,7 +943,7 @@ class UserController {
                 }
 
 
-                log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier // TODO remove again!!!
+                //log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier
 
                 // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
                 //                getSessionObject(false)?.invalidate()
@@ -759,6 +965,8 @@ class UserController {
                 sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
 
                 loginStatus = LoginStatus.SUCCESS
+
+                createFavoritesFolderIfNotExisting(user)
 
             }else {
                 log.info "doOpenIdLogin(): failure verification"
@@ -811,5 +1019,21 @@ class UserController {
         sessionService.destroySession()
     }
 
+    private boolean isCookiesActivated() {
+        if(request.getCookies() != null && request.getCookies().length > 0){
+            return true
+        }else{
+            return false
+        }
+    }
+
+    private def createFavoritesFolderIfNotExisting(User user){
+        log.info "createFavoritesFolderIfNotExisting()"
+        def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+        if(mainFavoriteFolder == null){
+            def folderId = bookmarksService.newFolder(user.getId(), "favorites", false)
+            log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
+        }
+    }
 
 }

@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%! import org.codehaus.groovy.grails.validation.routines.UrlValidator %> 
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <div style="margin-top:20px; margin-bottom:20px">
@@ -23,12 +24,12 @@ limitations under the License.
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th width="70%" style="margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
       </g:else>
-      <th width="170px"></th>
+      <th style="width: 170px;"></th>
     </tr>
   </thead>
   <tbody>
@@ -41,7 +42,7 @@ limitations under the License.
       </g:if>
       
       <tr>
-        <td width="70%" height="130px" style="padding: 10px;">
+        <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${grailsApplication.config.ddb.favorites.basedomain}"
               action="${ action }" params="[id: it.id]"
@@ -50,14 +51,22 @@ limitations under the License.
                 length="${ 100 }"></g:truncateItemTitle>
             </g:link>
           </h2>
-          <div>
-            ${it.preview.subtitle}
-          </div>
+          <g:if test="${!(it.preview.subtitle instanceof net.sf.json.JSONNull)}">
+            <div>
+              ${it.preview.subtitle}
+            </div>
+          </g:if>
         </td>
-        <td width="170px" style="padding: 10px;">
+        <td style="width: 170px; padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
-            <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
-                 alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
+              <!-- institution logos still point to the content server -->
+              <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>"></img>
+            </g:if>
+            <g:else>
+              <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+                   alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            </g:else>
           </g:link>
         </td>
       </tr>

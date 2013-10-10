@@ -391,6 +391,14 @@ class SearchService {
             urlQuery["sortDesc"] = getMapElementOfUnsureType(reqParameters, "sortDesc", "")
         }
 
+        if(reqParameters.isThumbnailFiltered){
+            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
+            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery["facet"].add("grid_preview")
+                urlQuery["grid_preview"] = "true"
+            }
+        }
+
         //We ask for a maximum of 301 facets
         urlQuery["facet.limit"] = 301
 
@@ -700,6 +708,7 @@ class SearchService {
             if(!urlQuery["facet"].contains(reqParameters.get("name")))
                 urlQuery["facet"].add(reqParameters.get("name"))
         }
+
 
         if(reqParameters.isThumbnailFiltered){
             urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]

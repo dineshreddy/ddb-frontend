@@ -14,11 +14,10 @@
  * limitations under the License.
  */
  
-@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb.eot")}
-@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb.woff") format("woff")}
-@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb-Bold.woff") format("woff");font-weight:bold}
+@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb.eot");}
+@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb.woff") format("woff");}
+@font-face{font-family:KarbidWeb;src:url("fonts/KarbidWeb-Bold.woff") format("woff");font-weight:bold;}
 
- 
 body {
   color: #3E3A37;
   font-family: Calibri,Arial,sans-serif;
@@ -97,7 +96,7 @@ li {
 }
 
 .institution-name {
-  background: url(../images/icons/list_arrows.png) no-repeat 0px -1px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
   font-size: 1.214em;
   font-weight: bold;
   height: 25px;
@@ -120,7 +119,7 @@ li {
   height: 100px !important;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 0px !important;
+  margin-bottom: 0 !important;
   border-bottom: 3px solid #E9E5E2;
 }
 
@@ -149,7 +148,7 @@ li {
 }
 
 .print .printrow {
-  margin-left: 0px !important;
+  margin-left: 0 !important;
 }
 
 .print .borderbottom {
@@ -175,7 +174,7 @@ li {
 
 .print .institution-name {
   background: none !important;
-  padding-left: 0px !important;
+  padding-left: 0 !important;
 }
 
 .print .item .previewrow {
@@ -184,7 +183,7 @@ li {
 }
 
 .print .item img {
-  margin: 0px !important; 
+  margin: 0 !important; 
 }
 
 .print .item .fieldtitle {
@@ -202,11 +201,10 @@ li {
 }
 
 .print .hierarchy ul {
-  margin: 0px 0px 10px 15px !important;  
+  margin: 0 0 10px 15px !important;  
   list-style-type: square !important;
 }
-  
+
 .print .hierarchy .field-header {
   margin-bottom: 10px;
 }
-

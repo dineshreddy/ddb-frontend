@@ -108,6 +108,7 @@ class ConfigurationService {
         return url
     }
 
+
     public String getBookmarkUrl(){
         def url = grailsApplication.config.ddb?.bookmark?.url
         if(!url){
@@ -126,6 +127,17 @@ class ConfigurationService {
         }
         if(!(url instanceof String)){
             throw new ConfigurationException("getNewsletterUrl(): ddb.newsletter.url is not a String")
+        }
+        return url
+    }
+
+    public String getElasticSearchUrl(){
+        def url = grailsApplication.config.ddb?.elasticsearch?.url
+        if(!url){
+            throw new ConfigurationException("getElasticSearchUrl(): Configuration entry does not exist -> ddb.elasticsearch.url ")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getElasticSearchUrl(): ddb.elasticsearch.url is not a String")
         }
         return url
     }
@@ -268,17 +280,20 @@ class ConfigurationService {
         return grailsMailHost
     }
 
+    /**
+     * Get the authorization key to access restricted API calls.
+     *
+     * This property is optional. Leave it blank if you do not want to set an API key.
+     *
+     * @return the authorization key
+     */
     public String getBackendApikey(){
         def backendApikey = grailsApplication.config.ddb?.backend?.apikey
-        if(!backendApikey){
-            throw new ConfigurationException("getBackendApikey(): Configuration entry does not exist -> ddb.backend.apikey")
-        }
         if(!(backendApikey instanceof String)){
             throw new ConfigurationException("getBackendApikey(): ddb.backend.apikey is not a String")
         }
         return backendApikey
     }
-
 
     public int getSearchGroupCount() {
         def searchGroupCount = grailsApplication.config.ddb?.advancedSearch?.searchGroupCount?.toString()
@@ -402,10 +417,16 @@ class ConfigurationService {
 
 
     public def logConfigurationSettings() {
+        log.info "------------- application.properties ------------------"
+        log.info "app.grails.version = "+grailsApplication.metadata["app.grails.version"]
+        log.info "app.name = "+grailsApplication.metadata["app.name"]
+        log.info "app.version = "+grailsApplication.metadata["app.version"]
+        log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
         log.info "ddb.apis.url = " + getApisUrl()
         log.info "ddb.backend.url = " + getBackendUrl()
+        log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.dnb.url = " + getDnbUrl()
@@ -426,8 +447,9 @@ class ConfigurationService {
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
+        log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
-        //log.info "ddb.backend.apikey = " + getBackendApikey()
+        log.info "-------------------------------------------------------"
     }
 }

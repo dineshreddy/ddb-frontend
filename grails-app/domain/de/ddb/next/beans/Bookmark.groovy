@@ -15,6 +15,9 @@
  */
 package de.ddb.next.beans
 
+import org.codehaus.groovy.runtime.NullObject
+
+import net.sf.json.JSONNull
 import groovy.transform.ToString
 
 import de.ddb.next.Type
@@ -25,14 +28,38 @@ class Bookmark {
     String bookmarkId
     String userId
     String itemId
+    String description
     Date creationDate
+    Date updateDate
     Type type
+    Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type) {
-        this.bookmarkId =bookmarkId
+    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders, def description, def updateDate) {
+        this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
+        if(description == null || description instanceof JSONNull || description instanceof NullObject){
+            this.description = ""
+        }else{
+            this.description = description.toString()
+        }
         this.creationDate = creationDate
+        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
+            this.updateDate = creationDate
+        }else{
+            this.updateDate = new Date(updateDate.toLong())
+        }
         this.type = type
+        if(folders instanceof String){
+            String folderString = folders.toString()
+            if(folderString.startsWith("[")){
+                folderString = folderString.substring(1,folderString.length()-1)
+                this.folders = Arrays.asList(folderString.split(","))
+            }else{
+                this.folders = [folders]
+            }
+        }else{
+            this.folders = folders
+        }
     }
 }

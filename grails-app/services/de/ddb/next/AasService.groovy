@@ -351,7 +351,7 @@ class AasService {
             apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), url, true, postParameter)
         }
         else if (method.equals(Method.DELETE)) {
-            apiResponse = ApiConsumer.delete(configurationService.getAasUrl(), url, true)
+            apiResponse = ApiConsumer.deleteJson(configurationService.getAasUrl(), url, true)
         }
         else {
             throw new BackendErrorException("No method for request defined")

@@ -32,6 +32,10 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-list.selected-folder {
+  background-color: transparent !important;
+}
+
 .bookmarks-list a.h3, .bookmarks-list span.h3 {
   color: #3e3a37;
   font-size: 1.063em;
@@ -50,7 +54,7 @@ hr {
   padding: 0 35% 0 10px;
 }
 
-.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number{
+.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete {
   position:absolute;
   top:0;
   right:0;
@@ -58,15 +62,21 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  padding-right: 70px;
+  margin-right: 75px;
 }
 
-.bookmarks-list-envelope{
-  padding-right: 30px;
+.bookmarks-list-envelope {
+  margin-top: 1px;
+  margin-right: 50px;
+}
+
+.bookmarks-list-delete {
+  margin-top: 3px;
+  margin-right: 5px;
 }
 
 .bookmarks-list-edit{
-  padding-right: 10px;
+  margin-right: 25px;
 }
 
 .bookmarks-list-envelope i, .bookmarks-list-edit i{
@@ -113,6 +123,17 @@ hr {
   margin-left: 0;
 }
 
+#favorites-copy .submit{
+  margin-top:8px;
+  margin-left: 0;
+}
+
+#folder-create .submit{
+  margin-top:8px;
+  margin-left: 0;
+  width: 200px;
+}
+
 .results-sorter {
   background: #efebe8;
   overflow: hidden;
@@ -145,6 +166,7 @@ hr {
 
 .favorites-results-controls .deleteBtn{
   float:left;
+  margin-right: 10px;
 }
 
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
@@ -169,10 +191,10 @@ hr {
 
 .favorites-results .search-results-overlay-modal {
   position: absolute;
-  top: 0px;
-  right: 0px;
-  bottom: 0px;
-  left: 0px;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 1;
   background-color: #FFFFFF;
   opacity: 0.90;
@@ -182,9 +204,9 @@ hr {
 .favorites-results .search-results-overlay-waiting {
   text-align: center;
   position: absolute;
-  top: 0px;
-  right: 0px;
-  left: 0px;
+  top: 0;
+  right: 0;
+  left: 0;
   z-index: 2;
 }
 
@@ -195,7 +217,7 @@ hr {
 }
 
 .favorites-results .results-list .title {
-  padding: 4px 10px 0 0;
+  padding: 0 10px 0 0;
   margin: 0;
   line-height: 1.1em;
   overflow: hidden;
@@ -295,7 +317,7 @@ hr {
 }
 
 .favorites-results .results-list .summary .extra .types .unknown {
-  background-position: 0 0px;
+  background-position: 0 0;
 }
 
 
@@ -332,7 +354,7 @@ hr {
 }
 
 .favorites-results .results-list .summary .information:hover {
-  background-position: 0px -20px;
+  background-position: 0 -20px;
 }
 
 .bookmarks-lists .active {
@@ -410,7 +432,7 @@ hr {
   margin-left: -17px;
 }
 
-#sendbookmarks.cursor-pointer {
+.sendbookmarks.cursor-pointer {
   cursor: pointer;
 }
 
@@ -435,10 +457,10 @@ hr {
      display: none;
    }
   .page-nav .br {
-    border-right: 0px;
+    border-right: 0;
    }
   .page-nav .bl {
-    border-left: 0px;
+    border-left: 0;
    }
 }
 
@@ -454,4 +476,63 @@ hr {
 }
 .orderList{
 	margin:10px 0 10px 3px;
+}
+
+#favoritesCreateConfirmDialog.modal{
+  width: 400px !important;
+  margin-left: -200px !important; 
+}
+
+#favoritesCreateConfirmDialog .modal-body div {
+  margin-bottom: 10px;
+}
+
+.folder-create-name, .folder-edit-name {
+  width: 100%;
+}
+
+.folder-create-description, .folder-edit-description {
+  width: 100%;
+  resize: none;
+}
+
+.folder-delete-check {
+  margin-top: -4px !important;
+}
+
+.folder-delete-row {
+  margin-bottom: 20px;
+}
+
+.favorites-copy-selection {
+  width: 100%;
+}
+
+.favorites-results .results-list .comment .comment-container {
+  margin: 10px 10px 0px 35px;
+}
+
+.favorites-results .results-list .comment .comment-input {
+  width: 100%; 
+  height: 20px; 
+  resize: vertical;
+  padding: 2px;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+
+.favorites-results .results-list .comment .comment-text {
+  width: 100%;
+  padding: 2px;
+  border: 1px solid #EFEBE8;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+
+.favorites-results .results-list .comment .comment-meta {
+  font-style: italic;
 }

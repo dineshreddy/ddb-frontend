@@ -19,7 +19,7 @@
   clear: right;
   width: 476px;
   height: 300px;
-  line-height: 0px;
+  line-height: 0;
   background-color:#efebe8;
   overflow: hidden;
   font-size:0.938em;
@@ -30,7 +30,7 @@
 
 @media (min-width: 768px) and (max-width: 979px) {
   .locations #divOSM { 
-    margin-left: 0px;
+    margin-left: 0;
     width: 400px;
   }
 }
@@ -50,7 +50,7 @@
 }
 
 .location-container {
-  margin-left: 0px
+  margin-left: 0;
 }
 
 .location-container .location {
@@ -92,7 +92,7 @@
 }
 
 .hierarchy > .institution-list {
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 .institution-list {
@@ -114,8 +114,8 @@
 }
 
 .institution h2 {
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
   font-size: 1.467em;
 }
 

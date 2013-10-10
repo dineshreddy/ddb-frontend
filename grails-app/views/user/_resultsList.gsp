@@ -30,9 +30,16 @@ limitations under the License.
           <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
           <div class="summary-main">
             <h2 class="title">
-              <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
-                <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
-              </g:link>
+              <g:if test="${it.category == "orphaned"}">
+                <a title="${truncateHovercardTitle(title: it.label, length: 350)}">
+                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                </a>
+              </g:if>
+              <g:else>
+                <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
+                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                </g:link>
+              </g:else>
             </h2>
             <div class="subtitle">
               <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
@@ -46,14 +53,28 @@ limitations under the License.
           </div>
         </div>
         <div class="span2 thumbnail">
-          <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
-            <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
-          </g:link>
+          <g:if test="${it.category == "orphaned"}">
+            <a>
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            </a>
+          </g:if>
+          <g:else>
+            <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+            </g:link>
+          </g:else>
         </div>
         <div class="span2 created-at">
           <div>${it.creationDate}</div>
         </div>
       </div>
+      <g:if test="${it.category != "orphaned" }">
+        <div class="comment row">
+          <div class="span9">
+            <g:render template="favoritesComment" model="${[item: it]}" />
+          </div>
+        </div>
+      </g:if>
     </li>
   </g:each>
 </ul>

@@ -32,6 +32,7 @@ class User implements Cloneable {
     boolean newsletterSubscribed
 
     // TODO: why do we need to declare a default constructor?
+    // TODO: *arb*: If you write a Question in a TODO, write your name after it so we know who to ask remove the TODO :)
     User(){
     }
 

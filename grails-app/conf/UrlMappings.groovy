@@ -19,7 +19,7 @@ class UrlMappings {
         //@formatter:off
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
-        
+
         "/searchresults/$q?" {
             controller="search"
             action="results"
@@ -29,7 +29,7 @@ class UrlMappings {
             controller="facets"
             action="facetsList"
         }
-        
+
         "/informationitem/$id"{
             controller="search"
             action="informationItem"
@@ -60,14 +60,29 @@ class UrlMappings {
             action="findById"
         }
 
-        "/apis/favorites/" {
+        "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
         }
 
         name delFavorites: "/apis/favorites/_delete" {
             controller="favorites"
-            action=[POST: "deleteFavorites"]
+            action=[POST: "deleteFavoritesFromFolder"]
+        }
+
+        "/apis/favorites/folder/create" {
+            controller="favorites"
+            action="createFavoritesFolder"
+        }
+
+        "/apis/favorites/folder/delete" {
+            controller="favorites"
+            action="deleteFavoritesFolder"
+        }
+
+        "/apis/favorites/folder/edit" {
+            controller="favorites"
+            action="editFavoritesFolder"
         }
 
         "/apis/favorites/_get" {
@@ -75,9 +90,39 @@ class UrlMappings {
             action=[POST: "filterFavorites"]
         }
 
+        "/apis/favorites/copy" {
+            controller="favorites"
+            action="copyFavorites"
+        }
+
+        "/apis/favorites/comment" {
+            controller="favorites"
+            action=[POST: "setComment"]
+        }
+
         "/apis/favorites/$id" {
             controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
+        }
+
+        "/apis/savedsearches" {
+            controller="savedsearches"
+            action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
+        }
+
+        "/apis/savedsearches/$id" {
+            controller="savedsearches"
+            action=[PUT: "updateSavedSearch"]
+        }
+
+        name delSavedSearches: "/apis/savedsearches/_delete" {
+            controller="savedsearches"
+            action=[POST: "deleteSavedSearches"]
+        }
+
+        "/apis/savedsearches/_get" {
+            controller="savedsearches"
+            action=[POST: "isSavedSearch"]
         }
 
         "/about-us/institutions" {
@@ -119,7 +164,7 @@ class UrlMappings {
             controller="user"
             action="registration"
         }
-        
+
         "/user/resetPassword" {
             controller="user"
             action="passwordResetPage"
@@ -130,9 +175,14 @@ class UrlMappings {
             action="profile"
         }
 
-        "/user/favorites" {
+        "/user/favorites/$id" {
             controller="user"
             action="favorites"
+        }
+
+        "/user/savedsearches" {
+            controller="user"
+            action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
         }
 
         "/user/confirm/$id/$token" {

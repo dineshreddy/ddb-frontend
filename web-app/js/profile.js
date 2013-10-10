@@ -44,7 +44,12 @@ $(document).ready(function(){
   });
 
   $('#delete-account').click(function() {
-    return confirm(messages.ddbnext.User.Really_Delete_Account());
+    $('#msDeleteAccount').modal('show');
   });
 
+  $('#delete-account-confirm').click(function() {
+    $.get(jsContextPath + "/user/delete", function(data) {
+      $("body").html(data);
+    });
+  });
 });

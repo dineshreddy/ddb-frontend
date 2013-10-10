@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import org.codehaus.groovy.grails.web.util.WebUtils
+
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -28,7 +30,7 @@ class InstitutionService {
     def grailsApplication
 
     def grailsLinkGenerator
-    
+
     def configurationService
 
     def findAll() {
@@ -127,7 +129,7 @@ class InstitutionService {
 
     private def buildIndex() {
         // create a map with empty arrays as initial values.
-        def institutionByFirstLetter = [:].withDefault{ [] }
+        def institutionByFirstLetter = [:].withDefault{ []}
 
         // use A..Z as keys
         LETTERS.each {

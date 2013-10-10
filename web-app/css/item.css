@@ -17,25 +17,31 @@
   color: #878380;
   padding-left: 16px;
   margin-right: 10px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0px -40px
+  background: url(../images/icons/list_backarrows.png) no-repeat 0 -40px
 }
 .item-detail .rights {
   margin: 0 0 27px 0;
 }
 .back-to-list {
   padding-left: 16px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0px 0px;
+  background: url(../images/icons/list_backarrows.png) no-repeat 0 0;
   margin-right: 10px
 }
 .page-link {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px 0px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 0;
 }
 
 .viewer.dfg {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0px -40px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 -40px;
 }
+
+.item-content a[href^="http"] {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
 .item-detail .institution {
   margin-top: 1em;
   margin-bottom: 1em;
@@ -56,7 +62,7 @@
   padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/list_arrows.png) no-repeat 0px 1px;
+  background: url(../images/icons/list_arrows.png) no-repeat 0 1px;
   font-weight: bold;
   font-size: 1.133em;
 }
@@ -100,7 +106,7 @@
 .favorite-actions {
   padding-left: 17px;
   background: url(../images/icons/search_actions.png) no-repeat ;
-  background-position: -2px -0px;
+  background-position: -2px 0;
   margin-right: 10px;
 }
 
@@ -108,17 +114,18 @@
   background-position: -2px -140px;
   cursor: pointer;
 }
-.favorite-actions.favorite-add:hover {
-  //background-position: -2px -100px;
-}
+
+/*.favorite-actions.favorite-add:hover {
+  background-position: -2px -100px;
+}*/
 
 .favorite-actions.favorite-selected {
   background-position: -2px -160px;
   pointer-events: none;
 }
-.favorite-actions.favorite-selected:hover {
-  //background-position: -2px -60px;
-}
+/*.favorite-actions.favorite-selected:hover {
+  background-position: -2px -60px;
+}*/
 
 .modal-body {
   position: relative;
@@ -179,7 +186,7 @@
 .fields, .rights {
   font-size: 0.938em;
 }
-@media ( max-width : 979px) {
+@media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
     display: none;
