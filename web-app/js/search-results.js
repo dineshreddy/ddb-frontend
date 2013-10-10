@@ -1268,34 +1268,37 @@ function searchResultsInitializer(){
       itemIds.push(extractItemId($(this).attr("href")));
     });
 
-    // check if a result hit is already stored in the list of favorites
-    $.ajax({
-        type: "POST",
-        url: jsContextPath + "/apis/favorites/_get",
-        contentType : "application/json",
-        data: JSON.stringify(itemIds),
-        success: function(favoriteItemIds) {
-          $.each(itemIds, function(index, itemId) {
-            var div = $("#favorite-" + itemId);
-
-            if ($.inArray(itemId, favoriteItemIds) >= 0) {
-              disableFavorite(div);
-            }
-            else {
-              div.click(function() {
+    // Only perform this check if a user is logged in
+    if(jsLoggedIn == "true"){
+      // check if a result hit is already stored in the list of favorites
+      $.ajax({
+          type: "POST",
+          url: jsContextPath + "/apis/favorites/_get",
+          contentType : "application/json",
+          data: JSON.stringify(itemIds),
+          success: function(favoriteItemIds) {
+            $.each(itemIds, function(index, itemId) {
+              var div = $("#favorite-" + itemId);
+  
+              if ($.inArray(itemId, favoriteItemIds) >= 0) {
                 disableFavorite(div);
-                // add a result hit to the list of favorites
-                $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
-                  $("#favorite-confirmation").modal("show");
-                  window.setTimeout(function(){
-                    $("#favorite-confirmation").modal("hide");
-                  }, 1500);
+              }
+              else {
+                div.click(function() {
+                  disableFavorite(div);
+                  // add a result hit to the list of favorites
+                  $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                    $("#favorite-confirmation").modal("show");
+                    window.setTimeout(function(){
+                      $("#favorite-confirmation").modal("hide");
+                    }, 1500);
+                  });
                 });
-              });
-            }
-          });
-        }
-    });
+              }
+            });
+          }
+      });
+    }
   }
 
   /**
