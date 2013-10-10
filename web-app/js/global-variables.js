@@ -18,6 +18,7 @@ var jsLanguage = "";
 var jsPageName = "";
 var jsLatitude = "";
 var jsLongitude = "";
+var jsLoggedIn = "";
 
 $(document).ready(function () {
     var jsVariablesDiv = $('#globalJsVariables');
@@ -35,6 +36,9 @@ $(document).ready(function () {
         if (jsVariablesDiv.attr('data-js-latitude')) {
             jsLatitude = jsVariablesDiv.attr('data-js-latitude');
         }
+        if (jsVariablesDiv.attr('data-js-loggedin')) {
+          jsLoggedIn = jsVariablesDiv.attr('data-js-loggedin');
+      }
     }
     if (jsPageMeta) {
         jsPageName = jsPageMeta;

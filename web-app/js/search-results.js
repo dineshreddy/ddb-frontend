@@ -516,12 +516,12 @@ function searchResultsInitializer(){
   });
 
   function hideError() {
-	  $('.errors-container').remove();
+    $('.errors-container').remove();
   }
 
   function showError(errorHtml) {
       var errorContainer = ($('.search-results-list').find('.errors-container').length > 0) ?
-    		  $('.search-results-list').find('.errors-container') : $(document.createElement('div'));
+          $('.search-results-list').find('.errors-container') : $(document.createElement('div'));
       var errorIcon = $(document.createElement('i'));
       errorContainer.addClass('errors-container');
       errorIcon.addClass('icon-exclamation-sign');
@@ -1299,7 +1299,7 @@ function searchResultsInitializer(){
       $("#addToSavedSearchesModal").modal("hide");
       var title = $("#addToSavedSearchesTitle").val();
       if (title.length > 0) {
-    	hideError();
+      hideError();
         $.ajax({
           type: "PUT",
           contentType: "application/json",
@@ -1324,38 +1324,42 @@ function searchResultsInitializer(){
   function checkFavorites() {
     var itemIds = [];
 
-    // collect all item ids on the page
-    $(".search-results .summary-main .persist").each(function() {
-      itemIds.push(extractItemId($(this).attr("href")));
-    });
+    // Only perform this check if a user is logged in
+    if(jsLoggedIn == "true"){
 
-    // check if a result hit is already stored in the list of favorites
-    $.ajax({
-        type: "POST",
-        url: jsContextPath + "/apis/favorites/_get",
-        contentType : "application/json",
-        data: JSON.stringify(itemIds),
-        success: function(favoriteItemIds) {
-          $.each(itemIds, function(index, itemId) {
-            var div = $("#favorite-" + itemId);
-
-            if ($.inArray(itemId, favoriteItemIds) >= 0) {
-              disableFavorite(div);
-            } else {
-              $(div).click(function() {
+      // collect all item ids on the page
+      $(".search-results .summary-main .persist").each(function() {
+        itemIds.push(extractItemId($(this).attr("href")));
+      });
+  
+      // check if a result hit is already stored in the list of favorites
+      $.ajax({
+          type: "POST",
+          url: jsContextPath + "/apis/favorites/_get",
+          contentType : "application/json",
+          data: JSON.stringify(itemIds),
+          success: function(favoriteItemIds) {
+            $.each(itemIds, function(index, itemId) {
+              var div = $("#favorite-" + itemId);
+  
+              if ($.inArray(itemId, favoriteItemIds) >= 0) {
                 disableFavorite(div);
-                // add a result hit to the list of favorites
-                $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
-                  $("#favorite-confirmation").modal("show");
-                  window.setTimeout(function(){
-                    $("#favorite-confirmation").modal("hide");
-                  }, 1500);
+              } else {
+                $(div).click(function() {
+                  disableFavorite(div);
+                  // add a result hit to the list of favorites
+                  $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                    $("#favorite-confirmation").modal("show");
+                    window.setTimeout(function(){
+                      $("#favorite-confirmation").modal("hide");
+                    }, 1500);
+                  });
                 });
-              });
-            }
-          });
-        }
-    });
+              }
+            });
+          }
+      });
+    }
   }
 
   /**
