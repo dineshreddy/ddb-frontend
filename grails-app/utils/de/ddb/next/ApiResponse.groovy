@@ -10,7 +10,7 @@ import de.ddb.next.exception.ItemNotFoundException
  * The response itself and additional meta informations about the request and response 
  * are added and available for further computation. The following data is available:
  * 
- * calledUrl: The called URL (e.g. http://backend-p1.deutsche-digitale-bibliothek.de:9998/access/AYKQ6FKHP6A7KFKCK2K3DP6HCVNZQEQC/components/view?client=AP)
+ * calledUrl: The called URL (e.g. http://backend-p1.deutsche-digitale-bibliothek.de:9998/item/AYKQ6FKHP6A7KFKCK2K3DP6HCVNZQEQC/components/view?client=AP)
  * method: The request method used (GET, POST)
  * content: The requested content type (TEXT, JSON, XML, BINARY)
  * response: The actual response from the server. Dependent of the requested content type, this can contain different object types. (String, InputStream, etc)

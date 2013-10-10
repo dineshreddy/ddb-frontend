@@ -141,7 +141,7 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
-        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/access/" + id + "/components/binaries")
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/items/" + id + "/binaries")
         if (apiResponse.isOk()) {
             def binaries = apiResponse.getResponse()
             return binaries.binary.list()
@@ -199,31 +199,31 @@ class ItemService {
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
-					
-					binaryMap.'orig'.'author'= z.'@name2'
-					binaryMap.'orig'.'rights'= z.'@name3'
+
+                    binaryMap.'orig'.'author'= z.'@name2'
+                    binaryMap.'orig'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 }
                 else if(path.contains(PREVIEW)) {
                     htmlStrip = z.'@name'
                     binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'preview'.'author'= z.'@name2'
-					binaryMap.'preview'.'rights'= z.'@name3'
-					binaryMap.'checkValue' = "1"
+                    binaryMap.'preview'.'author'= z.'@name2'
+                    binaryMap.'preview'.'rights'= z.'@name3'
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(THUMBNAIL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'thumbnail'.'author'= z.'@name2'
-					binaryMap.'thumbnail'.'rights'= z.'@name3'
+                    binaryMap.'thumbnail'.'author'= z.'@name2'
+                    binaryMap.'thumbnail'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 } else if (path.contains(FULL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'full'.'author'= z.'@name2'
-					binaryMap.'full'.'rights'= z.'@name3'
+                    binaryMap.'full'.'author'= z.'@name2'
+                    binaryMap.'full'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 }
             }
