@@ -17,11 +17,9 @@ limitations under the License.
 <div class="comment-container">
   <div class="comment-text" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
     <span class="comment-meta">
-    <%-- 
       <g:if test="${!item.bookmark.description.isEmpty()}">
-        Kommentar von ${item.bookmark.updateDate}:
+        <g:message code="ddbnext.Favorites_Comment_Of" /> ${item.user.username}, <g:formatJsonDate dateString="${item.bookmark.updateDate}" inputFormat="yyyy-MM-dd'T'hh:mm:ss'Z'" outputFormat="dd.MM.yyyy HH:mm" />:
       </g:if>
-    --%>
     </span>
     <span id="comment-text-dyn-${item.bookmark.bookmarkId}">
       <g:if test="${!item.bookmark.description.isEmpty()}">

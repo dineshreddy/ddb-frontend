@@ -221,4 +221,19 @@ class FavoritesPageService {
         return all
     }
 
+    private List addCurrentUserToFavResults(allRes, User user) {
+        def userJson = [:]
+        userJson["id"] = user.id
+        userJson["username"] = user.username
+        userJson["status"] = user.status
+        userJson["firstname"] = user.firstname
+        userJson["lastname"] = user.lastname
+        userJson["email"] = user.email
+
+        allRes.each { searchItem ->
+            searchItem["user"] = userJson
+        }
+        return allRes
+    }
+
 }

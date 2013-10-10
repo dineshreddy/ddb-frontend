@@ -139,6 +139,8 @@ class UserController {
                     by = params.by
             }
 
+            def user = getUserFromSession()
+
             def selectedFolder = bookmarksService.findFolderById(folderId)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
@@ -205,38 +207,39 @@ class UserController {
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
-                def allResultsWithBookmark = favoritesPageService.addBookmarkToFavResults(allRes, items)
-                def allResultsWithDate = favoritesPageService.addDateToFavResults(allResultsWithBookmark, items, locale)
+                def allResultsWithAdditionalInfo = favoritesPageService.addBookmarkToFavResults(allRes, items)
+                allResultsWithAdditionalInfo = favoritesPageService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
+                allResultsWithAdditionalInfo = favoritesPageService.addDateToFavResults(allResultsWithAdditionalInfo, items, locale)
 
                 //Default ordering is newest on top == DESC
-                allResultsWithDate.sort{a,b-> b.serverDate<=>a.serverDate}
-                def allResultsOrdered = allResultsWithDate //Used in the send-favorites listing
+                allResultsWithAdditionalInfo.sort{a,b-> b.serverDate<=>a.serverDate}
+                def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
                 def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])]
                 if (params.order=="asc"){
                     if(by.toString()==ORDER_DATE){
-                        allResultsWithDate.sort{a,b-> a.serverDate<=>b.serverDate}
+                        allResultsWithAdditionalInfo.sort{a,b-> a.serverDate<=>b.serverDate}
                         urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
                     }else{
-                        allResultsWithDate=allResultsWithDate.sort{it.label.toLowerCase()}.reverse()
+                        allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
                         urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }
                     urlsForOrder["asc"]="#"
                 }else{
                     if(by.toString()==ORDER_TITLE){
                         urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
-                        allResultsWithDate.sort{it.label.toLowerCase()}
+                        allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                     }
                     params.order="desc"
                 }
 
                 if (params.offset){
-                    resultsItems=allResultsWithDate.drop(params.offset.toInteger())
+                    resultsItems=allResultsWithAdditionalInfo.drop(params.offset.toInteger())
                     resultsItems=resultsItems.take( rows)
                 }else{
                     params.offset=0
-                    resultsItems=allResultsWithDate.take( rows)
+                    resultsItems=allResultsWithAdditionalInfo.take( rows)
                 }
 
                 if (request.method=="POST"){
