@@ -1366,17 +1366,22 @@ function searchResultsInitializer(){
    * Check if the current search string is already stored as a saved search.
    */
   function checkSavedSearch() {
-    $.ajax({
-      type: "POST",
-      contentType: "application/json",
-      dataType: "json",
-      url: jsContextPath + "/apis/savedsearches/_get",
-      data: JSON.stringify({query: window.location.search.substring(1)})
-    }).done(function() {
-      disableSavedSearch($(".add-to-saved-searches"));
-    }).fail(function() {
-      enableSavedSearch($(".added-to-saved-searches"));
-    });
+    // Only perform this check if a user is logged in
+    if(jsLoggedIn == "true"){
+    
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        url: jsContextPath + "/apis/savedsearches/_get",
+        data: JSON.stringify({query: window.location.search.substring(1)})
+      }).done(function() {
+        disableSavedSearch($(".add-to-saved-searches"));
+      }).fail(function() {
+        enableSavedSearch($(".added-to-saved-searches"));
+      });
+      
+    }
   }
 
   /**

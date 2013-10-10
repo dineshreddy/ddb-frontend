@@ -229,7 +229,18 @@ class BookmarksService {
 
             def items = [] as Set
             response.hits.hits.each { it ->
-                items.add(it._id)
+                //                items.add(it._id)
+                def bookmark = new Bookmark(
+                        it._id,
+                        it._source.user,
+                        it._source.item,
+                        new Date(it._source.createdAt.toLong()),
+                        it._source.type as Type,
+                        it._source.folder,
+                        it._source.description,
+                        it._source.updatedAt
+                        )
+                items.add(bookmark)
             }
             return items
         }
@@ -262,14 +273,14 @@ class BookmarksService {
      */
     def addFavorite(userId, itemId, description = null, type = Type.CULTURAL_ITEM, folderIdList = []) {
         log.info "addFavorite()"
-        def foundItemIdList =  findFavoritesByItemIds(userId, [itemId])
-        if(foundItemIdList.size()>0) {
+        def foundItemList =  findFavoritesByItemIds(userId, [itemId])
+        if(foundItemList.size()>0) {
             log.warn('The item ID (itemId) is already in the Favorites')
             return null
         }
         log.info "type: ${type}"
         if(folderIdList.size() == 0){
-            def favoritesFolder = findFoldersByTitle(userId, "favorites")[0]
+            def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)[0]
             folderIdList.add(favoritesFolder.folderId)
         }
         return saveBookmark(userId, folderIdList, itemId, description, type)
@@ -366,7 +377,6 @@ class BookmarksService {
         return findBookmarkedItemsInFolder(userId, itemIdList )
     }
 
-    // TODO refactor this method, duplicate with findFavoritesByItemIds
     def findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
         log.info "findBookmarkedItemsInFolder(): itemIdList ${itemIdList}"
 
@@ -387,7 +397,18 @@ class BookmarksService {
             def items = [] as Set
             def resultList = response.hits.hits
             resultList.each { it ->
-                items.add(it._id)
+                //items.add(it._id)
+                def bookmark = new Bookmark(
+                        it._id,
+                        it._source.user,
+                        it._source.item,
+                        new Date(it._source.createdAt.toLong()),
+                        it._source.type as Type,
+                        it._source.folder,
+                        it._source.description,
+                        it._source.updatedAt
+                        )
+                items.add(bookmark)
             }
             return items
         }

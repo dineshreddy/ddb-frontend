@@ -50,7 +50,7 @@ class FavoritesPageService {
         if (user != null) {
             def result = bookmarksService.findAllFolders(user.getId())
             result.each {
-                if(it.title == "favorites"){
+                if(it.title == BookmarksService.FAVORITES){
                     folder = it
                 }
             }

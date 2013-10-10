@@ -110,7 +110,8 @@ class FavoritesController {
                     if(folderId == mainFavoriteFolder.folderId) {
                         bookmarksService.deleteFavorites(user.getId(), itemIds)
                     }else{
-                        def favoriteIds = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
+                        def favorites = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
+                        def favoriteIds = favorites.collect { it.id }
                         bookmarksService.removeFavoritesFromFolder(favoriteIds, folderId)
                     }
                     result = response.SC_OK
@@ -208,7 +209,7 @@ class FavoritesController {
             foldersOfUser.each {
                 if(it.folderId == folderId){
                     isFolderOfUser = true
-                    if(it.title == "favorites"){
+                    if(it.title == BookmarksService.FAVORITES){
                         isDefaultFavoritesFolder = true
                     }
                 }
@@ -274,13 +275,13 @@ class FavoritesController {
             }
 
             if(foldersOwnedByUser){
-                def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
+                //def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
                 folderIds.each { folderId ->
                     itemIds.each { itemId ->
                         // Check if the item already exists in the list
-                        def favoriteId = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
+                        def favorite = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
                         // if not -> add it
-                        if(favoriteId == null){
+                        if(favorite == null){
                             bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM)
                         }
                     }
@@ -326,7 +327,7 @@ class FavoritesController {
             foldersOfUser.each {
                 if(it.folderId == id){
                     isFolderOfUser = true
-                    if(it.title == "favorites"){
+                    if(it.title == BookmarksService.FAVORITES){
                         isDefaultFavoritesFolder = true
                     }
                 }

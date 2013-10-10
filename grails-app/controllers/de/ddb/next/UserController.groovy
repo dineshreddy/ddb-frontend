@@ -320,7 +320,7 @@ class UserController {
         // find the "favorites" and put it first
         for(int i=0; i<out.size(); i++){
             String insertTitle = out[i].folder.title
-            if(insertTitle == "favorites"){
+            if(insertTitle == BookmarksService.FAVORITES){
                 def favoritesEntry = out[i]
                 out.remove(i)
                 out.add(0, favoritesEntry)
@@ -1031,7 +1031,7 @@ class UserController {
         log.info "createFavoritesFolderIfNotExisting()"
         def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
         if(mainFavoriteFolder == null){
-            def folderId = bookmarksService.newFolder(user.getId(), "favorites", false)
+            def folderId = bookmarksService.newFolder(user.getId(), BookmarksService.FAVORITES, false)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }
