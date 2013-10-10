@@ -19,7 +19,7 @@ limitations under the License.
     <div class="row">
       <div class="span2"><strong><g:message code="ddbnext.License_Field" />: </strong></div>
       <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
-        <a href="${license.url}" target="_blank"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if>${license.text}</a>
+        <a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span class="external-link-icon">${license.text}</span></a>
       </div>
     </div>
   </div>
