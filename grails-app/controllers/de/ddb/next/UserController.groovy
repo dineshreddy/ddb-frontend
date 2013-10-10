@@ -350,10 +350,10 @@ class UserController {
             def urlsForOrder
 
             if (!params.criteria) {
-                params.criteria = "label"
+                params.criteria = "creationDate"
             }
             if (!params.order) {
-                params.order = "asc"
+                params.order = "desc"
             }
             if (params.criteria == "creationDate") {
                 if (params.order == "asc") {
