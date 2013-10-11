@@ -16,13 +16,16 @@ limitations under the License.
 <g:set var="prevId" value="${navData.results.results["docs"][0].id}" />
 <g:set var="nextId" value="nodisplay" />
 <g:if test="${navData.hitNumber == 1}">
-<g:set var="displayLeftPagination" value="off" />
-</g:if>
-<g:if test="${navData.hitNumber == navData.results["numberOfResults"] || navData.results["numberOfResults"] == 1}">
-  <g:set var="displayRightPagination" value="${false}" />
+  <g:set var="enableLeftPagination" value="${false}" />
 </g:if>
 <g:else>
-  <g:set var="displayRightPagination" value="${true}" />
+  <g:set var="enableLeftPagination" value="${true}" />
+</g:else>
+<g:if test="${navData.hitNumber == navData.results["numberOfResults"] || navData.results["numberOfResults"] == 1}">
+  <g:set var="enableRightPagination" value="${false}" />
+</g:if>
+<g:else>
+  <g:set var="enableRightPagination" value="${true}" />
 </g:else>
 
 <g:if test="${navData.hitNumber == 1 && navData.results["numberOfResults"] > 1}">
@@ -46,10 +49,20 @@ limitations under the License.
       <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
     </g:else>
   </li>
-  <li class="prev-item bl ${displayLeftPagination}">
-    <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><span>Previous</span></g:link>
+  <li class="next-item bl fr">
+    <g:if test="${enableRightPagination}">
+      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span>Next</span></div></g:link>
+    </g:if>
+    <g:else>
+      <div class="disabled-arrow"></div>
+    </g:else>
   </li>
-  <li class="next-item bl <g:if test="${!displayRightPagination}">opaque</g:if>">
-    <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><span>Next</span></g:link>
+  <li class="prev-item bl fr">
+    <g:if test="${enableLeftPagination}">
+      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span>Previous</span></div></g:link>
+    </g:if>
+    <g:else>
+      <div class="disabled-arrow"></div>
+    </g:else>
   </li>
 </ul>

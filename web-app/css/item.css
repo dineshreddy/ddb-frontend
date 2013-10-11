@@ -192,12 +192,30 @@
 .item-nav-mob ul {
   margin-top: 10px;
 }
+.item-nav-mob ul li{
+  margin-top: 3px;
+}
+.item-nav-mob .prev-item a div, .item-nav-mob .next-item a div,
+.item-nav-mob .prev-item .disabled-arrow, .item-nav-mob .next-item .disabled-arrow {
+  width: 40px;
+  height: 25px;
+  margin-left: 14px;
+  background:url("../images/icons/objectviewer_carousel_controls.png") no-repeat;
+}
+.item-nav-mob .prev-item a div {
+  background-position: 3px -121px;
+}
+.item-nav-mob .next-item a div {
+  background-position: 3px -32px;
+}
+.item-nav-mob .prev-item .disabled-arrow {
+  background-position: 3px -151px;
+}
+.item-nav-mob .next-item .disabled-arrow {
+  background-position: 3px -62px;
+}
 .item-nav-mob .prev-item span, .item-nav-mob .next-item span {
-  left:3px;
-  height:24px;
-  width:20px;
-  background-image:url("../images/icons/objectviewer_carousel_controls.png");
-  background-position: 0 -151px;
+  display: none;
 }
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
@@ -222,7 +240,11 @@
     display:block;
   }
 }
-
+@media (min-width: 480px) {
+  .item-nav-mob .prev-item {
+    border-left: none;
+  }
+}
 @media (max-width: 480px) {
   .item-nav .result-label {
     display: none;
@@ -230,7 +252,6 @@
   .item-nav .hit-number + span {
     display: none;
   }
-
   .item-nav .hit-number:after {
     content: " / ";
   }
