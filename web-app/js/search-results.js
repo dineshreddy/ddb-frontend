@@ -15,6 +15,9 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 
+/**
+ * Is called after the DOM has been initialized, the new handler passed in will be executed immediately
+ */
 $(function() {
   if (jsPageName == "results") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
@@ -633,6 +636,8 @@ function searchResultsInitializer(){
     currentFacetField: null,
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
+    currentRoleFacetSelected: new Array(),
+    currentRoleFacetNotSelected: new Array(),
     currentPage: 1,
     searchFacetValuesTimeout: 0,
     errorCaught: false,
@@ -765,13 +770,15 @@ function searchResultsInitializer(){
     },
     
     selectFacetValue: function(facetValue, localizedValue){
-        var currObjInstance = this;
+        var currObjInstance = this;        
+        
         this.currentFacetValuesSelected.push(facetValue);
         
         this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
             return element.value != facetValue;
         });
         
+        //render the selected facet
         var selectedFacetValue = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
         
         selectedFacetValue.find('.facet-remove').click(function(event){
@@ -803,6 +810,30 @@ function searchResultsInitializer(){
         fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(selectedFacetValue, true);});
         
         $('.clear-filters').removeClass('off');
+        
+        //search for role based facets (see DDBNEXT-794) on the selected facet
+        var request = $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            async: true,
+            url: this.facetsEndPoint+'?name=affiliate_fct_subject&query='+facetValue,
+            complete: function(data){
+                var parsedResponse = jQuery.parseJSON(data.responseText);                
+                currObjInstance.connectedflyoutWidget.renderRoleFacetValue(selectedFacetValue, 'affiliate_fct_subject', parsedResponse);
+            }
+        });
+        
+        var request = $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            async: true,
+            url: this.facetsEndPoint+'?name=affiliate_fct_involved&query='+facetValue,
+            complete: function(data){
+                var parsedResponse = jQuery.parseJSON(data.responseText);                
+                currObjInstance.connectedflyoutWidget.renderRoleFacetValue(selectedFacetValue, 'affiliate_fct_involved', parsedResponse);
+            }
+        });        
+        
     },
     
     unselectFacetValue: function(element,unselectWithoutFetch){
@@ -1139,27 +1170,54 @@ function searchResultsInitializer(){
     },
     
     renderSelectedFacetValue: function(facetValue, localizedValue){
-      var facetValueContainer = $(document.createElement('li'));
-      var facetValueSpan = $(document.createElement('span'));
-      var facetValueRemove = $(document.createElement('a'));
-// var facetValueRemove = $(document.createElement('span'));
+        var facetValueContainer = $(document.createElement('li'));
+        var facetValueSpan = $(document.createElement('span'));
+        var facetValueRemove = $(document.createElement('a'));
+        
+        facetValueContainer.attr('data-fctvalue', facetValue);
+        facetValueSpan.attr('title', localizedValue);
+        facetValueSpan.html(localizedValue);
+        facetValueSpan.addClass('facet-value');
+        
+        facetValueRemove.attr('href', '#');
+        facetValueRemove.attr('title', this.field_RemoveButton);
+        facetValueRemove.addClass('facet-remove fr');
+
+        facetValueSpan.appendTo(facetValueContainer);
+        
+        facetValueRemove.appendTo(facetValueContainer);      
+        facetValueContainer.appendTo(this.selectedItems);
+        
+        return facetValueContainer;
+      },
       
-      facetValueContainer.attr('data-fctvalue', facetValue);
-      facetValueSpan.attr('title', localizedValue);
-      facetValueSpan.html(localizedValue);
-      facetValueRemove.attr('href', '#');
-      facetValueRemove.attr('title', this.field_RemoveButton);
+    renderRoleFacetValue: function(facetValue, facetField, roleFacetValues){
+	  //Find the span element of the facetvalue
+      var facetValueSpan = facetValue.find('.facet-value');    	
+	       	  
+	  //Create the role based facets and add them to the container
+      $.each(roleFacetValues.values, function(index, value){
+        var roleFacetValueDiv = $(document.createElement('div'));
+        var roleFacetValueSpan = $(document.createElement('span')); 
+        var roleFacetValueCheckbox = $(document.createElement('input'));        
+        var roleFieldMessage = messages.ddbnext['facet_'+facetField];
+        
+      	roleFacetValueDiv.addClass('role-facet');
+        
+        roleFacetValueSpan.attr('title', "RoleValue");
+        roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
+        roleFacetValueSpan.addClass('role-facet-value');
+        
+        roleFacetValueCheckbox.attr('type', "checkbox");
+        roleFacetValueCheckbox.addClass('role-facet-checkbox');
+        
+        roleFacetValueSpan.appendTo(roleFacetValueDiv);
+        roleFacetValueCheckbox.appendTo(roleFacetValueDiv);
+        roleFacetValueDiv.appendTo(facetValueSpan);
+      })                    
+     },
       
-      facetValueSpan.addClass('facet-value');
-      facetValueRemove.addClass('facet-remove fr');
       
-      facetValueSpan.appendTo(facetValueContainer);
-      facetValueRemove.appendTo(facetValueContainer);
-      facetValueContainer.appendTo(this.selectedItems);
-      
-      return facetValueContainer;
-    },
-    
     renderAddMoreFiltersButton: function(facetField){
         this.addMoreFilters = $(document.createElement('div'));
         var text = $(document.createElement('span'));
