@@ -156,6 +156,9 @@ limitations under the License.
       <div class="row">
         <div class="span9">
           <div class="search-results">
+            <div class="entity-results-list">
+              <g:entityListRender></g:entityListRender>
+            </div>
             <div class="search-results-list">
               <g:if test="${results}">
                 <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
