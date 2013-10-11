@@ -1456,7 +1456,7 @@ select {
 
 /* external links */
 
-a[href^="http"]:not(.no-external-link-icon), .external-link-icon {
+a[href^="http"]:not(.no-external-link-icon,[href^="http://localhost"],[href^="http://dev.escidoc.org"],[href^="http://www.deutsche-digitale-bibliothek.de"]), .external-link-icon {
   padding-left: 20px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
 }

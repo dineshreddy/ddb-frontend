@@ -16,7 +16,7 @@ limitations under the License.
 <div class="thumb">
   <div class="thumbinner">
 
-    <a href="${entity.thumbnail.link}" class="image">
+    <a href="${entity.thumbnail.link}" class="image no-external-link-icon">
       <!-- TODO: refactor to use figure element -->
       <!-- TODO: remove width and height, use CSS -->
       <!-- TODO srcset is not a valid attribute -->

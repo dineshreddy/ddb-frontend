@@ -158,7 +158,7 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
+                <g:itemResultsRender results="${results.results["docs"]}" gndResults="${gndResults}"></g:itemResultsRender>
               </g:if>
             </div>
           </div>

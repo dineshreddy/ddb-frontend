@@ -22,9 +22,16 @@ class EntityController {
 
 
     def index() {
+        log.info "index(): entityId=" + params.id + " / rows=" + params.rows + " / offset=" + params.offset
+
+        if(!configurationService.isCulturegraphFeaturesEnabled()){
+            redirect(controller: 'index', action: 'index')
+            return
+        }
+
         def entityId = params.id
-        def rows = params.rows
-        def offset = params.offset
+        def rows = params.rows.toInteger()
+        def offset = params.offset.toInteger()
 
         if(!rows) {
             rows = 4
