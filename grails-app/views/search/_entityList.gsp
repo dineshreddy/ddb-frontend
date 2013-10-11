@@ -1,3 +1,0 @@
-<div>
-  Entities
-</div>
