@@ -36,10 +36,20 @@ limitations under the License.
 </g:else>
 
 <ul class="inline">
-  <li class="prev-item br-white ${displayLeftPagination}">
-    <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ></g:link>
+  <li>
+    <g:if test="${searchResultUri != null}">
+      <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
+        <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
+      </a>
+    </g:if> 
+    <g:else>
+      <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
+    </g:else>
   </li>
-  <li class="next-item bl-white <g:if test="${!displayRightPagination}">off</g:if>">
-    <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ></g:link>
+  <li class="prev-item bl ${displayLeftPagination}">
+    <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><span>Previous</span></g:link>
+  </li>
+  <li class="next-item bl <g:if test="${!displayRightPagination}">opaque</g:if>">
+    <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><span>Next</span></g:link>
   </li>
 </ul>

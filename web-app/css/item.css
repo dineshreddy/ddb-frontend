@@ -185,8 +185,18 @@
 .fields, .rights {
   font-size: 0.938em;
 }
-.item-nav-mob{
+.item-nav-mob {
   display:none;
+}
+.item-nav-mob ul {
+  margin-top: 10px;
+}
+.item-nav-mob .prev-item span, .item-nav-mob .next-item span {
+  left:3px;
+  height:24px;
+  width:20px;
+  background-image:url("../images/icons/objectviewer_carousel_controls.png");
+  background-position: 0 -151px;
 }
 @media ( max-width : 979px) {
   .object-controls .inline .first-item, 

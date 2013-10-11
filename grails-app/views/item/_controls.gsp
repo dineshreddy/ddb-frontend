@@ -35,8 +35,8 @@ limitations under the License.
       <div class="span6 item-nav fr">
         <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
       </div>
-      <div class="span6 item-nav-mob fr">
-        <g:itemDetailInfoNavMobRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavMobRender>
+      <div class="span6 item-nav-mob fr bb">
+        <g:itemDetailInfoNavMobRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results, searchResultUri: searchResultUri]}"></g:itemDetailInfoNavMobRender>
       </div>
     </g:if>
     <g:else>
