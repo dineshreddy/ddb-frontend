@@ -1207,7 +1207,9 @@ function searchResultsInitializer(){
       },
       
     renderRoleFacetValue: function(facetValue, facetField, roleFacetValues){
-	  //Find the span element of the facetvalue
+      var currObjInstance = this;
+      
+      //Find the span element of the facetvalue
       var facetValueSpan = facetValue.find('.facet-value');    	
 	       	  
 	  //Create the role based facets and add them to the container
@@ -1225,19 +1227,43 @@ function searchResultsInitializer(){
         
         roleFacetValueCheckbox.attr('type', "checkbox");
         roleFacetValueCheckbox.addClass('role-facet-checkbox');
-        roleFacetValueCheckbox.click(function(event){
-            //currObjInstance.unselectFacetValue(selectedFacetValue);
-            //event.preventDefault();
-        	alert('Hello checkbox!');
+        roleFacetValueCheckbox.click(function(event){        	
+        	currObjInstance.updateRoleFacetSelection(facetValue);        	
         });
         
         roleFacetValueSpan.appendTo(roleFacetValueDiv);
         roleFacetValueCheckbox.appendTo(roleFacetValueDiv);
         roleFacetValueDiv.appendTo(facetValueSpan);
       })                    
-     },
-      
-      
+    },
+     
+    updateRoleFacetSelection: function(facetValue){    	    	
+    	var facetFieldFilter = facetValue.parents('.facets-item');    	
+    	var facetRoleCheckboxes = facetFieldFilter.find('.role-facet-checkbox');
+    	var checkboxSelected = false;
+    	
+    	if (facetRoleCheckboxes.length == 0) {
+    		alarm('No Checkbox found :-(');
+    	}
+    	
+    	//1) Check if a role based facet has been selected    	
+    	$.each(facetRoleCheckboxes, function(){
+    		if (this.checked) {
+    			checkboxSelected = true;
+    		}
+    	});
+    	
+    	alert('Checkboxes has been checked:' + checkboxSelected);
+    	
+    	// Case yes
+    	// remove facetValue from URI and add all selected role based facets    	
+    	// Case no
+    	// add facetvalue from URI and add all selected role based facets
+    	
+    	
+    	//2) perform search with new URI
+    },
+    
     renderAddMoreFiltersButton: function(facetField){
         this.addMoreFilters = $(document.createElement('div'));
         var text = $(document.createElement('span'));
