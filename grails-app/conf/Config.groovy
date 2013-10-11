@@ -166,6 +166,7 @@ ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.basedomain="http://localhost:8080"
+ddb.culturegraph.features.enabled=false
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

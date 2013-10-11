@@ -23,7 +23,7 @@ class SearchResultsListRenderTagLib {
      */
     def searchService
     def itemResultsRender = { attrs, body ->
-        out << render(template:"/search/resultsList", model:[results: attrs.results, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
+        out << render(template:"/search/resultsList", model:[results: attrs.results, gndResults: attrs.gndResults, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
     }
 
     def truncateItemTitle = { attrs, body ->

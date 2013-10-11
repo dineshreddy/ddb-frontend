@@ -415,6 +415,25 @@ class ConfigurationService {
         return grailsMailPort
     }
 
+    public boolean isCulturegraphFeaturesEnabled() {
+        def culturegraphFeaturesEnabled = grailsApplication.config.ddb?.culturegraph?.features?.enabled?.toString()
+        if(!culturegraphFeaturesEnabled){
+            throw new ConfigurationException("isCulturegraphFeaturesEnabled(): Configuration entry does not exist -> ddb.culturegraph.features.enabled")
+        }
+        if(!(culturegraphFeaturesEnabled instanceof String)){
+            throw new ConfigurationException("isCulturegraphFeaturesEnabled(): ddb.culturegraph.features.enabled is not a String")
+        }
+        try {
+            culturegraphFeaturesEnabled = Boolean.parseBoolean(culturegraphFeaturesEnabled)
+        }
+        catch (Exception e) {
+            throw new ConfigurationException("isCulturegraphFeaturesEnabled(): ddb.culturegraph.features.enabled is not a Boolean")
+        }
+        return culturegraphFeaturesEnabled
+    }
+
+
+
 
     public def logConfigurationSettings() {
         log.info "------------- application.properties ------------------"
@@ -448,6 +467,7 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
+        log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "-------------------------------------------------------"
