@@ -57,8 +57,6 @@ class ApiConsumer {
     private static final log = LogFactory.getLog(this)
     private static Pattern nonProxyHostsPattern
 
-    private static def grailsApplication = Holders.getGrailsApplication()
-
     /**
      * Requests a TEXT ressource from the backend by calling GET
      * @param baseUrl The base REST-server url
@@ -445,6 +443,7 @@ class ApiConsumer {
     }
 
     static def checkContext(String baseUrl, String path) {
+        def grailsApplication = Holders.getGrailsApplication()
         if (grailsApplication.config.ddb.apis.url == baseUrl) {
             if (path == null) {
                 path = ""
@@ -455,6 +454,7 @@ class ApiConsumer {
     }
 
     static def setApiKey(optionalHeaders, baseUrl) {
+        def grailsApplication = Holders.getGrailsApplication()
         if (baseUrl.startsWith(grailsApplication.config.ddb.backend.url) && grailsApplication.config.ddb.backend.apikey) {
             optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="' + grailsApplication.config.ddb.backend.apikey + '"')
         }
