@@ -15,18 +15,18 @@
  */
 package de.ddb.next
 
-class FavoritesTagLib {  
-  /**
-   * Renders the favorites results list.
-   *
-   * @attrs items REQUIRED data for paginator
-   */
-  
-  def favoritesResultsRender = { attrs, body ->
-      out << render(template:"/user/resultsList", model:[results: attrs.results,confBinary: request.getContextPath()])
-  }
-  
-  def favoritesEmailResultsRender = { attrs, body ->
-      out << render(template:"/user/favoritesemailList", model:[results: attrs.results,confBinary: request.getContextPath()])
-  }
+class FavoritesTagLib {
+    /**
+     * Renders the favorites results list.
+     *
+     * @attrs items REQUIRED data for paginator
+     */
+
+    def favoritesResultsRender = { attrs, body ->
+        out << render(template:"/user/resultsList", model:[results: attrs.results,confBinary: request.getContextPath()])
+    }
+
+    def favoritesEmailResultsRender = { attrs, body ->
+        out << render(template:"/user/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
+    }
 }

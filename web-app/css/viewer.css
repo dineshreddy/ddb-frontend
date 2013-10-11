@@ -125,26 +125,26 @@
   background-image:url("../images/icons/objectviewer_carousel_controls.png");
 }
 .slide-viewer .btn-prev span {
-  background-position:0px -91px;
+  background-position:0 -91px;
 }
 .slide-viewer .btn-prev.disabled span {
-  background-position:0px -151px;
+  background-position:0 -151px;
 }
 .slide-viewer .btn-prev:hover:not(.disabled) span {
-  background-position:0px -121px;
+  background-position:0 -121px;
 }
 .slide-viewer .btn-next {
   float:right;
   right:0;
 }
 .slide-viewer .btn-next span {
-  background-position:0px -2px;
+  background-position:0 -2px;
 }
 .slide-viewer .btn-next.disabled span {
-  background-position:0px -62px;
+  background-position:0 -62px;
 }
 .slide-viewer .btn-next:hover:not(.disabled) span {
-  background-position:0px -32px;
+  background-position:0 -32px;
 }
 .slide-viewer .tabs {
   position:relative;
@@ -254,9 +254,8 @@ noscript .scroller {
 .fancybox-pagination {
   display: none;
   width: 100%;
-  bottom: 0px;
+  bottom: 0;
   position: absolute;
-  color: #FFF;
   background-color: #e8eae9;
   opacity: 0.8;
   color: #3E3A37; 
@@ -294,7 +293,7 @@ noscript .scroller {
   background-color:#fff;
   overflow:hidden;
 }
-.binary-title {
+.binary-title, .binary-author, .binary-rights {
   padding-top:7px;
   font-size: 0.938em;
   white-space: nowrap;

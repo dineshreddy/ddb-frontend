@@ -27,7 +27,7 @@ limitations under the License.
       </g:if>
       <g:else>
         <th style="margin-top: 20px"><g:message
-            code="ddbnext.Entity_Objects" /></th>
+            code="ddbnext.Searches" /></th>
       </g:else>
     </tr>
   </thead>

@@ -71,7 +71,7 @@ limitations under the License.
         <div id="addToSavedSearches">
           <div class="add-to-saved-searches"></div>
           <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
-          <span id="addToSavedSearchesSpan" class="off"><g:message code="ddbnext.Save_Savedsearch"/></span>
+          <span id="addToSavedSearchesSpan" class="off"><g:message code="ddbnext.Saved_Savedsearch"/></span>
         </div>
       
         <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
@@ -83,6 +83,8 @@ limitations under the License.
             </h3>
           </div>
           <div class="modal-body">
+            <div><b><g:message code="ddbnext.Mandatory"/></b></div>
+            <br/>
             <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
             <div><input id="addToSavedSearchesTitle" type="text"></div>
           </div>

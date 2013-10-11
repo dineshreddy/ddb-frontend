@@ -63,7 +63,7 @@ limitations under the License.
         <div class="span3 bookmarks-container">
           <ul class="bookmarks-lists unstyled">
             <li class="bookmarks-list bt bb bl br">
-              <span class="h3"><g:message code="ddbnext.All_Savedsearches"/></span>
+              <span class="h3"><g:message code="ddbnext.Searches"/></span>
               <span class="bookmarks-list-number"> ${numberOfResults}</span>
               <a class="bookmarks-list-envelope" id="sendSavedSearches">
                 <i class="icon-envelope" title="<g:message code="ddbnext.Send_Savedsearches"/>"></i>
@@ -109,26 +109,30 @@ limitations under the License.
                 <span>
                   <g:if test="${params.order == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
-                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:message code="ddbnext.Saved_Search"/>
                       <span>
                         <g:if test="${params.criteria == "label"}">
-                          <g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/>
+                          <g:img dir="images/icons" file="asc.gif" class="orderList"
+                                 alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                                 alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
                     </a>
                   </g:if>
                   <g:else>
                     <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}">
-                      <g:message code="ddbnext.HierarchyHelp_Leaf"/>
+                      <g:message code="ddbnext.Saved_Search"/>
                       <span>
                         <g:if test="${params.criteria == "label"}">
-                          <g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/>
+                          <g:img dir="images/icons" file="desc.gif" class="orderList"
+                                 alt="${message(code: 'ddbnext.Order_Descending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                                 alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
                     </a>
@@ -140,10 +144,12 @@ limitations under the License.
                       <g:message code="ddbnext.Added_On"/>
                       <span>
                         <g:if test="${params.criteria == "creationDate"}">
-                          <g:img dir="images/icons" file="asc.gif" class="orderList" alt="order asc"/>
+                          <g:img dir="images/icons" file="asc.gif" class="orderList"
+                                 alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                                 alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
                     </a>
@@ -153,10 +159,12 @@ limitations under the License.
                       <g:message code="ddbnext.Added_On"/>
                       <span>
                         <g:if test="${params.criteria == "creationDate"}">
-                          <g:img dir="images/icons" file="desc.gif" class="orderList" alt="order desc"/>
+                          <g:img dir="images/icons" file="desc.gif" class="orderList"
+                                 alt="${message(code: 'ddbnext.Order_Descending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="no order"/>
+                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                                 alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
                     </a>
@@ -230,5 +238,31 @@ limitations under the License.
         </button>
       </div>
     </div>
+
+    <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog"
+       aria-labelledby="editSavedSearchLabel" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3 id="editSavedSearchLabel">
+          <g:message code="ddbnext.Edit_Savedsearch"/>
+        </h3>
+      </div>
+      <div class="modal-body">
+        <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
+        <div>
+          <input id="editSavedSearchId" type="hidden">
+          <input id="editSavedSearchTitle" type="text">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+          <g:message code="ddbnext.Close"/>
+        </button>
+        <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
+          <g:message code="ddbnext.Save"/>
+        </button>
+      </div>
+    </div>
+
   </body>
 </html>

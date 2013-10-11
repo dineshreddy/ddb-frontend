@@ -173,6 +173,6 @@ a {
   <![endif]-->
 </head>
 <body style="font-family:Calibri,Arial,sans-serif;">
-  <g:favoritesEmailResultsRender results="${results}"></g:favoritesEmailResultsRender>
+  <g:favoritesEmailResultsRender results="${results}" userName="${userName}"></g:favoritesEmailResultsRender>
 </body>
 </html>

@@ -13,15 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.bold {
+  font-weight: bold;
+}
+
 #deleteSavedSearches .submit {
   margin-top: 8px;
   margin-left: 0;
+}
+
+.edit-saved-search-icon {
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+#editSavedSearchTitle {
+  width: 100%;
+}
+
+.saved-search-title {
+  margin: 0;
 }
 
 #sendSavedSearches {
   cursor: pointer;
 }
 
-.bold {
-  font-weight: bold;
+.favorites-results .results-list .persist {
+  display: inline-block;
 }

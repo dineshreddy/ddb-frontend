@@ -46,7 +46,7 @@ class SavedsearchesController {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
-            else if (savedSearchesService.deleteSavedSearches(user.getId(), request.JSON.ids)) {
+            else if (savedSearchesService.deleteSavedSearches(request.JSON.ids)) {
                 result = response.SC_OK
             }
         }
@@ -71,6 +71,15 @@ class SavedsearchesController {
         }
     }
 
+    private def getUserFromSession() {
+        def result
+        def HttpSession session = request.getSession(false)
+        if (session != null) {
+            result = session.getAttribute(User.SESSION_USER)
+        }
+        return result
+    }
+
     def isSavedSearch() {
         log.info "isSavedSearch()"
         def User user = getUserFromSession()
@@ -90,12 +99,22 @@ class SavedsearchesController {
         }
     }
 
-    private def getUserFromSession() {
-        def result
-        def HttpSession session = request.getSession(false)
-        if (session != null) {
-            result = session.getAttribute(User.SESSION_USER)
+    def updateSavedSearch() {
+        log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
+        def User user = getUserFromSession()
+        if (user != null) {
+            def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
+            log.info "updateSavedSearch returns " + result
+            if (result) {
+                render(status: response.SC_OK)
+            }
+            else {
+                render(status: response.SC_NOT_FOUND)
+            }
         }
-        return result
+        else {
+            log.info "updateSavedSearch returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
     }
 }

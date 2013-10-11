@@ -417,6 +417,11 @@ class ConfigurationService {
 
 
     public def logConfigurationSettings() {
+        log.info "------------- application.properties ------------------"
+        log.info "app.grails.version = "+grailsApplication.metadata["app.grails.version"]
+        log.info "app.name = "+grailsApplication.metadata["app.name"]
+        log.info "app.version = "+grailsApplication.metadata["app.version"]
+        log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
         log.info "ddb.apis.url = " + getApisUrl()
@@ -445,5 +450,6 @@ class ConfigurationService {
         log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
+        log.info "-------------------------------------------------------"
     }
 }

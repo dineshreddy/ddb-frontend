@@ -59,7 +59,7 @@ $(function() {
         else {
           this.value = 1;
         }
-        $('.page-input').attr('value', this.value);
+        $('.page-input').val(this.value);
 
         var paramsArray = new Array(new Array('offset', (this.value - 1) * getParamWithDefault("rows", 20)),
                                     new Array('rows', getParamWithDefault("rows", 20)),
@@ -72,14 +72,14 @@ $(function() {
     $('#deleteSavedSearches').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
-        selected.push($(this).attr('value'));
+        selected.push($(this).val());
       });
       $('#totalNrSelectedObjects').html(selected.length);
       $('#deleteSavedSearchesModal').modal('show');
       $('#id-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('value'));
+          selected.push($(this).val());
         });
         var body = {
             ids : selected
@@ -101,6 +101,29 @@ $(function() {
         $('#deleteSavedSearchesModal').modal('hide');
       });
       return false;
+    });
+
+    $(".edit-saved-search").click(function(event) {
+      $("#editSavedSearchId").val($(this).attr("id"));
+      $("#editSavedSearchTitle").val($(this).attr("data-label"));
+      $("#editSavedSearchModal").modal("show");
+      $("#editSavedSearchConfirm").click(function(e) {
+        $("#editSavedSearchModal").modal("hide");
+        var title = $("#editSavedSearchTitle").val();
+        $.ajax({
+          type: "PUT",
+          contentType: "application/json",
+          dataType: "json",
+          url: jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
+          data: JSON.stringify({title: title})
+        }).done(function() {
+          var editAnchor = $("#" + $("#editSavedSearchId").val());
+          editAnchor.attr("data-label", title);
+          var anchor = editAnchor.prev("a");
+          anchor.text(title);
+          anchor.attr("title", title);
+        });
+      });
     });
   }
 });

@@ -108,7 +108,7 @@ limitations under the License.
             <div class="control-group">
               <div class="controls checkbox">
                 <div class="input-prepend">
-                  <input type="checkbox" id="newsletter" class="profile-input" name="newsletter" ${newsletterCheck}>
+                  <input type="checkbox" id="newsletter" class="profile-checkbox" name="newsletter" ${newsletterCheck}>
                 </div>
               </div>
               <label class="checkbox-label control-label"><g:message code="ddbnext.Newsletter_Subscription" /></label>

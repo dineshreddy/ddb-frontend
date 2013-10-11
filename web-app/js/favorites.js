@@ -22,11 +22,8 @@ $(function() {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-    $("#sendbookmarks").click(function(event) {
-      event.preventDefault()
-      $('#favoritesModal').modal({remote: $(this).attr("href")})
-    });
-
+    
+    
     $('.page-filter select').change(function(){
       var url = jsContextPath + "/user/favorites/?rows="+this.value;
       var order = getParam("order");
@@ -69,20 +66,24 @@ $(function() {
       }
     });
 
+    
+    /** Delete favorites */
     $('#favorites-remove').submit(function() {
       var selected = new Array();
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('#totalNrSelectedObjects').html(selected.length);
+      $('.totalNrSelectedObjects').html(selected.length);
       $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
+        var folderId = $('#folder-list').attr('data-folder-selected')
         var body = {
-            ids : selected
+            ids : selected,
+            folderId: folderId
         }
         jQuery.ajax({
           type : 'POST',
@@ -92,8 +93,7 @@ $(function() {
           data : JSON.stringify(body),
           dataType : "json",
           success : function(data) {
-            //$('#msDeleteFavorites').modal();
-            window.setTimeout('location.reload();', 100);
+            window.setTimeout('location.reload();', 500);
           }
         });
         $('#slaves input:checked').each(function() {
@@ -104,13 +104,218 @@ $(function() {
       return false;
     });
 
-    $('#deletedFavoritesBtnClose').click(function(){
-      $('#msDeleteFavorites').modal('hide');
-      window.setTimeout('location.reload();', 1000);
+    
+    /** Send email */
+    $(".sendbookmarks").click(function(event) {
+      event.preventDefault();
+      $('#favoritesModal').modal('show');
+      return false;
+    });
+    
+    
+    /** Create folder */
+    $('#folder-create').submit(function() {
+      $('#folderCreateConfirmDialog').modal('show');
+      $('#create-confirm').click(function() {
+        var body = {
+          title : $('#folder-create-name').val() ,
+          description : $('#folder-create-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/create",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderCreateConfirmDialog').modal('hide');
+      });
+      return false;
+    });
+    
+    
+    /** Delete folder */
+    $(".deletefolders").click(function(event) {
+      event.preventDefault()
+      $('#folderDeleteConfirmDialog').modal('show');
+
+      var folderId = $(this).attr('data-folder-id');
+      
+      $('#delete-confirm').click(function() {
+        var body = {
+          folderId : folderId,
+          deleteItems : $('#folder-delete-check').is(':checked')
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/delete",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderDeleteConfirmDialog').modal('hide');
+      });
+      return false;
+      
     });
 
-  }
 
+    /** Copy favorites */
+    $('#favorites-copy').submit(function() {
+      var selected = new Array();
+      $('#slaves input:checked').each(function() {
+        selected.push($(this).attr('value'));
+      });
+      $('.totalNrSelectedObjects').html(selected.length);
+      $('#favoritesCopyDialog').modal('show');
+      $('#copy-confirm').click(function() {
+        var selected = new Array();
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('value'));
+        });
+        
+        var selectedFolders = $('.favorites-copy-selection').val()
+        
+        var body = {
+            ids : selected,
+            folders: selectedFolders
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/copy",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#slaves input:checked').each(function() {
+          selected.push($(this).attr('checked', false));
+        });
+        $('#favoritesCopyDialog').modal('hide');
+      });
+      return false;
+    });
+    
+
+    /** Edit folder */
+    $('.editfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var oldFolderTitle = $(this).attr('data-folder-title');
+      var oldFolderDescription = $(this).attr('data-folder-description');
+      $('#folder-edit-id').val(folderId);
+      $('#folder-edit-name').val(oldFolderTitle);
+      $('#folder-edit-description').val(oldFolderDescription);
+      
+      $('#folderEditConfirmDialog').modal('show');
+      $('#edit-confirm').click(function() {
+        var body = {
+          id : $('#folder-edit-id').val(),
+          title : $('#folder-edit-name').val(),
+          description : $('#folder-edit-description').val()
+        }
+        jQuery.ajax({
+          type : 'POST',
+          contentType : "application/json; charset=utf-8",
+          traditional : true,
+          url : jsContextPath + "/apis/favorites/folder/edit",
+          data : JSON.stringify(body),
+          dataType : "json",
+          success : function(data) {
+            window.setTimeout('location.reload();', 500);
+          }
+        });
+        $('#folderEditConfirmDialog').modal('hide');
+      });
+      return false;
+    });
+
+    /** Open comment favorites */
+    $('.comment-text').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      $(textField).addClass("off");
+      $(inputField).removeClass("off");
+      $(buttonField).removeClass("off");
+      $(inputField).focus();
+      
+      inputField.animate({height: "100px"}, 200, function() {
+      });
+      
+      return false;
+    });
+
+    /** Cancel comment favorites */
+    $('.comment-cancel').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+      
+      inputField.animate({height: "20px"}, 200, function() {
+        $(textField).removeClass("off");
+        $(inputField).addClass("off");
+        $(buttonField).addClass("off");
+      });
+      
+      return false;
+    });
+
+    /** Save comment favorites */
+    $('.comment-save').click(function(event) {
+      
+      var bookmarksId = $(this).attr('data-bookmark-id');
+      var textField = $("#comment-text-"+bookmarksId);
+      var inputField = $("#comment-input-"+bookmarksId);
+      var buttonField = $("#comment-button-"+bookmarksId);
+
+      var body = {
+        id: bookmarksId,
+        text : $(inputField).val()
+      }
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/comment",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          
+          $(textField).text($(inputField).val());
+          
+          inputField.animate({height: "20px"}, 200, function() {
+            $(textField).removeClass("off");
+            $(inputField).addClass("off");
+            $(buttonField).addClass("off");
+          });
+          
+        }
+      });
+      
+      return false;
+    });
+    
+
+
+  }
+  
 });
 
 function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
@@ -180,3 +385,6 @@ function getParamWithDefault(name, defaultValue) {
   }
   return result;
 }
+
+
+

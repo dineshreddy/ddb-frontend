@@ -94,7 +94,8 @@ public static List<String> validatorRegistration(String username, String firstna
  * @return true or false (valid or not)
  */
 public static validatorEmail(String email){
-    String encodedEmail = IDN.toASCII(email)
+    String encodedEmail = email
+    //String encodedEmail = IDN.toASCII(email)
     EmailValidator emailValidator = EmailValidator.getInstance()
     if (emailValidator.isValid(encodedEmail)) {
         return true
