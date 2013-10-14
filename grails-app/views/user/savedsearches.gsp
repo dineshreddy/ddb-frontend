@@ -45,7 +45,7 @@ limitations under the License.
         </div>
         <div class="span4 results-paginator-options">
           <div class="page-filter">
-            <label><g:message code="ddbnext.SearchResultsPagination_Display"/></label>
+            <label><g:message code="ddbnext.Items_Per_Page"/></label>
             <span>
               <select class="select">
                 <g:each in="${resultsPaginatorOptions.pageFilter}">
