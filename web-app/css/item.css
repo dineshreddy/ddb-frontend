@@ -233,10 +233,10 @@
     text-align: left;
   }
   
-  .span6.item-nav.fr{
+  .span6.item-nav.fr {
     display:none
   }
-  .item-nav-mob{
+  .item-nav-mob {
     display:block;
   }
 }

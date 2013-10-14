@@ -51,7 +51,7 @@ limitations under the License.
   </li>
   <li class="next-item bl fr">
     <g:if test="${enableRightPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span>Next</span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span><g:message code="ddbnext.Next_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>
@@ -59,7 +59,7 @@ limitations under the License.
   </li>
   <li class="prev-item bl fr">
     <g:if test="${enableLeftPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span>Previous</span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span><g:message code="ddbnext.Previous_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>

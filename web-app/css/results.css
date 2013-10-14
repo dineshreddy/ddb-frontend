@@ -115,7 +115,7 @@
   background: url("../images/icons/pagination.png") no-repeat;
 }
 
-.page-nav .first-page a{
+.page-nav .first-page a {
   padding-left: 14px;
   background-position: left -21px;
 }
@@ -150,6 +150,48 @@
   text-align:center;
   margin-bottom:3px;
   vertical-align: middle;
+}
+
+.page-nav-mob {
+  display: none;
+  float: right;
+  margin-top: 10px;
+}
+
+.page-nav-mob .inline {
+  margin: 0 0 7px 25px;
+}
+
+.page-nav-mob ul li{
+  margin-top: 3px;
+}
+
+.page-nav-mob .prev-page a div, .page-nav-mob .next-page a div,
+.page-nav-mob .prev-page .disabled-arrow, .page-nav-mob .next-page .disabled-arrow {
+  width: 40px;
+  height: 25px;
+  margin-left: 14px;
+  background:url("../images/icons/objectviewer_carousel_controls.png") no-repeat;
+}
+
+.page-nav-mob .prev-page a div {
+  background-position: -2px -121px;
+}
+
+.page-nav-mob .next-page a div {
+  background-position: 8px -32px;
+}
+
+.page-nav-mob .prev-page .disabled-arrow {
+  background-position: -2px -151px;
+}
+
+.page-nav-mob .next-page .disabled-arrow {
+  background-position: 8px -62px;
+}
+
+.page-nav-mob .prev-page span, .page-nav-mob .next-page span {
+  display: none;
 }
 
 .keep-filters {
@@ -791,33 +833,43 @@ input[type="checkbox"],input[type="radio"] {
   .summary .extra,
   .search-results .results-list .summary .information,
   .results-paginator-options, 
-  .results-paginator-view .group-actions, 
-  .page-info-nav .first-page, 
-  .page-info-nav .last-page, 
-  .page-info-nav .pages-overall-index {
-     display: none;
-   }
+  .results-paginator-view .group-actions,
+  .results-paginator-view,
+  .page-nav {
+    display: none;
+  }
+
+  .page-nav-mob  {
+    display: block;
+  }
+
   .page-info-nav .prev-page {
     margin-right: 0;
     padding-right: 0;
     margin-left: 0;
     padding-left: 0;
-    border: none;
   }
+
   .page-info-nav .next-page {
     margin-right: 0;
     padding-right: 0;
     margin-left: -2px;
     padding-left: 0;
    }
+
+  .page-info-nav .page-info {
+    margin-top: 5px;
+  }
+}
+
+@media (min-width: 480px) {
+  .page-nav-mob .prev-page {
+    border-left: none;
+  }
 }
 
 @media (max-width: 480px) {
-   
-  .results-paginator-view {
-     display: none;
-   }
-   
+
   .page-info-nav .results-label {
      display: none;
   }
