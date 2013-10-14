@@ -781,7 +781,7 @@ function searchResultsInitializer(){
         var foundFacetRole = false;
         
         //render the selected facet
-        var selectedFacetValue = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+        var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
                 
         //search for role based facets (see DDBNEXT-794) on the selected facet
         //TODO get all role based facets dynamically for the current facetField
@@ -797,7 +797,7 @@ function searchResultsInitializer(){
 	        var parsedResponse = jQuery.parseJSON(request.responseText);            
             if (parsedResponse.values.length > 0){
             	foundFacetRole = true;
-            	currObjInstance.connectedflyoutWidget.renderRoleFacetValue(selectedFacetValue, 'affiliate_fct_subject', parsedResponse);
+            	currObjInstance.connectedflyoutWidget.renderRoleFacetValue(facetValueContainer, facetValue, 'affiliate_fct_subject', parsedResponse);
             }
             
             //TODO replace this static search for affiliate_fct_involved with a dynamic one!
@@ -810,13 +810,13 @@ function searchResultsInitializer(){
             parsedResponse = jQuery.parseJSON(request2.responseText);            
             if (parsedResponse.values.length > 0){
             	foundFacetRole = true;
-            	currObjInstance.connectedflyoutWidget.renderRoleFacetValue(selectedFacetValue, 'affiliate_fct_involved', parsedResponse);
+            	currObjInstance.connectedflyoutWidget.renderRoleFacetValue(facetValueContainer, facetValue, 'affiliate_fct_involved', parsedResponse);
             }
         }
         
         //add event listener for removing facet
-        selectedFacetValue.find('.facet-remove').click(function(event){
-          currObjInstance.unselectFacetValue(selectedFacetValue);
+        facetValueContainer.find('.facet-remove').click(function(event){
+          currObjInstance.unselectFacetValue(facetValueContainer);
           event.preventDefault();
         });
         
@@ -844,14 +844,14 @@ function searchResultsInitializer(){
         
         //perform search
         paramsArray.push(new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(selectedFacetValue, true);});
+        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(facetValueContainer, true);});
         
         $('.clear-filters').removeClass('off');
         
 
     },
     
-    unselectFacetValue: function(element,unselectWithoutFetch){
+    unselectFacetValue: function(element,unselectWithoutFetch){     	
       var facetFieldFilter = element.parents('.facets-item');
       if(this.connectedflyoutWidget.opened){
           this.connectedflyoutWidget.close();
@@ -865,7 +865,18 @@ function searchResultsInitializer(){
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
-      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+      
+      //Remove facet and all role based facets belonging to this facet from the URL
+      var facetsToRemove = new Array();
+      facetsToRemove.push(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue')));
+    	  
+      var roleFacets = facetFieldFilter.find('span.role-facet-value');
+      $.each((roleFacets), function(){
+    	  facetsToRemove.push(new Array('facetValues[]',$( this ).attr("facetfield")+'='+element.attr('data-fctvalue')));
+      });
+      
+      var newUrl = removeParamFromUrl(facetsToRemove);
+      
       if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
           removeSearchCookieParameter('facetValues[]');
       }
@@ -1206,11 +1217,11 @@ function searchResultsInitializer(){
         return facetValueContainer;
       },
       
-    renderRoleFacetValue: function(facetValue, facetField, roleFacetValues){
+    renderRoleFacetValue: function(facetValueContainer, facetValue, facetField, roleFacetValues){
       var currObjInstance = this;
       
       //Find the span element of the facetvalue
-      var facetValueSpan = facetValue.find('.facet-value');    	
+      var facetValueSpan = facetValueContainer.find('.facet-value');    	
 	       	  
 	  //Create the role based facets and add them to the container
       $.each(roleFacetValues.values, function(index, value){
@@ -1222,13 +1233,37 @@ function searchResultsInitializer(){
       	roleFacetValueDiv.addClass('role-facet');
         
         roleFacetValueSpan.attr('title', "RoleValue");
+        roleFacetValueSpan.attr('facetField', facetField);
         roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
         roleFacetValueSpan.addClass('role-facet-value');
         
         roleFacetValueCheckbox.attr('type', "checkbox");
         roleFacetValueCheckbox.addClass('role-facet-checkbox');
         roleFacetValueCheckbox.click(function(event){        	
-        	currObjInstance.updateRoleFacetSelection(facetValue);        	
+        	if (this.checked) {
+    	        // We want to add the facet value selected, but at the same time we want
+    	        // to keep all the old selected values
+    	        var paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues%5B%5D');
+    	        if(paramsFacetValues){
+    	          $.each(paramsFacetValues, function(key,value){
+    	            paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
+    	          });
+    	          paramsFacetValues.push(facetField+'='+facetValue);
+    	          var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
+    	        }else{
+    	          var paramsArray = new Array(new Array('facetValues[]', facetField+'='+facetValue));
+    	        }
+    	        
+    	        paramsArray.push(new Array('offset', 0));
+    	        fetchResultsList(addParamToCurrentUrl(paramsArray));
+    		} else {
+    		      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetField+'='+facetValue)));
+    		      if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
+    		          removeSearchCookieParameter('facetValues[]');
+    		      }
+    		      
+    		      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
+    		}
         });
         
         roleFacetValueSpan.appendTo(roleFacetValueDiv);
@@ -1237,33 +1272,6 @@ function searchResultsInitializer(){
       })                    
     },
      
-    updateRoleFacetSelection: function(facetValue){    	    	
-    	var facetFieldFilter = facetValue.parents('.facets-item');    	
-    	var facetRoleCheckboxes = facetFieldFilter.find('.role-facet-checkbox');
-    	var checkboxSelected = false;
-    	
-    	if (facetRoleCheckboxes.length == 0) {
-    		alarm('No Checkbox found :-(');
-    	}
-    	
-    	//1) Check if a role based facet has been selected    	
-    	$.each(facetRoleCheckboxes, function(){
-    		if (this.checked) {
-    			checkboxSelected = true;
-    		}
-    	});
-    	
-    	alert('Checkboxes has been checked:' + checkboxSelected);
-    	
-    	// Case yes
-    	// remove facetValue from URI and add all selected role based facets    	
-    	// Case no
-    	// add facetvalue from URI and add all selected role based facets
-    	
-    	
-    	//2) perform search with new URI
-    },
-    
     renderAddMoreFiltersButton: function(facetField){
         this.addMoreFilters = $(document.createElement('div'));
         var text = $(document.createElement('span'));
