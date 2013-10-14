@@ -135,8 +135,11 @@ class UserController {
             def String result = favoritesPageService.getFavoritesOfFolder(folderId)
             def by = ORDER_DATE
             if (params.by){
-                if (params.by.toString()==ORDER_TITLE)
+                if (params.by.toString()==ORDER_TITLE){
                     by = params.by
+                }else{
+                    params.by= ORDER_DATE
+                }
             }
 
             def user = getUserFromSession()
@@ -218,17 +221,22 @@ class UserController {
                     if(by.toString()==ORDER_DATE){
                         allResultsWithAdditionalInfo.sort{a,b-> a.serverDate<=>b.serverDate}
                         urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }else{
                         allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
                         urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
                     }
-                    urlsForOrder["asc"]="#"
                 }else{
+                    //desc
                     if(by.toString()==ORDER_TITLE){
                         urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
                         allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
+                    }else{
+                        //by date
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }
-                    params.order="desc"
                 }
 
                 if (params.offset){

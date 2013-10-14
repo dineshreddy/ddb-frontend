@@ -170,13 +170,28 @@ limitations under the License.
               <g:if test="${params.order== 'desc'}" >
                   <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
                     <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
-                    <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/></span>
+                    <span>
+                     <g:if test="${params.by == "title"}">
+                      <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
+                     </g:if>
+                     <g:else>
+                      <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                     </g:else>
+                    </span>
                   </a>
                 </g:if> 
                 <g:else>
                   <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
                     <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
-                    <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
+                    <span>
+                     <g:if test="${params.by == "title"}">
+                      <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
+                     </g:if>
+                     <g:else>
+                      <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                     </g:else>
+                    </span>
+                    
                   </a>
                 </g:else>
               </span>
@@ -184,13 +199,26 @@ limitations under the License.
                 <g:if test="${params.order== 'desc'}" >
                   <a href="${urlsForOrder["asc"].encodeAsHTML()}">
                     <g:message code="ddbnext.Added_On" />
-                    <span><g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/></span>
+                    <span>
+                     <g:if test="${params.by == "date"}">
+                      <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
+                     </g:if>
+                     <g:else>
+                      <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                     </g:else>
+                    </span>                    
                   </a>
                 </g:if> 
                 <g:else>
                   <a href="${urlsForOrder["desc"].encodeAsHTML()}">
                     <g:message code="ddbnext.Added_On" />
-                    <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
+                    <span>
+                     <g:if test="${params.by == "date"}">
+                      <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     </g:if>
+                     <g:else>
+                      <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                     </g:else>
+                    </span>
                   </a>
                 </g:else>
               </span>
