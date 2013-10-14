@@ -135,12 +135,14 @@ class UserController {
             def String result = favoritesPageService.getFavoritesOfFolder(folderId)
             def by = ORDER_DATE
             if (params.by){
-                if (params.by.toString()==ORDER_TITLE)
+                if (params.by.toString()==ORDER_TITLE){
                     by = params.by
+                }else{
+                    params.by= ORDER_DATE
+                }
             }
 
             def user = getUserFromSession()
-
             def selectedFolder = bookmarksService.findFolderById(folderId)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
@@ -152,8 +154,6 @@ class UserController {
             List items = JSON.parse(result) as List
             def totalResults= items.length()
 
-            def dateTime = new Date()
-            dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd.MM.yyyy')
             def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
             def lastPgOffset=0
 
@@ -176,7 +176,7 @@ class UserController {
                     resultsNumber: totalResults,
                     allFolders: allFoldersInformation,
                     userName: userName,
-                    dateString: dateTime,
+                    dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(0,0,"desc",0),
                 ])
                 return
@@ -221,17 +221,22 @@ class UserController {
                     if(by.toString()==ORDER_DATE){
                         allResultsWithAdditionalInfo.sort{a,b-> a.serverDate<=>b.serverDate}
                         urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }else{
                         allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
                         urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
                     }
-                    urlsForOrder["asc"]="#"
                 }else{
+                    //desc
                     if(by.toString()==ORDER_TITLE){
                         urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
                         allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
+                    }else{
+                        //by date
+                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
                     }
-                    params.order="desc"
                 }
 
                 if (params.offset){
@@ -243,37 +248,15 @@ class UserController {
                 }
 
                 if (request.method=="POST"){
-                    def List emails = []
-                    if (params.email.contains(',')){
-                        emails=params.email.tokenize(',')
-                    }else{
-                        emails.add(params.email)
-                    }
-                    try {
-                        sendMail {
-                            to emails.toArray()
-                            from configurationService.getFavoritesSendMailFrom()
-                            replyTo getUserFromSession().getEmail()
-                            subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
-                            body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered, dateString: dateTime, userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
-                        }
-                        flash.message = "ddbnext.favorites_email_was_sent_succ"
-                    } catch (e) {
-                        log.info "An error occurred sending the email "+ e.getMessage()
-                        flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
-                    }
+                    sendBookmarkPerMail(params.email,allResultsOrdered)
                 }
 
                 render(view: "favorites", model: [
-                    ORDER_TITLE: urlQuery["query"],
                     results: resultsItems,
                     selectedFolder: selectedFolder,
                     mainFavoriteFolder: mainFavoriteFolder,
                     allResultsOrdered: allResultsOrdered,
                     allFolders: allFoldersInformation,
-                    isThumbnailFiltered: params.isThumbnailFiltered,
-                    clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     viewType: urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
@@ -284,13 +267,40 @@ class UserController {
                     offset: params["offset"],
                     rows: rows,
                     userName: userName,
-                    dateString: dateTime,
+                    dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderTitle:urlsForOrderTitle,
                     urlsForOrder:urlsForOrder
                 ])
             }
         } else{
             redirect(controller:"user", action:"index")
+        }
+    }
+
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered) {
+        if (isUserLoggedIn()) {
+            def List emails = []
+            if (paramEmails.contains(',')){
+                emails=paramEmails.tokenize(',')
+            }else{
+                emails.add(paramEmails)
+            }
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo getUserFromSession().getEmail()
+                    subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    body( view:"_favoritesEmailBody",
+                    model:[results: allResultsOrdered, dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'), userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
+                }
+                flash.message = "ddbnext.favorites_email_was_sent_succ"
+            } catch (e) {
+                log.info "An error occurred sending the email "+ e.getMessage()
+                flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
+            }
+        }else {
+            redirect(controller: "user", action: "index")
         }
     }
 
