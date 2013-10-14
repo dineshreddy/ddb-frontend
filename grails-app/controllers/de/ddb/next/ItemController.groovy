@@ -41,6 +41,7 @@ class ItemController {
     def messageSource
     def bookmarksService
     def sessionService
+    def cultureGraphService
 
     private def isFavorite(pId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
@@ -135,6 +136,10 @@ class ItemController {
                 def itemUri = request.forwardURI
                 def fields = translate(item.fields, convertToHtmlLink)
 
+                if(configurationService.isCulturegraphFeaturesEnabled()){
+                    fields = createEntityLinks(fields)
+                }
+
                 if(params.print){
                     renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
                         'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl , fields: fields,
@@ -171,10 +176,21 @@ class ItemController {
         }
     }
 
+    def createEntityLinks(fields){
+        fields.each {
+            def valueTag = it.value
+            def resource = valueTag?.'@ns2:resource'
+            if(resource != null && !resource.isEmpty()){
+                def entityId = cultureGraphService.getGndIdFromGndUri(resource.toString())
+                it.value.@entityId = entityId
+            }
+        }
+        return fields
+    }
+
     def translate(fields, convertToHtmlLink) {
         fields.each {
             it = convertToHtmlLink(it)
-
             def messageKey = 'ddbnext.' + it.'@id'
             def translated = message(code: messageKey)
             if(translated != messageKey) {

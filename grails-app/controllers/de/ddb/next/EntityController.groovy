@@ -30,8 +30,8 @@ class EntityController {
         }
 
         def entityId = params.id
-        def rows = params.rows.toInteger()
-        def offset = params.offset.toInteger()
+        def rows = params.rows?.toInteger()
+        def offset = params.offset?.toInteger()
 
         if(!rows) {
             rows = 4

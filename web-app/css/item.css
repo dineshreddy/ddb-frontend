@@ -237,3 +237,9 @@
 #idFavorite {
   margin-left: 4px;
 }
+
+.fields .entity-link {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -140px;
+}
+

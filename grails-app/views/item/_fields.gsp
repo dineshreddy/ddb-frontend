@@ -14,12 +14,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="fields">
-
-<g:each in="${fields}">
-  <div class="row">
-    <div class="span2"><strong>${it.name}: </strong></div>
-    <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">${it.value}</div>
-  </div>
-</g:each>
-
+  <g:each in="${fields}">
+    <div class="row">
+      <div class="span2"><strong>${it.name}: </strong></div>
+      <g:if test="${it.value.@entityId != null && !it.value.@entityId.isEmpty()}"> 
+        <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
+          <g:link controller="entity" action="index" params="${["id": it.value.@entityId]}" class=" entity-link">${it.value}</g:link>
+        </div>
+      </g:if>
+      <g:else>
+        <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">${it.value}</div>
+      </g:else>
+    </div>
+  </g:each>
 </div>

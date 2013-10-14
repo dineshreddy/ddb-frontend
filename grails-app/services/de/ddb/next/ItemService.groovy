@@ -76,6 +76,7 @@ class ItemService {
 
         def displayFieldsTag = xml.item.fields.findAll{ it.@usage.text().contains('display') }
         def fields = displayFieldsTag[0].field.findAll()
+
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
