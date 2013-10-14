@@ -508,14 +508,15 @@ input[type="checkbox"],input[type="radio"] {
   padding-bottom: 5px;
 }
 
-.results-list.grid .item {
+.results-list.grid .item, .results-list.grid .entity {
   display: inline-block;
   padding-right:10px;
   width:202px;
   vertical-align: top;
 }
 
-.results-list.grid .item .summary {
+
+.results-list.grid .item .summary, .results-list.grid .entity .summary {
   position: relative;
 }
 
