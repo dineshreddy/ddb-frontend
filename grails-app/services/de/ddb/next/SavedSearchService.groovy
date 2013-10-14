@@ -56,12 +56,12 @@ class SavedSearchService {
 
     def findSavedSearchByUserId(userId) {
         log.info "findSavedSearchByUserId(): find saved searches for the user (${userId})"
-        return findSavedSearch(["q":"user:${userId}".encodeAsURL()])
+        return findSavedSearch(["q":"user:\"${userId}\"".encodeAsURL()])
     }
 
     def findSavedSearchByQueryString(userId, queryString) {
         log.info "findSavedSearchByQueryString(): find saved searches for the user ${userId} and query ${queryString}"
-        return findSavedSearch(["q":"user:${userId} AND queryString:${queryString}".encodeAsURL()])
+        return findSavedSearch(["q":"user:\"${userId}\" AND queryString:\"${queryString}\"".encodeAsURL()])
     }
 
     private def findSavedSearch(def query) {
