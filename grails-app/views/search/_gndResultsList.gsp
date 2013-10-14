@@ -33,7 +33,7 @@ limitations under the License.
               </g:link>
             </h2>
             <div class="subtitle">
-                O Culturegraph Webservice, Where Art Thou?
+                ${ gndItem.person.description }
             </div>
           </div>
           <div class="extra">
@@ -47,6 +47,7 @@ limitations under the License.
               <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
             </g:link>
           </div>
+          <%-- 
           <g:isLoggedIn>
             <div id="favorite-${gndItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -55,6 +56,7 @@ limitations under the License.
               </div>
             </div>
           </g:isLoggedIn>
+          --%>
         </div>
 
 

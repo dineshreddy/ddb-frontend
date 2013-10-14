@@ -508,7 +508,7 @@ input[type="checkbox"],input[type="radio"] {
   padding-bottom: 5px;
 }
 
-.results-list.grid .item, .results-list.grid .entity {
+.results-list.grid .item {
   display: inline-block;
   padding-right:10px;
   width:202px;
@@ -516,7 +516,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 
-.results-list.grid .item .summary, .results-list.grid .entity .summary {
+.results-list.grid .item .summary {
   position: relative;
 }
 
