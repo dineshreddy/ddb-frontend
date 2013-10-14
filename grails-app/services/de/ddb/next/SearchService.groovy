@@ -139,6 +139,40 @@ class SearchService {
         return res
     }
 
+    
+    def buildRoleFacetsUrl(List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery){
+        def res = [:]
+        urlQuery["facet"].each{
+            if(it!="grid_preview"){
+                facets.each { x->
+                    //if(x.field == it && x.numberOfFacets>0){
+                    if(x.numberOfFacets>0){
+                        println '################## x' + x
+                        res[x.field] = []
+                        x.facetValues.each{ y->
+//                            println '################## y' + y
+//                            def tmpFacetValuesMap = ["fctValue": y.value,"url":"",cnt: y["count"],selected:""]
+//                            //def tmpUrl = mainFacetsUrl[x.field]//FIXME
+//                            def tmpUrl = mainFacetsUrl['affiliate_fct']//FIXME
+//                            println '################## tmpUrl' + tmpUrl
+//                            if(mainFacetsUrl[x.field].contains(y["value"])){
+//                                tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+x.field+"="+y["value"],"")
+//                                tmpFacetValuesMap["url"] = tmpUrl
+//                                tmpFacetValuesMap["selected"] = "selected"
+//                            }else{
+//                                tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
+//                                tmpFacetValuesMap["url"] = tmpUrl
+//                            }
+//                            res[x.field].add(tmpFacetValuesMap)
+                        }
+                    }
+                }
+            }
+        }
+        return res
+    }
+    
+    
     /**
      * 
      * Build the list of facets to be rendered in the non javascript version of search results
@@ -179,6 +213,51 @@ class SearchService {
         return res
     }
 
+    /**
+     * Build the list of role facets to be rendered in the non javascript version of search results
+     *
+     * @param urlQuery
+     * @return list of all facets filtered
+     */
+    def buildRoleFacets(LinkedHashMap urlQuery){
+        def emptyFacets = this.facetsList.clone()
+        def res = [:]
+
+        urlQuery["affiliate_fct"].each{
+            res["affiliate_fct"] = []
+            
+            //search for affiliate_fct_involved
+            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search/facets/affiliate_fct_subject', false, [query:it])
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            }
+            def jsonResp = apiResponse.getResponse()
+            
+            jsonResp.facetValues.each{ facet->
+                if (facet.count > 0) {
+                    res["affiliate_fct"].add(['subFacetValue':it, 'facet':'affiliate_fct_subject', 'facetValues':jsonResp.facetValues])
+                }
+            }
+            
+            //search for affiliate_fct_involved
+            apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search/facets/affiliate_fct_involved', false, [query:it])
+            if(!apiResponse.isOk()){
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            }
+            jsonResp = apiResponse.getResponse()
+            jsonResp.facetValues.each{ facet->
+                if (facet.count > 0) {
+                    res["affiliate_fct"].add(['subFacetValue':it, 'facet':'affiliate_fct_involved', 'facetValues':jsonResp.facetValues])
+                }
+            }
+            
+        }
+                
+        return res
+    }
+    
     def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
         def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination

@@ -40,6 +40,7 @@ limitations under the License.
         <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
+      	<span class="label">${facets.selectedRoleFacets.encodeAsHTML()}</span>
         <g:each in="${facetsList}" var="mit">
           <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
@@ -47,7 +48,7 @@ limitations under the License.
                 <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
-                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></g:facetListRender>
+                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetValues="${facets.selectedRoleFacets}"></g:facetListRender>
                   </ul>
                 </g:if>
               </div>
