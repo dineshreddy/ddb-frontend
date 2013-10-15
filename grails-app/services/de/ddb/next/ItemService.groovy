@@ -142,15 +142,17 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
+        def result = []
         def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/items/" + id + "/binaries")
         if (apiResponse.isOk()) {
             def binaries = apiResponse.getResponse()
-            return binaries.binary.list()
+            result = binaries.binary.list()
         }
-        else {
-            log.error "fetchBinaryList: XML file was not found"
+        else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+            log.error "fetchBinaryList: XML file could not be fetched"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+        return result
     }
 
     private def parse(binaries) {
