@@ -80,18 +80,19 @@ class BookmarksService {
 
 
 
-    /**
-     * List all folders belong to a user.
-     *
-     * A Folder {@link Folder} contains following properties:
-     * - String folderId
-     * - String userId
-     * - String title
-     * - boolean isPublic
-     *
-     * @param userId    the ID whose the folders belongs to.
-     * @return          a list of folders.
-     */
+    def findAllPublicFolders(userId) {
+        log.info "findAllPublicFolders()"
+
+        def folders = findAllFolders(userId)
+        def publicFolders = []
+        folders?.each {
+            if(it.isPublic){
+                publicFolders.add(it)
+            }
+        }
+        return publicFolders
+    }
+
     def findAllFolders(userId) {
         log.info "findAllFolders()"
 
@@ -152,7 +153,7 @@ class BookmarksService {
                         it._id,
                         it._source.user,
                         it._source.item,
-                        new Date(it._source.createdAt.toLong()),
+                        it._source.createdAt,
                         it._source.type as Type,
                         it._source.folder,
                         it._source.description,
@@ -163,6 +164,39 @@ class BookmarksService {
             return all
         }
     }
+
+    def findBookmarksByPublicFolderId(folderId, size = DEFAULT_SIZE) {
+        log.info "findBookmarksByPublicFolderId(): find bookmarks in the folder ${folderId}"
+
+        Folder folder = findPublicFolderById(folderId)
+        if(folder == null || !folder.isPublic){
+            return []
+        }
+
+        def query = ["q":"folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def all = []
+            def resultList = response.hits.hits
+            resultList.each { it ->
+                def bookmark = new Bookmark(
+                        it._id,
+                        it._source.user,
+                        it._source.item,
+                        it._source.createdAt,
+                        it._source.type as Type,
+                        it._source.folder,
+                        it._source.description,
+                        it._source.updatedAt
+                        )
+                all.add(bookmark)
+            }
+            return all
+        }
+    }
+
 
     /**
      * Bookmark a cultural item in a folder for a certain user.
@@ -234,7 +268,7 @@ class BookmarksService {
                         it._id,
                         it._source.user,
                         it._source.item,
-                        new Date(it._source.createdAt.toLong()),
+                        it._source.createdAt,
                         it._source.type as Type,
                         it._source.folder,
                         it._source.description,
@@ -334,7 +368,7 @@ class BookmarksService {
                         it._id,
                         it._source.user,
                         it._source.item,
-                        new Date(it._source.createdAt.toLong()),
+                        it._source.createdAt,
                         it._source.type as Type,
                         it._source.folder,
                         it._source.description,
@@ -402,7 +436,7 @@ class BookmarksService {
                         it._id,
                         it._source.user,
                         it._source.item,
-                        new Date(it._source.createdAt.toLong()),
+                        it._source.createdAt,
                         it._source.type as Type,
                         it._source.folder,
                         it._source.description,
@@ -440,7 +474,7 @@ class BookmarksService {
                         it._id,
                         it._source.user,
                         it._source.item,
-                        new Date(it._source.createdAt.toLong()),
+                        it._source.createdAt,
                         it._source.type as Type,
                         it._source.folder,
                         it._source.description,
@@ -511,7 +545,7 @@ class BookmarksService {
                     it._id,
                     it._source.user,
                     it._source.item,
-                    new Date(it._source.createdAt.toLong()),
+                    it._source.createdAt,
                     it._source.type as Type,
                     it._source.folder,
                     it._source.description,
@@ -541,19 +575,30 @@ class BookmarksService {
         } else {
             return null
         }
+    }
+
+    def findPublicFolderById(folderId) {
+        log.info "findPublicFolderById()"
+
+        Folder folder = findFolderById(folderId)
+        if(folder?.isPublic){
+            return folder
+        }else{
+            return null
+        }
 
     }
 
-    def updateFolder(folderId, newTitle, newDescription = null) {
+    def updateFolder(folderId, newTitle, newDescription = null, isPublic = false) {
         log.info "updateFolder()"
 
         def postBody = ""
         if(newDescription) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: newTitle, description: newDescription]]
+            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: newTitle]]
+            postBody = [doc: [title: newTitle, isPublic: isPublic]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody as JSON)

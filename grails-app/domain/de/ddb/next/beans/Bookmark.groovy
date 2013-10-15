@@ -34,7 +34,7 @@ class Bookmark {
     Type type
     Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders, def description, def updateDate) {
+    public Bookmark(String bookmarkId, String userId, String itemId, Long creationDateAsLong, Type type, def folders, def description, Long updateDateAsLong) {
         this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
@@ -43,11 +43,15 @@ class Bookmark {
         }else{
             this.description = description.toString()
         }
-        this.creationDate = creationDate
-        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
-            this.updateDate = creationDate
+        if(creationDate == null || creationDate instanceof JSONNull || creationDate instanceof NullObject){
+            this.creationDate = new Date()
         }else{
-            this.updateDate = new Date(updateDate.toLong())
+            this.creationDate = new Date(creationDateAsLong)
+        }
+        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
+            this.updateDate = new Date()
+        }else{
+            this.updateDate = new Date(creationDate.getTime())
         }
         this.type = type
         if(folders instanceof String){
@@ -61,5 +65,18 @@ class Bookmark {
         }else{
             this.folders = folders
         }
+    }
+
+    public def getAsMap() {
+        def out = [:]
+        out["bookmarkId"] = bookmarkId
+        out["userId"] = userId
+        out["itemId"] = itemId
+        out["description"] = description
+        out["creationDate"] = creationDate
+        out["updateDate"] = updateDate
+        out["type"] = type
+        out["folders"] = folders
+        return out
     }
 }

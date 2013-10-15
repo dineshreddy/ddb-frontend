@@ -333,7 +333,7 @@ class FavoritesController {
                 }
             }
             if(isFolderOfUser && !isDefaultFavoritesFolder){
-                bookmarksService.updateFolder(id, title, description)
+                bookmarksService.updateFolder(id, title, description, true)
                 result = response.SC_OK
                 flash.message = "ddbnext.folder_edit_succ"
             } else {

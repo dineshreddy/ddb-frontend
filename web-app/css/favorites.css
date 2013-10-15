@@ -536,3 +536,28 @@ hr {
 .favorites-results .results-list .comment .comment-meta {
   font-style: italic;
 }
+
+.folder-information-container .folder-information {
+  margin: 2px 0;
+  position: relative;
+  overflow: hidden;
+  background-color: #efebe8;
+  padding: 5px 10px;
+}
+
+.folder-information-container .folder-information > ul {
+  margin: 0;
+}
+
+.folder-information-container .folder-information > ul li {
+  display: block;
+  color: #4c4a48;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.folder-information-container .folder-information > ul li a {
+  text-decoration: underline;
+  color: #A5003B;
+}

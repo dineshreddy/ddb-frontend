@@ -160,6 +160,11 @@ class UrlMappings {
             action="staticFiles"
         }
 
+        "/user/$userId/favorites/$folderId" {
+            controller="user"
+            action="publicFavorites"
+        }
+
         "/user/registration" {
             controller="user"
             action="registration"
