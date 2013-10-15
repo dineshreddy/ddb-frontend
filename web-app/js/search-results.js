@@ -410,7 +410,7 @@ function searchResultsInitializer(){
     });
     var paramsArray = new Array(new Array('viewType', 'list'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
+    $('.page-nav a, .page-nav-mob a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     $('.results-list a').each(function(){
@@ -492,7 +492,7 @@ function searchResultsInitializer(){
     });
     var paramsArray = new Array(new Array('viewType', 'grid'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
+    $('.page-nav a, .page-nav-mob a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     $('.results-list a').each(function(){
@@ -567,34 +567,46 @@ function searchResultsInitializer(){
         }
         $('.search-results-list').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
-        $('.page-input').attr("value", JSONresponse.page);
+        $('.page-input').attr('value', JSONresponse.page);
         $('.page-nonjs').html(JSONresponse.page);
         $('.total-pages').html(JSONresponse.totalPages);
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
-        if (JSONresponse.numberOfResults == "1") {
+        if (JSONresponse.numberOfResults == '1') {
             $('.results-label').html(messages.ddbnext.Result_lowercase);
         }
         else {
             $('.results-label').html(messages.ddbnext.Results_lowercase);
         }
         if(JSONresponse.paginationURL.nextPg){
-          $(".page-nav .next-page").removeClass("off");
-          $(".page-nav .last-page").removeClass("off");
-          $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .next-page, .page-nav-mob .next-page a').removeClass('off');
+          $('.page-nav .last-page').removeClass('off');
+          //hide disabledArrow in mobile view
+          $('.page-nav-mob .next-page .disabled-arrow').addClass('off');
+          $('.page-nav .next-page a, .page-nav-mob .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
           $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
         }else{
-          $(".page-nav .next-page").addClass("off");
-          $(".page-nav .last-page").addClass("off");
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .next-page, .page-nav-mob .next-page a').addClass('off');
+          //show disabledArrow in mobile view
+          $('.page-nav-mob .next-page .disabled-arrow').removeClass('off');
+          $('.page-nav .last-page').addClass('off');
         }
         if(JSONresponse.paginationURL.firstPg){
-          $(".page-nav .prev-page").removeClass("off");
-          $(".page-nav .first-page").removeClass("off");
-          $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .prev-page, .page-nav-mob .prev-page a').removeClass('off');
+          $('.page-nav .first-page').removeClass('off');
+          //hide disabledArrow in mobile view
+          $('.page-nav-mob .prev-page .disabled-arrow').addClass('off');
+          $('.page-nav .prev-page a, .page-nav-mob .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
           $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
         }else{
-          $(".page-nav .prev-page").addClass("off");
-          $(".page-nav .first-page").addClass("off");
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .prev-page, .page-nav-mob .prev-page a').addClass('off');
+          //show disabledArrow in mobile view
+          $('.page-nav-mob .prev-page .disabled-arrow').removeClass('off');
+          $('.page-nav .first-page').addClass('off');
         }
 
         $('.search-results-list').fadeIn('fast');
@@ -603,7 +615,7 @@ function searchResultsInitializer(){
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
 
-        $(this).trigger("searchChange");
+        $(this).trigger('searchChange');
         });
       },
       error: function(){

@@ -182,6 +182,37 @@
 .fields, .rights {
   font-size: 0.938em;
 }
+.item-nav-mob {
+  display:none;
+}
+.item-nav-mob ul {
+  margin-top: 10px;
+}
+.item-nav-mob ul li{
+  margin-top: 3px;
+}
+.item-nav-mob .prev-item a div, .item-nav-mob .next-item a div,
+.item-nav-mob .prev-item .disabled-arrow, .item-nav-mob .next-item .disabled-arrow {
+  width: 40px;
+  height: 25px;
+  margin-left: 14px;
+  background:url("../images/icons/objectviewer_carousel_controls.png") no-repeat;
+}
+.item-nav-mob .prev-item a div {
+  background-position: 3px -121px;
+}
+.item-nav-mob .next-item a div {
+  background-position: 3px -32px;
+}
+.item-nav-mob .prev-item .disabled-arrow {
+  background-position: 3px -151px;
+}
+.item-nav-mob .next-item .disabled-arrow {
+  background-position: 3px -62px;
+}
+.item-nav-mob .prev-item span, .item-nav-mob .next-item span {
+  display: none;
+}
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
@@ -197,8 +228,19 @@
   .object-controls .item-nav {
     text-align: left;
   }
+  
+  .span6.item-nav.fr {
+    display:none
+  }
+  .item-nav-mob {
+    display:block;
+  }
 }
-
+@media (min-width: 480px) {
+  .item-nav-mob .prev-item {
+    border-left: none;
+  }
+}
 @media (max-width: 480px) {
   .item-nav .result-label {
     display: none;
@@ -206,7 +248,6 @@
   .item-nav .hit-number + span {
     display: none;
   }
-
   .item-nav .hit-number:after {
     content: " / ";
   }
