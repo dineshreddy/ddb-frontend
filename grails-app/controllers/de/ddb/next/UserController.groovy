@@ -122,9 +122,6 @@ class UserController {
     def publicFavorites() {
         log.info "publicFavorites()"
 
-        println "##################### 01 "+params.userId
-        println "##################### 02 "+params.folderId
-
         def rows=20 //default
         if (params.rows){
             rows = params.rows.toInteger()
