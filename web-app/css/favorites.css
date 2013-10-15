@@ -54,7 +54,7 @@ hr {
   padding: 0 35% 0 10px;
 }
 
-.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete {
+.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
   position:absolute;
   top:0;
   right:0;
@@ -62,12 +62,12 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  margin-right: 75px;
+  margin-right: 95px;
 }
 
 .bookmarks-list-envelope {
   margin-top: 1px;
-  margin-right: 50px;
+  margin-right: 70px;
 }
 
 .bookmarks-list-delete {
@@ -75,11 +75,15 @@ hr {
   margin-right: 5px;
 }
 
-.bookmarks-list-edit{
+.bookmarks-list-edit {
   margin-right: 25px;
 }
 
-.bookmarks-list-envelope i, .bookmarks-list-edit i{
+.bookmarks-list-publish {
+  margin-right: 45px;
+}
+
+.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i{
   margin-top: 3px;
 }
 
@@ -139,6 +143,10 @@ hr {
   overflow: hidden;
   line-height: 28px;
   font-size: 0.938em;
+}
+
+.public-favorites .results-sorter {
+  padding-left: 10px;
 }
 
 .results-sorter .select-all {
@@ -474,6 +482,11 @@ hr {
   display:block;
   margin-bottom: -10px;
 }
+
+.public-favorites .deleteContainer {
+  margin-bottom: 0px !important;
+}
+
 .orderList{
 	margin:10px 0 10px 3px;
 }
@@ -565,3 +578,15 @@ hr {
   text-decoration: underline;
   color: #A5003B;
 }
+
+
+.icon-not-publish {
+  background: url("../images/icons/favorites.png") no-repeat 0 0;
+  background-position: -0px -54px;
+  width: 20px;
+}
+
+.icon-publish {
+  background-position: -0px -39px !important;
+}
+

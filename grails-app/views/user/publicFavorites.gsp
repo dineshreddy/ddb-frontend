@@ -27,7 +27,7 @@ limitations under the License.
 <meta name="layout" content="main">
 </head>
 <body>
-  <div class="favorites-results-container">
+  <div class="favorites-results-container public-favorites">
     <div class="row favorites-results-head">
       <div class="span8">
         <h1>

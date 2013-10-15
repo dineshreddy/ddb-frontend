@@ -23,6 +23,7 @@ import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16
 import org.ccil.cowan.tagsoup.Parser
 
 import de.ddb.next.beans.Bookmark
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 
 class FavoritesController {
@@ -380,6 +381,37 @@ class FavoritesController {
         }
 
         log.info "setComment returns " + result
+        render(status: result)
+
+    }
+
+    def togglePublish() {
+        log.info "togglePublish " + request.JSON
+
+        def id = request.JSON.id
+
+        def result = response.SC_BAD_REQUEST
+
+        def User user = getUserFromSession()
+        if (user != null) {
+
+            // 1) Check if the current user is really the owner of this folder, else deny
+            Folder folder = bookmarksService.findFolderById(id)
+            boolean isFolderOfUser = false
+            if(folder.userId == user.getId()){
+                isFolderOfUser = true
+            }
+            if(isFolderOfUser){
+                bookmarksService.updateFolder(folder.folderId, folder.title, folder.description, !folder.isPublic)
+                result = response.SC_OK
+            } else {
+                result = response.SC_UNAUTHORIZED
+            }
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+
+        log.info "togglePublish returns " + result
         render(status: result)
 
     }

@@ -241,6 +241,29 @@ $(function() {
       return false;
     });
 
+    
+    /** Publish folder */
+    $('.publishfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var body = {
+        id : folderId
+      }
+
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/togglePublish",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          window.setTimeout('location.reload();', 500);
+        }
+      });
+      return false;
+    });
+
     /** Open comment favorites */
     $('.comment-text-clickanchor').click(function(event) {
       
