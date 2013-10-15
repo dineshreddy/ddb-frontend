@@ -26,7 +26,7 @@ limitations under the License.
     </g:if>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span7">
+        <div class="summary-main-wrapper span5">
           <g:if test="${!publicView}">
             <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
           </g:if>
@@ -67,7 +67,7 @@ limitations under the License.
           </g:else>
         </div>
         <div class="span2 created-at">
-          <div>${it.creationDate}</div>
+          <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
       <g:if test="${it.category != "orphaned" }">

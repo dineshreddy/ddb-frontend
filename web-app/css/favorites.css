@@ -537,6 +537,10 @@ hr {
   font-style: italic;
 }
 
+.folder-information-container {
+  margin-bottom: 20px;  
+}
+
 .folder-information-container .folder-information {
   margin: 2px 0;
   position: relative;
