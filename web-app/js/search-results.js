@@ -582,14 +582,14 @@ function searchResultsInitializer(){
           $('.page-nav .next-page, .page-nav-mob .next-page a').removeClass('off');
           $('.page-nav .last-page').removeClass('off');
           //hide disabledArrow in mobile view
-          $('.page-nav-mob .next-page div').addClass('off');
+          $('.page-nav-mob .next-page .disabled-arrow').addClass('off');
           $('.page-nav .next-page a, .page-nav-mob .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
           $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
         }else{
           //first selector for desktop view, the second one for mobile view
           $('.page-nav .next-page, .page-nav-mob .next-page a').addClass('off');
           //show disabledArrow in mobile view
-          $('.page-nav-mob .next-page div').removeClass('off');
+          $('.page-nav-mob .next-page .disabled-arrow').removeClass('off');
           $('.page-nav .last-page').addClass('off');
         }
         if(JSONresponse.paginationURL.firstPg){
@@ -597,14 +597,14 @@ function searchResultsInitializer(){
           $('.page-nav .prev-page, .page-nav-mob .prev-page a').removeClass('off');
           $('.page-nav .first-page').removeClass('off');
           //hide disabledArrow in mobile view
-          $('.page-nav-mob .prev-page div').addClass('off');
+          $('.page-nav-mob .prev-page .disabled-arrow').addClass('off');
           $('.page-nav .prev-page a, .page-nav-mob .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
           $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
         }else{
           //first selector for desktop view, the second one for mobile view
           $('.page-nav .prev-page, .page-nav-mob .prev-page a').addClass('off');
           //show disabledArrow in mobile view
-          $('.page-nav-mob .prev-page div').removeClass('off');
+          $('.page-nav-mob .prev-page .disabled-arrow').removeClass('off');
           $('.page-nav .first-page').addClass('off');
         }
 
