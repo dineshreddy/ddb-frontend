@@ -873,6 +873,11 @@ input[type="checkbox"],input[type="radio"] {
     display: block;
   }
 
+  .page-info-nav {
+    border-top: solid 1px #efebe8;
+    border-bottom: solid 1px #efebe8;
+  }
+
   .page-info-nav .prev-page {
     margin-right: 0;
     padding-right: 0;
@@ -889,6 +894,10 @@ input[type="checkbox"],input[type="radio"] {
 
   .page-info-nav .page-info {
     margin-top: 5px;
+  }
+  
+  .search-results .results-list li:first-child {
+    border-top: none;
   }
 }
 
