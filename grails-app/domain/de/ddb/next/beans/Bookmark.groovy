@@ -51,7 +51,7 @@ class Bookmark {
         if(updateDateAsLong == null || updateDateAsLong instanceof JSONNull || updateDateAsLong instanceof NullObject){
             this.updateDate = new Date()
         }else{
-            this.updateDate = new Date(creationDate.getTime())
+            this.updateDate = new Date(updateDateAsLong)
         }
         this.type = type
         if(folders instanceof String){
