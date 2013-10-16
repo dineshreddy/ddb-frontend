@@ -33,6 +33,7 @@
 
 .saved-search-title {
   margin: 0;
+  line-height: 1.1em;
 }
 
 #sendSavedSearches {

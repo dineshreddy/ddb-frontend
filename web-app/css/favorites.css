@@ -279,12 +279,12 @@ hr {
   margin: auto;
 }
 
-.favorites-results .results-list .created-at{
+.favorites-results .results-list .created-at {
   text-align:right;
   font-size: 0.938em;
 }
 
-.favorites-results .results-list .created-at div{
+.favorites-results .results-list .created-at div {
   margin-right: 10px;
 }
 
@@ -334,13 +334,14 @@ hr {
   margin-left: 36px;
 }
 
-.favorites-results-container .messages-container {
-  margin-top: 7px;
-}
-
-.remove-item-check {
+.favorites-results .remove-item-check {
   position: absolute;
   left: 10px;
+  margin-top: 5px;
+}
+
+.favorites-results-container .messages-container {
+  margin-top: 7px;
 }
 
 .favorites-results .results-list .extra {
