@@ -1,10 +1,10 @@
 package ddb.next.controllers
 
-import grails.test.mixin.web.GroovyPageUnitTestMixin;
-import grails.util.Environment;
+import grails.test.mixin.web.GroovyPageUnitTestMixin
+import grails.util.Environment
 
-import de.ddb.next.ErrorController;
-import grails.test.mixin.TestFor;
+import de.ddb.next.ErrorController
+import grails.test.mixin.TestFor
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
@@ -33,7 +33,6 @@ class ErrorControllerTests {
     }
 
     void testNotFound() {
-        //        controller.notFound();
         //
         //        // Check if response status is 404
         //        assert response.status == 404

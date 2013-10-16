@@ -116,9 +116,8 @@ class InstitutionController {
                 organisationLogo = selectedOrgXML.logo
             }
             render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl, isFavorite: isFavorite])
-        }
-        else {
-            forward controller: 'error', action: "notFound"
+        } else {
+            forward controller: 'error', action: "defaultNotFound"
         }
 
     }

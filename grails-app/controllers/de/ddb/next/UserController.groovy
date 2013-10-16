@@ -37,6 +37,7 @@ import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
+import de.ddb.next.exception.FavoritelistNotFoundException
 import de.ddb.next.exception.ItemNotFoundException
 
 class UserController {
@@ -145,7 +146,7 @@ class UserController {
 
         // If the folder does not exist (maybe deleted) or the user does not exist -> 404
         if(selectedFolder == null || user == null){
-            throw new ItemNotFoundException("publicFavorites(): favorites list or user do not exist")
+            throw new FavoritelistNotFoundException("publicFavorites(): favorites list or user do not exist")
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())

@@ -160,7 +160,7 @@ class ItemController {
             }
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
-            forward controller: "error", action: "notFound"
+            forward controller: "error", action: "itemNotFound"
         }
     }
     def makeLinksBlank(fields){

@@ -19,18 +19,18 @@ import groovy.util.XmlSlurper
 import java.net.URI.Parser
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.ItemNotFoundException
 
 class ContentController {
     static defaultAction = "staticcontent"
-    
+
     def configurationService
 
     def staticcontent(){
         try{
-            def firstLvl = "news";
+            def firstLvl = "news"
             if (params.dir!=null){
-                firstLvl=getFirstLvl();
+                firstLvl=getFirstLvl()
             }
 
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
@@ -48,7 +48,7 @@ class ContentController {
                 redirect uri: browserUrl + firstLvl + "/"
                 return
             }else{
-                firstLvl = getFirstLvl();
+                firstLvl = getFirstLvl()
             }
 
             def prioritySortedLocales = SupportedLocales.getSupportedLocalesByPriority(RCU.getLocale(request))
@@ -57,7 +57,7 @@ class ContentController {
             for(int i=0; i < prioritySortedLocales.size(); i++){
                 def it = prioritySortedLocales.get(i)
 
-                def secondLvl = getSecLvl();
+                def secondLvl = getSecLvl()
                 def url = configurationService.getStaticUrl()
                 def lang = it.getISO2()
                 def path = "/static/"+lang+"/"+firstLvl+"/index.html"
@@ -68,19 +68,19 @@ class ContentController {
                 def apiResponse = ApiConsumer.getText(url, path, false)
                 if(apiResponse.isOk()){
                     response = apiResponse.getResponse()
-                    break;
+                    break
                 }
-                else if (i == prioritySortedLocales.size()-1) { //A 404 was returned for EVERY supported language
+                else if (i == prioritySortedLocales.size()-1) {
+                    //A 404 was returned for EVERY supported language
                     throw new ItemNotFoundException()
                 }
             }
 
             def map= retrieveArguments(response)
             render(view: "staticcontent", model: map)
-
         } catch(ItemNotFoundException infe){
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
-            forward controller: "error", action: "notFound"
+            forward controller: "error", action: "itemNotFound"
         }
     }
 
@@ -111,7 +111,6 @@ class ContentController {
         def robot = fetchRobots(content)
         def body = fetchBody(content)
         return [title:title, author:author, keywords:keywords,robot:robot,content:body]
-
     }
 
     private def fetchBody(content) {

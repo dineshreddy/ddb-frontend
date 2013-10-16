@@ -15,8 +15,8 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.BackendErrorException;
-import de.ddb.next.exception.ItemNotFoundException;
+import de.ddb.next.exception.BackendErrorException
+import de.ddb.next.exception.ItemNotFoundException
 import grails.util.Environment
 
 /**
@@ -26,9 +26,13 @@ class ErrorController {
 
     def configurationService
 
+    enum Type404 {
+        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND
+    }
+
     def uncaughtException() {
         log.error "uncaughtException(): An uncaught exception occured in the frontend."
-        serverError();
+        serverError()
     }
 
     /**
@@ -37,14 +41,14 @@ class ErrorController {
      */
     def serverError() {
         def exceptionMessage = ""
-        
+
         //Lot of logging to make bugfixing easier
         log.error "serverError(): The user will be redirected to the 500 page."
         if(request?.exception){
             exceptionMessage = request.exception.getMessage()
             try{
                 log.error "serverError(): Source of the error is: '"+exceptionMessage+"'"
-                def stackElements = request.exception.getStackTrace();
+                def stackElements = request.exception.getStackTrace()
                 for(stackElement in stackElements){
                     log.error "Stack: "+stackElement.getClassName()+"."+stackElement.getMethodName()+" ["+stackElement.getLineNumber()+"]"
                 }
@@ -99,7 +103,7 @@ class ErrorController {
         // Return response code 409
         response.status = 409
         response.setHeader("Error-Message", exceptionMessage)
-        
+
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
@@ -117,16 +121,16 @@ class ErrorController {
             // Not it production? show an ugly, developer-focused error message
             log.error "notFound(): Return view '409_development'"
             return render(view:'409_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-            
+
         }
-        
+
     }
 
     /**
      * Handler method for error 404 situations
      * @return The notfound view
      */
-    def notFound() {
+    private def notFound(Type404 type) {
 
         // Here we have the possibility to add further logging to identify if some 404 urls were called
 
@@ -143,7 +147,7 @@ class ErrorController {
         // Return response code 404
         response.status = 404
         response.setHeader("Error-Message", exceptionMessage)
-        
+
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
@@ -154,19 +158,31 @@ class ErrorController {
 
             // Return the 404 view
             log.error "notFound(): Return view '404'"
-            return render(view:'404_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            return render(view:'404_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [type: type])
 
         } else {
 
             // Not it production? show an ugly, developer-focused error message
             log.error "notFound(): Return view '404_development'"
-            return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-            
+            return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse, type: type], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
         }
-        
+
     }
 
-     /**
+    def defaultNotFound() {
+        notFound(Type404.DEFAULT)
+    }
+
+    def favoritelistNotFound() {
+        notFound(Type404.FAVORITELIST_NOT_FOUND)
+    }
+
+    def itemNotFound() {
+        notFound(Type404.ITEM_NOT_FOUND)
+    }
+
+    /**
      * Handler method for error 401 situations
      * @return The auth view
      */
@@ -185,7 +201,7 @@ class ErrorController {
         // Return response code 401
         response.status = 401
         response.setHeader("Error-Message", exceptionMessage)
-        
+
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
@@ -203,12 +219,12 @@ class ErrorController {
             // Not it production? show an ugly, developer-focused error message
             log.error "auth(): Return view '401_development'"
             return render(view:'401_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-            
+
         }
-        
+
     }
 
-     /**
+    /**
      * Handler method for error 400 situations
      * @return The bad-request view
      */
@@ -227,7 +243,7 @@ class ErrorController {
         // Return response code 400
         response.status = 400
         response.setHeader("Error-Message", exceptionMessage)
-        
+
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
         // could be text/json if an API was called and the layout would be messed up
         def contentTypeFromConfig = configurationService.getMimeTypeHtml()
@@ -245,9 +261,9 @@ class ErrorController {
             // Not it production? show an ugly, developer-focused error message
             log.error "auth(): Return view '400_development'"
             return render(view:'400_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-            
+
         }
-        
+
     }
 
 }

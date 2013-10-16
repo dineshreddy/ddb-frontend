@@ -236,11 +236,13 @@ class UrlMappings {
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
-        "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "itemNotFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
         "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
         "500"(controller: "error", action: "uncaughtException")
+        "404"(controller: "error", action: "defaultNotFound")
 
     }
 }
