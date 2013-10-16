@@ -206,14 +206,14 @@ class BookmarksService {
      * @param itemID    the ID of the DDB cultural item.
      * @return          the created bookmark ID.
      */
-    def saveBookmark(userId, folderId, itemId, description = null, type = Type.CULTURAL_ITEM) {
+    def saveBookmark(userId, folderId, itemId, description = null, type = Type.CULTURAL_ITEM, long createdAt = new Date().getTime()) {
         log.info "saveBookmark()"
 
         def postBody = [
             user: userId,
             folder: folderId,
             item: itemId,
-            createdAt: new Date().getTime(),
+            createdAt: createdAt,
             type: type.toString(),
             description: description,
             updatedAt: new Date().getTime()

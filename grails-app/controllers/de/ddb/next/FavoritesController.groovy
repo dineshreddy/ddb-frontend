@@ -257,7 +257,7 @@ class FavoritesController {
 
     def copyFavorites() {
         log.info "copyFavorites " + request.JSON
-        def itemIds = request.JSON.ids
+        def favoriteIds = request.JSON.ids
         def folderIds = request.JSON.folders
 
         def result = response.SC_BAD_REQUEST
@@ -278,12 +278,14 @@ class FavoritesController {
             if(foldersOwnedByUser){
                 //def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
                 folderIds.each { folderId ->
-                    itemIds.each { itemId ->
+                    favoriteIds.each { favoriteId ->
+                        Bookmark favoriteToCopy = bookmarksService.findFavoriteById(favoriteId)
+                        String itemId = favoriteToCopy.itemId
                         // Check if the item already exists in the list
-                        def favorite = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
+                        Bookmark favoriteInTargetFolder = bookmarksService.findFavoriteByItemId(user.getId(), itemId, folderId)
                         // if not -> add it
-                        if(favorite == null){
-                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM)
+                        if(favoriteInTargetFolder == null){
+                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM, favoriteToCopy.creationDate.getTime())
                         }
                     }
                 }

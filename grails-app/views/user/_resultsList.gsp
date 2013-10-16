@@ -28,7 +28,7 @@ limitations under the License.
       <div class="summary row">
         <div class="summary-main-wrapper span5">
           <g:if test="${!publicView}">
-            <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
+            <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
           </g:if>
           <div class="summary-main">
             <h2 class="title">

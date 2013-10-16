@@ -43,12 +43,12 @@ class Bookmark {
         }else{
             this.description = description.toString()
         }
-        if(creationDate == null || creationDate instanceof JSONNull || creationDate instanceof NullObject){
+        if(creationDateAsLong == null || creationDateAsLong instanceof JSONNull || creationDateAsLong instanceof NullObject){
             this.creationDate = new Date()
         }else{
             this.creationDate = new Date(creationDateAsLong)
         }
-        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
+        if(updateDateAsLong == null || updateDateAsLong instanceof JSONNull || updateDateAsLong instanceof NullObject){
             this.updateDate = new Date()
         }else{
             this.updateDate = new Date(creationDate.getTime())
