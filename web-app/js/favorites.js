@@ -177,7 +177,8 @@ $(function() {
       $('#copy-confirm').click(function() {
         var selected = new Array();
         $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('value'));
+          //selected.push($(this).attr('value'));
+          selected.push($(this).attr('data-bookmark-id'));
         });
         
         var selectedFolders = $('.favorites-copy-selection').val()
