@@ -44,7 +44,10 @@ limitations under the License.
         <div class="thumbnail-wrapper span2">
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id: gndItem.id]}" class="no-external-link-icon">
+              <%-- 
               <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
+              --%>
+              <g:img dir="images/placeholder" file="search_result_entity.png" alt="${ gndItem.person.name }"/>
             </g:link>
           </div>
           <%-- 
