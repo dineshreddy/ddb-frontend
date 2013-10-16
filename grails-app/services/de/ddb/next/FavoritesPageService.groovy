@@ -1,4 +1,5 @@
 package de.ddb.next
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
@@ -39,7 +40,7 @@ class FavoritesPageService {
             def result = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
             return result as JSON
         } else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            log.info "getFavorites returns null"
             return null
         }
     }
@@ -63,39 +64,46 @@ class FavoritesPageService {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
-    def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        def first = createFavoritesLinkNavigation(0,rows,order)
-        if (offset<rows){
-            first=null
+    def private createAllFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset){
+        def first = createFavoritesLinkNavigation(0, rows, order)
+        if (offset < rows){
+            first = null
         }
-        def last = createFavoritesLinkNavigation(lastPgOffset,rows,order)
-        if (offset>=lastPgOffset){
-            last=null
+        def last = createFavoritesLinkNavigation(lastPgOffset, rows, order)
+        if (offset >= lastPgOffset){
+            last = null
         }
-        return [firstPg:first,prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:last]
+        return [
+            firstPg: first,
+            prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order),
+            nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order),
+            lastPg: last
+        ]
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
     }
 
-    def private formatDate(items,String id,Locale locale) {
-        def newDate
-        def oldDate
-        items.each { favItems ->
-            if (id== favItems.itemId){
-                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern)
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
-                oldFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-                newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
-                def Date javaDate = oldFormat.parse(favItems.creationDate)
-                newDate = newFormat.format(javaDate)
-                oldDate = favItems.creationDate
-            }
+    def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset, String userId, String folderId){
+        def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId)
+        if (offset < rows){
+            first = null
         }
-        return [newdate:newDate.toString(),oldDate:oldDate]
+        def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId)
+        if (offset >= lastPgOffset){
+            last = null
+        }
+        return [
+            firstPg: first,
+            prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId),
+            nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId),
+            lastPg: last
+        ]
+    }
+    def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId){
+        def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        return g.createLink(controller:'user', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
     }
 
     /**
@@ -103,8 +111,8 @@ class FavoritesPageService {
      * @param items
      * @return
      */
-    def private retriveItemMD(JSONArray items, Locale locale){
-        def totalResults= items.length()
+    def private retriveItemMD(List items, Locale locale){
+        def totalResults= items.size()
         def step = 20
         def queryItems
         def orQuery=""
@@ -191,20 +199,7 @@ class FavoritesPageService {
         }
     }
 
-    private List addDateToFavResults(allRes, List items, Locale locale) {
-        def all = []
-        def temp = []
-        allRes.each { searchItem->
-            temp = []
-            temp = searchItem
-            temp["creationDate"]=formatDate(items,searchItem.id,locale).get("newdate")
-            temp["serverDate"]=formatDate(items,searchItem.id,locale).get("oldDate")
-            all.add(temp)
-        }
-        return all
-    }
-
-    private List addBookmarkToFavResults(allRes, List items) {
+    private List addBookmarkToFavResults(allRes, List items, Locale locale) {
         def all = []
         def temp = []
         allRes.each { searchItem->
@@ -212,13 +207,22 @@ class FavoritesPageService {
             temp = searchItem
             for(int i=0; i<items.size(); i++){
                 if(items.get(i).itemId == searchItem.id){
-                    temp["bookmark"]=items.get(i)
+                    temp["bookmark"] = items.get(i).getAsMap()
+                    temp["bookmark"]["creationDateFormatted"] = formatDate(items.get(i).creationDate, locale)
+                    temp["bookmark"]["updateDateFormatted"] = formatDate(items.get(i).updateDate, locale)
                     break
                 }
             }
             all.add(temp)
         }
         return all
+    }
+
+    private String formatDate(Date oldDate, Locale locale) {
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
+        newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
+        return newFormat.format(oldDate)
     }
 
     private List addCurrentUserToFavResults(allRes, User user) {

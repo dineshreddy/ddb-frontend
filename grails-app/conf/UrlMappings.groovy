@@ -100,6 +100,11 @@ class UrlMappings {
             action=[POST: "setComment"]
         }
 
+        "/apis/favorites/togglePublish" {
+            controller="favorites"
+            action=[POST: "togglePublish"]
+        }
+
         "/apis/favorites/$id" {
             controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
@@ -158,6 +163,11 @@ class UrlMappings {
         "/static/$filename**" {
             controller="apis"
             action="staticFiles"
+        }
+
+        "/user/$userId/favorites/$folderId" {
+            controller="user"
+            action="publicFavorites"
         }
 
         "/user/registration" {

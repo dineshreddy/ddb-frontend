@@ -108,6 +108,14 @@ limitations under the License.
                 <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
               </a>
               <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
+                <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
+                  <g:if test="${it.folder.isPublic}">
+                    <i class="icon-not-publish icon-publish" title="<g:message code="ddbnext.Hide_Folder" />" ></i>
+                  </g:if>
+                  <g:else>
+                    <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
+                  </g:else>
+                </a>
                 <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" data-folder-title="${it.folder.title}" data-folder-description="${it.folder.description}">  
                   <i class="icon-edit" title="<g:message code="ddbnext.Edit_Folder" />" ></i>
                 </a>

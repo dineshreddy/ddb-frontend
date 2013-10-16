@@ -23,13 +23,11 @@ $(function() {
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
     
-    
+
     $('.page-filter select').change(function(){
-      var url = jsContextPath + "/user/favorites/?rows="+this.value;
+      var url = updateURLParameter(window.location.href, 'rows', this.value);
       var order = getParam("order");
-      if ( order  ) {
-        url = url + "&order="+order;
-      }
+      url = updateURLParameter(url, 'order', order);
       window.location.href=url;
       return false;
     });
@@ -241,8 +239,31 @@ $(function() {
       return false;
     });
 
+    
+    /** Publish folder */
+    $('.publishfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var body = {
+        id : folderId
+      }
+
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/togglePublish",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          window.setTimeout('location.reload();', 500);
+        }
+      });
+      return false;
+    });
+
     /** Open comment favorites */
-    $('.comment-text').click(function(event) {
+    $('.comment-text-clickanchor').click(function(event) {
       
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-"+bookmarksId);
@@ -320,6 +341,8 @@ $(function() {
             $(textField).removeClass("off");
             $(inputField).addClass("off");
             $(buttonField).addClass("off");
+            
+            window.setTimeout('location.reload();', 100);            
           });
           
         }
@@ -402,5 +425,24 @@ function getParamWithDefault(name, defaultValue) {
   return result;
 }
 
+function updateURLParameter(url, param, paramVal){
+  var newAdditionalURL = "";
+  var tempArray = url.split("?");
+  var baseURL = tempArray[0];
+  var additionalURL = tempArray[1];
+  var temp = "";
+  if (additionalURL) {
+      tempArray = additionalURL.split("&");
+      for (i=0; i<tempArray.length; i++){
+          if(tempArray[i].split('=')[0] != param){
+              newAdditionalURL += temp + tempArray[i];
+              temp = "&";
+          }
+      }
+  }
+
+  var rows_txt = temp + "" + param + "=" + paramVal;
+  return baseURL + "?" + newAdditionalURL + rows_txt;
+}
 
 

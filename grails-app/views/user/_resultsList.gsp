@@ -27,7 +27,9 @@ limitations under the License.
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span5">
-          <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
+          <g:if test="${!publicView}">
+            <input type="checkbox" name="id[${index++}]" value="${it.id}" class="remove-item-check">
+          </g:if>
           <div class="summary-main">
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
@@ -65,13 +67,13 @@ limitations under the License.
           </g:else>
         </div>
         <div class="span2 created-at">
-          <div>${it.creationDate}</div>
+          <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
       <g:if test="${it.category != "orphaned" }">
         <div class="comment row">
           <div class="span9">
-            <g:render template="favoritesComment" model="${[item: it]}" />
+            <g:render template="favoritesComment" model="${[item: it, publicView: publicView]}" />
           </div>
         </div>
       </g:if>
