@@ -40,7 +40,6 @@ limitations under the License.
         <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
-      	<span class="label">${facets.roleFacetsUrl.encodeAsHTML()}</span>
         <g:each in="${facetsList}" var="mit">
           <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
