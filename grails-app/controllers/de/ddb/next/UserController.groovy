@@ -403,7 +403,7 @@ class UserController {
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
                     resultsNumber: totalResults,
-                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
+                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset, params.rows, params.order, lastPgOffset),
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: params["offset"],

@@ -112,7 +112,7 @@ class FavoritesController {
                         bookmarksService.deleteFavorites(user.getId(), itemIds)
                     }else{
                         def favorites = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
-                        def favoriteIds = favorites.collect { it.id }
+                        def favoriteIds = favorites.collect { it.bookmarkId }
                         bookmarksService.removeFavoritesFromFolder(favoriteIds, folderId)
                     }
                     result = response.SC_OK

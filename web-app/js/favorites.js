@@ -27,9 +27,7 @@ $(function() {
     $('.page-filter select').change(function(){
       var url = updateURLParameter(window.location.href, 'rows', this.value);
       var order = getParam("order");
-      if (!order) {
-        url = url + "&order="+order;
-      }
+      url = updateURLParameter(url, 'order', order);
       window.location.href=url;
       return false;
     });
