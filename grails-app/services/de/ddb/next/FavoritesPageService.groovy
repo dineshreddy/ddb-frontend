@@ -97,7 +97,7 @@ class FavoritesPageService {
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
+        return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order])
     }
 
     def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset, String userId, String folderId){
@@ -118,7 +118,7 @@ class FavoritesPageService {
     }
     def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'user', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
+        return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
     }
 
     /**

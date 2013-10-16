@@ -110,6 +110,16 @@ class UrlMappings {
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
         }
 
+        "/user/favorites/$id?" {
+            controller="favorites"
+            action="favorites"
+        }
+
+        "/user/$userId/favorites/$folderId" {
+            controller="favorites"
+            action="publicFavorites"
+        }
+
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
@@ -165,10 +175,6 @@ class UrlMappings {
             action="staticFiles"
         }
 
-        "/user/$userId/favorites/$folderId" {
-            controller="user"
-            action="publicFavorites"
-        }
 
         "/user/registration" {
             controller="user"
@@ -183,11 +189,6 @@ class UrlMappings {
         "/user/profile" {
             controller="user"
             action="profile"
-        }
-
-        "/user/favorites/$id" {
-            controller="user"
-            action="favorites"
         }
 
         "/user/savedsearches" {

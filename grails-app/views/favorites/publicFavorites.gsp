@@ -84,7 +84,7 @@ limitations under the License.
             <g:each var="publicFolder" in="${publicFolders}">
               <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
                 <li>
-                  <g:link controller="user" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
+                  <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
                     ${publicFolder.title}
                   </g:link>
                 </li>
@@ -93,7 +93,7 @@ limitations under the License.
           </ul>
         </div>
         <div class="folder-information bt bb bl br">        
-          <a href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "user", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+          <a href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
             <g:message code="ddbnext.Report_Public_List" />
           </a>
         </div>

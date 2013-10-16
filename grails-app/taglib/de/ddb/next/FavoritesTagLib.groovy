@@ -23,14 +23,14 @@ class FavoritesTagLib {
      */
 
     def favoritesResultsRender = { attrs, body ->
-        out << render(template:"/user/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: false])
+        out << render(template:"/favorites/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: false])
     }
 
     def publicFavoritesResultsRender = { attrs, body ->
-        out << render(template:"/user/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: true])
+        out << render(template:"/favorites/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: true])
     }
 
     def favoritesEmailResultsRender = { attrs, body ->
-        out << render(template:"/user/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
+        out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
     }
 }
