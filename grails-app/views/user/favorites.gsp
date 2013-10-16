@@ -120,7 +120,7 @@ limitations under the License.
           <li class="">
             <span class="h3">
               <g:form id="folder-create" method="POST" name="folder-create">
-                <button type="submit" class="submit" title="<g:message code="ddbnext.Create_Favorites" />">
+                <button class="submit" title="<g:message code="ddbnext.Create_Favorites" />">
                   <span><g:message code="ddbnext.Create_Folder"></g:message></span>
                 </button>
               </g:form>
