@@ -429,7 +429,10 @@ class FavoritesController {
     private String sanitizeTextInput(String input){
         String output = ""
         if(input != null) {
+            Parser tagsoupParser = new Parser()
+            XmlSlurper slurper = new XmlSlurper(tagsoupParser)
             output = input
+            output = slurper.parseText(output).text()
             output = output.replaceAll("\\\"", "''")
             output = output.replaceAll("´", "'")
             output = output.replaceAll("`", "'")
