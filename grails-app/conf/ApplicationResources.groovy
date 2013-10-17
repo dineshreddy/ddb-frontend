@@ -45,6 +45,7 @@ modules = {
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
         resource url:'/css/saved-searches.css', bundle: 'screen'
+        resource url:'/css/socialmedia.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
