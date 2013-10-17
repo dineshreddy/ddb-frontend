@@ -344,4 +344,8 @@ class ItemController {
             return ""
         }
     }
+
+    def showXml() {
+
+    }
 }

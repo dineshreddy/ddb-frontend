@@ -23,13 +23,6 @@ limitations under the License.
             ${institution.name}
             </g:link>
             <a class="institution-link" href="${institution.url}">${institution.url}</a>
-        </div>
-
-        <div class="span3">
-            <img alt="${institution.name}" src="${institutionImage}"/>
-        </div>
-
-        <div class="span9">
             <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                   <g:if test="${!originUrl?.toString()?.isEmpty()}">
@@ -47,31 +40,7 @@ limitations under the License.
             </g:if>
         </div>
         <div class="span3">
-            <g:isLoggedIn>
-                <g:if test="${(isFavorite == 302) }">
-                    <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
-                        <g:link params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
-                            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
-                                <g:message code="ddbnext.favorit" />
-                            </span>
-                        </g:link>
-                    </div>
-                </g:if>
-                <g:else>
-                    <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
-                        <g:link params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
-                            <span data-itemid="${itemId}" data-actn="POST" id="idFavorite" >
-                                <g:message code="ddbnext.favorit" />
-                            </span>
-                        </g:link>
-                    </div>
-                </g:else>
-                <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                    <div class="modal-body">
-                        <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                    </div>
-                </div>
-            </g:isLoggedIn>
+            <img alt="${institution.name}" src="${institutionImage}"/>
         </div>
     </div>
   </div>
