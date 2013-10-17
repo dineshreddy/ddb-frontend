@@ -16,18 +16,20 @@ limitations under the License.
 
 <div class="socialmedia">
   <div class="social-off">
-    <div class="social-entry">
-      facebook
-      <i class="icon-facebook" ></i>
+    <div class="social-overlay">
+      overlay
     </div>
-    <div class="social-entry">
-      twitter
-      <i class="icon-twitter" ></i>
-    </div>
-    <div class="social-entry">
-      googleplus
-      <i class="icon-googleplus" ></i>
-    </div>
+    <ul>
+      <li class="social-entry">
+          <i class="icon-facebook" ></i>
+      </li>
+      <li class="social-entry">
+          <i class="icon-twitter" ></i>
+      </li>
+      <li class="social-entry">
+          <i class="icon-googleplus" ></i>
+      </li>
+    </ul>
   </div>
   <div class="social-on">
     <div class="social-facebook">

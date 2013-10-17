@@ -16,13 +16,42 @@
  
 .socialmedia .social-off {
   display: block;
+}
+
+.socialmedia .social-off ul {
+  margin: 0px;
+  padding: 0px;
+  display: block;
+}
+
+.socialmedia .social-off .social-overlay {
   border: 1px solid red;
+  width: 200px;
 }
 
 .socialmedia .social-off .social-entry {
-  width: 50px;
-  height: 50px;
-  border: 1px solid blue;
+  margin: 0px;
+  width: 20px;
+  height: 22px;
+  display: inline-block;
+}
+
+.socialmedia .social-off .social-entry .icon-facebook {
+  width: 20px;
+  height: 20px;
+  background: url(../images/icons/socialmedia.png) no-repeat 0 0px;
+}
+
+.socialmedia .social-off .social-entry .icon-twitter {
+  width: 20px;
+  height: 20px;
+  background: url(../images/icons/socialmedia.png) no-repeat 0 -50px;
+}
+
+.socialmedia .social-off .social-entry .icon-googleplus {
+  width: 20px;
+  height: 20px;
+  background: url(../images/icons/socialmedia.png) no-repeat 0 -25px;
 }
 
 .socialmedia .social-on {
