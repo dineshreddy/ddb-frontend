@@ -33,6 +33,7 @@ import org.openid4java.util.HttpClientFactory
 import org.openid4java.util.ProxyProperties
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
@@ -51,7 +52,6 @@ class UserController {
     def messageSource
     def searchService
     def newsletterService
-    def favoritesPageService
     def savedSearchesService
     def bookmarksService
 
@@ -304,9 +304,9 @@ class UserController {
                 }
             }
             //get favorites-count
-            def String favoritesResult = favoritesPageService.getFavorites()
-            List favorites = JSON.parse(favoritesResult) as List
-            def favoritesCount = favorites.length()
+            Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+            List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
+            def favoritesCount = favorites.size()
 
             //get savedsearch-count
             def savedSearchesResult = savedSearchesService.getSavedSearches()
@@ -498,9 +498,8 @@ class UserController {
                 params.errors = errors
             }
 
-            def String result = favoritesPageService.getFavorites()
-            List items = JSON.parse(result) as List
-            def favoritesCount = items.length()
+            List favorites = bookmarksService.findBookmarksByUserId(user.getId())
+            def favoritesCount = favorites.size()
 
             //render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
             render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors: errors, messages: messages])
@@ -600,7 +599,8 @@ class UserController {
 
         String discoveryUrl = ""
 
-        setProxy()
+        ProxyUtil proxyUtil = new ProxyUtil()
+        proxyUtil.setProxy()
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
@@ -730,30 +730,6 @@ class UserController {
 
     }
 
-    private def setProxy(){
-
-        def proxyHost = System.getProperty("http.proxyHost")
-        def proxyPortString = System.getProperty("http.proxyPort")
-        int proxyPort = 80
-
-        if (proxyHost) {
-            if (proxyPortString && !proxyPortString.isEmpty()) {
-                try{
-                    proxyPort = Integer.parseInt(proxyPortString)
-                }catch(NumberFormatException e){
-                    log.error "setProxy(): The proxyport of the system properties cannot be cast to an int: '"+proxyPortString"'"
-                }
-            }
-
-            ProxyProperties proxyProps = new ProxyProperties()
-            proxyProps.setProxyHostName(proxyHost)
-            proxyProps.setProxyPort(proxyPort)
-            HttpClientFactory.setProxyProperties(proxyProps)
-        }
-
-    }
-
-
     private boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
@@ -777,9 +753,10 @@ class UserController {
 
     private def createFavoritesFolderIfNotExisting(User user){
         log.info "createFavoritesFolderIfNotExisting()"
-        def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+        def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+
         if(mainFavoriteFolder == null){
-            def folderId = bookmarksService.newFolder(user.getId(), BookmarksService.FAVORITES, false)
+            def folderId = bookmarksService.newFolder(user.getId(), BookmarksService.MAIN_BOOKMARKS_FOLDER, false)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }

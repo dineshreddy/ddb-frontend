@@ -43,48 +43,48 @@ class ItemController {
     def sessionService
     def cultureGraphService
 
-    private def isFavorite(pId) {
+    private def isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        return bookmarksService.isFavorite(pId, user)
+        return bookmarksService.isBookmarkOfUser(itemId, user)
     }
 
-    def delFavorite(pId) {
+    def delFavorite(itemId) {
         boolean vResult = false
-        log.info "non-JavaScript: delFavorite " + pId
+        log.info "non-JavaScript: delFavorite " + itemId
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
-            // Bug: DDBNEXT-626: if (bookmarksService.deleteFavorites(user.getId(), [pId])) {
-            bookmarksService.deleteFavorites(user.getId(), [pId])
-            def isFavorite = isFavorite(pId)
+            // Bug: DDBNEXT-626: if (bookmarksService.deleteBookmarksByBookmarkIds(user.getId(), [pId])) {
+            bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])
+            def isFavorite = isFavorite(itemId)
             if (isFavorite == response.SC_NOT_FOUND) {
-                log.info "non-JavaScript: delFavorite " + pId + " - success!"
+                log.info "non-JavaScript: delFavorite " + itemId + " - success!"
                 vResult = true
             }
             else {
-                log.info "non-JavaScript: delFavorite " + pId + " - failed..."
+                log.info "non-JavaScript: delFavorite " + itemId + " - failed..."
             }
         }
         else {
-            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
+            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
         }
         return vResult
     }
 
-    def addFavorite(pId) {
+    def addFavorite(itemId) {
         boolean vResult = false
-        log.info "non-JavaScript: addFavorite " + pId
+        log.info "non-JavaScript: addFavorite " + itemId
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
-            if (bookmarksService.addFavorite(user.getId(), pId)) {
-                log.info "non-JavaScript: addFavorite " + pId + " - success!"
+            if (bookmarksService.addBookmark(user.getId(), itemId)) {
+                log.info "non-JavaScript: addFavorite " + itemId + " - success!"
                 vResult = true
             }
             else {
-                log.info "non-JavaScript: addFavorite " + pId + " - failed..."
+                log.info "non-JavaScript: addFavorite " + itemId + " - failed..."
             }
         }
         else {
-            log.info "non-JavaScript: addFavorite " + pId + " - failed (unauthorized)"
+            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
         }
         return vResult
     }

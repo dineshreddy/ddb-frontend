@@ -34,12 +34,9 @@
       complete: function(data) {
         if (vActn=="POST") {
           addToFavorites(data);
-        }
-        else if (vActn=="DELETE") {
+        } else if (vActn=="DELETE") {
           delFromFavorites(data);
-        }
-        else {
-          alert("Method not found...");
+        } else {       
         }
       }
     });

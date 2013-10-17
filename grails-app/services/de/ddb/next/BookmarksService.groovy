@@ -41,7 +41,7 @@ import de.ddb.next.beans.Folder
  */
 class BookmarksService {
 
-    public static final def FAVORITES = 'favorites'
+    public static final def MAIN_BOOKMARKS_FOLDER = 'favorites'
     public static final def IS_PUBLIC = false
     public static final def DEFAULT_SIZE = 9999
 
@@ -56,8 +56,10 @@ class BookmarksService {
      * @param isPublic  boolean flag to mark if a folder should be public visible.
      * @return          the newly created folder ID.
      */
-    def newFolder(userId, title, isPublic, description = null) {
+    String newFolder(userId, title, isPublic, description = null) {
         log.info "newFolder(): creating a new folder with the title: ${title}"
+
+        String newFolderId = null
 
         def postBody = [
             user: userId,
@@ -71,16 +73,16 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            def folderId = response._id
+            newFolderId = response._id
             refresh()
-
-            return folderId
         }
+
+        return newFolderId
     }
 
 
 
-    def findAllPublicFolders(userId) {
+    List findAllPublicFolders(userId) {
         log.info "findAllPublicFolders()"
 
         def folders = findAllFolders(userId)
@@ -93,15 +95,16 @@ class BookmarksService {
         return publicFolders
     }
 
-    def findAllFolders(userId) {
+    List findAllFolders(userId) {
         log.info "findAllFolders()"
+
+        def folderList = []
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, ["q":userId])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
-            def folderList = []
             resultList.each { it ->
                 def description = "null"
                 if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
@@ -117,8 +120,8 @@ class BookmarksService {
                         )
                 folderList.add(folder)
             }
-            return folderList
         }
+        return folderList
     }
 
     /* TODO: refactor this one
@@ -138,15 +141,17 @@ class BookmarksService {
      * @param size      how many bookmarks the service should return, it is _optional_ by default size=9999
      * @return          a list of bookmarks.
      */
-    def findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
+    List findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
         log.info "findBookmarksByFolderId(): find bookmarks for the user (${userId}) in the folder ${folderId}"
+
+        def all = []
 
         def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            def all = []
+
             def resultList = response.hits.hits
             resultList.each { it ->
                 def bookmark = new Bookmark(
@@ -161,12 +166,14 @@ class BookmarksService {
                         )
                 all.add(bookmark)
             }
-            return all
         }
+        return all
     }
 
-    def findBookmarksByPublicFolderId(folderId, size = DEFAULT_SIZE) {
+    List findBookmarksByPublicFolderId(folderId, size = DEFAULT_SIZE) {
         log.info "findBookmarksByPublicFolderId(): find bookmarks in the folder ${folderId}"
+
+        def all = []
 
         Folder folder = findPublicFolderById(folderId)
         if(folder == null || !folder.isPublic){
@@ -178,7 +185,6 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            def all = []
             def resultList = response.hits.hits
             resultList.each { it ->
                 def bookmark = new Bookmark(
@@ -193,8 +199,9 @@ class BookmarksService {
                         )
                 all.add(bookmark)
             }
-            return all
         }
+
+        return all
     }
 
 
@@ -206,8 +213,10 @@ class BookmarksService {
      * @param itemID    the ID of the DDB cultural item.
      * @return          the created bookmark ID.
      */
-    def saveBookmark(userId, folderId, itemId, description = null, type = Type.CULTURAL_ITEM, long createdAt = new Date().getTime()) {
+    String saveBookmark(userId, folderId, itemId, description = null, type = Type.CULTURAL_ITEM, long createdAt = new Date().getTime()) {
         log.info "saveBookmark()"
+
+        String newBookmarkId = null
 
         def postBody = [
             user: userId,
@@ -223,15 +232,15 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            def bookmarkId = response._id
-            log.info "Bookmark ${bookmarkId} is created."
+            newBookmarkId = response._id
+            log.info "Bookmark ${newBookmarkId} is created."
             refresh()
-
-            return bookmarkId
         }
+
+        return newBookmarkId
     }
 
-    private refresh() {
+    private void refresh() {
         log.info "refresh(): refreshing index ddb..."
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/_refresh", false, "")
@@ -250,8 +259,10 @@ class BookmarksService {
      * @param itemIdList a list of cultural item IDs.
      * @return           the list of bookmarked items.
      */
-    def findBookmarkedItems(userId, itemIdList) {
+    List findBookmarkedItems(userId, itemIdList) {
         log.info "findBookmarkedItems(): itemIdList ${itemIdList}"
+
+        def bookmarks = []
 
         def postBody = [filter: [terms: [item: itemIdList]]]
 
@@ -261,9 +272,7 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             log.info "response as application/json: ${response}"
 
-            def items = [] as Set
             response.hits.hits.each { it ->
-                //                items.add(it._id)
                 def bookmark = new Bookmark(
                         it._id,
                         it._source.user,
@@ -274,10 +283,11 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                items.add(bookmark)
+                bookmarks.add(bookmark)
             }
-            return items
         }
+
+        return bookmarks
     }
 
     /**
@@ -286,8 +296,8 @@ class BookmarksService {
      * @param userId         the ID who bookmarked the cultural items.
      * @param bookmarkIdList a list of bookmark IDs. NOTE: These are _not_ a list of cultural item IDs.
      */
-    def deleteBookmarks(userId, bookmarkIdList) {
-        log.info "deleteBookmarks()"
+    boolean deleteBookmarksByBookmarkIds(userId, bookmarkIdList) {
+        log.info "deleteBookmarksByBookmarkIds()"
 
         def postBody = ''
         bookmarkIdList.each { id ->
@@ -297,31 +307,34 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             refresh()
-
             return true
+        }else{
+            return false
         }
     }
 
     /**
      *
      */
-    def addFavorite(userId, itemId, description = null, type = Type.CULTURAL_ITEM, folderIdList = []) {
-        log.info "addFavorite()"
-        def foundItemList =  findFavoritesByItemIds(userId, [itemId])
+    String addBookmark(userId, itemId, description = null, type = Type.CULTURAL_ITEM, folderIdList = []) {
+        log.info "addBookmark()"
+        def foundItemList =  findBookmarkedItemsInFolder(userId, [itemId])
         if(foundItemList.size()>0) {
-            log.warn('The item ID (itemId) is already in the Favorites')
+            log.warn('The item ID (itemId) is already in the Bookmarks')
             return null
         }
         log.info "type: ${type}"
         if(folderIdList.size() == 0){
-            def favoritesFolder = findFoldersByTitle(userId, BookmarksService.FAVORITES)[0]
-            folderIdList.add(favoritesFolder.folderId)
+            def mainBookmarksFolder = findFoldersByTitle(userId, BookmarksService.MAIN_BOOKMARKS_FOLDER)[0]
+            folderIdList.add(mainBookmarksFolder.folderId)
         }
         return saveBookmark(userId, folderIdList, itemId, description, type)
     }
 
-    def findFoldersByTitle(userId, title) {
+    List findFoldersByTitle(userId, title) {
         log.info "findFoldersByTitle(): finding a folder with the title ${title} for the user: ${userId}"
+
+        def all = []
 
         def postBody = [filter: [term: [title: title]]]
 
@@ -330,7 +343,6 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
-            def all = []
             resultList.each { it ->
                 def description = "null"
                 if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
@@ -348,19 +360,33 @@ class BookmarksService {
             }
 
             log.info "found #folder: ${all.size()} with the title ${title}"
-            return all
         }
+
+        return all
     }
 
-    def findFavoritesByUserId(userId, size = DEFAULT_SIZE) {
-        log.info "findFavoritesByUserId()"
+    Folder findMainBookmarksFolder(userId) {
+        log.info "findMainBookmarksFolder()"
+        Folder folder = null
+        List allFolders = findAllFolders(userId)
+        allFolders.each {
+            if(it.title == BookmarksService.MAIN_BOOKMARKS_FOLDER){
+                folder = it
+            }
+        }
+        return folder
+    }
+
+    List findBookmarksByUserId(userId, size = DEFAULT_SIZE) {
+        log.info "findBookmarksByUserId()"
+
+        def all = []
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:\"${userId}\"", "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "response as application/json: ${response}"
-            def all = [] //as Set
             def resultList = response.hits.hits
 
             resultList.each { it ->
@@ -376,43 +402,39 @@ class BookmarksService {
                         )
                 all.add(bookmark)
             }
-
-            return all
         }
 
+        return all
     }
 
-    def deleteFavorites(userId, itemIds) {
-        log.info "deleteFavorites()"
+    boolean deleteBookmarksByItemIds(userId, itemIds) {
+        log.info "deleteBookmarksByItemIds()"
         def bookmarkIds = []
-        def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
-        allFavorites.each { it ->
+        def allBookmarks = findBookmarksByUserId(userId, DEFAULT_SIZE)
+        allBookmarks.each { it ->
             if(it.itemId  in itemIds) {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
-        log.info "delete favorites for the items ${itemIds}"
-        log.info "delete favorites with the bookmarkIds ${bookmarkIds}"
-        return deleteBookmarks(userId, bookmarkIds)
+        log.info "deleteBookmarksByItemIds for the items ${itemIds}"
+        log.info "deleteBookmarksByItemIds the bookmarkIds ${bookmarkIds}"
+        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
     }
 
-    def deleteAllUserFavorites(userId) {
-        log.info "deleteAllUserFavorites()"
+    boolean deleteAllUserBookmarks(userId) {
+        log.info "deleteAllUserBookmarks()"
         def bookmarkIds = []
-        def allFavorites = findFavoritesByUserId(userId, DEFAULT_SIZE)
-        allFavorites.each { it ->
+        def allBookmarksOfUser = findBookmarksByUserId(userId, DEFAULT_SIZE)
+        allBookmarksOfUser.each { it ->
             bookmarkIds.add(it.bookmarkId)
         }
-        return deleteBookmarks(userId, bookmarkIds)
+        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
     }
 
-    def findFavoritesByItemIds(userId, itemIdList) {
-        log.info "findFavoritesByItemIds(): itemIdList ${itemIdList}"
-        return findBookmarkedItemsInFolder(userId, itemIdList )
-    }
-
-    def findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
+    List findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
         log.info "findBookmarkedItemsInFolder(): itemIdList ${itemIdList}"
+
+        def bookmarks = []
 
         def queryParameter = [:]
         if(folderId) {
@@ -428,7 +450,6 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "response as application/json: ${response}"
-            def items = [] as Set
             def resultList = response.hits.hits
             resultList.each { it ->
                 //items.add(it._id)
@@ -442,15 +463,17 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                items.add(bookmark)
+                bookmarks.add(bookmark)
             }
-            return items
         }
 
+        return bookmarks
     }
 
-    def findFavoriteByItemId(userId, itemId, folderId=null) {
-        log.info "findFavoriteByItemId(): itemId: ${itemId}"
+    List findBookmarksByItemId(userId, itemId, folderId = null) {
+        log.info "findBookmarksByItemId(): itemId: ${itemId}"
+
+        def all = []
 
         def queryParameter = [:]
         if(folderId) {
@@ -466,7 +489,6 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "response as application/json: ${response}"
-            def all = [] //as Set
             def resultList = response.hits.hits
 
             resultList.each { it ->
@@ -482,30 +504,20 @@ class BookmarksService {
                         )
                 all.add(bookmark)
             }
-            assert all.size() <= 1
-            return all[0]
         }
 
+        return all
     }
 
-    def isFavorite(pId, user) {
-        log.info "isFavorite()"
-        def vResult = null
-        if (user != null) {
-            def favorites = findFavoritesByItemIds(user.getId(), [pId])
-            log.info "isFavorite findFavoritesByUserId(${user.getId()}, ${pId}): favorites = " + favorites
-            if (favorites && (favorites.size() > 0)) {
-                vResult = HttpServletResponse.SC_FOUND
-            }
-            else {
-                vResult = HttpServletResponse.SC_NOT_FOUND
-            }
+    boolean isBookmarkOfUser(itemId, userId) {
+        log.info "isBookmarkOfUser()"
+        boolean result = false
+        def bookmarks = findBookmarkedItemsInFolder(userId, [itemId])
+        if (bookmarks && (bookmarks.size() > 0)) {
+            result = true
         }
-        else {
-            vResult = HttpServletResponse.SC_UNAUTHORIZED
-        }
-        log.info "isFavorite ${pId} returns: " + vResult
-        return vResult
+        log.info "isBookmarkOfUser ${itemId} returns: " + result
+        return result
     }
 
     /*
@@ -514,11 +526,11 @@ class BookmarksService {
      * bookmarkIds, list of bookmarks to update
      * folderIds, list of folderId as input
      */
-    def copyFavoritesToFolders(List<String> favoriteIds, List<String> folderIds) {
-        log.info "copyFavoritesToFolders()"
+    void copyBookmarksToFolders(List<String> bookmarkIds, List<String> folderIds) {
+        log.info "copyBookmarksToFolders()"
 
         def postBody = ''
-        favoriteIds.each { it ->
+        bookmarkIds.each { it ->
             postBody = postBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
                     '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
         }
@@ -527,17 +539,16 @@ class BookmarksService {
         if(apiResponse.isOk()){
             refresh()
         }
-
     }
 
-    private def surroundWithQuotes(stringInList) {
+    private void surroundWithQuotes(stringInList) {
         stringInList.collect { it ->  '"' + it + '"'}
     }
 
-    def findFavoriteById(favoriteId) {
-        log.info "findFavoriteById()"
+    Bookmark findBookmarkById(bookmarkId) {
+        log.info "findBookmarkById()"
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${favoriteId}", false, [:])
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${bookmarkId}", false, [:])
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
@@ -552,12 +563,13 @@ class BookmarksService {
                     it._source.updatedAt
                     )
             return bookmark
+        }else{
+            return null
         }
-
     }
 
 
-    def findFolderById(folderId) {
+    Folder findFolderById(folderId) {
         log.info "findFolderById()"
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false, [:])
@@ -577,7 +589,7 @@ class BookmarksService {
         }
     }
 
-    def findPublicFolderById(folderId) {
+    Folder findPublicFolderById(folderId) {
         log.info "findPublicFolderById()"
 
         Folder folder = findFolderById(folderId)
@@ -586,10 +598,9 @@ class BookmarksService {
         }else{
             return null
         }
-
     }
 
-    def updateFolder(folderId, newTitle, newDescription = null, isPublic = false) {
+    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false) {
         log.info "updateFolder()"
 
         def postBody = ""
@@ -606,27 +617,25 @@ class BookmarksService {
         if(apiResponse.isOk()){
             refresh()
         }
-
     }
 
-    def updateBookmark(favoriteId, newDescription) {
+    void updateBookmark(bookmarkId, newDescription) {
         log.info "updateBookmark()"
 
         def postBody = [doc: [description: newDescription, updatedAt: System.currentTimeMillis()]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${favoriteId}/_update", false, postBody as JSON)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${bookmarkId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             refresh()
         }
-
     }
 
-    def removeFavoritesFromFolder(favoriteIds, folderId) {
-        log.info "removeFavoritesFromFolder(): favoriteIds="+favoriteIds
+    void removeBookmarksFromFolder(bookmarkIds, folderId) {
+        log.info "removeBookmarksFromFolder(): bookmarkIds="+bookmarkIds
 
         def postBody = ''
-        favoriteIds.each { it ->
+        bookmarkIds.each { it ->
             postBody = postBody +
                     '{ "delete" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"}}'+
                     '{ "script" : "ctx._source.folder.remove(otherFolder);", "params" : { "otherFolder" : "' + folderId + '"}}\n'
@@ -636,10 +645,9 @@ class BookmarksService {
         if(apiResponse.isOk()){
             refresh()
         }
-
     }
 
-    def deleteFolder(folderId) {
+    void deleteFolder(folderId) {
         log.info "deleteFolder()"
 
         ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false)
@@ -649,6 +657,5 @@ class BookmarksService {
             log.info "Is folder with the ID ${folderId} deleted(true/false)? ${response.ok}"
             refresh()
         }
-
     }
 }
