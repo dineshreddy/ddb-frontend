@@ -636,8 +636,6 @@ function searchResultsInitializer(){
     currentFacetField: null,
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
-    currentRoleFacetSelected: new Array(),
-    currentRoleFacetNotSelected: new Array(),
     currentPage: 1,
     searchFacetValuesTimeout: 0,
     errorCaught: false,
@@ -751,7 +749,10 @@ function searchResultsInitializer(){
       if(this.connectedflyoutWidget.facetLeftContainer){
         var currObjInstance = this;
         var selectedList = this.connectedflyoutWidget.facetLeftContainer.find('.selected-items li');
+        
+        this.currentFacetValuesSelected = new Array();
         this.currentFacetValuesNotSelected = responseFacetValues;
+        
         if(selectedList.length>0){
           selectedList.each(function(){
             var tmpFacetValue = $(this).attr('data-fctvalue');
@@ -787,10 +788,10 @@ function searchResultsInitializer(){
     },
     
     selectFacetValue: function(facetValue, localizedValue){
-        var currObjInstance = this;        
+        var currObjInstance = this;                
         
+        //update selection lists
         this.currentFacetValuesSelected.push(facetValue);
-        
         this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
             return element.value != facetValue;
         });
@@ -810,18 +811,17 @@ function searchResultsInitializer(){
           event.preventDefault();
         });
         
-        //add event listener for add more facet filters
-        if(this.currentFacetValuesSelected.length == 1){
-            this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
-            this.connectedflyoutWidget.addMoreFilters.click(function(event){
-                currObjInstance.connectedflyoutWidget.build($(this));
-            });
-        }
+        //update add more facet filters button
+        this.connectedflyoutWidget.updateAddMoreFiltersButton();
         this.connectedflyoutWidget.close();
                 
         // We want to add the facet value selected, but at the same time we want
         // to keep all the old selected values
-        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');        
+        if (paramsFacetValues == null) {
+      	  paramsFacetValues = this.getUrlVar('facetValues[]');
+        }
+        
         if(paramsFacetValues){
           $.each(paramsFacetValues, function(key,value){
             paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
@@ -841,26 +841,37 @@ function searchResultsInitializer(){
     
     unselectFacetValue: function(element,unselectWithoutFetch){     	
       var facetFieldFilter = element.parents('.facets-item');
+      var facetValue = element.attr('data-fctvalue');
+      var facetFieldFilter = element.parents('.facets-item');
+      
+      //close the connectedflyoutWidget
+      //TODO Inside this method currentFacetValuesNotSelected is modified! Maybe this has sideeffects
       if(this.connectedflyoutWidget.opened){
           this.connectedflyoutWidget.close();
-          this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
-              return el != element.attr('data-fctvalue');
-          });
-      }
-      // if in the list there is only one element means that is the case of the
-      // last element that we are going to remove
-      if(facetFieldFilter.find('.selected-items li').length == 1){
-        var facetFieldFilter = element.parents('.facets-item');
-        this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
       
+      //update selection lists
+      this.currentFacetValuesNotSelected.push(facetValue);
+      this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
+    	  return el != facetValue;
+      });
+      
+      // if we are going to remove the last element -> remove the button to close the facet field in the menu 
+      if(facetFieldFilter.find('.selected-items li').length == 1){
+        this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
+      } 
+      // if the list has more than one element call updateAddMoreFiltersButton
+      else {
+    	this.connectedflyoutWidget.updateAddMoreFiltersButton();
+      }
+
       //Remove facet and all role based facets belonging to this facet from the URL
       var facetsToRemove = new Array();
-      facetsToRemove.push(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue')));
+      facetsToRemove.push(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+facetValue));
     	  
       var roleFacets = facetFieldFilter.find('span.role-facet-value');
       $.each((roleFacets), function(){
-    	  facetsToRemove.push(new Array('facetValues[]',$( this ).attr("facetfield")+'='+element.attr('data-fctvalue')));
+    	  facetsToRemove.push(new Array('facetValues[]',$( this ).attr("facetfield")+'='+facetValue));
       });
       
       var newUrl = removeParamFromUrl(facetsToRemove);
@@ -881,6 +892,10 @@ function searchResultsInitializer(){
     	// We want to add the facet value selected, but at the same time we want
         // to keep all the old selected values
         var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+        if (paramsFacetValues == null) {
+      	  paramsFacetValues = this.getUrlVar('facetValues[]');
+        }
+        
         if(paramsFacetValues){
           $.each(paramsFacetValues, function(key,value){
             paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
@@ -1264,12 +1279,14 @@ function searchResultsInitializer(){
 	       	  
 	  //Create the role based facets and add them to the container
       $.each(roleFacetValues.values, function(index, value){
-        var roleFacetValueDiv = $(document.createElement('div'));
+        var roleFacetValueUl = $(document.createElement('ul'));
+        var roleFacetValueLi = $(document.createElement('li'));
         var roleFacetValueSpan = $(document.createElement('span')); 
         var roleFacetValueCheckbox = $(document.createElement('input'));        
         var roleFieldMessage = messages.ddbnext['facet_'+facetField];
         
-      	roleFacetValueDiv.addClass('role-facet');
+        roleFacetValueUl.addClass('unstyled');
+        roleFacetValueLi.addClass('role-facet');
         
         roleFacetValueSpan.attr('title', "RoleValue");
         roleFacetValueSpan.attr('facetField', facetField);
@@ -1279,7 +1296,8 @@ function searchResultsInitializer(){
         roleFacetValueCheckbox.attr('type', "checkbox");
         roleFacetValueCheckbox.addClass('role-facet-checkbox');
         
-        //If this method call is invoked by initializeSelectedFacetOnLoad we have to check if the checkbox must be checked or not 
+        //If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad 
+        //we have to find out if the checkbox must be checked 
         var paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues%5B%5D');        
         if (paramsFacetValues == null) {
       	  paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues[]');
@@ -1306,12 +1324,30 @@ function searchResultsInitializer(){
         	
         });
         
-        roleFacetValueSpan.appendTo(roleFacetValueDiv);
-        roleFacetValueCheckbox.appendTo(roleFacetValueDiv);
-        roleFacetValueDiv.appendTo(facetValueSpan);
+        roleFacetValueSpan.appendTo(roleFacetValueLi);
+        roleFacetValueCheckbox.appendTo(roleFacetValueLi);
+        roleFacetValueLi.appendTo(roleFacetValueUl);
+        roleFacetValueUl.insertAfter(facetValueSpan);
       })                    
     },
-     
+    
+    updateAddMoreFiltersButton: function(){
+    	var currObjInstance = this;
+    	var facetFieldFilter = this.facetLeftContainer;
+    	
+        if(currObjInstance.fctManager.currentFacetValuesNotSelected.length >= 1){
+        	//if the filter button not exists -> render it
+        	if (facetFieldFilter.find('.add-more-filters').length == 0) {
+	        	currObjInstance.renderAddMoreFiltersButton(currObjInstance.fctManager.currentFacetField);
+	        	currObjInstance.addMoreFilters.click(function(event){
+	                currObjInstance.build($(this));
+	            });
+        	}
+        } else {
+        	currObjInstance.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
+        }
+    },
+    
     renderAddMoreFiltersButton: function(facetField){
         this.addMoreFilters = $(document.createElement('div'));
         var text = $(document.createElement('span'));

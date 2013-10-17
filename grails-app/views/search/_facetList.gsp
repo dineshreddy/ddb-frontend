@@ -36,21 +36,25 @@ limitations under the License.
       </g:if>
     </a>
 	
-	<g:if test="${facetType == 'affiliate_fct'}">
+	<g:if test="${facetType == 'affiliate_fct' && roleFacetsUrl != null && roleFacetsUrl.size() > 0}">
+		<ul class="role-facets-list">
 		<g:each in="${(roleFacetsUrl)}" var="roleFacet">		
 			<g:if test="${roleFacet.fctValue == facetValues[i]['fctValue']}">
-				<a href="${roleFacet['url']}" class="${roleFacet['selected']}">
-					<g:if test="${roleFacet.field == 'affiliate_fct_subject'}">
-						<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
-						<span class="label"><g:message code="ddbnext.facet_affiliate_fct_subject" /></span>						
-					</g:if>
-					<g:if test="${roleFacet.field == 'affiliate_fct_involved'}">					
-						<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
-						<span class="label"><g:message code="ddbnext.facet_affiliate_fct_involved" /></span>
-					</g:if>
-				</a>
+				<li class="role-facet">
+					<a href="${roleFacet['url']}" class="${roleFacet['selected']}">
+						<g:if test="${roleFacet.field == 'affiliate_fct_subject'}">
+							<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
+							<span class="label"><g:message code="ddbnext.facet_affiliate_fct_subject" /></span>						
+						</g:if>
+						<g:if test="${roleFacet.field == 'affiliate_fct_involved'}">					
+							<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
+							<span class="label"><g:message code="ddbnext.facet_affiliate_fct_involved" /></span>
+						</g:if>
+					</a>
+				</li>
 			</g:if>
 		</g:each>
+		</ul>
 	</g:if>
   </li>
 </g:each>
