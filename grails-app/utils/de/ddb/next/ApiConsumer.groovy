@@ -176,7 +176,11 @@ class ApiConsumer {
 
         try {
             def http = new HTTPBuilder(baseUrl)
-            setProxy(http, baseUrl)
+
+            ProxyUtil proxyUtil = new ProxyUtil()
+            proxyUtil.setProxy(http, baseUrl)
+            //setProxy(http, baseUrl)
+
             if (httpAuth) {
                 setAuthHeader(http)
             }
@@ -398,35 +402,6 @@ class ApiConsumer {
         return response
     }
 
-    /**
-     * Sets the proxy information for each request
-     * @param http The HttpBuilder object
-     * @param baseUrl The base request URL
-     * @return void
-     */
-    private static def setProxy(http, String baseUrl) {
-        def proxyHost = System.getProperty("http.proxyHost")
-        def proxyPort = System.getProperty("http.proxyPort")
-        def nonProxyHosts = System.getProperty("http.nonProxyHosts")
-
-        if (proxyHost) {
-            if (nonProxyHosts) {
-                if (!nonProxyHostsPattern) {
-                    nonProxyHosts = nonProxyHosts.replaceAll("\\.", "\\\\.")
-                    nonProxyHosts = nonProxyHosts.replaceAll("\\*", "")
-                    nonProxyHosts = nonProxyHosts.replaceAll("\\?", "\\\\?")
-                    nonProxyHostsPattern = Pattern.compile(nonProxyHosts)
-                }
-                if (nonProxyHostsPattern.matcher(baseUrl).find()) {
-                    return
-                }
-            }
-            if (!proxyPort) {
-                proxyPort = "80"
-            }
-            http.setProxy(proxyHost, new Integer(proxyPort), 'http')
-        }
-    }
 
     /**
      * Sets explicit timeout parameters to requests.

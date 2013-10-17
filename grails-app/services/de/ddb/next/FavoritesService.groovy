@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package de.ddb.next
+
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
@@ -28,7 +29,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
 
-class FavoritesPageService {
+class FavoritesService {
 
     def transactional = false
     def bookmarksService
@@ -37,47 +38,6 @@ class FavoritesPageService {
     def searchService
     def configurationService
     def messageSource
-
-    def getFavorites() {
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findFavoritesByUserId(user.getId())
-            return result as JSON
-        } else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-            return null
-        }
-    }
-
-    def getFavoritesOfFolder(folderId) {
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
-            return result as JSON
-        } else {
-            log.info "getFavorites returns null"
-            return null
-        }
-    }
-
-    def getMainFavoritesFolder() {
-        Folder folder = null
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findAllFolders(user.getId())
-            result.each {
-                if(it.title == BookmarksService.FAVORITES){
-                    folder = it
-                }
-            }
-        }
-        log.info "getMainFavoritesFolder returns " +folder
-        return folder
-    }
-
-    private User getUserFromSession() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-    }
 
     def private createAllFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset){
         def first = createFavoritesLinkNavigation(0, rows, order)
@@ -97,7 +57,7 @@ class FavoritesPageService {
     }
     def private createFavoritesLinkNavigation(offset,rows,order){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
+        return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order])
     }
 
     def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset, String userId, String folderId){
@@ -118,7 +78,7 @@ class FavoritesPageService {
     }
     def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'user', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
+        return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
     }
 
     /**
@@ -203,8 +163,7 @@ class FavoritesPageService {
         return resultsItems["results"]["docs"]
     }
 
-    def private getAllFoldersPerUser(){
-        def User user = getUserFromSession()
+    def private getAllFoldersPerUser(User user){
         if (user != null) {
             return bookmarksService.findAllFolders(user.getId())
         }
