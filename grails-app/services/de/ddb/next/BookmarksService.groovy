@@ -520,26 +520,26 @@ class BookmarksService {
         return result
     }
 
-    /*
-     * Given a list of bookmark ID, update its folder values to [folderId]
-     *
-     * bookmarkIds, list of bookmarks to update
-     * folderIds, list of folderId as input
-     */
-    void copyBookmarksToFolders(List<String> bookmarkIds, List<String> folderIds) {
-        log.info "copyBookmarksToFolders()"
-
-        def postBody = ''
-        bookmarkIds.each { it ->
-            postBody = postBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
-                    '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
-        }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
-
-        if(apiResponse.isOk()){
-            refresh()
-        }
-    }
+    //    /*
+    //     * Given a list of bookmark ID, update its folder values to [folderId]
+    //     *
+    //     * bookmarkIds, list of bookmarks to update
+    //     * folderIds, list of folderId as input
+    //     */
+    //    void copyBookmarksToFolders(List<String> bookmarkIds, List<String> folderIds) {
+    //        log.info "copyBookmarksToFolders()"
+    //
+    //        def postBody = ''
+    //        bookmarkIds.each { it ->
+    //            postBody = postBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
+    //                    '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
+    //        }
+    //        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
+    //
+    //        if(apiResponse.isOk()){
+    //            refresh()
+    //        }
+    //    }
 
     private void surroundWithQuotes(stringInList) {
         stringInList.collect { it ->  '"' + it + '"'}
