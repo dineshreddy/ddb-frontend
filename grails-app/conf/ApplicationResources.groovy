@@ -99,6 +99,7 @@ modules = {
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/saved-searches.js'
+        resource url:'/js/socialmedia.js'
     }
 
     autocomplete {

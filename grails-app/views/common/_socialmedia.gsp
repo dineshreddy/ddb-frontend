@@ -15,23 +15,30 @@ limitations under the License.
 --%>
 
 <div class="socialmedia">
-  <div class="social-off">
-    <div class="social-overlay">
-      overlay
+  <div class="social-locked">
+    <div class="social-overlay-container">
+      <div class="social-overlay">
+        <b><g:message code="ddbnext.Social_Tooltip_Header"/></b>
+        <br />
+        <g:message code="ddbnext.Social_Tooltip_Body"/>
+        <br />
+        <br />
+        <a href="javascript:void();" class="social-accept" ><g:message code="ddbnext.Social_Tooltip_Accept"/></a>      
+      </div>
     </div>
     <ul>
       <li class="social-entry">
-          <i class="icon-facebook" ></i>
+        <i class="icon-facebook" ></i>
       </li>
       <li class="social-entry">
-          <i class="icon-twitter" ></i>
+        <i class="icon-twitter" ></i>
       </li>
       <li class="social-entry">
-          <i class="icon-googleplus" ></i>
+        <i class="icon-googleplus" ></i>
       </li>
     </ul>
   </div>
-  <div class="social-on">
+  <div class="social-open">
     <div class="social-facebook">
       <iframe>
       </iframe>

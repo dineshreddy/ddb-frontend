@@ -14,46 +14,65 @@
  * limitations under the License.
  */
  
-.socialmedia .social-off {
-  display: block;
+.socialmedia .social-locked {
+  display: none;
+  position: relative;
 }
 
-.socialmedia .social-off ul {
+.socialmedia .social-locked ul {
   margin: 0px;
   padding: 0px;
   display: block;
 }
 
-.socialmedia .social-off .social-overlay {
-  border: 1px solid red;
-  width: 200px;
+.socialmedia .social-locked .social-overlay-container {
+  display: none;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
 }
 
-.socialmedia .social-off .social-entry {
+.socialmedia .social-locked .social-overlay {
+  border: 1px solid #000000;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  background-color: #FFFFFF;
+  margin: 30px 0 0 0;
+}
+
+.socialmedia .social-locked .social-overlay .social-accept {
+  color: #A0003B;
+  text-decoration: underline;
+}
+
+.socialmedia .social-locked .social-entry {
   margin: 0px;
   width: 20px;
   height: 22px;
   display: inline-block;
+  cursor: pointer;
 }
 
-.socialmedia .social-off .social-entry .icon-facebook {
+.socialmedia .social-locked .social-entry .icon-facebook {
   width: 20px;
   height: 20px;
   background: url(../images/icons/socialmedia.png) no-repeat 0 0px;
 }
 
-.socialmedia .social-off .social-entry .icon-twitter {
+.socialmedia .social-locked .social-entry .icon-twitter {
   width: 20px;
   height: 20px;
   background: url(../images/icons/socialmedia.png) no-repeat 0 -50px;
 }
 
-.socialmedia .social-off .social-entry .icon-googleplus {
+.socialmedia .social-locked .social-entry .icon-googleplus {
   width: 20px;
   height: 20px;
   background: url(../images/icons/socialmedia.png) no-repeat 0 -25px;
 }
 
-.socialmedia .social-on {
-  display: none;
+.socialmedia .social-open {
+  display: block;
 }
