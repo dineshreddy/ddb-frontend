@@ -52,6 +52,9 @@ hr {
   z-index: 10;
   display: block;
   padding: 0 35% 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
@@ -174,7 +177,7 @@ hr {
 
 .favorites-results-controls .deleteBtn{
   float:left;
-  margin-right: 10px;
+  margin-right: 50px;
 }
 
 .results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
@@ -456,6 +459,15 @@ hr {
    .bookmarks-container .bookmarks-list-number {
         padding-right: 50px;
    }
+  /** .bookmarks-container .bookmarks-list-envelope {
+        padding-right: 0px;
+   }
+   .bookmarks-container .bookmarks-list-number {
+        padding-right: 0px;
+   }
+   #folder-create .submit{
+   		width: 165px;
+   }*/
 }
 
 @media (max-width: 767px) {
