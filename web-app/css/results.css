@@ -745,7 +745,7 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -12px;
+  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
   position:relative;
   border-top: none;
 }

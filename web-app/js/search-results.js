@@ -802,7 +802,7 @@ function searchResultsInitializer(){
         //search for role based facets (see DDBNEXT-794) on the selected facet
         if (currObjInstance.currentFacetField.indexOf('affiliate_fct')!=-1) {
         	currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, 'affiliate_fct_subject');
-        	currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, 'affiliate_fct_involved');        	
+        	currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, 'affiliate_fct_involved');
         }
         
         //add event listener for removing facet
@@ -811,12 +811,16 @@ function searchResultsInitializer(){
           event.preventDefault();
         });
         
-        //update add more facet filters button
-        this.connectedflyoutWidget.updateAddMoreFiltersButton();
+        //add event listener for add more facet filters
+        if(this.currentFacetValuesSelected.length == 1){
+            this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
+            this.connectedflyoutWidget.addMoreFilters.click(function(event){
+                currObjInstance.connectedflyoutWidget.build($(this));
+            });
+        }
         this.connectedflyoutWidget.close();
-                
-        // We want to add the facet value selected, but at the same time we want
-        // to keep all the old selected values
+
+        //Update Url (We want to add the facet value selected, but at the same time we want to keep all the old selected values)
         var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');        
         if (paramsFacetValues == null) {
       	  paramsFacetValues = this.getUrlVar('facetValues[]');
@@ -842,27 +846,18 @@ function searchResultsInitializer(){
     unselectFacetValue: function(element,unselectWithoutFetch){     	
       var facetFieldFilter = element.parents('.facets-item');
       var facetValue = element.attr('data-fctvalue');
-      var facetFieldFilter = element.parents('.facets-item');
-      
-      //close the connectedflyoutWidget
-      //TODO Inside this method currentFacetValuesNotSelected is modified! Maybe this has sideeffects
+  
       if(this.connectedflyoutWidget.opened){
           this.connectedflyoutWidget.close();
+          this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
+              return el != element.attr('data-fctvalue');
+          });
       }
-      
-      //update selection lists
-      this.currentFacetValuesNotSelected.push(facetValue);
-      this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
-    	  return el != facetValue;
-      });
-      
-      // if we are going to remove the last element -> remove the button to close the facet field in the menu 
+      // if in the list there is only one element means that is the case of the
+      // last element that we are going to remove
       if(facetFieldFilter.find('.selected-items li').length == 1){
+        var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
-      } 
-      // if the list has more than one element call updateAddMoreFiltersButton
-      else {
-    	this.connectedflyoutWidget.updateAddMoreFiltersButton();
       }
 
       //Remove facet and all role based facets belonging to this facet from the URL
@@ -1275,77 +1270,71 @@ function searchResultsInitializer(){
       var currObjInstance = this;
       
       //Find the span element of the facetvalue
-      var facetValueSpan = facetValueContainer.find('.facet-value');    	
-	       	  
+      var facetValueSpan = facetValueContainer.find('.facet-value');
+      
+      var newUl = false;
+      var roleFacetValueUl = facetValueContainer.find('ul');
+      if (roleFacetValueUl.length == 0) {
+    	  newUl = true;
+      	  roleFacetValueUl = $(document.createElement('ul'));
+      }
+      
 	  //Create the role based facets and add them to the container
       $.each(roleFacetValues.values, function(index, value){
-        var roleFacetValueUl = $(document.createElement('ul'));
-        var roleFacetValueLi = $(document.createElement('li'));
-        var roleFacetValueSpan = $(document.createElement('span')); 
-        var roleFacetValueCheckbox = $(document.createElement('input'));        
-        var roleFieldMessage = messages.ddbnext['facet_'+facetField];
-        
-        roleFacetValueUl.addClass('unstyled');
-        roleFacetValueLi.addClass('role-facet');
-        
-        roleFacetValueSpan.attr('title', "RoleValue");
-        roleFacetValueSpan.attr('facetField', facetField);
-        roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
-        roleFacetValueSpan.addClass('role-facet-value');
-        
-        roleFacetValueCheckbox.attr('type', "checkbox");
-        roleFacetValueCheckbox.addClass('role-facet-checkbox');
-        
-        //If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad 
-        //we have to find out if the checkbox must be checked 
-        var paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues%5B%5D');        
-        if (paramsFacetValues == null) {
-      	  paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues[]');
-        }
-        
-        if (paramsFacetValues) {
-	        var search = facetField+'='+facetValue;
-	        $.each(paramsFacetValues, function(key,value){
-	        	paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
-            });
-        	
-	        if (jQuery.inArray(search, paramsFacetValues) != -1) {
-	        	roleFacetValueCheckbox.prop('checked', true);
-	        }	        
-        }
-        
-        //add action handler
-        roleFacetValueCheckbox.click(function(event){        	
-        	if (this.checked) {
-        		currObjInstance.fctManager.selectRoleFacetValue(facetField, facetValue);        		
-    		} else {
-    			currObjInstance.fctManager.unselectRoleFacetValue(facetField, facetValue);
-    		}
-        	
-        });
-        
-        roleFacetValueSpan.appendTo(roleFacetValueLi);
-        roleFacetValueCheckbox.appendTo(roleFacetValueLi);
-        roleFacetValueLi.appendTo(roleFacetValueUl);
-        roleFacetValueUl.insertAfter(facetValueSpan);
-      })                    
-    },
-    
-    updateAddMoreFiltersButton: function(){
-    	var currObjInstance = this;
-    	var facetFieldFilter = this.facetLeftContainer;
-    	
-        if(currObjInstance.fctManager.currentFacetValuesNotSelected.length >= 1){
-        	//if the filter button not exists -> render it
-        	if (facetFieldFilter.find('.add-more-filters').length == 0) {
-	        	currObjInstance.renderAddMoreFiltersButton(currObjInstance.fctManager.currentFacetField);
-	        	currObjInstance.addMoreFilters.click(function(event){
-	                currObjInstance.build($(this));
+        //The role search could return more than one role. So the roleFacetValue must match exactly the facetValue! 
+    	  if (facetValue == value.value) {
+	        var roleFacetValueLi = $(document.createElement('li'));
+	        var roleFacetValueSpan = $(document.createElement('span')); 
+	        var roleFacetValueCheckbox = $(document.createElement('input'));        
+	        var roleFieldMessage = messages.ddbnext['facet_'+facetField];
+	        
+	        roleFacetValueUl.addClass('unstyled');
+	        roleFacetValueLi.addClass('role-facet');
+	        
+	        roleFacetValueSpan.attr('title', "RoleValue");
+	        roleFacetValueSpan.attr('facetField', facetField);
+	        roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
+	        roleFacetValueSpan.addClass('role-facet-value');
+	        
+	        roleFacetValueCheckbox.attr('type', "checkbox");
+	        roleFacetValueCheckbox.addClass('role-facet-checkbox');
+	        
+	        //If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad 
+	        //we have to find out if the checkbox must be checked 
+	        var paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues%5B%5D');        
+	        if (paramsFacetValues == null) {
+	      	  paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues[]');
+	        }
+	        
+	        if (paramsFacetValues) {
+		        var search = facetField+'='+facetValue;
+		        $.each(paramsFacetValues, function(key,value){
+		        	paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
 	            });
-        	}
-        } else {
-        	currObjInstance.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
+	        	
+		        if (jQuery.inArray(search, paramsFacetValues) != -1) {
+		        	roleFacetValueCheckbox.prop('checked', true);
+		        }	        
+	        }
+	        
+	        //add action handler
+	        roleFacetValueCheckbox.click(function(event){        	
+	        	if (this.checked) {
+	        		currObjInstance.fctManager.selectRoleFacetValue(facetField, facetValue);        		
+	    		} else {
+	    			currObjInstance.fctManager.unselectRoleFacetValue(facetField, facetValue);
+	    		}                 	
+	        });
+	        
+	        roleFacetValueSpan.appendTo(roleFacetValueLi);
+	        roleFacetValueCheckbox.appendTo(roleFacetValueLi);
+	        roleFacetValueLi.appendTo(roleFacetValueUl);
         }
+      })
+      
+      if (newUl) {
+      	roleFacetValueUl.insertAfter(facetValueSpan);
+      }
     },
     
     renderAddMoreFiltersButton: function(facetField){
