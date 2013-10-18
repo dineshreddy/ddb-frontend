@@ -30,7 +30,7 @@ class SearchController {
     def configurationService
 
     def results() {
-        try { 
+        try {
             def searchParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
             if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
