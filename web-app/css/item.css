@@ -95,32 +95,31 @@
 }
 
 .favorite {
-  margin-top: 20px;
   text-align: right;
 }
 .favorite-actions {
   padding-left: 17px;
-  background: url(../images/icons/search_actions.png) no-repeat ;
-  background-position: -2px 0;
-  margin-right: 10px;
+  background: url(../images/icons/item_actions_sprite.png) no-repeat ;
+  background-position: -5px 0;
 }
 
 .favorite-actions.favorite-add {
-  background-position: -2px -140px;
+  background-position: -5px -67px;
   cursor: pointer;
 }
 
-/*.favorite-actions.favorite-add:hover {
-  background-position: -2px -100px;
-}*/
+.favorite-actions.favorite-add:hover {
+  background-position: -5px -97px;
+}
 
 .favorite-actions.favorite-selected {
-  background-position: -2px -160px;
-  pointer-events: none;
+  background-position: -5px -7px;
+  cursor: pointer;
 }
-/*.favorite-actions.favorite-selected:hover {
-  background-position: -2px -60px;
-}*/
+
+.favorite-actions.favorite-selected:hover {
+  background-position: -5px -37px;
+}
 
 .modal-body {
   position: relative;
@@ -296,9 +295,10 @@
 
 .xml-link {
   padding-left: 22px;
-  background: url(../images/icons/item_actions_sprite.png) no-repeat -4px -245px;
+  background: url(../images/icons/item_actions_sprite.png) no-repeat;
+  background-position: -4px -245px;
 }
 
 .xml-link:hover {
-  background: url(../images/icons/item_actions_sprite.png) no-repeat -4px -275px;
+  background-position: -4px -275px;
 }

@@ -48,10 +48,12 @@ limitations under the License.
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
-    <div class="link-block">
-      <g:link class="xml-link" controller="item" action="showXml" params="[id: institution.id]">
-            <g:message code="ddbnext.View" />
-      </g:link>
-    </div>
+    <g:isLoggedIn>
+      <div class="link-block">
+        <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]">
+              <g:message code="ddbnext.View" />
+        </g:link>
+      </div>
+    </g:isLoggedIn>
   </div>
 </div>
