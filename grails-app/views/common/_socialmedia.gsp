@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<div class="socialmedia">
+<div class="socialmedia" data-lang-iso2="<g:currentLocale />" data-lang-full="<g:currentLocaleFull />">
   <div class="social-locked">
     <div class="social-overlay-container">
       <div class="social-overlay">
@@ -23,33 +23,37 @@ limitations under the License.
         <g:message code="ddbnext.Social_Tooltip_Body"/>
         <br />
         <br />
-        <a href="javascript:void();" class="social-accept" ><g:message code="ddbnext.Social_Tooltip_Accept"/></a>      
+        <a href="javascript:void(0);" class="social-accept" ><g:message code="ddbnext.Social_Tooltip_Accept"/></a>      
       </div>
     </div>
     <ul>
-      <li class="social-entry">
+      <li>
         <i class="icon-facebook" ></i>
       </li>
-      <li class="social-entry">
+      <li>
         <i class="icon-twitter" ></i>
       </li>
-      <li class="social-entry">
+      <li>
         <i class="icon-googleplus" ></i>
       </li>
     </ul>
   </div>
   <div class="social-open">
-    <div class="social-facebook">
-      <iframe>
-      </iframe>
-    </div>
-    <div class="social-twitter">
-      <iframe>
-      </iframe>
-    </div>
-    <div class="social-googleplus">
-      <iframe>
-      </iframe>
-    </div>
+    <ul>
+      <li class="social-facebook">
+        <iframe></iframe>
+      </li>
+      <li class="social-twitter">
+        <iframe></iframe>
+      </li>
+      <li class="social-googleplus">
+        <%-- IFrame is created dynamically by Google-JS 
+        <iframe></iframe>
+        --%>
+      </li>
+      <li class="social-lockagain" title="<g:message code="ddbnext.Social_Tooltip_Revoke" />">
+        <i class="icon-lockagain" ></i>
+      </li>
+    </ul>
   </div>
 </div>

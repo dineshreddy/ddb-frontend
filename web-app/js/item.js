@@ -15,22 +15,11 @@
  */
 $(document).ready(function(){
   
-  /** Fade in overlay when social icon is clicked **/
-  $(".social-entry").click(function() {
-    $(".social-overlay-container").fadeIn(200);
-  });
-
-  /** Fade out overlay when overlay div is leaved **/
-  $(".social-overlay-container").mouseleave(function() {
-    window.setTimeout(function(){
-      $(".social-overlay-container").fadeOut(200);
-    }, 200);
-  });
+  if(jsPageName == "item"){
+    
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMedia();
+    
+  }
   
-  $(".social-accept").click(function(){
-    $(".social-overlay-container").fadeOut(100);
-    $(".social-locked").css("display", "none");
-    $(".social-open").css("display", "block");
-  });
-
 });

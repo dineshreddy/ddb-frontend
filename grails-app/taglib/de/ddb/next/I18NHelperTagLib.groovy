@@ -39,6 +39,29 @@ class I18NHelperTagLib {
     }
 
     /**
+     * Prints out the currently selected language. The language itself is in ISO2 format. The language must be
+     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
+     */
+    def currentLocale = { attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        def localeLanguage = locale.getLanguage()
+
+        out << localeLanguage
+    }
+
+    /**
+     * Prints out the currently selected language. The language itself is in full format (de_DE). The language must be
+     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
+     */
+    def currentLocaleFull = { attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        def localeFull = locale.getLanguage()+"_"+locale.getCountry()
+        out << localeFull
+    }
+
+    /**
      * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,
      * otherwise not.
      */
