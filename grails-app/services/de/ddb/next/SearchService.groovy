@@ -150,11 +150,17 @@ class SearchService {
     
     def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
         def res = []        
+        def allBackendRolefacets = getRoleFacets()
         
         rolefacets.each { rf->
             if(rf.numberOfFacets>0){
-                rf.facetValues.each{ fv->
-                    def tmpFacetValuesMap = ["field":rf.field, "fctValue": fv.value,"url":"",cnt: fv["count"],selected:""]
+                rf.facetValues.each{ fv->                    
+                    
+                    def roleFacetDefinition = allBackendRolefacets.find {  
+                        it.name = rf.field
+                    }
+                    
+                    def tmpFacetValuesMap = ["parent": roleFacetDefinition.parent, "field":rf.field, "fctValue": fv.value,"url":"",cnt: fv["count"],selected:""]
                     def mainUrl = mainFacetsUrl.find{
                         rf.field.contains(it.key)
                     }
@@ -246,32 +252,26 @@ class SearchService {
      */
     def buildRoleFacets(LinkedHashMap urlQuery){
         def res = []
-
-        urlQuery["affiliate_fct"].each{
-            //search for affiliate_fct_involved
-            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search/facets/affiliate_fct_subject', false, [query:it])
-            if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
-                apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        def roleFacets = getRoleFacets()
+        
+        roleFacets.each { roleFacet ->
+            if (urlQuery[roleFacet.parent] != null) {
+                
+                urlQuery[roleFacet.parent].each { facetValue -> 
+                    def searchUrl = '/search/facets/' + roleFacet.name
+                    
+                    def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
+                    if(!apiResponse.isOk()){
+                        log.error "Json: Json file was not found"
+                        apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+                    }
+                    def jsonResp = apiResponse.getResponse()
+    
+                    if (jsonResp.numberOfFacets > 0) {
+                        res.add(jsonResp)
+                    }               
+                }
             }
-            def jsonResp = apiResponse.getResponse()
-            
-            if (jsonResp.numberOfFacets > 0) {
-                res.add(jsonResp)
-            }            
-            
-            //search for affiliate_fct_involved
-            apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search/facets/affiliate_fct_involved', false, [query:it])
-            if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
-                apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-            }
-            jsonResp = apiResponse.getResponse()
-            
-            if (jsonResp.numberOfFacets > 0) {
-                res.add(jsonResp)
-            }
-            
         }
                 
         return res
