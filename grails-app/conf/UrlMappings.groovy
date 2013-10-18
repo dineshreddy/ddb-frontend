@@ -30,6 +30,11 @@ class UrlMappings {
             action="facetsList"
         }
 
+        "/rolefacets" {
+            controller="facets"
+            action="roleFacets"
+        }
+        
         "/informationitem/$id"{
             controller="search"
             action="informationItem"

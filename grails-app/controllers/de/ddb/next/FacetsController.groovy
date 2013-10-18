@@ -90,5 +90,16 @@ class FacetsController {
 
         render (contentType:"text/json"){facetValues}
     }
+    
+    /**
+     * Returns all role facets from the backend
+     * 
+     * @return a list of all role facets in the json format
+     */
+    def roleFacets() {     
+        def roleFacets = searchService.getRoleFacets()
+        
+        render (contentType:"text/json"){roleFacets}
+    }
 
 }
