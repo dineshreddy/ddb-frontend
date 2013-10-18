@@ -855,7 +855,7 @@ function searchResultsInitializer(){
       }
       // if in the list there is only one element means that is the case of the
       // last element that we are going to remove
-      if(facetFieldFilter.find('.selected-items li').length == 1){
+      if(facetFieldFilter.find('.selected-items li[data-fctvalue]').length == 1){
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
