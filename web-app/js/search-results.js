@@ -622,7 +622,17 @@ function searchResultsInitializer(){
     });
   }
  
-  // Facets Manager --
+  /** 
+   * Facets Manager 
+   * 
+   * This main intend of this class is to 
+   * - retrieving facet data via ajax
+   * - handlig all events coming from the DOM tree (add/remove facets, show next page etc.)
+   * - updating the facets values in the browser url. This is important for navigating with back/next butoon of the browser
+   * - triggering the flyoutWidget to render the facets
+   * 
+   * Do all rendering in the flyoutWidget!
+   */   
   FacetsManager = function(){
     this.init();
   }
@@ -1026,7 +1036,17 @@ function searchResultsInitializer(){
     }
   });
   
-  // Flyout Widget --
+  /* 
+   * Flyout Widget
+   * 
+   * This main intend of this class is to render all content in the context of facets
+   * Its doing this by DOM manipulation triggered by the FacetManager instance.
+   * The Flyout Widget contains 
+   * - facetLeftContainer: showing the facet fields and the selected facets
+   * - facetRightContainer: showing the unselected facets  
+   * 
+   * Do not use AJAX calls in this class!
+   */     
   FlyoutFacetsWidget = function(){
     this.init();
   }
