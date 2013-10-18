@@ -745,17 +745,23 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
+  background: url("../images/bg/advanced_search_solid_joint_standard_top_first.png") no-repeat 0px -68px;
   position:relative;
   border-top: none;
 }
+.selected-items .role-facet:last-child {
+  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
+}
+
 .role-facet .role-facet-value {  
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   text-indent: 0;
-  margin-left: 50px;
+  margin-left: 20px;
+  background: #fff;
+  padding-left: 10px;
 }
 .role-facet .role-facet-checkbox {    
   position: absolute;
