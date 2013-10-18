@@ -26,38 +26,46 @@ $(document).ready(function(){
     socialMediaCookieName: "socialmedia/ddb-next",
     socialMediaCookieValue: "allowed",
     socialMediaCookieTTL: 1,
-    self: null, 
   
     /** Initialization **/
     init: function(){
-      self = this;
     },
     
     /** Main method. Call to integrate social network into the page **/
     integrateSocialMedia: function() {
-      self.registerClickHandlers();
-      self.applyCookieAllowed();
+      this.registerClickHandlers();
+      this.applyCookieAllowed();
     },
     
     /** Register the click- and mouseover-events on the DOM objects **/
     registerClickHandlers: function() {
+      var self = this;
+      
       /** Fade in overlay when social icon is clicked **/
-      $(".socialmedia .social-locked ul li").mouseover(self.showPrivacyInformationOverlay);
+      $(".socialmedia .social-locked ul li").mouseover(function(event){
+        self.showPrivacyInformationOverlay();
+      });
 
       /** Fade out overlay when overlay div is leaved **/
-      $(".socialmedia .social-locked .social-overlay-container").mouseleave(self.hidePrivacyInformationOverlay);
+      $(".socialmedia .social-locked .social-overlay-container").mouseleave(function(event){
+        self.hidePrivacyInformationOverlay();
+      });
       
       /** If the user accepts the privacy tooltip -> attach social sites to page **/
-      $(".socialmedia .social-accept").click(self.integrateSocialCodeInPage);
+      $(".socialmedia .social-accept").click(function(event){
+        self.integrateSocialCodeInPage(true);
+      });
 
       /** If the user revokes the social integration -> remove integration from page and delete cookie **/
-      $(".socialmedia .social-open .social-lockagain").click(self.removeSocialCodeFromPage);
+      $(".socialmedia .social-open .social-lockagain").click(function(event){
+        self.removeSocialCodeFromPage();
+      });
     },
     
     /** If access is allowed by cookie -> skip privacy tooltip **/
     applyCookieAllowed: function() {
-      if(self.isSocialMediaCookieAllowed()){
-        self.integrateSocialCodeInPage(false);
+      if(this.isSocialMediaCookieAllowed()){
+        this.integrateSocialCodeInPage(false);
       }
     },
     
@@ -94,8 +102,8 @@ $(document).ready(function(){
       $(".socialmedia .social-open .social-twitter iframe").attr("src", urlTwitter);
       $(".socialmedia .social-open .social-googleplus").html(htmlGooglePlus);
       
-      if(setCookie != false){ // setCookie is either a clickEvent or true or false
-        self.setSocialMediaCookie();
+      if(setCookie){
+        this.setSocialMediaCookie();
       }
     },
     
@@ -108,20 +116,20 @@ $(document).ready(function(){
       $(".socialmedia .social-locked").css("display", "block");
       $(".socialmedia .social-open").css("display", "none");
 
-      self.removeSocialMediaCookie();
+      this.removeSocialMediaCookie();
     },
     
     /** Sets a cookie that will immediately activate the social network integration **/
     setSocialMediaCookie: function() {
       var expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + self.socialMediaCookieTTL); 
-      $.cookies.set(self.socialMediaCookieName, self.socialMediaCookieValue, { expiresAt: expirationDate, path: jsContextPath });
+      expirationDate.setDate(expirationDate.getDate() + this.socialMediaCookieTTL); 
+      $.cookies.set(this.socialMediaCookieName, this.socialMediaCookieValue, { expiresAt: expirationDate, path: jsContextPath });
     },
     
     /** Checks is the social network integration cookie is set and has the value 'allowed' **/
     isSocialMediaCookieAllowed: function() {
-      var socialMediaAllowed = $.cookies.get(self.socialMediaCookieName);
-      if(socialMediaAllowed == self.socialMediaCookieValue){
+      var socialMediaAllowed = $.cookies.get(this.socialMediaCookieName);
+      if(socialMediaAllowed == this.socialMediaCookieValue){
         return true;
       }
       return false;
@@ -129,7 +137,7 @@ $(document).ready(function(){
     
     /** Explicitely removes the social network cookie again **/
     removeSocialMediaCookie: function() {
-      $.cookies.del(self.socialMediaCookieName, { path: jsContextPath });
+      $.cookies.del(this.socialMediaCookieName, { path: jsContextPath });
     },
     
   });
