@@ -135,7 +135,9 @@ class FavoritesService {
                     emptyDummyItem["preview"]["subtitle"] = ""
                     emptyDummyItem["preview"]["media"] = ["unknown"]
                     emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
-                    allRes.add(emptyDummyItem)
+
+                    net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
+                    allRes.add(jsonDummyItem)
                 }
             }
         }
