@@ -97,6 +97,7 @@
 
 .share {
   margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .favorite {
@@ -255,6 +256,9 @@
   .item-nav .hit-number:after {
     content: " / ";
   }
+  .socialmedia .social-open ul li {
+    display: block !important;
+  }
 }
 
 .fields .row {
@@ -263,6 +267,7 @@
 
 @media (min-width: 768px) and (max-width: 979px) {
   .fields .span2,.fields .span4,
+  .share .span2,.share .span4,
   .rights .span2,.rights .span4 {
     float: none;
     width: 100%;
