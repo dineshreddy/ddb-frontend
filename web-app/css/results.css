@@ -926,7 +926,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .searchSuggestion{
  padding-top:25px;
- padding-bottom:25px;
+ padding-bottom:10px;
 }
 .searchSuggestion a {
 font-family: Calibri, Arial, sans-serif;
