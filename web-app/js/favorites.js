@@ -211,32 +211,64 @@ $(function() {
     $('.editfolder').click(function(event) {
       
       var folderId = $(this).attr('data-folder-id');
-      var oldFolderTitle = $(this).attr('data-folder-title');
-      var oldFolderDescription = $(this).attr('data-folder-description');
-      $('#folder-edit-id').val(folderId);
-      $('#folder-edit-name').val(oldFolderTitle);
-      $('#folder-edit-description').val(oldFolderDescription);
       
-      $('#folderEditConfirmDialog').modal('show');
-      $('#edit-confirm').click(function() {
-        var body = {
-          id : $('#folder-edit-id').val(),
-          title : $('#folder-edit-name').val(),
-          description : $('#folder-edit-description').val()
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/folder/edit",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      // First get current values of the folder
+      jQuery.ajax({
+        type : 'GET',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
+        dataType : "json",
+        success : function(data) {
+          
+          // Then set the values to the GUI
+          var oldFolderTitle = data.title;
+          var oldFolderDescription = data.description;
+          
+          $('#folder-edit-id').val(folderId);
+          $('#folder-edit-name').val(oldFolderTitle);
+          $('#folder-edit-description').val(oldFolderDescription);
+          if(data.isPublic){
+            $('#folder-edit-privacy-public').attr('checked','checked');
+          }else{
+            $('#folder-edit-privacy-private').attr('checked','checked');
           }
-        });
-        $('#folderEditConfirmDialog').modal('hide');
+          $('#folderEditConfirmDialog').modal('show');
+          
+          // Then collect the updated values
+          $('#edit-confirm').click(function() {
+            var isPublic = false;
+            if($('#folder-edit-privacy-public').is(':checked')) {
+              isPublic = true;
+            }
+            
+            var body = {
+              id : $('#folder-edit-id').val(),
+              title : $('#folder-edit-name').val(),
+              description : $('#folder-edit-description').val(),
+              isPublic: isPublic,
+              name: $('#folder-edit-publish-name').find(":selected").val()
+            }
+            jQuery.ajax({
+              type : 'POST',
+              contentType : "application/json; charset=utf-8",
+              traditional : true,
+              url : jsContextPath + "/apis/favorites/folder/edit",
+              data : JSON.stringify(body),
+              dataType : "json",
+              success : function(data) {
+                window.setTimeout('location.reload();', 500);
+              }
+            });
+            $('#folderEditConfirmDialog').modal('hide');
+          });
+          
+          
+          
+        }
       });
+      
+      
       return false;
     });
 

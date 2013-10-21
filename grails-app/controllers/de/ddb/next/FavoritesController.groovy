@@ -561,6 +561,22 @@ class FavoritesController {
         }
     }
 
+    def getFavoriteFolder() {
+        log.info "getFavoriteFolder " + params.id
+        def result = response.SC_NOT_FOUND
+        def User user = getUserFromSession()
+        if (user != null) {
+            Folder folder = bookmarksService.findFolderById(params.id)
+            log.info "getFavoriteFolder returns " + folder
+            render(folder as JSON)
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+        log.info "getFavoriteFolder returns " + result
+        render(status: result)
+    }
+
+
     def createFavoritesFolder() {
         log.info "createFavoritesFolder " + request.JSON
 
