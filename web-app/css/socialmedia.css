@@ -91,12 +91,14 @@
   overflow: hidden; 
   width: 130px; 
   height: 25px;
+  overflow: hidden;
 }
 
 .socialmedia .social-open .social-twitter iframe {
   border: none; 
-  width: 110px; 
+  width: 120px; 
   height: 25px;
+  overflow: hidden;
 }
 
 .socialmedia .social-open .social-googleplus iframe {

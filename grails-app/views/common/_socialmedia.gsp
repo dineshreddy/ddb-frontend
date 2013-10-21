@@ -41,10 +41,10 @@ limitations under the License.
   <div class="social-open">
     <ul>
       <li class="social-facebook">
-        <iframe></iframe>
+        <iframe scrolling="no"></iframe>
       </li>
       <li class="social-twitter">
-        <iframe></iframe>
+        <iframe scrolling="no"></iframe>
       </li>
       <li class="social-googleplus">
         <%-- IFrame is created dynamically by Google-JS 
