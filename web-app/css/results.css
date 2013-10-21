@@ -816,6 +816,43 @@ input[type="checkbox"],input[type="radio"] {
 .selected-items .facet-remove:hover{
   background-position-y: -60px;
 }
+.selected-items .role-facet {
+  background: url("../images/bg/advanced_search_solid_joint_standard_top_first.png") no-repeat 0px -68px;
+  position:relative;
+  border-top: none;
+}
+.selected-items .role-facet:last-child {
+  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
+}
+
+.role-facet .role-facet-value {  
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-indent: 0;
+  margin-left: 20px;
+  background: #fff;
+  padding-left: 10px;
+}
+.role-facet .role-facet-checkbox {    
+  position: absolute;
+  right: -8px;
+  top: 2px;
+}
+.role-facets-list {
+  list-style: none outside none;
+  margin-left: 0
+}
+.role-facets-list .role-facet {
+  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -16px;
+  position:relative;
+  border-top: none;
+  margin=0px;
+}
+.role-facets-list .label {
+	margin-left: 45px;
+}
 .add-more-filters{
   margin: 0 10px;
   cursor: pointer;

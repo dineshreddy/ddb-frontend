@@ -35,5 +35,20 @@ limitations under the License.
         <span class="label"><g:message code="${'ddbnext.sector_fct_'+facetValues[i]['fctValue']}" /></span>
       </g:if>
     </a>
+	
+	<g:if test="${facetType == 'affiliate_fct' && roleFacetsUrl != null && roleFacetsUrl.size() > 0}">			
+		<ul class="role-facets-list">
+		<g:each in="${(roleFacetsUrl)}" var="roleFacet">
+			<g:if test="${facetType == roleFacet.parent && roleFacet.fctValue == facetValues[i]['fctValue']}">
+				<li class="role-facet">
+					<a href="${roleFacet['url']}" class="${roleFacet['selected']}">
+						<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
+						<span class="label"><g:message code="${'ddbnext.facet_'+ roleFacet.field}" /></span>						
+					</a>
+				</li>
+			</g:if>
+		</g:each>
+		</ul>
+	</g:if>
   </li>
 </g:each>
