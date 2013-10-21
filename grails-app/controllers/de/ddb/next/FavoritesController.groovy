@@ -279,7 +279,9 @@ class FavoritesController {
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
                 //Default ordering is newest on top == DESC
-                allResultsWithAdditionalInfo.sort{a,b-> b.bookmark.creationDate<=>a.bookmark.creationDate}
+                allResultsWithAdditionalInfo.sort{a,b ->
+                    b.bookmark.creationDate<=>a.bookmark.creationDate
+                }
                 def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
