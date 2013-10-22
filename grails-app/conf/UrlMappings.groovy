@@ -65,6 +65,11 @@ class UrlMappings {
             action="findById"
         }
 
+        "/item/xml/$id" {
+            controller="item"
+            action="showXml"
+        }
+
         "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
