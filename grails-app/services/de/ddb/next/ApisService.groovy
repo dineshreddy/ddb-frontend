@@ -33,6 +33,13 @@ class ApisService {
 
     def transactional=false
 
+    /**
+     * Transform the query parameter Map from the SearchService to a backend compatible query Map  
+     * 
+     * @param queryParameters The map with the original frontend API query parameter
+     * 
+     * @return query parameter map for the cortex API
+     */
     def getQueryParameters(Map queryParameters){
 
         def query = [ query: queryParameters.query ]
@@ -54,83 +61,32 @@ class ApisService {
                 }
             }else query["facet"]=queryParameters.facet
         }
+        
         if(queryParameters.minDocs)
             query["minDocs"] = queryParameters.minDocs
 
         if(queryParameters.sort)
             query["sort"] = queryParameters.sort
-        if(queryParameters.time_fct){
-            if(queryParameters.time_fct.getClass().isArray()){
-                query["time_fct"] = []
-                queryParameters.time_fct.each {
-                    query["time_fct"].add(it)
-                }
-            }else query["time_fct"]=queryParameters.time_fct
-        }
+            
+        evaluateFacetParameter(query, queryParameters.time_fct, "time_fct")
+        
+        evaluateFacetParameter(query, queryParameters.place_fct, "place_fct")
+        
+        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct")
+        
+        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct_involved")
+        
+        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct_subject")
+        
+        evaluateFacetParameter(query, queryParameters.keywords_fct, "keywords_fct")
 
-        if(queryParameters.place_fct){
-            if(queryParameters.place_fct.getClass().isArray()){
-                query["place_fct"] = []
-                queryParameters.place_fct.each {
-                    query["place_fct"].add(it)
-                }
-            }else query["place_fct"]=queryParameters.place_fct
-        }
-
-        if(queryParameters.affiliate_fct){
-            if(queryParameters.affiliate_fct.getClass().isArray()){
-                query["affiliate_fct"] = []
-                queryParameters.affiliate_fct.each {
-                    query["affiliate_fct"].add(it)
-                }
-            }else query["affiliate_fct"]=queryParameters.affiliate_fct
-        }
-
-        if(queryParameters.keywords_fct){
-            if(queryParameters.keywords_fct.getClass().isArray()){
-                query["keywords_fct"] = []
-                queryParameters.keywords_fct.each {
-                    query["keywords_fct"].add(it)
-                }
-            }else query["keywords_fct"]=queryParameters.keywords_fct
-        }
-
-
-        if(queryParameters.language_fct){
-            if(queryParameters.language_fct.getClass().isArray()){
-                query["language_fct"] = []
-                queryParameters.language_fct.each {
-                    query["language_fct"].add(it)
-                }
-            }else query["language_fct"]=queryParameters.language_fct
-        }
-
-        if(queryParameters.type_fct){
-            if(queryParameters.type_fct.getClass().isArray()){
-                query["type_fct"] = []
-                queryParameters.type_fct.each {
-                    query["type_fct"].add(it)
-                }
-            }else query["type_fct"]=queryParameters.type_fct
-        }
-
-        if(queryParameters.sector_fct){
-            if(queryParameters.sector_fct.getClass().isArray()){
-                query["sector_fct"] = []
-                queryParameters.sector_fct.each {
-                    query["sector_fct"].add(it)
-                }
-            }else query["sector_fct"]=queryParameters.sector_fct
-        }
-
-        if(queryParameters.provider_fct){
-            if(queryParameters.provider_fct.getClass().isArray()){
-                query["provider_fct"] = []
-                queryParameters.provider_fct.each {
-                    query["provider_fct"].add(it)
-                }
-            }else query["provider_fct"]=queryParameters.provider_fct
-        }
+        evaluateFacetParameter(query, queryParameters.language_fct, "language_fct")
+               
+        evaluateFacetParameter(query, queryParameters.type_fct, "type_fct")
+        
+        evaluateFacetParameter(query, queryParameters.sector_fct, "sector_fct")
+        
+        evaluateFacetParameter(query, queryParameters.provider_fct, "provider_fct")
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
@@ -142,4 +98,25 @@ class ApisService {
 
         return query
     }
+    
+    /**
+     * 
+     * @param query
+     * @param queryParameter
+     * @param facetName
+     * @return
+     */
+    private def evaluateFacetParameter(Map query, Object queryParameter, String facetName) {
+        if(queryParameter){
+            if(queryParameter.getClass().isArray()){
+                query[facetName] = []
+                queryParameter.each {
+                    query[facetName].add(it)
+                }
+            }else { 
+                query[facetName]=queryParameter
+            }
+        }
+    }
+    
 }

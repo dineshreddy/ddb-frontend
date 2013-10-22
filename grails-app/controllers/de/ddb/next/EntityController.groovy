@@ -149,7 +149,37 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
 
-        render(view: 'entity', model: ["entity": entity, "entityUri": entityUri])
+        //------------------------- Search facet affiliate_fct_involved -------------------------------
+        
+        //FIXME Ask for right value of rows
+        def searchQueryInvolved = ["query": entity["title"], "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": entity["title"], "affiliate_fct_involved": entity["title"]]
+        searchQueryInvolved["facet"].add("affiliate_fct");
+        searchQueryInvolved["facet"].add("affiliate_fct_involved");
+        
+        def apiResponseSearchInvolved = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQueryInvolved)
+        if(!apiResponseSearchInvolved.isOk()){
+            log.error "index(): Search response contained error"
+            apiResponseSearchInvolved.throwException(request)
+        }
+        def jsonSearchResultInvolved = apiResponseSearchInvolved.getResponse()
+        
+        //------------------------- Search facet affiliate_fct_subject -------------------------------
+        //FIXME Ask for right value of rows
+        def searchQuerySubject = ["query": entity["title"], "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": entity["title"], "affiliate_fct_subject": entity["title"]]
+        searchQuerySubject["facet"].add("affiliate_fct");
+        searchQuerySubject["facet"].add("affiliate_fct_subject");
+        
+        def apiResponseSearchSubject = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuerySubject)
+        if(!apiResponseSearchSubject.isOk()){
+            log.error "index(): Search response contained error"
+            apiResponseSearchSubject.throwException(request)
+        }
+        def jsonSearchResultSubject = apiResponseSearchSubject.getResponse()        
+        
+        render(view: 'entity', model: ["entity": entity, 
+                                       "entityUri": entityUri, 
+                                       "involved": jsonSearchResultInvolved, 
+                                       "subject": jsonSearchResultSubject])
     }
 
     public def getAjaxSearchResultsAsJson() {

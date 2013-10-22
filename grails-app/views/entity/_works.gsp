@@ -28,36 +28,17 @@ limitations under the License.
   </div>
   <ol class="unstyled">
     <!-- TODO: replace br tag with CSS -->
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
+    <g:each var="item" in="${involved.results.docs}">
+	    <li class="theme">
+	      <i class="icon-theme"></i>
+	      <span>${item.preview.title}</span><br>
+	      <span>${item.preview.subtitle}</span><br>
+    	</li>
+    </g:each>
   </ol>
-  <a href="">Alle Objekte (XX)</a>
+  
+  <g:link controller="search" action="results" params="${["query":entity.title, "facetValues%5B%5D": ["affiliate_fct%3D"+entity.title, "affiliate_fct_involved%3D"+entity.title]] }">
+  	Alle Objekte (${involved.numberOfResults})
+  </g:link>
+
 </div>

@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="themes todo">
+<%--  ${subject}--%>
   <div class="row">
     <div class="span6">
       <h3>Thema in:</h3>
@@ -28,29 +29,16 @@ limitations under the License.
   </div>
   <ol class="unstyled">
     <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
+    <g:each var="item" in="${subject.results.docs}">
+	    <li class="theme">
+	      <i class="icon-theme"></i>
+	      <span>${item.preview.title}</span><br>
+	      <span>${item.preview.subtitle}</span><br>
+    	</li>
+    </g:each>
   </ol>
-  <a href="">Alle Objekte (XX)</a>
+  <g:link controller="search" action="results" params="${["query":entity.title, "facetValues[]": ["affiliate_fct="+entity.title, "affiliate_fct_subject="+entity.title]] }">
+  	Alle Objekte (${subject.numberOfResults})
+  </g:link>
+  
 </div>
