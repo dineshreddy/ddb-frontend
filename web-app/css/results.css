@@ -435,6 +435,15 @@ input[type="checkbox"],input[type="radio"] {
   margin: auto;
 }
 
+.thumbnail-wrapper .icons-right {
+	position: absolute; 
+	top: 0; 
+	bottom: 0; 
+	right: 0; 
+	width: 30px;
+	border-left: solid 1px #efebe8;
+}
+
 .search-results .results-list .matches {
   font-size: 0.875em;
   line-height: 1.2em;

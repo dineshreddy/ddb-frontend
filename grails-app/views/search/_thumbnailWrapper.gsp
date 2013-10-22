@@ -14,9 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="java.awt.event.ItemEvent"%>
-<div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span2</g:if>">
+<div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span3</g:if>">
   <div class="thumbnail">
-    <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
+    <g:link controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
@@ -37,5 +37,7 @@ limitations under the License.
         <p><g:message code="ddbnext.Added_To_Favorites"/></p>
       </div>
     </div>
+</div>
   </g:isLoggedIn>
+      <div class="icons-right"></div>
 </div>
