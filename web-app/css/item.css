@@ -69,7 +69,7 @@
   background-color: #efebe8;
   font-size: 0.938em;
 }
-.object-controls .span6{
+.object-controls .span6 {
   margin-left: 10px;
 }
 .origin {
@@ -264,6 +264,9 @@
   }
   .item-nav-mob {
     display:block;
+  }
+  .item-nav-mob .inline {
+    min-width: 240px
   }
   .item-nav-mob .inline li:first-child {
     padding-left: 0;
