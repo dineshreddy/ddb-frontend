@@ -224,15 +224,21 @@ $(function() {
           // Then set the values to the GUI
           var oldFolderTitle = data.title;
           var oldFolderDescription = data.description;
+          var isPublic = data.isPublic;
+          var publishingName = data.publishingName;
+          
           
           $('#folder-edit-id').val(folderId);
           $('#folder-edit-name').val(oldFolderTitle);
           $('#folder-edit-description').val(oldFolderDescription);
-          if(data.isPublic){
+          if(isPublic){
             $('#folder-edit-privacy-public').attr('checked','checked');
           }else{
             $('#folder-edit-privacy-private').attr('checked','checked');
           }
+          $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
+
+          
           $('#folderEditConfirmDialog').modal('show');
           
           // Then collect the updated values
@@ -262,8 +268,6 @@ $(function() {
             });
             $('#folderEditConfirmDialog').modal('hide');
           });
-          
-          
           
         }
       });

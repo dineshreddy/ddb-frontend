@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.FolderConstants"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData"
@@ -432,8 +433,10 @@ limitations under the License.
         <g:message code="ddbnext.favorites_list_publishtext"/>
         <br />
         <select name="publisher-name" size="1" id="folder-edit-publish-name">
-          <option value="nick"><g:message code="ddbnext.Username"/></option>
-          <option value="full"><g:message code="ddbnext.Fullname"/></option>
+          <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
+          <g:if test="${fullName}"> 
+            <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
+          </g:if>
         </select>      
       </div>
     </div>
