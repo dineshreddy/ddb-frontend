@@ -229,7 +229,8 @@ limitations under the License.
                     <g:message code="ddbnext.Added_On" />
                     <span>
                      <g:if test="${params.by == "date"}">
-                      <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     </g:if>
+                      <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     
+                     </g:if>
                      <g:else>
                       <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                      </g:else>
