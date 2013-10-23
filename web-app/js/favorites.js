@@ -172,37 +172,38 @@ $(function() {
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('.totalNrSelectedObjects').html(selected.length);
-      $('#favoritesCopyDialog').modal('show');
-      $('#copy-confirm').click(function() {
-        var selected = new Array();
-        $('#slaves input:checked').each(function() {
-          //selected.push($(this).attr('value'));
-          selected.push($(this).attr('data-bookmark-id'));
-        });
-        
-        var selectedFolders = $('.favorites-copy-selection').val()
-        
-        var body = {
-            ids : selected,
-            folders: selectedFolders
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/copy",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      
+      if(selected.length > 0) {
+        $('#favoritesCopyDialog').modal('show');
+        $('#copy-confirm').click(function() {
+          var selected = new Array();
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('data-bookmark-id'));
+          });
+          
+          var selectedFolders = $('.favorites-copy-selection').val()
+          
+          var body = {
+              ids : selected,
+              folders: selectedFolders
           }
+          jQuery.ajax({
+            type : 'POST',
+            contentType : "application/json; charset=utf-8",
+            traditional : true,
+            url : jsContextPath + "/apis/favorites/copy",
+            data : JSON.stringify(body),
+            dataType : "json",
+            success : function(data) {
+              window.setTimeout('location.reload();', 500);
+            }
+          });
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('checked', false));
+          });
+          $('#favoritesCopyDialog').modal('hide');
         });
-        $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('checked', false));
-        });
-        $('#favoritesCopyDialog').modal('hide');
-      });
+      }
       return false;
     });
     
