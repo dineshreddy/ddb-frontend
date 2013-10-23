@@ -458,27 +458,6 @@ class SearchService {
         return urlQuery
     }
 
-    def convertQueryParametersToGndSearchParameters(Map reqParameters) {
-        def urlQuery = [:]
-
-        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
-        }else{
-            urlQuery["query"] = "*"
-        }
-
-        urlQuery["offset"] = "0"
-
-        urlQuery["rows"] = "0"
-
-        urlQuery["facet"] = [
-            "affiliate_fct_involved_normdata",
-            "affiliate_fct_subject"
-        ]
-
-        return urlQuery
-    }
-
     /**
      * Generate Map that can be used to call Autocomplete and Search Facets on Search-Server
      *
