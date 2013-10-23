@@ -249,7 +249,7 @@
 }
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
-  .xml-link,
+  .item-links .link-block,
   .institution img {
     display: none;
   }
