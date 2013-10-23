@@ -344,4 +344,13 @@ class ItemController {
             return ""
         }
     }
+
+    def showXml() {
+
+        def itemId = params.id
+
+        response.contentType = "text/xml"
+        response.outputStream << itemService.fetchXMLMetadata(itemId)
+
+    }
 }

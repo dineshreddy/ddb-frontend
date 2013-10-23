@@ -120,17 +120,25 @@ class SearchService {
                     if(x.field == it && x.numberOfFacets>0){
                         res[x.field] = []
                         x.facetValues.each{ y->
-                            def tmpFacetValuesMap = ["fctValue": y.value,"url":"",cnt: y["count"],selected:""]
-                            def tmpUrl = mainFacetsUrl[x.field]
-                            if(mainFacetsUrl[x.field].contains(y["value"])){
-                                tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+x.field+"="+y["value"],"")
-                                tmpFacetValuesMap["url"] = tmpUrl
-                                tmpFacetValuesMap["selected"] = "selected"
-                            }else{
-                                tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
-                                tmpFacetValuesMap["url"] = tmpUrl
+                            //only proceed if the facetValue is of type main facet. Role facets will be ignored
+                            if (mainFacetsUrl[x.field] != null) {
+                                def tmpFacetValuesMap = ["fctValue": y.value,"url":"",cnt: y["count"],selected:""]
+                                def tmpUrl = mainFacetsUrl[x.field]
+
+                                //remove the facetvalue from the URL (the facet is selected)
+                                if(mainFacetsUrl[x.field].contains(y["value"])){
+                                    tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+x.field+"="+y["value"],"")
+                                    tmpFacetValuesMap["url"] = tmpUrl
+                                    tmpFacetValuesMap["selected"] = "selected"
+                                }
+                                //add the value from the link (the facet is deselected)
+                                else{
+                                    tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
+                                    tmpFacetValuesMap["url"] = tmpUrl
+                                }
+
+                                res[x.field].add(tmpFacetValuesMap)
                             }
-                            res[x.field].add(tmpFacetValuesMap)
                         }
                     }
                 }
@@ -138,6 +146,63 @@ class SearchService {
         }
         return res
     }
+
+
+    def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
+        def res = []
+        def allBackendRolefacets = getRoleFacets()
+
+        rolefacets.each { rf->
+            if(rf.numberOfFacets>0){
+                rf.facetValues.each{ fv->
+
+                    def roleFacetDefinition = allBackendRolefacets.find {
+                        it.name = rf.field
+                    }
+
+                    def tmpFacetValuesMap = ["parent": roleFacetDefinition.parent, "field":rf.field, "fctValue": fv.value,"url":"",cnt: fv["count"],selected:""]
+                    def mainUrl = mainFacetsUrl.find{
+                        rf.field.contains(it.key)
+                    }
+
+                    def tmpUrl = mainUrl.value
+
+                    //remove the facetvalue from the URL (the role facet is selected)
+                    if(tmpUrl.contains(rf.field+"="+fv["value"])){
+                        tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+rf.field+"="+fv["value"],"")
+                        tmpFacetValuesMap["url"] = tmpUrl
+                        tmpFacetValuesMap["selected"] = "selected"
+
+                        //remove also the role facets from the corresponding subFacetUrl
+
+                        subFacetsUrl.each {  key, value  ->
+                            if (rf.field.contains(key)) {
+                                value.each { subUrl ->
+                                    if (subUrl.fctValue.equals(fv['value'])) {
+                                        def query = "&facetValues%5B%5D="+rf.field+"="+fv["value"]
+
+                                        //replace the url in the subUrl Map
+                                        def cleanedSubUrl = subUrl.url.replaceAll(query,"")
+                                        subUrl.url = cleanedSubUrl
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    //add the value to the link (the role facet is deselected)
+                    else{
+                        tmpUrl += "&facetValues%5B%5D="+rf.field+"%3D"+fv["value"]
+                        tmpFacetValuesMap["url"] = tmpUrl
+                    }
+
+                    res.add(tmpFacetValuesMap)
+                }
+            }
+        }
+
+        return res
+    }
+
 
     /**
      * 
@@ -176,6 +241,39 @@ class SearchService {
         emptyFacets.each{
             res.add([field: it, numberOfFacets: 0, facetValues: []])
         }
+        return res
+    }
+
+    /**
+     * Build the list of role facets to be rendered in the non javascript version of search results
+     *
+     * @param urlQuery
+     * @return list of all facets filtered
+     */
+    def buildRoleFacets(LinkedHashMap urlQuery){
+        def res = []
+        def roleFacets = getRoleFacets()
+
+        roleFacets.each { roleFacet ->
+            if (urlQuery[roleFacet.parent] != null) {
+
+                urlQuery[roleFacet.parent].each { facetValue ->
+                    def searchUrl = '/search/facets/' + roleFacet.name
+
+                    def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
+                    if(!apiResponse.isOk()){
+                        log.error "Json: Json file was not found"
+                        apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+                    }
+                    def jsonResp = apiResponse.getResponse()
+
+                    if (jsonResp.numberOfFacets > 0) {
+                        res.add(jsonResp)
+                    }
+                }
+            }
+        }
+
         return res
     }
 
@@ -350,26 +448,12 @@ class SearchService {
                 urlQuery["grid_preview"] = "true"
             }
         }
-        return urlQuery
-    }
 
-    def convertQueryParametersToGndSearchParameters(Map reqParameters) {
-        def urlQuery = [:]
-
-        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
-        }else{
-            urlQuery["query"] = "*"
+        if(!urlQuery["facet"]){
+            urlQuery["facet"] = []
         }
-
-        urlQuery["offset"] = "0"
-
-        urlQuery["rows"] = "0"
-
-        urlQuery["facet"] = [
-            "affiliate_fct_involved_normdata",
-            "affiliate_fct_subject"
-        ]
+        urlQuery["facet"].add("affiliate_fct_involved_normdata")
+        urlQuery["facet"].add("affiliate_fct_subject")
 
         return urlQuery
     }
@@ -535,13 +619,7 @@ class SearchService {
             }
 
             if(!filterFacet){
-                if(matcher && this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
-                    def localizedValue = this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString())
-                    def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
-                    localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                    res.values.add([value: facets.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
-                }else if(!matcher)
-                    res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
             }
         }
         return res
@@ -805,5 +883,33 @@ class SearchService {
         return searchResult
     }
 
+    /**
+     * Returns all role facets from the backend.
+     * The method requests all available facets and then filter for the role attribute.
+     * 
+     * A role facet looks like this:
+     * [name:affiliate_fct_involved, parent:affiliate_fct, paths:[], role:involved, searchType:TEXT, sortType:null, displayType:TECHNICAL, position:-1]
+     * 
+     * @return a list of all role facets in the json format
+     */
+    def getRoleFacets() {
+        def res = []
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/')
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+
+        def resultsItems = apiResponse.getResponse()
+        resultsItems.each {
+            if (it.role != 'null') {
+                //FIXME set sortType '' to avoid "net.sf.json.JSONException: Object is null" exception
+                it.sortType = ''
+                res.add(it)
+            }
+        }
+        return res
+    }
 
 }

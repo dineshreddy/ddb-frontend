@@ -19,6 +19,8 @@ import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
+import net.sf.json.util.JSONBuilder
+
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -135,7 +137,9 @@ class FavoritesService {
                     emptyDummyItem["preview"]["subtitle"] = ""
                     emptyDummyItem["preview"]["media"] = ["unknown"]
                     emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
-                    allRes.add(emptyDummyItem)
+
+                    net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
+                    allRes.add(jsonDummyItem)
                 }
             }
         }

@@ -40,7 +40,6 @@
 
 .item-detail .institution {
   margin-top: 1em;
-  margin-bottom: 1em;
   padding-bottom: 10px;
   border: 1px solid #e9e5e2;
   border-width: 0 0 5px;
@@ -95,33 +94,37 @@
   font-size: 0.938em;
 }
 
+.share {
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
 .favorite {
-  margin-top: 20px;
   text-align: right;
 }
 .favorite-actions {
   padding-left: 17px;
-  background: url(../images/icons/search_actions.png) no-repeat ;
-  background-position: -2px 0;
-  margin-right: 10px;
+  background: url(../images/icons/item_actions_sprite.png) no-repeat ;
+  background-position: -5px 0;
 }
 
 .favorite-actions.favorite-add {
-  background-position: -2px -140px;
+  background-position: -6px -67px;
   cursor: pointer;
 }
 
-/*.favorite-actions.favorite-add:hover {
-  background-position: -2px -100px;
-}*/
+.favorite-actions.favorite-add:hover {
+  background-position: -6px -97px;
+}
 
 .favorite-actions.favorite-selected {
-  background-position: -2px -160px;
-  pointer-events: none;
+  background-position: -6px -7px;
+  cursor: pointer;
 }
-/*.favorite-actions.favorite-selected:hover {
-  background-position: -2px -60px;
-}*/
+
+.favorite-actions.favorite-selected:hover {
+  background-position: -6px -37px;
+}
 
 .modal-body {
   position: relative;
@@ -213,27 +216,57 @@
 .item-nav-mob .prev-item span, .item-nav-mob .next-item span {
   display: none;
 }
+.license-icon {
+  margin: -2px 10px 0 0;
+  display: inline-block;
+}
+#idFavorite {
+  margin-left: 4px;
+}
+.fields .entity-link {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -140px;
+}
+.item-links {
+  line-height: 30px;
+  font-size: 0.938em;
+  margin-bottom: 20px;
+}
+.item-links .link-block, .item-links .favorite {
+  display: inline-block;
+  margin-right: 10px;
+}
+.xml-link {
+  padding-left: 27px;
+  background: url(../images/icons/item_actions_sprite.png) no-repeat;
+  background-position: -3px -247px;
+}
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
     display: none;
   }
+  .socialmedia .social-open ul li {
+    display: block !important;
+  }
 }
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
+  .xml-link,
   .institution img {
     display: none;
   }
-  
   .object-controls .item-nav {
     text-align: left;
   }
-  
   .span6.item-nav.fr {
     display:none
   }
   .item-nav-mob {
     display:block;
+  }
+  .item-nav-mob .inline li:first-child {
+    padding-left: 0;
   }
 }
 @media (min-width: 480px) {
@@ -259,6 +292,7 @@
 
 @media (min-width: 768px) and (max-width: 979px) {
   .fields .span2,.fields .span4,
+  .share .span2,.share .span4,
   .rights .span2,.rights .span4 {
     float: none;
     width: 100%;
@@ -269,18 +303,3 @@
     max-width: 724px;
   }
 }
-
-.license-icon {
-  margin: -2px 10px 0 0;
-  display: inline-block;
-}
-
-#idFavorite {
-  margin-left: 4px;
-}
-
-.fields .entity-link {
-  padding-left: 20px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -140px;
-}
-

@@ -25,6 +25,7 @@ limitations under the License.
 <body>
   <g:render template="controls" />
   <g:render template="institution" />
+  <g:render template="itemLinks" />
   <div class="row item-detail item-content">
     <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
       <h2><g:truncateItemTitle title="${title}" length="${binaryList?271:351}"></g:truncateItemTitle></h2>
@@ -32,6 +33,7 @@ limitations under the License.
       <g:render template="rights" />
       <g:render template="license" />
       <g:render template="origin" />
+      <g:render template="share" />
     </div>
     <g:if test="${binaryList}">
       <g:render template="binaries" />

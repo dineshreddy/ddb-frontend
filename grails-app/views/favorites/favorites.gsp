@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.FolderConstants"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData"
@@ -116,7 +117,7 @@ limitations under the License.
                     <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
                   </g:else>
                 </a>
-                <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" data-folder-title="${it.folder.title}" data-folder-description="${it.folder.description}">  
+                <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" >  
                   <i class="icon-edit" title="<g:message code="ddbnext.Edit_Folder" />" ></i>
                 </a>
                 <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}">
@@ -416,6 +417,27 @@ limitations under the License.
         <g:message code="ddbnext.Create_Folder_Description" />
         <br />
         <textarea rows="10" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
+      </div>
+      <br />
+      <div>
+        <fieldset>          
+          <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
+          <label for="folder-edit-privacy-private"><g:message code="ddbnext.favorites_list_private"/></label>
+          <br />
+          <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
+          <label for="folder-edit-privacy-public"><g:message code="ddbnext.favorites_list_public"/></label>
+        </fieldset>
+      </div>
+      <br />
+      <div>
+        <g:message code="ddbnext.favorites_list_publishtext"/>
+        <br />
+        <select name="publisher-name" size="1" id="folder-edit-publish-name">
+          <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
+          <g:if test="${fullName}"> 
+            <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
+          </g:if>
+        </select>      
       </div>
     </div>
     <div class="modal-footer">

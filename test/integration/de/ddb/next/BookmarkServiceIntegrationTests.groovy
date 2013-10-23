@@ -4,6 +4,8 @@ import static org.junit.Assert.*
 
 import org.junit.*
 
+import de.ddb.next.constants.FolderConstants
+
 
 
 
@@ -88,14 +90,14 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "the bookmark service should find folders by its title."
         def userId = UUID.randomUUID() as String
 
-        def folderId = bookmarksService.newFolder(userId, BookmarksService.MAIN_BOOKMARKS_FOLDER, BookmarksService.IS_PUBLIC)
-        log.info "the bookmark service created a ${BookmarksService.MAIN_BOOKMARKS_FOLDER} folder(${folderId}) for a user(${userId})"
+        def folderId = bookmarksService.newFolder(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value, BookmarksService.IS_PUBLIC)
+        log.info "the bookmark service created a ${FolderConstants.MAIN_BOOKMARKS_FOLDER.value} folder(${folderId}) for a user(${userId})"
 
-        def favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.MAIN_BOOKMARKS_FOLDER)
+        def favFolderList = bookmarksService.findFoldersByTitle(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
         log.info "The user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
 
         if(!favFolderList) {
-            favFolderList = bookmarksService.findFoldersByTitle(userId, BookmarksService.MAIN_BOOKMARKS_FOLDER)
+            favFolderList = bookmarksService.findFoldersByTitle(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
             log.info "Second try, the user(${userId}) has ${favFolderList.size()} folders with the title `Favorites`"
         }
 
@@ -230,8 +232,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def userId = UUID.randomUUID() as String
         def folderTitle = 'Favorites-' + new Date().getTime().toString()
         def description = 'folder description'
+        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
         def isPublic = true
-        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic, description)
+        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic, publishingName, description)
 
         def folders = bookmarksService.findAllFolders(userId)
         assert folders[0].description == description
@@ -286,7 +289,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def newTitle = "bar"
         def newDescription = "new desc"
 
-        bookmarksService.updateFolder(folderId, newTitle, newDescription)
+        bookmarksService.updateFolder(folderId, newTitle, newDescription, FolderConstants.PUBLISHING_NAME_USERNAME.value)
         def updatedFolder = bookmarksService.findFolderById(folderId)
         assert updatedFolder.title == newTitle
         assert updatedFolder.description == newDescription

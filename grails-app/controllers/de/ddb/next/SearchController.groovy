@@ -104,7 +104,7 @@ class SearchController {
             if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
                 queryString = queryString+"&sort="+urlQuery["randomSeed"]
 
-            def gndItems = getGndItems(params, page)
+            def gndItems = getGndItems(resultsItems, page)
 
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
@@ -131,6 +131,14 @@ class SearchController {
                 if(urlQuery["facet"]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
                 }
+
+                def roleFacetsUrl = [:]
+                def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
+                if(urlQuery["facet"]){
+                    log.info("buildRoleFacetsUrl")
+                    roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
+                }
+
                 render(view: "results", model: [
                     title: urlQuery["query"],
                     results: resultsItems,
@@ -139,7 +147,7 @@ class SearchController {
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery["viewType"],
-                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
+                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
@@ -160,23 +168,14 @@ class SearchController {
         }
     }
 
-    private def getGndItems(params, page) {
+    private def getGndItems(resultItems, page) {
         def gndItems = null
         if(configurationService.isCulturegraphFeaturesEnabled()){
 
             if(page == "1"){
 
-                def gndUrlQuery = searchService.convertQueryParametersToGndSearchParameters(params)
-
-                def gndApiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, gndUrlQuery)
-                if(!gndApiResponse.isOk()){
-                    log.error "Json: Json file was not found"
-                    gndApiResponse.throwException(request)
-                }
-                def gndResultsItems = gndApiResponse.getResponse()
-
                 def gndLinkItems = []
-                gndResultsItems.facets.each { facet ->
+                resultItems.facets.each { facet ->
                     if(facet.field == "affiliate_fct_involved_normdata" || facet.field == "affiliate_fct_subject") {
                         facet.facetValues.each { entry ->
                             if(cultureGraphService.isValidGndUri(entry.value)){

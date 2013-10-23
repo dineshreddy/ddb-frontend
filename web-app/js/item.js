@@ -13,17 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
-
-class FacetsResultsManagerTagLib {
-	
-  /**
-   * Renders the navigation bar for the results.
-   *
-   * @attr facetValues REQUIRED data for page navigation
-   */
-
-  def facetListRender = { attrs, body ->
-    out << render(template:"/search/facetList", model:[facetValues: attrs.facetValues, facetType: attrs.facetType, roleFacetsUrl: attrs.roleFacetsUrl])
-   }
-}
+$(document).ready(function(){
+  
+  if(jsPageName == "item"){
+    
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMedia();
+    
+  }
+  
+});

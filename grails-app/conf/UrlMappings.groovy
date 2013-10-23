@@ -30,6 +30,11 @@ class UrlMappings {
             action="facetsList"
         }
 
+        "/rolefacets" {
+            controller="facets"
+            action="roleFacets"
+        }
+        
         "/informationitem/$id"{
             controller="search"
             action="informationItem"
@@ -60,6 +65,11 @@ class UrlMappings {
             action="findById"
         }
 
+        "/item/xml/$id" {
+            controller="item"
+            action="showXml"
+        }
+
         "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
@@ -83,6 +93,11 @@ class UrlMappings {
         "/apis/favorites/folder/edit" {
             controller="favorites"
             action="editFavoritesFolder"
+        }
+
+        "/apis/favorites/folder/get/$id" {
+            controller="favorites"
+            action="getFavoriteFolder"
         }
 
         "/apis/favorites/_get" {

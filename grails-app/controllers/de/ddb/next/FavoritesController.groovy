@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
@@ -220,7 +221,12 @@ class FavoritesController {
             //List items = JSON.parse(result) as List
             def totalResults= items.size()
 
-            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
+            def userName = user.getFirstnameAndLastnameOrNickname()
+            def nickName = user.getUsername()
+            def fullName = null
+            if(user.getFirstname() || user.getLastname()){
+                fullName = user.getFirstname() + " " + user.getLastname()
+            }
             def lastPgOffset=0
 
             def allFoldersInformation = []
@@ -244,6 +250,8 @@ class FavoritesController {
                     resultsNumber: totalResults,
                     allFolders: allFoldersInformation,
                     userName: userName,
+                    fullName: fullName,
+                    nickName: nickName,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc",0),
                 ])
@@ -279,7 +287,9 @@ class FavoritesController {
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
                 //Default ordering is newest on top == DESC
-                allResultsWithAdditionalInfo.sort{a,b-> b.bookmark.creationDate<=>a.bookmark.creationDate}
+                allResultsWithAdditionalInfo.sort{a,b ->
+                    b.bookmark.creationDate<=>a.bookmark.creationDate
+                }
                 def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
                 def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
@@ -334,6 +344,8 @@ class FavoritesController {
                     offset: params["offset"],
                     rows: rows,
                     userName: userName,
+                    fullName: fullName,
+                    nickName: nickName,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderTitle:urlsForOrderTitle,
                     urlsForOrder:urlsForOrder
@@ -398,7 +410,7 @@ class FavoritesController {
         // find the "favorites" and put it first
         for(int i=0; i<out.size(); i++){
             String insertTitle = out[i].folder.title
-            if(insertTitle == BookmarksService.MAIN_BOOKMARKS_FOLDER){
+            if(insertTitle == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
                 def favoritesEntry = out[i]
                 out.remove(i)
                 out.add(0, favoritesEntry)
@@ -561,11 +573,28 @@ class FavoritesController {
         }
     }
 
+    def getFavoriteFolder() {
+        log.info "getFavoriteFolder " + params.id
+        def result = response.SC_NOT_FOUND
+        def User user = getUserFromSession()
+        if (user != null) {
+            Folder folder = bookmarksService.findFolderById(params.id)
+            log.info "getFavoriteFolder returns " + folder
+            render(folder as JSON)
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+        log.info "getFavoriteFolder returns " + result
+        render(status: result)
+    }
+
+
     def createFavoritesFolder() {
         log.info "createFavoritesFolder " + request.JSON
 
         def title = request.JSON.title
         def description = request.JSON.description
+        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
         title = sanitizeTextInput(title)
         description = sanitizeTextInput(description)
@@ -573,7 +602,7 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.newFolder(user.getId(), title, false, description)) {
+            if (bookmarksService.newFolder(user.getId(), title, false, publishingName, description)) {
                 result = response.SC_CREATED
                 flash.message = "ddbnext.favorites_folder_create_succ"
             }
@@ -601,7 +630,7 @@ class FavoritesController {
             foldersOfUser.each {
                 if(it.folderId == folderId){
                     isFolderOfUser = true
-                    if(it.title == BookmarksService.MAIN_BOOKMARKS_FOLDER){
+                    if(it.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
                         isDefaultFavoritesFolder = true
                     }
                 }
@@ -703,6 +732,8 @@ class FavoritesController {
         def id = request.JSON.id
         def title = request.JSON.title
         def description = request.JSON.description
+        def publishingName = request.JSON.name
+        def isPublic = request.JSON.isPublic
 
         title = sanitizeTextInput(title)
         description = sanitizeTextInput(description)
@@ -721,13 +752,13 @@ class FavoritesController {
             foldersOfUser.each {
                 if(it.folderId == id){
                     isFolderOfUser = true
-                    if(it.title == BookmarksService.MAIN_BOOKMARKS_FOLDER){
+                    if(it.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
                         isDefaultFavoritesFolder = true
                     }
                 }
             }
             if(isFolderOfUser && !isDefaultFavoritesFolder){
-                bookmarksService.updateFolder(id, title, description, true)
+                bookmarksService.updateFolder(id, title, description, isPublic, publishingName)
                 result = response.SC_OK
                 flash.message = "ddbnext.folder_edit_succ"
             } else {
@@ -795,7 +826,7 @@ class FavoritesController {
                 isFolderOfUser = true
             }
             if(isFolderOfUser){
-                bookmarksService.updateFolder(folder.folderId, folder.title, folder.description, !folder.isPublic)
+                bookmarksService.updateFolder(folder.folderId, folder.title, folder.description, !folder.isPublic, folder.publishingName)
                 result = response.SC_OK
             } else {
                 result = response.SC_UNAUTHORIZED
