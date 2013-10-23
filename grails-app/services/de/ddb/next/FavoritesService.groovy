@@ -41,46 +41,46 @@ class FavoritesService {
     def configurationService
     def messageSource
 
-    def private createAllFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset){
-        def first = createFavoritesLinkNavigation(0, rows, order)
+    def private createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset){
+        def first = createFavoritesLinkNavigation(0, rows, order, by)
         if (offset < rows){
             first = null
         }
-        def last = createFavoritesLinkNavigation(lastPgOffset, rows, order)
+        def last = createFavoritesLinkNavigation(lastPgOffset, rows, order, by)
         if (offset >= lastPgOffset){
             last = null
         }
         return [
             firstPg: first,
-            prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order),
-            nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order),
+            prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, by),
+            nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, by),
             lastPg: last
         ]
     }
-    def private createFavoritesLinkNavigation(offset,rows,order){
+    def private createFavoritesLinkNavigation(offset,rows,order,by){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order])
+        return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order,by:by])
     }
 
-    def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, Integer lastPgOffset, String userId, String folderId){
-        def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId)
+    def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
+        def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId, by)
         if (offset < rows){
             first = null
         }
-        def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId)
+        def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId, by)
         if (offset >= lastPgOffset){
             last = null
         }
         return [
             firstPg: first,
-            prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId),
-            nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId),
+            prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId, by),
+            nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId, by),
             lastPg: last
         ]
     }
-    def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId){
+    def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId, String by){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order])
+        return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order, by:by])
     }
 
     /**
