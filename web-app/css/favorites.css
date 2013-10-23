@@ -65,12 +65,12 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  margin-right: 35px;
+  margin-right: 95px;
 }
 
 .bookmarks-list-envelope {
   margin-top: 1px;
-  margin-right: 10px;
+  margin-right: 70px;
 }
 
 .bookmarks-list-delete {
@@ -453,21 +453,9 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
-   .bookmarks-container .bookmarks-list-envelope {
-        padding-right: 10px;
-   }
-   .bookmarks-container .bookmarks-list-number {
-        padding-right: 50px;
-   }
-  /** .bookmarks-container .bookmarks-list-envelope {
-        padding-right: 0px;
-   }
-   .bookmarks-container .bookmarks-list-number {
-        padding-right: 0px;
-   }
    #folder-create .submit{
    		width: 165px;
-   }*/
+   }
 }
 
 @media (max-width: 767px) {

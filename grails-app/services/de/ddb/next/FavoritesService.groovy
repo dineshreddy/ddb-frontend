@@ -19,6 +19,8 @@ import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
+import net.sf.json.util.JSONBuilder
+
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
