@@ -50,7 +50,7 @@ limitations under the License.
     </div>
     <g:isLoggedIn>
       <div class="link-block">
-        <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]">
+        <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
               <g:message code="ddbnext.View" />
         </g:link>
       </div>

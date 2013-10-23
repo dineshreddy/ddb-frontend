@@ -281,7 +281,7 @@ class ItemService {
         def result = []
         def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/items/" + id + "/aip")
         if (apiResponse.isOk()) {
-            result = apiResponse.getResponse()
+            result = apiResponse.getResponse().toXmlString()
         }
         else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
           log.error "XMLMetadata: XML file could not be fetched"

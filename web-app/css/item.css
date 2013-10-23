@@ -237,12 +237,9 @@
   margin-right: 10px;
 }
 .xml-link {
-  padding-left: 25px;
+  padding-left: 27px;
   background: url(../images/icons/item_actions_sprite.png) no-repeat;
   background-position: -3px -247px;
-}
-.xml-link:hover {
-  background-position: -3px -277px;
 }
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 

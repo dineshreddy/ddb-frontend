@@ -14,12 +14,23 @@
  * limitations under the License.
  */
 
+import groovy.util.slurpersupport.NodeChild
+import groovy.xml.StreamingMarkupBuilder
+
 class BootStrap {
 
     def configurationService
 
     def init = { servletContext ->
         configurationService.logConfigurationSettings()
+
+        NodeChild.metaClass.toXmlString = {
+            def self = delegate
+            new StreamingMarkupBuilder().bind {
+                delegate.mkp.xmlDeclaration() // Use this if you want an XML declaration
+                delegate.out << self
+            }.toString()
+        }
     }
 
     def destroy = {
