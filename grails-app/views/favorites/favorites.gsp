@@ -21,9 +21,7 @@ limitations under the License.
 ></g:set>
 <html>
 <head>
-<title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of" /> - <g:message
-    code="ddbnext.Deutsche_Digitale_Bibliothek"
-  /></title>
+<title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="favorites">
 <meta name="layout" content="main">
 </head>
@@ -61,13 +59,15 @@ limitations under the License.
       </div>
       <div class="span4 results-paginator-options">
         <div class="page-filter">
-          <label><g:message code="ddbnext.Items_Per_Page" /></label> <span> <select class="select">
+          <label><g:message code="ddbnext.Items_Per_Page" /></label> 
+          <span> 
+            <select class="select">
               <g:each in="${resultsPaginatorOptions.pageFilter}">
                 <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
                   ${it}
                 </option>
               </g:each>
-          </select>
+            </select>
           </span>
         </div>
       </div>
@@ -82,7 +82,13 @@ limitations under the License.
             <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
               <span class="h3"> 
                 <g:if test="${it.folder.folderId != selectedFolder.folderId }">
-                  <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${it.folder.description}">                  
+                
+                  <g:set var="folderTooltip" value="${it.folder.description}" />
+                  <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                    <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
+                  </g:if>
+                  
+                  <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                       <g:message code="ddbnext.All_Favorites" />
                     </g:if>
