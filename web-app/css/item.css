@@ -109,21 +109,21 @@
 }
 
 .favorite-actions.favorite-add {
-  background-position: -5px -67px;
+  background-position: -6px -67px;
   cursor: pointer;
 }
 
 .favorite-actions.favorite-add:hover {
-  background-position: -5px -97px;
+  background-position: -6px -97px;
 }
 
 .favorite-actions.favorite-selected {
-  background-position: -5px -7px;
+  background-position: -6px -7px;
   cursor: pointer;
 }
 
 .favorite-actions.favorite-selected:hover {
-  background-position: -5px -37px;
+  background-position: -6px -37px;
 }
 
 .modal-body {
@@ -237,12 +237,12 @@
   margin-right: 10px;
 }
 .xml-link {
-  padding-left: 22px;
+  padding-left: 25px;
   background: url(../images/icons/item_actions_sprite.png) no-repeat;
-  background-position: -4px -245px;
+  background-position: -3px -247px;
 }
 .xml-link:hover {
-  background-position: -4px -275px;
+  background-position: -3px -277px;
 }
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
