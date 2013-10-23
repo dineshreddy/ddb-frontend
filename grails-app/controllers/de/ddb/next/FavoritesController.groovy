@@ -49,6 +49,10 @@ class FavoritesController {
         if (params.rows){
             rows = params.rows.toInteger()
         }
+        def offset = 0 // default
+        if(params.offset){
+            offset = params.offset.toInteger()
+        }
         def folderId = params.folderId
         def by = ORDER_DATE
         if (params.by){
@@ -58,6 +62,7 @@ class FavoritesController {
                 params.by= ORDER_DATE
             }
         }
+        def order = params.order
 
         //def user = aasService.getPerson(params.userId) // does not work yet because of security constraints in AAS
         User user = new User()
@@ -102,13 +107,13 @@ class FavoritesController {
 
             urlQuery["offset"] = 0
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
+            def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
             def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
             lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
 
             if (totalPages.toFloat()<page.toFloat()){
-                params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
+                offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
                 if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
                     lastPgOffset=20
                 }
@@ -121,39 +126,43 @@ class FavoritesController {
             allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
             //Default ordering is newest on top == DESC
-            allResultsWithAdditionalInfo.sort{a,b-> b.bookmark.creationDate<=>a.bookmark.creationDate}
+            allResultsWithAdditionalInfo.sort{ a, b ->
+                b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
+            }
             def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
-            def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
-            def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
-            if (params.order=="asc"){
+            def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
+            def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
+            if (order=="asc"){
                 if(by.toString()==ORDER_DATE){
-                    allResultsWithAdditionalInfo.sort{a,b-> a.bookmark.creationDate<=>b.bookmark.creationDate}
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    allResultsWithAdditionalInfo.sort{ a, b ->
+                        a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
+                    }
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
                 }else{
                     allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
                 }
             }else{
                 //desc
                 if(by.toString()==ORDER_TITLE){
-                    urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
                     allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                 }else{
                     //by date
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
                 }
             }
 
-            if (params.offset){
-                resultsItems=allResultsWithAdditionalInfo.drop(params.offset.toInteger())
-                resultsItems=resultsItems.take( rows)
+            if (offset != 0){
+                resultsItems=allResultsWithAdditionalInfo.drop(offset)
+                resultsItems=resultsItems.take(rows)
             }else{
-                params.offset=0
-                resultsItems=allResultsWithAdditionalInfo.take( rows)
+                resultsItems=allResultsWithAdditionalInfo.take(rows)
             }
 
             if (request.method=="POST"){
@@ -169,10 +178,10 @@ class FavoritesController {
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 page: page,
                 resultsNumber: totalResults,
-                createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(params.offset, params.rows, params.order, params.by, lastPgOffset, user.id, selectedFolder.folderId),
+                createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
                 totalPages: totalPages,
                 numberOfResultsFormatted: numberOfResultsFormatted,
-                offset: params["offset"],
+                offset: offset,
                 rows: rows,
                 selectedUser: user,
                 publicFolders: publicFolders,
@@ -301,7 +310,9 @@ class FavoritesController {
                 def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE])]
                 if (order=="asc"){
                     if(by.toString()==ORDER_DATE){
-                        allResultsWithAdditionalInfo.sort{a,b-> a.bookmark.creationDate<=>b.bookmark.creationDate}
+                        allResultsWithAdditionalInfo.sort{ a, b->
+                            a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
+                        }
                         urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
                         urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE])
                     }else{
@@ -313,7 +324,7 @@ class FavoritesController {
                     //desc
                     if(by.toString()==ORDER_TITLE){
                         urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE])
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
                         allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                     }else{
                         //by date
@@ -323,7 +334,7 @@ class FavoritesController {
                 }
 
                 if (offset != 0){
-                    resultsItems=allResultsWithAdditionalInfo.drop(offset.toInteger())
+                    resultsItems=allResultsWithAdditionalInfo.drop(offset)
                     resultsItems=resultsItems.take( rows)
                 }else{
                     resultsItems=allResultsWithAdditionalInfo.take( rows)
