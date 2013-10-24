@@ -83,7 +83,7 @@
 }
 .origin .show-origin span {
   background: none;
-  padding-left: 3px;
+  padding-left: 0;
 }
 .show-origin {
   padding-left: 17px;
