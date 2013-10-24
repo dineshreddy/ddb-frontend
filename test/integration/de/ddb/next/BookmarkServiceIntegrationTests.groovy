@@ -17,21 +17,26 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
     def userId = 'crh'
 
-    // Folder
-    @Test void shouldCreateNewFolder() {
-        def folderId = createNewFolder()
-        assertNotNull folderId
-        log.info "Created a bookmark folder with the ID: ${folderId}"
-    }
-
     def createNewFolder() {
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
         return bookmarksService.newFolder(userId, folderTitle, isPublic)
     }
 
+
+    // Folder
+    @Test void shouldCreateNewFolder() {
+        def folderId = createNewFolder()
+        assertNotNull folderId
+        log.info "Created a bookmark folder with the ID: ${folderId}"
+
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
+    }
+
     @Test void shouldGetAllFolders() {
-        createNewFolder()
+        def folderId = createNewFolder()
         def folderList = bookmarksService.findAllFolders(userId)
         assertTrue folderList.size() >0
 
@@ -43,6 +48,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         } else {
             log.info 'empty folder.'
         }
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     // Bookmark
@@ -53,6 +61,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         assertNotNull bookmarkId
         log.info 'bookmark is saved, ID is: ' + bookmarkId
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     @Test void shouldFindBookmarksByFolderId() {
@@ -61,6 +72,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def bookmarkId = bookmarksService.saveBookmark(userId, folderId, itemId)
         def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId)
         assert bookmarks.size() > 0
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     @Test void shouldFindBookmarkedItems() {
@@ -70,6 +84,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def foundBookmarkedItems = bookmarksService.findBookmarkedItems(userId, [itemId])
         assert foundBookmarkedItems.size() > 0
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     // Favorites
@@ -103,6 +120,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         assert favFolderList.size() == 1
         assertEquals favFolderList[0].folderId, folderId
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     @Test void shouldGetAllUserFavorites() {
@@ -240,6 +260,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         assert folders[0].description == description
 
         log.info "folder's description ${folders[0].description}"
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
 
@@ -257,6 +280,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def favorite = bookmarksService.findBookmarkById(favoriteId)
         assert favorite.bookmarkId == favoriteId
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     //    @Test void shouldCopyFavoritesToFolders() {
@@ -289,10 +315,13 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def newTitle = "bar"
         def newDescription = "new desc"
 
-        bookmarksService.updateFolder(folderId, newTitle, newDescription, FolderConstants.PUBLISHING_NAME_USERNAME.value)
+        bookmarksService.updateFolder(folderId, newTitle, newDescription, false, FolderConstants.PUBLISHING_NAME_USERNAME.value)
         def updatedFolder = bookmarksService.findFolderById(folderId)
         assert updatedFolder.title == newTitle
         assert updatedFolder.description == newDescription
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     @Test void shouldRemoveFavoritesFromFolder() {
@@ -323,6 +352,9 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def otherFavorite = bookmarksService.findBookmarkById(otherFavoriteId)
         assert otherFavorite == null
+
+        log.info "Cleanup"
+        bookmarksService.deleteFolder(folderId)
     }
 
     @Test void shouldDeleteFolder() {
