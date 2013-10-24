@@ -24,10 +24,7 @@ $(document).ready(function(){
 //    if(!offset) {
 //      offset = 0;
 //    }
-    
-  
-    
-    
+              
     $(".preview-item-previous").click(function(event){
       event.preventDefault();
   
@@ -102,7 +99,7 @@ $(document).ready(function(){
             normdata = true;
         }
     	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 2);
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
     });
 
     
@@ -117,7 +114,7 @@ $(document).ready(function(){
             normdata = true;
         }
     	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 2);
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
     });
     
     
@@ -191,12 +188,12 @@ $(document).ready(function(){
 	    var containerSubject = $(".themes_result");
 	    var normdata = true;
 	    var facetname = 'affiliate_fct_subject';
-		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 2);
+		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
 	
 	    //Initialize Search results for facet: affiliate_fct_involved
 	    var containerInvolved = $(".works_result");
 		facetname = 'affiliate_fct_involved';
-		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 2);
+		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
     }
     
     initPage();

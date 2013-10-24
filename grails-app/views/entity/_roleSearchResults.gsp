@@ -16,20 +16,21 @@ limitations under the License.
 
 <ol class="unstyled">
   <!-- TODO: replace br tag with CSS -->
-<%--  <g:each var="item" in="${involved.results.docs}">--%>
   <g:each var="item" in="${entity.roleSearch.items}">
-   <li class="theme">
-     <i class="icon-theme"></i>
-     <span>${item.preview.title}</span><br>
-     <span>${item.preview.subtitle}</span><br>
-  	</li>
+	  <g:link controller="item" action="findById" params="${["id": item.id]}">
+	  <li class="theme">
+	     <i class="icon-theme"></i>
+	     <span class="item-title">${item.preview.title}</span><br>
+	     <span class="item-subtitle">${item.preview.subtitle}</span><br>
+	  </li>
+	  </g:link>  	
   </g:each>
 </ol>
 
 <g:if test="${entity.roleSearch.resultCount > 0 }">
-<%-- <g:link controller="search" action="results" params="${["query":entity.title, "facetValues[]": ["affiliate_fct="+entity.title, "affiliate_fct_involved="+entity.title]] }">--%>
+	<g:link controller="search" action="results" params="${entity.roleSearch.searchUrlParameter }">
  	Alle Objekte (${entity.roleSearch.resultCount})
-<%-- </g:link>--%>
+	</g:link>
 </g:if>
 <g:if test="${entity.roleSearch.resultCount <= 0 }">
 	Kein Suchergebnisse

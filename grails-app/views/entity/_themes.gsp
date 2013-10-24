@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="themes">
+<div class="themes rolefacet">
   <div class="row">
     <div class="span6">
       <h3>Thema in:</h3>
@@ -22,7 +22,7 @@ limitations under the License.
       <label>
         <input type="checkbox" class="normdata_subject_checkbox" checked="checked">
         Nur Objekte mit Normdaten
-        </label>
+      </label>
       <span class="icon-question-sign"></span>
     </div>
   </div>

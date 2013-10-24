@@ -227,14 +227,22 @@ class EntityController {
 
         def searchQuery = []
         
+        def searchUrlParameter = []
+        
         if (normdata) {
-            searchQuery = ["query": query, "rows": 2, "offset": offset, "facet": [], (rolefacet+'_normdata') : ("http://d-nb.info/gnd/" + entityid)]
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : ("http://d-nb.info/gnd/" + entityid)]
             searchQuery["facet"].add(rolefacet + "_normdata");
+            
+            //These parameters are for the frontend to create a search link
+            searchUrlParameter = ["query":entity.title, "facetValues[]": [(rolefacet+'_normdata')+ "="+("http://d-nb.info/gnd/" + entityid)]]
         } else {
-                searchQuery = ["query": query, "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
-                searchQuery[rolefacet] = query;
-                searchQuery["facet"].add("affiliate_fct");
-                searchQuery["facet"].add(rolefacet);
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
+            searchQuery[rolefacet] = query;
+            searchQuery["facet"].add("affiliate_fct");
+            searchQuery["facet"].add(rolefacet);
+            
+            //These parameters are for the frontend to create a search link
+            searchUrlParameter = ["query":query, "facetValues[]": ["affiliate_fct="+query, "affiliate_fct_involved="+query]]
         }
         
         
@@ -248,6 +256,7 @@ class EntityController {
 
         roleSearch["items"] = jsonSearchResult.results.docs
         roleSearch["resultCount"] = jsonSearchResult.numberOfResults
+        roleSearch["searchUrlParameter"] = searchUrlParameter
 
         entity["roleSearch"] = roleSearch
 
