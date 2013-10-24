@@ -289,7 +289,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         def newTitle = "bar"
         def newDescription = "new desc"
 
-        bookmarksService.updateFolder(folderId, newTitle, newDescription, FolderConstants.PUBLISHING_NAME_USERNAME.value)
+        bookmarksService.updateFolder(folderId, newTitle, newDescription, false, FolderConstants.PUBLISHING_NAME_USERNAME.value)
         def updatedFolder = bookmarksService.findFolderById(folderId)
         assert updatedFolder.title == newTitle
         assert updatedFolder.description == newDescription
