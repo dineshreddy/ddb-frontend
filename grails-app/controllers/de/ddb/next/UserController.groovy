@@ -731,6 +731,44 @@ class UserController {
 
     }
 
+    def showApiKey() {
+        log.info "showApiKey()"
+        User user = getUserFromSession()
+        def apiKey = sessionService.getSessionAttributeIfAvailable("apikeydummy") // TODO this is just a workaround dummy until the AAS delivers the API-Key
+
+        if(apiKey){
+            user.apiKey = apiKey
+            render(view: "apiKey", model: [user: user])
+        }else{
+            render(view: "requestApiKey", model: [:])
+        }
+    }
+
+    def requestApiKey() {
+        log.info "requestApiKey()"
+
+        def isConfirmed = false
+        if(params.apiConfirmation){
+            isConfirmed = true
+        }
+
+        if(isConfirmed){
+            String newApiKey = aasService.createApiKey()
+            log.info "requestApiKey(): temporarily created a dummy key "+newApiKey
+            sessionService.setSessionAttributeIfAvailable("apikeydummy", newApiKey) // TODO this is just a workaround dummy until the AAS delivers the API-Key
+        }else{
+            flash.error = "ddbnext.Api_Not_Confirmed"
+        }
+        redirect(controller: 'user', action: 'showApiKey')
+    }
+
+    def deleteApiKey() {
+        log.info "deleteApiKey()"
+        sessionService.removeSessionAttributeIfAvailable("apikeydummy")
+        redirect(controller: 'user', action: 'showApiKey')
+    }
+
+
     private boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }

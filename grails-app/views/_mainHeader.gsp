@@ -190,7 +190,7 @@ limitations under the License.
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
+                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
                     <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                     <ul>
                       <li

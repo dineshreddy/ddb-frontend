@@ -25,7 +25,7 @@ $(document).ready(function(){
     /** Configuration **/
     socialMediaCookieName: "socialmedia/ddb-next",
     socialMediaCookieValue: "allowed",
-    socialMediaCookieTTL: 1,
+    socialMediaCookieTTL: 1, //1 = 1 day
   
     /** Initialization **/
     init: function(){

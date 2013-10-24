@@ -34,7 +34,7 @@ class UrlMappings {
             controller="facets"
             action="roleFacets"
         }
-        
+
         "/informationitem/$id"{
             controller="search"
             action="informationItem"
@@ -225,6 +225,21 @@ class UrlMappings {
             action="delete"
         }
 
+        "/user/apikey" {
+            controller="user"
+            action="showApiKey"
+        }
+
+        "/user/apikey/request" {
+            controller="user"
+            action="requestApiKey"
+        }
+
+        "/user/apikey/delete" {
+            controller="user"
+            action="deleteApiKey"
+        }
+
         "/login" {
             controller="user"
             action="index"
@@ -249,6 +264,7 @@ class UrlMappings {
             controller="user"
             action="doOpenIdLogin"
         }
+
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
