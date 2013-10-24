@@ -234,7 +234,7 @@ class EntityController {
             searchQuery["facet"].add(rolefacet + "_normdata");
             
             //These parameters are for the frontend to create a search link
-            searchUrlParameter = ["query":entity.title, "facetValues[]": [(rolefacet+'_normdata')+ "="+("http://d-nb.info/gnd/" + entityid)]]
+            searchUrlParameter = ["query":query, "facetValues[]": [(rolefacet+'_normdata')+ "="+("http://d-nb.info/gnd/" + entityid)]]
         } else {
             searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
             searchQuery[rolefacet] = query;
