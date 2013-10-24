@@ -125,7 +125,7 @@ class InstitutionController {
     private def isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if(user != null){
-            return bookmarksService.isBookmarkOfUser(itemId, user.getId)
+            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
         }else{
             return false
         }

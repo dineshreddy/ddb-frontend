@@ -508,6 +508,7 @@ hr {
 .folder-create-description, .folder-edit-description {
   width: 100%;
   resize: none;
+  font-family: Calibri,Arial,sans-serif;
 }
 
 .folder-delete-check {
@@ -520,6 +521,7 @@ hr {
 
 .favorites-copy-selection {
   width: 100%;
+  font-size: 1em;
 }
 
 .favorites-results .results-list .comment .comment-container {
