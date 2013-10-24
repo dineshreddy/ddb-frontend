@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import java.util.List
+
 import grails.converters.*
 
 import javax.servlet.http.HttpSession
@@ -734,10 +736,9 @@ class UserController {
     def showApiKey() {
         log.info "showApiKey()"
         User user = getUserFromSession()
-        def apiKey = sessionService.getSessionAttributeIfAvailable("apikeydummy") // TODO this is just a workaround dummy until the AAS delivers the API-Key
+        def apiKey = user.apiKey
 
         if(apiKey){
-            user.apiKey = apiKey
             render(view: "apiKey", model: [user: user])
         }else{
             render(view: "requestApiKey", model: [:])
@@ -753,9 +754,11 @@ class UserController {
         }
 
         if(isConfirmed){
-            String newApiKey = aasService.createApiKey()
+            User user = getUserFromSession()
+            String newApiKey = aasService.createApiKey() // TODO this is just a workaround dummy until the AAS delivers the API-Key
             log.info "requestApiKey(): temporarily created a dummy key "+newApiKey
-            sessionService.setSessionAttributeIfAvailable("apikeydummy", newApiKey) // TODO this is just a workaround dummy until the AAS delivers the API-Key
+            user.apiKey = newApiKey
+            sendApiKeyPerMail(user)
         }else{
             flash.error = "ddbnext.Api_Not_Confirmed"
         }
@@ -764,9 +767,30 @@ class UserController {
 
     def deleteApiKey() {
         log.info "deleteApiKey()"
-        sessionService.removeSessionAttributeIfAvailable("apikeydummy")
+        User user = getUserFromSession()
+        user.apiKey = null  // TODO this is just a workaround dummy until the AAS delivers the API-Key
         redirect(controller: 'user', action: 'showApiKey')
     }
+
+    private def sendApiKeyPerMail(User user) {
+        log.info "sendApiKeyPerMail()"
+        if (user != null) {
+            def List emails = []
+            emails.add(user.email)
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo configurationService.getFavoritesSendMailFrom()
+                    subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
+                    body( view:"_apiKeyEmailBody", model:[user: user])
+                }
+            } catch (e) {
+                log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
+            }
+        }
+    }
+
 
 
     private boolean isUserLoggedIn() {

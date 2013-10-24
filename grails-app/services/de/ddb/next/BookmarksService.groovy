@@ -512,11 +512,11 @@ class BookmarksService {
         return all
     }
 
-    boolean isBookmarkOfUser(itemId, userId) {
+    boolean isBookmarkOfUser(String itemId, String userId) {
         log.info "isBookmarkOfUser()"
         boolean result = false
         def bookmarks = findBookmarkedItemsInFolder(userId, [itemId])
-        if (bookmarks && (bookmarks.size() > 0)) {
+        if (bookmarks != null && (bookmarks.size() > 0)) {
             result = true
         }
         log.info "isBookmarkOfUser ${itemId} returns: " + result
