@@ -17,7 +17,7 @@ limitations under the License.
 <div class="row">
   <div class="span12 item-links bb">
     <g:isLoggedIn>
-      <g:if test="${(isFavorite == 302) }">
+      <g:if test="${isFavorite}">
         <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
           <g:link params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
             <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite">

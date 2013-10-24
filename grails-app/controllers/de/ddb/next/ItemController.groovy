@@ -45,7 +45,7 @@ class ItemController {
 
     private def isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        return bookmarksService.isBookmarkOfUser(itemId, user)
+        return bookmarksService.isBookmarkOfUser(itemId, user.getId())
     }
 
     def delFavorite(itemId) {
