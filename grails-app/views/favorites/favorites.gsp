@@ -420,6 +420,7 @@ limitations under the License.
         <input type="hidden" id="folder-edit-id" required="required" value="" />
         <input type="text" class="folder-edit-name" id="folder-edit-name" required="required" value="" />
       </div>
+      <br />
       <div>
         <g:message code="ddbnext.Create_Folder_Description" />
         <br />
