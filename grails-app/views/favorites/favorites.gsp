@@ -424,7 +424,7 @@ limitations under the License.
       <div>
         <g:message code="ddbnext.Create_Folder_Description" />
         <br />
-        <textarea rows="10" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
+        <textarea rows="8" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
       </div>
       <br />
       <div>
