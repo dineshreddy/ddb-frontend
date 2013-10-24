@@ -149,37 +149,8 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
 
-        //------------------------- Search facet affiliate_fct_involved -------------------------------
-        
-        //FIXME Ask for right value of rows
-        def searchQueryInvolved = ["query": entity["title"], "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": entity["title"], "affiliate_fct_involved": entity["title"]]
-        searchQueryInvolved["facet"].add("affiliate_fct");
-        searchQueryInvolved["facet"].add("affiliate_fct_involved");
-        
-        def apiResponseSearchInvolved = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQueryInvolved)
-        if(!apiResponseSearchInvolved.isOk()){
-            log.error "index(): Search response contained error"
-            apiResponseSearchInvolved.throwException(request)
-        }
-        def jsonSearchResultInvolved = apiResponseSearchInvolved.getResponse()
-        
-        //------------------------- Search facet affiliate_fct_subject -------------------------------
-        //FIXME Ask for right value of rows
-        def searchQuerySubject = ["query": entity["title"], "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": entity["title"], "affiliate_fct_subject": entity["title"]]
-        searchQuerySubject["facet"].add("affiliate_fct");
-        searchQuerySubject["facet"].add("affiliate_fct_subject");
-        
-        def apiResponseSearchSubject = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuerySubject)
-        if(!apiResponseSearchSubject.isOk()){
-            log.error "index(): Search response contained error"
-            apiResponseSearchSubject.throwException(request)
-        }
-        def jsonSearchResultSubject = apiResponseSearchSubject.getResponse()        
-        
         render(view: 'entity', model: ["entity": entity, 
-                                       "entityUri": entityUri, 
-                                       "involved": jsonSearchResultInvolved, 
-                                       "subject": jsonSearchResultSubject])
+                                       "entityUri": entityUri])
     }
 
     public def getAjaxSearchResultsAsJson() {
@@ -227,6 +198,66 @@ class EntityController {
         render (contentType:"text/json"){result}
     }
 
+    
+    public def getAjaxRoleSearchResultsAsJson() {                        
+        def query = params.query
+        def offset = params.long("offset")
+        def rows = params.long("rows")
+        def normdata = params.boolean("normdata")        
+        def rolefacet = params.facetname
+        def entityid = params.entityid
+                
+        if(!rows) {
+            rows = 4
+        }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
+        def entity = [:]
+
+        def roleSearch = [:]
+
+        def searchQuery = []
+        
+        if (normdata) {
+            searchQuery = ["query": query, "rows": 2, "offset": offset, "facet": [], (rolefacet+'_normdata') : ("http://d-nb.info/gnd/" + entityid)]
+            searchQuery["facet"].add(rolefacet + "_normdata");
+        } else {
+                searchQuery = ["query": query, "rows": 2, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
+                searchQuery[rolefacet] = query;
+                searchQuery["facet"].add("affiliate_fct");
+                searchQuery["facet"].add(rolefacet);
+        }
+        
+        
+        ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+        if(!apiResponseSearch.isOk()){
+            log.error "getAjaxSearchResultsAsJson(): Search response contained error"
+            apiResponseSearch.throwException(request)
+        }
+
+        def jsonSearchResult = apiResponseSearch.getResponse()
+
+        roleSearch["items"] = jsonSearchResult.results.docs
+        roleSearch["resultCount"] = jsonSearchResult.numberOfResults
+
+        entity["roleSearch"] = roleSearch
+
+        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '')
+
+        def result = ["html": resultsHTML]
+
+        render (contentType:"text/json"){result}
+    }
+    
     private def getResultCountsForFacetType(def searchString, def facetType) {
 
         def searchQuery = ["query": searchString, "rows": 0, "offset": 0, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": facetType]

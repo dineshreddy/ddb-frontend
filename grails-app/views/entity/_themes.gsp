@@ -13,32 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="themes todo">
-<%--  ${subject}--%>
+<div class="themes">
   <div class="row">
     <div class="span6">
       <h3>Thema in:</h3>
     </div>
     <div class="span3">
       <label>
-        <input type="checkbox">
+        <input type="checkbox" class="normdata_subject_checkbox" checked="checked">
         Nur Objekte mit Normdaten
         </label>
       <span class="icon-question-sign"></span>
     </div>
   </div>
-  <ol class="unstyled">
-    <!-- TODO: replace br tag with CSS -->
-    <g:each var="item" in="${subject.results.docs}">
-	    <li class="theme">
-	      <i class="icon-theme"></i>
-	      <span>${item.preview.title}</span><br>
-	      <span>${item.preview.subtitle}</span><br>
-    	</li>
-    </g:each>
-  </ol>
-  <g:link controller="search" action="results" params="${["query":entity.title, "facetValues[]": ["affiliate_fct="+entity.title, "affiliate_fct_subject="+entity.title]] }">
-  	Alle Objekte (${subject.numberOfResults})
-  </g:link>
-  
+  <div class="themes_result">
+  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>  
+  </div>
 </div>

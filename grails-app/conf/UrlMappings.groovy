@@ -170,6 +170,11 @@ class UrlMappings {
             action="getAjaxSearchResultsAsJson"
         }
 
+        "/entity/ajax/rolesearchresults" {
+            controller="entity"
+            action="getAjaxRoleSearchResultsAsJson"
+        }
+        
         "/binary/$filename**" {
             controller="apis"
             action="binary"

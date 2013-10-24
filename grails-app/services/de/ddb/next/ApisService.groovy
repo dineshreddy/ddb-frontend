@@ -74,9 +74,13 @@ class ApisService {
         
         evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct")
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct_involved")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved, "affiliate_fct_involved")
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct_subject")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject, "affiliate_fct_subject")
+        
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject_normdata, "affiliate_fct_subject_normdata")
+        
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved_normdata, "affiliate_fct_involved_normdata")
         
         evaluateFacetParameter(query, queryParameters.keywords_fct, "keywords_fct")
 
