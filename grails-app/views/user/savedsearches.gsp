@@ -64,8 +64,8 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled">
             <li class="bookmarks-list bt bb bl br">
               <span class="h3"><g:message code="ddbnext.Searches"/></span>
-              <span class="bookmarks-list-number"> ${numberOfResults}</span>
-              <a class="bookmarks-list-envelope" id="sendSavedSearches">
+              <span class="saved-searches-list-number"> ${numberOfResults}</span>
+              <a class="saved-searches-list-envelope" id="sendSavedSearches">
                 <i class="icon-envelope" title="<g:message code="ddbnext.Send_Savedsearches"/>"></i>
               </a>
             </li>

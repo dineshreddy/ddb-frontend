@@ -31,6 +31,26 @@
   width: 100%;
 }
 
+.saved-searches-list-envelope,.saved-searches-list-number {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.saved-searches-list-envelope {
+  margin-top: 1px;
+  margin-right: 10px;
+}
+
+.saved-searches-list-envelope i {
+  margin-top: 3px;
+}
+
+.saved-searches-list-number {
+  text-align: center;
+  margin-right: 30px;
+}
+
 .saved-search-title {
   margin: 0;
   line-height: 1.1em;
