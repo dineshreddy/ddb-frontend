@@ -504,8 +504,11 @@ class UserController {
             List favorites = bookmarksService.findBookmarksByUserId(user.getId())
             def favoritesCount = favorites.size()
 
-            //render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
-            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors: errors, messages: messages])
+            //get savedsearch-count
+            def savedSearchesResult = savedSearchesService.getSavedSearches()
+            def savedSearchesCount = savedSearchesResult.size()
+            
+            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
