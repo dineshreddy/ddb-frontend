@@ -998,7 +998,7 @@ color: #a5003b;
 .added-to-saved-searches {
   width: 19px;
   height: 19px;
-  background: url("../images/icons/search_actions.png") no-repeat -5px -6px;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -6px;
   padding-left: 3px;
   float: left;
 }
