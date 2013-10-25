@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import java.util.List
+
 import grails.converters.*
 
 import javax.servlet.http.HttpSession
@@ -35,6 +37,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
@@ -730,6 +733,66 @@ class UserController {
 
     }
 
+    def showApiKey() {
+        log.info "showApiKey()"
+        User user = getUserFromSession()
+        def apiKey = user.apiKey
+
+        if(apiKey){
+            render(view: "apiKey", model: [user: user])
+        }else{
+            render(view: "requestApiKey", model: [:])
+        }
+    }
+
+    def requestApiKey() {
+        log.info "requestApiKey()"
+
+        def isConfirmed = false
+        if(params.apiConfirmation){
+            isConfirmed = true
+        }
+
+        if(isConfirmed){
+            User user = getUserFromSession()
+            String newApiKey = aasService.createApiKey() // TODO this is just a workaround dummy until the AAS delivers the API-Key
+            log.info "requestApiKey(): temporarily created a dummy key "+newApiKey
+            user.apiKey = newApiKey
+            sendApiKeyPerMail(user)
+        }else{
+            flash.error = "ddbnext.Api_Not_Confirmed"
+        }
+        redirect(controller: 'user', action: 'showApiKey')
+    }
+
+    def deleteApiKey() {
+        log.info "deleteApiKey()"
+        User user = getUserFromSession()
+        user.apiKey = null  // TODO this is just a workaround dummy until the AAS delivers the API-Key
+        redirect(controller: 'user', action: 'showApiKey')
+    }
+
+    private def sendApiKeyPerMail(User user) {
+        log.info "sendApiKeyPerMail()"
+        if (user != null) {
+            def List emails = []
+            emails.add(user.email)
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo configurationService.getFavoritesSendMailFrom()
+                    subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
+                    body( view:"_apiKeyEmailBody", model:[user: user])
+                }
+            } catch (e) {
+                log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
+            }
+        }
+    }
+
+
+
     private boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
@@ -756,7 +819,7 @@ class UserController {
         def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
         if(mainFavoriteFolder == null){
-            def folderId = bookmarksService.newFolder(user.getId(), BookmarksService.MAIN_BOOKMARKS_FOLDER, false)
+            def folderId = bookmarksService.newFolder(user.getId(), FolderConstants.MAIN_BOOKMARKS_FOLDER.value, false)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }

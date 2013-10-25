@@ -18,8 +18,7 @@ limitations under the License.
 
 <g:redirectIfNotLoggedIn />
 
-<title><g:message code="ddbnext.Profile" /> - <g:message
-    code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="userprofile" />
 <meta name="layout" content="main" />
@@ -56,6 +55,11 @@ limitations under the License.
                 <a class="profile-link" title="<g:message code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
                     <g:message code="ddbnext.Searches" /> (${savedSearchesCount})
                 </a>
+                <%-- 
+                <a class="profile-link" title="<g:message code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
+                    <g:message code="ddbnext.Api_Access" /> 
+                </a>
+                --%>
                 <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
                     <g:message code="ddbnext.Change_Password_Link" />
                 </a>
@@ -141,6 +145,7 @@ limitations under the License.
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message code="ddbnext.Ok" /></button>
         <button class="submit" data-dismiss="modal"><g:message code="ddbnext.Cancel" /></button>
+      </div>
     </div>
   </body>
 </html>

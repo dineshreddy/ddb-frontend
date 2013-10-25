@@ -31,6 +31,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
+import de.ddb.next.constants.FolderConstants
 
 
 /**
@@ -41,7 +42,6 @@ import de.ddb.next.beans.Folder
  */
 class BookmarksService {
 
-    public static final def MAIN_BOOKMARKS_FOLDER = 'favorites'
     public static final def IS_PUBLIC = false
     public static final def DEFAULT_SIZE = 9999
 
@@ -56,7 +56,7 @@ class BookmarksService {
      * @param isPublic  boolean flag to mark if a folder should be public visible.
      * @return          the newly created folder ID.
      */
-    String newFolder(userId, title, isPublic, description = null) {
+    String newFolder(userId, title, isPublic, publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value, description = null) {
         log.info "newFolder(): creating a new folder with the title: ${title}"
 
         String newFolderId = null
@@ -65,7 +65,8 @@ class BookmarksService {
             user: userId,
             title : title,
             description: description,
-            isPublic : isPublic
+            isPublic : isPublic,
+            publishingName : publishingName
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -116,7 +117,8 @@ class BookmarksService {
                         it._source.user,
                         it._source.title,
                         description,
-                        it._source.isPublic
+                        it._source.isPublic,
+                        it._source.publishingName
                         )
                 folderList.add(folder)
             }
@@ -325,7 +327,7 @@ class BookmarksService {
         }
         log.info "type: ${type}"
         if(folderIdList.size() == 0){
-            def mainBookmarksFolder = findFoldersByTitle(userId, BookmarksService.MAIN_BOOKMARKS_FOLDER)[0]
+            def mainBookmarksFolder = findFoldersByTitle(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)[0]
             folderIdList.add(mainBookmarksFolder.folderId)
         }
         return saveBookmark(userId, folderIdList, itemId, description, type)
@@ -353,7 +355,8 @@ class BookmarksService {
                         it._source.user,
                         it._source.title,
                         description,
-                        it._source.isPublic
+                        it._source.isPublic,
+                        it._source.publishingName
                         )
 
                 all.add(folder)
@@ -370,7 +373,7 @@ class BookmarksService {
         Folder folder = null
         List allFolders = findAllFolders(userId)
         allFolders.each {
-            if(it.title == BookmarksService.MAIN_BOOKMARKS_FOLDER){
+            if(it.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
                 folder = it
             }
         }
@@ -509,11 +512,11 @@ class BookmarksService {
         return all
     }
 
-    boolean isBookmarkOfUser(itemId, userId) {
+    boolean isBookmarkOfUser(String itemId, String userId) {
         log.info "isBookmarkOfUser()"
         boolean result = false
         def bookmarks = findBookmarkedItemsInFolder(userId, [itemId])
-        if (bookmarks && (bookmarks.size() > 0)) {
+        if (bookmarks != null && (bookmarks.size() > 0)) {
             result = true
         }
         log.info "isBookmarkOfUser ${itemId} returns: " + result
@@ -581,7 +584,8 @@ class BookmarksService {
                     it._source.user,
                     it._source.title,
                     it._source.description,
-                    it._source.isPublic
+                    it._source.isPublic,
+                    it._source.publishingName
                     )
             return folder
         } else {
@@ -600,16 +604,21 @@ class BookmarksService {
         }
     }
 
-    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false) {
+    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value) {
         log.info "updateFolder()"
+
+        // Save fallback to username if wrong parameters are given
+        if(!FolderConstants.isValidPublishingName(publishingName)){
+            publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
+        }
 
         def postBody = ""
         if(newDescription) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic]]
+            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic, publishingName: publishingName]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: newTitle, isPublic: isPublic]]
+            postBody = [doc: [title: newTitle, isPublic: isPublic, publishingName: publishingName]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody as JSON)

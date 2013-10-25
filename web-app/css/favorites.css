@@ -65,12 +65,12 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  margin-right: 35px;
+  margin-right: 75px;
 }
 
 .bookmarks-list-envelope {
   margin-top: 1px;
-  margin-right: 10px;
+  margin-right: 70px;
 }
 
 .bookmarks-list-delete {
@@ -100,11 +100,12 @@ hr {
 }
 
 .favorites-results-container .results-paginator-options {
-  text-align:right;
+  text-align: right;
+  display: inline-block;
+  float: right;
 }
 
 .favorites-results-container .page-filter,.sort-results-switch {
-  line-height: 3.5em;
   display: inline-block;
 }
 
@@ -119,6 +120,47 @@ hr {
 .favorites-results-controls .results-pagination{
   overflow:hidden;
   display:block;
+}
+
+.favorites-results-container .link-row {
+  padding: 10px 0;
+}
+
+.favorites-results-container .email-block {
+  display: inline-block;
+  margin-right: 10px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -180px;
+  padding-left: 20px;
+}
+
+.favorites-results-container .link-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.favorites-results-container .share-block {
+  display: inline-block;
+  margin-right: 10px;
+  min-width: 400px;
+  min-height: 25px;
+}
+
+@media (max-width: 979px) {
+  .favorites-results-container .share-block {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .favorites-results-container .results-paginator-options {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-results-container .link-block {
+    display: none;
+  }
 }
 
 .favorites-results-controls .page-nav {
@@ -453,21 +495,9 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
-   .bookmarks-container .bookmarks-list-envelope {
-        padding-right: 10px;
-   }
-   .bookmarks-container .bookmarks-list-number {
-        padding-right: 50px;
-   }
-  /** .bookmarks-container .bookmarks-list-envelope {
-        padding-right: 0px;
-   }
-   .bookmarks-container .bookmarks-list-number {
-        padding-right: 0px;
-   }
    #folder-create .submit{
    		width: 165px;
-   }*/
+   }
 }
 
 @media (max-width: 767px) {
@@ -520,6 +550,7 @@ hr {
 .folder-create-description, .folder-edit-description {
   width: 100%;
   resize: none;
+  font-family: Calibri,Arial,sans-serif;
 }
 
 .folder-delete-check {
@@ -532,6 +563,7 @@ hr {
 
 .favorites-copy-selection {
   width: 100%;
+  font-size: 1em;
 }
 
 .favorites-results .results-list .comment .comment-container {

@@ -125,18 +125,18 @@ class SearchService {
                                 def tmpFacetValuesMap = ["fctValue": y.value,"url":"",cnt: y["count"],selected:""]
                                 def tmpUrl = mainFacetsUrl[x.field]
 
-                                //remove the facetvalue from the URL (the facet is selected) 
+                                //remove the facetvalue from the URL (the facet is selected)
                                 if(mainFacetsUrl[x.field].contains(y["value"])){
                                     tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+x.field+"="+y["value"],"")
                                     tmpFacetValuesMap["url"] = tmpUrl
-                                    tmpFacetValuesMap["selected"] = "selected"                                                                        
+                                    tmpFacetValuesMap["selected"] = "selected"
                                 }
                                 //add the value from the link (the facet is deselected)
                                 else{
                                     tmpUrl += "&facetValues%5B%5D="+x.field+"%3D"+y["value"]
                                     tmpFacetValuesMap["url"] = tmpUrl
                                 }
-                            
+
                                 res[x.field].add(tmpFacetValuesMap)
                             }
                         }
@@ -147,40 +147,40 @@ class SearchService {
         return res
     }
 
-    
+
     def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
-        def res = []        
+        def res = []
         def allBackendRolefacets = getRoleFacets()
-        
+
         rolefacets.each { rf->
             if(rf.numberOfFacets>0){
-                rf.facetValues.each{ fv->                    
-                    
-                    def roleFacetDefinition = allBackendRolefacets.find {  
+                rf.facetValues.each{ fv->
+
+                    def roleFacetDefinition = allBackendRolefacets.find {
                         it.name = rf.field
                     }
-                    
+
                     def tmpFacetValuesMap = ["parent": roleFacetDefinition.parent, "field":rf.field, "fctValue": fv.value,"url":"",cnt: fv["count"],selected:""]
                     def mainUrl = mainFacetsUrl.find{
                         rf.field.contains(it.key)
                     }
 
                     def tmpUrl = mainUrl.value
-                    
-                    //remove the facetvalue from the URL (the role facet is selected) 
+
+                    //remove the facetvalue from the URL (the role facet is selected)
                     if(tmpUrl.contains(rf.field+"="+fv["value"])){
                         tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+rf.field+"="+fv["value"],"")
                         tmpFacetValuesMap["url"] = tmpUrl
                         tmpFacetValuesMap["selected"] = "selected"
-                        
+
                         //remove also the role facets from the corresponding subFacetUrl
-                        
+
                         subFacetsUrl.each {  key, value  ->
                             if (rf.field.contains(key)) {
                                 value.each { subUrl ->
                                     if (subUrl.fctValue.equals(fv['value'])) {
                                         def query = "&facetValues%5B%5D="+rf.field+"="+fv["value"]
-                                        
+
                                         //replace the url in the subUrl Map
                                         def cleanedSubUrl = subUrl.url.replaceAll(query,"")
                                         subUrl.url = cleanedSubUrl
@@ -194,7 +194,7 @@ class SearchService {
                         tmpUrl += "&facetValues%5B%5D="+rf.field+"%3D"+fv["value"]
                         tmpFacetValuesMap["url"] = tmpUrl
                     }
-                    
+
                     res.add(tmpFacetValuesMap)
                 }
             }
@@ -202,8 +202,8 @@ class SearchService {
 
         return res
     }
-    
-    
+
+
     /**
      * 
      * Build the list of facets to be rendered in the non javascript version of search results
@@ -253,30 +253,30 @@ class SearchService {
     def buildRoleFacets(LinkedHashMap urlQuery){
         def res = []
         def roleFacets = getRoleFacets()
-        
+
         roleFacets.each { roleFacet ->
             if (urlQuery[roleFacet.parent] != null) {
-                
-                urlQuery[roleFacet.parent].each { facetValue -> 
+
+                urlQuery[roleFacet.parent].each { facetValue ->
                     def searchUrl = '/search/facets/' + roleFacet.name
-                    
+
                     def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
                     if(!apiResponse.isOk()){
                         log.error "Json: Json file was not found"
                         apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
                     }
                     def jsonResp = apiResponse.getResponse()
-    
+
                     if (jsonResp.numberOfFacets > 0) {
                         res.add(jsonResp)
-                    }               
+                    }
                 }
             }
         }
-                
+
         return res
     }
-    
+
     def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
         def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination
@@ -448,26 +448,12 @@ class SearchService {
                 urlQuery["grid_preview"] = "true"
             }
         }
-        return urlQuery
-    }
 
-    def convertQueryParametersToGndSearchParameters(Map reqParameters) {
-        def urlQuery = [:]
-
-        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
-        }else{
-            urlQuery["query"] = "*"
+        if(!urlQuery["facet"]){
+            urlQuery["facet"] = []
         }
-
-        urlQuery["offset"] = "0"
-
-        urlQuery["rows"] = "0"
-
-        urlQuery["facet"] = [
-            "affiliate_fct_involved_normdata",
-            "affiliate_fct_subject"
-        ]
+        urlQuery["facet"].add("affiliate_fct_involved_normdata")
+        urlQuery["facet"].add("affiliate_fct_subject")
 
         return urlQuery
     }
@@ -619,7 +605,7 @@ class SearchService {
     def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale){
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
-        
+
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
 
@@ -631,7 +617,7 @@ class SearchService {
                     break
                 }
             }
-            
+
             if(!filterFacet){
                 res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
             }
@@ -908,13 +894,13 @@ class SearchService {
      */
     def getRoleFacets() {
         def res = []
-        
+
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/')
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
-        
+
         def resultsItems = apiResponse.getResponse()
         resultsItems.each {
             if (it.role != 'null') {
@@ -923,7 +909,7 @@ class SearchService {
                 res.add(it)
             }
         }
-        return res;
+        return res
     }
 
 }

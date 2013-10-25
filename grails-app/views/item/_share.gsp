@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="row item-detail">
-  <div class="share">
-  
+
+  <div class="span6 share">
+
     <g:render template="/common/socialmedia" />
   
   </div>

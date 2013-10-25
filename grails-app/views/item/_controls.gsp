@@ -26,9 +26,6 @@ limitations under the License.
       <g:else>
           <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
       </g:else>
-      <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
-        <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
-      </a>
     </div>
     <!-- search results navigation -->
     <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">

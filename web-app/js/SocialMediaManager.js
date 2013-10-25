@@ -25,7 +25,9 @@ $(document).ready(function(){
     /** Configuration **/
     socialMediaCookieName: "socialmedia/ddb-next",
     socialMediaCookieValue: "allowed",
-    socialMediaCookieTTL: 1,
+    socialMediaCookieTTL: 1, //1 = 1 day
+    urlToLike: null,
+    titleToLike: null,
   
     /** Initialization **/
     init: function(){
@@ -36,7 +38,18 @@ $(document).ready(function(){
       this.registerClickHandlers();
       this.applyCookieAllowed();
     },
-    
+
+    /** Main method. Call to integrate social network into the page **/
+    integrateSocialMediaWithPresets: function(urlToLike, titleToLike) {
+      if(urlToLike) {
+        this.urlToLike = urlToLike;
+      }
+      if(titleToLike) {
+        this.titleToLike = titleToLike;
+      }
+      this.integrateSocialMedia();
+    },
+
     /** Register the click- and mouseover-events on the DOM objects **/
     registerClickHandlers: function() {
       var self = this;
@@ -88,8 +101,14 @@ $(document).ready(function(){
       $(".socialmedia .social-open").css("display", "block");
 
       var urlSelf = document.location.href;
+      if(this.urlToLike != null) {
+        urlSelf = this.urlToLike;
+      }
       var urlSelfEncoded = encodeURIComponent(urlSelf);
       var pageTitle = encodeURIComponent(window.document.title);
+      if(this.titleToLike != null){
+        pageTitle = encodeURIComponent(this.titleToLike);
+      }
       var serverUrl = encodeURIComponent(window.location.protocol+"//"+window.location.hostname);
       var languageISO2 = $(".socialmedia").attr("data-lang-iso2");
       var languageFull = $(".socialmedia").attr("data-lang-full");

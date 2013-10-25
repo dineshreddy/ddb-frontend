@@ -80,6 +80,7 @@
         jElemFavorite.attr("data-actn", "POST");
         jElemFavorite.parent().removeClass("favorite-selected");
         jElemFavorite.parent().addClass("favorite-add");
+        jElemFavorite.parent().parent().attr('title', messages.ddbnext.Add_To_Favorites);
         break;
       case 401:
         // -- handle unauthorized

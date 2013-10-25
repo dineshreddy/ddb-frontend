@@ -17,6 +17,13 @@
 $(function() {
 
   if (jsPageName == "favorites") {
+    
+    var publicPageLink = $(".popup-dialog-wrapper input").val()
+    var publicPageTitle = $(".page-link-popup-anchor").attr("data-title");
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMediaWithPresets(publicPageLink, publicPageTitle);
+    
+    
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
@@ -172,37 +179,38 @@ $(function() {
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('.totalNrSelectedObjects').html(selected.length);
-      $('#favoritesCopyDialog').modal('show');
-      $('#copy-confirm').click(function() {
-        var selected = new Array();
-        $('#slaves input:checked').each(function() {
-          //selected.push($(this).attr('value'));
-          selected.push($(this).attr('data-bookmark-id'));
-        });
-        
-        var selectedFolders = $('.favorites-copy-selection').val()
-        
-        var body = {
-            ids : selected,
-            folders: selectedFolders
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/copy",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      
+      if(selected.length > 0) {
+        $('#favoritesCopyDialog').modal('show');
+        $('#copy-confirm').click(function() {
+          var selected = new Array();
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('data-bookmark-id'));
+          });
+          
+          var selectedFolders = $('.favorites-copy-selection').val()
+          
+          var body = {
+              ids : selected,
+              folders: selectedFolders
           }
+          jQuery.ajax({
+            type : 'POST',
+            contentType : "application/json; charset=utf-8",
+            traditional : true,
+            url : jsContextPath + "/apis/favorites/copy",
+            data : JSON.stringify(body),
+            dataType : "json",
+            success : function(data) {
+              window.setTimeout('location.reload();', 500);
+            }
+          });
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('checked', false));
+          });
+          $('#favoritesCopyDialog').modal('hide');
         });
-        $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('checked', false));
-        });
-        $('#favoritesCopyDialog').modal('hide');
-      });
+      }
       return false;
     });
     
@@ -211,32 +219,68 @@ $(function() {
     $('.editfolder').click(function(event) {
       
       var folderId = $(this).attr('data-folder-id');
-      var oldFolderTitle = $(this).attr('data-folder-title');
-      var oldFolderDescription = $(this).attr('data-folder-description');
-      $('#folder-edit-id').val(folderId);
-      $('#folder-edit-name').val(oldFolderTitle);
-      $('#folder-edit-description').val(oldFolderDescription);
       
-      $('#folderEditConfirmDialog').modal('show');
-      $('#edit-confirm').click(function() {
-        var body = {
-          id : $('#folder-edit-id').val(),
-          title : $('#folder-edit-name').val(),
-          description : $('#folder-edit-description').val()
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/folder/edit",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      // First get current values of the folder
+      jQuery.ajax({
+        type : 'GET',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
+        dataType : "json",
+        success : function(data) {
+          
+          // Then set the values to the GUI
+          var oldFolderTitle = data.title;
+          var oldFolderDescription = data.description;
+          var isPublic = data.isPublic;
+          var publishingName = data.publishingName;
+          
+          
+          $('#folder-edit-id').val(folderId);
+          $('#folder-edit-name').val(oldFolderTitle);
+          $('#folder-edit-description').val(oldFolderDescription);
+          if(isPublic){
+            $('#folder-edit-privacy-public').attr('checked','checked');
+          }else{
+            $('#folder-edit-privacy-private').attr('checked','checked');
           }
-        });
-        $('#folderEditConfirmDialog').modal('hide');
+          $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
+
+          
+          $('#folderEditConfirmDialog').modal('show');
+          
+          // Then collect the updated values
+          $('#edit-confirm').click(function() {
+            var isPublic = false;
+            if($('#folder-edit-privacy-public').is(':checked')) {
+              isPublic = true;
+            }
+            
+            var body = {
+              id : $('#folder-edit-id').val(),
+              title : $('#folder-edit-name').val(),
+              description : $('#folder-edit-description').val(),
+              isPublic: isPublic,
+              name: $('#folder-edit-publish-name').find(":selected").val()
+            }
+            jQuery.ajax({
+              type : 'POST',
+              contentType : "application/json; charset=utf-8",
+              traditional : true,
+              url : jsContextPath + "/apis/favorites/folder/edit",
+              data : JSON.stringify(body),
+              dataType : "json",
+              success : function(data) {
+                window.setTimeout('location.reload();', 500);
+              }
+            });
+            $('#folderEditConfirmDialog').modal('hide');
+          });
+          
+        }
       });
+      
+      
       return false;
     });
 

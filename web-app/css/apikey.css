@@ -13,26 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-import groovy.util.slurpersupport.NodeChild
-import groovy.xml.StreamingMarkupBuilder
-
-class BootStrap {
-
-    def configurationService
-
-    def init = { servletContext ->
-        configurationService.logConfigurationSettings()
-
-        NodeChild.metaClass.toXmlString = {
-            def self = delegate
-            new StreamingMarkupBuilder().bind {
-                delegate.mkp.xmlDeclaration() // Use this if you want an XML declaration
-                delegate.out << self
-            }.toString()
-        }
-    }
-
-    def destroy = {
-    }
+ 
+.apirequest a, .apikey a {
+  color: #A5003B;
+  text-decoration: underline;
+} 
+ 
+.apirequest .control-group {
+  margin: 30px 0 0 0;
 }
+
+.apikey .control-group {
+  margin: 50px 0 50px 0;
+}
+
+.apikey .apikey-delete {
+  width: 20px;
+  height: 20px;
+  margin: 4px;
+  background: url(../images/icons/socialmedia.png) no-repeat 0 -72px;
+  border: none;
+  box-shadow: none;
+}
+
+.apikey .apikey-delete:hover {
+  background-position: 0 -72px;
+}
+

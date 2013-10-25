@@ -44,6 +44,8 @@ class AasService {
 
     private static final String PERSON_URI = "/aas/persons/"
 
+    private static final String APIKEY_URI = "/aas/keys/"
+
     private static final String ID_FIELD = "id"
 
     private static final String NICKNAME_FIELD = "nickname"
@@ -362,4 +364,15 @@ class AasService {
         }
         return apiResponse.getResponse()
     }
+
+    /**
+     * Creates and returns a new API-Key which is not attached to any user
+     * 
+     * @return The new API-Key as String
+     */
+    public String createApiKey() {
+        JSONObject newApiKey = request(APIKEY_URI + "generate", Method.GET)
+        return newApiKey?.developerKey?.toString()
+    }
+
 }
