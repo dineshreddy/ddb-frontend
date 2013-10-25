@@ -20,16 +20,6 @@ limitations under the License.
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
-  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
-    <div class="hovercard-info-item" data-iid="${item.id}">
-      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
-      <ul class="unstyled">
-        <li>
-          <div class="small-loader"></div>
-        </li>
-      </ul>
-    </div>
-  </div>
   <g:isLoggedIn>
     <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
     <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -37,7 +27,37 @@ limitations under the License.
         <p><g:message code="ddbnext.Added_To_Favorites"/></p>
       </div>
     </div>
-</div>
   </g:isLoggedIn>
-      <div class="icons-right"></div>
+      <div class="item-options bl">
+      	<ul class="bb">
+      		<li>
+     		  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+			    <div class="hovercard-info-item" data-iid="${item.id}">
+			      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
+			      <ul class="unstyled">
+			        <li>
+			          <div class="small-loader"></div>
+			        </li>
+			      </ul>
+			    </div>
+			  </div>
+      		</li>
+      		<li>
+     		  <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+			  </div>
+      		</li>
+      		<li>
+     		  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+			    <div class="hovercard-info-item" data-iid="${item.id}">
+			      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
+			      <ul class="unstyled">
+			        <li>
+			          <div class="small-loader"></div>
+			        </li>
+			      </ul>
+			    </div>
+			  </div>
+      		</li>
+      	</ul>
+      </div>
 </div>

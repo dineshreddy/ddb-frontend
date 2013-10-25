@@ -435,13 +435,12 @@ input[type="checkbox"],input[type="radio"] {
   margin: auto;
 }
 
-.thumbnail-wrapper .icons-right {
-	position: absolute; 
+.thumbnail-wrapper .item-options {
+	position: relative;
 	top: 0; 
 	bottom: 0; 
 	right: 0; 
 	width: 30px;
-	border-left: solid 1px #efebe8;
 }
 
 .search-results .results-list .matches {
@@ -499,11 +498,21 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary .information {
-  width: 19px;
-  height: 19px;
-  position: absolute;
+  width: 30px;
+  height: 30px;
+  position: relative;
   right: 0;
   background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -185px;
+  margin-top: -15px;
+  cursor: pointer;
+}
+
+.search-results .results-list .summary .compare {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  right: 0;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -155px;
   margin-top: -15px;
   cursor: pointer;
 }
