@@ -982,6 +982,10 @@ font-size: 1.1em;
 color: #a5003b;
 }
 
+#favorite-folders {
+  width: 100%;
+}
+
 .add-to-saved-searches {
   width: 19px;
   height: 19px;

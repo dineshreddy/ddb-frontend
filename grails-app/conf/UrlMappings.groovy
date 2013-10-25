@@ -80,6 +80,16 @@ class UrlMappings {
             action=[POST: "deleteFavoritesFromFolder"]
         }
 
+        "/apis/favorites/folders" {
+            controller="favorites"
+            action="getFavoriteFolders"
+        }
+
+        "/apis/favorites/folders/$folderId/$itemId" {
+            controller="favorites"
+            action=[POST: "addFavoriteToFolder"]
+        }
+
         "/apis/favorites/folder/create" {
             controller="favorites"
             action="createFavoritesFolder"

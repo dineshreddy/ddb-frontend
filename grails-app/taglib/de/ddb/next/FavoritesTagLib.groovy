@@ -15,12 +15,17 @@
  */
 package de.ddb.next
 
+import de.ddb.next.beans.User
+
 class FavoritesTagLib {
     /**
      * Renders the favorites results list.
      *
      * @attrs items REQUIRED data for paginator
      */
+
+    def favoritesService
+    def sessionService
 
     def favoritesResultsRender = { attrs, body ->
         out << render(template:"/favorites/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: false])
@@ -32,5 +37,16 @@ class FavoritesTagLib {
 
     def favoritesEmailResultsRender = { attrs, body ->
         out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
+    }
+
+    def hasPersonalFavorites = {attrs, body ->
+        def user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if (favoritesService.getAllFoldersPerUser(user).size() > 1) {
+            out << body()
+        }
+        else {
+            out << ""
+        }
     }
 }
