@@ -1625,9 +1625,29 @@ function searchResultsInitializer(){
                   // add a result hit to the list of favorites
                   $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
                     $("#favorite-confirmation").modal("show");
-                    window.setTimeout(function(){
-                      $("#favorite-confirmation").modal("hide");
-                    }, 1500);
+                    $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
+                      if (folders.length > 1) {
+                        $.each(folders, function(index, folder) {
+                          if (!folder.isMainFolder) {
+                            // show select box with all foder names
+                            var selectEntry = "<option value=" + folder.folderId + ">" +
+                              folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
+
+                            $("#favorite-folders").append(selectEntry);
+                          }
+                        });
+                        $("#favoriteId").val(itemId);
+                        $("#addToFavoritesConfirm").click(function() {
+                          $("#favorite-confirmation").modal("hide");
+                          $.post(jsContextPath + "/apis/favorites/folders/" + $("#favorite-folders").val() + "/" + itemId);
+                        });
+                      }
+                      else {
+                        window.setTimeout(function() {
+                          $("#favorite-confirmation").modal("hide");
+                        }, 1500);
+                      }
+                    });
                   });
                 });
               }

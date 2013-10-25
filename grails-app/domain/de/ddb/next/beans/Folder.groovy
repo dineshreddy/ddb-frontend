@@ -29,6 +29,7 @@ class Folder {
     String userId
     String title
     String description
+    boolean isMainFolder = false
     boolean isPublic = false
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 

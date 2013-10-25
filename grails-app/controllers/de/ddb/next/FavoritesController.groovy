@@ -447,7 +447,6 @@ class FavoritesController {
         return out
     }
 
-
     def addFavorite() {
         log.info "addFavorite " + params.id
         def itemId = params.id
@@ -461,6 +460,21 @@ class FavoritesController {
             result = response.SC_UNAUTHORIZED
         }
         log.info "addFavorite returns " + result
+        render(status: result)
+    }
+
+    def addFavoriteToFolder() {
+        log.info "addFavoriteToFolder " + params.folderId + "," + params.itemId
+        def result = response.SC_BAD_REQUEST
+        def User user = getUserFromSession()
+        if (user != null) {
+            if (bookmarksService.saveBookmark(user.getId(), params.folderId, params.itemId)) {
+                result = response.SC_CREATED
+            }
+        } else {
+            result = response.SC_UNAUTHORIZED
+        }
+        log.info "addFavoriteToFolder returns " + result
         render(status: result)
     }
 
@@ -479,23 +493,6 @@ class FavoritesController {
         log.info "deleteFavorite returns " + result
         render(status: result)
     }
-
-    //    def deleteFavorites() {
-    //        log.info "deleteFavorites " + request.JSON
-    //        def result = response.SC_NOT_FOUND
-    //        def User user = getUserFromSession()
-    //        if (user != null) {
-    //            if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
-    //                result = response.SC_OK
-    //            }else if (bookmarksService.deleteBookmarks(user.getId(), request.JSON)) {
-    //                result = response.SC_OK
-    //            }
-    //        } else {
-    //            result = response.SC_UNAUTHORIZED
-    //        }
-    //        log.info "deleteFavorites returns " + result
-    //        render(status: result)
-    //    }
 
     def deleteFavoritesFromFolder() {
         log.info "deleteFavoritesFromFolder " + request.JSON
@@ -609,6 +606,26 @@ class FavoritesController {
         render(status: result)
     }
 
+    /**
+     * Get a sorted list of all bookmark folders. The main folder is marked with "isMainFolder".
+     *
+     * @return sorted list of all bookmark folders
+     */
+    def getFavoriteFolders() {
+        log.info "getFavoriteFolders"
+        def User user = getUserFromSession()
+        if (user != null) {
+            def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+            def result = bookmarksService.findAllFolders(user.getId())
+            result.find {it.folderId == mainFolder.folderId}.isMainFolder = true
+            result.sort {it.title.toLowerCase()}
+            log.info "getFavoriteFolders returns " + result
+            render(result as JSON)
+        } else {
+            log.info "getFavoriteFolders returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
+    }
 
     def createFavoritesFolder() {
         log.info "createFavoritesFolder " + request.JSON
