@@ -257,6 +257,9 @@ class FavoritesController {
             }
             allFoldersInformation = sortFolders(allFoldersInformation)
 
+            //def fullPublicLink = configurationService.getSelfBaseUrl() + g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+            def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+
             if (totalResults <1){
                 render(view: "favorites", model: [
                     selectedFolder: selectedFolder,
@@ -266,6 +269,7 @@ class FavoritesController {
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,
+                    fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0),
                 ])
@@ -362,6 +366,7 @@ class FavoritesController {
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,
+                    fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderTitle:urlsForOrderTitle,
                     urlsForOrder:urlsForOrder

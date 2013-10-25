@@ -65,7 +65,7 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  margin-right: 95px;
+  margin-right: 75px;
 }
 
 .bookmarks-list-envelope {
@@ -100,11 +100,12 @@ hr {
 }
 
 .favorites-results-container .results-paginator-options {
-  text-align:right;
+  text-align: right;
+  display: inline-block;
+  float: right;
 }
 
 .favorites-results-container .page-filter,.sort-results-switch {
-  line-height: 3.5em;
   display: inline-block;
 }
 
@@ -119,6 +120,47 @@ hr {
 .favorites-results-controls .results-pagination{
   overflow:hidden;
   display:block;
+}
+
+.favorites-results-container .link-row {
+  padding: 10px 0;
+}
+
+.favorites-results-container .email-block {
+  display: inline-block;
+  margin-right: 10px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -180px;
+  padding-left: 20px;
+}
+
+.favorites-results-container .link-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.favorites-results-container .share-block {
+  display: inline-block;
+  margin-right: 10px;
+  min-width: 400px;
+  min-height: 25px;
+}
+
+@media (max-width: 979px) {
+  .favorites-results-container .share-block {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .favorites-results-container .results-paginator-options {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-results-container .link-block {
+    display: none;
+  }
 }
 
 .favorites-results-controls .page-nav {

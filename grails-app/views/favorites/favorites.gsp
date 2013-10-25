@@ -57,6 +57,7 @@ limitations under the License.
           </div>
           --%>
       </div>
+      <%--
       <div class="span4 results-paginator-options">
         <div class="page-filter">
           <label><g:message code="ddbnext.Items_Per_Page" /></label> 
@@ -69,6 +70,43 @@ limitations under the License.
               </g:each>
             </select>
           </span>
+        </div>
+      </div>
+      --%>
+      <div class="span12">
+        <hr>
+      </div>
+      <div class="span12 link-row">
+        <div class="email-block">
+          <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">  
+            <span><g:message code="ddbnext.favorites_list_send" /></span>
+          </a>
+        </div>
+        <g:if test="${selectedFolder.isPublic}">
+          <div class="link-block">
+            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
+              <span><g:message code="ddbnext.favorites_list_publiclink" /></span>
+            </a>
+          </div>
+        </g:if>
+        <g:if test="${selectedFolder.isPublic}">
+          <div class="share-block">
+            <g:render template="/common/socialmedia" />
+          </div>
+        </g:if>
+        <div class="results-paginator-options">
+          <div class="page-filter">
+            <label><g:message code="ddbnext.Items_Per_Page" /></label> 
+            <span> 
+              <select class="select">
+                <g:each in="${resultsPaginatorOptions.pageFilter}">
+                  <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
+                    ${it}
+                  </option>
+                </g:each>
+              </select>
+            </span>
+          </div>
         </div>
       </div>
       <div class="span12">
@@ -111,9 +149,11 @@ limitations under the License.
                 </g:else>
               </span> 
               <span class="bookmarks-list-number"> ${it.count}</span>
+              <%-- 
               <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
                 <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
               </a>
+              --%>
               <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
                 <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
                   <g:if test="${it.folder.isPublic}">
