@@ -138,8 +138,29 @@ hr {
   margin-right: 10px;
 }
 
-.favorites-results-container .email-link {
-  
+.favorites-results-container .share-block {
+  display: inline-block;
+  margin-right: 10px;
+  min-width: 400px;
+  min-height: 25px;
+}
+
+@media (max-width: 979px) {
+  .favorites-results-container .share-block {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .favorites-results-container .results-paginator-options {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorites-results-container .link-block {
+    display: none;
+  }
 }
 
 .favorites-results-controls .page-nav {

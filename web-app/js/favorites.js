@@ -17,6 +17,13 @@
 $(function() {
 
   if (jsPageName == "favorites") {
+    
+    var publicPageLink = $(".popup-dialog-wrapper input").val()
+    var publicPageTitle = $(".page-link-popup-anchor").attr("data-title");
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMediaWithPresets(publicPageLink, publicPageTitle);
+    
+    
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic

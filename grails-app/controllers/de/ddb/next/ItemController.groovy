@@ -145,19 +145,47 @@ class ItemController {
                 }
 
                 if(params.print){
-                    renderPdf(template: "itemPdf", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl , fields: fields,
-                        binaryList: binaryList, pageLabel: item.pageLabel,
-                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation],
+                    renderPdf(template: "itemPdf", model: [
+                        itemUri: itemUri,
+                        viewerUri: item.viewerUri,
+                        title: item.title,
+                        item: item.item,
+                        itemId: id,
+                        institution : item.institution,
+                        institutionImage: item.institutionImage,
+                        originUrl: item.originUrl,
+                        fields: fields,
+                        binaryList: binaryList,
+                        pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"],
+                        lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"],
+                        results: searchResultParameters["resultsItems"],
+                        searchResultUri: searchResultParameters["searchResultUri"],
+                        flashInformation: flashInformation,
+                        license: licenseInformation],
                     filename: "Item-Detail.pdf")
                 }else{
-                    render(view: "item", model: [itemUri: itemUri, viewerUri: item.viewerUri,
-                        'title': item.title, item: item.item, itemId: id, institution : item.institution, institutionImage: item.institutionImage, originUrl: item.originUrl, fields: fields,
-                        binaryList: binaryList, pageLabel: item.pageLabel,
-                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"], lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
-                        hitNumber: params["hitNumber"], results: searchResultParameters["resultsItems"], searchResultUri: searchResultParameters["searchResultUri"], 'flashInformation': flashInformation, 'license': licenseInformation
-                        , "isFavorite":isFavorite
+                    render(view: "item", model: [
+                        itemUri: itemUri,
+                        viewerUri: item.viewerUri,
+                        title: item.title,
+                        item: item.item,
+                        itemId: id,
+                        institution: item.institution,
+                        institutionImage: item.institutionImage,
+                        originUrl: item.originUrl,
+                        fields: fields,
+                        binaryList: binaryList,
+                        pageLabel: item.pageLabel,
+                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"],
+                        lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        hitNumber: params["hitNumber"],
+                        results: searchResultParameters["resultsItems"],
+                        searchResultUri: searchResultParameters["searchResultUri"],
+                        flashInformation: flashInformation,
+                        license: licenseInformation,
+                        isFavorite: isFavorite
                     ])
 
                 }

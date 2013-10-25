@@ -257,8 +257,8 @@ class FavoritesController {
             }
             allFoldersInformation = sortFolders(allFoldersInformation)
 
+            //def fullPublicLink = configurationService.getSelfBaseUrl() + g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
             def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
-            println "########################### 01 "+fullPublicLink
 
             if (totalResults <1){
                 render(view: "favorites", model: [

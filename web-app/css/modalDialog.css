@@ -21,6 +21,7 @@
   position: absolute;
   box-shadow: 0 10px 48px rgba(50, 50, 50, 0.5);
   border: 1px solid #ddd;
+  z-index: 100;
 }
 
 .popup-dialog-title {
@@ -30,6 +31,7 @@
   background-color: #EFEBE8;
   padding: 0 0 5px 10px;
   height: 25px;
+  line-height: 30px;
 }
 
 .popup-dialog-title a {

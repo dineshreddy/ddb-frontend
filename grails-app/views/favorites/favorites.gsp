@@ -78,15 +78,22 @@ limitations under the License.
       </div>
       <div class="span12 link-row">
         <div class="email-block">
-          <a href="#" class="email-link sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">  
-            <span><g:message code="ddbnext.send_favorites" /></span>
+          <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">  
+            <span><g:message code="ddbnext.favorites_list_send" /></span>
           </a>
         </div>
-        <div class="link-block">
-          <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
-            <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
-          </a>
-        </div>
+        <g:if test="${selectedFolder.isPublic}">
+          <div class="link-block">
+            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
+              <span><g:message code="ddbnext.favorites_list_publiclink" /></span>
+            </a>
+          </div>
+        </g:if>
+        <g:if test="${selectedFolder.isPublic}">
+          <div class="share-block">
+            <g:render template="/common/socialmedia" />
+          </div>
+        </g:if>
         <div class="results-paginator-options">
           <div class="page-filter">
             <label><g:message code="ddbnext.Items_Per_Page" /></label> 
