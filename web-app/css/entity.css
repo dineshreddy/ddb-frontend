@@ -33,10 +33,6 @@
   font-weight:bold;
 }
 
-.entity-page .item-subtitle {
-	
-}
-
 .entity-page .rolefacet {
   margin:10px 0px 0px 0px;
 }
@@ -45,9 +41,6 @@
   background: url(../images/icons/search.png) no-repeat 0 -145px;
   min-height: 35px;
   padding: 0 0 0 35px;
-}
-
-.entity-page .search-entity {
 }
 
 .entity-page .preview {

@@ -229,12 +229,14 @@ class EntityController {
         
         def searchUrlParameter = []
         
+        def gndUrl = configurationService.getDnbUrl() + "/gnd/"
+        
         if (normdata) {
-            searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : ("http://d-nb.info/gnd/" + entityid)]
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : (gndUrl + entityid)]
             searchQuery["facet"].add(rolefacet + "_normdata");
             
             //These parameters are for the frontend to create a search link
-            searchUrlParameter = ["query":query, "facetValues[]": [(rolefacet+'_normdata')+ "="+("http://d-nb.info/gnd/" + entityid)]]
+            searchUrlParameter = ["query":query, "facetValues[]": [(rolefacet+'_normdata')+ "="+(gndUrl + entityid)]]
         } else {
             searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
             searchQuery[rolefacet] = query;
