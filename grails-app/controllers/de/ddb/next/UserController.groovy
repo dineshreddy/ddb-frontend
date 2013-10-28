@@ -94,6 +94,8 @@ class UserController {
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
+
+            println "################################ 01 "+user
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
@@ -507,7 +509,7 @@ class UserController {
             //get savedsearch-count
             def savedSearchesResult = savedSearchesService.getSavedSearches()
             def savedSearchesCount = savedSearchesResult.size()
-            
+
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
@@ -758,9 +760,17 @@ class UserController {
 
         if(isConfirmed){
             User user = getUserFromSession()
-            String newApiKey = aasService.createApiKey() // TODO this is just a workaround dummy until the AAS delivers the API-Key
+            String newApiKey = aasService.createApiKey()
+
+            println "############################# 02 "
+
+            JSONObject aasUser = aasService.getPerson(user.getId())
+            aasUser.put(AasService.APIKEY_FIELD, newApiKey)
+            aasService.updatePerson(user.getId(), aasUser)
+            user.setApiKey(newApiKey)
+
+            println "############################# 09 "
             log.info "requestApiKey(): temporarily created a dummy key "+newApiKey
-            user.apiKey = newApiKey
             sendApiKeyPerMail(user)
         }else{
             flash.error = "ddbnext.Api_Not_Confirmed"
