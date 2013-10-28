@@ -1629,7 +1629,7 @@ function searchResultsInitializer(){
                       if (folders.length > 1) {
                         $.each(folders, function(index, folder) {
                           if (!folder.isMainFolder) {
-                            // show select box with all foder names
+                            // show select box with all folder names
                             var selectEntry = "<option value=" + folder.folderId + ">" +
                               folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
 
