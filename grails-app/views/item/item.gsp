@@ -20,7 +20,8 @@ limitations under the License.
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
 
-<meta property="og:title" content="" />
+<meta property="og:url" content="${itemUri}"/>
+<meta property="og:title" content="${title}" />
 <meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
 <meta property="og:description" content="" />
 
