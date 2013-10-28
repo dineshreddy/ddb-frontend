@@ -24,6 +24,7 @@ limitations under the License.
 <body>
   <div class="entity-page">
     <div id="entity-title" class="off">${entity.title}</div>
+    <a href="#" id="entity-id" data-entityid="${entity.id}"></a>
     <g:render template="controls" />
     <div class="row">
       <div class="span9">
@@ -31,9 +32,12 @@ limitations under the License.
         <g:render template="dates" />
         <hr>
         <g:render template="objects" />
+        <hr>        
         <g:render template="works" />
+        <hr>
         <g:render template="themes" />
       </div>
+      
       <div class="span3">
         <g:render template="thumb" />
         <g:render template="search" />

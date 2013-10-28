@@ -29,6 +29,14 @@
   background-color: #DDFFDD;
 }
 
+.entity-page .item-title {
+  font-weight:bold;
+}
+
+.entity-page .rolefacet {
+  margin:10px 0px 0px 0px;
+}
+
 .entity-page .search-entity {
   background: url(../images/icons/search.png) no-repeat 0 -145px;
   min-height: 35px;
@@ -98,6 +106,7 @@
 
 .entity-page .objects {
   padding-bottom: 20px;
+  overflow: scroll;
 }
 
 .entity-page .popup-dialog-wrapper {

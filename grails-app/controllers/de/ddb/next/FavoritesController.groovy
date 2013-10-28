@@ -271,7 +271,7 @@ class FavoritesController {
                     nickName: nickName,
                     fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0),
+                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0,folderId),
                 ])
                 return
             }else{
@@ -310,30 +310,30 @@ class FavoritesController {
                 }
                 def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_DATE])]
-                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE])]
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_DATE,id:folderId])]
+                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,id:folderId])]
                 if (order=="asc"){
                     if(by.toString()==ORDER_DATE){
                         allResultsWithAdditionalInfo.sort{ a, b->
                             a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
                         }
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,id:folderId])
                     }else{
                         allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE])
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,id:folderId])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,id:folderId])
                     }
                 }else{
                     //desc
                     if(by.toString()==ORDER_TITLE){
-                        urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE])
-                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
+                        urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,id:folderId])
+                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,id:folderId])
                         allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                     }else{
                         //by date
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,id:folderId])
                     }
                 }
 
@@ -358,7 +358,7 @@ class FavoritesController {
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     page: page,
                     resultsNumber: totalResults,
-                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(offset, rows, order, by, lastPgOffset),
+                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(offset, rows, order, by, lastPgOffset,folderId),
                     totalPages: totalPages,
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: offset,

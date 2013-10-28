@@ -13,44 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="themes todo">
+<div class="themes rolefacet">
   <div class="row">
     <div class="span6">
       <h3>Thema in:</h3>
     </div>
     <div class="span3">
       <label>
-        <input type="checkbox">
+        <input type="checkbox" class="normdata_subject_checkbox" checked="checked">
         Nur Objekte mit Normdaten
-        </label>
+      </label>
       <span class="icon-question-sign"></span>
     </div>
   </div>
-  <ol class="unstyled">
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-    <!-- TODO: replace br tag with CSS -->
-    <li class="theme">
-      <i class="icon-theme"></i>
-      <span>Goethe ueber den Faust</span><br>
-      <span>Dieck, Alfred - Goettigen: Vandenhoeck & Ruprecht, 1963</span>
-    </li>
-  </ol>
-  <a href="">Alle Objekte (XX)</a>
+  <div class="themes_result">
+  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>  
+  </div>
 </div>

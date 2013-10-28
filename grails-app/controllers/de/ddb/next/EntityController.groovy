@@ -149,7 +149,8 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
 
-        render(view: 'entity', model: ["entity": entity, "entityUri": entityUri])
+        render(view: 'entity', model: ["entity": entity, 
+                                       "entityUri": entityUri])
     }
 
     public def getAjaxSearchResultsAsJson() {
@@ -197,6 +198,77 @@ class EntityController {
         render (contentType:"text/json"){result}
     }
 
+    
+    public def getAjaxRoleSearchResultsAsJson() {                        
+        def query = params.query
+        def offset = params.long("offset")
+        def rows = params.long("rows")
+        def normdata = params.boolean("normdata")        
+        def rolefacet = params.facetname
+        def entityid = params.entityid
+                
+        if(!rows) {
+            rows = 4
+        }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
+        def entity = [:]
+
+        def roleSearch = [:]
+
+        def searchQuery = []
+        
+        def searchUrlParameter = []
+        
+        def gndUrl = configurationService.getDnbUrl() + "/gnd/"
+        
+        if (normdata) {
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : (gndUrl + entityid)]
+            searchQuery["facet"].add(rolefacet + "_normdata");
+            
+            //These parameters are for the frontend to create a search link
+            searchUrlParameter = ["query":query, "facetValues[]": [(rolefacet+'_normdata')+ "="+(gndUrl + entityid)]]
+        } else {
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
+            searchQuery[rolefacet] = query;
+            searchQuery["facet"].add("affiliate_fct");
+            searchQuery["facet"].add(rolefacet);
+            
+            //These parameters are for the frontend to create a search link
+            searchUrlParameter = ["query":query, "facetValues[]": ["affiliate_fct="+query, "affiliate_fct_involved="+query]]
+        }
+        
+        
+        ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+        if(!apiResponseSearch.isOk()){
+            log.error "getAjaxSearchResultsAsJson(): Search response contained error"
+            apiResponseSearch.throwException(request)
+        }
+
+        def jsonSearchResult = apiResponseSearch.getResponse()
+
+        roleSearch["items"] = jsonSearchResult.results.docs
+        roleSearch["resultCount"] = jsonSearchResult.numberOfResults
+        roleSearch["searchUrlParameter"] = searchUrlParameter
+
+        entity["roleSearch"] = roleSearch
+
+        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '')
+
+        def result = ["html": resultsHTML]
+
+        render (contentType:"text/json"){result}
+    }
+    
     private def getResultCountsForFacetType(def searchString, def facetType) {
 
         def searchQuery = ["query": searchString, "rows": 0, "offset": 0, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": facetType]
