@@ -40,7 +40,7 @@ limitations under the License.
           <p><g:message code="ddbnext.Added_To_Favorites"/></p>
           <g:hasPersonalFavorites>
             <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
-            <g:select name="favorite-folders" from=""/>
+            <g:select name="favorite-folders" from="" multiple="true"/>
           </g:hasPersonalFavorites>
         </div>
         <g:hasPersonalFavorites>
