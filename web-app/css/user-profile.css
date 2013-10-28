@@ -26,9 +26,9 @@
 }
 
 #user-profile-form .profile-nav {
-  margin-bottom: 20px;
   line-height: 40px;
   display: block;
+  padding-bottom: 15px;
 }
 
 #user-profile-form .profile-title, #user-profile-form .profile-links{
@@ -48,6 +48,10 @@
 #password-change-form .control-group.bt-white, 
 #password-reset-form .control-group.bt-white {
   padding-top: 30px;
+}
+
+#user-profile-form .control-groups {
+  margin-top: 40px;
 }
 
 #user-profile-form .profile-links {
