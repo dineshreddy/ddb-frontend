@@ -37,10 +37,22 @@ limitations under the License.
       </g:else>
       <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-body">
-          <p>
-            <g:message code="ddbnext.Added_To_Favorites" />
-          </p>
+          <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+          <g:hasPersonalFavorites>
+            <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
+            <g:select name="favorite-folders" from=""/>
+          </g:hasPersonalFavorites>
         </div>
+        <g:hasPersonalFavorites>
+          <div class="modal-footer">
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+              <g:message code="ddbnext.Close"/>
+            </button>
+            <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+              <g:message code="ddbnext.Save"/>
+            </button>
+          </div>
+        </g:hasPersonalFavorites>
       </div>
     </g:isLoggedIn>
     <div class="link-block">
