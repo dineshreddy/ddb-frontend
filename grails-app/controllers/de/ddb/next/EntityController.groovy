@@ -49,6 +49,13 @@ class EntityController {
 
 
         def jsonGraph = cultureGraphService.getCultureGraph(entityId)
+
+        //Forward to a 404 page if the entityId is not known by the culture graph service
+        if (jsonGraph == null) {
+            forward controller: "error", action: "entityNotFound"
+            return
+        }
+        
         def xmlDnb = cultureGraphService.getDNBInformation(entityId)
 
         def entityUri = request.forwardURI
