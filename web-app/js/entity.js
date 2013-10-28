@@ -19,16 +19,12 @@ $(document).ready(function(){
   
     var defaultRowCount = 4;
 
-    var offset = parseInt(getUrlParam("offset"));
-    if(!offset) {
-      offset = 0;
-    }
-    
-    var query = $("#entity-title").html();
-    var History = window.History;
-    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
-    History.pushState("", document.title, decodeURI(urlParameters));  
-    
+    var offset = 0;
+//    var offset = parseInt(getUrlParam("offset"));
+//    if(!offset) {
+//      offset = 0;
+//    }
+              
     $(".preview-item-previous").click(function(event){
       event.preventDefault();
   
@@ -57,11 +53,6 @@ $(document).ready(function(){
       var History = window.History;
       var urlParameters = "?query="+currentQuery+"&offset="+currentOffset+"&rows="+currentRows;
       History.pushState("", document.title, decodeURI(urlParameters));
-      
-  
-      getNewSearchResults(currentQuery, currentOffset, currentRows);
-      
-      
     });
   
     $(".preview-item-next").click(function(event){
@@ -96,6 +87,57 @@ $(document).ready(function(){
       getNewSearchResults(currentQuery, currentOffset, currentRows);
     });
   
+    
+    $('.normdata_involved_checkbox').bind('click', function() {
+    	var container = $(".works_result");
+	    var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+        var normdata = false;
+        var facetname = 'affiliate_fct_involved';
+        
+    	if($(this).is(":checked")) {
+            normdata = true;
+        }
+    	
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+    });
+
+    
+    $('.normdata_subject_checkbox').bind('click', function() {
+	    var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+    	var container = $(".themes_result");
+        var normdata = false;
+        var facetname = 'affiliate_fct_subject';
+        
+    	if($(this).is(":checked")) {
+            normdata = true;
+        }
+    	
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+    });
+    
+    
+    function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid, offset, rows){
+        var request = $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          async: true,
+          url: jsContextPath+'/entity/ajax/rolesearchresults?query='+query+'&offset='+offset+'&rows='+rows+'&normdata='+normdata+'&facetname='+facetname+'&entityid='+entityid,
+          complete: function(data){
+        	var jsonResponse = $.parseJSON(data.responseText);
+        	
+        	renderRoleBasedSearchResults(itemContainer, jsonResponse);           
+          }
+        });
+    }
+    
+    function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
+        itemContainer.empty();
+        itemContainer.html(jsonResponse.html);
+    }
+    
+    
     function getNewSearchResults(query, offset, rows){
       var request = $.ajax({
         type: 'GET',
@@ -130,5 +172,30 @@ $(document).ready(function(){
         return decodeURIComponent(results[1].replace(/\+/g, " "));
       }
     }
+
+    function initPage(){
+	    var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+	    
+	    var History = window.History;
+	    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
+	    History.pushState("", document.title, decodeURI(urlParameters));  
+	    
+	    //Initialize Search results
+	    getNewSearchResults(query, offset, defaultRowCount);
+	    
+	    //Initialize Search results for facet: affiliate_fct_subject
+	    var containerSubject = $(".themes_result");
+	    var normdata = true;
+	    var facetname = 'affiliate_fct_subject';
+		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
+	
+	    //Initialize Search results for facet: affiliate_fct_involved
+	    var containerInvolved = $(".works_result");
+		facetname = 'affiliate_fct_involved';
+		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
+    }
+    
+    initPage();
   }
 });

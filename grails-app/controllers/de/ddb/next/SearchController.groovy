@@ -135,7 +135,6 @@ class SearchController {
                 def roleFacetsUrl = [:]
                 def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
                 if(urlQuery["facet"]){
-                    log.info("buildRoleFacetsUrl")
                     roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
                 }
 
