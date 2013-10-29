@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<meta property="og:url" content="${g.baseUrl()}${request.forwardURI}"/>
-<meta property="og:title" content="${title}" />
+<meta property="og:url" content="${likeUrl}"/>
+<meta property="og:title" content="${likeTitle}" />
 <meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
 <meta property="og:description" content="" />

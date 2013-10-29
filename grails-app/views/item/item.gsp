@@ -20,10 +20,7 @@ limitations under the License.
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
 
-<meta property="og:url" content="${g.baseUrl()}${request.forwardURI}"/>
-<meta property="og:title" content="${title}" />
-<meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
-<meta property="og:description" content="" />
+<g:socialmediaMeta likeTitle="${title}" likeUrl="${g.baseUrl() + request.forwardURI}"/>
 
 </head>
 <body>

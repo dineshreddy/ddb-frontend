@@ -17,10 +17,8 @@ $(document).ready(function(){
   
   if(jsPageName == "item"){
     
-    var publicPageLink = $(".popup-dialog-wrapper input").val()
-    var publicPageTitle = window.document.title
     var socialMediaManager = new SocialMediaManager();
-    socialMediaManager.integrateSocialMediaWithPresets(publicPageLink, publicPageTitle);
+    socialMediaManager.integrateSocialMedia();
     
     
   }
