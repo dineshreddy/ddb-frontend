@@ -38,7 +38,7 @@ class User implements Cloneable {
     }
 
     public String toString() {
-        return "User[id=${id}, username=${username}, firstname=${firstname}, lastname=${lastname}, email=${email}, openIdUser=${openIdUser}, isSubscriber=${newsletterSubscribed}"
+        return "User[id=${id}, username=${username}, firstname=${firstname}, lastname=${lastname}, email=${email}, openIdUser=${openIdUser}, isSubscriber=${newsletterSubscribed}, apiKey=${apiKey}]"
     }
 
     // Utility method to get first name and last name if present or username if not

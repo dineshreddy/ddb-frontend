@@ -13,18 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
-<g:each var="item" in="${entity.searchPreview.items}">
-  <li class="preview-item">
-    <div class="preview-item-image">
-      <g:link controller="item" action="findById" params="${["id": item.id]}">
-        <img src="${request.getContextPath() + item.preview.thumbnail}" alt="${item.label}" />
-      </g:link>
-    </div>
-    <div class="preview-item-label">
-      <g:link controller="item" action="findById" params="${["id": item.id]}">
-        <g:truncateItemTitle title="${item.label}" length="${ 40 }"></g:truncateItemTitle>        
-      </g:link>
-    </div>
-  </li>
-</g:each>
+<div id="items" style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 4212px; height: 210px;">
+	<g:each var="item" in="${entity.searchPreview.items}">
+	    <div class="preview-item">
+	      <g:link controller="item" action="findById" params="${["id": item.id]}">
+	        <img src="${request.getContextPath() + item.preview.thumbnail}" alt="${item.label}" />
+	      </g:link>
+		  <div class="caption">
+		  	<g:truncateItemTitle title="${entity.title}" length="${ 40 }"></g:truncateItemTitle>        
+	      </div>
+	    </div>
+	</g:each>
+</div>
