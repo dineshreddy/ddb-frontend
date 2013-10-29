@@ -14,18 +14,25 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
+
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"></g:set>
+
 <html>
   <head>
+  
     <title>
       <%-- TODO uncomment when username is available: DDBNEXT-866
       <g:message code="ddbnext.Favorites_List_Of" args="${[selectedUser.username]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
       --%>
       <g:message code="ddbnext.Favorites_List" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
+
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
+
+    <g:socialmediaMeta likeTitle="${selectedFolder.title.capitalize()}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+
   </head>
   <body>
     <div class="favorites-results-container public-favorites">
