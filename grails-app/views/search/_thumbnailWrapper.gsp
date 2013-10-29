@@ -20,18 +20,11 @@ limitations under the License.
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
-  <g:isLoggedIn>
-    <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
-    <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-body">
-        <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-      </div>
-    </div>
-  </g:isLoggedIn>
-      <div class="item-options bl">
-      	<ul class="bb">
+  <div style="position: absolute; top: 0; bottom: 0; right: 0; width: 30px;" class="bl">
+      <div class="item-options">
+      	<ul class="item-options-ul">
       		<li>
-     		  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+     		  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn> bb">
 			    <div class="hovercard-info-item" data-iid="${item.id}">
 			      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
 			      <ul class="unstyled">
@@ -43,21 +36,16 @@ limitations under the License.
 			  </div>
       		</li>
       		<li>
-     		  <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn>">
+     		  <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> bb">
 			  </div>
       		</li>
       		<li>
-     		  <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn>">
-			    <div class="hovercard-info-item" data-iid="${item.id}">
-			      <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
-			      <ul class="unstyled">
-			        <li>
-			          <div class="small-loader"></div>
-			        </li>
-			      </ul>
-			    </div>
-			  </div>
+				<g:isLoggedIn>
+				    <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+		
+				  </g:isLoggedIn>
       		</li>
       	</ul>
       </div>
+	</div>
 </div>
