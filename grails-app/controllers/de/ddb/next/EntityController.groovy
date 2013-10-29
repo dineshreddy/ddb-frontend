@@ -57,7 +57,6 @@ class EntityController {
             throw new EntityNotFoundException()
         }
         
-        def xmlDnb = cultureGraphService.getDNBInformation(entityId)
 
         def entityUri = request.forwardURI
 
@@ -85,51 +84,16 @@ class EntityController {
         entity["title"] = jsonGraph[entityType].name
 
         //------------------------- Birth/Death date -------------------------------
-
-        //        entity["dateOfBirth"] = xmlDnb.breadthFirst().find {
-        //            it.name() == "dateOfBirth"
-        //        }[0].text()
-        //        entity["dateOfDeath"] = xmlDnb.breadthFirst().find {
-        //            it.name() == "dateOfDeath"
-        //        }[0].text()
-
         entity["dateOfBirth"] = jsonGraph[entityType].birth
         entity["dateOfDeath"] = jsonGraph[entityType].death
 
         //------------------------- Birth/Death place -------------------------------
-
-        def dnbPlaceOfBirthUrl = xmlDnb.breadthFirst().find {it.name() == "placeOfBirth"}?."@rdf:resource"?.text()
-        if(dnbPlaceOfBirthUrl){
-            def dnbPlaceOfBirthId = dnbPlaceOfBirthUrl.substring(dnbPlaceOfBirthUrl.lastIndexOf("/")+1)
-            def xmlDnbPlaceOfBirth = cultureGraphService.getDNBInformation(dnbPlaceOfBirthId)
-            entity["placeOfBirth"] = xmlDnbPlaceOfBirth.breadthFirst().find {
-                it.name() == "preferredNameForThePlaceOrGeographicName"
-            }[0].text()
-        }
-
-        def dnbPlaceOfDeathUrl = xmlDnb.breadthFirst().find {it.name() == "placeOfDeath"}?."@rdf:resource"?.text()
-        if(dnbPlaceOfDeathUrl){
-            def dnbPlaceOfDeathId = dnbPlaceOfDeathUrl.substring(dnbPlaceOfDeathUrl.lastIndexOf("/")+1)
-            def xmlDnbPlaceOfDeath = cultureGraphService.getDNBInformation(dnbPlaceOfDeathId)
-            entity["placeOfDeath"] = xmlDnbPlaceOfDeath.breadthFirst().find {
-                it.name() == "preferredNameForThePlaceOrGeographicName"
-            }[0].text()
-        }
-
+        entity["placeOfBirth"] = "Freiburg im Breisgau" //TODO get value from culturegraph service
+        entity["placeOfDeath"] = "Hamburg" //TODO get value from culturegraph service
+        
         //------------------------- Professions -------------------------------
 
-        //        def dnbProfessionUrls = xmlDnb.breadthFirst().findAll {it.name() == "professionOrOccupation"}."@rdf:resource".collect {it.text()}
-        //        def dnbProfessionIds = dnbProfessionUrls.collect {it.substring(it.lastIndexOf("/")+1)}
-        //
-        //        def professions = []
-        //        dnbProfessionIds.each {
-        //            def xmlProfession = cultureGraphService.getDNBInformation(it)
-        //            def professionName = xmlProfession.breadthFirst().find {it.name() == "preferredNameForTheSubjectHeading"}[0].text()
-        //            professions.add(professionName)
-        //        }
-        //
-        //        entity["professions"] = professions.join(', ')
-
+        entity["professions"] = "Schriftsteller" //TODO get value from culturegraph service
         entity["description"] = jsonGraph[entityType].description
 
         //------------------------- Search preview -------------------------------
@@ -237,7 +201,7 @@ class EntityController {
         
         def searchUrlParameter = []
         
-        def gndUrl = configurationService.getDnbUrl() + "/gnd/"
+        def gndUrl = CultureGraphService.GND_URI_PREFIX
         
         if (normdata) {
             searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : (gndUrl + entityid)]
