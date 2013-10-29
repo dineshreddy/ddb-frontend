@@ -103,6 +103,7 @@ hr {
   text-align: right;
   display: inline-block;
   float: right;
+  margin-top: 20px;
 }
 
 .favorites-results-container .page-filter,.sort-results-switch {

@@ -78,33 +78,37 @@ limitations under the License.
       </div>
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
-          <div class="folder-information bt bb bl br">
-            <%-- TODO uncomment when username is available: DDBNEXT-866
-            <g:message code="ddbnext.List_Of"/> ${selectedUser.username}
-            <br />
-            <br />          
-            --%>
-            <g:message code="ddbnext.Create_Folder_Description"/>:
-            <br />
-            ${selectedFolder.description}
-          </div>
-          <div class="folder-information bt bb bl br">
-            <%-- TODO uncomment when username is available: DDBNEXT-866
-            <g:message code="ddbnext.Other_Lists_Of"/> ${selectedUser.username}:
-            --%>
-            <g:message code="ddbnext.Other_Lists_Of"/>:
-            <ul>
-              <g:each var="publicFolder" in="${publicFolders}">
-                <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
-                  <li>
-                    <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
-                      ${publicFolder.title}
-                    </g:link>
-                  </li>
-                </g:if>
-              </g:each>
+          <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
+            <div class="folder-information bt bb bl br">
+              <%-- TODO uncomment when username is available: DDBNEXT-866
+              <g:message code="ddbnext.List_Of"/> ${selectedUser.username}
+              <br />
+              <br />          
+              --%>
+              <g:message code="ddbnext.Create_Folder_Description"/>:
+              <br />
+              ${selectedFolder.description}
+            </div>
+          </g:if>
+          <g:if test="${publicFolders != null && publicFolders.size() > 1}">
+            <div class="folder-information bt bb bl br">
+              <%-- TODO uncomment when username is available: DDBNEXT-866
+              <g:message code="ddbnext.Other_Lists_Of"/> ${selectedUser.username}:
+              --%>
+              <g:message code="ddbnext.Other_Lists_Of"/>:
+              <ul>
+                <g:each var="publicFolder" in="${publicFolders}">
+                  <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
+                    <li>
+                      <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
+                        ${publicFolder.title}
+                      </g:link>
+                    </li>
+                  </g:if>
+                </g:each>
             </ul>
           </div>
+          </g:if>
           <div class="folder-information bt bb bl br">        
             <a href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
