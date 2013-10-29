@@ -56,6 +56,13 @@ limitations under the License.
                   </ul>
                 </div>
               </g:if>
+              <g:if test="${flash.message}">
+                <div class="messages-container">
+                  <ul class="unstyled">
+                    <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
+                  </ul>
+                </div>
+              </g:if>
               <div class="input-prepend">
                 <input type="checkbox" class="api-checkbox" name="apiConfirmation">
               </div>
