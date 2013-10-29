@@ -180,6 +180,19 @@ a {
   <![endif]-->
 </head>
 <body style="font-family: Calibri, Arial, sans-serif;">
-  <g:message code="ddbnext.Api_Key_Send_Mail_Body" /> ${user.apiKey }
+  <div>
+    <g:message code="ddbnext.Api_Access_Of"/> ${user.getFirstnameAndLastnameOrNickname()}
+  </div>
+  <br />            
+  <div>
+    <g:message code="ddbnext.Api_Key_Send_Mail_Body" /> ${user.apiKey }
+  </div>
+  <br />            
+  <div>
+    <g:message code="ddbnext.Api_Agreed" />
+    <br />            
+    <g:message code="ddbnext.Api_Dokumentation" />
+  </div>            
+  
 </body>
 </html>

@@ -95,7 +95,6 @@ class UserController {
                 loginStatus = LoginStatus.FAILURE
             }
 
-            println "################################ 01 "+user
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
@@ -740,49 +739,66 @@ class UserController {
 
     def showApiKey() {
         log.info "showApiKey()"
-        User user = getUserFromSession()
-        def apiKey = user.apiKey
+        if (isUserLoggedIn()) {
 
-        if(apiKey){
-            render(view: "apiKey", model: [user: user])
+            User user = getUserFromSession()
+            def apiKey = user.apiKey
+
+            if(apiKey){
+                render(view: "apiKey", model: [user: user])
+            }else{
+                render(view: "requestApiKey", model: [:])
+            }
         }else{
-            render(view: "requestApiKey", model: [:])
+            redirect(controller:"user", action:"index")
         }
+
     }
 
     def requestApiKey() {
         log.info "requestApiKey()"
 
-        def isConfirmed = false
-        if(params.apiConfirmation){
-            isConfirmed = true
-        }
+        if (isUserLoggedIn()) {
+            def isConfirmed = false
+            if(params.apiConfirmation){
+                isConfirmed = true
+            }
 
-        if(isConfirmed){
-            User user = getUserFromSession()
-            String newApiKey = aasService.createApiKey()
+            if(isConfirmed){
+                User user = getUserFromSession()
+                String newApiKey = aasService.createApiKey()
 
-            println "############################# 02 "
+                JSONObject aasUser = aasService.getPerson(user.getId())
+                aasUser.put(AasService.APIKEY_FIELD, newApiKey)
+                aasService.updatePerson(user.getId(), aasUser)
+                user.setApiKey(newApiKey)
 
-            JSONObject aasUser = aasService.getPerson(user.getId())
-            aasUser.put(AasService.APIKEY_FIELD, newApiKey)
-            aasService.updatePerson(user.getId(), aasUser)
-            user.setApiKey(newApiKey)
-
-            println "############################# 09 "
-            log.info "requestApiKey(): temporarily created a dummy key "+newApiKey
-            sendApiKeyPerMail(user)
+                sendApiKeyPerMail(user)
+            }else{
+                flash.error = "ddbnext.Api_Not_Confirmed"
+            }
+            redirect(controller: 'user', action: 'showApiKey')
         }else{
-            flash.error = "ddbnext.Api_Not_Confirmed"
+            redirect(controller:"user", action:"index")
         }
-        redirect(controller: 'user', action: 'showApiKey')
     }
 
     def deleteApiKey() {
         log.info "deleteApiKey()"
-        User user = getUserFromSession()
-        user.apiKey = null  // TODO this is just a workaround dummy until the AAS delivers the API-Key
-        redirect(controller: 'user', action: 'showApiKey')
+        if (isUserLoggedIn()) {
+            User user = getUserFromSession()
+
+            JSONObject aasUser = aasService.getPerson(user.getId())
+            aasUser.put(AasService.APIKEY_FIELD, null)
+            aasService.updatePerson(user.getId(), aasUser)
+            user.setApiKey(null)
+
+            flash.message = "ddbnext.Api_Deleted"
+
+            redirect(controller: 'user', action: 'showApiKey')
+        }else{
+            redirect(controller:"user", action:"index")
+        }
     }
 
     private def sendApiKeyPerMail(User user) {

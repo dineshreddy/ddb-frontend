@@ -55,9 +55,11 @@ limitations under the License.
                 <a class="profile-link" title="<g:message code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
                     <g:message code="ddbnext.Searches" /> (${savedSearchesCount})
                 </a>
-                <a class="profile-link" title="<g:message code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
-                    <g:message code="ddbnext.Api_Access" /> 
-                </a>
+                <g:if test="${user.openIdUser != true}">
+                  <a class="profile-link" title="<g:message code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
+                      <g:message code="ddbnext.Api_Access" /> 
+                  </a>
+                </g:if>
                 <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
                     <g:message code="ddbnext.Change_Password_Link" />
                 </a>
