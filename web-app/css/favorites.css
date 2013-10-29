@@ -490,7 +490,12 @@ hr {
   cursor: pointer;
 }
 
+#folder-create #button-new.submit {
+  width: 100%;
+}
+
 /* responsive */
+
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
