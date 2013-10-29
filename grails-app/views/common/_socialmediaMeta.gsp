@@ -16,5 +16,5 @@ limitations under the License.
 
 <meta property="og:url" content="${likeUrl}"/>
 <meta property="og:title" content="${likeTitle}" />
-<meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
+<meta property="og:image" content="${g.baseUrl() + resource(dir: "images", file: "logo_social.png")}" />
 <meta property="og:description" content="" />
