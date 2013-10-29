@@ -95,11 +95,13 @@ $(document).ready(function(){
       if(this.urlToLike != null) {
         urlSelf = this.urlToLike;
       }
+      console.log("integrateSocialCodeInPage(): "+urlSelf);
       var urlSelfEncoded = encodeURIComponent(urlSelf);
       var pageTitle = encodeURIComponent(window.document.title);
       if(this.titleToLike != null){
         pageTitle = encodeURIComponent(this.titleToLike);
       }
+      console.log("integrateSocialCodeInPage(): "+pageTitle);
       var serverUrl = encodeURIComponent(window.location.protocol+"//"+window.location.hostname);
       var languageISO2 = $(".socialmedia").attr("data-lang-iso2");
       var languageFull = $(".socialmedia").attr("data-lang-full");
@@ -156,10 +158,13 @@ $(document).ready(function(){
       if(likeTitle != null && likeTitle != ""){
         this.titleToLike = likeTitle;
       }
+      console.log("removeSocialMediaCookie(): "+likeTitle);
+
       var likeUrl = $("meta[property='og:url']").attr("content");
       if(likeUrl != null && likeUrl != ""){
         this.urlToLike = likeUrl;
       }
+      console.log("removeSocialMediaCookie(): "+likeUrl);
     }
     
   });
