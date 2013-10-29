@@ -18,10 +18,8 @@ $(function() {
 
   if (jsPageName == "favorites") {
     
-    var publicPageLink = $(".popup-dialog-wrapper input").val()
-    var publicPageTitle = $(".page-link-popup-anchor").attr("data-title");
     var socialMediaManager = new SocialMediaManager();
-    socialMediaManager.integrateSocialMediaWithPresets(publicPageLink, publicPageTitle);
+    socialMediaManager.integrateSocialMedia();
     
     
     $('.page-input').removeClass('off');   

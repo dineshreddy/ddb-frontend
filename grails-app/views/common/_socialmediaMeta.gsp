@@ -13,11 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="row item-detail">
 
-  <div class="span6 share">
-
-    <g:socialmediaBody />
-  
-  </div>
-</div>
+<meta property="og:url" content="${likeUrl}"/>
+<meta property="og:title" content="${likeTitle}" />
+<meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
+<meta property="og:description" content="" />

@@ -13,14 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
-  
-  if(jsPageName == "item"){
-    
-    var socialMediaManager = new SocialMediaManager();
-    socialMediaManager.integrateSocialMedia();
-    
-    
-  }
-  
-});
+
+package de.ddb.next
+
+class SocialmediaTagLib {
+
+    def configurationService
+
+    def socialmediaMeta = { attrs, body ->
+        def likeUrl = attrs.likeUrl
+        def likeTitle = attrs.likeTitle
+
+        out << render(template:"/common/socialmediaMeta", model:[likeUrl: likeUrl, likeTitle: likeTitle])
+    }
+
+    def socialmediaBody = { attrs, body ->
+        out << render(template:"/common/socialmediaBody", model:[errors: attrs.errors])
+    }
+}
