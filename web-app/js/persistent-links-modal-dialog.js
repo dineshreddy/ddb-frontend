@@ -75,7 +75,7 @@ $.extend(PopupManager.prototype, {
     popupDialogCloseButton.appendTo(popupDialogWrapper);
     popupDialogFooter.appendTo(popupDialogWrapper);
 
-    popupDialogWrapper.css('margin-left', offsetX + 'px');
+    //popupDialogWrapper.css('margin-left', offsetX + 'px');
     popupDialogWrapper.css('margin-top', offsetY + 'px');
 
     popupDialogWrapper.insertAfter(anchorTag);
