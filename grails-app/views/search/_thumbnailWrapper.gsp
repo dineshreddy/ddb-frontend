@@ -35,9 +35,9 @@ limitations under the License.
               </div>
             </div>
           </li>
-          <li>
+      <!--<li>
             <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> bb"></div>
-          </li>
+          </li>   -->  
           <li>
             <g:isLoggedIn>
               <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
