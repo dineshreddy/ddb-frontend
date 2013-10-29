@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.next.exception.EntityNotFoundException
+
 class EntityController {
 
     def cultureGraphService
@@ -52,8 +54,7 @@ class EntityController {
 
         //Forward to a 404 page if the entityId is not known by the culture graph service
         if (jsonGraph == null) {
-            forward controller: "error", action: "entityNotFound"
-            return
+            throw new EntityNotFoundException()
         }
         
         def xmlDnb = cultureGraphService.getDNBInformation(entityId)
