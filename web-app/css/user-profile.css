@@ -26,9 +26,9 @@
 }
 
 #user-profile-form .profile-nav {
-  margin-bottom: 20px;
   line-height: 40px;
   display: block;
+  padding-bottom: 15px;
 }
 
 #user-profile-form .profile-title, #user-profile-form .profile-links{
@@ -50,8 +50,17 @@
   padding-top: 30px;
 }
 
+#user-profile-form .control-groups {
+  margin-top: 40px;
+  position: relative;
+}
+
 #user-profile-form .profile-links {
+  width: 160px;
   padding-top: 10px;
+  position: absolute;
+  right: 0;
+  top: -40px;
 }
 
 #user-profile-form .privacylink {
@@ -73,6 +82,12 @@
   #user-profile-form label.checkbox-label {
     width: 36%;
   }
+  #user-profile-form .profile-links {
+    top: 220px;
+  }
+  #user-profile-form .well {
+    padding-bottom:70px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -85,5 +100,8 @@
   }
   #newsletter {
     margin: 0 0 0;
+  }
+  #user-profile-form .profile-links {
+    top: 315px;
   }
 }
