@@ -66,7 +66,9 @@
             $("#favoriteId").val(itemId);
             $("#addToFavoritesConfirm").click(function() {
               $("#favorite-confirmation").modal("hide");
-              $.post(jsContextPath + "/apis/favorites/folders/" + $("#favorite-folders").val() + "/" + itemId);
+              $.each($("#favorite-folders").val(), function(index, value) {
+                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
+              });
             });
           }
           else {
