@@ -110,7 +110,7 @@ limitations under the License.
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">        
-            <a href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
             </a>
           </div>
