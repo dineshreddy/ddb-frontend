@@ -153,7 +153,7 @@ limitations under the License.
                     </b>
                   </g:else>
                 </div> 
-                <div class="fav-number bookmarks-list-number"> ${it.count}</div>
+                <div class="fav-number"> ${it.count}</div>
                 <%-- 
                 <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
                   <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
