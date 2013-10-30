@@ -922,7 +922,6 @@ input[type="checkbox"],input[type="radio"] {
 
 @media (max-width: 767px) {
   .summary .extra,
-  .search-results .results-list .summary .information,
   .results-paginator-options, 
   .results-paginator-view .group-actions,
   .results-paginator-view,
