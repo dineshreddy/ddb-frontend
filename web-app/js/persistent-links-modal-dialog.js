@@ -25,7 +25,7 @@ $(document).ready(
       var title = $(document.createElement('a'));
       title.addClass('page-link');
       var titleString = $(document.createElement('span'));
-      titleString.html(messages.ddbnext.CulturalItem_LinkToThisPage_Label);
+      titleString.html(popupAnchor.children("span")[0].innerHTML);
       titleString.appendTo(title);
       var popupManager = new PopupManager();
       popupManager.registerPopup(popupAnchor[0], title, content, 162, -31);
