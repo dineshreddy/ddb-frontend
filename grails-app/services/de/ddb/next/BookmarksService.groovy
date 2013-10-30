@@ -120,7 +120,11 @@ class BookmarksService {
                         it._source.isPublic,
                         it._source.publishingName
                         )
-                folderList.add(folder)
+                if(folder.isValid()){
+                    folderList.add(folder)
+                }else{
+                    log.error "findAllFolders(): found corrupt folder: "+folder
+                }
             }
         }
         return folderList
@@ -166,7 +170,12 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                all.add(bookmark)
+
+                if(bookmark.isValid()){
+                    all.add(bookmark)
+                }else{
+                    log.error "findBookmarksByFolderId(): found corrupt bookmark: "+bookmark
+                }
             }
         }
         return all
@@ -199,7 +208,11 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                all.add(bookmark)
+                if(bookmark.isValid()){
+                    all.add(bookmark)
+                }else{
+                    log.error "findBookmarksByPublicFolderId(): found corrupt bookmark: "+bookmark
+                }
             }
         }
 
@@ -285,7 +298,12 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                bookmarks.add(bookmark)
+
+                if(bookmark.isValid()){
+                    bookmarks.add(bookmark)
+                }else{
+                    log.error "findBookmarkedItems(): found corrupt bookmark: "+bookmark
+                }
             }
         }
 
@@ -359,7 +377,12 @@ class BookmarksService {
                         it._source.publishingName
                         )
 
-                all.add(folder)
+
+                if(folder.isValid()){
+                    all.add(folder)
+                }else{
+                    log.error "findFoldersByTitle(): found corrupt folder: "+folder
+                }
             }
 
             log.info "found #folder: ${all.size()} with the title ${title}"
@@ -403,7 +426,12 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                all.add(bookmark)
+
+                if(bookmark.isValid()){
+                    all.add(bookmark)
+                }else{
+                    log.error "findBookmarksByUserId(): found corrupt bookmark: "+bookmark
+                }
             }
         }
 
@@ -437,7 +465,7 @@ class BookmarksService {
     List findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
         log.info "findBookmarkedItemsInFolder(): itemIdList ${itemIdList}"
 
-        def bookmarks = []
+        def all = []
 
         def queryParameter = [:]
         if(folderId) {
@@ -466,11 +494,15 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                bookmarks.add(bookmark)
+                if(bookmark.isValid()){
+                    all.add(bookmark)
+                }else{
+                    log.error "findBookmarkedItemsInFolder(): found corrupt bookmark: "+bookmark
+                }
             }
         }
 
-        return bookmarks
+        return all
     }
 
     List findBookmarksByItemId(userId, itemId, folderId = null) {
@@ -505,7 +537,13 @@ class BookmarksService {
                         it._source.description,
                         it._source.updatedAt
                         )
-                all.add(bookmark)
+
+                if(bookmark.isValid()){
+                    all.add(bookmark)
+                }else{
+                    log.error "findBookmarksByItemId(): found corrupt bookmark: "+bookmark
+                }
+
             }
         }
 
@@ -565,10 +603,14 @@ class BookmarksService {
                     it._source.description,
                     it._source.updatedAt
                     )
-            return bookmark
-        }else{
-            return null
+
+            if(bookmark.isValid()){
+                return bookmark
+            }else{
+                log.error "findBookmarkById(): found corrupt bookmark: "+bookmark
+            }
         }
+        return null
     }
 
 
@@ -587,10 +629,13 @@ class BookmarksService {
                     it._source.isPublic,
                     it._source.publishingName
                     )
-            return folder
-        } else {
-            return null
+            if(folder.isValid()){
+                return folder
+            }else{
+                log.error "findFolderById(): found corrupt folder: "+folder
+            }
         }
+        return null
     }
 
     Folder findPublicFolderById(folderId) {
@@ -667,4 +712,5 @@ class BookmarksService {
             refresh()
         }
     }
+
 }

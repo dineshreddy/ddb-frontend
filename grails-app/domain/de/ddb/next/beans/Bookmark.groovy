@@ -54,7 +54,9 @@ class Bookmark {
             this.updateDate = new Date(updateDateAsLong)
         }
         this.type = type
-        if(folders instanceof String){
+        if(folders instanceof net.sf.json.JSONNull){
+            this.folders = null
+        }else if(folders instanceof String){
             String folderString = folders.toString()
             if(folderString.startsWith("[")){
                 folderString = folderString.substring(1,folderString.length()-1)
@@ -78,5 +80,17 @@ class Bookmark {
         out["type"] = type
         out["folders"] = folders
         return out
+    }
+
+    boolean isValid() {
+        if(bookmarkId != null
+        && userId != null
+        && itemId != null
+        && creationDate != null
+        && folders != null
+        && updateDate != null){
+            return true
+        }
+        return false
     }
 }
