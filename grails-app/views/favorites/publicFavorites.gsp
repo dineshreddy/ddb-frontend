@@ -31,7 +31,8 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <g:socialmediaMeta likeTitle="${selectedFolder.title.capitalize()}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+      <%-- TODO change to new browser title when username is available: DDBNEXT-866 --%>
+    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List")}" likeUrl="${g.baseUrl() + fullPublicLink}" />
 
   </head>
   <body>
