@@ -13,15 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div id="items" style="text-align: left; float: none; position: absolute; top: 0px; right: auto; bottom: auto; left: 0px; margin: 0px; width: 4212px; height: 210px;">
-	<g:each var="item" in="${entity.searchPreview.items}">
-	    <div class="preview-item">
-	      <g:link controller="item" action="findById" params="${["id": item.id]}">
-	        <img src="${request.getContextPath() + item.preview.thumbnail}" alt="${item.label}" />
-	      </g:link>
-		  <div class="caption">
-		  	<g:truncateItemTitle title="${entity.title}" length="${ 40 }"></g:truncateItemTitle>        
-	      </div>
-	    </div>
-	</g:each>
-</div>
+
+<g:each var="item" in="${entity.searchPreview.items}">   
+    <div class="preview-item">    
+      <g:link controller="item" action="findById" params="${["id": item.id]}">
+        
+        <g:if test="${item.preview.thumbnail != null}">        
+	        <g:if test="${ (item.preview.thumbnail.toString().contains('binary'))}">       
+	        	<img src="${request.getContextPath() + item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        </g:if>
+	        <g:else>       
+	        	<img src="${item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        </g:else>
+        </g:if>
+        
+      </g:link>
+	  
+	  <div class="caption">
+	  	<g:truncateItemTitle title="${item.preview.subtitle}" length="${ 40 }"></g:truncateItemTitle>        
+      </div>
+    </div>
+</g:each>

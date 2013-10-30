@@ -17,76 +17,11 @@ $(document).ready(function(){
   
   if(jsPageName == "entity"){
   
-    var defaultRowCount = 4;
+    var defaultRowCount = 10;
+    
+    var allRowCount = 0;
 
     var offset = 0;
-//    var offset = parseInt(getUrlParam("offset"));
-//    if(!offset) {
-//      offset = 0;
-//    }
-              
-    $(".preview-item-previous").click(function(event){
-      event.preventDefault();
-  
-      var currentOffset = parseInt(getUrlParam("offset"));
-      if(!currentOffset) {
-        currentOffset = 0;
-      }
-  
-      var currentRows = parseInt(getUrlParam("rows"));
-      if(!currentRows) {
-        currentRows = defaultRowCount;
-      }
-      
-      if(currentOffset > 0){
-        currentOffset = currentOffset - currentRows;
-      }
-      if(currentOffset < 0) {
-        currentOffset = 0;
-      }
-  
-      var currentQuery = getUrlParam("query");
-      if(!currentQuery){
-        currentQuery = "*"
-      }
-      
-      var History = window.History;
-      var urlParameters = "?query="+currentQuery+"&offset="+currentOffset+"&rows="+currentRows;
-      History.pushState("", document.title, decodeURI(urlParameters));
-    });
-  
-    $(".preview-item-next").click(function(event){
-      event.preventDefault();
-  
-      var currentOffset = parseInt(getUrlParam("offset"));
-      if(!currentOffset) {
-        currentOffset = 0;
-      }
-  
-      var currentRows = parseInt(getUrlParam("rows"));
-      if(!currentRows) {
-        currentRows = defaultRowCount;
-      }
-      
-      if(currentOffset >= 0){
-        currentOffset = currentOffset + currentRows;
-      }
-      if(currentOffset < 0) {
-        currentOffset = 0;
-      }
-      
-      var currentQuery = getUrlParam("query");
-      if(!currentQuery){
-        currentQuery = "*"
-      }
-  
-      var History = window.History;
-      var urlParameters = "?query="+currentQuery+"&offset="+currentOffset+"&rows="+currentRows;
-      History.pushState("", document.title, decodeURI(urlParameters));
-      
-      getNewSearchResults(currentQuery, currentOffset, currentRows);
-    });
-  
     
     $('.normdata_involved_checkbox').bind('click', function() {
     	var container = $(".works_result");
@@ -139,18 +74,20 @@ $(document).ready(function(){
     
     
     function getNewSearchResults(query, offset, rows){
-      var request = $.ajax({
+    	console.log("Add new items to carousel");
+    	console.log('getNewSearchResults: query='+query+'&offset='+offset+'&rows='+rows )
+    	var request = $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
         url: jsContextPath+'/entity/ajax/searchresults?query='+query+'&offset='+offset+'&rows='+rows,
-        complete: function(data){
+        complete: function(data){          
           var jsonResponse = $.parseJSON(data.responseText);
-          
-          var itemContainer = $(".preview-item-container");
-          itemContainer.empty();
-          itemContainer.html(jsonResponse.html);
-          
+          //  insert an item at the end of the list in the original item order
+          console.log("complete offset:" + offset);
+          $("#items").trigger("insertItem", [jsonResponse.html,"end"]);
+          $("#items").trigger("slideTo", offset -2);
+          allRowCount = jsonResponse.resultCount;
         }
       });
       
@@ -174,7 +111,9 @@ $(document).ready(function(){
     }
 
     function initPage(){
-	    var query = $("#entity-title").html();
+		initCarousel();
+    	
+    	var query = $("#entity-title").html();
 	    var entityid = $("#entity-id").attr("data-entityid");
 	    
 	    var History = window.History;
@@ -182,7 +121,7 @@ $(document).ready(function(){
 	    History.pushState("", document.title, decodeURI(urlParameters));  
 	    
 	    //Initialize Search results
-	    getNewSearchResults(query, offset, defaultRowCount);
+	    getNewSearchResults(query, 0, defaultRowCount);
 	    
 	    //Initialize Search results for facet: affiliate_fct_subject
 	    var containerSubject = $(".themes_result");
@@ -194,8 +133,69 @@ $(document).ready(function(){
 	    var containerInvolved = $(".works_result");
 		facetname = 'affiliate_fct_involved';
 		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
+		
+
     }
     
-    initPage();
+    function initCarousel() {        
+    	var carouselItems = $("#items");
+    	
+    	$('div.carousel').show();
+        
+        if ($(".item .caption").length > 0) {
+            $(".item .caption").dotdotdot({});
+        }
+        
+        $("#next").click(function() {        	
+        	carouselItems.trigger("next", 1);
+        	
+        	var currentLoadItems = $(".preview-item");
+        	console.log("currentLoadItems : " + currentLoadItems.length);
+        	
+        	var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
+        	
+        	var el = currentVisibleItems[currentVisibleItems.length - 1];
+        	
+        	var currentPosition = (function(){ 
+    		  for(var i = 0, max = el.parentNode.childNodes.length; i < max; i++)
+    		   if( el.parentNode.childNodes[i] == el ) return i;
+    		})();
+        	
+        	var nextItem = currentPosition+1; 
+
+        	console.log("last item index: " + currentPosition);
+        	console.log("nextItem: " + nextItem);        	
+        	console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
+        	
+        	if (nextItem >= currentLoadItems.length && nextItem < allRowCount) {
+        	    var query = $("#entity-title").html();
+        	    var entityid = $("#entity-id").attr("data-entityid");
+        	    
+        	    var History = window.History;
+        	    var urlParameters = "?query="+query+"&offset="+currentLoadItems+"&rows="+defaultRowCount;
+        	    History.pushState("", document.title, decodeURI(urlParameters));  
+        	    
+        	    //Initialize Search results
+        	    getNewSearchResults(query, currentPosition+1, defaultRowCount);
+        	}
+        });
+        
+        $("#previous").click(function() {
+        	carouselItems.trigger("prev", 1);
+        	var pos = carouselItems.triggerHandler("currentPosition");
+        	console.log( "The carousel is at item number " + pos );
+        });
+        
+        
+        if (carouselItems.length) {
+            carouselItems.carouFredSel({
+                infinite: false,
+                auto: false,
+                swipe: 1,
+            });
+        }
+    }
+    
+    initPage();    
   }
 });
