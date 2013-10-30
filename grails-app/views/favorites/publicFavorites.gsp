@@ -32,7 +32,7 @@ limitations under the License.
     <meta name="layout" content="main">
 
       <%-- TODO change to new browser title when username is available: DDBNEXT-866 --%>
-    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List")}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List") + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${g.baseUrl() + fullPublicLink}" />
 
   </head>
   <body>
