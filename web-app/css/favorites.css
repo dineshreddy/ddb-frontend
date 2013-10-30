@@ -32,6 +32,27 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-lists .bookmarks-list{
+  display: block;
+  padding: 0 54% 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmarks-lists .bookmarks-list .fav-text{
+  display: inline;
+}
+
+.bookmarks-lists .bookmarks-list .fav-number{
+  display: inline;
+  width: 75px;
+  position:absolute;
+  right:0;
+  text-align: center;
+  margin-right: 44px;
+}
+
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
@@ -61,11 +82,6 @@ hr {
   position:absolute;
   top:0;
   right:0;
-}
-
-.bookmarks-list-number {
-  text-align: center;
-  margin-right: 75px;
 }
 
 .bookmarks-list-envelope {
@@ -505,7 +521,12 @@ hr {
   cursor: pointer;
 }
 
+#folder-create #button-new.submit {
+  width: 100%;
+}
+
 /* responsive */
+
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
