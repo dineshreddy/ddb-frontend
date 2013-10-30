@@ -49,6 +49,7 @@ hr {
   display: inline;
   width: 75px;
 }
+
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
