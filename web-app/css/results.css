@@ -437,13 +437,16 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .thumbnail-wrapper .item-options {
-	position: relative;
-	width: 30px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30px;
 }
 
 .thumbnail-wrapper .item-options-ul {
-	list-style-type: none;
-	margin: 0 0 0 0;
+  list-style-type: none;
+  margin: 0 0 0 0;
 }
 
 .search-results .results-list .matches {

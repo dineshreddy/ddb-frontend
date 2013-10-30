@@ -20,49 +20,47 @@ limitations under the License.
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
     </g:link>
   </div>
-  <div style="position: absolute; top: 0; bottom: 0; right: 0; width: 30px;" class="bl">
-      <div class="item-options">
-        <ul class="item-options-ul">
-          <li>
-            <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn> bb">
-              <div class="hovercard-info-item" data-iid="${item.id}">
-                <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
-                <ul class="unstyled">
-                  <li>
-                    <div class="small-loader"></div>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </li>
-      <!--<li>
-            <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> bb"></div>
-          </li>   -->  
-          <li>
-            <g:isLoggedIn>
-              <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
-              <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-body">
-                  <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                  <g:hasPersonalFavorites>
-                    <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
-                    <g:select name="favorite-folders" from="" multiple="true"/>
-                  </g:hasPersonalFavorites>
-                  <g:hasPersonalFavorites>
-                    <div class="modal-footer">
-                      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                        <g:message code="ddbnext.Close"/>
-                      </button>
-                      <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-                        <g:message code="ddbnext.Save"/>
-                      </button>
-                    </div>
-                  </g:hasPersonalFavorites>
+  <div class="item-options <g:if test="${viewType != 'grid'}">bl</g:if>">
+    <ul class="item-options-ul">
+      <li>
+        <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>">
+          <div class="hovercard-info-item" data-iid="${item.id}">
+            <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
+            <ul class="unstyled">
+              <li>
+                <div class="small-loader"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </li>
+  <!--<li> 
+        <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>"></div>
+      </li>   -->  
+      <g:isLoggedIn>
+        <li>
+          <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+          <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body">
+              <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+              <g:hasPersonalFavorites>
+                <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
+                <g:select name="favorite-folders" from="" multiple="true"/>
+              </g:hasPersonalFavorites>
+              <g:hasPersonalFavorites>
+                <div class="modal-footer">
+                  <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+                    <g:message code="ddbnext.Close"/>
+                  </button>
+                  <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+                    <g:message code="ddbnext.Save"/>
+                  </button>
                 </div>
-              </div>
-            </g:isLoggedIn>
-          </li>
-        </ul>
-      </div>
+              </g:hasPersonalFavorites>
+            </div>
+          </div>
+        </li>
+      </g:isLoggedIn>
+    </ul>
   </div>
 </div>
