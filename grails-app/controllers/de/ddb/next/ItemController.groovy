@@ -211,7 +211,7 @@ class ItemController {
     def createEntityLinks(fields){
         fields.each {
             def valueTag = it.value
-            def resource = valueTag?.'@ns2:resource'
+            def resource = valueTag?.'@rdf:resource'
             if(resource != null && !resource.isEmpty()){
                 def entityId = cultureGraphService.getGndIdFromGndUri(resource.toString())
                 it.value.@entityId = entityId
