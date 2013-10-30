@@ -123,7 +123,7 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolder.folderId}">
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
-                <span class="h3"> 
+                <div style="display: inline"> 
                   <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                   
                     <g:set var="folderTooltip" value="${it.folder.description}" />
@@ -152,8 +152,8 @@ limitations under the License.
                       </a>
                     </b>
                   </g:else>
-                </span> 
-                <span class="bookmarks-list-number"> ${it.count}</span>
+                </div> 
+                <div style="display: inline; width: 75px;"> ${it.count}</div>
                 <%-- 
                 <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
                   <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
@@ -185,7 +185,7 @@ limitations under the License.
                   </button>
                 </g:form>
               </span>
-            </li> 
+            </li>
           </ul>
         </div>
         <div class="span9 favorites-results-content">

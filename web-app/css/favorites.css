@@ -32,6 +32,15 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-lists .bookmarks-list{
+  z-index: 10;
+  display: block;
+  padding: 0 37% 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
