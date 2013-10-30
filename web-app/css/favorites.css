@@ -41,6 +41,14 @@ hr {
   white-space: nowrap;
 }
 
+.bookmarks-lists .bookmarks-list .fav-text{
+  display: inline;
+}
+
+.bookmarks-lists .bookmarks-list .fav-number{
+  display: inline;
+  width: 75px;
+}
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
