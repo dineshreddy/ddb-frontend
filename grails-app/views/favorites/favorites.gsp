@@ -123,26 +123,28 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolder.folderId}">
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
-                <span class="h3"> 
-                  <g:if test="${it.folder.folderId != selectedFolder.folderId }">
+                <span class="h3">
+                 
+                  <g:set var="folderTooltip" value="${it.folder.description}" />
+                  <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                    <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
+                  </g:if>
                   
-                    <g:set var="folderTooltip" value="${it.folder.description}" />
+                  <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
-                    </g:if>
-                    
-                    <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
-                      <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
                         <g:message code="ddbnext.All_Favorites" />
-                      </g:if>
-                      <g:else>
+                      </g:link>
+                    </g:if>
+                    <g:else>
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
                         ${it.folder.title.capitalize()}
-                      </g:else>
-                    </g:link>
+                      </g:link>
+                    </g:else>
                   </g:if>
                   <g:else>
                     <b>
-                      <a title="${it.folder.description}">
+                      <a title="${folderTooltip}">
                         <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                           <g:message code="ddbnext.All_Favorites" />
                         </g:if>
