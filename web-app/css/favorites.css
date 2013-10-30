@@ -34,7 +34,7 @@ hr {
 
 .bookmarks-lists .bookmarks-list{
   display: block;
-  padding: 0 37% 0 10px;
+  padding: 0 54% 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -82,7 +82,7 @@ hr {
 
 .bookmarks-list-number {
   text-align: center;
-  margin-right: 75px;
+  margin-right: 44px;
 }
 
 .bookmarks-list-envelope {
