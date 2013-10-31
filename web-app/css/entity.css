@@ -67,6 +67,9 @@
   max-height: 105px;
   height: 105px;
   max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;  
 }
 
 .entity-page .caption {
