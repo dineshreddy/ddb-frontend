@@ -402,8 +402,11 @@ function searchResultsInitializer(){
     $('#view-grid').removeAttr('disabled');
     $('.search-results').fadeOut('fast', function(){
       $('.results-list .summary').addClass('row');
-      $('.summary-main-wrapper').addClass('span7');
-      $('.thumbnail-wrapper').addClass('span2');
+      $('.summary-main-wrapper').addClass('span6');
+      $('.thumbnail-wrapper').addClass('span3');
+      $('.results-list .item-options').not('.entity-list .item-options').addClass('bl');
+      $('.results-list .item-options .information').not('.entity-list .item-options .information').addClass('bb');
+      $('.results-list .item-options .compare').not('.entity-list .item-options .compare').addClass('bb');
       $('.results-list').removeClass("grid");
       $('.search-results').fadeOut('fast');
       $('.summary .thumbnail-wrapper').each(function(){
@@ -419,7 +422,7 @@ function searchResultsInitializer(){
     $('.results-list a').each(function(){
       this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=list'));
+    $('.clear-filters a').attr('href', $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i,'viewType=list'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
   });
@@ -484,8 +487,11 @@ function searchResultsInitializer(){
     $('.search-results').fadeOut('fast', function(){
       // For no special line view of entity search results in grid -> remove the not() statements again 
       $('.results-list .summary').not('.entity-list .summary').removeClass('row');
-      $('.results-list .summary-main-wrapper').not('.entity-list .summary-main-wrapper').removeClass('span7');
-      $('.results-list .thumbnail-wrapper').not('.entity-list .thumbnail-wrapper').removeClass('span2');
+      $('.results-list .summary-main-wrapper').not('.entity-list .summary-main-wrapper').removeClass('span6');
+      $('.results-list .thumbnail-wrapper').not('.entity-list .thumbnail-wrapper').removeClass('span3');
+      $('.results-list .item-options').not('.entity-list .item-options').removeClass('bl');
+      $('.results-list .item-options .information').not('.entity-list .item-options .information').removeClass('bb');
+      $('.results-list .item-options .compare').not('.entity-list .item-options .compare').removeClass('bb');
       $('.results-list').not('.entity-list').addClass("grid");
       $('.search-results').fadeOut('fast');
       $('.results-list .summary .summary-main-wrapper').not('.entity-list .summary .summary-main-wrapper').each(function(){
@@ -501,7 +507,7 @@ function searchResultsInitializer(){
     $('.results-list a').each(function(){
       this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=grid'));
+    $('.clear-filters a').attr('href', $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i,'viewType=grid'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
     historyedited= true;
@@ -1009,7 +1015,7 @@ function searchResultsInitializer(){
       //fetch all role facets asynchronusly. The success method will select all facet values
       currObjInstance.fetchRoleFacets(connectedflyoutWidget);
         
-      $('.clear-filters').removeClass('off');      
+      $('.clear-filters').removeClass('off');
     },
     
     initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
