@@ -47,4 +47,12 @@ class Folder {
             this.publishingName = publishingName
         }
     }
+
+    boolean isValid(){
+        if(folderId != null
+        && userId != null) {
+            return true
+        }
+        return false
+    }
 }
