@@ -554,7 +554,7 @@ input[type="checkbox"],input[type="radio"] {
   }
   .search-results .results-list .summary .added-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat -6px -5px;
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px 0px;
   }
 }
 
