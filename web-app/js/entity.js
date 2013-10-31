@@ -74,8 +74,6 @@ $(document).ready(function(){
     
     
     function getNewSearchResults(query, offset, rows){
-    	console.log("Add new items to carousel");
-    	console.log('getNewSearchResults: query='+query+'&offset='+offset+'&rows='+rows )
     	var request = $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -83,13 +81,17 @@ $(document).ready(function(){
         url: jsContextPath+'/entity/ajax/searchresults?query='+query+'&offset='+offset+'&rows='+rows,
         complete: function(data){          
           var jsonResponse = $.parseJSON(data.responseText);
-          //  insert an item at the end of the list in the original item order
-          console.log("complete offset:" + offset);
-          $("#items").trigger("insertItem", [jsonResponse.html,"end"]);
-          $("#items").trigger("slideTo", offset -2);
+          var items = $.parseHTML(jsonResponse.html);
+          
+          $.each(items, function(index, value) {        	          	  
+        	  if (value.tagName == 'DIV') {
+        		  $("#items").triggerHandler("insertItem", [value, "end", true]);
+        	  }
+          });
+          
           allRowCount = jsonResponse.resultCount;
         }
-      });
+    	});
       
     }
     
@@ -150,40 +152,31 @@ $(document).ready(function(){
         	carouselItems.trigger("next", 1);
         	
         	var currentLoadItems = $(".preview-item");
-        	console.log("currentLoadItems : " + currentLoadItems.length);
         	
         	var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
-        	
-        	var el = currentVisibleItems[currentVisibleItems.length - 1];
-        	
-        	var currentPosition = (function(){ 
-    		  for(var i = 0, max = el.parentNode.childNodes.length; i < max; i++)
-    		   if( el.parentNode.childNodes[i] == el ) return i;
-    		})();
-        	
-        	var nextItem = currentPosition+1; 
+        	var numberOfVisibleItems = currentVisibleItems.length;
 
-        	console.log("last item index: " + currentPosition);
-        	console.log("nextItem: " + nextItem);        	
+        	var currentPosition = carouselItems.triggerHandler("currentPosition");
+        	var nextVisbleItem = currentPosition + numberOfVisibleItems;
+        	
+        	//TODO remove the log        	        	
         	console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
         	
-        	if (nextItem >= currentLoadItems.length && nextItem < allRowCount) {
+        	if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
         	    var query = $("#entity-title").html();
         	    var entityid = $("#entity-id").attr("data-entityid");
         	    
         	    var History = window.History;
-        	    var urlParameters = "?query="+query+"&offset="+currentLoadItems+"&rows="+defaultRowCount;
+        	    var urlParameters = "?query="+query+"&offset=" + currentLoadItems.length +"&rows=" + defaultRowCount;
         	    History.pushState("", document.title, decodeURI(urlParameters));  
         	    
         	    //Initialize Search results
-        	    getNewSearchResults(query, currentPosition+1, defaultRowCount);
-        	}
+        	    getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
+        	}        	
         });
         
         $("#previous").click(function() {
         	carouselItems.trigger("prev", 1);
-        	var pos = carouselItems.triggerHandler("currentPosition");
-        	console.log( "The carousel is at item number " + pos );
         });
         
         
@@ -191,7 +184,13 @@ $(document).ready(function(){
             carouselItems.carouFredSel({
                 infinite: false,
                 auto: false,
-                swipe: 1,
+                scroll: 1,
+                prev    : {
+                    button : "#previous",
+                },
+                next    : { 
+                    button  : "#next",
+                }
             });
         }
     }
