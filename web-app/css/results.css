@@ -547,19 +547,19 @@ input[type="checkbox"],input[type="radio"] {
   background: url("../images/icons/item_actions_sprite.png") no-repeat 0 0;
 }
 
+.search-results .results-list .summary .added-to-favorites:hover {
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -30px;
+}
+
 @media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
   .search-results .results-list .summary .add-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -65px;
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px -60px;
   }
   .search-results .results-list .summary .added-to-favorites {
     width: 40px;
     background: url("../images/icons/item_actions_sprite.png") no-repeat 0px 0px;
   }
-}
-
-.search-results .results-list .summary .added-to-favorites:hover {
-    background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -30px;
 }
 
 .search-noresults-content .noresults {
