@@ -897,6 +897,9 @@ input[type="checkbox"],input[type="radio"] {
 
 /* responsive */
 @media (max-width: 979px) {
+   .search-results-list .summary .thumbnail{
+     margin-right: 40px;
+   }
    .search-results .results-list .thumbnail .persist {
      display: inline;
    }
