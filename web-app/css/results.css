@@ -960,6 +960,10 @@ input[type="checkbox"],input[type="radio"] {
   .search-results .results-list li:first-child {
     border-top: none;
   }
+  
+  .search-results .summary-main {
+    margin-right: 40px;
+  }
 }
 
 @media (min-width: 480px) {
