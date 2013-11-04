@@ -164,8 +164,6 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
         
-        println entity
-        
         //Replace all the newlines. The resulting html is better parsable by JQuery
         def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
 
