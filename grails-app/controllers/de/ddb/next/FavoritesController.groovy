@@ -95,7 +95,7 @@ class FavoritesController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,"desc","title",0, user.id, selectedFolder.folderId),
-                baseDomain: configurationService.getFavoritesBasedomain(),
+                baseDomain: configurationService.getContextUrl(),
             ])
             return
         }else{
@@ -194,7 +194,7 @@ class FavoritesController {
                 urlsForOrderTitle: urlsForOrderTitle,
                 urlsForOrder: urlsForOrder,
                 fullPublicLink: fullPublicLink,
-                baseDomain: configurationService.getFavoritesBasedomain(),
+                baseDomain: configurationService.getContextUrl(),
             ])
         }
 

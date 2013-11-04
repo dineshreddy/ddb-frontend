@@ -143,7 +143,6 @@ environments {
 
 //DDB SPECIFIC Configuration variables
 //The variables have to be overwritten by defining local configurations, see below environments
-ddb.self.base.url="http://localhost:8080"
 ddb.binary.url="http://localhost/binary/"
 ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
@@ -164,7 +163,6 @@ ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
-ddb.favorites.basedomain="http://localhost:8080"
 ddb.culturegraph.features.enabled=false
 
 // The grails.serverURL is required for the PDF rendering plugin.

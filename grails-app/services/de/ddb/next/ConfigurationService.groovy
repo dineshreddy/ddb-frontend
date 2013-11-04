@@ -19,6 +19,7 @@ package de.ddb.next
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 import de.ddb.next.exception.ConfigurationException
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 /**
  * Service for accessing the configuration.
@@ -28,6 +29,7 @@ import de.ddb.next.exception.ConfigurationException
 class ConfigurationService {
 
     def grailsApplication
+    def LinkGenerator grailsLinkGenerator
 
     def transactional=false
 
@@ -130,19 +132,26 @@ class ConfigurationService {
         return url
     }
 
+    /**
+     * Return the application base URL with context path and without trailing slash.
+     */
+    public String getContextUrl(){
+        return grailsLinkGenerator.serverBaseURL
+    }
+
+    /**
+     * Return the application base URL without context path and without trailing slash.
+     */
     public String getSelfBaseUrl(){
-        def baseUrl = grailsApplication.config.ddb?.self?.base?.url
-        if(!baseUrl){
-            throw new ConfigurationException("getSelfBaseUrl(): Configuration entry does not exist -> ddb.self.base.url")
+        def result = getContextUrl()
+        if (grailsLinkGenerator.contextPath?.length() > 0) {
+            result = result.substring(0, result.length() - grailsLinkGenerator.contextPath.length())
         }
-        if(!(baseUrl instanceof String)){
-            throw new ConfigurationException("getSelfBaseUrl(): ddb.self.base.url is not a String")
-        }
-        return baseUrl
+        return result
     }
 
     public String getConfirmBase(){
-        return getSelfBaseUrl() + ServletContextHolder.servletContext.contextPath + "/user/confirm/|id|/|confirmationToken|"
+        return getContextUrl() + "/user/confirm/|id|/|confirmationToken|"
     }
 
     public String getPasswordResetConfirmationLink(){
@@ -166,17 +175,6 @@ class ConfigurationService {
             throw new ConfigurationException("getFavoritesSendMailFrom(): ddb.favorites.sendmailfrom  is not a String")
         }
         return email
-    }
-
-    public String getFavoritesBasedomain(){
-        def favoritesBaseDomain = grailsApplication.config.ddb?.favorites?.basedomain
-        if(!favoritesBaseDomain){
-            throw new ConfigurationException("getFavoritesBasedomain(): Configuration entry does not exist -> ddb.favorites.basedomain ")
-        }
-        if(!(favoritesBaseDomain instanceof String)){
-            throw new ConfigurationException("getFavoritesBasedomain(): ddb.favorites.basedomain is not a String")
-        }
-        return favoritesBaseDomain
     }
 
     public List getFacetsFilter(){
@@ -438,9 +436,7 @@ class ConfigurationService {
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.bookmark.url = " + getBookmarkUrl()
         log.info "ddb.newsletter.url = " + getNewsletterUrl()
-        log.info "ddb.self.base.url = " + getSelfBaseUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
-        log.info "ddb.favorites.basedomain = " + getFavoritesBasedomain()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()

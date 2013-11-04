@@ -37,7 +37,7 @@ limitations under the License.
         <td style="height: 130px; padding: 10px;">
           <h2>
             <a style="color: #a5003b"
-              href="${grailsApplication.config.ddb.favorites.basedomain + '/search?' +
+              href="${g.contextUrl() + '/search?' +
                (search.queryString).encodeAsHTML()}"
               title="${truncateHovercardTitle(title: search.label, length: 350)}">
               <g:truncateItemTitle title="${search.label}"

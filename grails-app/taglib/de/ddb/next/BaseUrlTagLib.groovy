@@ -21,4 +21,8 @@ class BaseUrlTagLib {
     def baseUrl = { attrs, body ->
         out << configurationService.getSelfBaseUrl()
     }
+
+    def contextUrl = { attrs, body ->
+        out << configurationService.getContextUrl()
+    }
 }
