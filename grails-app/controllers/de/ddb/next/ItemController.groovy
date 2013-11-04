@@ -185,7 +185,8 @@ class ItemController {
                         searchResultUri: searchResultParameters["searchResultUri"],
                         flashInformation: flashInformation,
                         license: licenseInformation,
-                        isFavorite: isFavorite
+                        isFavorite: isFavorite,
+                        baseUrl: configurationService.getSelfBaseUrl()
                     ])
 
                 }

@@ -44,7 +44,7 @@ limitations under the License.
       <tr>
         <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
-            <g:link style="color:#a5003b" controller="${ controller }" base="${g.contextUrl()}"
+            <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
               action="${ action }" params="[id: it.id]"
               title="${truncateHovercardTitle(title: it.label, length: 350)}">
               <g:truncateItemTitle title="${ it.preview.title }"
@@ -58,13 +58,13 @@ limitations under the License.
           </g:if>
         </td>
         <td style="width: 170px; padding: 10px;">
-          <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${g.contextUrl()}">
+          <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${contextUrl}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
               <!-- institution logos still point to the content server -->
               <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>"></img>
             </g:if>
             <g:else>
-              <img src="${g.contextUrl()}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${contextUrl}${confBinary}</g:if><g:else>${baseUrl}</g:else>${it.preview.thumbnail}"
                    alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
             </g:else>
           </g:link>

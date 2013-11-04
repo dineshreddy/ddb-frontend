@@ -95,7 +95,7 @@ class FavoritesController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,"desc","title",0, user.id, selectedFolder.folderId),
-                baseDomain: configurationService.getContextUrl(),
+                contextUrl: configurationService.getContextUrl()
             ])
             return
         }else{
@@ -194,7 +194,8 @@ class FavoritesController {
                 urlsForOrderTitle: urlsForOrderTitle,
                 urlsForOrder: urlsForOrder,
                 fullPublicLink: fullPublicLink,
-                baseDomain: configurationService.getContextUrl(),
+                baseUrl: configurationService.getSelfBaseUrl(),
+                contextUrl: configurationService.getContextUrl()
             ])
         }
 
@@ -375,7 +376,9 @@ class FavoritesController {
                     fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderTitle:urlsForOrderTitle,
-                    urlsForOrder:urlsForOrder
+                    urlsForOrder:urlsForOrder,
+                    baseUrl: configurationService.getSelfBaseUrl(),
+                    contextUrl: configurationService.getContextUrl()
                 ])
             }
         } else{
@@ -399,7 +402,13 @@ class FavoritesController {
                     replyTo getUserFromSession().getEmail()
                     subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
                     body( view:"_favoritesEmailBody",
-                    model:[results: allResultsOrdered, dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'), userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
+                    model:[
+                        results: allResultsOrdered,
+                        dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                        userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),
+                        baseUrl: configurationService.getSelfBaseUrl(),
+                        contextUrl: configurationService.getContextUrl()
+                        ])
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {

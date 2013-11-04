@@ -26,7 +26,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
     
-    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List_Of", args: [userName])}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List_Of", args: [userName])}" likeUrl="${baseUrl + fullPublicLink}" />
     
   </head>
   <body>

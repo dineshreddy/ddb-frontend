@@ -139,6 +139,7 @@ class SavedsearchesController {
                         user.getFirstnameAndLastnameOrNickname()
                     ])
                     body(view: "_savedSearchesEmailBody", model: [
+                        contextUrl: configurationService.getContextUrl(),
                         results:
                         savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
                             a.label.toLowerCase() <=> b.label.toLowerCase()
