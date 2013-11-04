@@ -975,6 +975,14 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 @media (max-width: 480px) {
+  .item-options .hovercard-info-item {
+    width: 213px;
+  }
+  
+  .item-options .hovercard-info-item .fieldContent {
+    width: 193px;
+    margin-left: 20px;
+  }
 
   .page-info-nav .results-label {
      display: none;
