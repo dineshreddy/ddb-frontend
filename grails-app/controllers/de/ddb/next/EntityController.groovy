@@ -100,7 +100,8 @@ class EntityController {
 
         def searchPreview = [:]
 
-        def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
+        //def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
+        def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE"]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponseSearch.isOk()){
             log.error "index(): Search response contained error"
@@ -121,15 +122,15 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
 
-        render(view: 'entity', model: ["entity": entity, 
+        render(view: 'entity', model: ["entity": entity,
                                        "entityUri": entityUri])
     }
 
     public def getAjaxSearchResultsAsJson() {
 
         def query = params.query
-        def offset = params.offset
-        def rows = params.rows
+        def offset = params.long("offset")
+        def rows = params.long("rows")
 
         if(!rows) {
             rows = 4
@@ -162,20 +163,21 @@ class EntityController {
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
         entity["searchPreview"] = searchPreview
+        
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
 
-        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '')
-
-        def result = ["html": resultsHTML]
+        def result = ["html": resultsHTML, "resultCount" : jsonSearchResult.numberOfResults]
 
         render (contentType:"text/json"){result}
     }
 
     
-    public def getAjaxRoleSearchResultsAsJson() {                        
+    public def getAjaxRoleSearchResultsAsJson() {
         def query = params.query
         def offset = params.long("offset")
         def rows = params.long("rows")
-        def normdata = params.boolean("normdata")        
+        def normdata = params.boolean("normdata")
         def rolefacet = params.facetname
         def entityid = params.entityid
                 
@@ -234,7 +236,8 @@ class EntityController {
 
         entity["roleSearch"] = roleSearch
 
-        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '')
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
 
         def result = ["html": resultsHTML]
 
