@@ -64,13 +64,14 @@ limitations under the License.
            </div>
            <div class="span3">
              <g:isLoggedIn>
-               <g:if test="${(isFavorite == 302) }">
+
+               <g:if test="${isFavorite}">
                  <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
-                   <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
-                     <span data-itemid="${selectedItemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite" >
+                   <span class="favorite-actions favorite-selected">
+                     <span data-itemid="${selectedItemId}" data-actn="DELETE" id="idFavorite" >
                        <g:message code="ddbnext.favorit" />
                      </span>
-                   </g:link>
+                   </span>
                  </div>
                </g:if>
                <g:else>
@@ -82,11 +83,27 @@ limitations under the License.
                    </g:link>
                  </div>
                </g:else>
-               <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                 <div class="modal-body">
-                   <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                 </div>
-               </div>
+
+              <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-body">
+                  <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+                  <g:hasPersonalFavorites>
+                    <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
+                    <g:select name="favorite-folders" from="" multiple="true"/>
+                  </g:hasPersonalFavorites>
+                </div>
+                <g:hasPersonalFavorites>
+                  <div class="modal-footer">
+                    <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+                      <g:message code="ddbnext.Close"/>
+                    </button>
+                    <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+                      <g:message code="ddbnext.Save"/>
+                    </button>
+                  </div>
+                </g:hasPersonalFavorites>
+              </div>
+               
              </g:isLoggedIn>                
            </div>
          </div>
