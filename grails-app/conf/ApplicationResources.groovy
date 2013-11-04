@@ -102,6 +102,7 @@ modules = {
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
         resource url:'/js/saved-searches.js'
+        resource url:'/js/apiKey.js'
     }
 
     autocomplete {

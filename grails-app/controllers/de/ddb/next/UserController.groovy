@@ -207,7 +207,7 @@ class UserController {
         if (errors == null || errors.isEmpty()) {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
