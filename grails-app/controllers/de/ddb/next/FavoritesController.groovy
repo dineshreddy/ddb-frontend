@@ -126,6 +126,7 @@ class FavoritesController {
             def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
             def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+            allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
             allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
             //Default ordering is newest on top == DESC
@@ -229,7 +230,7 @@ class FavoritesController {
             }
             def order = params.order
 
-            def selectedFolder = bookmarksService.findFolderById(folderId)
+            Folder selectedFolder = bookmarksService.findFolderById(folderId)
             List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
@@ -308,6 +309,7 @@ class FavoritesController {
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
                 def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+                allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
                 //Default ordering is newest on top == DESC
@@ -638,7 +640,6 @@ class FavoritesController {
 
         def title = request.JSON.title
         def description = request.JSON.description
-        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
         title = sanitizeTextInput(title)
         description = sanitizeTextInput(description)
@@ -646,6 +647,8 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
+            def publishingName = user.getUsername()
+
             if (bookmarksService.newFolder(user.getId(), title, false, publishingName, description)) {
                 result = response.SC_CREATED
                 flash.message = "ddbnext.favorites_folder_create_succ"
@@ -776,7 +779,7 @@ class FavoritesController {
         def id = request.JSON.id
         def title = request.JSON.title
         def description = request.JSON.description
-        def publishingName = request.JSON.name
+        def publishingType = request.JSON.name
         def isPublic = request.JSON.isPublic
 
         title = sanitizeTextInput(title)
@@ -786,6 +789,14 @@ class FavoritesController {
 
         def User user = getUserFromSession()
         if (user != null) {
+
+            def publishingName = ""
+            if(publishingType == FolderConstants.PUBLISHING_NAME_FULLNAME.getValue()) {
+                publishingName = user.getFirstnameAndLastnameOrNickname()
+            }else{
+                publishingName = user.getUsername()
+            }
+
 
             def foldersOfUser = bookmarksService.findAllFolders(user.getId())
 
