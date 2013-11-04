@@ -106,28 +106,28 @@
 
 @media (min-width: 980px) and (max-width: 1199px) {
   .entity-page .carousel a.previous {
-    left: -30px;
+    left: -6px;
   }
   .entity-page .carousel a.next {
-    right: -30px;
+    right: -10px;
   }
 }
 
 @media (max-width: 979px) {
   .entity-page .carousel a.previous {
-    left: -22px;
+    left: -8px;
   }
   .entity-page .carousel a.next {
-    right: -30px;
+    right: -12px;
   }
 }
 
 @media (max-width: 767px) {
   .entity-page .carousel a.previous {
-    left: -12px;
+    left: -4px;
   }
   .entity-page .carousel a.next {
-    right: -22px;
+    right: -8px;
   }
 }
 /* carousel controls responsiveness - end */

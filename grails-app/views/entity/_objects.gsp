@@ -45,7 +45,7 @@ limitations under the License.
 	</div>
 	<div class="clearfix"></div>
 	<a class="previous" id="previous"><span><g:message code="ddbnext.Previous_Label" /></span></a>
-    <a class="next" id="next"><span><g:message code="ddbnext.Next_Label" /></span></a>	
+	<a class="next" id="next"><span><g:message code="ddbnext.Next_Label" /></span></a>	
   </div>
   
   <div>

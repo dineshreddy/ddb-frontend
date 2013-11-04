@@ -158,9 +158,8 @@ $(document).ready(function(){
 
         	var currentPosition = carouselItems.triggerHandler("currentPosition");
         	var nextVisbleItem = currentPosition + numberOfVisibleItems;
-        	
-        	//TODO remove the log        	        	
-        	console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
+        	        	        	
+        	//console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
         	
         	if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
         	    var query = $("#entity-title").html();
