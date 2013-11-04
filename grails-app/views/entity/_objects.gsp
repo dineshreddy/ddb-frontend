@@ -37,26 +37,17 @@ limitations under the License.
     <g:set var="previousOffset" value="${0}" />
   </g:if>
   
-  <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
+  <h3><g:message code="ddbnext.Entity_Objects" />(${entity.searchPreview.resultCount}):</h3>
   
-  <div class="carousel" style="display: block;">
-	  <div class="caroufredsel_wrapper" style="display: block; text-align: start; float: none; position: relative; top: auto; right: auto; bottom: auto; left: auto; z-index: auto; width: 936px; height: 210px; margin: 0px; overflow: hidden;">
-	    <g:render template="searchResults" />
-	  </div>
-	  
-	  <div class="clearfix"></div>
-	  
-	  <g:link controller="entity" action="index" 
-	    params="${["id": entity.id, "query": entity.title, "offset": previousOffset, "rows": rows]}" 
-	    class="previous">
-	    <span><g:message code="ddbnext.Previous_Label" /></span>
-	  </g:link>
-	  <g:link controller="entity" action="index" 
-	    params="${["id": entity.id, "query": entity.title, "offset": nextOffset, "rows": rows]}" 
-	    class="next">
-	    <span><g:message code="ddbnext.Next_Label" /></span>
-	  </g:link>
-  </div>	      
+  <div class="carousel">	  
+	<div id="items">
+		<%--      Items are retrived via Javascript	  	  --%>
+	</div>
+	<div class="clearfix"></div>
+	<a class="previous" id="previous"><span><g:message code="ddbnext.Previous_Label" /></span></a>
+	<a class="next" id="next"><span><g:message code="ddbnext.Next_Label" /></span></a>	
+  </div>
+  
   <div>
     <g:if test="${showPictures}">
       <g:link controller="search" action="results" params="${["query": entity.title, "facetValues[]": "type_fct=mediatype_002"]}">
@@ -80,5 +71,4 @@ limitations under the License.
       </g:link>
     </g:if>
   </div>
-
-</div>
+</div>  

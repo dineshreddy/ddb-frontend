@@ -54,61 +54,37 @@
   margin-bottom: 10px;
 }
 
-.entity-page .caroufredsel_wrapper {
-  margin: auto !important;
-}
-
 .entity-page .preview-item {
     display: block;
     float: left;
     position: relative;
+    max-width: 200px;
+    width: 200px;
 }
 
 .entity-page .preview-item img {
   text-align: center;
-  height: 180px;
-  max-width:204px;
+  max-height: 105px;
+  height: 105px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;  
 }
-
-.entity-page .items {
-  bottom: auto;
-  display: block;
-  float: none;
-  height: 210px;
-  left: auto;
-  margin: 0;
-  overflow: hidden;
-  position: relative;
-  right: auto;
-  text-align: start;
-  top: auto;
-  width: 936px;
-  z-index: auto;
-}
-
 
 .entity-page .caption {
-  	left:0;
-  	bottom:-20px;	
+  	left:0px;
+  	bottom:0px;	
     font-size: 0.875em;
     font-weight: bold;
     height: 36px;    
     line-height: 18px;
     opacity: 0.8;
-    position: absolute;
     text-overflow: ellipsis;
-    width: 180px;
+    text-align: center;
+    max-width: 200px;    
 }
 
-.entity-page .caroufredsel_wrapper .preview-item {
-  display: block;
-  float: left;
-  position: relative;
-}
-
-.entity-page .carousel a.previous {
-  left: -27px;
-}
 
 .entity-page .carousel a.previous:hover {
   background-position: 0 -50px;
@@ -116,43 +92,42 @@
 
 .entity-page .carousel a.next {
   background-position: 0 -150px;
-  right: -40px;
 }
 
 /* carousel controls responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
-    left: -27px;
+    left: 0px;
   }
   .entity-page .carousel a.next {
-    right: 76px;
+    right: 0px;
   }
 }
 
 @media (min-width: 980px) and (max-width: 1199px) {
   .entity-page .carousel a.previous {
-    left: -30px;
+    left: -6px;
   }
   .entity-page .carousel a.next {
-    right: -40px;
+    right: -10px;
   }
 }
 
 @media (max-width: 979px) {
   .entity-page .carousel a.previous {
-    left: -22px;
+    left: -8px;
   }
   .entity-page .carousel a.next {
-    right: -30px;
+    right: -12px;
   }
 }
 
 @media (max-width: 767px) {
   .entity-page .carousel a.previous {
-    left: -12px;
+    left: -4px;
   }
   .entity-page .carousel a.next {
-    right: -20px;
+    right: -8px;
   }
 }
 /* carousel controls responsiveness - end */
