@@ -49,9 +49,9 @@ limitations under the License.
             </div>
 
             <div>
-              <g:message code="ddbnext.Api_Agreed" />
+              <g:message code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
               <br />            
-              <g:message code="ddbnext.Api_Dokumentation" />
+              <g:message code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
             </div>            
             
           </div>

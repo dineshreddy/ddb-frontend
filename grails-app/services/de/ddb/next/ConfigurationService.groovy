@@ -202,6 +202,29 @@ class ConfigurationService {
         return filepath
     }
 
+    public String getApiKeyDocUrl(){
+        def url = grailsApplication.config.ddb?.apikey?.doc?.url
+        if(!url){
+            throw new ConfigurationException("getApiKeyDocUrl(): Configuration entry does not exist -> ddb.apikey.doc.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getApiKeyDocUrl(): ddb.apikey.doc.url is not a String")
+        }
+        return url
+    }
+
+    public String getApiKeyTermsUrl(){
+        def url = grailsApplication.config.ddb?.apikey?.terms?.url
+        if(!url){
+            throw new ConfigurationException("getApiKeyTermsUrl(): Configuration entry does not exist -> ddb.apikey.terms.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getApiKeyTermsUrl(): ddb.apikey.terms.url is not a String")
+        }
+        return url
+    }
+
+
     public String getEncoding(){
         def encoding = grailsApplication.config.grails?.views?.gsp?.encoding
         if(!encoding){
@@ -267,6 +290,8 @@ class ConfigurationService {
         }
         return grailsMailHost
     }
+
+
 
     /**
      * Get the authorization key to access restricted API calls.
@@ -455,6 +480,8 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
+        log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
+        log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "-------------------------------------------------------"

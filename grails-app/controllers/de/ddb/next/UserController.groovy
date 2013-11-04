@@ -745,9 +745,16 @@ class UserController {
             def apiKey = user.apiKey
 
             if(apiKey){
-                render(view: "apiKey", model: [user: user])
+                render(view: "apiKey", model: [
+                    user: user,
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
             }else{
-                render(view: "requestApiKey", model: [:])
+                render(view: "requestApiKey", model: [
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
             }
         }else{
             redirect(controller:"user", action:"index")
@@ -812,7 +819,11 @@ class UserController {
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo configurationService.getFavoritesSendMailFrom()
                     subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
-                    body( view:"_apiKeyEmailBody", model:[user: user])
+                    body( view:"_apiKeyEmailBody", model:[
+                        user: user,
+                        apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                        apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                    ])
                 }
             } catch (e) {
                 log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
