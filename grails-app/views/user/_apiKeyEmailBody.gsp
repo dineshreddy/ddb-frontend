@@ -181,17 +181,25 @@ a {
 </head>
 <body style="font-family: Calibri, Arial, sans-serif;">
   <div>
-    <g:message code="ddbnext.Api_Access_Of"/> ${user.getFirstnameAndLastnameOrNickname()}
+    <g:message code="ddbnext.Api_Key_Email_Intro"/> 
+    <br />            
+    <br />   
   </div>
-  <br />            
   <div>
     <g:message code="ddbnext.Api_Key_Send_Mail_Body" /> ${user.apiKey }
+    <br />   
+    <br />
   </div>
-  <br />            
   <div>
-    <g:message code="ddbnext.Api_Agreed" />
+    <g:message code="ddbnext.Api_Key_Email_Outro" />
+    <br />   
+    <br />
+  </div>
+  --------------------
+  <div>
+    <g:message code="ddbnext.Api_Key_Email_Api" />
     <br />            
-    <g:message code="ddbnext.Api_Dokumentation" />
+    <g:message code="ddbnext.Api_Key_Email_Docu" />
   </div>            
   
 </body>
