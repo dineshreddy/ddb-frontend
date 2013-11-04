@@ -214,7 +214,7 @@ hr {
   padding-left: 10px;
 }
 
-.public-favorites .summary-main-wrapper .summary-main, .public-favorites .summary-main-wrapper .extra {
+.public-favorites .summary-main-wrapper .summary-main, .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
   margin-left: 0px !important;
 }
 
