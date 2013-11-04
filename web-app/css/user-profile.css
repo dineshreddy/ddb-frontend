@@ -54,9 +54,9 @@
 #user-profile-form .profile-links {
   width: 160px;
   padding-top: 10px;
-  position: absolute;
   right: -5px;
   top: -40px;
+  float: right;
 }
 
 #user-profile-form .privacylink {
@@ -101,5 +101,6 @@
     top: 320px;
     left: 0;
     text-align: left;
+    float: none;
   }
 }
