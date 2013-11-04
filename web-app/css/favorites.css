@@ -32,7 +32,7 @@ hr {
   background-color: #efebe8;
 }
 
-.bookmarks-lists .bookmarks-list{
+.bookmarks-lists .bookmarks-list {
   display: block;
   padding: 0 54% 0 10px;
   overflow: hidden;
@@ -40,11 +40,11 @@ hr {
   white-space: nowrap;
 }
 
-.bookmarks-lists .bookmarks-list .fav-text{
+.bookmarks-lists .bookmarks-list .fav-text {
   display: inline;
 }
 
-.bookmarks-lists .bookmarks-list .fav-number{
+.bookmarks-lists .bookmarks-list .fav-number {
   display: inline;
   width: 75px;
   position:absolute;
@@ -102,7 +102,7 @@ hr {
   margin-right: 45px;
 }
 
-.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i{
+.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i {
   margin-top: 3px;
 }
 
@@ -187,17 +187,17 @@ hr {
   font-size: 0.938em;
 }
 
-#favorites-remove .submit{
+#favorites-remove .submit {
   margin-top:8px;
   margin-left: 0;
 }
 
-#favorites-copy .submit{
+#favorites-copy .submit {
   margin-top:8px;
   margin-left: 0;
 }
 
-#folder-create .submit{
+#folder-create .submit {
   margin-top:8px;
   margin-left: 0;
   width: 200px;
@@ -231,7 +231,7 @@ hr {
   text-align:right;
 }
 
-.results-sorter .favorite-dateheade r{
+.results-sorter .favorite-dateheader {
   float:right;
   margin-right:10px;
 }
