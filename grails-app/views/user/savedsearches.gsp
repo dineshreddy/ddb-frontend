@@ -92,8 +92,8 @@ limitations under the License.
           </g:elseif>
           <g:if test="${results.size() > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
-                <div class="deleteBtn span1">
+              <div class="delete-container row">
+                <div class="delete-btn span1">
                   <g:form id="deleteSavedSearches" method="POST" name="deleteSavedSearches" mapping="delSavedSearches">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Savedsearches"/>">
                       <span><g:message code="ddbnext.Delete"/></span>
