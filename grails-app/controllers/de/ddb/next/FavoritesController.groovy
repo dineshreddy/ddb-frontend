@@ -77,6 +77,9 @@ class FavoritesController {
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
+        publicFolders.sort{ a, b ->
+            a.title <=> b.title
+        }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
 
