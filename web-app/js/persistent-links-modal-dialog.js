@@ -25,7 +25,10 @@ $(document).ready(
       var title = $(document.createElement('a'));
       title.addClass('page-link');
       var titleString = $(document.createElement('span'));
-      titleString.html(messages.ddbnext.CulturalItem_LinkToThisPage_Label);
+      var popupSpan = popupAnchor.children("span");
+      if (popupSpan != null && popupSpan.length > 0) {
+        titleString.html(popupSpan[0].innerHTML);
+      }
       titleString.appendTo(title);
       var popupManager = new PopupManager();
       popupManager.registerPopup(popupAnchor[0], title, content, 162, -31);
@@ -75,7 +78,7 @@ $.extend(PopupManager.prototype, {
     popupDialogCloseButton.appendTo(popupDialogWrapper);
     popupDialogFooter.appendTo(popupDialogWrapper);
 
-    popupDialogWrapper.css('margin-left', offsetX + 'px');
+    //popupDialogWrapper.css('margin-left', offsetX + 'px');
     popupDialogWrapper.css('margin-top', offsetY + 'px');
 
     popupDialogWrapper.insertAfter(anchorTag);

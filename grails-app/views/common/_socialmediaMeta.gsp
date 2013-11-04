@@ -13,14 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="name">
-  <h2>${entity.title}</h2>
-  
-  <%-- 
-  <span>Schriftsteller, Politiker, Jurist, Naturwissenschaftler, Maler, Zeichner</span>
-  --%>
-  
-  <span class="todo-gnd">${entity.professions}</span><br>
-  <span>${entity.description}</span>
-  
-</div>
+
+<meta property="og:url" content="${likeUrl}"/>
+<meta property="og:title" content="${likeTitle}" />
+<meta property="og:image" content="${g.baseUrl() + resource(dir: "images", file: "logo_social.png")}" />
+<meta property="og:description" content="" />

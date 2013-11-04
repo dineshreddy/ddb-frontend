@@ -72,6 +72,8 @@ class AasService {
 
     private static final String CONFIRMATION_SUBJECT_FIELD = "confirmationSubject"
 
+    private static final String APIKEY_FIELD = "apiKey"
+
     /**
      * 
      * @param id id of person to login
@@ -96,6 +98,7 @@ class AasService {
             }
             user.setPassword(password)
             user.setOpenIdUser(false)
+            user.setApiKey(aasResponse.apiKey)
 
             return user
         }
@@ -208,7 +211,8 @@ class AasService {
             String pswd,
             String confirmationLink,
             String confirmationTemplate,
-            String confirmationSubject) throws MissingArgumentException {
+            String confirmationSubject,
+            String apiKey) throws MissingArgumentException {
 
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(nickname)) {
@@ -246,6 +250,9 @@ class AasService {
         }
         if (!StringUtils.isBlank(confirmationSubject)) {
             jsonObject.put(CONFIRMATION_SUBJECT_FIELD, confirmationSubject)
+        }
+        if (!StringUtils.isBlank(apiKey)) {
+            jsonObject.put(APIKEY_FIELD, apiKey)
         }
         return jsonObject
     }

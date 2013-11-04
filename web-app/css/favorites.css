@@ -32,6 +32,27 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-lists .bookmarks-list{
+  display: block;
+  padding: 0 54% 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmarks-lists .bookmarks-list .fav-text{
+  display: inline;
+}
+
+.bookmarks-lists .bookmarks-list .fav-number{
+  display: inline;
+  width: 75px;
+  position:absolute;
+  right:0;
+  text-align: center;
+  margin-right: 44px;
+}
+
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
@@ -61,11 +82,6 @@ hr {
   position:absolute;
   top:0;
   right:0;
-}
-
-.bookmarks-list-number {
-  text-align: center;
-  margin-right: 75px;
 }
 
 .bookmarks-list-envelope {
@@ -103,6 +119,10 @@ hr {
   text-align: right;
   display: inline-block;
   float: right;
+}
+
+.public-favorites .results-paginator-options {
+  margin-top: 20px !important;
 }
 
 .favorites-results-container .page-filter,.sort-results-switch {
@@ -192,6 +212,10 @@ hr {
 
 .public-favorites .results-sorter {
   padding-left: 10px;
+}
+
+.public-favorites .summary-main-wrapper .summary-main, .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
+  margin-left: 0px !important;
 }
 
 .results-sorter .select-all {
@@ -379,6 +403,7 @@ hr {
   margin-left: 36px;
 }
 
+
 .favorites-results .remove-item-check {
   position: absolute;
   left: 10px;
@@ -388,6 +413,12 @@ hr {
 .favorites-results-container .messages-container {
   margin-top: 7px;
 }
+
+.favorites-results-container .favorites-report {
+  background: url("../images/icons/objectviewer_actions.png") no-repeat -0px -222px;
+  padding-left: 25px;
+}
+
 
 .favorites-results .results-list .extra {
   margin-left: 36px;
@@ -490,7 +521,12 @@ hr {
   cursor: pointer;
 }
 
+#folder-create #button-new.submit {
+  width: 100%;
+}
+
 /* responsive */
+
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
@@ -617,11 +653,6 @@ hr {
   position: relative;
   padding: 0;
   margin: 0;
-}
-
-.folder-information-container .folder-information > ul li a {
-  text-decoration: underline;
-  color: #A5003B;
 }
 
 

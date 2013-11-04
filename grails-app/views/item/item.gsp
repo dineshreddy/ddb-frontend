@@ -13,39 +13,37 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
+<g:set var="itemTitle" value="${g.truncateItemTitle(title: title, length: (binaryList?271:351)) }" />
+
 <html>
-<head>
-<title><g:truncateItemTitle title="${title}" length="${binaryList?271:351}"></g:truncateItemTitle> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
-<meta name="page" content="item" />
-<meta name="layout" content="main" />
-
-<%-- Temporarily commented out again. See DDBNEXT-868  
-<meta property="og:url" content="${g.baseUrl()}${request.forwardURI}"/>
-<meta property="og:title" content="${title}" />
-<meta property="og:image" content="${resource(dir: "images", file: "logo_social.png", absolute: true)}" />
-<meta property="og:description" content="" />
---%>
-
-</head>
-<body>
-  <g:render template="controls" />
-  <g:render template="institution" />
-  <g:render template="itemLinks" />
-  <div class="row item-detail item-content">
-    <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
-      <h2><g:truncateItemTitle title="${title}" length="${binaryList?271:351}"></g:truncateItemTitle></h2>
-      <g:render template="fields" />
-      <g:render template="rights" />
-      <g:render template="license" />
-      <g:render template="origin" />
-      <g:render template="share" />
+  <head>
+    <title>${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    
+    <meta name="page" content="item" />
+    <meta name="layout" content="main" />
+    
+    <g:socialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${g.baseUrl() + request.forwardURI}"/>
+    
+  </head>
+  <body>
+    <g:render template="controls" />
+    <g:render template="institution" />
+    <g:render template="itemLinks" />
+    <div class="row item-detail item-content">
+      <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
+        <h2>${itemTitle}</h2>
+        <g:render template="fields" />
+        <g:render template="rights" />
+        <g:render template="license" />
+        <g:render template="origin" />
+        <g:render template="share" />
+      </div>
+      <g:if test="${binaryList}">
+        <g:render template="binaries" />
+      </g:if>
     </div>
-    <g:if test="${binaryList}">
-      <g:render template="binaries" />
-    </g:if>
-  </div>
-  <g:render template="hierarchy" />
-  <g:render template="linkurl" />
-</body>
+    <g:render template="hierarchy" />
+    <g:render template="linkurl" />
+  </body>
 </html>

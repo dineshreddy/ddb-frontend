@@ -39,17 +39,6 @@ $(document).ready(function(){
       this.applyCookieAllowed();
     },
 
-    /** Main method. Call to integrate social network into the page **/
-    integrateSocialMediaWithPresets: function(urlToLike, titleToLike) {
-      if(urlToLike) {
-        this.urlToLike = urlToLike;
-      }
-      if(titleToLike) {
-        this.titleToLike = titleToLike;
-      }
-      this.integrateSocialMedia();
-    },
-
     /** Register the click- and mouseover-events on the DOM objects **/
     registerClickHandlers: function() {
       var self = this;
@@ -96,6 +85,8 @@ $(document).ready(function(){
     
     /** Integrates the social network code into the page **/
     integrateSocialCodeInPage: function(setCookie) {
+      this.checkForOpenGraphMetaTags();
+      
       $(".socialmedia .social-locked .social-overlay-container").css("display", "none");
       $(".socialmedia .social-locked").css("display", "none");
       $(".socialmedia .social-open").css("display", "block");
@@ -158,6 +149,19 @@ $(document).ready(function(){
     removeSocialMediaCookie: function() {
       $.cookies.del(this.socialMediaCookieName, { path: jsContextPath });
     },
+    
+    /** Check for existing opengraph metatags to take config from **/
+    checkForOpenGraphMetaTags: function() {
+      var likeTitle = $("meta[property='og:title']").attr("content");
+      if(likeTitle != null && likeTitle != ""){
+        this.titleToLike = likeTitle;
+      }
+
+      var likeUrl = $("meta[property='og:url']").attr("content");
+      if(likeUrl != null && likeUrl != ""){
+        this.urlToLike = likeUrl;
+      }
+    }
     
   });
   

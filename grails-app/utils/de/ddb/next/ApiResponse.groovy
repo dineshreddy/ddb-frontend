@@ -53,8 +53,9 @@ class ApiResponse {
     def status
     def headers
     def postBody
+    def apiKey
 
-    ApiResponse(calledUrl, method, content, response, duration, exception, status, headers, postBody){
+    ApiResponse(calledUrl, method, content, response, duration, exception, status, headers, postBody, apiKey){
         this.calledUrl = calledUrl
         this.method = method
         this.content = content
@@ -64,6 +65,7 @@ class ApiResponse {
         this.status = status
         this.headers = headers
         this.postBody = postBody
+        this.apiKey = apiKey
     }
 
     def isOk() {
@@ -71,12 +73,15 @@ class ApiResponse {
     }
 
     String toString() {
-        def out = "ApiResponse: " + status + " / " + duration + "ms / " + method + " / " + content + " / URL='" + calledUrl+"'"
+        def out = "ApiResponse: " + status + " / " + duration + "ms / " + method + " / " + content + " / URL='" + calledUrl + "'"
         if(exception){
-            out += " / Exception='" + exception.getMessage()+"'"
+            out += " / Exception='" + exception.getMessage() + "'"
         }
         if(postBody){
-            out += " / postBody=" + postBody+""
+            out += " / postBody=" + postBody + ""
+        }
+        if(apiKey){
+            out += " / apiKey=" + apiKey.toString().substring(0,5) + "..."
         }
         return out
     }

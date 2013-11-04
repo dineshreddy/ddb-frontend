@@ -327,6 +327,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results-content .search-results .item {
   padding: 15px 0 15px 0;
+  position: relative;
 }
 
 .search-results-content .search-results .entity {
@@ -361,7 +362,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .search-results-overlay-waiting .small-loader {
-  position: absolute;
+  position: relative;
   top: 50px;
   left: 45%;
 }
@@ -435,6 +436,19 @@ input[type="checkbox"],input[type="radio"] {
   margin: auto;
 }
 
+.thumbnail-wrapper .item-options {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 30px;
+}
+
+.thumbnail-wrapper .item-options-ul {
+  list-style-type: none;
+  margin: 0 0 0 0;
+}
+
 .search-results .results-list .matches {
   font-size: 0.875em;
   line-height: 1.2em;
@@ -490,35 +504,40 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary .information {
-  width: 19px;
-  height: 19px;
-  position: absolute;
-  right: 0;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -185px;
-  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -180px;
   cursor: pointer;
+}
+
+.search-results .results-list .summary .information:hover {
+  background-position: 0 -210px;
+}
+
+.search-results .results-list .summary .compare {
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -122px;
+  cursor: pointer;
+}
+
+.search-results .results-list .summary .compare:hover {
+  background-position: 0 -152px;
 }
 
 .search-results .results-list .summary .information.show-favorites {
   margin-right: 30px;
 }
 
-.search-results .results-list .summary .information:hover {
-  background-position: -5px -215px;
-}
-
 .search-results .results-list .summary .add-to-favorites {
-  width: 19px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -65px;
-  height: 19px;
-  position: absolute;
-  right: 0;
-  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -60px;
   cursor: pointer;
 }
 
 .search-results .results-list .summary .add-to-favorites:hover {
-  background-position: -5px -95px;
+  background-position: 0 -90px;
 }
 
 .search-results .results-list .entity .add-to-favorites, .search-results .results-list .entity .added-to-favorites {
@@ -526,27 +545,24 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary .added-to-favorites {
-  width: 19px;
-  height: 19px;
-  position: absolute;
-  right: 0;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat -6px -5px;
-  margin-top: -15px;
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 0;
+}
+
+.search-results .results-list .summary .added-to-favorites:hover {
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -30px;
 }
 
 @media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
   .search-results .results-list .summary .add-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -65px;
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px -60px;
   }
   .search-results .results-list .summary .added-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat -6px -5px;
+    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px 0px;
   }
-}
-
-.search-results .results-list .summary .added-to-favorites:hover {
-    background: url("../images/icons/item_actions_sprite.png") no-repeat -6px -35px;
 }
 
 .search-noresults-content .noresults {
@@ -674,7 +690,7 @@ input[type="checkbox"],input[type="radio"] {
   text-align: left;
   position: absolute;
   right: 0;
-  top: 20px;
+  top: 30px;
   display:none;
 }
 
@@ -884,6 +900,9 @@ input[type="checkbox"],input[type="radio"] {
 
 /* responsive */
 @media (max-width: 979px) {
+   .search-results-list .summary .thumbnail{
+     margin-right: 40px;
+   }
    .search-results .results-list .thumbnail .persist {
      display: inline;
    }
@@ -946,6 +965,10 @@ input[type="checkbox"],input[type="radio"] {
   
   .search-results .results-list li:first-child {
     border-top: none;
+  }
+  
+  .search-results .summary-main {
+    margin-right: 40px;
   }
 }
 

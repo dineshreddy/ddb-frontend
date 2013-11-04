@@ -77,6 +77,9 @@ class FavoritesController {
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
+        publicFolders.sort{ a, b ->
+            a.title <=> b.title
+        }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
 
@@ -169,6 +172,8 @@ class FavoritesController {
                 sendBookmarkPerMail(params.email,allResultsOrdered)
             }
 
+            def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+
             render(view: "publicFavorites", model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -188,6 +193,7 @@ class FavoritesController {
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderTitle: urlsForOrderTitle,
                 urlsForOrder: urlsForOrder,
+                fullPublicLink: fullPublicLink,
                 baseDomain: configurationService.getFavoritesBasedomain(),
             ])
         }

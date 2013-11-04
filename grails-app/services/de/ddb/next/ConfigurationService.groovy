@@ -97,18 +97,6 @@ class ConfigurationService {
         return url
     }
 
-    public String getDnbUrl(){
-        def url = grailsApplication.config.ddb?.dnb?.url
-        if(!url){
-            throw new ConfigurationException("getDnbUrl(): Configuration entry does not exist -> ddb.dnb.url")
-        }
-        if(!(url instanceof String)){
-            throw new ConfigurationException("getDnbUrl(): ddb.dnb.url is not a String")
-        }
-        return url
-    }
-
-
     public String getBookmarkUrl(){
         def url = grailsApplication.config.ddb?.bookmark?.url
         if(!url){
@@ -448,7 +436,6 @@ class ConfigurationService {
         log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
-        log.info "ddb.dnb.url = " + getDnbUrl()
         log.info "ddb.bookmark.url = " + getBookmarkUrl()
         log.info "ddb.newsletter.url = " + getNewsletterUrl()
         log.info "ddb.self.base.url = " + getSelfBaseUrl()

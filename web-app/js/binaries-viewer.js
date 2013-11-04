@@ -169,15 +169,15 @@ $(document).ready(function() {
     var author = $(a).attr("data-author");
     var rights = $(a).attr("data-rights");
     
-    if (title.toString().length>270){
+    if (title != null && title.toString().length>270){
         title = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
     
-    if (author.toString().length>270){
+    if (author != null && author.toString().length>270){
         author = $.trim(author.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }    
     
-    if (rights.toString().length>270){
+    if (rights != null && rights.toString().length>270){
         rights = $.trim(rights.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
     

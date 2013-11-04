@@ -238,6 +238,7 @@ noscript .scroller {
   left: -40px;
   background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -105px;
 }
+
 .fancybox-prev:hover {
   background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -55px;
 }
@@ -248,6 +249,17 @@ noscript .scroller {
 .fancybox-next:hover {
   background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -203px;
 }
+
+@media (max-width: 767px) {
+  .fancybox-prev {
+    left: 0px !important;
+  }
+  .fancybox-next {
+    right: -5px;
+  }
+}
+
+
 .fancybox-inner:hover .fancybox-pagination{
   display: block !important;
 } 

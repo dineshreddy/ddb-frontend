@@ -27,7 +27,7 @@ class ErrorController {
     def configurationService
 
     enum Type404 {
-        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND
+        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND, ENTITY_NOT_FOUND
     }
 
     def uncaughtException() {
@@ -182,6 +182,10 @@ class ErrorController {
         notFound(Type404.ITEM_NOT_FOUND)
     }
 
+    def entityNotFound() {
+        notFound(Type404.ENTITY_NOT_FOUND)
+    }
+    
     /**
      * Handler method for error 401 situations
      * @return The auth view

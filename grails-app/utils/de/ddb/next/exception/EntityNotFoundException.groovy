@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
-  
-  if(jsPageName == "item"){
+package de.ddb.next.exception
+
+class EntityNotFoundException extends Exception {
     
-    var socialMediaManager = new SocialMediaManager();
-    socialMediaManager.integrateSocialMedia();
-    
-    
-  }
-  
-});
+    EntityNotFoundException() {
+        super()
+    }
+
+    EntityNotFoundException(String description) {
+        super(description)
+    }
+}
