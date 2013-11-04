@@ -20,28 +20,94 @@
     return false;
     
   });
-  
+
+  function changeFavoriteState() {
+    var vActn = $("#idFavorite").attr("data-actn");
+    
+    // Currently only allow to add favorites, not to delete them
+    if (vActn=="POST") { 
+      addToFavorites();
+    } 
+    //    else if (vActn=="DELETE") {
+    //      delFromFavorites();
+    //    } 
+  }
+
+/*
   function changeFavoriteState() {
     var jElemFavorite = $("#idFavorite");
     disableFavorite(jElemFavorite.parent());
     var vActn = jElemFavorite.attr("data-actn");
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
-    var request = $.ajax({
-      type: vActn,
-      dataType: 'json',
-      async: true,
-      url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
-      complete: function(data) {
-        if (vActn=="POST") {
-          addToFavorites(data);
-        } else if (vActn=="DELETE") {
-          delFromFavorites(data);
-        } else {       
+    if(vActn=="POST"){ // Currently only allow to add favorites, not to delete them
+      var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
+      var request = $.ajax({
+        type: vActn,
+        dataType: 'json',
+        async: true,
+        url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
+        complete: function(data) {
+          if (vActn=="POST") {
+            addToFavorites(data);
+          } else if (vActn=="DELETE") {
+            delFromFavorites(data);
+          } else {       
+          }
         }
-      }
-    });
+      });
+    }
+  }
+
+*/
+  
+  function addToFavorites() {
+    var jElemFavorite = $("#idFavorite");
+        $("#favorite-confirmation").modal("show");
+        $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
+          if (folders.length > 1) {
+            var itemId = jElemFavorite.attr("data-itemid");
+
+            $.each(folders, function(index, folder) {
+              if (!folder.isMainFolder) {
+                // show select box with all folder names
+                var selectEntry = "<option value=" + folder.folderId + ">" +
+                  folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
+
+                $("#favorite-folders").append(selectEntry);
+              }
+            });
+            
+            $("#favoriteId").val(itemId);
+            $("#addToFavoritesConfirm").click(function() {
+              
+              var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
+              var request = $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                async: true,
+                url: url + "&reqActn=add",
+                complete: function(data) {
+                  disableFavorite(jElemFavorite.parent());
+
+                  $("#favorite-confirmation").modal("hide");
+                  //$.each($("#favorite-folders").val(), function(index, value) {
+                  var selectionValues = $("#favorite-folders").val() || [];
+                  $(selectionValues).each(function(index, value) {
+                    $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
+                  });
+                  
+                }
+              });
+              
+            });
+          } else {
+            window.setTimeout(function() {
+              $("#favorite-confirmation").modal("hide");
+            }, 1500);
+          }
+        });
   }
   
+/*
   function addToFavorites(data) {
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
@@ -69,9 +135,10 @@
               $.each($("#favorite-folders").val(), function(index, value) {
                 $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
               });
+              
+              $("#idFavorite").parent().parent().attr('title', messages.ddbnext.favorites_already_saved);
             });
-          }
-          else {
+          } else {
             window.setTimeout(function() {
               $("#favorite-confirmation").modal("hide");
             }, 1500);
@@ -94,6 +161,7 @@
         break;
     }
   }
+*/ 
   
   function delFromFavorites(data) {
     var jElemFavorite = $("#idFavorite");
