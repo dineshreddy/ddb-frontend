@@ -98,9 +98,12 @@ limitations under the License.
             </div>
           </div>
           <label class="checkbox-label control-label">
+            <g:message code="ddbnext.I_Have_Read" />*
+            <%-- This does not work. The <a> Tags are displayed in the website instead of getting interpreted by the browser.
             <g:message code="ddbnext.I_Have_Read" 
                        args="${['<a href="' + createLink(controller:"content", params:[dir:'terms']) + '">','</a>','<a href="' + createLink(controller:"content", params:[dir:'privacy/personal_data']) + '">','</a>']}" 
                        default="ddbnext.I_Have_Read" />*
+            --%>
           </label>
         </div>
 
