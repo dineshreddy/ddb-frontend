@@ -974,7 +974,7 @@ input[type="checkbox"],input[type="radio"] {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 479px) {
   .item-options .hovercard-info-item {
     width: 213px;
   }
