@@ -272,7 +272,7 @@
     padding-left: 0;
   }
 }
-@media (min-width: 480px) {
+@media (min-width: 481px) {
   .item-nav-mob .prev-item {
     border-left: none;
   }

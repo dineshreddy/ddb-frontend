@@ -52,10 +52,8 @@
 }
 
 #user-profile-form .profile-links {
-  width: 160px;
+  width: 140px;
   padding-top: 10px;
-  right: -5px;
-  top: -40px;
   float: right;
 }
 
@@ -71,6 +69,12 @@
   #user-profile-form .controls.checkbox label.error {
     margin-top: 4px;
     margin-left: -216px;
+  }
+}
+
+@media (min-width:980) and (max-width: 1199px) {
+  #user-profile-form .control-group label.error {
+    position: absolute;
   }
 }
 
@@ -98,8 +102,6 @@
     margin: 0 0 0;
   }
   #user-profile-form .profile-links {
-    top: 320px;
-    left: 0;
     text-align: left;
     float: none;
   }
