@@ -928,7 +928,6 @@ input[type="checkbox"],input[type="radio"] {
 
 @media (max-width: 767px) {
   .summary .extra,
-  .search-results .results-list .summary .information,
   .results-paginator-options, 
   .results-paginator-view .group-actions,
   .results-paginator-view,
@@ -970,6 +969,20 @@ input[type="checkbox"],input[type="radio"] {
   .search-results .summary-main {
     margin-right: 40px;
   }
+  
+  .item-options .hovercard-info-item {
+    width: 373px;
+  }
+  
+  .item-options .hovercard-info-item .fieldContent {
+    width: 240px;
+    margin-left: 20px;
+  }
+  
+  .item-options .hovercard-info-item .fieldName{
+    margin-left: 13px;
+    width: 100px;
+  }
 }
 
 @media (min-width: 481px) {
@@ -979,6 +992,19 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 @media (max-width: 480px) {
+  .item-options .hovercard-info-item {
+    width: 213px;
+  }
+  
+  .item-options .hovercard-info-item .fieldContent {
+    width: 119px;
+    margin-left: 7px;
+  }
+  
+    .item-options .hovercard-info-item .fieldName {
+    width: 70px;
+    margin-left: 10px;
+  }
 
   .page-info-nav .results-label {
      display: none;
