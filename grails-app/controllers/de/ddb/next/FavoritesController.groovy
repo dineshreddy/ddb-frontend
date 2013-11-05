@@ -350,8 +350,7 @@ class FavoritesController {
                 if (request.method=="POST"){
                     sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
-                println "baseURL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + configurationService.getSelfBaseUrl()
-                
+
                 render(view: "favorites", model: [
                     results: resultsItems,
                     selectedFolder: selectedFolder,
