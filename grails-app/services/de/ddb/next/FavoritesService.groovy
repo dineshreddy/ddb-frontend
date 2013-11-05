@@ -196,6 +196,17 @@ class FavoritesService {
         return all
     }
 
+    private List addFolderToFavResults(allRes, Folder folder) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = searchItem
+            temp["folder"] = folder.getAsMap()
+            all.add(temp)
+        }
+        return all
+    }
+
     private String formatDate(Date oldDate, Locale locale) {
         SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
