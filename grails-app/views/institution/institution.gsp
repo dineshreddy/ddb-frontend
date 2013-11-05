@@ -65,6 +65,7 @@ limitations under the License.
            <div class="span3">
              <g:isLoggedIn>
 
+                <%-- 
                <g:if test="${isFavorite}">
                  <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
                    <span class="favorite-actions favorite-selected">
@@ -83,6 +84,15 @@ limitations under the License.
                    </g:link>
                  </div>
                </g:else>
+               --%>
+               
+              <div class="favorite" >
+                <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
+                  <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+                    <g:message code="ddbnext.favorit" />
+                  </span>
+                </span>
+              </div>
 
               <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-body">

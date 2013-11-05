@@ -1008,6 +1008,7 @@ color: #a5003b;
 #favorite-folders {
   height: 10em;
   width: 100%;
+  font-size: 1em;
 }
 
 .add-to-saved-searches {

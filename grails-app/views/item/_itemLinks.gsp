@@ -17,33 +17,20 @@ limitations under the License.
 <div class="row">
   <div class="span12 item-links bb">
     <g:isLoggedIn>
-      <g:if test="${isFavorite}">
-        <%-- 
-        <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
-          <g:link params="${params+[reqActn:'del']}" class="favorite-actions favorite-selected">
-            <span data-itemid="${itemId}" data-actn="DELETE" title="<g:message code='ddbnext.stat_011' />" id="idFavorite">
-              <g:message code="ddbnext.favorit" />
-            </span>
-          </g:link>
-        </div>
-        --%>
-        <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
-          <span class="favorite-actions favorite-selected">
-            <span data-itemid="${itemId}" data-actn="DELETE" id="idFavorite">
-              <g:message code="ddbnext.favorit" />
-            </span>
+      <div class="favorite" >
+        <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
+          <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+            <g:message code="ddbnext.favorit" />
           </span>
-        </div>
-      </g:if>
-      <g:else>
-        <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
-          <g:link params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
-            <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
-              <g:message code="ddbnext.favorit" />
-            </span>
-          </g:link>
-        </div>
-      </g:else>
+        </span>
+        <%-- 
+        <g:link params="${params+[reqActn:'add']}" class="favorite-actions favorite-add <g:if test="${isFavorite}">off</g:if>" title="<g:message code="ddbnext.Add_To_Favorites"/>">
+          <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+            <g:message code="ddbnext.favorit" />
+          </span>
+        </g:link>
+        --%>
+      </div>
       <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-body">
           <p><g:message code="ddbnext.Added_To_Favorites"/></p>

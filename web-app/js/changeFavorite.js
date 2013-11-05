@@ -21,19 +21,16 @@
     
   });
 
+  /*
   function changeFavoriteState() {
     var vActn = $("#idFavorite").attr("data-actn");
     
-    // Currently only allow to add favorites, not to delete them
     if (vActn=="POST") { 
       addToFavorites();
     } 
-    //    else if (vActn=="DELETE") {
-    //      delFromFavorites();
-    //    } 
   }
+  */
 
-/*
   function changeFavoriteState() {
     var jElemFavorite = $("#idFavorite");
     disableFavorite(jElemFavorite.parent());
@@ -44,12 +41,10 @@
         type: vActn,
         dataType: 'json',
         async: true,
-        url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
+        url: url + "&reqActn=add",
         complete: function(data) {
           if (vActn=="POST") {
             addToFavorites(data);
-          } else if (vActn=="DELETE") {
-            delFromFavorites(data);
           } else {       
           }
         }
@@ -57,8 +52,8 @@
     }
   }
 
-*/
   
+  /*
   function addToFavorites() {
     var jElemFavorite = $("#idFavorite");
         $("#favorite-confirmation").modal("show");
@@ -66,6 +61,7 @@
           if (folders.length > 1) {
             var itemId = jElemFavorite.attr("data-itemid");
 
+            $("#favorite-folders").empty();
             $.each(folders, function(index, folder) {
               if (!folder.isMainFolder) {
                 // show select box with all folder names
@@ -106,20 +102,20 @@
           }
         });
   }
+  */
   
-/*
   function addToFavorites(data) {
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
       case 200: case 201:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.attr("data-actn", "DELETE");
         $("#favorite-confirmation").modal("show");
         $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
           if (folders.length > 1) {
             var itemId = jElemFavorite.attr("data-itemid");
 
+            $("#favorite-folders").empty();
             $.each(folders, function(index, folder) {
               if (!folder.isMainFolder) {
                 // show select box with all folder names
@@ -161,35 +157,7 @@
         break;
     }
   }
-*/ 
   
-  function delFromFavorites(data) {
-    var jElemFavorite = $("#idFavorite");
-    switch (data.status) {
-      case 200: case 204:
-        // -- success
-        //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.attr("data-actn", "POST");
-        jElemFavorite.parent().removeClass("favorite-selected");
-        jElemFavorite.parent().addClass("favorite-add");
-        jElemFavorite.parent().parent().attr('title', messages.ddbnext.Add_To_Favorites);
-        break;
-      case 401:
-        // -- handle unauthorized
-        break;
-      case 404:
-        // -- not found
-        break;
-      case 500:
-        // -- internal error
-        aler("Internal Server Error");
-        break;
-      default:
-        // -- bad response
-        alert("Bad response: status: " + data.status);
-        break;
-    }
-  }
 
   /**
    * Disable a favorite button.
@@ -200,5 +168,5 @@
     link.unbind("click");
     link.removeClass("favorite-add");
     link.addClass("favorite-selected");
-    link.parent().attr('title', messages.ddbnext.favorites_already_saved);
+    link.attr('title', messages.ddbnext.favorites_already_saved);
   }
