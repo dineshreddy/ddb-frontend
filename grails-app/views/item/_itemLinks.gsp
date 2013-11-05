@@ -23,13 +23,6 @@ limitations under the License.
             <g:message code="ddbnext.favorit" />
           </span>
         </span>
-        <%-- 
-        <g:link params="${params+[reqActn:'add']}" class="favorite-actions favorite-add <g:if test="${isFavorite}">off</g:if>" title="<g:message code="ddbnext.Add_To_Favorites"/>">
-          <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
-            <g:message code="ddbnext.favorit" />
-          </span>
-        </g:link>
-        --%>
       </div>
       <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-body">

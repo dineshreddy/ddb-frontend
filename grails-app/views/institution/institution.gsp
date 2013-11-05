@@ -65,27 +65,6 @@ limitations under the License.
            <div class="span3">
              <g:isLoggedIn>
 
-                <%-- 
-               <g:if test="${isFavorite}">
-                 <div class="favorite" title="<g:message code="ddbnext.favorites_already_saved"/>">
-                   <span class="favorite-actions favorite-selected">
-                     <span data-itemid="${selectedItemId}" data-actn="DELETE" id="idFavorite" >
-                       <g:message code="ddbnext.favorit" />
-                     </span>
-                   </span>
-                 </div>
-               </g:if>
-               <g:else>
-                 <div class="favorite" title="<g:message code="ddbnext.Add_To_Favorites"/>">
-                   <g:link controller="institution" action="showInstitutionsTreeByItemId" params="${params+[reqActn:'add']}" class="favorite-actions favorite-add">
-                     <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite" >
-                       <g:message code="ddbnext.favorit" />
-                     </span>
-                   </g:link>
-                 </div>
-               </g:else>
-               --%>
-               
               <div class="favorite" >
                 <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
                   <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
