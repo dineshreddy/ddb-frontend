@@ -273,6 +273,7 @@ class FavoritesController {
                     nickName: nickName,
                     fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                    baseUrl: configurationService.getSelfBaseUrl(),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0,folderId),
                 ])
                 return
@@ -349,7 +350,8 @@ class FavoritesController {
                 if (request.method=="POST"){
                     sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
-
+                println "baseURL >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>" + configurationService.getSelfBaseUrl()
+                
                 render(view: "favorites", model: [
                     results: resultsItems,
                     selectedFolder: selectedFolder,
