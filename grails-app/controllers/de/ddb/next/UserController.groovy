@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import java.util.List
-
 import grails.converters.*
 
 import javax.servlet.http.HttpSession
@@ -30,8 +28,6 @@ import org.openid4java.discovery.Identifier
 import org.openid4java.message.AuthRequest
 import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
-import org.openid4java.util.HttpClientFactory
-import org.openid4java.util.ProxyProperties
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
@@ -40,7 +36,6 @@ import de.ddb.next.constants.FolderConstants
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
-import de.ddb.next.exception.FavoritelistNotFoundException
 import de.ddb.next.exception.ItemNotFoundException
 
 class UserController {
@@ -188,6 +183,44 @@ class UserController {
         }
     }
 
+    def sendSavedSearches() {
+        log.info "sendSavedSearches()"
+        if (isUserLoggedIn()) {
+            def user = getUserFromSession()
+            def List emails = []
+
+            if (params.email.contains(',')) {
+                emails = params.email.tokenize(',')
+            } else {
+                emails.add(params.email)
+            }
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo getUserFromSession().getEmail()
+                    subject g.message(code: "ddbnext.Savedsearches_Of", args: [
+                        user.getFirstnameAndLastnameOrNickname()
+                    ])
+                    body(view: "_savedSearchesEmailBody", model: [
+                        contextUrl: configurationService.getContextUrl(),
+                        results:
+                        savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
+                            a.label.toLowerCase() <=> b.label.toLowerCase()
+                        },
+                        userName: user.getFirstnameAndLastnameOrNickname()
+                    ])
+                }
+                flash.message = "ddbnext.favorites_email_was_sent_succ"
+            } catch (e) {
+                log.info "An error occurred sending the email "+ e.getMessage()
+                flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
+            }
+            redirect(controller: "user", action: "getSavedSearches")
+        } else {
+            redirect(controller: "user", action: "index")
+        }
+    }
 
     /* end saved searches methods */
 
