@@ -207,22 +207,22 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
-                <div class="deleteBtn span1">
+              <div class="delete-container row">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites" />">
                       <span><g:message code="ddbnext.Delete"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="deleteBtn span1">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Copy_Favorites" />">
                       <span><g:message code="ddbnext.Copy"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="results-pagination">
+                <div class="span4 results-pagination fr">
                   <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
                 </div>
               </div>

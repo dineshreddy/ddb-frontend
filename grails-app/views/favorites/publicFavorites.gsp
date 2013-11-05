@@ -126,7 +126,7 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
+              <div class="row delete-container">
                 <div class="results-pagination">
                   <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
                 </div>
