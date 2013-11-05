@@ -314,7 +314,7 @@ limitations under the License.
         <form method="POST" id="sendFavorites">
           <div class="modal-body">
             <fieldset>
-              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required="required" />
+              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" name="email" required="required" />
               <br /> 
               <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients" /></small>
               <br />
