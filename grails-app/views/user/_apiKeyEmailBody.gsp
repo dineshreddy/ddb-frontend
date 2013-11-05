@@ -197,9 +197,9 @@ a {
   </div>
   --------------------
   <div>
-    <g:message code="ddbnext.Api_Key_Email_Api" />
+    <g:message code="ddbnext.Api_Key_Email_Api" args="${[apiKeyTermsUrl]}" />
     <br />            
-    <g:message code="ddbnext.Api_Key_Email_Docu" />
+    <g:message code="ddbnext.Api_Key_Email_Docu" args="${[apiKeyDocUrl]}" />
   </div>            
   
 </body>

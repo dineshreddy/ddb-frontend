@@ -196,7 +196,11 @@ class UserController {
 
     def registration() {
         log.info "registration()"
-        render(view: "registration", model: [:])
+
+        render(view: "registration", model: [
+            accountTermsUrl: configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getAccountPrivacyUrl()
+        ])
     }
 
     def signup() {
@@ -207,7 +211,7 @@ class UserController {
         if (errors == null || errors.isEmpty()) {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
@@ -745,9 +749,16 @@ class UserController {
             def apiKey = user.apiKey
 
             if(apiKey){
-                render(view: "apiKey", model: [user: user])
+                render(view: "apiKey", model: [
+                    user: user,
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
             }else{
-                render(view: "requestApiKey", model: [:])
+                render(view: "requestApiKey", model: [
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
             }
         }else{
             redirect(controller:"user", action:"index")
@@ -812,7 +823,11 @@ class UserController {
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo configurationService.getFavoritesSendMailFrom()
                     subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
-                    body( view:"_apiKeyEmailBody", model:[user: user])
+                    body( view:"_apiKeyEmailBody", model:[
+                        user: user,
+                        apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                        apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                    ])
                 }
             } catch (e) {
                 log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
