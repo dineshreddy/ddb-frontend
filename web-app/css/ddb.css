@@ -1416,11 +1416,14 @@ select {
   .form-horizontal .input-prepend {
     white-space: normal;
   }
-  .form-horizontal .control-label {
-    width: 170px;
-  }
   .form-horizontal label.error {
     margin-left: 0;
+  }
+}
+
+@media (max-width: 1199px) {
+  .form-horizontal .control-label {
+    width: 170px;
   }
 }
 /* responsive genaral rules - end */
