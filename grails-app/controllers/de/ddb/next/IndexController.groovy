@@ -15,12 +15,9 @@
  */
 package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 class IndexController {
 
-    LinkGenerator grailsLinkGenerator
-    
     def configurationService
 
     def index() {
@@ -47,7 +44,7 @@ class IndexController {
 
         def articles = retrieveArguments(response)
 
-        render(view: "index", model: [articles: articles, staticUrl: grailsLinkGenerator.serverBaseURL])
+        render(view: "index", model: [articles: articles, staticUrl: configurationService.getContextUrl()])
     }
 
     private def retrieveArguments(def content){

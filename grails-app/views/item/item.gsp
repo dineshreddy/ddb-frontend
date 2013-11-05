@@ -23,7 +23,7 @@ limitations under the License.
     <meta name="page" content="item" />
     <meta name="layout" content="main" />
     
-    <g:socialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${g.baseUrl() + request.forwardURI}"/>
+    <g:socialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
     
   </head>
   <body>

@@ -23,7 +23,6 @@ import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
 import org.openid4java.discovery.DiscoveryInformation
@@ -57,8 +56,6 @@ class UserController {
     def newsletterService
     def savedSearchesService
     def bookmarksService
-
-    LinkGenerator grailsLinkGenerator
 
     def index() {
         log.info "index()"
@@ -644,7 +641,7 @@ class UserController {
         sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
         sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
 
-        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -670,7 +667,7 @@ class UserController {
             ParameterList openidResp = new ParameterList(request.getParameterMap())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
-            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+            String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
             String receivingURL =  returnURL + "?" + request.getQueryString()
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
             Identifier verified = verification.getVerifiedId()

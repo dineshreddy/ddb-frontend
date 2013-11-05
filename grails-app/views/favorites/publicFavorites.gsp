@@ -28,7 +28,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -102,7 +102,7 @@ limitations under the License.
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">        
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
             </a>
           </div>
