@@ -20,6 +20,8 @@ limitations under the License.
 <g:message code="ddbnext.send_favorites_email_body_pre" 
              args="${[userName]}" /><br />
 </div>
+<g:message code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
+
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
     <tr>
