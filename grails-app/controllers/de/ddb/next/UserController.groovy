@@ -196,7 +196,11 @@ class UserController {
 
     def registration() {
         log.info "registration()"
-        render(view: "registration", model: [:])
+
+        render(view: "registration", model: [
+            accountTermsUrl: configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getAccountPrivacyUrl()
+        ])
     }
 
     def signup() {

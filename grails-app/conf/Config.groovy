@@ -167,8 +167,9 @@ ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.basedomain="http://localhost:8080"
 ddb.culturegraph.features.enabled=false
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
-ddb.apikey.terms.url="https://www.deutsche-digitale-bibliothek.de/content/terms/api"
-
+ddb.apikey.terms.url=ddb.self.base.url+"/content/terms/api"
+ddb.account.terms.url=ddb.self.base.url+"/content/terms"
+ddb.account.privacy.url=ddb.self.base.url+"/content/privacy/personal_data"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
