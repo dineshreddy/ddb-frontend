@@ -1633,6 +1633,7 @@ function searchResultsInitializer(){
                     $("#favorite-confirmation").modal("show");
                     $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
                       if (folders.length > 1) {
+                        $("#favorite-folders").empty();
                         $.each(folders, function(index, folder) {
                           if (!folder.isMainFolder) {
                             // show select box with all folder names
