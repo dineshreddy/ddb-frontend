@@ -968,6 +968,22 @@ input[type="checkbox"],input[type="radio"] {
   }
 }
 
+@media (max-width: 670px) {
+  .item-options .hovercard-info-item {
+    width: 373px;
+  }
+  
+  .item-options .hovercard-info-item .fieldContent {
+    width: 240px;
+    margin-left: 20px;
+  }
+  
+  .item-options .hovercard-info-item .fieldName{
+    margin-left: 13px;
+    width: 100px;
+  }
+}
+
 @media (min-width: 480px) {
   .page-nav-mob .prev-page {
     border-left: none;
@@ -980,8 +996,13 @@ input[type="checkbox"],input[type="radio"] {
   }
   
   .item-options .hovercard-info-item .fieldContent {
-    width: 193px;
-    margin-left: 20px;
+    width: 119px;
+    margin-left: 7px;
+  }
+  
+    .item-options .hovercard-info-item .fieldName {
+    width: 70px;
+    margin-left: 10px;
   }
 
   .page-info-nav .results-label {
