@@ -89,6 +89,7 @@ $(document).ready(function(){
       
       $(".socialmedia .social-locked .social-overlay-container").css("display", "none");
       $(".socialmedia .social-locked").css("display", "none");
+      $(".socialmedia .social-open iframe").attr( "scrolling", "no" );
       $(".socialmedia .social-open").css("display", "block");
 
       var urlSelf = document.location.href;
