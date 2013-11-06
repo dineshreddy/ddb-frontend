@@ -45,6 +45,8 @@ modules = {
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
         resource url:'/css/saved-searches.css', bundle: 'screen'
+        resource url:'/css/socialmedia.css', bundle: 'screen'
+        resource url:'/css/apikey.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -61,7 +63,6 @@ modules = {
 
     javascript {
         resource url:'/js/jquery-1.8.2.min.js'
-        resource url:'/js/jquery.cookies.2.2.0.min.js'
         resource url:'/js/jquery.dotdotdot-1.5.1.js'
         resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
         resource url:'/js/vendor/bootstrap.js'
@@ -72,6 +73,9 @@ modules = {
         resource url:'/js/vendor/jquery.validate.min.js'
         // resource url:'/js/vendor/respond.src.js'
         resource url:'/js/jquery.fancybox.pack.js'
+        resource url:'/js/jquery.checkall.js'
+        resource url:'/js/jquery.cookies.2.2.0.min.js'
+        resource url:'/js/SocialMediaManager.js'
         resource url:'/js/StringBuilder.js'
         resource url:'/js/underscore-min.js'
         resource url:'/jwplayer/jwplayer.js'
@@ -81,6 +85,7 @@ modules = {
         resource url:'/js/tooltip.js'
         resource url:'/js/json2.js'
         resource url:'/js/global-variables.js'
+        resource url:'/js/global-scripts.js'
         resource url:'/js/institution-list.js'
         resource url:'/js/start-page.js'
         resource url:'/js/item-hierarchy.js'
@@ -90,13 +95,14 @@ modules = {
         resource url:'/js/search-results.js'
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
-        resource url:'/js/jquery.checkall.js'
         resource url:'/js/changeFavorite.js'
         resource url:'/js/profile.js'
         resource url:'/js/passwordchange.js'
         resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
+        resource url:'/js/item.js'
         resource url:'/js/saved-searches.js'
+        resource url:'/js/apiKey.js'
     }
 
     autocomplete {

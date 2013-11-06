@@ -28,6 +28,7 @@ class SearchController {
 
     def searchService
     def configurationService
+    def cultureGraphService
 
     def results() {
         try {
@@ -103,9 +104,11 @@ class SearchController {
             if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
                 queryString = queryString+"&sort="+urlQuery["randomSeed"]
 
+            def gndItems = getGndItems(resultsItems, page)
+
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], viewType:  urlQuery["viewType"],confBinary: request.getContextPath(),
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery["viewType"],confBinary: request.getContextPath(),
                     offset: params["offset"]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
@@ -128,14 +131,22 @@ class SearchController {
                 if(urlQuery["facet"]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
                 }
+
+                def roleFacetsUrl = [:]
+                def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
+                if(urlQuery["facet"]){
+                    roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
+                }
+
                 render(view: "results", model: [
                     title: urlQuery["query"],
                     results: resultsItems,
+                    gndResults: gndItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery["viewType"],
-                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
+                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
@@ -156,6 +167,55 @@ class SearchController {
         }
     }
 
+    private def getGndItems(resultItems, page) {
+        def gndItems = null
+        if(configurationService.isCulturegraphFeaturesEnabled()){
+
+            if(page == "1"){
+
+                def gndLinkItems = []
+                resultItems.facets.each { facet ->
+                    if(facet.field == "affiliate_fct_involved_normdata" || facet.field == "affiliate_fct_subject") {
+                        facet.facetValues.each { entry ->
+                            if(cultureGraphService.isValidGndUri(entry.value)){
+                                gndLinkItems.addAll(entry)
+                            }
+                        }
+                    }
+                }
+
+                int initialGndItemsToDisplay = 2
+                int maxGndIdsAvailable = gndLinkItems.size()
+                int displayCount = Math.min(maxGndIdsAvailable, initialGndItemsToDisplay)
+
+                gndItems = []
+
+                int gndItemsRetrieved = 0
+                int i = 0
+                while (gndItemsRetrieved < displayCount) {
+                    def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
+
+                    def gndData = cultureGraphService.getCultureGraph(gndId)
+                    if(gndData != null) {
+                        gndItems.add(gndData)
+                        gndItemsRetrieved ++
+                    }
+
+                    i ++
+
+                    if(i == maxGndIdsAvailable){
+                        break
+                    }
+
+                }
+            }
+
+
+        }
+
+        return gndItems
+
+    }
 
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()

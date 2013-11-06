@@ -45,7 +45,7 @@ limitations under the License.
         </div>
         <div class="span4 results-paginator-options">
           <div class="page-filter">
-            <label><g:message code="ddbnext.SearchResultsPagination_Display"/></label>
+            <label><g:message code="ddbnext.Items_Per_Page"/></label>
             <span>
               <select class="select">
                 <g:each in="${resultsPaginatorOptions.pageFilter}">
@@ -64,8 +64,8 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled">
             <li class="bookmarks-list bt bb bl br">
               <span class="h3"><g:message code="ddbnext.Searches"/></span>
-              <span class="bookmarks-list-number"> ${numberOfResults}</span>
-              <a class="bookmarks-list-envelope" id="sendSavedSearches">
+              <span class="saved-searches-list-number"> ${numberOfResults}</span>
+              <a class="saved-searches-list-envelope" id="sendSavedSearches">
                 <i class="icon-envelope" title="<g:message code="ddbnext.Send_Savedsearches"/>"></i>
               </a>
             </li>
@@ -92,8 +92,8 @@ limitations under the License.
           </g:elseif>
           <g:if test="${results.size() > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
-                <div class="deleteBtn span1">
+              <div class="row delete-container">
+                <div class="span1 delete-btn">
                   <g:form id="deleteSavedSearches" method="POST" name="deleteSavedSearches" mapping="delSavedSearches">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Savedsearches"/>">
                       <span><g:message code="ddbnext.Delete"/></span>
@@ -248,6 +248,8 @@ limitations under the License.
         </h3>
       </div>
       <div class="modal-body">
+        <div><b><g:message code="ddbnext.Mandatory"/></b></div>
+        <br/>
         <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
         <div>
           <input id="editSavedSearchId" type="hidden">

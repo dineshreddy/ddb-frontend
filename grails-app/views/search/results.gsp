@@ -47,7 +47,7 @@ limitations under the License.
                 <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
-                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></g:facetListRender>
+                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetsUrl="${facets.roleFacetsUrl}"></g:facetListRender>
                   </ul>
                 </g:if>
               </div>
@@ -158,7 +158,7 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:itemResultsRender results="${results.results["docs"]}"></g:itemResultsRender>
+                <g:itemResultsRender results="${results.results["docs"]}" gndResults="${gndResults}"></g:itemResultsRender>
               </g:if>
             </div>
           </div>

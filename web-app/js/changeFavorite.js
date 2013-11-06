@@ -20,42 +20,64 @@
     return false;
     
   });
-  
+
   function changeFavoriteState() {
     var jElemFavorite = $("#idFavorite");
     disableFavorite(jElemFavorite.parent());
     var vActn = jElemFavorite.attr("data-actn");
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
-    var request = $.ajax({
-      type: vActn,
-      dataType: 'json',
-      async: true,
-      url: url + (vActn=="DELETE" ? "&reqActn=del" : "&reqActn=add"),
-      complete: function(data) {
-        if (vActn=="POST") {
-          addToFavorites(data);
+    if(vActn=="POST"){ // Currently only allow to add favorites, not to delete them
+      var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '/?reqType=ajax';
+      var request = $.ajax({
+        type: vActn,
+        dataType: 'json',
+        async: true,
+        url: url + "&reqActn=add",
+        complete: function(data) {
+          if (vActn=="POST") {
+            addToFavorites(data);
+          } else {       
+          }
         }
-        else if (vActn=="DELETE") {
-          delFromFavorites(data);
-        }
-        else {
-          alert("Method not found...");
-        }
-      }
-    });
+      });
+    }
   }
-  
+
   function addToFavorites(data) {
     var jElemFavorite = $("#idFavorite");
     switch (data.status) {
       case 200: case 201:
         // -- success
         //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.attr("data-actn", "DELETE");
         $("#favorite-confirmation").modal("show");
-        window.setTimeout(function(){
-          $("#favorite-confirmation").modal("hide");
-        }, 1500);
+        $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
+          if (folders.length > 1) {
+            var itemId = jElemFavorite.attr("data-itemid");
+
+            $("#favorite-folders").empty();
+            $.each(folders, function(index, folder) {
+              if (!folder.isMainFolder) {
+                // show select box with all folder names
+                var selectEntry = "<option value=" + folder.folderId + ">" +
+                  folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
+
+                $("#favorite-folders").append(selectEntry);
+              }
+            });
+            $("#favoriteId").val(itemId);
+            $("#addToFavoritesConfirm").click(function() {
+              $("#favorite-confirmation").modal("hide");
+              $.each($("#favorite-folders").val(), function(index, value) {
+                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
+              });
+              
+              $("#idFavorite").parent().parent().attr('title', messages.ddbnext.favorites_already_saved);
+            });
+          } else {
+            window.setTimeout(function() {
+              $("#favorite-confirmation").modal("hide");
+            }, 1500);
+          }
+        });
         break;
       case 400:
         // -- bad request
@@ -74,32 +96,6 @@
     }
   }
   
-  function delFromFavorites(data) {
-    var jElemFavorite = $("#idFavorite");
-    switch (data.status) {
-      case 200: case 204:
-        // -- success
-        //var JSONresponse = jQuery.parseJSON(data.responseText);
-        jElemFavorite.attr("data-actn", "POST");
-        jElemFavorite.parent().removeClass("favorite-selected");
-        jElemFavorite.parent().addClass("favorite-add");
-        break;
-      case 401:
-        // -- handle unauthorized
-        break;
-      case 404:
-        // -- not found
-        break;
-      case 500:
-        // -- internal error
-        aler("Internal Server Error");
-        break;
-      default:
-        // -- bad response
-        alert("Bad response: status: " + data.status);
-        break;
-    }
-  }
 
   /**
    * Disable a favorite button.
@@ -110,5 +106,5 @@
     link.unbind("click");
     link.removeClass("favorite-add");
     link.addClass("favorite-selected");
-    link.parent().attr('title', messages.ddbnext.favorites_already_saved);
+    link.attr('title', messages.ddbnext.favorites_already_saved);
   }

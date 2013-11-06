@@ -13,51 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="works todo">
+<div class="works rolefacet">
   <div class="row">
     <div class="span6">
       <h3>Werke von:</h3>
     </div>
     <div class="span3">
       <label>
-        <input type="checkbox">
+        <input type="checkbox" class="normdata_involved_checkbox" checked="checked">
         Nur Objekte mit Normdaten
         </label>
       <span class="icon-question-sign"></span>
     </div>
   </div>
-  <ol class="unstyled">
-    <!-- TODO: replace br tag with CSS -->
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-    <li class="work">
-      <i class="icon-work"></i>
-      <span>Clavigo: Ein Trauerspiel in fuenf Aufzuegen</span><br>
-      <span>Goethe, Johann Wolfgang von - [S.I.]: 1788</span>
-    </li>
-  </ol>
-  <a href="">Alle Objekte (XX)</a>
+  <div class="works_result">
+	  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>
+  </div>
 </div>

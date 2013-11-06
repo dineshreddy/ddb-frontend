@@ -37,6 +37,16 @@ class ResultsPaginationManagerTagLib {
    }
   
   /**
+   * Renders the navigation bar for the item detail view mobile.
+   *
+   * @attrs navData REQUIRED data for page navigation
+   */
+
+  def itemDetailInfoNavMobRender = { attrs, body ->
+    out << render(template:"/search/itemNavigationMob", model:[navData: attrs.navData])
+   }
+  
+  /**
    * Renders the paginator bar for the results.
    *
    * @attrs paginatorData REQUIRED data for paginator

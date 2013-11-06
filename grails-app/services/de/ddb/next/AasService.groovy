@@ -44,6 +44,8 @@ class AasService {
 
     private static final String PERSON_URI = "/aas/persons/"
 
+    private static final String APIKEY_URI = "/aas/keys/"
+
     private static final String ID_FIELD = "id"
 
     private static final String NICKNAME_FIELD = "nickname"
@@ -70,6 +72,8 @@ class AasService {
 
     private static final String CONFIRMATION_SUBJECT_FIELD = "confirmationSubject"
 
+    private static final String APIKEY_FIELD = "apiKey"
+
     /**
      * 
      * @param id id of person to login
@@ -94,6 +98,7 @@ class AasService {
             }
             user.setPassword(password)
             user.setOpenIdUser(false)
+            user.setApiKey(aasResponse.apiKey)
 
             return user
         }
@@ -206,7 +211,8 @@ class AasService {
             String pswd,
             String confirmationLink,
             String confirmationTemplate,
-            String confirmationSubject) throws MissingArgumentException {
+            String confirmationSubject,
+            String apiKey) throws MissingArgumentException {
 
         JSONObject jsonObject = new JSONObject()
         if (!StringUtils.isBlank(nickname)) {
@@ -244,6 +250,9 @@ class AasService {
         }
         if (!StringUtils.isBlank(confirmationSubject)) {
             jsonObject.put(CONFIRMATION_SUBJECT_FIELD, confirmationSubject)
+        }
+        if (!StringUtils.isBlank(apiKey)) {
+            jsonObject.put(APIKEY_FIELD, apiKey)
         }
         return jsonObject
     }
@@ -362,4 +371,15 @@ class AasService {
         }
         return apiResponse.getResponse()
     }
+
+    /**
+     * Creates and returns a new API-Key which is not attached to any user
+     * 
+     * @return The new API-Key as String
+     */
+    public String createApiKey() {
+        JSONObject newApiKey = request(APIKEY_URI + "generate", Method.GET)
+        return newApiKey?.developerKey?.toString()
+    }
+
 }

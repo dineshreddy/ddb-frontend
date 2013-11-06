@@ -15,6 +15,9 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 
+/**
+ * Is called after the DOM has been initialized, the new handler passed in will be executed immediately
+ */
 $(function() {
   if (jsPageName == "results") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
@@ -399,8 +402,11 @@ function searchResultsInitializer(){
     $('#view-grid').removeAttr('disabled');
     $('.search-results').fadeOut('fast', function(){
       $('.results-list .summary').addClass('row');
-      $('.summary-main-wrapper').addClass('span7');
-      $('.thumbnail-wrapper').addClass('span2');
+      $('.summary-main-wrapper').addClass('span6');
+      $('.thumbnail-wrapper').addClass('span3');
+      $('.results-list .item-options').not('.entity-list .item-options').addClass('bl');
+      $('.results-list .item-options .information').not('.entity-list .item-options .information').addClass('bb');
+      $('.results-list .item-options .compare').not('.entity-list .item-options .compare').addClass('bb');
       $('.results-list').removeClass("grid");
       $('.search-results').fadeOut('fast');
       $('.summary .thumbnail-wrapper').each(function(){
@@ -410,13 +416,13 @@ function searchResultsInitializer(){
     });
     var paramsArray = new Array(new Array('viewType', 'list'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
+    $('.page-nav a, .page-nav-mob a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     $('.results-list a').each(function(){
       this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=list'));
+    $('.clear-filters a').attr('href', $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i,'viewType=list'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
   });
@@ -452,26 +458,26 @@ function searchResultsInitializer(){
   });
   $('#view-grid').click(function(){
     $('.summary-main .title a').each(function(index,value){
-      var newTitle = value.title.toString();
-      if(newTitle.length>53){
-          newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
-      }
-      if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
-        newTitle = jQuery.trim($(value).html());
-      }else{
-        var replacementsRegex = new StringBuilder();
-        replacementsRegex.append("(");
-        $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
-          var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
-          if (replacementsRegex.getLength() > 1) {
-            replacementsRegex.append("|");
-          }
-          replacementsRegex.append(tmpSvalueText);
-        });
-        replacementsRegex.append(")");
-        newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
-      }
-      value.innerHTML = newTitle;
+        var newTitle = value.title.toString();
+        if(newTitle.length>53){
+            newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ") + "...";
+        }
+        if($(this).closest('.summary-main').find('.matches li span strong').length == 0 && jQuery.trim($(value).find('strong')).length >0){
+          newTitle = jQuery.trim($(value).html());
+        }else{
+          var replacementsRegex = new StringBuilder();
+          replacementsRegex.append("(");
+          $(this).closest('.summary-main').find('.matches li span strong').each(function(sindex, svalue){
+            var tmpSvalueText = (svalue.innerHTML+'').replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1");
+            if (replacementsRegex.getLength() > 1) {
+              replacementsRegex.append("|");
+            }
+            replacementsRegex.append(tmpSvalueText);
+          });
+          replacementsRegex.append(")");
+          newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),"<strong>\$1</strong>"); 
+        }
+        value.innerHTML = newTitle;
     });
     var newTitle = $('.summary-main .title a').title;
     $('#view-list').removeClass('selected');
@@ -479,25 +485,29 @@ function searchResultsInitializer(){
     $('#view-grid').addClass('selected');
     $('#view-grid').attr("disabled","disabled");
     $('.search-results').fadeOut('fast', function(){
-      $('.results-list .summary').removeClass('row');
-      $('.summary-main-wrapper').removeClass('span7');
-      $('.thumbnail-wrapper').removeClass('span2');
-      $('.results-list').addClass("grid");
+      // For no special line view of entity search results in grid -> remove the not() statements again 
+      $('.results-list .summary').not('.entity-list .summary').removeClass('row');
+      $('.results-list .summary-main-wrapper').not('.entity-list .summary-main-wrapper').removeClass('span6');
+      $('.results-list .thumbnail-wrapper').not('.entity-list .thumbnail-wrapper').removeClass('span3');
+      $('.results-list .item-options').not('.entity-list .item-options').removeClass('bl');
+      $('.results-list .item-options .information').not('.entity-list .item-options .information').removeClass('bb');
+      $('.results-list .item-options .compare').not('.entity-list .item-options .compare').removeClass('bb');
+      $('.results-list').not('.entity-list').addClass("grid");
       $('.search-results').fadeOut('fast');
-      $('.summary .summary-main-wrapper').each(function(){
+      $('.results-list .summary .summary-main-wrapper').not('.entity-list .summary .summary-main-wrapper').each(function(){
         $(this).appendTo(this.parentNode);
       });
       $('.search-results').fadeIn('fast');
     });
     var paramsArray = new Array(new Array('viewType', 'grid'));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    $('.page-nav a').each(function(){
+    $('.page-nav a, .page-nav-mob a').each(function(){
       this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
     });
     $('.results-list a').each(function(){
       this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
     });
-    $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/viewType=(list|grid)/i,'viewType=grid'));
+    $('.clear-filters a').attr('href', $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i,'viewType=grid'));
     historyManager(newUrl);
     setSearchCookieParameter(paramsArray);
     historyedited= true;
@@ -566,34 +576,46 @@ function searchResultsInitializer(){
         }
         $('.search-results-list').html(JSONresponse.results);
         $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
-        $('.page-input').attr("value", JSONresponse.page);
+        $('.page-input').attr('value', JSONresponse.page);
         $('.page-nonjs').html(JSONresponse.page);
         $('.total-pages').html(JSONresponse.totalPages);
         $('.result-pages-count').html(JSONresponse.totalPages);
         $('.results-total').html(JSONresponse.numberOfResults);
-        if (JSONresponse.numberOfResults == "1") {
+        if (JSONresponse.numberOfResults == '1') {
             $('.results-label').html(messages.ddbnext.Result_lowercase);
         }
         else {
             $('.results-label').html(messages.ddbnext.Results_lowercase);
         }
         if(JSONresponse.paginationURL.nextPg){
-          $(".page-nav .next-page").removeClass("off");
-          $(".page-nav .last-page").removeClass("off");
-          $('.page-nav .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .next-page, .page-nav-mob .next-page a').removeClass('off');
+          $('.page-nav .last-page').removeClass('off');
+          //hide disabledArrow in mobile view
+          $('.page-nav-mob .next-page .disabled-arrow').addClass('off');
+          $('.page-nav .next-page a, .page-nav-mob .next-page a').attr('href', JSONresponse.paginationURL.nextPg);
           $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
         }else{
-          $(".page-nav .next-page").addClass("off");
-          $(".page-nav .last-page").addClass("off");
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .next-page, .page-nav-mob .next-page a').addClass('off');
+          //show disabledArrow in mobile view
+          $('.page-nav-mob .next-page .disabled-arrow').removeClass('off');
+          $('.page-nav .last-page').addClass('off');
         }
         if(JSONresponse.paginationURL.firstPg){
-          $(".page-nav .prev-page").removeClass("off");
-          $(".page-nav .first-page").removeClass("off");
-          $('.page-nav .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .prev-page, .page-nav-mob .prev-page a').removeClass('off');
+          $('.page-nav .first-page').removeClass('off');
+          //hide disabledArrow in mobile view
+          $('.page-nav-mob .prev-page .disabled-arrow').addClass('off');
+          $('.page-nav .prev-page a, .page-nav-mob .prev-page a').attr('href', JSONresponse.paginationURL.prevPg);
           $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
         }else{
-          $(".page-nav .prev-page").addClass("off");
-          $(".page-nav .first-page").addClass("off");
+          //first selector for desktop view, the second one for mobile view
+          $('.page-nav .prev-page, .page-nav-mob .prev-page a').addClass('off');
+          //show disabledArrow in mobile view
+          $('.page-nav-mob .prev-page .disabled-arrow').removeClass('off');
+          $('.page-nav .first-page').addClass('off');
         }
 
         $('.search-results-list').fadeIn('fast');
@@ -602,7 +624,7 @@ function searchResultsInitializer(){
         divSearchResultsOverlayWaiting.remove();
         divSearchResultsOverlayModal.remove();
 
-        $(this).trigger("searchChange");
+        $(this).trigger('searchChange');
         });
       },
       error: function(){
@@ -619,7 +641,19 @@ function searchResultsInitializer(){
     });
   }
  
-  // Facets Manager --
+  /** 
+   * Facets Manager 
+   * 
+   * The main intend of this class is to 
+   * - retrieving facet data via ajax
+   * - handlig all events coming from the DOM tree (add/remove facets, show next page etc.)
+   * - updating the facets values in the browser url. This is important for navigating with back/next butoon of the browser
+   * - triggering the flyoutWidget to render the facets
+   * 
+   * Do all rendering in the flyoutWidget!
+   *
+   * Do not make synchronous AJAX calls in this class. Otherwise the GUI might freeze!
+   */   
   FacetsManager = function(){
     this.init();
   }
@@ -628,11 +662,13 @@ function searchResultsInitializer(){
       
     connectedflyoutWidget: null,
     facetsEndPoint: jsContextPath +'/facets',
+    rolefacetsEndPoint: jsContextPath +'/rolefacets',
     currentOffset: 0, 
     currentRows: -1, // all facets
     currentFacetField: null,
     currentFacetValuesSelected: new Array(),
     currentFacetValuesNotSelected: new Array(),
+    roleFacets: new Array,
     currentPage: 1,
     searchFacetValuesTimeout: 0,
     errorCaught: false,
@@ -668,6 +704,46 @@ function searchResultsInitializer(){
     init: function(){
     },
 
+    fetchRoleFacets: function(flyoutWidget){
+    	var currObjInstance = this;
+    	var url = this.rolefacetsEndPoint;
+    	var request = $.ajax({
+	        type: 'GET',
+	        dataType: 'json',
+	        async: true,
+	        url: url,
+	        complete: function(data){
+	    	    var parsedResponse = jQuery.parseJSON(request.responseText);        
+	    	    
+	    	    if (parsedResponse.length > 0){
+	    	    	currObjInstance.roleFacets = new Array();
+	    	    	$.each((parsedResponse), function(){
+	    	        	currObjInstance.roleFacets.push(this);
+	    	        });	    	    	
+	    	    }
+	    	    //invoke the callback method to continue initializing the facets 
+	    	    currObjInstance.initializeSelectedFacetOnLoad(flyoutWidget);
+              }
+            });
+    },
+    
+    fetchRoleFacetValues: function(facetValueContainer, facetValue, roleFacet){
+    	var currObjInstance = this;
+    	var url = this.facetsEndPoint+'?name='+roleFacet+'&query='+facetValue;
+    	var request = $.ajax({
+	        type: 'GET',
+	        dataType: 'json',
+	        async: true,
+	        url: url,
+	        complete: function(data){
+	    	    var parsedResponse = jQuery.parseJSON(request.responseText);            
+	    	    if (parsedResponse.values.length > 0){
+	    	    	currObjInstance.connectedflyoutWidget.renderRoleFacetValue(facetValueContainer, facetValue, roleFacet, parsedResponse);
+	    	    }
+              }
+            });
+    },
+    
     fetchFacetValues: function(flyoutWidget, query){
         if(flyoutWidget!=null)
           this.connectedflyoutWidget = flyoutWidget;
@@ -729,7 +805,10 @@ function searchResultsInitializer(){
       if(this.connectedflyoutWidget.facetLeftContainer){
         var currObjInstance = this;
         var selectedList = this.connectedflyoutWidget.facetLeftContainer.find('.selected-items li');
+        
+        this.currentFacetValuesSelected = new Array();
         this.currentFacetValuesNotSelected = responseFacetValues;
+        
         if(selectedList.length>0){
           selectedList.each(function(){
             var tmpFacetValue = $(this).attr('data-fctvalue');
@@ -765,20 +844,33 @@ function searchResultsInitializer(){
     },
     
     selectFacetValue: function(facetValue, localizedValue){
-        var currObjInstance = this;
-        this.currentFacetValuesSelected.push(facetValue);
+        var currObjInstance = this;                
         
+        //update selection lists
+        this.currentFacetValuesSelected.push(facetValue);
         this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected, function(element) {
             return element.value != facetValue;
         });
         
-        var selectedFacetValue = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+        //render the selected facet
+        var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
+                
+        //search for role based facets for the current field
+        var roleFacets = currObjInstance.getRoleFacets(this.currentFacetField);
+            
+        if (roleFacets.length > 0){
+          	$.each(currObjInstance.roleFacets, function(){
+          		currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, this.name);
+          	}); 
+        }            
         
-        selectedFacetValue.find('.facet-remove').click(function(event){
-          currObjInstance.unselectFacetValue(selectedFacetValue);
+        //add event listener for removing facet
+        facetValueContainer.find('.facet-remove').click(function(event){
+          currObjInstance.unselectFacetValue(facetValueContainer);
           event.preventDefault();
         });
         
+        //add event listener for add more facet filters
         if(this.currentFacetValuesSelected.length == 1){
             this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
             this.connectedflyoutWidget.addMoreFilters.click(function(event){
@@ -786,10 +878,13 @@ function searchResultsInitializer(){
             });
         }
         this.connectedflyoutWidget.close();
+
+        //Update Url (We want to add the facet value selected, but at the same time we want to keep all the old selected values)
+        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');        
+        if (paramsFacetValues == null) {
+      	  paramsFacetValues = this.getUrlVar('facetValues[]');
+        }
         
-        // We want to add the facet value selected, but at the same time we want
-        // to keep all the old selected values
-        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
         if(paramsFacetValues){
           $.each(paramsFacetValues, function(key,value){
             paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
@@ -799,14 +894,18 @@ function searchResultsInitializer(){
         }else{
           var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField+'='+facetValue));
         }
+        
+        //perform search
         paramsArray.push(new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(selectedFacetValue, true);});
+        fetchResultsList(addParamToCurrentUrl(paramsArray), function(){currObjInstance.unselectFacetValue(facetValueContainer, true);});
         
         $('.clear-filters').removeClass('off');
     },
     
-    unselectFacetValue: function(element,unselectWithoutFetch){
+    unselectFacetValue: function(element,unselectWithoutFetch){     	
       var facetFieldFilter = element.parents('.facets-item');
+      var facetValue = element.attr('data-fctvalue');
+  
       if(this.connectedflyoutWidget.opened){
           this.connectedflyoutWidget.close();
           this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected, function(el) {
@@ -815,11 +914,22 @@ function searchResultsInitializer(){
       }
       // if in the list there is only one element means that is the case of the
       // last element that we are going to remove
-      if(facetFieldFilter.find('.selected-items li').length == 1){
+      if(facetFieldFilter.find('.selected-items li[data-fctvalue]').length == 1){
         var facetFieldFilter = element.parents('.facets-item');
         this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter, facetFieldFilter.find('.add-more-filters'));
       }
-      var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+element.attr('data-fctvalue'))));
+
+      //Remove facet and all role based facets belonging to this facet from the URL
+      var facetsToRemove = new Array();
+      facetsToRemove.push(new Array('facetValues[]',facetFieldFilter.find('.h3').attr('data-fctname')+'='+facetValue));
+    	  
+      var roleFacets = facetFieldFilter.find('span.role-facet-value');
+      $.each((roleFacets), function(){
+    	  facetsToRemove.push(new Array('facetValues[]',$( this ).attr("facetfield")+'='+facetValue));
+      });
+      
+      var newUrl = removeParamFromUrl(facetsToRemove);
+      
       if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
           removeSearchCookieParameter('facetValues[]');
       }
@@ -829,6 +939,39 @@ function searchResultsInitializer(){
       element.remove();
       
       if($('.facets-list').find('li[data-fctvalue]').length==0) $('.clear-filters').addClass('off');
+    },
+    
+    selectRoleFacetValue: function(facetField,facetValue){
+    	var currObjInstance = this;
+    	// We want to add the facet value selected, but at the same time we want
+        // to keep all the old selected values
+        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+        if (paramsFacetValues == null) {
+      	  paramsFacetValues = this.getUrlVar('facetValues[]');
+        }
+        
+        if(paramsFacetValues){
+          $.each(paramsFacetValues, function(key,value){
+            paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
+          });
+          paramsFacetValues.push(facetField+'='+facetValue);
+          var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
+        }else{
+          var paramsArray = new Array(new Array('facetValues[]', facetField+'='+facetValue));
+        }
+        
+        paramsArray.push(new Array('offset', 0));
+        fetchResultsList(addParamToCurrentUrl(paramsArray));
+    },
+    
+    unselectRoleFacetValue: function(facetField,facetValue){
+    	var currObjInstance = this;
+	    var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]',facetField+'='+facetValue)));
+	    if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
+	        removeSearchCookieParameter('facetValues[]');
+	    }
+	      
+	    fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl.substr(newUrl.indexOf("?") + 1)));
     },
     
     initializeFacetValuesDynamicSearch: function(inputSearchElement){
@@ -864,46 +1007,103 @@ function searchResultsInitializer(){
       });
     },
     
+    initializeOnLoad: function(connectedflyoutWidget){
+
+      //this methods initialize all selected facets and role facets
+      var currObjInstance = this;      
+      
+      //fetch all role facets asynchronusly. The success method will select all facet values
+      currObjInstance.fetchRoleFacets(connectedflyoutWidget);
+        
+      $('.clear-filters').removeClass('off');
+    },
+    
     initializeSelectedFacetOnLoad: function(connectedflyoutWidget){
-      var currObjInstance = this;
-      this.connectedflyoutWidget = connectedflyoutWidget;
-      var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-      if(paramsFacetValues){
-        var selectedFacets = {};
-        $.each(paramsFacetValues, function(key,value){
-          var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
-          var fctField = decodedElement[0];
-          var fctValue = decodedElement[1];
-          if(!selectedFacets[fctField]){
-            selectedFacets[fctField] = new Array();
-          }
-          selectedFacets[fctField].push(fctValue);
-        });
-        $.each(selectedFacets, function(fctField, fctValues){
-            currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
-            currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
-            currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
-            currObjInstance.connectedflyoutWidget.buildLeftContainer();
-            currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
-            $.each(fctValues, function(){
-                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, getLocalizedFacetValue(fctField, this));
-                
-                selectedFacetValue.find('.facet-remove').click(function(){
-                currObjInstance.unselectFacetValue(selectedFacetValue);
-              });
-            });
-            
-            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
-            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
-                currObjInstance.connectedflyoutWidget.build($(this));
-            });
-        });
-        $('.clear-filters').removeClass('off');
-      }
+        var currObjInstance = this;
+        
+        this.connectedflyoutWidget = connectedflyoutWidget;
+        var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
+        
+        if (paramsFacetValues == null) {
+      	  paramsFacetValues = this.getUrlVar('facetValues[]');
+        }
+        
+        if(paramsFacetValues){
+          var selectedFacets = {};
+          $.each(paramsFacetValues, function(key,value){
+            var decodedElement = decodeURIComponent(value.replace(/\+/g,'%20')).split('=');
+            var fctField = decodedElement[0];
+            var fctValue = decodedElement[1];
+            if(!selectedFacets[fctField]){
+              selectedFacets[fctField] = new Array();
+            }
+            selectedFacets[fctField].push(fctValue);
+          });
+          
+          //handle selected facets
+          $.each(selectedFacets, function(fctField, fctValues){
+          	if (! currObjInstance.isRoleFacet(fctField)) {
+  	        	currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list').find('a[data-fctname="'+fctField+'"]');
+  	            currObjInstance.connectedflyoutWidget.parentMainElement = currObjInstance.connectedflyoutWidget.mainElement.parent();
+  	            currObjInstance.currentFacetField = currObjInstance.connectedflyoutWidget.mainElement.attr('data-fctname');
+  	            currObjInstance.connectedflyoutWidget.buildLeftContainer();
+  	            currObjInstance.connectedflyoutWidget.parentMainElement.find('.input-search-fct-container').hide();
+  	            $.each(fctValues, function(fctValue){
+  	            	var facetValue = this;
+  	                var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, getLocalizedFacetValue(fctField, this));
+  	                var roleFacets = currObjInstance.getRoleFacets(currObjInstance.currentFacetField);
+  	                
+  	                if (roleFacets.length > 0){
+	  	              	$.each(currObjInstance.roleFacets, function(){
+	  	              		currObjInstance.fetchRoleFacetValues(selectedFacetValue, facetValue, this.name);
+	  	              	}); 
+  	                }
+  	                
+  	                selectedFacetValue.find('.facet-remove').click(function(){
+  	                currObjInstance.unselectFacetValue(selectedFacetValue);
+  	              });
+  	            });
+  	            
+  	            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
+  	            currObjInstance.connectedflyoutWidget.addMoreFilters.click(function(event){
+  	            	currObjInstance.connectedflyoutWidget.build($(this));
+  	            });
+          	}
+          });
+          
+          $('.clear-filters').removeClass('off');
+        }
+      },
+    
+    isRoleFacet: function(fctField){
+    	var currObjInstance = this;
+    	var isRoleFacet = false;
+    	
+    	$.each(currObjInstance.roleFacets, function(){
+        	if (fctField == this.name) {
+        		isRoleFacet = true;
+        	}    		
+    	});    	
+
+    	return isRoleFacet;
+    },
+    
+    getRoleFacets: function(fctField){    	
+    	var currObjInstance = this;
+    	var roleFacets = new Array();
+    	
+    	$.each(currObjInstance.roleFacets, function(){
+        	if (fctField == this.parent) {
+        		roleFacets.push(this);
+        	}    		
+    	});    	
+
+    	return roleFacets;
     },
     
     getUrlVars: function(){
       var vars = {}, hash;
+      var windowLocation = window.location.href;
       var hashes = (historySupport)?window.location.href.slice(window.location.href.indexOf('?') + 1).split('&'):globalUrl.split('&');
       for(var i = 0; i < hashes.length; i++)
       {
@@ -920,7 +1120,17 @@ function searchResultsInitializer(){
     }
   });
   
-  // Flyout Widget --
+  /** 
+   * Flyout Widget
+   * 
+   * The main intend of this class is to render all content in the context of facets
+   * Its doing this by DOM manipulation triggered by the FacetManager instance.
+   * The Flyout Widget contains 
+   * - facetLeftContainer: showing the facet fields and the selected facets
+   * - facetRightContainer: showing the unselected facets  
+   * 
+   * Do not use AJAX calls in this class!
+   */     
   FlyoutFacetsWidget = function(){
     this.init();
   }
@@ -956,7 +1166,7 @@ function searchResultsInitializer(){
     
     init: function(){
         this.cleanNonJsStructures();
-        this.fctManager.initializeSelectedFacetOnLoad(this);
+        this.fctManager.initializeOnLoad(this);
     },
     
     build: function(element){
@@ -1139,25 +1349,96 @@ function searchResultsInitializer(){
     },
     
     renderSelectedFacetValue: function(facetValue, localizedValue){
-      var facetValueContainer = $(document.createElement('li'));
-      var facetValueSpan = $(document.createElement('span'));
-      var facetValueRemove = $(document.createElement('a'));
-// var facetValueRemove = $(document.createElement('span'));
+        var facetValueContainer = $(document.createElement('li'));
+        var facetValueSpan = $(document.createElement('span'));
+        var facetValueRemove = $(document.createElement('a'));
+        
+        facetValueContainer.attr('data-fctvalue', facetValue);
+        facetValueSpan.attr('title', localizedValue);
+        facetValueSpan.html(localizedValue);
+        facetValueSpan.addClass('facet-value');
+        
+        facetValueRemove.attr('href', '#');
+        facetValueRemove.attr('title', this.field_RemoveButton);
+        facetValueRemove.addClass('facet-remove fr');
+
+        facetValueSpan.appendTo(facetValueContainer);
+        
+        facetValueRemove.appendTo(facetValueContainer);      
+        facetValueContainer.appendTo(this.selectedItems);
+        
+        return facetValueContainer;
+      },
       
-      facetValueContainer.attr('data-fctvalue', facetValue);
-      facetValueSpan.attr('title', localizedValue);
-      facetValueSpan.html(localizedValue);
-      facetValueRemove.attr('href', '#');
-      facetValueRemove.attr('title', this.field_RemoveButton);
+    renderRoleFacetValue: function(facetValueContainer, facetValue, facetField, roleFacetValues){
+      var currObjInstance = this;
       
-      facetValueSpan.addClass('facet-value');
-      facetValueRemove.addClass('facet-remove fr');
+      //Find the span element of the facetvalue
+      var facetValueSpan = facetValueContainer.find('.facet-value');
       
-      facetValueSpan.appendTo(facetValueContainer);
-      facetValueRemove.appendTo(facetValueContainer);
-      facetValueContainer.appendTo(this.selectedItems);
+      var newUl = false;
+      var roleFacetValueUl = facetValueContainer.find('ul');
+      if (roleFacetValueUl.length == 0) {
+    	  newUl = true;
+      	  roleFacetValueUl = $(document.createElement('ul'));
+      }
       
-      return facetValueContainer;
+	  //Create the role based facets and add them to the container
+      $.each(roleFacetValues.values, function(index, value){
+        //The role search could return more than one role. So the roleFacetValue must match exactly the facetValue! 
+    	  if (facetValue == value.value) {
+	        var roleFacetValueLi = $(document.createElement('li'));
+	        var roleFacetValueSpan = $(document.createElement('span')); 
+	        var roleFacetValueCheckbox = $(document.createElement('input'));        
+	        var roleFieldMessage = messages.ddbnext['facet_'+facetField];
+	        
+	        roleFacetValueUl.addClass('unstyled');
+	        roleFacetValueLi.addClass('role-facet');
+	        
+	        roleFacetValueSpan.attr('title', "RoleValue");
+	        roleFacetValueSpan.attr('facetField', facetField);
+	        roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
+	        roleFacetValueSpan.addClass('role-facet-value');
+	        
+	        roleFacetValueCheckbox.attr('type', "checkbox");
+	        roleFacetValueCheckbox.addClass('role-facet-checkbox');
+	        
+	        //If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad 
+	        //we have to find out if the checkbox must be checked 
+	        var paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues%5B%5D');        
+	        if (paramsFacetValues == null) {
+	      	  paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues[]');
+	        }
+	        
+	        if (paramsFacetValues) {
+		        var search = facetField+'='+facetValue;
+		        $.each(paramsFacetValues, function(key,value){
+		        	paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g,'%20'));
+	            });
+	        	
+		        if (jQuery.inArray(search, paramsFacetValues) != -1) {
+		        	roleFacetValueCheckbox.prop('checked', true);
+		        }	        
+	        }
+	        
+	        //add action handler
+	        roleFacetValueCheckbox.click(function(event){        	
+	        	if (this.checked) {
+	        		currObjInstance.fctManager.selectRoleFacetValue(facetField, facetValue);        		
+	    		} else {
+	    			currObjInstance.fctManager.unselectRoleFacetValue(facetField, facetValue);
+	    		}                 	
+	        });
+	        
+	        roleFacetValueSpan.appendTo(roleFacetValueLi);
+	        roleFacetValueCheckbox.appendTo(roleFacetValueLi);
+	        roleFacetValueLi.appendTo(roleFacetValueUl);
+        }
+      })
+      
+      if (newUl) {
+      	roleFacetValueUl.insertAfter(facetValueSpan);
+      }
     },
     
     renderAddMoreFiltersButton: function(facetField){
@@ -1350,9 +1631,32 @@ function searchResultsInitializer(){
                   // add a result hit to the list of favorites
                   $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
                     $("#favorite-confirmation").modal("show");
-                    window.setTimeout(function(){
-                      $("#favorite-confirmation").modal("hide");
-                    }, 1500);
+                    $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
+                      if (folders.length > 1) {
+                        $("#favorite-folders").empty();
+                        $.each(folders, function(index, folder) {
+                          if (!folder.isMainFolder) {
+                            // show select box with all folder names
+                            var selectEntry = "<option value=" + folder.folderId + ">" +
+                              folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
+
+                            $("#favorite-folders").append(selectEntry);
+                          }
+                        });
+                        $("#favoriteId").val(itemId);
+                        $("#addToFavoritesConfirm").click(function() {
+                          $("#favorite-confirmation").modal("hide");
+                          $.each($("#favorite-folders").val(), function(index, value) {
+                            $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
+                          });
+                        });
+                      }
+                      else {
+                        window.setTimeout(function() {
+                          $("#favorite-confirmation").modal("hide");
+                        }, 1500);
+                      }
+                    });
                   });
                 });
               }
@@ -1366,17 +1670,22 @@ function searchResultsInitializer(){
    * Check if the current search string is already stored as a saved search.
    */
   function checkSavedSearch() {
-    $.ajax({
-      type: "POST",
-      contentType: "application/json",
-      dataType: "json",
-      url: jsContextPath + "/apis/savedsearches/_get",
-      data: JSON.stringify({query: window.location.search.substring(1)})
-    }).done(function() {
-      disableSavedSearch($(".add-to-saved-searches"));
-    }).fail(function() {
-      enableSavedSearch($(".added-to-saved-searches"));
-    });
+    // Only perform this check if a user is logged in
+    if(jsLoggedIn == "true"){
+    
+      $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        dataType: "json",
+        url: jsContextPath + "/apis/savedsearches/_get",
+        data: JSON.stringify({query: window.location.search.substring(1)})
+      }).done(function() {
+        disableSavedSearch($(".add-to-saved-searches"));
+      }).fail(function() {
+        enableSavedSearch($(".added-to-saved-searches"));
+      });
+      
+    }
   }
 
   /**

@@ -30,6 +30,7 @@ class User implements Cloneable {
     String password
     boolean openIdUser
     boolean newsletterSubscribed
+    String apiKey
 
     // TODO: why do we need to declare a default constructor?
     // TODO: *arb*: If you write a Question in a TODO, write your name after it so we know who to ask remove the TODO :)
@@ -37,7 +38,7 @@ class User implements Cloneable {
     }
 
     public String toString() {
-        return "User[id=${id}, username=${username}, firstname=${firstname}, lastname=${lastname}, email=${email}, openIdUser=${openIdUser}, isSubscriber=${newsletterSubscribed}"
+        return "User[id=${id}, username=${username}, firstname=${firstname}, lastname=${lastname}, email=${email}, openIdUser=${openIdUser}, isSubscriber=${newsletterSubscribed}, apiKey=${apiKey}]"
     }
 
     // Utility method to get first name and last name if present or username if not
@@ -69,8 +70,8 @@ class User implements Cloneable {
         return true
     }
 
-   public Object clone() throws CloneNotSupportedException {
-     Object result = super.clone()
-     return result
-   }
+    public Object clone() throws CloneNotSupportedException {
+        Object result = super.clone()
+        return result
+    }
 }

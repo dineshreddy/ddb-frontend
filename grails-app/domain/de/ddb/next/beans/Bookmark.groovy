@@ -34,7 +34,7 @@ class Bookmark {
     Type type
     Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Date creationDate, Type type, def folders, def description, def updateDate) {
+    public Bookmark(String bookmarkId, String userId, String itemId, Long creationDateAsLong, Type type, def folders, def description, Long updateDateAsLong) {
         this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
@@ -43,14 +43,20 @@ class Bookmark {
         }else{
             this.description = description.toString()
         }
-        this.creationDate = creationDate
-        if(updateDate == null || updateDate instanceof JSONNull || updateDate instanceof NullObject){
-            this.updateDate = creationDate
+        if(creationDateAsLong == null || creationDateAsLong instanceof JSONNull || creationDateAsLong instanceof NullObject){
+            this.creationDate = new Date()
         }else{
-            this.updateDate = new Date(updateDate.toLong())
+            this.creationDate = new Date(creationDateAsLong)
+        }
+        if(updateDateAsLong == null || updateDateAsLong instanceof JSONNull || updateDateAsLong instanceof NullObject){
+            this.updateDate = new Date()
+        }else{
+            this.updateDate = new Date(updateDateAsLong)
         }
         this.type = type
-        if(folders instanceof String){
+        if(folders instanceof net.sf.json.JSONNull){
+            this.folders = null
+        }else if(folders instanceof String){
             String folderString = folders.toString()
             if(folderString.startsWith("[")){
                 folderString = folderString.substring(1,folderString.length()-1)
@@ -61,5 +67,30 @@ class Bookmark {
         }else{
             this.folders = folders
         }
+    }
+
+    public def getAsMap() {
+        def out = [:]
+        out["bookmarkId"] = bookmarkId
+        out["userId"] = userId
+        out["itemId"] = itemId
+        out["description"] = description
+        out["creationDate"] = creationDate
+        out["updateDate"] = updateDate
+        out["type"] = type
+        out["folders"] = folders
+        return out
+    }
+
+    boolean isValid() {
+        if(bookmarkId != null
+        && userId != null
+        && itemId != null
+        && creationDate != null
+        && folders != null
+        && updateDate != null){
+            return true
+        }
+        return false
     }
 }

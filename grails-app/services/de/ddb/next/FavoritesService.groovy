@@ -1,7 +1,26 @@
+/*
+ * Copyright (C) 2013 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package de.ddb.next
+
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import grails.converters.JSON
+import net.sf.json.util.JSONBuilder
+
 import org.codehaus.groovy.grails.web.json.*
 import java.text.DateFormat
 import java.text.SimpleDateFormat
@@ -12,7 +31,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
 
-class FavoritesPageService {
+class FavoritesService {
 
     def transactional = false
     def bookmarksService
@@ -22,80 +41,46 @@ class FavoritesPageService {
     def configurationService
     def messageSource
 
-    def getFavorites() {
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findFavoritesByUserId(user.getId())
-            return result as JSON
-        } else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-            return null
+    def private createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
+        def first = createFavoritesLinkNavigation(0, rows, order, by, folderId)
+        if (offset < rows){
+            first = null
         }
-    }
-
-    def getFavoritesOfFolder(folderId) {
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
-            return result as JSON
-        } else {
-            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-            return null
+        def last = createFavoritesLinkNavigation(lastPgOffset, rows, order, by, folderId)
+        if (offset >= lastPgOffset){
+            last = null
         }
+        return [
+            firstPg: first,
+            prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, by, folderId),
+            nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, by, folderId),
+            lastPg: last
+        ]
     }
-
-    def getMainFavoritesFolder() {
-        Folder folder = null
-        def User user = getUserFromSession()
-        if (user != null) {
-            def result = bookmarksService.findAllFolders(user.getId())
-            result.each {
-                if(it.title == "favorites"){
-                    folder = it
-                }
-            }
-        }
-        log.info "getMainFavoritesFolder returns " +folder
-        return folder
-    }
-
-    private User getUserFromSession() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-    }
-
-    def private createAllFavoritesLink(Integer offset,Integer rows,String order,Integer lastPgOffset){
-        def first = createFavoritesLinkNavigation(0,rows,order)
-        if (offset<rows){
-            first=null
-        }
-        def last = createFavoritesLinkNavigation(lastPgOffset,rows,order)
-        if (offset>=lastPgOffset){
-            last=null
-        }
-        return [firstPg:first,prevPg:createFavoritesLinkNavigation(offset.toInteger()-rows,rows,order),nextPg:createFavoritesLinkNavigation(offset.toInteger()+rows,rows,order),lastPg:last]
-    }
-    def private createFavoritesLinkNavigation(offset,rows,order){
+    def private createFavoritesLinkNavigation(offset,rows,order,by,folderId){
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-        return g.createLink(controller:'user', action: 'favorites',params:[offset:offset,rows:rows,order:order])
+        return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order,by:by,id:folderId])
     }
 
-    def private formatDate(items,String id,Locale locale) {
-        def newDate
-        def oldDate
-        items.each { favItems ->
-            if (id== favItems.itemId){
-                String pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                SimpleDateFormat oldFormat = new SimpleDateFormat(pattern)
-                SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
-                oldFormat.setTimeZone(TimeZone.getTimeZone("GMT"))
-                newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-                DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
-                def Date javaDate = oldFormat.parse(favItems.creationDate)
-                newDate = newFormat.format(javaDate)
-                oldDate = favItems.creationDate
-            }
+    def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
+        def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId, by)
+        if (offset < rows){
+            first = null
         }
-        return [newdate:newDate.toString(),oldDate:oldDate]
+        def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId, by)
+        if (offset >= lastPgOffset){
+            last = null
+        }
+        return [
+            firstPg: first,
+            prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId, by),
+            nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId, by),
+            lastPg: last
+        ]
+    }
+    def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId, String by){
+        def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, offset:offset, rows:rows, order:order, by:by])
     }
 
     /**
@@ -103,8 +88,8 @@ class FavoritesPageService {
      * @param items
      * @return
      */
-    def private retriveItemMD(JSONArray items, Locale locale){
-        def totalResults= items.length()
+    def private retriveItemMD(List items, Locale locale){
+        def totalResults= items.size()
         def step = 20
         def queryItems
         def orQuery=""
@@ -152,7 +137,9 @@ class FavoritesPageService {
                     emptyDummyItem["preview"]["subtitle"] = ""
                     emptyDummyItem["preview"]["media"] = ["unknown"]
                     emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
-                    allRes.add(emptyDummyItem)
+
+                    net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
+                    allRes.add(jsonDummyItem)
                 }
             }
         }
@@ -180,8 +167,7 @@ class FavoritesPageService {
         return resultsItems["results"]["docs"]
     }
 
-    def private getAllFoldersPerUser(){
-        def User user = getUserFromSession()
+    def private getAllFoldersPerUser(User user){
         if (user != null) {
             return bookmarksService.findAllFolders(user.getId())
         }
@@ -191,20 +177,7 @@ class FavoritesPageService {
         }
     }
 
-    private List addDateToFavResults(allRes, List items, Locale locale) {
-        def all = []
-        def temp = []
-        allRes.each { searchItem->
-            temp = []
-            temp = searchItem
-            temp["creationDate"]=formatDate(items,searchItem.id,locale).get("newdate")
-            temp["serverDate"]=formatDate(items,searchItem.id,locale).get("oldDate")
-            all.add(temp)
-        }
-        return all
-    }
-
-    private List addBookmarkToFavResults(allRes, List items) {
+    private List addBookmarkToFavResults(allRes, List items, Locale locale) {
         def all = []
         def temp = []
         allRes.each { searchItem->
@@ -212,13 +185,33 @@ class FavoritesPageService {
             temp = searchItem
             for(int i=0; i<items.size(); i++){
                 if(items.get(i).itemId == searchItem.id){
-                    temp["bookmark"]=items.get(i)
+                    temp["bookmark"] = items.get(i).getAsMap()
+                    temp["bookmark"]["creationDateFormatted"] = formatDate(items.get(i).creationDate, locale)
+                    temp["bookmark"]["updateDateFormatted"] = formatDate(items.get(i).updateDate, locale)
                     break
                 }
             }
             all.add(temp)
         }
         return all
+    }
+
+    private List addFolderToFavResults(allRes, Folder folder) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = searchItem
+            temp["folder"] = folder.getAsMap()
+            all.add(temp)
+        }
+        return all
+    }
+
+    private String formatDate(Date oldDate, Locale locale) {
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
+        newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
+        return newFormat.format(oldDate)
     }
 
     private List addCurrentUserToFavResults(allRes, User user) {

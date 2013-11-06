@@ -13,14 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:if test="${navData.paginationURL.firstPg == null}">
+  <g:set var="displayLeftPagination" value="off"></g:set>
+  <g:set var="enableLeftPagination" value="${false}"></g:set>
+</g:if>
+<g:else>
+  <g:set var="enableLeftPagination" value="${true}"></g:set>
+</g:else>
+<g:if test="${navData.paginationURL.lastPg == null}">
+  <g:set var="displayRightPagination" value="off"></g:set>
+  <g:set var="enableRightPagination" value="${false}"></g:set>
+</g:if>
+<g:else>
+  <g:set var="enableRightPagination" value="${true}"></g:set>
+</g:else>
 <div class="page-nav">
   <ul class="inline">
-    <g:if test="${navData.paginationURL.firstPg ==null}">
-      <g:set var="displayLeftPagination" value="off"></g:set>
-    </g:if>
-    <g:if test="${navData.paginationURL.lastPg ==null}">
-      <g:set var="displayRightPagination" value="off"></g:set>
-    </g:if>
     <li class="first-page ${displayLeftPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg.encodeAsHTML()}"><g:message code="ddbnext.First_Label" /></a>  
     </li>
@@ -41,6 +49,30 @@ limitations under the License.
     </li>
     <li class="last-page ${displayRightPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg.encodeAsHTML()}"><g:message code="ddbnext.Last_Label" /></a> 
+    </li>
+  </ul>
+</div>
+<div class="page-nav-mob">
+  <ul class="inline">
+    <li class="prev-page bl">
+      <g:if test="${enableLeftPagination}">
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Previous_Label" /></span></div></a>
+        <div class="disabled-arrow off"></div> 
+      </g:if>
+      <g:else>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Previous_Label" /></span></div></a>
+        <div class="disabled-arrow"></div>
+      </g:else>
+    </li>
+    <li class="next-page bl">
+      <g:if test="${enableRightPagination}">
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Next_Label" /></span></div></a>
+        <div class="disabled-arrow off"></div>
+      </g:if>
+      <g:else>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Next_Label" /></span></div></a>
+        <div class="disabled-arrow"></div>
+      </g:else> 
     </li>
   </ul>
 </div>

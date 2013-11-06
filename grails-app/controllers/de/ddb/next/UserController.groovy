@@ -21,7 +21,6 @@ import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
 import org.openid4java.discovery.DiscoveryInformation
@@ -29,11 +28,11 @@ import org.openid4java.discovery.Identifier
 import org.openid4java.message.AuthRequest
 import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
-import org.openid4java.util.HttpClientFactory
-import org.openid4java.util.ProxyProperties
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
@@ -43,8 +42,6 @@ class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
-    private final static String ORDER_TITLE = "title"
-    private final static String ORDER_DATE = "date"
 
     def aasService
     def sessionService
@@ -52,11 +49,8 @@ class UserController {
     def messageSource
     def searchService
     def newsletterService
-    def favoritesPageService
     def savedSearchesService
     def bookmarksService
-
-    LinkGenerator grailsLinkGenerator
 
     def index() {
         log.info "index()"
@@ -92,6 +86,7 @@ class UserController {
             }else{
                 loginStatus = LoginStatus.FAILURE
             }
+
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
@@ -103,7 +98,7 @@ class UserController {
                 messages.add("ddbnext.User.PasswordReset_Change")
                 redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
             } else {
-                redirect(controller: 'user', action: 'favorites')
+                redirect(controller: 'favorites', action: 'favorites')
             }
         }else{
             render(view: "login", model: ['loginStatus': loginStatus])
@@ -119,222 +114,7 @@ class UserController {
 
     }
 
-    //TODO Refactor in a new service most of the assisting code
-    def favorites(){
-        log.info "favorites()"
-        if(isUserLoggedIn()){
-            def rows=20 //default
-            if (params.rows){
-                rows = params.rows.toInteger()
-            }
-            def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
-            def folderId = mainFavoriteFolder.folderId
-            if(params.id){
-                folderId = params.id
-            }
-            def String result = favoritesPageService.getFavoritesOfFolder(folderId)
-            def by = ORDER_DATE
-            if (params.by){
-                if (params.by.toString()==ORDER_TITLE)
-                    by = params.by
-            }
 
-            def user = getUserFromSession()
-
-            def selectedFolder = bookmarksService.findFolderById(folderId)
-
-            // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
-            if(selectedFolder == null){
-                redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
-                return
-            }
-
-            List items = JSON.parse(result) as List
-            def totalResults= items.length()
-
-            def dateTime = new Date()
-            dateTime = g.formatDate(ORDER_DATE: dateTime, format: 'dd.MM.yyyy')
-            def userName = session.getAttribute(User.SESSION_USER).getFirstnameAndLastnameOrNickname()
-            def lastPgOffset=0
-
-            def allFoldersInformation = []
-            def allFolders = favoritesPageService.getAllFoldersPerUser()
-            allFolders.each {
-                def container = [:]
-                def String favoritesObject = favoritesPageService.getFavoritesOfFolder(it.folderId)
-                List favoritesOfFolder = JSON.parse(favoritesObject) as List
-                container["folder"] = it
-                container["count"] = favoritesOfFolder.size()
-                allFoldersInformation.add(container)
-            }
-            allFoldersInformation = sortFolders(allFoldersInformation)
-
-            if (totalResults <1){
-                render(view: "favorites", model: [
-                    selectedFolder: selectedFolder,
-                    mainFavoriteFolder: mainFavoriteFolder,
-                    resultsNumber: totalResults,
-                    allFolders: allFoldersInformation,
-                    userName: userName,
-                    dateString: dateTime,
-                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(0,0,"desc",0),
-                ])
-                return
-            }else{
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                def allRes = favoritesPageService.retriveItemMD(items,locale)
-                def resultsItems
-
-                def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-
-                // convertQueryParametersToSearchParameters modifies params
-                params.remove("query")
-
-                urlQuery["offset"] = 0
-                //Calculating results pagination (previous page, next page, first page, and last page)
-                def page = ((params.offset.toInteger()/urlQuery["rows"].toInteger())+1).toString()
-                def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-                def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-                lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-
-                if (totalPages.toFloat()<page.toFloat()){
-                    params.offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                    if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                        lastPgOffset=20
-                    }
-                    page=totalPages
-                }
-                def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-                def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-
-                def allResultsWithAdditionalInfo = favoritesPageService.addBookmarkToFavResults(allRes, items)
-                allResultsWithAdditionalInfo = favoritesPageService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
-                allResultsWithAdditionalInfo = favoritesPageService.addDateToFavResults(allResultsWithAdditionalInfo, items, locale)
-
-                //Default ordering is newest on top == DESC
-                allResultsWithAdditionalInfo.sort{a,b-> b.serverDate<=>a.serverDate}
-                def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
-
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_DATE])]
-                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])]
-                if (params.order=="asc"){
-                    if(by.toString()==ORDER_DATE){
-                        allResultsWithAdditionalInfo.sort{a,b-> a.serverDate<=>b.serverDate}
-                        urlsForOrder["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_DATE])
-                    }else{
-                        allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"desc",by:ORDER_TITLE])
-                    }
-                    urlsForOrder["asc"]="#"
-                }else{
-                    if(by.toString()==ORDER_TITLE){
-                        urlsForOrderTitle["asc"]=g.createLink(controller:'user',action:'favorites',params:[offset:0,rows:rows,order:"asc",by:ORDER_TITLE])
-                        allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
-                    }
-                    params.order="desc"
-                }
-
-                if (params.offset){
-                    resultsItems=allResultsWithAdditionalInfo.drop(params.offset.toInteger())
-                    resultsItems=resultsItems.take( rows)
-                }else{
-                    params.offset=0
-                    resultsItems=allResultsWithAdditionalInfo.take( rows)
-                }
-
-                if (request.method=="POST"){
-                    def List emails = []
-                    if (params.email.contains(',')){
-                        emails=params.email.tokenize(',')
-                    }else{
-                        emails.add(params.email)
-                    }
-                    try {
-                        sendMail {
-                            to emails.toArray()
-                            from configurationService.getFavoritesSendMailFrom()
-                            replyTo getUserFromSession().getEmail()
-                            subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
-                            body( view:"_favoritesEmailBody",
-                            model:[results: allResultsOrdered, dateString: dateTime, userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
-                        }
-                        flash.message = "ddbnext.favorites_email_was_sent_succ"
-                    } catch (e) {
-                        log.info "An error occurred sending the email "+ e.getMessage()
-                        flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
-                    }
-                }
-
-                render(view: "favorites", model: [
-                    ORDER_TITLE: urlQuery["query"],
-                    results: resultsItems,
-                    selectedFolder: selectedFolder,
-                    mainFavoriteFolder: mainFavoriteFolder,
-                    allResultsOrdered: allResultsOrdered,
-                    allFolders: allFoldersInformation,
-                    isThumbnailFiltered: params.isThumbnailFiltered,
-                    clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                    viewType: urlQuery["viewType"],
-                    resultsPaginatorOptions: resultsPaginatorOptions,
-                    page: page,
-                    resultsNumber: totalResults,
-                    createAllFavoritesLink:favoritesPageService.createAllFavoritesLink(params.offset,params.rows,params.order,lastPgOffset),
-                    totalPages: totalPages,
-                    numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: params["offset"],
-                    rows: rows,
-                    userName: userName,
-                    dateString: dateTime,
-                    urlsForOrderTitle:urlsForOrderTitle,
-                    urlsForOrder:urlsForOrder
-                ])
-            }
-        } else{
-            redirect(controller:"user", action:"index")
-        }
-    }
-
-    private def sortFolders(allFoldersInformations){
-        def out = []
-        //Inefficient sort, but we are expecting only very few entries
-
-        //Go over all allFoldersInformations
-        for(int i=0; i<allFoldersInformations.size(); i++){
-            String insertTitle = allFoldersInformations[i].folder.title.toLowerCase()
-            //and find the right place to fit
-            if(out.size() == 0){
-                out.add(allFoldersInformations[i])
-            }else{
-                for(int j=0; j<out.size(); j++){
-                    String compareTitle = out[j].folder.title.toLowerCase()
-                    if(insertTitle.compareTo(compareTitle) < 0){
-                        out.add(j, allFoldersInformations[i])
-                        break
-                    } else if(j == out.size()-1){
-                        out.add(allFoldersInformations[i])
-                        break
-                    }
-                }
-            }
-        }
-        // find the "favorites" and put it first
-        for(int i=0; i<out.size(); i++){
-            String insertTitle = out[i].folder.title
-            if(insertTitle == "favorites"){
-                def favoritesEntry = out[i]
-                out.remove(i)
-                out.add(0, favoritesEntry)
-                break
-            }
-        }
-        //Check for empty titles
-        for(int i=0; i<out.size(); i++){
-            if(out[i].folder.title.trim().isEmpty()){
-                out[i].folder.title = "-"
-            }
-        }
-        return out
-    }
 
 
     /* begin saved searches methods */
@@ -350,10 +130,10 @@ class UserController {
             def urlsForOrder
 
             if (!params.criteria) {
-                params.criteria = "label"
+                params.criteria = "creationDate"
             }
             if (!params.order) {
-                params.order = "asc"
+                params.order = "desc"
             }
             if (params.criteria == "creationDate") {
                 if (params.order == "asc") {
@@ -423,9 +203,11 @@ class UserController {
                         user.getFirstnameAndLastnameOrNickname()
                     ])
                     body(view: "_savedSearchesEmailBody", model: [
+                        contextUrl: configurationService.getContextUrl(),
                         results:
                         savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
-                            a.label.toLowerCase() <=> b.label.toLowerCase()},
+                            a.label.toLowerCase() <=> b.label.toLowerCase()
+                        },
                         userName: user.getFirstnameAndLastnameOrNickname()
                     ])
                 }
@@ -444,7 +226,11 @@ class UserController {
 
     def registration() {
         log.info "registration()"
-        render(view: "registration", model: [:])
+
+        render(view: "registration", model: [
+            accountTermsUrl: configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getAccountPrivacyUrl()
+        ])
     }
 
     def signup() {
@@ -455,7 +241,7 @@ class UserController {
         if (errors == null || errors.isEmpty()) {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
@@ -556,9 +342,9 @@ class UserController {
                 }
             }
             //get favorites-count
-            def String favoritesResult = favoritesPageService.getFavorites()
-            List favorites = JSON.parse(favoritesResult) as List
-            def favoritesCount = favorites.length()
+            Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+            List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
+            def favoritesCount = favorites.size()
 
             //get savedsearch-count
             def savedSearchesResult = savedSearchesService.getSavedSearches()
@@ -750,12 +536,14 @@ class UserController {
                 params.errors = errors
             }
 
-            def String result = favoritesPageService.getFavorites()
-            List items = JSON.parse(result) as List
-            def favoritesCount = items.length()
+            List favorites = bookmarksService.findBookmarksByUserId(user.getId())
+            def favoritesCount = favorites.size()
 
-            //render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
-            render(view: "profile", model: [favoritesCount: favoritesCount, user: user, errors: errors, messages: messages])
+            //get savedsearch-count
+            def savedSearchesResult = savedSearchesService.getSavedSearches()
+            def savedSearchesCount = savedSearchesResult.size()
+
+            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"index")
@@ -852,7 +640,8 @@ class UserController {
 
         String discoveryUrl = ""
 
-        setProxy()
+        ProxyUtil proxyUtil = new ProxyUtil()
+        proxyUtil.setProxy()
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
@@ -885,7 +674,7 @@ class UserController {
         sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
         sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
 
-        String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -911,7 +700,7 @@ class UserController {
             ParameterList openidResp = new ParameterList(request.getParameterMap())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
-            String returnURL = grailsLinkGenerator.serverBaseURL + "/login/doOpenIdLogin"
+            String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
             String receivingURL =  returnURL + "?" + request.getQueryString()
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
             Identifier verified = verification.getVerifiedId()
@@ -975,35 +764,107 @@ class UserController {
         }
 
         if(loginStatus == LoginStatus.SUCCESS){
-            redirect(controller: 'user', action: 'favorites')
+            redirect(controller: 'favorites', action: 'favorites')
         }else{
             render(view: "login", model: ['loginStatus': loginStatus])
         }
 
     }
 
-    private def setProxy(){
+    def showApiKey() {
+        log.info "showApiKey()"
+        if (isUserLoggedIn()) {
 
-        def proxyHost = System.getProperty("http.proxyHost")
-        def proxyPortString = System.getProperty("http.proxyPort")
-        int proxyPort = 80
+            User user = getUserFromSession()
+            def apiKey = user.apiKey
 
-        if (proxyHost) {
-            if (proxyPortString && !proxyPortString.isEmpty()) {
-                try{
-                    proxyPort = Integer.parseInt(proxyPortString)
-                }catch(NumberFormatException e){
-                    log.error "setProxy(): The proxyport of the system properties cannot be cast to an int: '"+proxyPortString"'"
-                }
+            if(apiKey){
+                render(view: "apiKey", model: [
+                    user: user,
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
+            }else{
+                render(view: "requestApiKey", model: [
+                    apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                ])
             }
-
-            ProxyProperties proxyProps = new ProxyProperties()
-            proxyProps.setProxyHostName(proxyHost)
-            proxyProps.setProxyPort(proxyPort)
-            HttpClientFactory.setProxyProperties(proxyProps)
+        }else{
+            redirect(controller:"user", action:"index")
         }
 
     }
+
+    def requestApiKey() {
+        log.info "requestApiKey()"
+
+        if (isUserLoggedIn()) {
+            def isConfirmed = false
+            if(params.apiConfirmation){
+                isConfirmed = true
+            }
+
+            if(isConfirmed){
+                User user = getUserFromSession()
+                String newApiKey = aasService.createApiKey()
+
+                JSONObject aasUser = aasService.getPerson(user.getId())
+                aasUser.put(AasService.APIKEY_FIELD, newApiKey)
+                aasService.updatePerson(user.getId(), aasUser)
+                user.setApiKey(newApiKey)
+
+                sendApiKeyPerMail(user)
+            }else{
+                flash.error = "ddbnext.Api_Not_Confirmed"
+            }
+            redirect(controller: 'user', action: 'showApiKey')
+        }else{
+            redirect(controller:"user", action:"index")
+        }
+    }
+
+    def deleteApiKey() {
+        log.info "deleteApiKey()"
+        if (isUserLoggedIn()) {
+            User user = getUserFromSession()
+
+            JSONObject aasUser = aasService.getPerson(user.getId())
+            aasUser.put(AasService.APIKEY_FIELD, null)
+            aasService.updatePerson(user.getId(), aasUser)
+            user.setApiKey(null)
+
+            flash.message = "ddbnext.Api_Deleted"
+
+            redirect(controller: 'user', action: 'showApiKey')
+        }else{
+            redirect(controller:"user", action:"index")
+        }
+    }
+
+    private def sendApiKeyPerMail(User user) {
+        log.info "sendApiKeyPerMail()"
+        if (user != null) {
+            def List emails = []
+            emails.add(user.email)
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo configurationService.getFavoritesSendMailFrom()
+                    subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
+                    body( view:"_apiKeyEmailBody", model:[
+                        user: user,
+                        apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
+                        apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                    ])
+                }
+            } catch (e) {
+                log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
+            }
+        }
+    }
+
 
 
     private boolean isUserLoggedIn() {
@@ -1029,9 +890,11 @@ class UserController {
 
     private def createFavoritesFolderIfNotExisting(User user){
         log.info "createFavoritesFolderIfNotExisting()"
-        def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
+        def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+
         if(mainFavoriteFolder == null){
-            def folderId = bookmarksService.newFolder(user.getId(), "favorites", false)
+            def publishingName = user.getUsername()
+            def folderId = bookmarksService.newFolder(user.getId(), FolderConstants.MAIN_BOOKMARKS_FOLDER.getValue(), false, publishingName)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }

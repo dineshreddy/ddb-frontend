@@ -1416,11 +1416,14 @@ select {
   .form-horizontal .input-prepend {
     white-space: normal;
   }
-  .form-horizontal .control-label {
-    width: 170px;
-  }
   .form-horizontal label.error {
     margin-left: 0;
+  }
+}
+
+@media (max-width: 1199px) {
+  .form-horizontal .control-label {
+    width: 170px;
   }
 }
 /* responsive genaral rules - end */
@@ -1453,3 +1456,13 @@ select {
   margin: 3px 5px 0 0;
 }
 /* messages - end */
+
+/* external links */
+
+
+a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href^="http://www.deutsche-digitale-bibliothek.de"]):not([href^="https://www.deutsche-digitale-bibliothek.de"]), .external-link-icon {
+  padding-left: 20px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
+/* external links - end */

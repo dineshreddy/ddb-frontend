@@ -76,6 +76,7 @@ class ItemService {
 
         def displayFieldsTag = xml.item.fields.findAll{ it.@usage.text().contains('display') }
         def fields = displayFieldsTag[0].field.findAll()
+
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
@@ -141,15 +142,17 @@ class ItemService {
     }
 
     private def fetchBinaryList(id) {
-        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/access/" + id + "/components/binaries")
+        def result = []
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/items/" + id + "/binaries")
         if (apiResponse.isOk()) {
             def binaries = apiResponse.getResponse()
-            return binaries.binary.list()
+            result = binaries.binary.list()
         }
-        else {
-            log.error "fetchBinaryList: XML file was not found"
+        else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+            log.error "fetchBinaryList: XML file could not be fetched"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
+        return result
     }
 
     private def parse(binaries) {
@@ -199,31 +202,31 @@ class ItemService {
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
-					
-					binaryMap.'orig'.'author'= z.'@name2'
-					binaryMap.'orig'.'rights'= z.'@name3'
+
+                    binaryMap.'orig'.'author'= z.'@name2'
+                    binaryMap.'orig'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 }
                 else if(path.contains(PREVIEW)) {
                     htmlStrip = z.'@name'
                     binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'preview'.'author'= z.'@name2'
-					binaryMap.'preview'.'rights'= z.'@name3'
-					binaryMap.'checkValue' = "1"
+                    binaryMap.'preview'.'author'= z.'@name2'
+                    binaryMap.'preview'.'rights'= z.'@name3'
+                    binaryMap.'checkValue' = "1"
                 } else if (path.contains(THUMBNAIL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'thumbnail'.'author'= z.'@name2'
-					binaryMap.'thumbnail'.'rights'= z.'@name3'
+                    binaryMap.'thumbnail'.'author'= z.'@name2'
+                    binaryMap.'thumbnail'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 } else if (path.contains(FULL)) {
                     htmlStrip = z.'@name'
                     binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
-					binaryMap.'full'.'author'= z.'@name2'
-					binaryMap.'full'.'rights'= z.'@name3'
+                    binaryMap.'full'.'author'= z.'@name2'
+                    binaryMap.'full'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
                 }
             }
@@ -272,6 +275,19 @@ class ItemService {
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return apiResponse.getResponse()
+    }
+
+    def fetchXMLMetadata(id) {
+        def result = []
+        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), "/items/" + id + "/aip")
+        if (apiResponse.isOk()) {
+            result = apiResponse.getResponse().toXmlString()
+        }
+        else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+            log.error "XMLMetadata: XML file could not be fetched"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return result
     }
 
     private def log(list) {

@@ -18,8 +18,7 @@ limitations under the License.
 
 <g:redirectIfNotLoggedIn />
 
-<title><g:message code="ddbnext.Profile" /> - <g:message
-    code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="userprofile" />
 <meta name="layout" content="main" />
@@ -46,61 +45,77 @@ limitations under the License.
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="well">
-            <div class="profile-nav">
+            <div class="profile-nav bb-white">
                 <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
             </div>
-            <div class="profile-links bt-white">
-                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="user", action: 'favorites', params:[:])}">
-                    <g:message code="ddbnext.Favorites" /> (${favoritesCount})
+            <div class="row">
+              <div class="span9 control-groups">
+                <div class="control-group">
+                  <label class="control-label"><g:message code="ddbnext.Username" /></label>
+                  <div class="controls">
+                    <div class="input-prepend">
+                      <span class="add-on"><i class="icon-user"></i></span>
+                      <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label"><g:message code="ddbnext.User.First_Name" /></label>
+                  <div class="controls">
+                    <div class="input-prepend">
+                      <span class="add-on"><i class="icon-user"></i></span>
+                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-group ">
+                  <label class="control-label"><g:message code="ddbnext.User.Last_Name" /></label>
+                  <div class="controls">
+                    <div class="input-prepend">
+                      <span class="add-on"><i class="icon-user"></i></span>
+                      <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label"><g:message code="ddbnext.Email" /></label>
+                  <div class="controls">
+                    <div class="input-prepend">
+                      <span class="add-on"><i class="icon-envelope"></i></span>
+                      <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
+                    </div>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label"></label>
+                  <div class="controls">
+                    <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Save_Changes"/>"><g:message code="ddbnext.Save_Changes"/></button>
+                  </div>
+                </div>
+              </div>
+              <div class="span1 profile-links">
+                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favorites", action: 'favorites', params:[:])}">
+                  <g:message code="ddbnext.Favorites" /> (${favoritesCount})
                 </a>
+                <br>
                 <a class="profile-link" title="<g:message code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
-                    <g:message code="ddbnext.Searches" /> (${savedSearchesCount})
+                  <g:message code="ddbnext.Searches" /> (${savedSearchesCount})
                 </a>
+                <br>
+                <g:if test="${user.openIdUser != true}">
+                  <a class="profile-link" title="<g:message code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
+                    <g:message code="ddbnext.Api_Access" /> 
+                  </a>
+                  <br>
+                </g:if>
                 <a class="profile-link ${offForOpenId}" title="<g:message code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-                    <g:message code="ddbnext.Change_Password_Link" />
+                  <g:message code="ddbnext.Change_Password_Link" />
                 </a>
+                <br>
                 <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message code="ddbnext.User.Delete_Account" />" class="persist" href="#">
-                    <g:message code="ddbnext.User.Delete_Account" />
+                  <g:message code="ddbnext.User.Delete_Account" />
                 </a>
-            </div>
-
-            <div class="control-group">
-              <label class="control-label"><g:message code="ddbnext.Username" /></label>
-              <div class="controls">
-                <div class="input-prepend">
-                  <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
-                </div>
-              </div>
-            </div>
-    
-            <div class="control-group">
-              <label class="control-label"><g:message code="ddbnext.User.First_Name" /></label>
-              <div class="controls">
-                <div class="input-prepend">
-                  <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
-                </div>
-              </div>
-            </div>
-    
-            <div class="control-group ">
-              <label class="control-label"><g:message code="ddbnext.User.Last_Name" /></label>
-              <div class="controls">
-                <div class="input-prepend">
-                  <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
-                </div>
-              </div>
-            </div>
-    
-            <div class="control-group">
-              <label class="control-label"><g:message code="ddbnext.Email" /></label>
-              <div class="controls">
-                <div class="input-prepend">
-                  <span class="add-on"><i class="icon-envelope"></i></span>
-                  <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
-                </div>
+                <br>
               </div>
             </div>
 
@@ -115,12 +130,6 @@ limitations under the License.
             </div>
             --%>
 
-            <div class="control-group">
-              <label class="control-label"></label>
-              <div class="controls">
-                <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Save_Changes"/>"><g:message code="ddbnext.Save_Changes"/></button>
-              </div>
-            </div>
         </div>
         <ul id="error-messages" class="off">
           <li><a><g:message code="ddbnext.Field_Required" /></a></li>
@@ -141,6 +150,7 @@ limitations under the License.
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message code="ddbnext.Ok" /></button>
         <button class="submit" data-dismiss="modal"><g:message code="ddbnext.Cancel" /></button>
+      </div>
     </div>
   </body>
 </html>

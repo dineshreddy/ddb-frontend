@@ -15,9 +15,11 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 class CultureGraphService {
+
+    public final static String GND_URI_PREFIX = "http://d-nb.info/gnd/"
 
     def configurationService
 
@@ -27,19 +29,25 @@ class CultureGraphService {
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId)
         if(!apiResponse.isOk()){
             log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            return null
         }
 
         return apiResponse.getResponse()
     }
 
-    def getDNBInformation(String gndId) {
-        ApiResponse apiResponse = ApiConsumer.getXml(configurationService.getDnbUrl(), "/gnd/" + gndId + "/about/rdf")
-        if(!apiResponse.isOk()){
-            log.error "getDNBInformation(): Could not access culturegraph api under: "+configurationService.getDnbUrl() + "/gnd/" + gndId + "/about/rdf"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+    boolean isValidGndUri(String uriToTest){
+        if(uriToTest != null && uriToTest.startsWith(GND_URI_PREFIX)){
+            return true
+        }else{
+            return false
         }
+    }
 
-        return apiResponse.getResponse()
+    String getGndIdFromGndUri(String uri){
+        String id = ""
+        if(uri != null && uri.startsWith(GND_URI_PREFIX)){
+            id = uri.substring(GND_URI_PREFIX.length())
+        }
+        return id
     }
 }

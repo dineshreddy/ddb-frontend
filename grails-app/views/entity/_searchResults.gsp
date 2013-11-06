@@ -14,17 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:each var="item" in="${entity.searchPreview.items}">
-  <li class="preview-item">
-    <div class="preview-item-image">
+<g:each var="item" in="${entity.searchPreview.items}">   
+    <div class="preview-item">    
       <g:link controller="item" action="findById" params="${["id": item.id]}">
-        <img src="${request.getContextPath() + item.preview.thumbnail}" alt="${item.label}" />
+        
+        <g:if test="${item.preview.thumbnail != null}">        
+	        <g:if test="${ (item.preview.thumbnail.toString().contains('binary'))}">       
+	        	<img src="${request.getContextPath() + item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        </g:if>
+	        <g:else>       
+	        	<img src="${item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        </g:else>
+        </g:if>
+        
       </g:link>
+	  
+	  <div class="caption">
+	  	<g:truncateItemTitle title="${item.preview.subtitle}" length="${ 40 }"></g:truncateItemTitle>        
+      </div>
     </div>
-    <div class="preview-item-label">
-      <g:link controller="item" action="findById" params="${["id": item.id]}">
-        <g:truncateItemTitle title="${item.label}" length="${ 40 }"></g:truncateItemTitle>        
-      </g:link>
-    </div>
-  </li>
 </g:each>

@@ -17,6 +17,8 @@ package de.ddb.next.beans
 
 import org.codehaus.groovy.runtime.NullObject
 
+import de.ddb.next.constants.FolderConstants
+
 import net.sf.json.JSONNull
 import groovy.transform.ToString
 
@@ -27,9 +29,11 @@ class Folder {
     String userId
     String title
     String description
+    boolean isMainFolder = false
     boolean isPublic = false
+    String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
-    public Folder(String folderId, String userId, String title, def description, boolean isPublic) {
+    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName) {
         this.folderId = folderId
         this.userId = userId
         this.title = title
@@ -39,5 +43,28 @@ class Folder {
             this.description = description.toString()
         }
         this.isPublic = isPublic
+        if(publishingName){
+            this.publishingName = publishingName
+        }
+    }
+
+    public def getAsMap() {
+        def out = [:]
+        out["folderId"] = folderId
+        out["userId"] = userId
+        out["title"] = title
+        out["description"] = description
+        out["isMainFolder"] = isMainFolder
+        out["isPublic"] = isPublic
+        out["publishingName"] = publishingName
+        return out
+    }
+
+    boolean isValid(){
+        if(folderId != null
+        && userId != null) {
+            return true
+        }
+        return false
     }
 }

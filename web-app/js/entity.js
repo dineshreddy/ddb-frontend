@@ -17,100 +17,81 @@ $(document).ready(function(){
   
   if(jsPageName == "entity"){
   
-    var defaultRowCount = 4;
+    var defaultRowCount = 10;
+    
+    var allRowCount = 0;
 
-    var offset = parseInt(getUrlParam("offset"));
-    if(!offset) {
-      offset = 0;
+    var offset = 0;
+    
+    $('.normdata_involved_checkbox').bind('click', function() {
+    	var container = $(".works_result");
+	    var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+        var normdata = false;
+        var facetname = 'affiliate_fct_involved';
+        
+    	if($(this).is(":checked")) {
+            normdata = true;
+        }
+    	
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+    });
+
+    
+    $('.normdata_subject_checkbox').bind('click', function() {
+	    var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+    	var container = $(".themes_result");
+        var normdata = false;
+        var facetname = 'affiliate_fct_subject';
+        
+    	if($(this).is(":checked")) {
+            normdata = true;
+        }
+    	
+    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+    });
+    
+    
+    function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid, offset, rows){
+        var request = $.ajax({
+          type: 'GET',
+          dataType: 'json',
+          async: true,
+          url: jsContextPath+'/entity/ajax/rolesearchresults?query='+query+'&offset='+offset+'&rows='+rows+'&normdata='+normdata+'&facetname='+facetname+'&entityid='+entityid,
+          complete: function(data){
+        	var jsonResponse = $.parseJSON(data.responseText);
+        	
+        	renderRoleBasedSearchResults(itemContainer, jsonResponse);           
+          }
+        });
     }
     
-    var query = $("#entity-title").html();
-    var History = window.History;
-    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
-    History.pushState("", document.title, decodeURI(urlParameters));  
+    function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
+        itemContainer.empty();
+        itemContainer.html(jsonResponse.html);
+    }
     
-    $(".preview-item-previous").click(function(event){
-      event.preventDefault();
-  
-      var currentOffset = parseInt(getUrlParam("offset"));
-      if(!currentOffset) {
-        currentOffset = 0;
-      }
-  
-      var currentRows = parseInt(getUrlParam("rows"));
-      if(!currentRows) {
-        currentRows = defaultRowCount;
-      }
-      
-      if(currentOffset > 0){
-        currentOffset = currentOffset - currentRows;
-      }
-      if(currentOffset < 0) {
-        currentOffset = 0;
-      }
-  
-      var currentQuery = getUrlParam("query");
-      if(!currentQuery){
-        currentQuery = "*"
-      }
-      
-      var History = window.History;
-      var urlParameters = "?query="+currentQuery+"&offset="+currentOffset+"&rows="+currentRows;
-      History.pushState("", document.title, decodeURI(urlParameters));
-      
-  
-      getNewSearchResults(currentQuery, currentOffset, currentRows);
-      
-      
-    });
-  
-    $(".preview-item-next").click(function(event){
-      event.preventDefault();
-  
-      var currentOffset = parseInt(getUrlParam("offset"));
-      if(!currentOffset) {
-        currentOffset = 0;
-      }
-  
-      var currentRows = parseInt(getUrlParam("rows"));
-      if(!currentRows) {
-        currentRows = defaultRowCount;
-      }
-      
-      if(currentOffset >= 0){
-        currentOffset = currentOffset + currentRows;
-      }
-      if(currentOffset < 0) {
-        currentOffset = 0;
-      }
-      
-      var currentQuery = getUrlParam("query");
-      if(!currentQuery){
-        currentQuery = "*"
-      }
-  
-      var History = window.History;
-      var urlParameters = "?query="+currentQuery+"&offset="+currentOffset+"&rows="+currentRows;
-      History.pushState("", document.title, decodeURI(urlParameters));
-      
-      getNewSearchResults(currentQuery, currentOffset, currentRows);
-    });
-  
+    
     function getNewSearchResults(query, offset, rows){
-      var request = $.ajax({
+    	var request = $.ajax({
         type: 'GET',
         dataType: 'json',
         async: true,
         url: jsContextPath+'/entity/ajax/searchresults?query='+query+'&offset='+offset+'&rows='+rows,
-        complete: function(data){
+        complete: function(data){          
           var jsonResponse = $.parseJSON(data.responseText);
+          var items = $.parseHTML(jsonResponse.html);
           
-          var itemContainer = $(".preview-item-container");
-          itemContainer.empty();
-          itemContainer.html(jsonResponse.html);
+          $.each(items, function(index, value) {        	          	  
+        	  if (value.tagName == 'DIV') {
+        		  $("#items").triggerHandler("insertItem", [value, "end", true]);
+        	  }
+          });
           
+          allRowCount = jsonResponse.resultCount;
         }
-      });
+    	});
       
     }
     
@@ -130,5 +111,89 @@ $(document).ready(function(){
         return decodeURIComponent(results[1].replace(/\+/g, " "));
       }
     }
+
+    function initPage(){
+		initCarousel();
+    	
+    	var query = $("#entity-title").html();
+	    var entityid = $("#entity-id").attr("data-entityid");
+	    
+	    var History = window.History;
+	    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
+	    History.pushState("", document.title, decodeURI(urlParameters));  
+	    
+	    //Initialize Search results
+	    getNewSearchResults(query, 0, defaultRowCount);
+	    
+	    //Initialize Search results for facet: affiliate_fct_subject
+	    var containerSubject = $(".themes_result");
+	    var normdata = true;
+	    var facetname = 'affiliate_fct_subject';
+		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
+	
+	    //Initialize Search results for facet: affiliate_fct_involved
+	    var containerInvolved = $(".works_result");
+		facetname = 'affiliate_fct_involved';
+		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
+		
+
+    }
+    
+    function initCarousel() {        
+    	var carouselItems = $("#items");
+    	
+    	$('div.carousel').show();
+        
+        if ($(".item .caption").length > 0) {
+            $(".item .caption").dotdotdot({});
+        }
+        
+        $("#next").click(function() {        	
+        	carouselItems.trigger("next", 1);
+        	
+        	var currentLoadItems = $(".preview-item");
+        	
+        	var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
+        	var numberOfVisibleItems = currentVisibleItems.length;
+
+        	var currentPosition = carouselItems.triggerHandler("currentPosition");
+        	var nextVisbleItem = currentPosition + numberOfVisibleItems;
+        	        	        	
+        	//console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
+        	
+        	if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
+        	    var query = $("#entity-title").html();
+        	    var entityid = $("#entity-id").attr("data-entityid");
+        	    
+        	    var History = window.History;
+        	    var urlParameters = "?query="+query+"&offset=" + currentLoadItems.length +"&rows=" + defaultRowCount;
+        	    History.pushState("", document.title, decodeURI(urlParameters));  
+        	    
+        	    //Initialize Search results
+        	    getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
+        	}        	
+        });
+        
+        $("#previous").click(function() {
+        	carouselItems.trigger("prev", 1);
+        });
+        
+        
+        if (carouselItems.length) {
+            carouselItems.carouFredSel({
+                infinite: false,
+                auto: false,
+                scroll: 1,
+                prev    : {
+                    button : "#previous",
+                },
+                next    : { 
+                    button  : "#next",
+                }
+            });
+        }
+    }
+    
+    initPage();    
   }
 });

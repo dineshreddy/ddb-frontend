@@ -79,10 +79,10 @@ limitations under the License.
           </li><!-- /end of help -->
             <g:isLoggedIn>
               <li class="">
-                <g:link controller="user" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
+                <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
                   <li class="">
-                    <g:link controller="user" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
+                    <g:link controller="favorites" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                   </li>
                   <li class="">
                     <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Searches" /></g:link>
@@ -190,12 +190,12 @@ limitations under the License.
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"]]}">active-default</g:isMappingActive>">
-                    <g:link controller="user" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
+                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
+                    <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                     <ul>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "favorites"]]}">active-default</g:isMappingActive>">
-                        <g:link controller="user" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"]]}">active-default</g:isMappingActive>">
+                        <g:link controller="favorites" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                       </li>
                       <li
                         class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</g:isMappingActive>">

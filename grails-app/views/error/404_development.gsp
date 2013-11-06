@@ -1,3 +1,4 @@
+<%@page import="de.ddb.next.ErrorController.Type404"%>
 <html>
   <head>
     <title><g:message code="error.notfound.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -8,12 +9,32 @@
   </head>
   <body>
     <div class="errorpage">
-      <h1>
-        <g:message code="error.notfound.title"/>
-      </h1>
-      <p>
-        <g:message code="error.notfound.body"/>
-      </p>
+      
+      <g:if test="${type==Type404.ITEM_NOT_FOUND}">
+        <h1>
+          <g:message code="error.notfound.title"/>
+        </h1>
+        <p>
+          <g:message code="error.notfound.body"/>
+        </p>
+      </g:if>
+      <g:elseif test="${type==Type404.FAVORITELIST_NOT_FOUND}">
+        <h1>
+          <g:message code="error.favlistnotfound.title"/>
+        </h1>
+        <p>
+          <g:message code="error.favlistnotfound.body"/>
+        </p>
+      </g:elseif>
+      <g:else>
+        <h1>
+          <g:message code="error.notfound.title"/>
+        </h1>
+        <p>
+          <g:message code="error.notfound.body"/>
+        </p>
+      </g:else>
+      
       <hr />
       <g:if test="${error_message}">
         <div>

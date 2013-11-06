@@ -30,6 +30,11 @@ class UrlMappings {
             action="facetsList"
         }
 
+        "/rolefacets" {
+            controller="facets"
+            action="roleFacets"
+        }
+
         "/informationitem/$id"{
             controller="search"
             action="informationItem"
@@ -60,6 +65,11 @@ class UrlMappings {
             action="findById"
         }
 
+        "/item/xml/$id" {
+            controller="item"
+            action="showXml"
+        }
+
         "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
@@ -68,6 +78,16 @@ class UrlMappings {
         name delFavorites: "/apis/favorites/_delete" {
             controller="favorites"
             action=[POST: "deleteFavoritesFromFolder"]
+        }
+
+        "/apis/favorites/folders" {
+            controller="favorites"
+            action="getFavoriteFolders"
+        }
+
+        "/apis/favorites/folders/$folderId/$itemId" {
+            controller="favorites"
+            action=[POST: "addFavoriteToFolder"]
         }
 
         "/apis/favorites/folder/create" {
@@ -85,6 +105,11 @@ class UrlMappings {
             action="editFavoritesFolder"
         }
 
+        "/apis/favorites/folder/get/$id" {
+            controller="favorites"
+            action="getFavoriteFolder"
+        }
+
         "/apis/favorites/_get" {
             controller="favorites"
             action=[POST: "filterFavorites"]
@@ -100,9 +125,24 @@ class UrlMappings {
             action=[POST: "setComment"]
         }
 
+        "/apis/favorites/togglePublish" {
+            controller="favorites"
+            action=[POST: "togglePublish"]
+        }
+
         "/apis/favorites/$id" {
             controller="favorites"
             action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
+        }
+
+        "/user/favorites/$id?" {
+            controller="favorites"
+            action="favorites"
+        }
+
+        "/user/$userId/favorites/$folderId" {
+            controller="favorites"
+            action="publicFavorites"
         }
 
         "/apis/savedsearches" {
@@ -150,6 +190,11 @@ class UrlMappings {
             action="getAjaxSearchResultsAsJson"
         }
 
+        "/entity/ajax/rolesearchresults" {
+            controller="entity"
+            action="getAjaxRoleSearchResultsAsJson"
+        }
+        
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -159,6 +204,7 @@ class UrlMappings {
             controller="apis"
             action="staticFiles"
         }
+
 
         "/user/registration" {
             controller="user"
@@ -173,11 +219,6 @@ class UrlMappings {
         "/user/profile" {
             controller="user"
             action="profile"
-        }
-
-        "/user/favorites/$id" {
-            controller="user"
-            action="favorites"
         }
 
         "/user/savedsearches" {
@@ -197,6 +238,21 @@ class UrlMappings {
         "/user/delete" {
             controller="user"
             action="delete"
+        }
+
+        "/user/apikey" {
+            controller="user"
+            action="showApiKey"
+        }
+
+        "/user/apikey/request" {
+            controller="user"
+            action="requestApiKey"
+        }
+
+        "/user/apikey/delete" {
+            controller="user"
+            action="deleteApiKey"
         }
 
         "/login" {
@@ -224,13 +280,17 @@ class UrlMappings {
             action="doOpenIdLogin"
         }
 
+
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
-        "500"(controller: "error", action: "notFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "itemNotFound", exception: de.ddb.next.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "entityNotFound", exception: de.ddb.next.exception.EntityNotFoundException)
+        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
         "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
         "500"(controller: "error", action: "uncaughtException")
+        "404"(controller: "error", action: "defaultNotFound")
 
     }
 }

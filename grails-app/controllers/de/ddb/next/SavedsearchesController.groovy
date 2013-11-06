@@ -16,11 +16,12 @@
 package de.ddb.next
 
 import grails.converters.JSON
-import javax.servlet.http.HttpSession
 import de.ddb.next.beans.User
 
 class SavedsearchesController {
+
     def savedSearchesService
+    def sessionService
 
     def addSavedSearch() {
         log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title
@@ -71,13 +72,8 @@ class SavedsearchesController {
         }
     }
 
-    private def getUserFromSession() {
-        def result
-        def HttpSession session = request.getSession(false)
-        if (session != null) {
-            result = session.getAttribute(User.SESSION_USER)
-        }
-        return result
+    private User getUserFromSession() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
     def isSavedSearch() {

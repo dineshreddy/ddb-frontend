@@ -47,6 +47,7 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
         log.info "should find all saved searches by user ID"
 
         def userId = UUID.randomUUID() as String
+        
         def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
         def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
         assert goetheSavedSearchId != null

@@ -17,19 +17,22 @@
 $(function() {
 
   if (jsPageName == "favorites") {
+    
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMedia();
+    
+    
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
     
-    
+
     $('.page-filter select').change(function(){
-      var url = jsContextPath + "/user/favorites/?rows="+this.value;
+      var url = updateURLParameter(window.location.href, 'rows', this.value);
       var order = getParam("order");
-      if ( order  ) {
-        url = url + "&order="+order;
-      }
+      url = updateURLParameter(url, 'order', order);
       window.location.href=url;
       return false;
     });
@@ -174,36 +177,38 @@ $(function() {
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      $('.totalNrSelectedObjects').html(selected.length);
-      $('#favoritesCopyDialog').modal('show');
-      $('#copy-confirm').click(function() {
-        var selected = new Array();
-        $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('value'));
-        });
-        
-        var selectedFolders = $('.favorites-copy-selection').val()
-        
-        var body = {
-            ids : selected,
-            folders: selectedFolders
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/copy",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      
+      if(selected.length > 0) {
+        $('#favoritesCopyDialog').modal('show');
+        $('#copy-confirm').click(function() {
+          var selected = new Array();
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('data-bookmark-id'));
+          });
+          
+          var selectedFolders = $('.favorites-copy-selection').val()
+          
+          var body = {
+              ids : selected,
+              folders: selectedFolders
           }
+          jQuery.ajax({
+            type : 'POST',
+            contentType : "application/json; charset=utf-8",
+            traditional : true,
+            url : jsContextPath + "/apis/favorites/copy",
+            data : JSON.stringify(body),
+            dataType : "json",
+            success : function(data) {
+              window.setTimeout('location.reload();', 500);
+            }
+          });
+          $('#slaves input:checked').each(function() {
+            selected.push($(this).attr('checked', false));
+          });
+          $('#favoritesCopyDialog').modal('hide');
         });
-        $('#slaves input:checked').each(function() {
-          selected.push($(this).attr('checked', false));
-        });
-        $('#favoritesCopyDialog').modal('hide');
-      });
+      }
       return false;
     });
     
@@ -212,37 +217,96 @@ $(function() {
     $('.editfolder').click(function(event) {
       
       var folderId = $(this).attr('data-folder-id');
-      var oldFolderTitle = $(this).attr('data-folder-title');
-      var oldFolderDescription = $(this).attr('data-folder-description');
-      $('#folder-edit-id').val(folderId);
-      $('#folder-edit-name').val(oldFolderTitle);
-      $('#folder-edit-description').val(oldFolderDescription);
       
-      $('#folderEditConfirmDialog').modal('show');
-      $('#edit-confirm').click(function() {
-        var body = {
-          id : $('#folder-edit-id').val(),
-          title : $('#folder-edit-name').val(),
-          description : $('#folder-edit-description').val()
-        }
-        jQuery.ajax({
-          type : 'POST',
-          contentType : "application/json; charset=utf-8",
-          traditional : true,
-          url : jsContextPath + "/apis/favorites/folder/edit",
-          data : JSON.stringify(body),
-          dataType : "json",
-          success : function(data) {
-            window.setTimeout('location.reload();', 500);
+      // First get current values of the folder
+      jQuery.ajax({
+        type : 'GET',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
+        dataType : "json",
+        success : function(data) {
+          
+          // Then set the values to the GUI
+          var oldFolderTitle = data.title;
+          var oldFolderDescription = data.description;
+          var isPublic = data.isPublic;
+          var publishingName = data.publishingName;
+          
+          
+          $('#folder-edit-id').val(folderId);
+          $('#folder-edit-name').val(oldFolderTitle);
+          $('#folder-edit-description').val(oldFolderDescription);
+          if(isPublic){
+            $('#folder-edit-privacy-public').attr('checked','checked');
+          }else{
+            $('#folder-edit-privacy-private').attr('checked','checked');
           }
-        });
-        $('#folderEditConfirmDialog').modal('hide');
+          $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
+
+          
+          $('#folderEditConfirmDialog').modal('show');
+          
+          // Then collect the updated values
+          $('#edit-confirm').click(function() {
+            var isPublic = false;
+            if($('#folder-edit-privacy-public').is(':checked')) {
+              isPublic = true;
+            }
+            
+            var body = {
+              id : $('#folder-edit-id').val(),
+              title : $('#folder-edit-name').val(),
+              description : $('#folder-edit-description').val(),
+              isPublic: isPublic,
+              name: $('#folder-edit-publish-name').find(":selected").val()
+            }
+            jQuery.ajax({
+              type : 'POST',
+              contentType : "application/json; charset=utf-8",
+              traditional : true,
+              url : jsContextPath + "/apis/favorites/folder/edit",
+              data : JSON.stringify(body),
+              dataType : "json",
+              success : function(data) {
+                window.setTimeout('location.reload();', 500);
+              }
+            });
+            $('#folderEditConfirmDialog').modal('hide');
+          });
+          
+        }
+      });
+      
+      
+      return false;
+    });
+
+    
+    /** Publish folder */
+    $('.publishfolder').click(function(event) {
+      
+      var folderId = $(this).attr('data-folder-id');
+      var body = {
+        id : folderId
+      }
+
+      jQuery.ajax({
+        type : 'POST',
+        contentType : "application/json; charset=utf-8",
+        traditional : true,
+        url : jsContextPath + "/apis/favorites/togglePublish",
+        data : JSON.stringify(body),
+        dataType : "json",
+        success : function(data) {
+          window.setTimeout('location.reload();', 500);
+        }
       });
       return false;
     });
 
     /** Open comment favorites */
-    $('.comment-text').click(function(event) {
+    $('.comment-text-clickanchor').click(function(event) {
       
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-"+bookmarksId);
@@ -320,6 +384,8 @@ $(function() {
             $(textField).removeClass("off");
             $(inputField).addClass("off");
             $(buttonField).addClass("off");
+            
+            window.setTimeout('location.reload();', 100);            
           });
           
         }
@@ -402,5 +468,24 @@ function getParamWithDefault(name, defaultValue) {
   return result;
 }
 
+function updateURLParameter(url, param, paramVal){
+  var newAdditionalURL = "";
+  var tempArray = url.split("?");
+  var baseURL = tempArray[0];
+  var additionalURL = tempArray[1];
+  var temp = "";
+  if (additionalURL) {
+      tempArray = additionalURL.split("&");
+      for (i=0; i<tempArray.length; i++){
+          if(tempArray[i].split('=')[0] != param){
+              newAdditionalURL += temp + tempArray[i];
+              temp = "&";
+          }
+      }
+  }
+
+  var rows_txt = temp + "" + param + "=" + paramVal;
+  return baseURL + "?" + newAdditionalURL + rows_txt;
+}
 
 
