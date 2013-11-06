@@ -55,7 +55,19 @@ limitations under the License.
           </h2>
           <g:if test="${!(it.preview.subtitle instanceof net.sf.json.JSONNull)}">
             <div>
-              ${it.preview.subtitle}
+              ${it.preview.subtitle}<br />
+              <br /><br /><br />
+              <span style="font-size:x-small;color:#333333">
+                <g:if test="${!it.bookmark.description.isEmpty()}">
+                  <g:message code="ddbnext.Favorites_Comment_Of" /> ${it.folder.publishingName}, ${it.bookmark.updateDateFormatted}:
+                </g:if>
+              </span><br />
+              <span>
+                <g:if test="${!it.bookmark.description.isEmpty()}">
+                  ${it.bookmark.description.trim()}
+                </g:if>
+              </span>
+
             </div>
           </g:if>
         </td>
