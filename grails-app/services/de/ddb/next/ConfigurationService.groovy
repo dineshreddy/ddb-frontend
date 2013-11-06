@@ -314,6 +314,36 @@ class ConfigurationService {
     }
 
 
+    public String getProxyHost(){
+        def proxyHost = System.getProperty("http.proxyHost")
+        if(!proxyHost){
+            log.warn "getProxyHost(): No proxy host configured -> System.getProperty('http.proxyHost'). This will most likely lead to problems."
+        }else if(!(proxyHost instanceof String)){
+            log.warn "getProxyHost(): Configuration entry is not of type String: " + proxyHost + " / " + proxyHost.getClass()
+        }
+        return proxyHost
+    }
+
+    public String getProxyPort(){
+        def proxyPortString = System.getProperty("http.proxyPort")
+        if(!proxyPortString){
+            log.warn "getProxyPort(): No proxy port configured -> System.getProperty('http.proxyPort'). This will most likely lead to problems."
+        }else if(!(proxyPortString instanceof String)){
+            log.warn "getProxyPort(): Configuration entry is not of type String: " + proxyPortString + " / " + proxyPortString.getClass()
+        }
+        return proxyPortString
+    }
+
+    public String getNonProxyHosts(){
+        def nonProxyHosts = System.getProperty("http.nonProxyHosts")
+        if(!nonProxyHosts){
+            log.warn "getNonProxyHosts(): No nonproxy hosts configured -> System.getProperty('http.nonProxyHosts'). This will most likely lead to problems."
+        }else if(!(nonProxyHosts instanceof String)){
+            log.warn "getNonProxyHosts(): Configuration entry is not of type String: " + nonProxyHosts + " / " + nonProxyHosts.getClass()
+        }
+        return nonProxyHosts
+    }
+
 
     /**
      * Get the authorization key to access restricted API calls.
@@ -471,6 +501,10 @@ class ConfigurationService {
 
 
     public def logConfigurationSettings() {
+        log.info "------------- System.properties -----------------------"
+        log.info "proxyHost = " + getProxyHost()
+        log.info "proxyPort = " + getProxyPort()
+        log.info "nonProxyHosts = " + getNonProxyHosts()
         log.info "------------- application.properties ------------------"
         log.info "app.grails.version = "+grailsApplication.metadata["app.grails.version"]
         log.info "app.name = "+grailsApplication.metadata["app.name"]
