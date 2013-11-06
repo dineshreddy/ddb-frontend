@@ -66,9 +66,6 @@ limitations under the License.
                 <g:if test="${!it.bookmark.description.isEmpty()}">
                   ${it.bookmark.description.trim()}
                 </g:if>
-                <g:else>
-                  <g:message code="ddbnext.Favorites_Comment_Label" />
-                </g:else>
               </span>
 
             </div>
