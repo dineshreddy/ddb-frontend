@@ -284,8 +284,8 @@ class ItemService {
             result = apiResponse.getResponse().toXmlString()
         }
         else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
-          log.error "XMLMetadata: XML file could not be fetched"
-          apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+            log.error "XMLMetadata: XML file could not be fetched"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return result
     }

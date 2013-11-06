@@ -179,7 +179,6 @@ class ApiConsumer {
 
             ProxyUtil proxyUtil = new ProxyUtil()
             proxyUtil.setProxy(http, baseUrl)
-            //setProxy(http, baseUrl)
 
             if (httpAuth) {
                 setAuthHeader(http)
