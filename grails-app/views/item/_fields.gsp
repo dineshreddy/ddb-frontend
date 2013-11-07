@@ -21,7 +21,7 @@ limitations under the License.
       <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
         <g:each var="value" in="${it.value }">
           <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}"> 
-            <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class=" entity-link">${value}</g:link>
+            <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
           </g:if>
           <g:else>
             ${value}
