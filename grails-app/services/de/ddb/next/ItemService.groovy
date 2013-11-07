@@ -27,6 +27,8 @@ import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.next.constants.CortexNamespace
+
 class ItemService {
     private static final log = LogFactory.getLog(this)
 
@@ -59,6 +61,11 @@ class ItemService {
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         def xml = apiResponse.getResponse()
+
+        def ns2Namespace = xml.lookupNamespace(CortexNamespace.NS2.namespace)
+        if(ns2Namespace == CortexNamespace.RDF.uri){
+            log.error "findItemById(): Cortex returned namespace ns2 instead of rdf for item "+id
+        }
 
         //def institution= xml.institution
         def institution= xml.item.institution
