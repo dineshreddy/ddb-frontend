@@ -201,7 +201,7 @@ class UserController {
                     replyTo getUserFromSession().getEmail()
                     subject g.message(code: "ddbnext.Savedsearches_Of", args: [
                         user.getFirstnameAndLastnameOrNickname()
-                    ])
+                    ], encodeAs: "none")
                     body(view: "_savedSearchesEmailBody", model: [
                         contextUrl: configurationService.getContextUrl(),
                         results:
@@ -852,7 +852,7 @@ class UserController {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo configurationService.getFavoritesSendMailFrom()
-                    subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject")
+                    subject g.message(code:"ddbnext.Api_Key_Send_Mail_Subject", encodeAs: "none")
                     body( view:"_apiKeyEmailBody", model:[
                         user: user,
                         apiKeyDocUrl: configurationService.getApiKeyDocUrl(),

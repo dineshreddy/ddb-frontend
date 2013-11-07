@@ -396,7 +396,8 @@ class FavoritesController {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo getUserFromSession().getEmail()
-                    subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none")
+                         + getUserFromSession().getFirstnameAndLastnameOrNickname())
                     body( view:"_favoritesEmailBody",
                     model:[
                         results: allResultsOrdered,
