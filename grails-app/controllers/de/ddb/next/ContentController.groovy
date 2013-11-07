@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import groovy.util.XmlSlurper
-import java.net.URI.Parser
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.next.exception.ItemNotFoundException
