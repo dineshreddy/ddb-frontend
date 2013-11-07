@@ -30,12 +30,16 @@ limitations under the License.
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
         <span class="contextual-help hidden-phone hidden-tablet" 
-              title="<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" 
-              args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-              default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>" 
-              data-content="<g:message code="ddbnext.SearchResultsFacetHeading_TooltipContent" 
-              args="${[('<a href="' + createLink(controller:"content", params:[dir:'help', id:'search-filters']) + '">').encodeAsHTML(),('</a>').encodeAsHTML()]}" 
-              default="ddbnext.SearchResultsFacetHeading_TooltipContent"/>">
+           title="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
+                              args: [('<a href="' + createLink(controller: "content",
+                                                               params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
+                                     '</a>'],
+                              encodeAs: "none")}"
+           data-content="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
+                                     args: [('<a href="' + createLink(controller: "content",
+                                                                      params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
+                                            '</a>'],
+                                     encodeAs: "none")}">
         </span> 
         <div class="tooltip off hasArrow"></div>
       </div>
