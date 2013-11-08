@@ -40,6 +40,10 @@ hr {
   white-space: nowrap;
 }
 
+.saved-searches .bookmarks-lists .bookmarks-list {
+	padding: 0 54px 0 10px;
+}
+
 .bookmarks-lists .bookmarks-list .fav-text {
   display: inline;
 }
