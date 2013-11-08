@@ -18,9 +18,24 @@ package de.ddb.next.constants
 public enum CortexNamespace {
 
     RDF("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
-    NS2("ns2", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
-    NS3("ns3", "http://www.deutsche-digitale-bibliothek.de/item"),
-    NS4("ns4", "http://www.deutsche-digitale-bibliothek.de/cortex")
+    NS2("ns2", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"), // TODO remove as soon as the cortex delivers fixed namespace prefixes
+    OAI_ID("oai_id", "http://www.openarchives.org/OAI/2.0/oai-identifier"),
+    OAI_DC("oai_dc", "http://www.deutsche-digitale-bibliothek.de/institution"),
+    DC("dc", "http://purl.org/dc/elements/1.1/"),
+    CORTEX("cortex", "http://www.deutsche-digitale-bibliothek.de/cortex"),
+    CI("ci", "http://www.deutsche-digitale-bibliothek.de/item"),
+    XSI("xsi", "http://www.w3.org/2001/XMLSchema-instance"),
+    DCTERMS("dcterms", "http://purl.org/dc/terms/"),
+    SKOS("skos", "http://www.w3.org/2004/02/skos/core#"),
+    EDM("edm", "http://www.europeana.eu/schemas/edm/"),
+    DDB("ddb", "http://www.deutsche-digitale-bibliothek.de/edm/"),
+    C_ALT("c_alt", "http://www.ddb.de/"),
+    CRM("crm", "http://www.cidoc-crm.org/cidoc-crm/"),
+    CRM_LABEL("crm_label", "http://www.cidoc-crm.org/rdfs/cidoc_crm_v5.0.2_english_label.rdfs#"),
+    ORE("ore", "http://www.openarchives.org/ore/terms/"),
+    FOAF("foaf", "http://xmlns.com/foaf/0.1/")
+
+
 
     String namespace
     String uri

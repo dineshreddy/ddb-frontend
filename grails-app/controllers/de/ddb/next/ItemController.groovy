@@ -203,10 +203,14 @@ class ItemController {
         fields.each {
             def valueTags = it.value
             valueTags.each { valueTag ->
-                def resource = valueTag['@'+CortexNamespace.RDF.namespace+':resource']
+                def resource = valueTag['@'+CortexNamespace.RDF.namespace+':resource']?.toString().trim()
+                if(resource == null || resource.isEmpty()){
+                    resource = valueTag['@'+CortexNamespace.NS2.namespace+':resource']?.toString().trim()
+                }
+
                 if(resource != null && !resource.isEmpty()){
-                    if(cultureGraphService.isValidGndUri(resource.toString())){
-                        def entityId = cultureGraphService.getGndIdFromGndUri(resource.toString())
+                    if(cultureGraphService.isValidGndUri(resource)){
+                        def entityId = cultureGraphService.getGndIdFromGndUri(resource)
                         valueTag.@entityId = entityId
                     }
                 }
@@ -323,7 +327,10 @@ class ItemController {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@"+CortexNamespace.RDF.namespace+":resource"].toString()
+            def licenseId = item.item.license["@"+CortexNamespace.RDF.namespace+":resource"].toString().trim()
+            if(licenseId == null || licenseId.isEmpty()){
+                licenseId = item.item.license["@"+CortexNamespace.NS2.namespace+":resource"].toString().trim()
+            }
 
             def propertyId = convertUriToProperties(licenseId)
 
