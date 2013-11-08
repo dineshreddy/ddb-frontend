@@ -227,9 +227,12 @@ class UserController {
     def registration() {
         log.info "registration()"
 
+        String accountTermsUrl = configurationService.getContextUrl() + configurationService.getAccountTermsUrl()
+        String accountPrivacyUrl = configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
+
         render(view: "registration", model: [
-            accountTermsUrl: configurationService.getAccountTermsUrl(),
-            accountPrivacyUrl: configurationService.getAccountPrivacyUrl()
+            accountTermsUrl: accountTermsUrl,
+            accountPrivacyUrl: accountPrivacyUrl
         ])
     }
 
@@ -778,16 +781,18 @@ class UserController {
             User user = getUserFromSession()
             def apiKey = user.apiKey
 
+            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+
             if(apiKey){
                 render(view: "apiKey", model: [
                     user: user,
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
-                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                    apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }else{
                 render(view: "requestApiKey", model: [
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
-                    apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                    apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }
         }else{
@@ -845,6 +850,9 @@ class UserController {
     private def sendApiKeyPerMail(User user) {
         log.info "sendApiKeyPerMail()"
         if (user != null) {
+
+            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+
             def List emails = []
             emails.add(user.email)
             try {
@@ -856,7 +864,7 @@ class UserController {
                     body( view:"_apiKeyEmailBody", model:[
                         user: user,
                         apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
-                        apiKeyTermsUrl: configurationService.getApiKeyTermsUrl()
+                        apiKeyTermsUrl: apiKeyTermsUrl
                     ])
                 }
             } catch (e) {
