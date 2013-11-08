@@ -37,11 +37,11 @@ public enum CortexNamespace {
 
 
 
-    String namespace
+    String prefix
     String uri
 
-    private CortexNamespace(namespace, uri) {
-        this.namespace = namespace
+    private CortexNamespace(prefix, uri) {
+        this.prefix = prefix
         this.uri = uri
     }
 }

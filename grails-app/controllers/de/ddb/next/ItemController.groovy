@@ -203,9 +203,9 @@ class ItemController {
         fields.each {
             def valueTags = it.value
             valueTags.each { valueTag ->
-                def resource = valueTag['@'+CortexNamespace.RDF.namespace+':resource']?.toString().trim()
+                def resource = valueTag['@'+CortexNamespace.RDF.prefix+':resource']?.toString().trim()
                 if(resource == null || resource.isEmpty()){
-                    resource = valueTag['@'+CortexNamespace.NS2.namespace+':resource']?.toString().trim()
+                    resource = valueTag['@'+CortexNamespace.NS2.prefix+':resource']?.toString().trim()
                 }
 
                 if(resource != null && !resource.isEmpty()){
@@ -327,9 +327,9 @@ class ItemController {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@"+CortexNamespace.RDF.namespace+":resource"].toString().trim()
+            def licenseId = item.item.license["@"+CortexNamespace.RDF.prefix+":resource"].toString().trim()
             if(licenseId == null || licenseId.isEmpty()){
-                licenseId = item.item.license["@"+CortexNamespace.NS2.namespace+":resource"].toString().trim()
+                licenseId = item.item.license["@"+CortexNamespace.NS2.prefix+":resource"].toString().trim()
             }
 
             def propertyId = convertUriToProperties(licenseId)
