@@ -203,10 +203,8 @@ class ItemController {
         fields.each {
             def valueTags = it.value
             valueTags.each { valueTag ->
-                def resource = valueTag['@'+CortexNamespace.RDF.prefix+':resource']?.toString().trim()
-                if(resource == null || resource.isEmpty()){
-                    resource = valueTag['@'+CortexNamespace.NS2.prefix+':resource']?.toString().trim()
-                }
+
+                def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
 
                 if(resource != null && !resource.isEmpty()){
                     if(cultureGraphService.isValidGndUri(resource)){
@@ -327,10 +325,8 @@ class ItemController {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@"+CortexNamespace.RDF.prefix+":resource"].toString().trim()
-            if(licenseId == null || licenseId.isEmpty()){
-                licenseId = item.item.license["@"+CortexNamespace.NS2.prefix+":resource"].toString().trim()
-            }
+
+            def licenseId = getTagAttribute(item.item.license, CortexNamespace.RDF.prefix, "resource")
 
             def propertyId = convertUriToProperties(licenseId)
 
@@ -382,6 +378,15 @@ class ItemController {
         }else{
             return ""
         }
+    }
+
+    private String getTagAttribute(def tag, String namespacePrefix, String attributeName ) {
+        String out = null
+        out = tag["@"+namespacePrefix+":"+attributeName].toString().trim()
+        if(out == null || out.isEmpty()){
+            out = tag["@"+CortexNamespace.NS2.prefix+":"+attributeName].toString().trim()
+        }
+        return out
     }
 
     def showXml() {
