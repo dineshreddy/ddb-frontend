@@ -19,6 +19,7 @@ package de.ddb.next
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 
 import de.ddb.next.exception.ConfigurationException
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 /**
  * Service for accessing the configuration.
@@ -28,6 +29,7 @@ import de.ddb.next.exception.ConfigurationException
 class ConfigurationService {
 
     def grailsApplication
+    def LinkGenerator grailsLinkGenerator
 
     def transactional=false
 
@@ -130,19 +132,26 @@ class ConfigurationService {
         return url
     }
 
+    /**
+     * Return the application base URL with context path and without trailing slash.
+     */
+    public String getContextUrl(){
+        return grailsLinkGenerator.serverBaseURL
+    }
+
+    /**
+     * Return the application base URL without context path and without trailing slash.
+     */
     public String getSelfBaseUrl(){
-        def baseUrl = grailsApplication.config.ddb?.self?.base?.url
-        if(!baseUrl){
-            throw new ConfigurationException("getSelfBaseUrl(): Configuration entry does not exist -> ddb.self.base.url")
+        def result = getContextUrl()
+        if (grailsLinkGenerator.contextPath?.length() > 0) {
+            result = result.substring(0, result.length() - grailsLinkGenerator.contextPath.length())
         }
-        if(!(baseUrl instanceof String)){
-            throw new ConfigurationException("getSelfBaseUrl(): ddb.self.base.url is not a String")
-        }
-        return baseUrl
+        return result
     }
 
     public String getConfirmBase(){
-        return getSelfBaseUrl() + ServletContextHolder.servletContext.contextPath + "/user/confirm/|id|/|confirmationToken|"
+        return getContextUrl() + "/user/confirm/|id|/|confirmationToken|"
     }
 
     public String getPasswordResetConfirmationLink(){
@@ -168,17 +177,6 @@ class ConfigurationService {
         return email
     }
 
-    public String getFavoritesBasedomain(){
-        def favoritesBaseDomain = grailsApplication.config.ddb?.favorites?.basedomain
-        if(!favoritesBaseDomain){
-            throw new ConfigurationException("getFavoritesBasedomain(): Configuration entry does not exist -> ddb.favorites.basedomain ")
-        }
-        if(!(favoritesBaseDomain instanceof String)){
-            throw new ConfigurationException("getFavoritesBasedomain(): ddb.favorites.basedomain is not a String")
-        }
-        return favoritesBaseDomain
-    }
-
     public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter
         if(!filter){
@@ -201,6 +199,53 @@ class ConfigurationService {
         }
         return filepath
     }
+
+    public String getApiKeyDocUrl(){
+        def url = grailsApplication.config.ddb?.apikey?.doc?.url
+        if(!url){
+            throw new ConfigurationException("getApiKeyDocUrl(): Configuration entry does not exist -> ddb.apikey.doc.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getApiKeyDocUrl(): ddb.apikey.doc.url is not a String")
+        }
+        return url
+    }
+
+    public String getApiKeyTermsUrl(){
+        def url = grailsApplication.config.ddb?.apikey?.terms?.url
+        if(!url){
+            throw new ConfigurationException("getApiKeyTermsUrl(): Configuration entry does not exist -> ddb.apikey.terms.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getApiKeyTermsUrl(): ddb.apikey.terms.url is not a String")
+        }
+        return url
+    }
+
+    public String getAccountTermsUrl(){
+        def url = grailsApplication.config.ddb?.account?.terms?.url
+        if(!url){
+            throw new ConfigurationException("getAccountTermsUrl(): Configuration entry does not exist -> ddb.account.terms.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getAccountTermsUrl(): ddb.account.terms.url is not a String")
+        }
+        return url
+    }
+
+    public String getAccountPrivacyUrl(){
+        def url = grailsApplication.config.ddb?.account?.privacy?.url
+        if(!url){
+            throw new ConfigurationException("getAccountPrivacyUrl(): Configuration entry does not exist -> ddb.account.privacy.url")
+        }
+        if(!(url instanceof String)){
+            throw new ConfigurationException("getAccountPrivacyUrl(): ddb.account.privacy.url is not a String")
+        }
+        return url
+    }
+
+
+
 
     public String getEncoding(){
         def encoding = grailsApplication.config.grails?.views?.gsp?.encoding
@@ -267,6 +312,38 @@ class ConfigurationService {
         }
         return grailsMailHost
     }
+
+
+    public String getProxyHost(){
+        def proxyHost = System.getProperty("http.proxyHost")
+        if(!proxyHost){
+            log.warn "getProxyHost(): No proxy host configured -> System.getProperty('http.proxyHost'). This will most likely lead to problems."
+        }else if(!(proxyHost instanceof String)){
+            log.warn "getProxyHost(): Configuration entry is not of type String: " + proxyHost + " / " + proxyHost.getClass()
+        }
+        return proxyHost
+    }
+
+    public String getProxyPort(){
+        def proxyPortString = System.getProperty("http.proxyPort")
+        if(!proxyPortString){
+            log.warn "getProxyPort(): No proxy port configured -> System.getProperty('http.proxyPort'). This will most likely lead to problems."
+        }else if(!(proxyPortString instanceof String)){
+            log.warn "getProxyPort(): Configuration entry is not of type String: " + proxyPortString + " / " + proxyPortString.getClass()
+        }
+        return proxyPortString
+    }
+
+    public String getNonProxyHosts(){
+        def nonProxyHosts = System.getProperty("http.nonProxyHosts")
+        if(!nonProxyHosts){
+            log.warn "getNonProxyHosts(): No nonproxy hosts configured -> System.getProperty('http.nonProxyHosts'). This will most likely lead to problems."
+        }else if(!(nonProxyHosts instanceof String)){
+            log.warn "getNonProxyHosts(): Configuration entry is not of type String: " + nonProxyHosts + " / " + nonProxyHosts.getClass()
+        }
+        return nonProxyHosts
+    }
+
 
     /**
      * Get the authorization key to access restricted API calls.
@@ -424,6 +501,10 @@ class ConfigurationService {
 
 
     public def logConfigurationSettings() {
+        log.info "------------- System.properties -----------------------"
+        log.info "proxyHost = " + getProxyHost()
+        log.info "proxyPort = " + getProxyPort()
+        log.info "nonProxyHosts = " + getNonProxyHosts()
         log.info "------------- application.properties ------------------"
         log.info "app.grails.version = "+grailsApplication.metadata["app.grails.version"]
         log.info "app.name = "+grailsApplication.metadata["app.name"]
@@ -438,9 +519,7 @@ class ConfigurationService {
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.bookmark.url = " + getBookmarkUrl()
         log.info "ddb.newsletter.url = " + getNewsletterUrl()
-        log.info "ddb.self.base.url = " + getSelfBaseUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
-        log.info "ddb.favorites.basedomain = " + getFavoritesBasedomain()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()
@@ -455,6 +534,10 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
+        log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
+        log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
+        log.info "ddb.account.terms.url = " + getAccountTermsUrl()
+        log.info "ddb.account.privacy.url = " + getAccountPrivacyUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "-------------------------------------------------------"

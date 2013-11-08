@@ -13,9 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="row item-detail">
-  <div class="rights">
-    <div class="span2"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
-    <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">${item.rights}</div>
+<g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
+  <div class="row item-detail">
+    <div class="rights">
+      <div class="span2"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
+      <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">${item.rights}</div>
+    </div>
   </div>
-</div>
+</g:if>

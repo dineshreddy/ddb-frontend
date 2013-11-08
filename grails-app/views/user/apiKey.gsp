@@ -29,7 +29,7 @@ limitations under the License.
   <body>
     <div class="row apikey" >
       <div class="span12">
-        <g:form method="post" name="user-api-form" class="form-horizontal" controller="user" action="deleteApiKey" >
+        <g:form method="post" name="apikey-form" id="apikey-form" class="form-horizontal" controller="user" action="deleteApiKey" >
           <div class="well">
             <div class="profile-nav">
               <div>
@@ -43,19 +43,34 @@ limitations under the License.
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-wrench"></i></span>
                   <input type="text" class="profile-input apikey-input" name="apikey" placeholder="<g:message code="ddbnext.Api_My_Key" />" value="${user.apiKey}">
-                  <button type="submit" class="apikey-delete" title="<g:message code="ddbnext.Api_Key_Delete"/>"></button>
+                  <button type="submit" class="apikey-delete" id="apikey-delete" title="<g:message code="ddbnext.Api_Key_Delete"/>"></button>
                 </div>
               </div>
             </div>
 
             <div>
-              <g:message code="ddbnext.Api_Agreed" />
+              <g:message code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
               <br />            
-              <g:message code="ddbnext.Api_Dokumentation" />
+              <g:message code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
             </div>            
             
           </div>
         </g:form>
+      </div>
+    </div>
+    <div id="msDeleteApiKey" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3>
+          <g:message code="ddbnext.delete_confirmation" />
+        </h3>
+      </div>
+      <div class="modal-body">
+        <g:message code="ddbnext.Api_Key_Delete_Confirmation" />
+      </div>
+      <div class="modal-footer">
+        <button class="submit" data-dismiss="modal" id="delete-apikey-confirm"><g:message code="ddbnext.Ok" /></button>
+        <button class="submit" data-dismiss="modal"><g:message code="ddbnext.Cancel" /></button>
       </div>
     </div>
   </body>

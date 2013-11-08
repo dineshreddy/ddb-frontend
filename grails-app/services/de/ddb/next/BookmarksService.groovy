@@ -56,7 +56,7 @@ class BookmarksService {
      * @param isPublic  boolean flag to mark if a folder should be public visible.
      * @return          the newly created folder ID.
      */
-    String newFolder(userId, title, isPublic, publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value, description = null) {
+    String newFolder(userId, title, isPublic, publishingName, description = null) {
         log.info "newFolder(): creating a new folder with the title: ${title}"
 
         String newFolderId = null
@@ -649,13 +649,13 @@ class BookmarksService {
         }
     }
 
-    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value) {
+    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName) {
         log.info "updateFolder()"
 
         // Save fallback to username if wrong parameters are given
-        if(!FolderConstants.isValidPublishingName(publishingName)){
-            publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
-        }
+        //        if(!FolderConstants.isValidPublishingName(publishingName)){
+        //            publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
+        //        }
 
         def postBody = ""
         if(newDescription) {

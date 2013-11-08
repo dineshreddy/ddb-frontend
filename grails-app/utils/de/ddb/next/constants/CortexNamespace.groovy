@@ -13,12 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+package de.ddb.next.constants
 
-class BaseUrlTagLib {
-    def configurationService
+public enum CortexNamespace {
 
-    def baseUrl = { attrs, body ->
-        out << configurationService.getSelfBaseUrl()
+    RDF("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+    NS2("ns2", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"),
+    NS3("ns3", "http://www.deutsche-digitale-bibliothek.de/item"),
+    NS4("ns4", "http://www.deutsche-digitale-bibliothek.de/cortex")
+
+    String namespace
+    String uri
+
+    private CortexNamespace(namespace, uri) {
+        this.namespace = namespace
+        this.uri = uri
     }
 }

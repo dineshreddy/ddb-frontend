@@ -66,7 +66,7 @@ limitations under the License.
               <div class="input-prepend">
                 <input type="checkbox" class="api-checkbox" name="apiConfirmation">
               </div>
-              <label class="checkbox-label control-label"><g:message code="ddbnext.Api_Confirmation" /></label>
+              <label class="checkbox-label control-label"><g:message code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
             </div>
 
             <div class="control-group">

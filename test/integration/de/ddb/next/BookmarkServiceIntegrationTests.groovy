@@ -20,7 +20,8 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
     def createNewFolder() {
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
-        return bookmarksService.newFolder(userId, folderTitle, isPublic)
+        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.getValue()
+        return bookmarksService.newFolder(userId, folderTitle, isPublic, publishingName)
     }
 
 
@@ -107,7 +108,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "the bookmark service should find folders by its title."
         def userId = UUID.randomUUID() as String
 
-        def folderId = bookmarksService.newFolder(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value, BookmarksService.IS_PUBLIC)
+        def folderId = bookmarksService.newFolder(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value, BookmarksService.IS_PUBLIC, FolderConstants.PUBLISHING_NAME_USERNAME.getValue())
         log.info "the bookmark service created a ${FolderConstants.MAIN_BOOKMARKS_FOLDER.value} folder(${folderId}) for a user(${userId})"
 
         def favFolderList = bookmarksService.findFoldersByTitle(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
@@ -272,7 +273,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
-        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic)
+        def folderId = bookmarksService.newFolder(userId, folderTitle, isPublic, FolderConstants.PUBLISHING_NAME_USERNAME.getValue())
         def favoriteId = bookmarksService.addBookmark(userId, itemId, null, Type.CULTURAL_ITEM, [folderId])
 
         assert favoriteId != null
@@ -309,7 +310,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         log.info "should change folder's title or its description."
         def userId = UUID.randomUUID() as String
         def folderTitle = 'foo'
-        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC)
+        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC, FolderConstants.PUBLISHING_NAME_USERNAME.getValue())
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
         def newTitle = "bar"
@@ -329,7 +330,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
 
         def userId = UUID.randomUUID() as String
         def folderTitle = 'foo'
-        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC)
+        def folderId = bookmarksService.newFolder(userId, folderTitle, BookmarksService.IS_PUBLIC, FolderConstants.PUBLISHING_NAME_USERNAME.getValue())
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
         def itemId = UUID.randomUUID() as String

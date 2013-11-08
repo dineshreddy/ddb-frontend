@@ -36,7 +36,7 @@
 
 #registration-form .controls.checkbox label.error {
   position: absolute;
-  margin-top: 22px;
+  margin-top: -12px;
   margin-left: 5px;
 }
 
@@ -69,7 +69,7 @@
     width: 60%;
   }
   #registration-form .controls.checkbox label.error {
-    margin-top: 4px;
+    margin-top: 24px;
     margin-left: -216px;
   }
 }

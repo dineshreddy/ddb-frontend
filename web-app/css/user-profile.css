@@ -52,10 +52,8 @@
 }
 
 #user-profile-form .profile-links {
-  width: 160px;
+  width: 140px;
   padding-top: 10px;
-  right: -5px;
-  top: -40px;
   float: right;
 }
 
@@ -98,8 +96,10 @@
     margin: 0 0 0;
   }
   #user-profile-form .profile-links {
-    top: 320px;
-    left: 0;
+    text-align: left;
+    float: none;
+  }
+}ofile-form .profile-links {
     text-align: left;
     float: none;
   }

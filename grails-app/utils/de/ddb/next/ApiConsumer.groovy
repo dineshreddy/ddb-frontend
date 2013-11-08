@@ -17,10 +17,13 @@ package de.ddb.next
 
 import grails.util.Holders
 import groovy.json.*
+import groovy.util.slurpersupport.GPathResult
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import groovyx.net.http.ParserRegistry
 
+import java.rmi.registry.Registry
 import java.util.regex.Pattern
 
 import javax.servlet.http.HttpServletRequest
@@ -34,6 +37,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.BadRequestException
@@ -179,11 +183,20 @@ class ApiConsumer {
 
             ProxyUtil proxyUtil = new ProxyUtil()
             proxyUtil.setProxy(http, baseUrl)
-            //setProxy(http, baseUrl)
 
             if (httpAuth) {
                 setAuthHeader(http)
             }
+
+            //            ParserRegistry registry = http.getParser()
+            //            registry.putAt(ContentType.XML) { resp ->
+            //                org.apache.http.HttpResponse res = (org.apache.http.HttpResponse)resp
+            //
+            //                XmlSlurper slurper = new XmlSlurper()
+            //                GPathResult result = slurper.parse(res.getEntity().content).declareNamespace(rdf:"http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+            //                return result
+            //
+            //            }
 
             // send API key
             def apiKey = setApiKey(optionalHeaders, baseUrl)

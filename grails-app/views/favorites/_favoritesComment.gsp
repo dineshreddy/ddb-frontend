@@ -23,10 +23,7 @@ limitations under the License.
     <div class="comment-text <g:if test="${!publicView}">comment-text-clickanchor</g:if>" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
       <span class="comment-meta">
         <g:if test="${!item.bookmark.description.isEmpty()}">
-          <%-- TODO uncomment when username is available: DDBNEXT-866
-          <g:message code="ddbnext.Favorites_Comment_Of" /> ${item.user.username}, ${item.bookmark.updateDateFormatted}:
-          --%>
-          <g:message code="ddbnext.Favorites_Comment_Of" />, ${item.bookmark.updateDateFormatted}:
+          <g:message code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, ${item.bookmark.updateDateFormatted}:
         </g:if>
       </span>
       <span id="comment-text-dyn-${item.bookmark.bookmarkId}">

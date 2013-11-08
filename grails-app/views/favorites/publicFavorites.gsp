@@ -22,17 +22,13 @@ limitations under the License.
   <head>
   
     <title>
-      <%-- TODO uncomment when username is available: DDBNEXT-866
-      <g:message code="ddbnext.Favorites_List_Of" args="${[selectedUser.username]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
-      --%>
-      <g:message code="ddbnext.Favorites_List" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message code="ddbnext.Favorites_List_Of" args="${[selectedFolder.publishingName]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-      <%-- TODO change to new browser title when username is available: DDBNEXT-866 --%>
-    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List") + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -79,24 +75,19 @@ limitations under the License.
       </div>
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
-          <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
-            <div class="folder-information bt bb bl br">
-              <%-- TODO uncomment when username is available: DDBNEXT-866
-              <g:message code="ddbnext.List_Of"/> ${selectedUser.username}
+          <div class="folder-information bt bb bl br">
+            <g:message code="ddbnext.List_Of"/> ${selectedFolder.publishingName}
+            <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
               <br />          
-              --%>
               <g:message code="ddbnext.Create_Folder_Description"/>:
               <br />
               ${selectedFolder.description}
-            </div>
-          </g:if>
+            </g:if>
+          </div>
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
             <div class="folder-information bt bb bl br">
-              <%-- TODO uncomment when username is available: DDBNEXT-866
-              <g:message code="ddbnext.Other_Lists_Of"/> ${selectedUser.username}:
-              --%>
-              <g:message code="ddbnext.Other_Lists_Of"/>:
+              <g:message code="ddbnext.Other_Lists_Of"/> ${selectedFolder.publishingName}:
               <ul>
                 <g:each var="publicFolder" in="${publicFolders}">
                   <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
@@ -111,7 +102,7 @@ limitations under the License.
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">        
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${baseDomain}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
             </a>
           </div>
@@ -126,7 +117,7 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
+              <div class="row delete-container">
                 <div class="results-pagination">
                   <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
                 </div>

@@ -26,7 +26,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
     
-    <g:socialmediaMeta likeTitle="${g.message(code:"ddbnext.Favorites_List_Of", args: [userName])}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
     
   </head>
   <body>
@@ -207,22 +207,22 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
-                <div class="deleteBtn span1">
+              <div class="delete-container row">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites" />">
                       <span><g:message code="ddbnext.Delete"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="deleteBtn span1">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Copy_Favorites" />">
                       <span><g:message code="ddbnext.Copy"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="results-pagination">
+                <div class="span4 results-pagination fr">
                   <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
                 </div>
               </div>
@@ -314,7 +314,7 @@ limitations under the License.
         <form method="POST" id="sendFavorites">
           <div class="modal-body">
             <fieldset>
-              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required="required" />
+              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" name="email" required="required" />
               <br /> 
               <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients" /></small>
               <br />

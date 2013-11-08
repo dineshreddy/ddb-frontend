@@ -866,8 +866,9 @@ function searchResultsInitializer(){
         
         //add event listener for removing facet
         facetValueContainer.find('.facet-remove').click(function(event){
-          currObjInstance.unselectFacetValue(facetValueContainer);
-          event.preventDefault();
+        	event.preventDefault();
+        	currObjInstance.unselectFacetValue(facetValueContainer);
+        	return false;
         });
         
         //add event listener for add more facet filters
@@ -1059,9 +1060,11 @@ function searchResultsInitializer(){
 	  	              	}); 
   	                }
   	                
-  	                selectedFacetValue.find('.facet-remove').click(function(){
-  	                currObjInstance.unselectFacetValue(selectedFacetValue);
-  	              });
+  	                selectedFacetValue.find('.facet-remove').click(function(event){
+  	                	event.preventDefault();
+  	                	currObjInstance.unselectFacetValue(selectedFacetValue);
+  	                	return false;
+  	                });
   	            });
   	            
   	            currObjInstance.connectedflyoutWidget.renderAddMoreFiltersButton(fctField);
@@ -1633,6 +1636,7 @@ function searchResultsInitializer(){
                     $("#favorite-confirmation").modal("show");
                     $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
                       if (folders.length > 1) {
+                        $("#favorite-folders").empty();
                         $.each(folders, function(index, folder) {
                           if (!folder.isMainFolder) {
                             // show select box with all folder names

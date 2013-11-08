@@ -452,6 +452,7 @@ class SearchService {
         if(!urlQuery["facet"]){
             urlQuery["facet"] = []
         }
+
         urlQuery["facet"].add("affiliate_fct_involved_normdata")
         urlQuery["facet"].add("affiliate_fct_subject")
 
