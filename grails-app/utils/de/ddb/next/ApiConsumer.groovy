@@ -193,7 +193,7 @@ class ApiConsumer {
             //                org.apache.http.HttpResponse res = (org.apache.http.HttpResponse)resp
             //
             //                XmlSlurper slurper = new XmlSlurper()
-            //                GPathResult result = slurper.parse(res.getEntity().content).declareNamespace(rdf:"http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+            //                GPathResult result = slurper.parse(res.getEntity().content).declareNamespace("rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#")
             //                return result
             //
             //            }

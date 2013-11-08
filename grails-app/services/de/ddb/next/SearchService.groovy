@@ -453,6 +453,7 @@ class SearchService {
             urlQuery["facet"] = []
         }
 
+        // This is needed for the entity search results that are displayed on top of the regular search results.
         urlQuery["facet"].add("affiliate_fct_involved_normdata")
         urlQuery["facet"].add("affiliate_fct_subject")
 
