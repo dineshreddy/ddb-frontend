@@ -26,7 +26,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
     
-    <g:socialmediaMeta likeTitle="${selectedFolder.title.capitalize()}" likeUrl="${g.baseUrl() + fullPublicLink}" />
+    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
     
   </head>
   <body>
@@ -123,26 +123,28 @@ limitations under the License.
           <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolder.folderId}">
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
-                <span class="h3"> 
-                  <g:if test="${it.folder.folderId != selectedFolder.folderId }">
+                <div class="fav-text h3"> 
+                 
+                  <g:set var="folderTooltip" value="${it.folder.description}" />
+                  <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                    <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
+                  </g:if>
                   
-                    <g:set var="folderTooltip" value="${it.folder.description}" />
+                  <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
-                    </g:if>
-                    
-                    <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
-                      <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
                         <g:message code="ddbnext.All_Favorites" />
-                      </g:if>
-                      <g:else>
+                      </g:link>
+                    </g:if>
+                    <g:else>
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
                         ${it.folder.title.capitalize()}
-                      </g:else>
-                    </g:link>
+                      </g:link>
+                    </g:else>
                   </g:if>
                   <g:else>
                     <b>
-                      <a title="${it.folder.description}">
+                      <a title="${folderTooltip}">
                         <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                           <g:message code="ddbnext.All_Favorites" />
                         </g:if>
@@ -152,8 +154,8 @@ limitations under the License.
                       </a>
                     </b>
                   </g:else>
-                </span> 
-                <span class="bookmarks-list-number"> ${it.count}</span>
+                </div> 
+                <div class="fav-number"> ${it.count}</div>
                 <%-- 
                 <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
                   <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
@@ -180,12 +182,12 @@ limitations under the License.
             <li class="">
               <span class="h3">
                 <g:form id="folder-create" method="POST" name="folder-create">
-                  <button type="submit" class="submit" title="<g:message code="ddbnext.Create_Folder_Title" />">
+                  <button id="button-new" type="submit" class="submit" title="<g:message code="ddbnext.Create_Folder_Title" />">
                     <span><g:message code="ddbnext.Create_Folder"></g:message></span>
                   </button>
                 </g:form>
               </span>
-            </li> 
+            </li>
           </ul>
         </div>
         <div class="span9 favorites-results-content">
@@ -205,22 +207,22 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="deleteContainer row">
-                <div class="deleteBtn span1">
+              <div class="delete-container row">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Favorites" />">
                       <span><g:message code="ddbnext.Delete"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="deleteBtn span1">
+                <div class="span1 delete-btn">
                   <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Copy_Favorites" />">
                       <span><g:message code="ddbnext.Copy"></g:message></span>
                     </button>
                   </g:form>
                 </div>
-                <div class="results-pagination">
+                <div class="span4 results-pagination fr">
                   <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
                 </div>
               </div>
@@ -312,7 +314,7 @@ limitations under the License.
         <form method="POST" id="sendFavorites">
           <div class="modal-body">
             <fieldset>
-              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" type="email" name="email" required="required" />
+              <input placeholder="<g:message code="ddbnext.send_favorites_email" />" name="email" required="required" />
               <br /> 
               <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients" /></small>
               <br />

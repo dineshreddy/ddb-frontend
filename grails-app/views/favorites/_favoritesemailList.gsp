@@ -20,6 +20,8 @@ limitations under the License.
 <g:message code="ddbnext.send_favorites_email_body_pre" 
              args="${[userName]}" /><br />
 </div>
+<g:message code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
+
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
     <tr>
@@ -44,7 +46,7 @@ limitations under the License.
       <tr>
         <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
-            <g:link style="color:#a5003b" controller="${ controller }" base="${grailsApplication.config.ddb.favorites.basedomain}"
+            <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
               action="${ action }" params="[id: it.id]"
               title="${truncateHovercardTitle(title: it.label, length: 350)}">
               <g:truncateItemTitle title="${ it.preview.title }"
@@ -53,18 +55,30 @@ limitations under the License.
           </h2>
           <g:if test="${!(it.preview.subtitle instanceof net.sf.json.JSONNull)}">
             <div>
-              ${it.preview.subtitle}
+              ${it.preview.subtitle}<br />
+              <br /><br /><br />
+              <span style="font-size:x-small;color:#333333">
+                <g:if test="${!it.bookmark.description.isEmpty()}">
+                  <g:message code="ddbnext.Favorites_Comment_Of" /> ${it.folder.publishingName}, ${it.bookmark.updateDateFormatted}:
+                </g:if>
+              </span><br />
+              <span>
+                <g:if test="${!it.bookmark.description.isEmpty()}">
+                  ${it.bookmark.description.trim()}
+                </g:if>
+              </span>
+
             </div>
           </g:if>
         </td>
         <td style="width: 170px; padding: 10px;">
-          <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${grailsApplication.config.ddb.favorites.basedomain}">
+          <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${contextUrl}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
               <!-- institution logos still point to the content server -->
               <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>"></img>
             </g:if>
             <g:else>
-              <img src="${grailsApplication.config.ddb.favorites.basedomain}<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}"
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${contextUrl}${confBinary}</g:if><g:else>${baseUrl}</g:else>${it.preview.thumbnail}"
                    alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
             </g:else>
           </g:link>

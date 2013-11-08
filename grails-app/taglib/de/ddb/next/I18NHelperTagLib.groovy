@@ -123,11 +123,13 @@ class I18NHelperTagLib {
             cleanedParams.each {
                 if (it.value instanceof String[]) {
                     it.value.each { a ->
-                        paramString += it.key + "=" + a + "&"
+                        //The param key "facetValues[]" has values like this: "type_fct=mediatype_003". So we have to encode the key and value for the URL 
+                        paramString += it.key.encodeAsURL() + "=" + a.encodeAsURL() + "&"
                     }
                 }
                 else {
-                    paramString += it.key + "=" + it.value + "&"
+                    //The param key "facetValues[]" has values like this: "type_fct=mediatype_003". So we have to encode the key and value for the URL
+                    paramString += it.key.encodeAsURL() + "=" + it.value.encodeAsURL() + "&"
                 }
             }
             if(paramString.length() > 1){

@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.next.exception.EntityNotFoundException
+
 class EntityController {
 
     def cultureGraphService
@@ -49,7 +51,12 @@ class EntityController {
 
 
         def jsonGraph = cultureGraphService.getCultureGraph(entityId)
-        def xmlDnb = cultureGraphService.getDNBInformation(entityId)
+
+        //Forward to a 404 page if the entityId is not known by the culture graph service
+        if (jsonGraph == null) {
+            throw new EntityNotFoundException()
+        }
+        
 
         def entityUri = request.forwardURI
 
@@ -77,58 +84,24 @@ class EntityController {
         entity["title"] = jsonGraph[entityType].name
 
         //------------------------- Birth/Death date -------------------------------
-
-        //        entity["dateOfBirth"] = xmlDnb.breadthFirst().find {
-        //            it.name() == "dateOfBirth"
-        //        }[0].text()
-        //        entity["dateOfDeath"] = xmlDnb.breadthFirst().find {
-        //            it.name() == "dateOfDeath"
-        //        }[0].text()
-
         entity["dateOfBirth"] = jsonGraph[entityType].birth
         entity["dateOfDeath"] = jsonGraph[entityType].death
 
         //------------------------- Birth/Death place -------------------------------
-
-        def dnbPlaceOfBirthUrl = xmlDnb.breadthFirst().find {it.name() == "placeOfBirth"}?."@rdf:resource"?.text()
-        if(dnbPlaceOfBirthUrl){
-            def dnbPlaceOfBirthId = dnbPlaceOfBirthUrl.substring(dnbPlaceOfBirthUrl.lastIndexOf("/")+1)
-            def xmlDnbPlaceOfBirth = cultureGraphService.getDNBInformation(dnbPlaceOfBirthId)
-            entity["placeOfBirth"] = xmlDnbPlaceOfBirth.breadthFirst().find {
-                it.name() == "preferredNameForThePlaceOrGeographicName"
-            }[0].text()
-        }
-
-        def dnbPlaceOfDeathUrl = xmlDnb.breadthFirst().find {it.name() == "placeOfDeath"}?."@rdf:resource"?.text()
-        if(dnbPlaceOfDeathUrl){
-            def dnbPlaceOfDeathId = dnbPlaceOfDeathUrl.substring(dnbPlaceOfDeathUrl.lastIndexOf("/")+1)
-            def xmlDnbPlaceOfDeath = cultureGraphService.getDNBInformation(dnbPlaceOfDeathId)
-            entity["placeOfDeath"] = xmlDnbPlaceOfDeath.breadthFirst().find {
-                it.name() == "preferredNameForThePlaceOrGeographicName"
-            }[0].text()
-        }
-
+        entity["placeOfBirth"] = "Freiburg im Breisgau" //TODO get value from culturegraph service
+        entity["placeOfDeath"] = "Hamburg" //TODO get value from culturegraph service
+        
         //------------------------- Professions -------------------------------
 
-        //        def dnbProfessionUrls = xmlDnb.breadthFirst().findAll {it.name() == "professionOrOccupation"}."@rdf:resource".collect {it.text()}
-        //        def dnbProfessionIds = dnbProfessionUrls.collect {it.substring(it.lastIndexOf("/")+1)}
-        //
-        //        def professions = []
-        //        dnbProfessionIds.each {
-        //            def xmlProfession = cultureGraphService.getDNBInformation(it)
-        //            def professionName = xmlProfession.breadthFirst().find {it.name() == "preferredNameForTheSubjectHeading"}[0].text()
-        //            professions.add(professionName)
-        //        }
-        //
-        //        entity["professions"] = professions.join(', ')
-
+        entity["professions"] = "Schriftsteller" //TODO get value from culturegraph service
         entity["description"] = jsonGraph[entityType].description
 
         //------------------------- Search preview -------------------------------
 
         def searchPreview = [:]
 
-        def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
+        //def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": "mediatype_002"]
+        def searchQuery = ["query": entity["title"], "rows": rows, "offset": offset, "sort": "RELEVANCE"]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponseSearch.isOk()){
             log.error "index(): Search response contained error"
@@ -149,15 +122,15 @@ class EntityController {
 
         entity["searchPreview"] = searchPreview
 
-        render(view: 'entity', model: ["entity": entity, 
+        render(view: 'entity', model: ["entity": entity,
                                        "entityUri": entityUri])
     }
 
     public def getAjaxSearchResultsAsJson() {
 
         def query = params.query
-        def offset = params.offset
-        def rows = params.rows
+        def offset = params.long("offset")
+        def rows = params.long("rows")
 
         if(!rows) {
             rows = 4
@@ -190,20 +163,21 @@ class EntityController {
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
         entity["searchPreview"] = searchPreview
+        
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
 
-        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '')
-
-        def result = ["html": resultsHTML]
+        def result = ["html": resultsHTML, "resultCount" : jsonSearchResult.numberOfResults]
 
         render (contentType:"text/json"){result}
     }
 
     
-    public def getAjaxRoleSearchResultsAsJson() {                        
+    public def getAjaxRoleSearchResultsAsJson() {
         def query = params.query
         def offset = params.long("offset")
         def rows = params.long("rows")
-        def normdata = params.boolean("normdata")        
+        def normdata = params.boolean("normdata")
         def rolefacet = params.facetname
         def entityid = params.entityid
                 
@@ -229,7 +203,7 @@ class EntityController {
         
         def searchUrlParameter = []
         
-        def gndUrl = configurationService.getDnbUrl() + "/gnd/"
+        def gndUrl = CultureGraphService.GND_URI_PREFIX
         
         if (normdata) {
             searchQuery = ["query": query, "rows": rows, "offset": offset, "facet": [], (rolefacet+'_normdata') : (gndUrl + entityid)]
@@ -262,7 +236,8 @@ class EntityController {
 
         entity["roleSearch"] = roleSearch
 
-        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '')
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
 
         def result = ["html": resultsHTML]
 

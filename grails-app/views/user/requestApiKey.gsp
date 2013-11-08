@@ -56,10 +56,17 @@ limitations under the License.
                   </ul>
                 </div>
               </g:if>
+              <g:if test="${flash.message}">
+                <div class="messages-container">
+                  <ul class="unstyled">
+                    <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
+                  </ul>
+                </div>
+              </g:if>
               <div class="input-prepend">
                 <input type="checkbox" class="api-checkbox" name="apiConfirmation">
               </div>
-              <label class="checkbox-label control-label"><g:message code="ddbnext.Api_Confirmation" /></label>
+              <label class="checkbox-label control-label"><g:message code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
             </div>
 
             <div class="control-group">

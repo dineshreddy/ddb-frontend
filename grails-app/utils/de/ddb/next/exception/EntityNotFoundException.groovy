@@ -13,12 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+package de.ddb.next.exception
 
-class BaseUrlTagLib {
-    def configurationService
+class EntityNotFoundException extends Exception {
+    
+    EntityNotFoundException() {
+        super()
+    }
 
-    def baseUrl = { attrs, body ->
-        out << configurationService.getSelfBaseUrl()
+    EntityNotFoundException(String description) {
+        super(description)
     }
 }

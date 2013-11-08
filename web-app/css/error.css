@@ -36,3 +36,20 @@
   padding: 10px;
 }
 
+@media (min-width: 980px) and (max-width: 1199px) {
+  .fullwidth-container {
+    width: 938px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .fullwidth-container {
+    width: 722px;
+  }
+}
+
+@media (max-width: 767px) {
+  .fullwidth-container {
+    width: 100%;
+  }
+}

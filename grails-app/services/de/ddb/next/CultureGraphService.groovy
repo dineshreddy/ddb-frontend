@@ -35,16 +35,6 @@ class CultureGraphService {
         return apiResponse.getResponse()
     }
 
-    def getDNBInformation(String gndId) {
-        ApiResponse apiResponse = ApiConsumer.getXml(configurationService.getDnbUrl(), "/gnd/" + gndId + "/about/rdf")
-        if(!apiResponse.isOk()){
-            log.error "getDNBInformation(): Could not access culturegraph api under: "+configurationService.getDnbUrl() + "/gnd/" + gndId + "/about/rdf"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-
-        return apiResponse.getResponse()
-    }
-
     boolean isValidGndUri(String uriToTest){
         if(uriToTest != null && uriToTest.startsWith(GND_URI_PREFIX)){
             return true

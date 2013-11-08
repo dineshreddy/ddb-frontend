@@ -26,18 +26,14 @@
 }
 
 #user-profile-form .profile-nav {
-  margin-bottom: 20px;
   line-height: 40px;
   display: block;
+  padding-bottom: 15px;
 }
 
 #user-profile-form .profile-title, #user-profile-form .profile-links{
   text-align: right;
   margin-bottom: 10px;
-}
-
-#user-profile-form .profile-link {
-  margin-left: 30px !important;
 }
 
 #user-profile-form .checkbox-label {
@@ -50,8 +46,15 @@
   padding-top: 30px;
 }
 
+#user-profile-form .control-groups {
+  margin-top: 40px;
+  position: relative;
+}
+
 #user-profile-form .profile-links {
+  width: 140px;
   padding-top: 10px;
+  float: right;
 }
 
 #user-profile-form .privacylink {
@@ -73,6 +76,12 @@
   #user-profile-form label.checkbox-label {
     width: 36%;
   }
+  #user-profile-form .profile-links {
+    top: 220px;
+  }
+  #user-profile-form .well {
+    padding-bottom:95px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -85,5 +94,13 @@
   }
   #newsletter {
     margin: 0 0 0;
+  }
+  #user-profile-form .profile-links {
+    text-align: left;
+    float: none;
+  }
+}ofile-form .profile-links {
+    text-align: left;
+    float: none;
   }
 }

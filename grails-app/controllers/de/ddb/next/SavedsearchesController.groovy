@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import grails.converters.JSON
-import javax.servlet.http.HttpSession
 import de.ddb.next.beans.User
 
 class SavedsearchesController {
@@ -73,10 +72,6 @@ class SavedsearchesController {
         }
     }
 
-    private boolean isUserLoggedIn() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-    }
-
     private User getUserFromSession() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
@@ -116,44 +111,6 @@ class SavedsearchesController {
         else {
             log.info "updateSavedSearch returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
-        }
-    }
-
-    def sendSavedSearches() {
-        log.info "sendSavedSearches()"
-        if (isUserLoggedIn()) {
-            def user = getUserFromSession()
-            def List emails = []
-
-            if (params.email.contains(',')) {
-                emails = params.email.tokenize(',')
-            } else {
-                emails.add(params.email)
-            }
-            try {
-                sendMail {
-                    to emails.toArray()
-                    from configurationService.getFavoritesSendMailFrom()
-                    replyTo getUserFromSession().getEmail()
-                    subject g.message(code: "ddbnext.Savedsearches_Of", args: [
-                        user.getFirstnameAndLastnameOrNickname()
-                    ])
-                    body(view: "_savedSearchesEmailBody", model: [
-                        results:
-                        savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
-                            a.label.toLowerCase() <=> b.label.toLowerCase()
-                        },
-                        userName: user.getFirstnameAndLastnameOrNickname()
-                    ])
-                }
-                flash.message = "ddbnext.favorites_email_was_sent_succ"
-            } catch (e) {
-                log.info "An error occurred sending the email "+ e.getMessage()
-                flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
-            }
-            redirect(controller: "user", action: "getSavedSearches")
-        } else {
-            redirect(controller: "user", action: "index")
         }
     }
 }

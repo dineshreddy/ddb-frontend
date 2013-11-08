@@ -143,7 +143,6 @@ environments {
 
 //DDB SPECIFIC Configuration variables
 //The variables have to be overwritten by defining local configurations, see below environments
-ddb.self.base.url="http://localhost:8080"
 ddb.binary.url="http://localhost/binary/"
 ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
@@ -151,7 +150,6 @@ ddb.backend.url="http://localhost/backend:9998/"
 ddb.backend.apikey=""
 ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
-ddb.dnb.url="http://d-nb.info"
 ddb.bookmark.url="http://localhost:9200"
 ddb.newsletter.url="http://localhost:9200"
 ddb.elasticsearch.url="http://localhost:9200"
@@ -165,8 +163,11 @@ ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom = "noreply@deutsche-digitale-bibliothek.de"
-ddb.favorites.basedomain="http://localhost:8080"
 ddb.culturegraph.features.enabled=false
+ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
+ddb.apikey.terms.url="/content/terms/api"
+ddb.account.terms.url="/content/terms"
+ddb.account.privacy.url="/content/privacy/personal_data"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

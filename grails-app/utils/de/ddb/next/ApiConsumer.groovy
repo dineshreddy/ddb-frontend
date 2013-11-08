@@ -17,10 +17,13 @@ package de.ddb.next
 
 import grails.util.Holders
 import groovy.json.*
+import groovy.util.slurpersupport.GPathResult
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
+import groovyx.net.http.ParserRegistry
 
+import java.rmi.registry.Registry
 import java.util.regex.Pattern
 
 import javax.servlet.http.HttpServletRequest
@@ -34,6 +37,7 @@ import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.BadRequestException
@@ -179,14 +183,23 @@ class ApiConsumer {
 
             ProxyUtil proxyUtil = new ProxyUtil()
             proxyUtil.setProxy(http, baseUrl)
-            //setProxy(http, baseUrl)
 
             if (httpAuth) {
                 setAuthHeader(http)
             }
 
+            //            ParserRegistry registry = http.getParser()
+            //            registry.putAt(ContentType.XML) { resp ->
+            //                org.apache.http.HttpResponse res = (org.apache.http.HttpResponse)resp
+            //
+            //                XmlSlurper slurper = new XmlSlurper()
+            //                GPathResult result = slurper.parse(res.getEntity().content).declareNamespace("rdf":"http://www.w3.org/1999/02/22-rdf-syntax-ns#")
+            //                return result
+            //
+            //            }
+
             // send API key
-            setApiKey(optionalHeaders, baseUrl)
+            def apiKey = setApiKey(optionalHeaders, baseUrl)
 
             http.request(method, content) { req ->
 
@@ -219,11 +232,11 @@ class ApiConsumer {
                 response.success = { resp, output ->
                     switch(content) {
                         case ContentType.TEXT:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output.getText(), requestBody)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output.getText(), requestBody, apiKey)
                         case ContentType.JSON:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody, apiKey)
                         case ContentType.XML:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody, apiKey)
                         case ContentType.BINARY:
                             if(streamingOutputStream != null){
                                 // We want to stream
@@ -231,51 +244,51 @@ class ApiConsumer {
                                     IOUtils.copy(output, streamingOutputStream)
                                 }catch(ClientAbortException c){
                                     log.warn "requestServer(): Client aborted binary request"
-                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Client aborted request -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody)
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Client aborted request -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody, apiKey)
                                 }catch(SocketException s){
                                     log.warn "requestServer(): Socket already closed in binary request"
-                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Sockets closed -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody)
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Sockets closed -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody, apiKey)
                                 }catch(Throwable t){
                                     log.error "requestServer(): Could not copy streams in binary request: ", t
-                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Could not copy streams -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody)
+                                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Could not copy streams -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase, requestBody, apiKey)
                                 }finally{
                                     IOUtils.closeQuietly(output)
                                 }
 
-                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, ["Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'], requestBody)
+                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, ["Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'], requestBody, apiKey)
                             }else{
                                 // We don't want to stream
-                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'], requestBody)
+                                return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, [bytes: output.getBytes(), "Content-Type": resp.headers.'Content-Type', "Content-Length": resp.headers.'Content-Length'], requestBody, apiKey)
                             }
                         default:
-                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody)
+                            return build200Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, output, requestBody, apiKey)
                     }
                 }
                 response.'400' = { resp ->
-                    return build400Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 400 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody)
+                    return build400Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 400 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody, apiKey)
                 }
                 response.'401' = { resp ->
-                    return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody)
+                    return build401Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 401 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody, apiKey)
                 }
                 response.'404' = { resp, output ->
-                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString() + " / " + resp.headers.'Error-Message', output, requestBody)
+                    return build404Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 404 -> " + uri.toString() + " / " + resp.headers.'Error-Message', output, requestBody, apiKey)
                 }
                 response.'409' = { resp ->
-                    return build409Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 409 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody)
+                    return build409Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 409 -> " + uri.toString() + " / " + resp.headers.'Error-Message', requestBody, apiKey)
                 }
                 response.failure = { resp ->
-                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase+"/"+resp.headers.'Error-Message', requestBody)
+                    return build500Response(timestampStart, uri.toString(), method.toString(), content.toString(), resp.headers, "Server answered 500 -> " + uri.toString() + " / " + resp.statusLine + "/"+resp.statusLine.statusCode +"/"+resp.statusLine.reasonPhrase+"/"+resp.headers.'Error-Message', requestBody, apiKey)
                 }
             }
         } catch (groovyx.net.http.HttpResponseException ex) {
             log.error "requestText(): A HttpResponseException occured", ex
-            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody)
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody, null)
         } catch (java.net.ConnectException ex) {
             log.error "requestText(): A ConnectException occured", ex
-            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody)
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody, null)
         } catch (java.lang.Exception ex) {
             log.error "requestText(): An Exception occured", ex
-            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody)
+            return build500ResponseWithException(timestampStart, baseUrl + path + query, method.toString(), content.toString(), ex, requestBody, null)
         }
     }
 
@@ -289,9 +302,9 @@ class ApiConsumer {
      * @param responseObject The response from the server
      * @return An ApiResponse object containing the server response
      */
-    private static def build200Response(timestampStart, calledUrl, method, content, responseHeader, responseObject, postBody){
+    private static def build200Response(timestampStart, calledUrl, method, content, responseHeader, responseObject, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
-        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, null, ApiResponse.HttpStatus.HTTP_200, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -306,10 +319,10 @@ class ApiConsumer {
      * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build400Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody){
+    private static def build400Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
         BadRequestException exception = new BadRequestException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_400, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_400, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -324,10 +337,10 @@ class ApiConsumer {
      * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build401Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody){
+    private static def build401Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
         AuthorizationException exception = new AuthorizationException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_401, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_401, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -342,10 +355,10 @@ class ApiConsumer {
      * @param exceptionDescription The text for the ItemNotFoundException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build404Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, responseObject, postBody){
+    private static def build404Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, responseObject, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
         ItemNotFoundException exception = new ItemNotFoundException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, responseObject, duration, exception, ApiResponse.HttpStatus.HTTP_404, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -360,10 +373,10 @@ class ApiConsumer {
      * @param exceptionDescription The text for the ConflictException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build409Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody){
+    private static def build409Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
         ConflictException exception = new ConflictException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_409, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_409, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -378,10 +391,10 @@ class ApiConsumer {
      * @param exceptionDescription The text for the BackendErrorException that will be attached but not thrown
      * @return An ApiResponse object containing the response information
      */
-    private static def build500Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody){
+    private static def build500Response(timestampStart, calledUrl, method, content, responseHeader, exceptionDescription, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
         BackendErrorException exception = new BackendErrorException(exceptionDescription)
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, responseHeader, postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, responseHeader, postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -395,9 +408,9 @@ class ApiConsumer {
      * @param exceptionDescription The actual exception that occured
      * @return An ApiResponse object containing the response information
      */
-    private static def build500ResponseWithException(timestampStart, calledUrl, method, content, exception, postBody){
+    private static def build500ResponseWithException(timestampStart, calledUrl, method, content, exception, postBody, apiKey){
         def duration = System.currentTimeMillis()-timestampStart
-        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, [:], postBody)
+        def response = new ApiResponse(calledUrl, method.toString(), content, "", duration, exception, ApiResponse.HttpStatus.HTTP_500, [:], postBody, apiKey)
         log.info response.toString()
         return response
     }
@@ -428,11 +441,13 @@ class ApiConsumer {
         return path
     }
 
-    static def setApiKey(optionalHeaders, baseUrl) {
+    static String setApiKey(optionalHeaders, baseUrl) {
         def grailsApplication = Holders.getGrailsApplication()
         if (baseUrl.startsWith(grailsApplication.config.ddb.backend.url) && grailsApplication.config.ddb.backend.apikey) {
             optionalHeaders.put("Authorization", 'OAuth oauth_consumer_key="' + grailsApplication.config.ddb.backend.apikey + '"')
+            return grailsApplication.config.ddb.backend.apikey
         }
+        return null
     }
 
     static def setAuthHeader(http){

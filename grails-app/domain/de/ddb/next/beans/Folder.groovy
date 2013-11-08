@@ -47,4 +47,24 @@ class Folder {
             this.publishingName = publishingName
         }
     }
+
+    public def getAsMap() {
+        def out = [:]
+        out["folderId"] = folderId
+        out["userId"] = userId
+        out["title"] = title
+        out["description"] = description
+        out["isMainFolder"] = isMainFolder
+        out["isPublic"] = isPublic
+        out["publishingName"] = publishingName
+        return out
+    }
+
+    boolean isValid(){
+        if(folderId != null
+        && userId != null) {
+            return true
+        }
+        return false
+    }
 }

@@ -32,6 +32,27 @@ hr {
   background-color: #efebe8;
 }
 
+.bookmarks-lists .bookmarks-list {
+  display: block;
+  padding: 0 54% 0 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bookmarks-lists .bookmarks-list .fav-text {
+  display: inline;
+}
+
+.bookmarks-lists .bookmarks-list .fav-number {
+  display: inline;
+  width: 75px;
+  position:absolute;
+  right:0;
+  text-align: center;
+  margin-right: 44px;
+}
+
 .bookmarks-list.selected-folder {
   background-color: transparent !important;
 }
@@ -63,11 +84,6 @@ hr {
   right:0;
 }
 
-.bookmarks-list-number {
-  text-align: center;
-  margin-right: 75px;
-}
-
 .bookmarks-list-envelope {
   margin-top: 1px;
   margin-right: 70px;
@@ -86,7 +102,7 @@ hr {
   margin-right: 45px;
 }
 
-.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i{
+.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i {
   margin-top: 3px;
 }
 
@@ -105,6 +121,10 @@ hr {
   float: right;
 }
 
+.public-favorites .results-paginator-options {
+  margin-top: 20px !important;
+}
+
 .favorites-results-container .page-filter,.sort-results-switch {
   display: inline-block;
 }
@@ -117,7 +137,7 @@ hr {
   margin-left: 10px;
 }
 
-.favorites-results-controls .results-pagination{
+.favorites-results-controls .results-pagination {
   overflow:hidden;
   display:block;
 }
@@ -167,17 +187,17 @@ hr {
   font-size: 0.938em;
 }
 
-#favorites-remove .submit{
+#favorites-remove .submit {
   margin-top:8px;
   margin-left: 0;
 }
 
-#favorites-copy .submit{
+#favorites-copy .submit {
   margin-top:8px;
   margin-left: 0;
 }
 
-#folder-create .submit{
+#folder-create .submit {
   margin-top:8px;
   margin-left: 0;
   width: 200px;
@@ -194,6 +214,10 @@ hr {
   padding-left: 10px;
 }
 
+.public-favorites .summary-main-wrapper .summary-main, .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
+  margin-left: 0px !important;
+}
+
 .results-sorter .select-all {
   width: 13px!important;
   height: 13px!important;
@@ -203,30 +227,33 @@ hr {
   top: -1px;
 }
 
-.results-sorter .added-on{
+.results-sorter .added-on {
   text-align:right;
 }
 
-.results-sorter .favorite-dateheader{
+.results-sorter .favorite-dateheader {
   float:right;
   margin-right:10px;
 }
 
-.favorites-results-controls .results-pagination{
-  float:right;
+.favorites-results-controls .results-pagination {
   margin-right:10px;
 }
 
-.favorites-results-controls .deleteBtn{
+.favorites-results-controls .delete-btn {
   float:left;
-  margin-right: 50px;
+  margin-right: 25px;
 }
 
-.results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down{
+.delete-container .delete-btn.span1 {
+  width: 100px;
+}
+
+.results-sorter .icon-arrow-up, .results-sorter .icon-arrow-down {
   margin-top:3px;
 }
 
-.results-sorter .added-on span{
+.results-sorter .added-on span {
   margin-right:10px;
 }
 
@@ -234,7 +261,7 @@ hr {
   font-size: 0.938em !important;
 }
 
-.favorites-results-content .favorites-results .item{
+.favorites-results-content .favorites-results .item {
   padding: 15px 0 15px 0;
 }
 
@@ -379,6 +406,7 @@ hr {
   margin-left: 36px;
 }
 
+
 .favorites-results .remove-item-check {
   position: absolute;
   left: 10px;
@@ -388,6 +416,12 @@ hr {
 .favorites-results-container .messages-container {
   margin-top: 7px;
 }
+
+.favorites-results-container .favorites-report {
+  background: url("../images/icons/objectviewer_actions.png") no-repeat -0px -222px;
+  padding-left: 25px;
+}
+
 
 .favorites-results .results-list .extra {
   margin-left: 36px;
@@ -490,7 +524,12 @@ hr {
   cursor: pointer;
 }
 
+#folder-create #button-new.submit {
+  width: 100%;
+}
+
 /* responsive */
+
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
@@ -513,6 +552,9 @@ hr {
   .page-nav .bl {
     border-left: 0;
    }
+   .favorites-results-controls .results-pagination {
+     margin-bottom: 10px;
+   }
 }
 
 /* responsive - end */
@@ -520,13 +562,14 @@ hr {
 .print-header {
   display: none;
 }
-.deleteContainer {
+.delete-container {
   overflow:hidden;
   display:block;
   margin-bottom: -10px;
+  min-width: 260px;
 }
 
-.public-favorites .deleteContainer {
+.public-favorites .delete-container {
   margin-bottom: 0px !important;
 }
 
@@ -617,11 +660,6 @@ hr {
   position: relative;
   padding: 0;
   margin: 0;
-}
-
-.folder-information-container .folder-information > ul li a {
-  text-decoration: underline;
-  color: #A5003B;
 }
 
 

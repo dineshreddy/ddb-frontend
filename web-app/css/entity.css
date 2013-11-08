@@ -43,70 +43,107 @@
   padding: 0 0 0 35px;
 }
 
-.entity-page .preview {
-  display: block;
+.entity-page .objects {
+  padding-bottom: 20px;  
 }
 
-.entity-page .preview ul {
-  margin: 0;
-  display: inline-block;
-}
-
-.entity-page .preview-item-previous {
-  display: inline-block;  
-  height: 50px;
-  width: 40px;
-  background: url('../images/icons/homepage_carousel_controls.png') no-repeat 0 0;
+.entity-page .carousel {
+  padding: 0 0 0 1px;
   position: relative;
-  top: 80px;
-  vertical-align: top;
-}
-
-.entity-page .preview-item-previous span{
   display: none;
-}
-
-.entity-page .preview-item-previous:hover {
-  background-position: 0 -50px;
-}
-
-.entity-page .preview-item-next {
-  display: inline-block;
-  height: 50px;
-  width: 40px;
-  background: url('../images/icons/homepage_carousel_controls.png') no-repeat 0 -150px;
-  position: relative;
-  top: 80px;
-  vertical-align: top;
-}
-
-.entity-page .preview-item-next span{
-  display: none;
-}
-
-.entity-page .preview-item-next:hover {
-  background-position: 0 -200px;
+  margin-bottom: 10px;
 }
 
 .entity-page .preview-item {
-  display: inline-block;
-  width: 140px; 
-  height: 180px;
-  padding: 10px 20px 20px 20px;
-  vertical-align: top;
+    display: block;
+    float: left;
+    position: relative;
+    max-width: 200px;
+    width: 200px;
 }
 
-.entity-page .preview-item-image {
+.entity-page .preview-item img {
   text-align: center;
+  max-height: 105px;
+  height: 105px;
+  max-width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;  
 }
 
-.entity-page .preview-item-image img {
-  margin: 0;
+.entity-page .caption {
+  	left:0px;
+  	bottom:0px;	
+    font-size: 0.875em;
+    font-weight: bold;
+    height: 36px;    
+    line-height: 18px;
+    opacity: 0.8;
+    text-overflow: ellipsis;
+    text-align: center;
+    max-width: 200px;    
 }
 
-.entity-page .objects {
-  padding-bottom: 20px;
-  overflow: scroll;
+
+.entity-page .carousel a.previous:hover {
+  background-position: 0 -50px;
+}
+
+.entity-page .carousel a.next {
+  background-position: 0 -150px;
+}
+
+/* carousel controls responsiveness */
+@media (min-width: 1200px) {
+  .entity-page .carousel a.previous {
+    left: 0px;
+  }
+  .entity-page .carousel a.next {
+    right: 0px;
+  }
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+  .entity-page .carousel a.previous {
+    left: -6px;
+  }
+  .entity-page .carousel a.next {
+    right: -10px;
+  }
+}
+
+@media (max-width: 979px) {
+  .entity-page .carousel a.previous {
+    left: -8px;
+  }
+  .entity-page .carousel a.next {
+    right: -12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .entity-page .carousel a.previous {
+    left: -4px;
+  }
+  .entity-page .carousel a.next {
+    right: -8px;
+  }
+}
+/* carousel controls responsiveness - end */
+
+
+.entity-page .carousel a.next:hover {
+  background-position: 0 -200px;
+}
+
+.entity-page .carousel .clearfix {
+  float: none;
+  clear: both;
+}
+
+.entity-page a.previous span,a.next span {
+  display: none;
 }
 
 .entity-page .popup-dialog-wrapper {

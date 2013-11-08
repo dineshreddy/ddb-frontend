@@ -77,6 +77,9 @@ class FavoritesController {
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
+        publicFolders.sort{ a, b ->
+            a.title <=> b.title
+        }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
 
@@ -92,7 +95,7 @@ class FavoritesController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,"desc","title",0, user.id, selectedFolder.folderId),
-                baseDomain: configurationService.getFavoritesBasedomain(),
+                contextUrl: configurationService.getContextUrl()
             ])
             return
         }else{
@@ -123,6 +126,7 @@ class FavoritesController {
             def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
             def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+            allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
             allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
             //Default ordering is newest on top == DESC
@@ -169,6 +173,8 @@ class FavoritesController {
                 sendBookmarkPerMail(params.email,allResultsOrdered)
             }
 
+            def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+
             render(view: "publicFavorites", model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -188,7 +194,9 @@ class FavoritesController {
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderTitle: urlsForOrderTitle,
                 urlsForOrder: urlsForOrder,
-                baseDomain: configurationService.getFavoritesBasedomain(),
+                fullPublicLink: fullPublicLink,
+                baseUrl: configurationService.getSelfBaseUrl(),
+                contextUrl: configurationService.getContextUrl()
             ])
         }
 
@@ -206,7 +214,6 @@ class FavoritesController {
                 offset = params.offset.toInteger()
             }
             def user = getUserFromSession()
-            //def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
             def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
             def folderId = mainFavoriteFolder.folderId
@@ -223,7 +230,7 @@ class FavoritesController {
             }
             def order = params.order
 
-            def selectedFolder = bookmarksService.findFolderById(folderId)
+            Folder selectedFolder = bookmarksService.findFolderById(folderId)
             List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
@@ -231,8 +238,7 @@ class FavoritesController {
                 redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
                 return
             }
-
-            //List items = JSON.parse(result) as List
+            
             def totalResults= items.size()
 
             def userName = user.getFirstnameAndLastnameOrNickname()
@@ -247,17 +253,13 @@ class FavoritesController {
             def allFolders = favoritesService.getAllFoldersPerUser(user)
             allFolders.each {
                 def container = [:]
-                // def String favoritesObject = favoritesPageService.getFavoritesOfFolder(it.folderId)
-                // List favoritesOfFolder = JSON.parse(favoritesObject) as List
                 List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
-
                 container["folder"] = it
                 container["count"] = favoritesOfFolder.size()
                 allFoldersInformation.add(container)
             }
             allFoldersInformation = sortFolders(allFoldersInformation)
 
-            //def fullPublicLink = configurationService.getSelfBaseUrl() + g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
             def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
             if (totalResults <1){
@@ -271,6 +273,7 @@ class FavoritesController {
                     nickName: nickName,
                     fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                    baseUrl: configurationService.getSelfBaseUrl(),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0,folderId),
                 ])
                 return
@@ -278,7 +281,6 @@ class FavoritesController {
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def allRes = favoritesService.retriveItemMD(items,locale)
                 def resultsItems
-
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
 
                 // convertQueryParametersToSearchParameters modifies params
@@ -302,6 +304,7 @@ class FavoritesController {
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
 
                 def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+                allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
 
                 //Default ordering is newest on top == DESC
@@ -345,7 +348,7 @@ class FavoritesController {
                 }
 
                 if (request.method=="POST"){
-                    sendBookmarkPerMail(params.email,allResultsOrdered)
+                    sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
 
                 render(view: "favorites", model: [
@@ -369,7 +372,9 @@ class FavoritesController {
                     fullPublicLink: fullPublicLink,
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderTitle:urlsForOrderTitle,
-                    urlsForOrder:urlsForOrder
+                    urlsForOrder:urlsForOrder,
+                    baseUrl: configurationService.getSelfBaseUrl(),
+                    contextUrl: configurationService.getContextUrl()
                 ])
             }
         } else{
@@ -378,7 +383,7 @@ class FavoritesController {
     }
 
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered) {
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
@@ -391,9 +396,18 @@ class FavoritesController {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo getUserFromSession().getEmail()
-                    subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none")
+                         + getUserFromSession().getFirstnameAndLastnameOrNickname())
                     body( view:"_favoritesEmailBody",
-                    model:[results: allResultsOrdered, dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'), userName:getUserFromSession().getFirstnameAndLastnameOrNickname()])
+                    model:[
+                        results: allResultsOrdered,
+                        dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                        userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),
+                        baseUrl: configurationService.getSelfBaseUrl(),
+                        contextUrl: configurationService.getContextUrl(),
+                        folderDescription:selectedFolder.description
+                        ])
+
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {
@@ -632,7 +646,6 @@ class FavoritesController {
 
         def title = request.JSON.title
         def description = request.JSON.description
-        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
         title = sanitizeTextInput(title)
         description = sanitizeTextInput(description)
@@ -640,6 +653,8 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
+            def publishingName = user.getUsername()
+
             if (bookmarksService.newFolder(user.getId(), title, false, publishingName, description)) {
                 result = response.SC_CREATED
                 flash.message = "ddbnext.favorites_folder_create_succ"
@@ -770,7 +785,7 @@ class FavoritesController {
         def id = request.JSON.id
         def title = request.JSON.title
         def description = request.JSON.description
-        def publishingName = request.JSON.name
+        def publishingType = request.JSON.name
         def isPublic = request.JSON.isPublic
 
         title = sanitizeTextInput(title)
@@ -780,6 +795,14 @@ class FavoritesController {
 
         def User user = getUserFromSession()
         if (user != null) {
+
+            def publishingName = ""
+            if(publishingType == FolderConstants.PUBLISHING_NAME_FULLNAME.getValue()) {
+                publishingName = user.getFirstnameAndLastnameOrNickname()
+            }else{
+                publishingName = user.getUsername()
+            }
+
 
             def foldersOfUser = bookmarksService.findAllFolders(user.getId())
 
