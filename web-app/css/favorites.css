@@ -50,11 +50,11 @@ hr {
 
 .bookmarks-lists .bookmarks-list .fav-number {
   display: inline;
-  width: 75px;
+  width: 30px;
   position:absolute;
   right:0;
-  text-align: center;
-  margin-right: 44px;
+  text-align: right;
+  margin-right: 72px;
 }
 
 .bookmarks-list.selected-folder {
@@ -82,32 +82,24 @@ hr {
   white-space: nowrap;
 }
 
-.bookmarks-list-envelope, .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
+.bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
   position:absolute;
   top:0;
   right:0;
 }
 
-.bookmarks-list-envelope {
-  margin-top: 1px;
-  margin-right: 70px;
-}
-
 .bookmarks-list-delete {
-  margin-top: 3px;
+  margin-top: 2px;
   margin-right: 5px;
 }
 
 .bookmarks-list-edit {
+  margin-top: 1px;
   margin-right: 25px;
 }
 
 .bookmarks-list-publish {
-  margin-right: 45px;
-}
-
-.bookmarks-list-envelope i, .bookmarks-list-edit, .bookmarks-list-publish i {
-  margin-top: 3px;
+  margin-right: 46px;
 }
 
 .bookmarks-lists .bookmarks-list a:hover {
@@ -669,11 +661,10 @@ hr {
 
 .icon-not-publish {
   background: url("../images/icons/favorites.png") no-repeat 0 0;
-  background-position: -0px -54px;
-  width: 20px;
+  background-position: -3px -54px;
 }
 
 .icon-publish {
-  background-position: -0px -39px !important;
+  background-position: -3px -39px !important;
 }
 
