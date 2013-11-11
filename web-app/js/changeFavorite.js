@@ -87,11 +87,9 @@
         break;
       case 500:
         // -- internal error
-        aler("Internal Server Error");
         break;
       default:
         // -- bad response
-        alert("Bad response: status: " + data.status);
         break;
     }
   }
