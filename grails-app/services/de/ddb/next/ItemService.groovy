@@ -62,7 +62,7 @@ class ItemService {
         }
         def xml = apiResponse.getResponse()
 
-        def ns2Namespace = xml.lookupNamespace(CortexNamespace.NS2.namespace)
+        def ns2Namespace = xml.lookupNamespace(CortexNamespace.NS2.prefix)
         if(ns2Namespace == CortexNamespace.RDF.uri){
             log.error "findItemById(): Cortex returned namespace ns2 instead of rdf for item "+id
         }

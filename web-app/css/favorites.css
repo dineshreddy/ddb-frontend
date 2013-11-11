@@ -34,10 +34,14 @@ hr {
 
 .bookmarks-lists .bookmarks-list {
   display: block;
-  padding: 0 54% 0 10px;
+  padding: 0 100px 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.saved-searches .bookmarks-lists .bookmarks-list {
+	padding: 0 54px 0 10px;
 }
 
 .bookmarks-lists .bookmarks-list .fav-text {
@@ -72,7 +76,7 @@ hr {
 .bookmarks-list>a.h3, .bookmarks-list>span.h3 {
   z-index: 10;
   display: block;
-  padding: 0 35% 0 10px;
+  padding: 0 10px 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

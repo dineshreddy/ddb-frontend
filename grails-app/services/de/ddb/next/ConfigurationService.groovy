@@ -540,6 +540,8 @@ class ConfigurationService {
         log.info "ddb.account.privacy.url = " + getAccountPrivacyUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
+        log.info "getContextUrl = " + getContextUrl()
+        log.info "getSelfBaseUrl = " + getSelfBaseUrl()
         log.info "-------------------------------------------------------"
     }
 }
