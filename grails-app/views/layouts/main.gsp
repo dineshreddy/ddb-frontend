@@ -14,14 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!DOCTYPE html>
-<html>
+<html lang="${g.currentLocale()}">
   <head>
     <meta charset="utf-8" />
     
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
     <meta name="description" content="Deutsche Digitale Bibliothek" />
-    <meta http-equiv="content-language" content="${g.currentLocale()}" />    
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
