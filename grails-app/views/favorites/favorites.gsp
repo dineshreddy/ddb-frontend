@@ -156,11 +156,6 @@ limitations under the License.
                   </g:else>
                 </div> 
                 <div class="fav-number"> ${it.count}</div>
-                <%-- 
-                <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
-                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
-                </a>
-                --%>
                 <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
                   <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
                     <g:if test="${it.folder.isPublic}">
