@@ -31,8 +31,7 @@ $(function() {
     {
 	  source : function(request, response) {
 		$.ajax(
-		  {
-			url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/",
+		  {			
 			url : jsContextPath+"/apis/autocomplete/",
 			dataType : "jsonp",
 			data : {
