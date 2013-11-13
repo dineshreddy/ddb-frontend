@@ -13,8 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
-<g:render template="gndResultsList" model="${[gndResults: gndResults]}" />
+<g:if test="${gndResults}">
+  <g:render template="gndResultsList" model="${[gndResults: gndResults]}" />
+</g:if>
 
 <ul class="results-list unstyled  <g:if test="${viewType == 'grid'}">grid</g:if>">
   <g:set var="pageHitCounter" value="${0}"/>
