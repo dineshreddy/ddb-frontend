@@ -26,7 +26,9 @@ limitations under the License.
                    </g:if>
                    <g:else>
                        <i class="icon-child-institution"></i>
-                       <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
+                       <div>
+                         <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
+                       </div>
                    </g:else>
                    <g:if test="${!(it.aggregationEntity)}">
                        <g:set var="itemId" value="${it.id}" />
