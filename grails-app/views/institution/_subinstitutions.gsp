@@ -22,11 +22,15 @@ limitations under the License.
                <li class="institution-listitem" data-sector="${ it?.sector }" data-institution-id="${ it?.id }" >
                    <g:if test="${(selectedItemId == it.id)}">
                        <i class="icon-institution"></i>
-                       <b>${it.label}</b>
+                       <div>
+                         <b>${it.label}</b>
+                       </div>
                    </g:if>
                    <g:else>
                        <i class="icon-child-institution"></i>
-                       <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
+                       <div>
+                         <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
+                       </div>
                    </g:else>
                    <g:if test="${!(it.aggregationEntity)}">
                        <g:set var="itemId" value="${it.id}" />
