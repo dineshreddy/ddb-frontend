@@ -1464,4 +1464,11 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
 }
 
+/* Exception for links in the openstreetmap */
+
+#mapWindow div:not(#mapContainer) a {
+  padding-left: 0px;
+  background: none;
+}
+
 /* external links - end */

@@ -1,0 +1,1 @@
+{"savedSearch":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"queryString":{"type":"string"},"title":{"type":"string"},"user":{"type":"string"}}}}
