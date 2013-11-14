@@ -69,6 +69,15 @@ class FavoritesController {
         user.id = params.userId
         user.username = "TODO"
 
+        // A user want to report this list to DDB
+        if(params.report){
+            reportFavoritesList(user.id, folderId)
+        }
+
+        if(params.blockingToken) {
+            blockFavoritesList(user.id, folderId, params.blockingToken)
+        }
+
         def selectedFolder = bookmarksService.findPublicFolderById(folderId)
 
         // If the folder does not exist (maybe deleted) or the user does not exist -> 404
@@ -382,6 +391,70 @@ class FavoritesController {
         }
     }
 
+    private def reportFavoritesList(String userId, String folderId){
+        log.info "reportFavoritesList()"
+        Folder folder = bookmarksService.findFolderById(folderId)
+        if(folder){
+
+            try {
+
+                // Only when no blockingToken is set.
+                if(folder.blockingToken?.isEmpty()){
+                    folder.setBlockingToken(UUID.randomUUID().toString())
+                    bookmarksService.updateFolder(
+                            folder.getFolderId(),
+                            folder.getTitle(),
+                            folder.getDescription(),
+                            folder.getIsPublic(),
+                            folder.getPublishingName(),
+                            folder.getIsBlocked(),
+                            folder.getBlockingToken())
+                }
+
+                def List emails = [
+                    "holger.lauinger@fiz-karlsruhe.de",
+                    //"geschaeftsstelle@deutsche-digitale-bibliothek.de"
+                ]
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo configurationService.getFavoritesSendMailFrom()
+                    subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
+                    body( view:"_favoritesReportEmailBody",
+                    model:[
+                        userId: userId,
+                        folderId: folderId,
+                        publicLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                        blockingLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                        selfBaseUrl: configurationService.getSelfBaseUrl()
+                    ])
+
+                }
+
+                flash.message = "ddbnext.favorites_list_reported"
+            } catch (e) {
+                log.error "An error occurred while reporting a favorites list "+ e.getMessage()
+                flash.email_error = "ddbnext.favorites_list_notreported"
+            }
+        }
+    }
+
+    private def blockFavoritesList(String userId, String folderId, String blockingToken){
+        log.info "blockFavoritesList()"
+        Folder folder = bookmarksService.findFolderById(folderId)
+        if(folder){
+            if(blockingToken == folder.getBlockingToken()){
+                println "###################### 01 correct token"
+                flash.message = "ddbnext.favorites_list_blocked"
+
+
+            }else{
+                println "###################### 02 incorrect token"
+                flash.email_error = "ddbnext.favorites_list_notblockedtoken"
+            }
+        }
+    }
+
 
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (isUserLoggedIn()) {
@@ -418,6 +491,8 @@ class FavoritesController {
             redirect(controller: "user", action: "index")
         }
     }
+
+
 
     private def sortFolders(allFoldersInformations){
         def out = []
