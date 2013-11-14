@@ -92,6 +92,7 @@
 
 .icon-institution {
   background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
+  position: absolute;
 }
 
 .icon-child-institution {

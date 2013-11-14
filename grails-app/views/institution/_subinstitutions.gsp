@@ -22,7 +22,9 @@ limitations under the License.
                <li class="institution-listitem" data-sector="${ it?.sector }" data-institution-id="${ it?.id }" >
                    <g:if test="${(selectedItemId == it.id)}">
                        <i class="icon-institution"></i>
-                       <b>${it.label}</b>
+                       <div>
+                         <b>${it.label}</b>
+                       </div>
                    </g:if>
                    <g:else>
                        <i class="icon-child-institution"></i>
