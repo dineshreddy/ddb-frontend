@@ -31,9 +31,11 @@ class Folder {
     String description
     boolean isMainFolder = false
     boolean isPublic = false
+    boolean isBlocked = false
+    String blockingToken
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
-    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName) {
+    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName, def isBlocked, def blockingToken) {
         this.folderId = folderId
         this.userId = userId
         this.title = title
@@ -46,6 +48,16 @@ class Folder {
         if(publishingName){
             this.publishingName = publishingName
         }
+        if(isBlocked == null || isBlocked instanceof JSONNull || isBlocked instanceof NullObject){
+            this.isBlocked = false
+        }else{
+            this.isBlocked = isBlocked
+        }
+        if(blockingToken == null || blockingToken instanceof JSONNull || blockingToken instanceof NullObject){
+            this.blockingToken = ""
+        }else{
+            this.blockingToken = blockingToken.toString()
+        }
     }
 
     public def getAsMap() {
@@ -57,6 +69,8 @@ class Folder {
         out["isMainFolder"] = isMainFolder
         out["isPublic"] = isPublic
         out["publishingName"] = publishingName
+        out["isBlocked"] = isBlocked
+        out["blockingToken"] = blockingToken
         return out
     }
 
