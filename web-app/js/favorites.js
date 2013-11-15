@@ -245,6 +245,8 @@ $(function() {
           $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
           if(isBlocked){
             $('#folder-edit-privacy-area').addClass('off');
+          }else{
+            $('#folder-edit-privacy-area').removeClass('off');
           }
 
           
