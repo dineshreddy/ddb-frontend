@@ -87,14 +87,14 @@ limitations under the License.
               <span><g:message code="ddbnext.favorites_list_send" /></span>
             </a>
           </div>
-          <g:if test="${selectedFolder.isPublic}">
+          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
             <div class="link-block">
               <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
                 <span><g:message code="ddbnext.favorites_list_publiclink" /></span>
               </a>
             </div>
           </g:if>
-          <g:if test="${selectedFolder.isPublic}">
+          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
             <div class="share-block">
               <g:socialmediaBody />
             </div>
