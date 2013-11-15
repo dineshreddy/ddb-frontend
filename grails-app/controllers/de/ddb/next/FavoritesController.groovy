@@ -417,7 +417,7 @@ class FavoritesController {
     }
 
     private def sortFolders(allFoldersInformations){
-        allFoldersInformations.sort({ o1, o2 ->
+        allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
             if (isMainBookmarkFolder(o1)) {
                 return -1
             }
