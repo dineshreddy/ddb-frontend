@@ -92,7 +92,7 @@ class SearchController {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
+            def page = ((int)Math.floor(urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
             def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
 
