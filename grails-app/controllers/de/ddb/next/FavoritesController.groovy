@@ -396,8 +396,10 @@ class FavoritesController {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo getUserFromSession().getEmail()
-                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none")
-                    + getUserFromSession().getFirstnameAndLastnameOrNickname())
+                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
+                        selectedFolder.title,
+                        getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    ]))
                     body( view:"_favoritesEmailBody",
                     model:[
                         results: allResultsOrdered,
@@ -405,7 +407,8 @@ class FavoritesController {
                         userName:getUserFromSession().getFirstnameAndLastnameOrNickname(),
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
-                        folderDescription:selectedFolder.description
+                        folderDescription:selectedFolder.description,
+                        folderTitle: selectedFolder.title
                     ])
 
                 }
