@@ -72,10 +72,20 @@ class FavoritesController {
         // A user want to report this list to DDB
         if(params.report){
             reportFavoritesList(user.id, folderId)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return
         }
 
         if(params.blockingToken) {
             blockFavoritesList(user.id, folderId, params.blockingToken)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return
+        }
+
+        if(params.unblockingToken) {
+            unblockFavoritesList(user.id, folderId, params.unblockingToken)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return
         }
 
         def selectedFolder = bookmarksService.findPublicFolderById(folderId)
@@ -412,8 +422,7 @@ class FavoritesController {
                 }
 
                 def List emails = [
-                    "holger.lauinger@fiz-karlsruhe.de",
-                    //"geschaeftsstelle@deutsche-digitale-bibliothek.de"
+                    configurationService.getFavoritesReportMailTo()
                 ]
                 sendMail {
                     to emails.toArray()
@@ -426,6 +435,7 @@ class FavoritesController {
                         folderId: folderId,
                         publicLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
                         blockingLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                        unblockingLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
                         selfBaseUrl: configurationService.getSelfBaseUrl()
                     ])
 
@@ -433,7 +443,8 @@ class FavoritesController {
 
                 flash.message = "ddbnext.favorites_list_reported"
             } catch (e) {
-                log.error "An error occurred while reporting a favorites list "+ e.getMessage()
+                e.printStackTrace()
+                log.error "An error occurred while reporting a favorites list: "+ e.getMessage()
                 flash.email_error = "ddbnext.favorites_list_notreported"
             }
         }
@@ -444,13 +455,61 @@ class FavoritesController {
         Folder folder = bookmarksService.findFolderById(folderId)
         if(folder){
             if(blockingToken == folder.getBlockingToken()){
-                println "###################### 01 correct token"
-                flash.message = "ddbnext.favorites_list_blocked"
 
+                try {
+                    folder.setIsPublic(false)
+                    folder.setIsBlocked(true)
+                    bookmarksService.updateFolder(
+                            folder.getFolderId(),
+                            folder.getTitle(),
+                            folder.getDescription(),
+                            folder.getIsPublic(),
+                            folder.getPublishingName(),
+                            folder.getIsBlocked(),
+                            folder.getBlockingToken())
+
+                    flash.message = "ddbnext.favorites_list_blocked"
+
+                } catch (e) {
+                    e.printStackTrace()
+                    log.error "An error occurred while blocking a favorites list: " + e.getMessage()
+                    flash.email_error = "ddbnext.favorites_list_notblocked"
+                }
 
             }else{
-                println "###################### 02 incorrect token"
                 flash.email_error = "ddbnext.favorites_list_notblockedtoken"
+            }
+        }
+    }
+
+    private def unblockFavoritesList(String userId, String folderId, String unblockingToken){
+        log.info "unblockFavoritesList()"
+        Folder folder = bookmarksService.findFolderById(folderId)
+        if(folder){
+            if(unblockingToken == folder.getBlockingToken()){
+
+                try {
+                    folder.setIsBlocked(false)
+                    folder.setBlockingToken("")
+                    bookmarksService.updateFolder(
+                            folder.getFolderId(),
+                            folder.getTitle(),
+                            folder.getDescription(),
+                            folder.getIsPublic(),
+                            folder.getPublishingName(),
+                            folder.getIsBlocked(),
+                            folder.getBlockingToken())
+
+                    flash.message = "ddbnext.favorites_list_unblocked"
+
+                } catch (e) {
+                    e.printStackTrace()
+                    log.error "An error occurred while blocking a favorites list: " + e.getMessage()
+                    flash.email_error = "ddbnext.favorites_list_notunblocked"
+                }
+
+            }else{
+                flash.email_error = "ddbnext.favorites_list_notunblockedtoken"
             }
         }
     }
@@ -484,6 +543,7 @@ class FavoritesController {
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {
+                e.printStackTrace()
                 log.info "An error occurred sending the email "+ e.getMessage()
                 flash.email_error = "ddbnext.favorites_email_was_not_sent_succ"
             }
@@ -690,6 +750,7 @@ class FavoritesController {
         if (user != null) {
             Folder folder = bookmarksService.findFolderById(params.id)
             log.info "getFavoriteFolder returns " + folder
+            folder.setBlockingToken("") // Don't expose the blockingToken to Javascript!
             render(folder as JSON)
         } else {
             result = response.SC_UNAUTHORIZED
@@ -711,6 +772,7 @@ class FavoritesController {
             def result = bookmarksService.findAllFolders(user.getId())
             result.find {it.folderId == mainFolder.folderId}.isMainFolder = true
             result.sort {it.title.toLowerCase()}
+            result.each {it.blockingToken = ""} // Don't expose the blockingToken to Javascript
             log.info "getFavoriteFolders returns " + result
             render(result as JSON)
         } else {
@@ -882,7 +944,8 @@ class FavoritesController {
             }
 
 
-            def foldersOfUser = bookmarksService.findAllFolders(user.getId())
+            List foldersOfUser = bookmarksService.findAllFolders(user.getId())
+            Folder folder = null
 
             // 1) Check if the current user is really the owner of this folder, else deny
             // 2) Check if the folder is a default favorites folder -> if true, deny
@@ -890,6 +953,12 @@ class FavoritesController {
             boolean isDefaultFavoritesFolder = false
             foldersOfUser.each {
                 if(it.folderId == id){
+                    folder = it
+                    // check if the favorites list is blocked
+                    if(it.isBlocked){
+                        isPublic = false
+                    }
+
                     isFolderOfUser = true
                     if(it.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
                         isDefaultFavoritesFolder = true
@@ -897,7 +966,15 @@ class FavoritesController {
                 }
             }
             if(isFolderOfUser && !isDefaultFavoritesFolder){
-                bookmarksService.updateFolder(id, title, description, isPublic, publishingName)
+                bookmarksService.updateFolder(
+                        folder.getFolderId(),
+                        title,
+                        description,
+                        isPublic,
+                        publishingName,
+                        folder.getIsBlocked(),
+                        folder.getBlockingToken())
+
                 result = response.SC_OK
                 flash.message = "ddbnext.folder_edit_succ"
             } else {
@@ -964,8 +1041,15 @@ class FavoritesController {
             if(folder.userId == user.getId()){
                 isFolderOfUser = true
             }
-            if(isFolderOfUser){
-                bookmarksService.updateFolder(folder.folderId, folder.title, folder.description, !folder.isPublic, folder.publishingName)
+            if(isFolderOfUser && !folder.isBlocked){
+                bookmarksService.updateFolder(
+                        folder.folderId,
+                        folder.title,
+                        folder.description,
+                        !folder.isPublic,
+                        folder.publishingName,
+                        folder.isBlocked,
+                        folder.blockingToken)
                 result = response.SC_OK
             } else {
                 result = response.SC_UNAUTHORIZED

@@ -157,14 +157,21 @@ limitations under the License.
                 </div> 
                 <div class="fav-number"> ${it.count}</div>
                 <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
-                  <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
-                    <g:if test="${it.folder.isPublic}">
-                      <i class="icon-not-publish icon-publish" title="<g:message code="ddbnext.Hide_Folder" />" ></i>
-                    </g:if>
-                    <g:else>
-                      <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
-                    </g:else>
-                  </a>
+                  <g:if test="${it.folder.isBlocked }">
+                    <a class="bookmarks-list-publish">
+                      <i class="icon-not-publish icon-blocked" title="<g:message code="ddbnext.Blocked_Folder" />" ></i>
+                    </a>
+                  </g:if>
+                  <g:else>
+                    <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
+                      <g:if test="${it.folder.isPublic}">
+                        <i class="icon-not-publish icon-publish" title="<g:message code="ddbnext.Hide_Folder" />" ></i>
+                      </g:if>
+                      <g:else>
+                        <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
+                      </g:else>
+                    </a>
+                  </g:else>
                   <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" >  
                     <i class="icon-edit" title="<g:message code="ddbnext.Edit_Folder" />" ></i>
                   </a>
@@ -324,26 +331,6 @@ limitations under the License.
     </g:if>
     
     
-    <%-- Modal "Delete Favorites" --%>
-    <%-- 
-    <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
-      <div class="modal-header">
-        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="msDeleteFavoritesLabel">
-          <g:message code="ddbnext.delete_favorites" />
-        </h3>
-      </div>
-      <div class="modal-body">
-        <p>
-          <g:message code="ddbnext.delete_favorites_succ" />
-        </p>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
-      </div>
-    </div>
-    --%>
-    
     <%-- Modal "Confirm favorites delete" --%>
     <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
       <div class="modal-header">
@@ -469,25 +456,27 @@ limitations under the License.
           <textarea rows="8" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
         </div>
         <br />
-        <div>
-          <fieldset>          
-            <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
-            <label for="folder-edit-privacy-private"><g:message code="ddbnext.favorites_list_private"/></label>
-            <br />
-            <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
-            <label for="folder-edit-privacy-public"><g:message code="ddbnext.favorites_list_public"/></label>
-          </fieldset>
-        </div>
-        <br />
-        <div>
-          <g:message code="ddbnext.favorites_list_publishtext"/>
+        <div id="folder-edit-privacy-area">
+          <div>
+            <fieldset>          
+              <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
+              <label for="folder-edit-privacy-private"><g:message code="ddbnext.favorites_list_private"/></label>
+              <br />
+              <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
+              <label for="folder-edit-privacy-public"><g:message code="ddbnext.favorites_list_public"/></label>
+            </fieldset>
+          </div>
           <br />
-          <select name="publisher-name" size="1" id="folder-edit-publish-name">
-            <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
-            <g:if test="${fullName}"> 
-              <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
-            </g:if>
-          </select>      
+          <div>
+            <g:message code="ddbnext.favorites_list_publishtext"/>
+            <br />
+            <select name="publisher-name" size="1" id="folder-edit-publish-name">
+              <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
+              <g:if test="${fullName}"> 
+                <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
+              </g:if>
+            </select>      
+          </div>
         </div>
       </div>
       <div class="modal-footer">

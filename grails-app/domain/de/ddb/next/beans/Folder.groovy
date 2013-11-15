@@ -20,6 +20,7 @@ import org.codehaus.groovy.runtime.NullObject
 import de.ddb.next.constants.FolderConstants
 
 import net.sf.json.JSONNull
+import grails.converters.JSON
 import groovy.transform.ToString
 
 @ToString(includeNames=true)

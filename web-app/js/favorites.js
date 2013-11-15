@@ -217,6 +217,7 @@ $(function() {
     $('.editfolder').click(function(event) {
       
       var folderId = $(this).attr('data-folder-id');
+      console.log(folderId);
       
       // First get current values of the folder
       jQuery.ajax({
@@ -226,12 +227,19 @@ $(function() {
         url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
         dataType : "json",
         success : function(data) {
+
+          console.log(data.folderId);
+
+          console.log(data);
           
           // Then set the values to the GUI
           var oldFolderTitle = data.title;
           var oldFolderDescription = data.description;
           var isPublic = data.isPublic;
           var publishingName = data.publishingName;
+          var isBlocked = data.isBlocked;
+
+          console.log(isBlocked);
           
           
           $('#folder-edit-id').val(folderId);
@@ -243,6 +251,9 @@ $(function() {
             $('#folder-edit-privacy-private').attr('checked','checked');
           }
           $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
+          if(isBlocked){
+            $('#folder-edit-privacy-area').addClass('off');
+          }
 
           
           $('#folderEditConfirmDialog').modal('show');

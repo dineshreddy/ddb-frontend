@@ -184,12 +184,22 @@ a {
   <br />
   Falls die Favoritenliste problematische Inhalte hat, klicken Sie bitte den folgenden Link an. Die Liste wird dann sofort gesperrt.
   <br /> 
-  Diese Favoritenliste sperren: 
   <a href="${selfBaseUrl}${blockingLink}">
     ${selfBaseUrl}${blockingLink}
   </a>
   <br />
   <br />
+  Sollten Sie diese Favoritenliste wieder entsperren wollen, so benutzen Sie bitten den folgenden Link. Die Liste wird dann sofort entsperrt.
+  <br />
+  <a href="${selfBaseUrl}${unblockingLink}">
+    ${selfBaseUrl}${unblockingLink}
+  </a>
+  <br />
+  <br />
+  <br />
+  Mit freundlichen Grüßen,
+  <br />
+  Ihre DDB    
   
 </body>
 </html>
