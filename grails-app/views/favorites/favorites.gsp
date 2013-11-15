@@ -83,7 +83,7 @@ limitations under the License.
         </div>
         <div class="span12 link-row">
           <div class="email-block">
-            <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">  
+            <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">
               <span><g:message code="ddbnext.favorites_list_send" /></span>
             </a>
           </div>
@@ -124,20 +124,20 @@ limitations under the License.
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
                 <div class="fav-text h3"> 
-                 
+
                   <g:set var="folderTooltip" value="${it.folder.description}" />
                   <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                     <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
                   </g:if>
-                  
+
                   <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         <g:message code="ddbnext.All_Favorites" />
                       </g:link>
                     </g:if>
                     <g:else>
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         ${it.folder.title.capitalize()}
                       </g:link>
                     </g:else>
@@ -263,7 +263,7 @@ limitations under the License.
                        <g:else>
                         <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
-                      </span>                    
+                      </span>
                     </a>
                   </g:if> 
                   <g:else>
@@ -271,7 +271,7 @@ limitations under the License.
                       <g:message code="ddbnext.Added_On" />
                       <span>
                        <g:if test="${params.by == "date"}">
-                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     
+                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
                        </g:if>
                        <g:else>
                         <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
@@ -289,7 +289,12 @@ limitations under the License.
           <g:else>
             <div class="messages-container">
               <ul class="unstyled">
-                <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+                <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                  <li><span><g:message code="ddbnext.no_favorites_general" /></span></li>
+                </g:if>
+                <g:else>
+                  <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+                </g:else>
               </ul>
             </div>
           </g:else>
