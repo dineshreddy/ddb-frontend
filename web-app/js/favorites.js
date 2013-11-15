@@ -217,7 +217,6 @@ $(function() {
     $('.editfolder').click(function(event) {
       
       var folderId = $(this).attr('data-folder-id');
-      console.log(folderId);
       
       // First get current values of the folder
       jQuery.ajax({
@@ -228,10 +227,6 @@ $(function() {
         dataType : "json",
         success : function(data) {
 
-          console.log(data.folderId);
-
-          console.log(data);
-          
           // Then set the values to the GUI
           var oldFolderTitle = data.title;
           var oldFolderDescription = data.description;
@@ -239,9 +234,6 @@ $(function() {
           var publishingName = data.publishingName;
           var isBlocked = data.isBlocked;
 
-          console.log(isBlocked);
-          
-          
           $('#folder-edit-id').val(folderId);
           $('#folder-edit-name').val(oldFolderTitle);
           $('#folder-edit-description').val(oldFolderDescription);

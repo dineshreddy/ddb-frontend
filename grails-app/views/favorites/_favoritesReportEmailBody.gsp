@@ -173,23 +173,23 @@ a {
   <![endif]-->
 </head>
 <body style="font-family:Calibri,Arial,sans-serif;">
-  Sehr geehrte Damen und Herren, 
+  <g:message code="ddbnext.Report_Public_List_Email_Title" />
   <br />
   <br />
-  Ein Benutzer hat die folgende öffentliche Favoritenliste gemeldet:
+  <g:message code="ddbnext.Report_Public_List_Email_Item" />
   <a href="${selfBaseUrl}${publicLink}">
     ${selfBaseUrl}${publicLink}
   </a>
   <br />
   <br />
-  Falls die Favoritenliste problematische Inhalte hat, klicken Sie bitte den folgenden Link an. Die Liste wird dann sofort gesperrt.
+  <g:message code="ddbnext.Report_Public_List_Email_Block" />
   <br /> 
   <a href="${selfBaseUrl}${blockingLink}">
     ${selfBaseUrl}${blockingLink}
   </a>
   <br />
   <br />
-  Sollten Sie diese Favoritenliste wieder entsperren wollen, so benutzen Sie bitten den folgenden Link. Die Liste wird dann sofort entsperrt.
+  <g:message code="ddbnext.Report_Public_List_Email_Unblock" />
   <br />
   <a href="${selfBaseUrl}${unblockingLink}">
     ${selfBaseUrl}${unblockingLink}
@@ -197,9 +197,7 @@ a {
   <br />
   <br />
   <br />
-  Mit freundlichen Grüßen,
-  <br />
-  Ihre DDB    
+  <g:message code="ddbnext.Report_Public_List_Email_Footer" />
   
 </body>
 </html>
