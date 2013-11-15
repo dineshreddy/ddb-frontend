@@ -166,17 +166,27 @@ $(document).ready(function() {
     var previewHref = $(a).attr("data-content");
     var type = $(a).attr("data-type");
     var title = $(a).find("span").text();
-    var author = $(a).attr("data-author");
+    var title_text = $(a).find("span").text();
+    var title_tooltip = $(a).find("span").text();    
+    var author = $(a).attr("data-author");    
     var rights = $(a).attr("data-rights");
     
+    //DDBNEXT-800 the title can use more than one line but should be limited to 200 characters
+    if (title != null && title.toString().length>200){
+    	title_text = $.trim(title.toString()).substring(0, 200).split(" ").slice(0, -1).join(" ") + "...";
+    }
+
+    //The tooltip of the title should be limited to 270 characters
     if (title != null && title.toString().length>270){
-        title = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
+    	title_tooltip = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
     
+    //The text and the tooltip of the author should be limited to 270 characters
     if (author != null && author.toString().length>270){
         author = $.trim(author.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }    
     
+    //The text and the tooltip of the rights should be limited to 270 characters
     if (rights != null && rights.toString().length>270){
         rights = $.trim(rights.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
     }
@@ -200,8 +210,8 @@ $(document).ready(function() {
     } else {
         jwPlayerSetup(previewHref,previewUri);
       }
-    $("div.binary-title span").text(title);
-    $("div.binary-title").attr("title",title);
+    $("div.binary-title span").text(title_text);
+    $("div.binary-title").attr("title",title_tooltip);
     
     $("div.binary-author span").text(author);
     $("div.binary-author").attr("title",author);
