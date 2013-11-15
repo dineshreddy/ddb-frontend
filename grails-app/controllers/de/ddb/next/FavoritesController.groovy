@@ -443,8 +443,7 @@ class FavoritesController {
 
                 flash.message = "ddbnext.favorites_list_reported"
             } catch (e) {
-                e.printStackTrace()
-                log.error "An error occurred while reporting a favorites list: "+ e.getMessage()
+                log.error "An error occurred while reporting a favorites list: "+ e.getMessage(), e
                 flash.error = "ddbnext.favorites_list_notreported"
             }
         }
@@ -471,8 +470,7 @@ class FavoritesController {
                     flash.message = "ddbnext.favorites_list_blocked"
 
                 } catch (e) {
-                    e.printStackTrace()
-                    log.error "An error occurred while blocking a favorites list: " + e.getMessage()
+                    log.error "An error occurred while blocking a favorites list: " + e.getMessage(), e
                     flash.error = "ddbnext.favorites_list_notblocked"
                 }
 
@@ -503,8 +501,7 @@ class FavoritesController {
                     flash.message = "ddbnext.favorites_list_unblocked"
 
                 } catch (e) {
-                    e.printStackTrace()
-                    log.error "An error occurred while blocking a favorites list: " + e.getMessage()
+                    log.error "An error occurred while blocking a favorites list: " + e.getMessage(), e
                     flash.error = "ddbnext.favorites_list_notunblocked"
                 }
 
@@ -543,8 +540,7 @@ class FavoritesController {
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {
-                e.printStackTrace()
-                log.info "An error occurred sending the email "+ e.getMessage()
+                log.info "An error occurred sending the email "+ e.getMessage(), e
                 flash.error = "ddbnext.favorites_email_was_not_sent_succ"
             }
         }else {

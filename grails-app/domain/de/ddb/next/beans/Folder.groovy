@@ -40,7 +40,7 @@ class Folder {
         this.folderId = folderId
         this.userId = userId
         this.title = title
-        if(description == null || description instanceof JSONNull || description instanceof NullObject){
+        if(isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
@@ -49,12 +49,12 @@ class Folder {
         if(publishingName){
             this.publishingName = publishingName
         }
-        if(isBlocked == null || isBlocked instanceof JSONNull || isBlocked instanceof NullObject){
+        if(isAnyNull(isBlocked)){
             this.isBlocked = false
         }else{
             this.isBlocked = isBlocked
         }
-        if(blockingToken == null || blockingToken instanceof JSONNull || blockingToken instanceof NullObject){
+        if(isAnyNull(blockingToken)){
             this.blockingToken = ""
         }else{
             this.blockingToken = blockingToken.toString()
@@ -81,5 +81,13 @@ class Folder {
             return true
         }
         return false
+    }
+
+    private boolean isAnyNull(def variable){
+        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
+            return true
+        }else{
+            false
+        }
     }
 }
