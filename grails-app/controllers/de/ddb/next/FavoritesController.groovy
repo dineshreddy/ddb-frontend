@@ -15,12 +15,9 @@
  */
 package de.ddb.next
 
-import java.util.List
-
 import grails.converters.JSON
 
-import javax.servlet.http.HttpSession
-import javax.swing.plaf.metal.MetalIconFactory.FolderIcon16
+import java.text.Collator
 
 import org.ccil.cowan.tagsoup.Parser
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -420,45 +417,27 @@ class FavoritesController {
     }
 
     private def sortFolders(allFoldersInformations){
-        def out = []
-        //Inefficient sort, but we are expecting only very few entries
+        allFoldersInformations.sort({ o1, o2 ->
+            if (isMainBookmarkFolder(o1)) {
+                return -1
+            }
+            if (isMainBookmarkFolder(o2)) {
+                return 1
+            }
+            return Collator.getInstance(Locale.GERMAN).compare(o1.folder.title, o2.folder.title)
+        })
 
-        //Go over all allFoldersInformations
-        for(int i=0; i<allFoldersInformations.size(); i++){
-            String insertTitle = allFoldersInformations[i].folder.title.toLowerCase()
-            //and find the right place to fit
-            if(out.size() == 0){
-                out.add(allFoldersInformations[i])
-            }else{
-                for(int j=0; j<out.size(); j++){
-                    String compareTitle = out[j].folder.title.toLowerCase()
-                    if(insertTitle.compareTo(compareTitle) < 0){
-                        out.add(j, allFoldersInformations[i])
-                        break
-                    } else if(j == out.size()-1){
-                        out.add(allFoldersInformations[i])
-                        break
-                    }
-                }
-            }
-        }
-        // find the "favorites" and put it first
-        for(int i=0; i<out.size(); i++){
-            String insertTitle = out[i].folder.title
-            if(insertTitle == FolderConstants.MAIN_BOOKMARKS_FOLDER.value){
-                def favoritesEntry = out[i]
-                out.remove(i)
-                out.add(0, favoritesEntry)
-                break
-            }
-        }
         //Check for empty titles
-        for(int i=0; i<out.size(); i++){
-            if(out[i].folder.title.trim().isEmpty()){
-                out[i].folder.title = "-"
+        for (def folderInfo : allFoldersInformations) {
+            if(folderInfo.folder.title.trim().isEmpty()){
+                folderInfo.folder.title = "-"
             }
         }
-        return out
+        return allFoldersInformations
+    }
+
+    private def isMainBookmarkFolder(folderInfo) {
+        return folderInfo.folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
     }
 
     def addFavorite() {
