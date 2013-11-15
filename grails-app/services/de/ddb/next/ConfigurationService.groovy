@@ -177,6 +177,17 @@ class ConfigurationService {
         return email
     }
 
+    public String getFavoritesReportMailTo(){
+        def email = grailsApplication.config.ddb?.favorites?.reportMailTo
+        if(!email){
+            throw new ConfigurationException("getFavoritesReportMailTo(): Configuration entry does not exist -> ddb.favorites.reportMailTo  ")
+        }
+        if(!(email instanceof String)){
+            throw new ConfigurationException("getFavoritesReportMailTo(): ddb.favorites.reportMailTo  is not a String")
+        }
+        return email
+    }
+
     public List getFacetsFilter(){
         def filter = grailsApplication.config.ddb?.backend?.facets?.filter
         if(!filter){
@@ -520,6 +531,7 @@ class ConfigurationService {
         log.info "ddb.bookmark.url = " + getBookmarkUrl()
         log.info "ddb.newsletter.url = " + getNewsletterUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
+        log.info "ddb.favorites.reportMailTo = " + getFavoritesReportMailTo()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "grails.views.gsp.encoding = " + getEncoding()
