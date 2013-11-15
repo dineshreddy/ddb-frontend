@@ -166,20 +166,23 @@ $(document).ready(function() {
     var previewHref = $(a).attr("data-content");
     var type = $(a).attr("data-type");
     var title = $(a).find("span").text();
-    var author = $(a).attr("data-author");
+    var title_text = $(a).find("span").text();
+    var title_tooltip = $(a).find("span").text();    
+    var author = $(a).attr("data-author");    
     var rights = $(a).attr("data-rights");
     
-    if (title != null && title.toString().length>270){
-        title = $.trim(title.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
-    }
+    //DDBNEXT-800 the title can use more than one line but should be limited to 200 characters
+    title_text = cutoffStringAtSpace(title, 200);
     
-    if (author != null && author.toString().length>270){
-        author = $.trim(author.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
-    }    
-    
-    if (rights != null && rights.toString().length>270){
-        rights = $.trim(rights.toString()).substring(0, 270).split(" ").slice(0, -1).join(" ") + "...";
-    }
+    //The tooltip of the title should be limited to 270 characters
+   	title_tooltip = cutoffStringAtSpace(title, 270);
+
+    //The text and the tooltip of the author should be limited to 270 characters
+    author = cutoffStringAtSpace(author, 270);
+        
+    //The text and the tooltip of the rights should be limited to 270 characters
+    rights = cutoffStringAtSpace(rights, 270);
+
     
     
     hideErrors();
@@ -200,8 +203,8 @@ $(document).ready(function() {
     } else {
         jwPlayerSetup(previewHref,previewUri);
       }
-    $("div.binary-title span").text(title);
-    $("div.binary-title").attr("title",title);
+    $("div.binary-title span").text(title_text);
+    $("div.binary-title").attr("title",title_tooltip);
     
     $("div.binary-author span").text(author);
     $("div.binary-author").attr("title",author);
@@ -209,6 +212,12 @@ $(document).ready(function() {
     $("div.binary-rights span").text(rights);
     $("div.binary-rights").attr("title",rights);
   };
+  function cutoffStringAtSpace(text, limit) {
+	    if (text != null && text.toString().length > limit){
+	        return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1).join(" ") + "...";
+	    }
+	    return text;
+  }
   function jwPlayerSetup(content,poster){
     if($("#binary-viewer").length==0)return;
     $(".previews").parent().addClass("off");
