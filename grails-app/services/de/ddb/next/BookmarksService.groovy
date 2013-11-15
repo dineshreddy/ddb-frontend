@@ -66,7 +66,9 @@ class BookmarksService {
             title : title,
             description: description,
             isPublic : isPublic,
-            publishingName : publishingName
+            publishingName : publishingName,
+            isBlocked : false,
+            blockingToken : ""
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -118,7 +120,9 @@ class BookmarksService {
                         it._source.title,
                         description,
                         it._source.isPublic,
-                        it._source.publishingName
+                        it._source.publishingName,
+                        it._source.isBlocked,
+                        it._source.blockingToken
                         )
                 if(folder.isValid()){
                     folderList.add(folder)
@@ -374,7 +378,9 @@ class BookmarksService {
                         it._source.title,
                         description,
                         it._source.isPublic,
-                        it._source.publishingName
+                        it._source.publishingName,
+                        it._source.isBlocked,
+                        it._source.blockingToken
                         )
 
 
@@ -627,7 +633,9 @@ class BookmarksService {
                     it._source.title,
                     it._source.description,
                     it._source.isPublic,
-                    it._source.publishingName
+                    it._source.publishingName,
+                    it._source.isBlocked,
+                    it._source.blockingToken
                     )
             if(folder.isValid()){
                 return folder
@@ -649,7 +657,7 @@ class BookmarksService {
         }
     }
 
-    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName) {
+    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName, isBlocked = false, blockingToken = "") {
         log.info "updateFolder()"
 
         // Save fallback to username if wrong parameters are given
@@ -660,10 +668,10 @@ class BookmarksService {
         def postBody = ""
         if(newDescription) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic, publishingName: publishingName]]
+            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic, publishingName: publishingName, isBlocked: isBlocked, blockingToken: blockingToken ]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: newTitle, isPublic: isPublic, publishingName: publishingName]]
+            postBody = [doc: [title: newTitle, isPublic: isPublic, publishingName: publishingName, isBlocked: isBlocked, blockingToken: blockingToken]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody as JSON)
