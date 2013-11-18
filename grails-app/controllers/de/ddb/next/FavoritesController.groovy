@@ -275,7 +275,7 @@ class FavoritesController {
                 ])
                 return
             }else{
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def locale = getLocale()
                 def allRes = favoritesService.retriveItemMD(items,locale)
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
@@ -379,6 +379,9 @@ class FavoritesController {
         }
     }
 
+    private Locale getLocale() {
+        return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+    }
 
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (isUserLoggedIn()) {
@@ -424,7 +427,7 @@ class FavoritesController {
             if (isMainBookmarkFolder(o2)) {
                 return 1
             }
-            return Collator.getInstance(Locale.GERMAN).compare(o1.folder.title, o2.folder.title)
+            return Collator.getInstance(getLocale()).compare(o1.folder.title, o2.folder.title)
         })
 
         //Check for empty titles
