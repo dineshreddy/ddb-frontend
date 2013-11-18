@@ -569,6 +569,10 @@ hr {
   margin-bottom: 0px !important;
 }
 
+.public-favorites .folder-siblings {
+  text-decoration: underline;
+}
+
 .orderList{
 	margin:10px 0 10px 3px;
 }

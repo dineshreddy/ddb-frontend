@@ -92,7 +92,7 @@ limitations under the License.
                 <g:each var="publicFolder" in="${publicFolders}">
                   <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
                     <li>
-                      <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
+                      <g:link class="folder-siblings" controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
                         ${publicFolder.title}
                       </g:link>
                     </li>

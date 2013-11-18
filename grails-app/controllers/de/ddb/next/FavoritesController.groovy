@@ -107,6 +107,9 @@ class FavoritesController {
         def lastPgOffset=0
 
         if (totalResults <1){
+
+            def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+
             render(view: "publicFavorites", model: [
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
@@ -114,6 +117,8 @@ class FavoritesController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,"desc","title",0, user.id, selectedFolder.folderId),
+                fullPublicLink: fullPublicLink,
+                baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl()
             ])
             return
