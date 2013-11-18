@@ -118,7 +118,6 @@ class FavoritesController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,"desc","title",0, user.id, selectedFolder.folderId),
-                contextUrl: configurationService.getContextUrl(),
                 fullPublicLink: fullPublicLink,
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl()
