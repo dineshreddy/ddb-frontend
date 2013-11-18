@@ -429,18 +429,26 @@ function searchResultsInitializer(){
   $('.page-input').keyup(function(e){
     if(e.keyCode == 13) {
       if (/^[0-9]+$/.test(this.value)) {
+        var resultPagesCountText = $('.result-pages-count').text();
+        var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
+        
         if (parseInt(this.value) <= 0) {
             this.value = 1;
         }
-        else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+        else if (parseInt(this.value) > resultPagesCountInt) {
             this.value = $('.result-pages-count').text();
         }
       }
       else {
         this.value = 1;
       }
+            
       $('.page-input').attr('value', this.value);
-      var paramsArray = new Array(new Array('offset', (this.value - 1) * $('.page-filter').find("select").val()));
+      
+      var valueInteger = parseInt(this.value.replace(/[^0-9]/g, ''));
+      var filterInteger = parseInt($('.page-filter').find("select").val());
+      var offset = (valueInteger - 1) * filterInteger;
+      var paramsArray = new Array(new Array('offset', offset));
       var newUrl = addParamToCurrentUrl(paramsArray);
       fetchResultsList(newUrl);
     }
