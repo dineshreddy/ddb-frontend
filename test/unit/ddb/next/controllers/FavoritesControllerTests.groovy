@@ -51,7 +51,7 @@ class FavoritesControllerTests {
 
     private def createFolder(String title) {
         def folder = [:]
-        folder["folder"] = new Folder("folder id", "user", title, null, false, null)
+        folder["folder"] = new Folder("folder id", "user", title, null, false, null, false, null)
         folder["count"] = 0
         return folder
     }
