@@ -20,6 +20,7 @@ import org.codehaus.groovy.runtime.NullObject
 import de.ddb.next.constants.FolderConstants
 
 import net.sf.json.JSONNull
+import grails.converters.JSON
 import groovy.transform.ToString
 
 @ToString(includeNames=true)
@@ -31,13 +32,15 @@ class Folder {
     String description
     boolean isMainFolder = false
     boolean isPublic = false
+    boolean isBlocked = false
+    String blockingToken
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
-    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName) {
+    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName, def isBlocked, def blockingToken) {
         this.folderId = folderId
         this.userId = userId
         this.title = title
-        if(description == null || description instanceof JSONNull || description instanceof NullObject){
+        if(isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
@@ -45,6 +48,16 @@ class Folder {
         this.isPublic = isPublic
         if(publishingName){
             this.publishingName = publishingName
+        }
+        if(isAnyNull(isBlocked)){
+            this.isBlocked = false
+        }else{
+            this.isBlocked = isBlocked
+        }
+        if(isAnyNull(blockingToken)){
+            this.blockingToken = ""
+        }else{
+            this.blockingToken = blockingToken.toString()
         }
     }
 
@@ -57,6 +70,8 @@ class Folder {
         out["isMainFolder"] = isMainFolder
         out["isPublic"] = isPublic
         out["publishingName"] = publishingName
+        out["isBlocked"] = isBlocked
+        out["blockingToken"] = blockingToken
         return out
     }
 
@@ -66,5 +81,13 @@ class Folder {
             return true
         }
         return false
+    }
+
+    private boolean isAnyNull(def variable){
+        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
+            return true
+        }else{
+            false
+        }
     }
 }

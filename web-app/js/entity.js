@@ -185,10 +185,10 @@ $(document).ready(function(){
                 auto: false,
                 scroll: 1,
                 prev    : {
-                    button : "#previous",
+                    button : "#previous"
                 },
                 next    : { 
-                    button  : "#next",
+                    button  : "#next"
                 }
             });
         }

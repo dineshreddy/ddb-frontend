@@ -92,7 +92,7 @@ limitations under the License.
                 <g:each var="publicFolder" in="${publicFolders}">
                   <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
                     <li>
-                      <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
+                      <g:link class="folder-siblings" controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
                         ${publicFolder.title}
                       </g:link>
                     </li>
@@ -101,10 +101,15 @@ limitations under the License.
             </ul>
           </div>
           </g:if>
-          <div class="folder-information bt bb bl br">        
+          <div class="folder-information bt bb bl br">
+            <%--         
             <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
             </a>
+            --%>
+            <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
+              <g:message code="ddbnext.Report_Public_List" />
+            </g:link>
           </div>
         </div>
         <div class="span9 favorites-results-content">
@@ -112,6 +117,13 @@ limitations under the License.
             <div class="messages-container">
               <ul class="unstyled">
                 <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
+              </ul>
+            </div>
+          </g:if>
+          <g:if test="${flash.error}">
+            <div class="errors-container">
+              <ul class="unstyled">
+                <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
               </ul>
             </div>
           </g:if>

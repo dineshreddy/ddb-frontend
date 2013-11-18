@@ -305,7 +305,11 @@ noscript .scroller {
   background-color:#fff;
   overflow:hidden;
 }
-.binary-title, .binary-author, .binary-rights {
+.binary-title {
+  padding-top:7px;
+  font-size: 0.938em;      
+}
+.binary-author, .binary-rights {
   padding-top:7px;
   font-size: 0.938em;
   white-space: nowrap;
@@ -316,6 +320,11 @@ noscript .scroller {
   width: 445px;
   height: 323px;
 }
+
+#binary-viewer .previews {
+  outline: none;
+}
+
 #binary-viewer img {
   cursor: pointer;
   margin: 0 0 0 0;

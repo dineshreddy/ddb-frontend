@@ -31,7 +31,7 @@
   width: 100%;
 }
 
-.saved-searches-list-envelope,.saved-searches-list-number {
+.saved-searches-list-envelope, .saved-searches-list-number {
   position: absolute;
   right: 0;
   top: 0;
@@ -62,4 +62,14 @@
 
 .favorites-results .results-list .persist {
   display: inline-block;
+}
+
+.saved-searches .results-paginator-options {
+  position: relative;
+}
+
+.saved-searches .results-paginator-options .page-filter {
+  position: absolute;
+  right: 0;
+  bottom: -38px;
 }

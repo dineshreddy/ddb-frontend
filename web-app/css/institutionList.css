@@ -86,12 +86,18 @@
   list-style: none;
 }
 
+.institution-listitem div {
+  padding-left: 18px;
+}
+
 .icon-institution {
   background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
+  position: absolute;
 }
 
 .icon-child-institution {
   background: url(../images/icons/list_arrows.png) no-repeat 0 -21px;
+  position: absolute;
 }
 
 .filter {

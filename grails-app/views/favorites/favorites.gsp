@@ -83,18 +83,18 @@ limitations under the License.
         </div>
         <div class="span12 link-row">
           <div class="email-block">
-            <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">  
+            <a href="#" class="sendbookmarks" title="<g:message code="ddbnext.send_favorites" />">
               <span><g:message code="ddbnext.favorites_list_send" /></span>
             </a>
           </div>
-          <g:if test="${selectedFolder.isPublic}">
+          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
             <div class="link-block">
               <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
                 <span><g:message code="ddbnext.favorites_list_publiclink" /></span>
               </a>
             </div>
           </g:if>
-          <g:if test="${selectedFolder.isPublic}">
+          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
             <div class="share-block">
               <g:socialmediaBody />
             </div>
@@ -124,20 +124,20 @@ limitations under the License.
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
                 <div class="fav-text h3"> 
-                 
+
                   <g:set var="folderTooltip" value="${it.folder.description}" />
                   <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
                     <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
                   </g:if>
-                  
+
                   <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         <g:message code="ddbnext.All_Favorites" />
                       </g:link>
                     </g:if>
                     <g:else>
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">                  
+                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         ${it.folder.title.capitalize()}
                       </g:link>
                     </g:else>
@@ -156,20 +156,22 @@ limitations under the License.
                   </g:else>
                 </div> 
                 <div class="fav-number"> ${it.count}</div>
-                <%-- 
-                <a href="#" class="bookmarks-list-envelope cursor-pointer sendbookmarks">  
-                  <i class="icon-envelope" title="<g:message code="ddbnext.send_favorites" />" ></i>
-                </a>
-                --%>
                 <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
-                  <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
-                    <g:if test="${it.folder.isPublic}">
-                      <i class="icon-not-publish icon-publish" title="<g:message code="ddbnext.Hide_Folder" />" ></i>
-                    </g:if>
-                    <g:else>
-                      <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
-                    </g:else>
-                  </a>
+                  <g:if test="${it.folder.isBlocked }">
+                    <a class="bookmarks-list-publish">
+                      <i class="icon-not-publish icon-blocked" title="<g:message code="ddbnext.Blocked_Folder" />" ></i>
+                    </a>
+                  </g:if>
+                  <g:else>
+                    <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
+                      <g:if test="${it.folder.isPublic}">
+                        <i class="icon-not-publish icon-publish" title="<g:message code="ddbnext.Hide_Folder" />" ></i>
+                      </g:if>
+                      <g:else>
+                        <i class="icon-not-publish" title="<g:message code="ddbnext.Publish_Folder" />" ></i>
+                      </g:else>
+                    </a>
+                  </g:else>
                   <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" >  
                     <i class="icon-edit" title="<g:message code="ddbnext.Edit_Folder" />" ></i>
                   </a>
@@ -198,10 +200,10 @@ limitations under the License.
               </ul>
             </div>
           </g:if>
-          <g:if test="${flash.email_error}">
+          <g:if test="${flash.error}">
             <div class="errors-container">
               <ul class="unstyled">
-                <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span></li>
+                <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
               </ul>
             </div>
           </g:if>
@@ -268,7 +270,7 @@ limitations under the License.
                        <g:else>
                         <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
-                      </span>                    
+                      </span>
                     </a>
                   </g:if> 
                   <g:else>
@@ -276,7 +278,7 @@ limitations under the License.
                       <g:message code="ddbnext.Added_On" />
                       <span>
                        <g:if test="${params.by == "date"}">
-                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     
+                        <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
                        </g:if>
                        <g:else>
                         <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
@@ -294,7 +296,12 @@ limitations under the License.
           <g:else>
             <div class="messages-container">
               <ul class="unstyled">
-                <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+                <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                  <li><span><g:message code="ddbnext.no_favorites_general" /></span></li>
+                </g:if>
+                <g:else>
+                  <li><span><g:message code="ddbnext.no_favorites" /></span></li>
+                </g:else>
               </ul>
             </div>
           </g:else>
@@ -328,26 +335,6 @@ limitations under the License.
       </div>
     </g:if>
     
-    
-    <%-- Modal "Delete Favorites" --%>
-    <%-- 
-    <div id="msDeleteFavorites" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="msDeleteFavoritesLabel" aria-hidden="true">
-      <div class="modal-header">
-        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="msDeleteFavoritesLabel">
-          <g:message code="ddbnext.delete_favorites" />
-        </h3>
-      </div>
-      <div class="modal-body">
-        <p>
-          <g:message code="ddbnext.delete_favorites_succ" />
-        </p>
-      </div>
-      <div class="modal-footer">
-        <a href="#" class="btn btn-danger" id="deletedFavoritesBtnClose"><g:message code="ddbnext.Close" /></a>
-      </div>
-    </div>
-    --%>
     
     <%-- Modal "Confirm favorites delete" --%>
     <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
@@ -474,25 +461,27 @@ limitations under the License.
           <textarea rows="8" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
         </div>
         <br />
-        <div>
-          <fieldset>          
-            <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
-            <label for="folder-edit-privacy-private"><g:message code="ddbnext.favorites_list_private"/></label>
-            <br />
-            <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
-            <label for="folder-edit-privacy-public"><g:message code="ddbnext.favorites_list_public"/></label>
-          </fieldset>
-        </div>
-        <br />
-        <div>
-          <g:message code="ddbnext.favorites_list_publishtext"/>
+        <div id="folder-edit-privacy-area">
+          <div>
+            <fieldset>          
+              <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
+              <label for="folder-edit-privacy-private"><g:message code="ddbnext.favorites_list_private"/></label>
+              <br />
+              <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
+              <label for="folder-edit-privacy-public"><g:message code="ddbnext.favorites_list_public"/></label>
+            </fieldset>
+          </div>
           <br />
-          <select name="publisher-name" size="1" id="folder-edit-publish-name">
-            <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
-            <g:if test="${fullName}"> 
-              <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
-            </g:if>
-          </select>      
+          <div>
+            <g:message code="ddbnext.favorites_list_publishtext"/>
+            <br />
+            <select name="publisher-name" size="1" id="folder-edit-publish-name">
+              <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
+              <g:if test="${fullName}"> 
+                <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
+              </g:if>
+            </select>      
+          </div>
         </div>
       </div>
       <div class="modal-footer">

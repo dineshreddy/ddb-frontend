@@ -122,11 +122,15 @@ limitations under the License.
                     <li class="institution-listitem">
                       <g:if test="${(selectedItemId == itemId)}">
                         <i class="icon-institution"></i>
-                        <b>${parentOrg[parentOrg.size() - 1].label}</b>
+                        <div>
+                          <b>${parentOrg[parentOrg.size() - 1].label}</b>
+                        </div>
                       </g:if>
                       <g:else>
                         <i class="icon-child-institution"></i>
-                        <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                        <div>
+                          <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
+                        </div>
                       </g:else>
                       <g:set var="maxDepthOfLoop" value="${10}" />
                       <g:set var="loopCount" value="${0}" />
