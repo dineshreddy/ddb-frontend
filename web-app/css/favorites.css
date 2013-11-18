@@ -88,6 +88,10 @@ hr {
   right:0;
 }
 
+.bookmarks-list-edit > i, .bookmarks-list-delete > i, .bookmarks-list-publish > i {
+  vertical-align: baseline;
+}
+
 .bookmarks-list-delete {
   margin-top: 2px;
   margin-right: 5px;
