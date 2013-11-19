@@ -113,6 +113,7 @@
 .slide-viewer .btn-prev,.slide-viewer .btn-next {
   background:white;
   overflow:hidden;
+  outline:none;
 }
 .slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
   cursor:default;
