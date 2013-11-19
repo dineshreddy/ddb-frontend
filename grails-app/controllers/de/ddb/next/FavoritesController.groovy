@@ -279,7 +279,7 @@ class FavoritesController {
                 container["count"] = favoritesOfFolder.size()
                 allFoldersInformation.add(container)
             }
-            allFoldersInformation = sortFolders(allFoldersInformation, { o -> o.folder })
+            allFoldersInformation = sortFolders(allFoldersInformation) { o -> o.folder }
 
             def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
