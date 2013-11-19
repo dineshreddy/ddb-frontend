@@ -88,21 +88,13 @@ class SearchService {
      * @param reqParameters the requestParameter
      * @return the url encoded query String for facetValues parameter
      */
-    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){
-        def facetValues = reqParameters.get("facetValues[]")
-        
+    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){        
         def res = ""
-        def newFacetValues = []
-        if(facetValues != null){
-            if(facetValues.getClass().isArray()){
-                newFacetValues = facetValues as List
-            }else{
-                newFacetValues.add(facetValues)
-            }
-                   
-            res = facetValuesToUrlQueryString(newFacetValues)
-        }
+        def facetValues = facetValuesRequestParameterToList(reqParameters)
         
+        if(facetValues != null){                   
+            res = facetValuesToUrlQueryString(facetValues)
+        }
         
         return res
     }
