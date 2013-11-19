@@ -839,9 +839,11 @@ class UserController {
             aasService.updatePerson(user.getId(), aasUser)
             user.setApiKey(null)
 
-            flash.message = "ddbnext.Api_Deleted"
+            List<String> messages = []
+            List<String> errors = []
+            messages.add("ddbnext.Api_Deleted")
 
-            redirect(controller: 'user', action: 'showApiKey')
+            redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
             redirect(controller:"user", action:"index")
         }

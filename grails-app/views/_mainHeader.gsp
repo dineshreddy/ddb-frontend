@@ -190,7 +190,7 @@ limitations under the License.
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
+                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
                     <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                     <ul>
                       <li
@@ -202,7 +202,7 @@ limitations under the License.
                         <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Searches" /></g:link>
                       </li>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"]]}">active-default</g:isMappingActive>">
+                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
                         <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
                       </li>
                       <li class="">
