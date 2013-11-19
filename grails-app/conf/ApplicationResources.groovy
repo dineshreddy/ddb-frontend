@@ -22,8 +22,8 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/css/vendor/bootstrap/bootstrap-2.2.2.css', bundle: 'screen'
-        resource url:'/css/vendor/bootstrap/bootstrap-responsive-2.2.2.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap-responsive.css', bundle: 'screen'
         resource url:'/css/vendor/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
