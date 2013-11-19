@@ -25,7 +25,7 @@ class FavoritesControllerTests {
     void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
         def folder1 = createFolder(" \t\r\n")
 
-        assert controller.sortFolders([folder1])[0].folder.title == "-"
+        assert controller.sortFolders([folder1])[0].title == "-"
     }
 
     void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
@@ -50,9 +50,6 @@ class FavoritesControllerTests {
     }
 
     private def createFolder(String title) {
-        def folder = [:]
-        folder["folder"] = new Folder("folder id", "user", title, null, false, null, false, null)
-        folder["count"] = 0
-        return folder
+        return new Folder("folder id", "user", title, null, false, null, false, null)
     }
 }
