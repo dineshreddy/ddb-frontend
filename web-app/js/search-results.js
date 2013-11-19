@@ -1391,7 +1391,11 @@ function searchResultsInitializer(){
       var roleFacetValueUl = facetValueContainer.find('ul');
       if (roleFacetValueUl.length == 0) {
     	  newUl = true;
-      	  roleFacetValueUl = $(document.createElement('ul'));
+      	  roleFacetValueUl = $(document.createElement('ul'));      	  
+      	  roleFacetValueUl.addClass('unstyled');
+
+      	  //FIXME Due to DDBNEXT-973 we do not show the role facet list
+      	  roleFacetValueUl.addClass('off');
       }
       
 	  //Create the role based facets and add them to the container
@@ -1403,7 +1407,6 @@ function searchResultsInitializer(){
 	        var roleFacetValueCheckbox = $(document.createElement('input'));        
 	        var roleFieldMessage = messages.ddbnext['facet_'+facetField];
 	        
-	        roleFacetValueUl.addClass('unstyled');
 	        roleFacetValueLi.addClass('role-facet');
 	        
 	        roleFacetValueSpan.attr('title', "RoleValue");
