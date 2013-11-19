@@ -24,7 +24,7 @@ modules = {
     cssscreen {
         resource url:'/css/vendor/bootstrap-2.2.2/bootstrap.css', bundle: 'screen'
         resource url:'/css/vendor/bootstrap-2.2.2/bootstrap-responsive.css', bundle: 'screen'
-        resource url:'/css/vendor/jquery.fancybox-2.1.4.css', bundle: 'screen'
+        resource url:'/css/vendor/fancybox-2.1.4/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
@@ -106,7 +106,7 @@ modules = {
     }
 
     autocomplete {
-        resource url:'/css/vendor/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
+        resource url:'/css/vendor/autocomplete/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
         resource url:'/js/myautocomplete.js'
     }
