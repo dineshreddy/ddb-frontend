@@ -23,6 +23,10 @@
   margin-top:12px;
   margin-left:20px;
 }
+.advanced-search .heading h1 {
+  white-space: nowrap;
+}
+
 .advanced-search .group-operator {
   margin-top: 15px;
   margin-bottom: 15px;
