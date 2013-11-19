@@ -62,53 +62,55 @@ modules = {
     }
 
     javascript {
-        resource url:'/js/jquery-1.8.2.min.js'
-        resource url:'/js/jquery.dotdotdot-1.5.1.js'
-        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
-        resource url:'/js/vendor/bootstrap.js'
-        resource url:'/js/vendor/bootstrap-collapse.js'
-        resource url:'/js/vendor/bootstrap-button.js'
-        resource url:'/js/vendor/bootstrap-modal.js'
-        resource url:'/js/vendor/bootstrap-multiselect.js'
-        resource url:'/js/vendor/jquery.validate.min.js'
-        // resource url:'/js/vendor/respond.src.js'
-        resource url:'/js/jquery.fancybox.pack.js'
-        resource url:'/js/jquery.checkall.js'
-        resource url:'/js/jquery.cookies.2.2.0.min.js'
-        resource url:'/js/SocialMediaManager.js'
-        resource url:'/js/StringBuilder.js'
-        resource url:'/js/underscore-min.js'
-        resource url:'/jwplayer/jwplayer.js'
-        resource url:'/js/jwplayer-key.js'
-        resource url:'/js/large-cookie.js'
+        resource url:'/js/vendor/jquery-1.8.2/jquery-1.8.2.min.js'
+        resource url:'/js/vendor/jquery.dotdotdot-1.5.1/jquery.dotdotdot-1.5.1.js'
+        resource url:'/js/vendor/jquery.carouFredSel-6.2.0/jquery.carouFredSel-6.2.0-packed.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-collapse.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-button.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-modal.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-multiselect.js'
+        resource url:'/js/vendor/jquery.validate-1.11.1/jquery.validate.min.js'
+        resource url:'/js/vendor/jquery.fancybox-2.1.4/jquery.fancybox.pack.js'
+        resource url:'/js/vendor/jquery.checkall-1.4/jquery.checkall.js'
+        resource url:'/js/vendor/jquery.cookies-2.2.0/jquery.cookies.2.2.0.min.js'
+        // resource url:'/js/vendor/respond-1.1.0/respond.src.js'
+        resource url:'/js/socialMediaManager.js'
+        resource url:'/js/stringBuilder.js'
+        resource url:'/js/vendor/underscore-1.3.1/underscore-min.js'
+        resource url:'/js/vendor/jwplayer-6.2.3115/jwplayer.js'
+        resource url:'/js/jwplayerKey.js'
+        resource url:'/js/largeCookie.js'
         resource url:'/js/header.js'
         resource url:'/js/tooltip.js'
-        resource url:'/js/json2.js'
-        resource url:'/js/global-variables.js'
-        resource url:'/js/global-scripts.js'
-        resource url:'/js/institution-list.js'
-        resource url:'/js/start-page.js'
-        resource url:'/js/item-hierarchy.js'
-        resource url:'/js/persistent-links-modal-dialog.js'
-        resource url:'/js/binaries-viewer.js'
-        resource url:'/js/advanced-search-page.js'
-        resource url:'/js/search-results.js'
+        resource url:'/js/vendor/json2-2010.11.17/json2.js'
+        resource url:'/js/globalVariables.js'
+        resource url:'/js/globalScripts.js'
+        resource url:'/js/institutionList.js'
+        resource url:'/js/startPage.js'
+        resource url:'/js/itemHierarchy.js'
+        resource url:'/js/persistentLinksModalDialog.js'
+        resource url:'/js/binariesViewer.js'
+        resource url:'/js/advancedSearchPage.js'
+        resource url:'/js/searchResults.js'
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
         resource url:'/js/changeFavorite.js'
         resource url:'/js/profile.js'
-        resource url:'/js/passwordchange.js'
-        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
+        resource url:'/js/passwordChange.js'
+        resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
-        resource url:'/js/saved-searches.js'
+        resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
+
+
     }
 
     autocomplete {
         resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
-        resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
-        resource url:'/js/myautocomplete.js'
+        resource url:'/js/vendor/autocomplete-1.10.2/js/jquery-ui-1.10.2.custom.min.js'
+        resource url:'/js/myAutocomplete.js'
     }
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
@@ -119,12 +121,12 @@ modules = {
 
     //These are pages that include third party components
     institution {
-        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
-        resource url:'/js/InstitutionsMapAdapter.js'
+        resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
     }
 
