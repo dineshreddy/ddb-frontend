@@ -252,9 +252,9 @@ jawr {
 
 
 compress {
-    enabled = false
+    enabled = true
 
-    debug = true
+    debug = false
     statsEnabled = true
     compressionThreshold = 1024
     // filter's url-patterns
