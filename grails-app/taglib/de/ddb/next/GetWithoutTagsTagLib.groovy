@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class GetWithoutTagsTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * It parses the body of the tag for further tags and removes them.

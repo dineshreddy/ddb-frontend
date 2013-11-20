@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class GetSocialMediaBodyTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def getSocialmediaBody = { attrs, body ->
         out << render(template:"/common/socialmediaBody", model:[errors: attrs.errors])

@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class RenderResultsPaginatorOptionsTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Renders the paginator bar for the results.

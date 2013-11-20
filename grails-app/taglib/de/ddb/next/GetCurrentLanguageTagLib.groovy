@@ -18,11 +18,9 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.DDBConstants
-
 class GetCurrentLanguageTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def messageSource
 

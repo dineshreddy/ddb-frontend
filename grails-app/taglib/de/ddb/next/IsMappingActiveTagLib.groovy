@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 /**
  * Taglib for checking if the currently displayed page fits a controller/action/dir combination
@@ -25,7 +24,7 @@ import de.ddb.next.constants.DDBConstants
  */
 class IsMappingActiveTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Renders the body of the tag if the given controller/action/dir combination fits the currently 

@@ -17,11 +17,9 @@ package de.ddb.next
 
 import javax.servlet.http.Cookie
 
-import de.ddb.next.constants.DDBConstants
-
 class GetCookieFieldValueTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def searchService
     def AMP = "&amp;"

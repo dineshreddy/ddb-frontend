@@ -33,12 +33,12 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
-                <a title="${truncateHovercardTitle(title: it.label, length: 350)}">
+                <a title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
                   <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </a>
               </g:if>
               <g:else>
-                <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
+                <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
                   <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </g:link>
               </g:else>

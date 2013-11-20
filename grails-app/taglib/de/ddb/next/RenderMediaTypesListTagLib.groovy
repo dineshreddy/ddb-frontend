@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class RenderMediaTypesListTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Renders the media types icons.

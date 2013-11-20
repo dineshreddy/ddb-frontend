@@ -16,11 +16,10 @@
 package de.ddb.next
 
 import de.ddb.next.beans.Item
-import de.ddb.next.constants.DDBConstants
 
 class GetItemHierarchyTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Maximum number of hierarchy-entries to display

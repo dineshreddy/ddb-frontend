@@ -15,16 +15,12 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.util.WebUtils
-
-import de.ddb.next.constants.DDBConstants
-
-
 class GetBackendVersionTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def configurationService
+    def log
 
     def getBackendVersion = { attrs, body ->
         try{

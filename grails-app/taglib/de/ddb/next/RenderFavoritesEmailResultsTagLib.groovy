@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class RenderFavoritesEmailResultsTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def renderFavoritesEmailResults = { attrs, body ->
         out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])

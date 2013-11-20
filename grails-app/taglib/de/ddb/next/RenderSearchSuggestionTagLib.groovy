@@ -15,11 +15,10 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
 
 class RenderSearchSuggestionTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def renderSearchSuggestion = { correctedQuery, body ->
         out << render(template:"/search/searchSuggestion", model:[correctedQuery])

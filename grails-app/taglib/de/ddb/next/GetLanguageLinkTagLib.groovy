@@ -17,11 +17,10 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.DDBConstants
-
 class GetLanguageLinkTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
+
 
     /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
@@ -44,7 +43,7 @@ class GetLanguageLinkTagLib {
         }
 
         if(isLocale){
-            out << "<a class=\""+localeclass+"\">"+currentLanguage(attrs)+"</a>"
+            out << "<a class=\""+localeclass+"\">"+ddb.getCurrentLanguage(attrs)+"</a>"
         }else{
             fixParams(attrs)
             def linkUrl = createLink("url": attrs.params)

@@ -16,11 +16,9 @@
 
 package de.ddb.next
 
-import de.ddb.next.constants.DDBConstants
-
 class GetSocialMediaMetaTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def getSocialmediaMeta = { attrs, body ->
         def likeUrl = attrs.likeUrl

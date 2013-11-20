@@ -17,6 +17,8 @@ package de.ddb.next
 
 class RenderFacetListTagLib {
 
+    static namespace = "ddb"
+
     /**
      * Renders the navigation bar for the results.
      *

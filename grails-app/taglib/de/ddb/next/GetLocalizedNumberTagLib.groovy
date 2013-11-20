@@ -17,11 +17,9 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.DDBConstants
-
 class GetLocalizedNumberTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Gives you back a localized representation of the number

@@ -16,11 +16,10 @@
 package de.ddb.next
 
 import de.ddb.next.beans.User
-import de.ddb.next.constants.DDBConstants
 
 class GetUserLabelTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def sessionService
 

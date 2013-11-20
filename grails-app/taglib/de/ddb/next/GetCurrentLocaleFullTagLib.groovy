@@ -18,11 +18,9 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.DDBConstants
-
 class GetCurrentLocaleFullTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Prints out the currently selected language. The language itself is in full format (de_DE). The language must be

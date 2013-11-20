@@ -16,10 +16,6 @@
 package de.ddb.next
 
 
-import de.ddb.next.constants.DDBConstants
-
-import grails.util.Environment
-
 /**
  * Taglib for automatic integration of the piwik tracking sourcecode. The taglib ensures that the correct version
  * of the trackingcode (DEV or PROD) is included.
@@ -28,10 +24,11 @@ import grails.util.Environment
  */
 class GetPiwikTrackingTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     def static trackingCodeCache = null
     def configurationService
+    def log
 
     /**
      * Tag closure <g:piwik />, this tag has no attributes. 

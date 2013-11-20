@@ -17,11 +17,9 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.DDBConstants
-
 class IsCurrentLanguageTagLib {
 
-    static namespace = DDBConstants.TAGLIB_NAMESPACE
+    static namespace = "ddb"
 
     /**
      * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,

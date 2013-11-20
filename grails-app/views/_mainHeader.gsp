@@ -97,12 +97,12 @@ limitations under the License.
               <g:message code="ddbnext.ChangeLanguage" />
             </a>
             <ul class="nav">
-              <li class="<ddb:isCurrentLanguage locale="de">selected-language</<ddb:isCurrentLanguage>">
+              <li class="<ddb:isCurrentLanguage locale="de">selected-language</ddb:isCurrentLanguage>">
                 <ddb:getLanguageLink params="${params}" locale="de" islocaleclass="nopointer">
                   <g:message code="ddbnext.language_de" />
                 </ddb:getLanguageLink>
               </li>
-              <li class="<<ddb:isCurrentLanguage locale="en">selected-language</<ddb:isCurrentLanguage>">
+              <li class="<<ddb:isCurrentLanguage locale="en">selected-language</ddb:isCurrentLanguage>">
                 <ddb:getLanguageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message code="ddbnext.language_en" />
                 </ddb:getLanguageLink>
