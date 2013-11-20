@@ -27,26 +27,26 @@ modules = {
         resource url:'/css/vendor/fancybox-2.1.4/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
-        resource url:'/css/institutionList2.css', bundle: 'screen'
+        resource url:'/css/institutionList.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
-        resource url:'/css/institutionMap2.css', bundle: 'screen'
+        resource url:'/css/institutionMap.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/favorites.css', bundle: 'screen'
-        resource url:'/css/staticContent2.css', bundle: 'screen'
+        resource url:'/css/staticContent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
         resource url:'/css/viewer.css', bundle: 'screen'
-        resource url:'/css/itemHierarchy2.css', bundle: 'screen'
-        resource url:'/css/modalDialog2.css', bundle: 'screen'
-        resource url:'/css/advancedSearch3.css', bundle: 'screen'
+        resource url:'/css/itemHierarchy.css', bundle: 'screen'
+        resource url:'/css/modalDialog.css', bundle: 'screen'
+        resource url:'/css/advancedSearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
         resource url:'/css/registration.css', bundle: 'screen'
-        resource url:'/css/userProfile2.css', bundle: 'screen'
+        resource url:'/css/userProfile.css', bundle: 'screen'
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
-        resource url:'/css/savedSearches2.css', bundle: 'screen'
-        resource url:'/css/socialMedia2.css', bundle: 'screen'
-        resource url:'/css/apiKey2.css', bundle: 'screen'
+        resource url:'/css/savedSearches.css', bundle: 'screen'
+        resource url:'/css/socialMedia.css', bundle: 'screen'
+        resource url:'/css/apiKey.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -54,7 +54,7 @@ modules = {
     cssprint {
         resource url:'/css/ddb.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/item.css', attrs:[media:'print'], bundle: 'print'
-        resource url:'/css/institutionList2.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/third-party/map/css/style.css', attrs:[media:'print'], bundle: 'print'
@@ -113,8 +113,8 @@ modules = {
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {
-        resource url:'/css/startPage2.css', bundle: 'startpage'
-        resource url:'/css/startPage2.css', attrs:[media:'print'], bundle: 'startpageprint'
+        resource url:'/css/startPage.css', bundle: 'startpage'
+        resource url:'/css/startPage.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
     //These are pages that include third party components
