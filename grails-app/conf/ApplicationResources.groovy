@@ -38,7 +38,7 @@ modules = {
         resource url:'/css/viewer.css', bundle: 'screen'
         resource url:'/css/itemHierarchy2.css', bundle: 'screen'
         resource url:'/css/modalDialog2.css', bundle: 'screen'
-        resource url:'/css/advancedSearch2.css', bundle: 'screen'
+        resource url:'/css/advancedSearch3.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
         resource url:'/css/registration.css', bundle: 'screen'
         resource url:'/css/userProfile2.css', bundle: 'screen'
