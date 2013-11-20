@@ -1166,7 +1166,6 @@ input {
   color: #3e3a37;
   font-family: Calibri,Arial,sans-serif;
   font-size: 0.875em;
-  background-color: #fff;
   border: 1px solid;
   border-color: #858280 #dcdbda #dcdbda #858280;
   box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.3);
@@ -1463,6 +1462,13 @@ select {
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href^="http://www.deutsche-digitale-bibliothek.de"]):not([href^="https://www.deutsche-digitale-bibliothek.de"]), .external-link-icon {
   padding-left: 20px;
   background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+}
+
+/* Exception for links in the openstreetmap */
+
+#mapWindow div:not(#mapContainer) a {
+  padding-left: 0px;
+  background: none;
 }
 
 /* external links - end */

@@ -238,7 +238,7 @@ class FavoritesController {
                 redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
                 return
             }
-            
+
             def totalResults= items.size()
 
             def userName = user.getFirstnameAndLastnameOrNickname()
@@ -396,7 +396,8 @@ class FavoritesController {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo getUserFromSession().getEmail()
-                    subject g.message(code:"ddbnext.send_favorites_subject_mail")+ getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none")
+                    + getUserFromSession().getFirstnameAndLastnameOrNickname())
                     body( view:"_favoritesEmailBody",
                     model:[
                         results: allResultsOrdered,
@@ -405,7 +406,7 @@ class FavoritesController {
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
                         folderDescription:selectedFolder.description
-                        ])
+                    ])
 
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
@@ -462,6 +463,7 @@ class FavoritesController {
 
     def addFavorite() {
         log.info "addFavorite " + params.id
+        long timestampStart = System.currentTimeMillis() // This is because of the slow request: See DDBNEXT-932
         def itemId = params.id
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
@@ -473,6 +475,8 @@ class FavoritesController {
             result = response.SC_UNAUTHORIZED
         }
         log.info "addFavorite returns " + result
+        long timestampStop = System.currentTimeMillis()
+        log.info "addFavorite duration: "+(timestampStop-timestampStart)/1000 // This is because of the slow request: See DDBNEXT-932
         render(status: result)
     }
 

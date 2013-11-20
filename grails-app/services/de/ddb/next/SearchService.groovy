@@ -452,6 +452,8 @@ class SearchService {
         if(!urlQuery["facet"]){
             urlQuery["facet"] = []
         }
+
+        // This is needed for the entity search results that are displayed on top of the regular search results.
         urlQuery["facet"].add("affiliate_fct_involved_normdata")
         urlQuery["facet"].add("affiliate_fct_subject")
 
@@ -619,7 +621,14 @@ class SearchService {
             }
 
             if(!filterFacet){
-                res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                if(matcher && facets.facetValues[i].value.toString().toLowerCase().contains(matcher.toLowerCase())){
+                    def facetValue = facets.facetValues[i].value
+                    def firstIndexMatcher = facetValue.toLowerCase().indexOf(matcher.toLowerCase())
+                    facetValue = facetValue.substring(0, firstIndexMatcher)+"<strong>"+facetValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+facetValue.substring(firstIndexMatcher+matcher.size(),facetValue.size())
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                } else {
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                }
             }
         }
         return res

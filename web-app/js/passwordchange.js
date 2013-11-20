@@ -19,7 +19,7 @@ $(document).ready(function(){
 
     rules:{
       oldpassword:{
-        required:true,
+        required:true
       },
       newpassword:{
         required:true,

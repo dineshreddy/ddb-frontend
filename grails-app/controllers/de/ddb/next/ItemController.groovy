@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession
 import com.sun.org.apache.bcel.internal.generic.RETURN
 
 import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexNamespace
 
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
@@ -196,26 +197,21 @@ class ItemController {
             forward controller: "error", action: "itemNotFound"
         }
     }
-    def makeLinksBlank(fields){
-        fields.each {
-            def value = it.value?.toString()
 
-            int indexOfHref = value.indexOf(" href=")
-            if(indexOfHref > 0){
-                def prefix = value.substring(0,indexOfHref)
-                def suffix = value.substring(indexOfHref, value.length())
-                it.value = prefix + " target=\"_blank\"" + suffix
-            }
-        }
-    }
 
     def createEntityLinks(fields){
         fields.each {
-            def valueTag = it.value
-            def resource = valueTag?.'@rdf:resource'
-            if(resource != null && !resource.isEmpty()){
-                def entityId = cultureGraphService.getGndIdFromGndUri(resource.toString())
-                it.value.@entityId = entityId
+            def valueTags = it.value
+            valueTags.each { valueTag ->
+
+                def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
+
+                if(resource != null && !resource.isEmpty()){
+                    if(cultureGraphService.isValidGndUri(resource)){
+                        def entityId = cultureGraphService.getGndIdFromGndUri(resource)
+                        valueTag.@entityId = entityId
+                    }
+                }
             }
         }
         return fields
@@ -236,10 +232,15 @@ class ItemController {
     }
 
     def convertToHtmlLink = { field ->
-        def fieldValue = field.value?.toString()
-        if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
-            field.value = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
+        for(int i=0; i<field.value.size(); i++) {
+            def value = field.value[i]
+
+            def fieldValue = field.value[i].toString()
+            if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
+                field.value[i] = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
+            }
         }
+
         return field
     }
 
@@ -324,7 +325,8 @@ class ItemController {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-            def licenseId = item.item.license["@ns2:resource"].toString()
+
+            def licenseId = getTagAttribute(item.item.license, CortexNamespace.RDF.prefix, "resource")
 
             def propertyId = convertUriToProperties(licenseId)
 
@@ -376,6 +378,15 @@ class ItemController {
         }else{
             return ""
         }
+    }
+
+    private String getTagAttribute(def tag, String namespacePrefix, String attributeName ) {
+        String out = null
+        out = tag["@"+namespacePrefix+":"+attributeName].toString().trim()
+        if(out == null || out.isEmpty()){
+            out = tag["@"+CortexNamespace.NS2.prefix+":"+attributeName].toString().trim()
+        }
+        return out
     }
 
     def showXml() {

@@ -32,7 +32,7 @@ limitations under the License.
     <meta name="layout" content="main">
   </head>
   <body>
-    <div class="favorites-results-container">
+    <div class="saved-searches">
       <div class="row favorites-results-head">
         <div class="span8">
           <h1><g:message code="ddbnext.Savedsearches_Header"/></h1>

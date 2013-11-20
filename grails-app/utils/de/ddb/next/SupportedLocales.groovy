@@ -17,9 +17,8 @@ package de.ddb.next;
 
 
 public enum SupportedLocales {
-
-    EN(new Locale("en", "EN"), 0),
-    DE(new Locale("de", "DE"), 1)
+    EN(Locale.US, 0),
+    DE(Locale.GERMANY, 1)
 
     private Locale locale
     private int priority
