@@ -226,14 +226,14 @@ $(function() {
         url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
         dataType : "json",
         success : function(data) {
-          
+
           // Then set the values to the GUI
           var oldFolderTitle = data.title;
           var oldFolderDescription = data.description;
           var isPublic = data.isPublic;
           var publishingName = data.publishingName;
-          
-          
+          var isBlocked = data.isBlocked;
+
           $('#folder-edit-id').val(folderId);
           $('#folder-edit-name').val(oldFolderTitle);
           $('#folder-edit-description').val(oldFolderDescription);
@@ -243,6 +243,11 @@ $(function() {
             $('#folder-edit-privacy-private').attr('checked','checked');
           }
           $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
+          if(isBlocked){
+            $('#folder-edit-privacy-area').addClass('off');
+          }else{
+            $('#folder-edit-privacy-area').removeClass('off');
+          }
 
           
           $('#folderEditConfirmDialog').modal('show');

@@ -88,6 +88,10 @@ hr {
   right:0;
 }
 
+.bookmarks-list-edit > i, .bookmarks-list-delete > i, .bookmarks-list-publish > i {
+  vertical-align: baseline;
+}
+
 .bookmarks-list-delete {
   margin-top: 2px;
   margin-right: 5px;
@@ -569,6 +573,10 @@ hr {
   margin-bottom: 0px !important;
 }
 
+.public-favorites .folder-siblings {
+  text-decoration: underline;
+}
+
 .orderList{
 	margin:10px 0 10px 3px;
 }
@@ -668,3 +676,6 @@ hr {
   background-position: -3px -39px !important;
 }
 
+.icon-blocked {
+  background-position: -3px -70px !important;
+}
