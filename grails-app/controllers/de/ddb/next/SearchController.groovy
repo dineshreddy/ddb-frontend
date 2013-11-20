@@ -40,7 +40,7 @@ class SearchController {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
-
+            
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
@@ -129,7 +129,7 @@ class SearchController {
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery)
                 if(urlQuery["facet"]){
-                    subFacetsUrl = searchService.buildSubFacetsUrl(selectedFacets, mainFacetsUrl, urlQuery)
+                    subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
 
                 def roleFacetsUrl = [:]

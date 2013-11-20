@@ -20,7 +20,7 @@ limitations under the License.
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
       <span class="count"><g:localizeNumber>${facetValues[i]['cnt']}</g:localizeNumber></span>
       <g:if test="${facetType == 'affiliate_fct' || facetType == 'keywords_fct' || facetType == 'place_fct' || facetType == 'provider_fct'}">
-        <span class="label">${facetValues[i]['fctValue'].encodeAsHTML()}</span>
+        <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == 'type_fct' }">
         <span class="label"><g:message code="${'ddbnext.type_fct_'+facetValues[i]['fctValue']}" /></span>
@@ -37,7 +37,8 @@ limitations under the License.
     </a>
 	
 	<g:if test="${facetType == 'affiliate_fct' && roleFacetsUrl != null && roleFacetsUrl.size() > 0}">			
-		<ul class="role-facets-list">
+		<!-- FIXME Due to DDBNEXT-973 we do not show the role facet list -->
+		<ul class="role-facets-list off">
 		<g:each in="${(roleFacetsUrl)}" var="roleFacet">
 			<g:if test="${facetType == roleFacet.parent && roleFacet.fctValue == facetValues[i]['fctValue']}">
 				<li class="role-facet">

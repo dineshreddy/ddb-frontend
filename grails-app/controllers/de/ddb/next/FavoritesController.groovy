@@ -279,7 +279,7 @@ class FavoritesController {
                 container["count"] = favoritesOfFolder.size()
                 allFoldersInformation.add(container)
             }
-            allFoldersInformation = sortFolders(allFoldersInformation)
+            allFoldersInformation = sortFolders(allFoldersInformation) { o -> o.folder }
 
             def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
@@ -558,28 +558,28 @@ class FavoritesController {
 
 
 
-    private def sortFolders(allFoldersInformations){
+    private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
         allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
-            if (isMainBookmarkFolder(o1)) {
+            if (isMainBookmarkFolder(folderAccess(o1))) {
                 return -1
             }
-            if (isMainBookmarkFolder(o2)) {
+            if (isMainBookmarkFolder(folderAccess(o2))) {
                 return 1
             }
-            return Collator.getInstance(getLocale()).compare(o1.folder.title, o2.folder.title)
+            return Collator.getInstance(getLocale()).compare(folderAccess(o1).title, folderAccess(o2).title)
         })
 
         //Check for empty titles
         for (def folderInfo : allFoldersInformations) {
-            if(folderInfo.folder.title.trim().isEmpty()){
-                folderInfo.folder.title = "-"
+            if(folderAccess(folderInfo).title.trim().isEmpty()){
+                folderAccess(folderInfo).title = "-"
             }
         }
         return allFoldersInformations
     }
 
-    private def isMainBookmarkFolder(folderInfo) {
-        return folderInfo.folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
+    private def isMainBookmarkFolder(folder) {
+        return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
     }
 
     def addFavorite() {
@@ -755,12 +755,12 @@ class FavoritesController {
         def User user = getUserFromSession()
         if (user != null) {
             def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-            def result = bookmarksService.findAllFolders(user.getId())
-            result.find {it.folderId == mainFolder.folderId}.isMainFolder = true
-            result.sort {it.title.toLowerCase()}
-            result.each {it.blockingToken = ""} // Don't expose the blockingToken to Javascript
-            log.info "getFavoriteFolders returns " + result
-            render(result as JSON)
+            def folders = bookmarksService.findAllFolders(user.getId())
+            folders.find {it.folderId == mainFolder.folderId}.isMainFolder = true
+            folders = sortFolders(folders)
+            folders.each {it.blockingToken = ""} // Don't expose the blockingToken to Javascript
+            log.info "getFavoriteFolders returns " + folders
+            render(folders as JSON)
         } else {
             log.info "getFavoriteFolders returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
