@@ -16,18 +16,16 @@
 
 package de.ddb.next
 
-class SocialmediaTagLib {
+import de.ddb.next.constants.DDBConstants
 
-    def configurationService
+class GetSocialMediaMetaTagLib {
 
-    def socialmediaMeta = { attrs, body ->
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+    def getSocialmediaMeta = { attrs, body ->
         def likeUrl = attrs.likeUrl
         def likeTitle = attrs.likeTitle
 
         out << render(template:"/common/socialmediaMeta", model:[likeUrl: likeUrl, likeTitle: likeTitle])
-    }
-
-    def socialmediaBody = { attrs, body ->
-        out << render(template:"/common/socialmediaBody", model:[errors: attrs.errors])
     }
 }

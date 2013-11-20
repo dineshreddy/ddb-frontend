@@ -17,7 +17,7 @@ limitations under the License.
 <html>
   <head>
   
-    <g:redirectIfNotLoggedIn />
+    <ddb:doRedirectIfNotLoggedIn />
     
     <title><g:message code="ddbnext.Api" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
     
@@ -33,7 +33,7 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message code="ddbnext.Api_Access_Of"/> <g:getUserLabel /></h1>
+                <h1><g:message code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
               </div>
             </div>
             

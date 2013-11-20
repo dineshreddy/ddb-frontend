@@ -39,8 +39,7 @@ limitations under the License.
             <a style="color: #a5003b"
               href="${contextUrl + '/search?' + (search.queryString).encodeAsHTML()}"
               title="${truncateHovercardTitle(title: search.label, length: 350)}">
-              <g:truncateItemTitle title="${search.label}"
-                length="${100}" />
+              <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
             </a>
           </h2>
           <div>

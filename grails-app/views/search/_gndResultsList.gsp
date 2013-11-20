@@ -29,7 +29,7 @@ limitations under the License.
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:gndItem.id]}" >
-                <strong><g:truncateItemTitle title="${ gndItem.person.name }" length="${ 100 }"></g:truncateItemTitle></strong>
+                <strong><ddb:getTruncatedItemTitle title="${ gndItem.person.name }" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
@@ -51,14 +51,14 @@ limitations under the License.
             </g:link>
           </div>
           <%-- 
-          <g:isLoggedIn>
+          <ddb:isLoggedIn>
             <div id="favorite-${gndItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
                 <p><g:message code="ddbnext.Added_To_Favorites"/></p>
               </div>
             </div>
-          </g:isLoggedIn>
+          </ddb:isLoggedIn>
           --%>
         </div>
 

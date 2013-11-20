@@ -15,19 +15,24 @@
  */
 package de.ddb.next
 
+import de.ddb.next.beans.User
 import de.ddb.next.constants.DDBConstants
 
-class RenderPaginationControls {
+class IsPersonalFavoritesAvailableTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
-    /**
-     * Renders the paginator bar for the results.
-     *
-     * @attrs navData REQUIRED data for paginator
-     */
+    def favoritesService
+    def sessionService
 
-    def renderPaginationControls = { attrs, body ->
-        out << render(template:"/common/pageNavigationControls", model:[navData: attrs.navData])
+    def isPersonalFavoritesAvailable = {attrs, body ->
+        def user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if (favoritesService.getAllFoldersPerUser(user).size() > 1) {
+            out << body()
+        }
+        else {
+            out << ""
+        }
     }
 }

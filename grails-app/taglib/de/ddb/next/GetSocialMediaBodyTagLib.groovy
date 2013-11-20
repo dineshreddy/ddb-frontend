@@ -14,9 +14,14 @@
  * limitations under the License.
  */
 package de.ddb.next
-//the search/searchSuggestion has been
-class SearchSuggestionTagLib {
-    def searchSuggestion = { correctedQuery, body ->
-        out << render(template:"/search/searchSuggestion", model:[correctedQuery])
+
+import de.ddb.next.constants.DDBConstants
+
+class GetSocialMediaBodyTagLib {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+    def getSocialmediaBody = { attrs, body ->
+        out << render(template:"/common/socialmediaBody", model:[errors: attrs.errors])
     }
 }

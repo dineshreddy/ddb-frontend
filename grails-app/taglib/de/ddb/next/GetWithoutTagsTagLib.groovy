@@ -15,40 +15,23 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils;
+import de.ddb.next.constants.DDBConstants
 
-/**
- * This taglib provides all the general functions that should be useful inside the whole application 
- * @author hla
- */
-class MiscellaneousTagLib {
+class GetWithoutTagsTagLib {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
 
     /**
-     * It parses the body of the tag for further tags and removes them. 
+     * It parses the body of the tag for further tags and removes them.
      * This is particularly useful, if the body of the tag is dynamically rendered from backend data but you want to
      * ensure there is no html code contained.
      */
-    def removeTags = { attrs, body ->
+    def getWithoutTags = { attrs, body ->
         def inputString = body()
         def outputString = ""
         if(inputString){
             outputString = inputString.replaceAll(/<!--.*?-->/, '').replaceAll(/<.*?>/, '')
         }
         out << outputString.encodeAsHTML()
-    }
-
-    /**
-     * Gives you back a localized representation of the number
-     */
-    def localizeNumber = { attrs, body ->
-
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def inputString = body()
-        def outputString = ""
-        if(inputString){
-            outputString = String.format(locale, "%,d", inputString.toInteger())
-        }
-        out << outputString
     }
 }

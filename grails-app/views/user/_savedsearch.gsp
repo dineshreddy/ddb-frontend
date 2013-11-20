@@ -26,8 +26,7 @@ limitations under the License.
               <a class="persist"
                 href="${request.contextPath + '/searchresults?' + (search.queryString).encodeAsHTML()}"
                 title="${truncateHovercardTitle(title: search.label, length: 350)}">
-                <g:truncateItemTitle title="${search.label}"
-                  length="${100}" />
+                <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
               </a>
               <a id="${search.id}" class="edit-saved-search" data-label="${search.label}"
                  data-querystring="${search.queryString}">

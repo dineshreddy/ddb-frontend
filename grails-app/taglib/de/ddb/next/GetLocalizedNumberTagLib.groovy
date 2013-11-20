@@ -15,9 +15,26 @@
  */
 package de.ddb.next
 
+import org.springframework.web.servlet.support.RequestContextUtils
+
 import de.ddb.next.constants.DDBConstants
 
-class RenderSearchResultsList {
+class GetLocalizedNumberTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+    /**
+     * Gives you back a localized representation of the number
+     */
+    def getLocalizedNumber = { attrs, body ->
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        def inputString = body()
+        def outputString = ""
+        if(inputString){
+            outputString = String.format(locale, "%,d", inputString.toInteger())
+        }
+        out << outputString
+    }
 }

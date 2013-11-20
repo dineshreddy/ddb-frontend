@@ -18,7 +18,7 @@ limitations under the License.
 <g:each var="i" in="${ (0..<upperBound) }">
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
-      <span class="count"><g:localizeNumber>${facetValues[i]['cnt']}</g:localizeNumber></span>
+      <span class="count"><ddb:getLocalizedNumber>${facetValues[i]['cnt']}</ddb:getLocalizedNumber></span>
       <g:if test="${facetType == 'affiliate_fct' || facetType == 'keywords_fct' || facetType == 'place_fct' || facetType == 'provider_fct'}">
         <span class="label">${facetValues[i]['fctValue'].encodeAsHTML()}</span>
       </g:if>
@@ -43,7 +43,7 @@ limitations under the License.
 			<g:if test="${facetType == roleFacet.parent && roleFacet.fctValue == facetValues[i]['fctValue']}">
 				<li class="role-facet">
 					<a href="${roleFacet['url']}" class="${roleFacet['selected']}">
-						<span class="count"><g:localizeNumber>${roleFacet.cnt}</g:localizeNumber></span>
+						<span class="count"><ddb:getLocalizedNumber>${roleFacet.cnt}</ddb:getLocalizedNumber></span>
 						<span class="label"><g:message code="${'ddbnext.facet_'+ roleFacet.field}" /></span>						
 					</a>
 				</li>

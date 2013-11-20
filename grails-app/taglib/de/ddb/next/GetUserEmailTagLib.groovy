@@ -15,19 +15,22 @@
  */
 package de.ddb.next
 
+import de.ddb.next.beans.User
 import de.ddb.next.constants.DDBConstants
 
-class RenderItemDetailInfoNavMob {
+class GetUserEmailTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
-    /**
-     * Renders the navigation bar for the item detail view mobile.
-     *
-     * @attrs navData REQUIRED data for page navigation
-     */
+    def sessionService
 
-    def renderItemDetailInfoNavMob = { attrs, body ->
-        out << render(template:"/search/itemNavigationMob", model:[navData: attrs.navData])
+    def getUserEmail = { attrs, body ->
+        def isLoggedIn = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if(isLoggedIn){
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getEmail()
+        }else{
+            out << ""
+        }
     }
 }

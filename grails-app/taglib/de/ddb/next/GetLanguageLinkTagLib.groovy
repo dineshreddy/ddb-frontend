@@ -17,69 +17,16 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-/**
- * Taglib for I18N issues.
- * @author hla
- */
-class I18NHelperTagLib {
+import de.ddb.next.constants.DDBConstants
 
-    def messageSource
+class GetLanguageLinkTagLib {
 
-    /**
-     * Prints out the currently selected language. The language itself is internationalized. The language must be 
-     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
-     */
-    def currentLanguage = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def localeLanguage = locale.getLanguage()
-        def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)
-
-        out << i18nLanguageString
-    }
-
-    /**
-     * Prints out the currently selected language. The language itself is in ISO2 format. The language must be
-     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
-     */
-    def currentLocale = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def localeLanguage = locale.getLanguage()
-
-        out << localeLanguage
-    }
-
-    /**
-     * Prints out the currently selected language. The language itself is in full format (de_DE). The language must be
-     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
-     */
-    def currentLocaleFull = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def localeFull = locale.getLanguage()+"_"+locale.getCountry()
-        out << localeFull
-    }
-
-    /**
-     * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,
-     * otherwise not.
-     */
-    def isCurrentLanguage = {attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def checkLocale = SupportedLocales.getBestMatchingLocale(attrs.locale)
-
-        if(locale.getLanguage() == checkLocale.getLanguage()){
-            out << body()
-        }else{
-            out << ""
-        }
-    }
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
 
     /**
      * Renders a language switching link dependend on the current url params, the given locale and the internationalized name.
      */
-    def languageLink = {attrs, body ->
+    def getLanguageLink = {attrs, body ->
         def checkLocaleString = attrs.locale
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
@@ -123,7 +70,7 @@ class I18NHelperTagLib {
             cleanedParams.each {
                 if (it.value instanceof String[]) {
                     it.value.each { a ->
-                        //The param key "facetValues[]" has values like this: "type_fct=mediatype_003". So we have to encode the key and value for the URL 
+                        //The param key "facetValues[]" has values like this: "type_fct=mediatype_003". So we have to encode the key and value for the URL
                         paramString += it.key.encodeAsURL() + "=" + a.encodeAsURL() + "&"
                     }
                 }

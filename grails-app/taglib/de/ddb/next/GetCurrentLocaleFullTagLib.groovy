@@ -13,21 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.ddb.next
+
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.constants.DDBConstants
 
-class RenderPageInfoNav {
+class GetCurrentLocaleFullTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
     /**
-     * Renders the navigation bar for the results.
-     *
-     * @attrs navData REQUIRED data for page navigation
+     * Prints out the currently selected language. The language itself is in full format (de_DE). The language must be
+     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
      */
+    def getCurrentLocaleFull = { attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-    def renderPageInfoNav = { attrs, body ->
-        out << render(template:"/search/pageNavigation", model:[navData: attrs.navData])
+        def localeFull = locale.getLanguage()+"_"+locale.getCountry()
+        out << localeFull
     }
 }

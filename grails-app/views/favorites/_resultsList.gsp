@@ -34,12 +34,12 @@ limitations under the License.
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
                 <a title="${truncateHovercardTitle(title: it.label, length: 350)}">
-                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                  <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </a>
               </g:if>
               <g:else>
                 <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
-                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                  <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </g:link>
               </g:else>
             </h2>
@@ -57,12 +57,12 @@ limitations under the License.
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
             <a>
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </a>
           </g:if>
           <g:else>
             <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:link>
           </g:else>
         </div>

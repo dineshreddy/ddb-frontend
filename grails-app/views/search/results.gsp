@@ -71,7 +71,7 @@ limitations under the License.
         <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
 
-      <g:isLoggedIn>
+      <ddb:isLoggedIn>
         <div id="addToSavedSearches">
           <div class="add-to-saved-searches"></div>
           <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
@@ -101,13 +101,13 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </g:isLoggedIn>
+      </ddb:isLoggedIn>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
       <g:if test="${correctedQuery!='null'}">
         <g:if test="${correctedQuery}">
-          <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
         </g:if>
       </g:if>
       <g:render template="noResults" />
@@ -153,7 +153,7 @@ limitations under the License.
       </div>
       <g:if test="${correctedQuery!='null'}">
 	      <g:if test="${correctedQuery}">
-	        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+	        <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
 	      </g:if>
       </g:if>
       
@@ -162,7 +162,7 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:itemResultsRender results="${results.results["docs"]}" gndResults="${gndResults}"></g:itemResultsRender>
+                <ddb:renderSearchResultsList results="${results.results["docs"]}" gndResults="${gndResults}" />
               </g:if>
             </div>
           </div>

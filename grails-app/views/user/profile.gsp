@@ -16,7 +16,7 @@ limitations under the License.
 <html>
 <head>
 
-<g:redirectIfNotLoggedIn />
+<ddb:doRedirectIfNotLoggedIn />
 
 <title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
@@ -46,7 +46,7 @@ limitations under the License.
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="well">
             <div class="profile-nav bb-white">
-                <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
+                <div><h1><g:message code="ddbnext.User_Profile"/> <ddb:getUserLabel /></h1></div>
             </div>
             <div class="row">
               <div class="span9 control-groups">

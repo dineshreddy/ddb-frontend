@@ -17,7 +17,7 @@ limitations under the License.
   <div class="summary-main">
     <h2 class="title">
       <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${truncateHovercardTitle(title: item.label, length: 350)}">
-      <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+      <ddb:getTruncatedItemTitle title="${ item.preview.title }" length="${ 100 }" />
       </g:link>
     </h2>
     <div class="subtitle">

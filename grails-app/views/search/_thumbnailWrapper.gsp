@@ -17,15 +17,15 @@ limitations under the License.
 <div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span3</g:if>">
   <div class="thumbnail">
     <g:link controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
-      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<g:removeTags>${item.preview.title}</g:removeTags>" />
+      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" />
     </g:link>
   </div>
   <div class="item-options <g:if test="${viewType != 'grid'}">bl</g:if>">
     <ul class="item-options-ul">
       <li>
-        <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>">
+        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>">
           <div class="hovercard-info-item" data-iid="${item.id}">
-            <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
+            <h4><ddb:getTruncatedHovercardTitle title="${ item.preview.title }" length="${ 350 }" /></h4>
             <ul class="unstyled">
               <li>
                 <div class="small-loader"></div>
@@ -35,19 +35,19 @@ limitations under the License.
         </div>
       </li>
   <!--<li> 
-        <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>"></div>
+        <div class="compare<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>"></div>
       </li>   -->  
-      <g:isLoggedIn>
+      <ddb:isLoggedIn>
         <li>
           <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
           <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
               <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-              <g:hasPersonalFavorites>
+              <ddb:isPersonalFavoritesAvailable>
                 <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
                 <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
-              </g:hasPersonalFavorites>
-              <g:hasPersonalFavorites>
+              </ddb:isPersonalFavoritesAvailable>
+              <ddb:isPersonalFavoritesAvailable>
                 <div class="modal-footer">
                   <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
                     <g:message code="ddbnext.Close"/>
@@ -56,11 +56,11 @@ limitations under the License.
                     <g:message code="ddbnext.Save"/>
                   </button>
                 </div>
-              </g:hasPersonalFavorites>
+              </ddb:isPersonalFavoritesAvailable>
             </div>
           </div>
         </li>
-      </g:isLoggedIn>
+      </ddb:isLoggedIn>
     </ul>
   </div>
 </div>

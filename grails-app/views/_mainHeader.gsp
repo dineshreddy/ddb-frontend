@@ -77,7 +77,7 @@ limitations under the License.
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
           </li><!-- /end of help -->
-            <g:isLoggedIn>
+            <ddb:isLoggedIn>
               <li class="">
                 <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
@@ -92,30 +92,30 @@ limitations under the License.
                   </li>
                 </ul>
               </li>
-            </g:isLoggedIn>
+            </ddb:isLoggedIn>
             <li class=""><a>
               <g:message code="ddbnext.ChangeLanguage" />
             </a>
             <ul class="nav">
-              <li class="<g:isCurrentLanguage locale="de">selected-language</g:isCurrentLanguage>">
-                <g:languageLink params="${params}" locale="de" islocaleclass="nopointer">
+              <li class="<ddb:isCurrentLanguage locale="de">selected-language</<ddb:isCurrentLanguage>">
+                <ddb:getLanguageLink params="${params}" locale="de" islocaleclass="nopointer">
                   <g:message code="ddbnext.language_de" />
-                </g:languageLink>
+                </ddb:getLanguageLink>
               </li>
-              <li class="<g:isCurrentLanguage locale="en">selected-language</g:isCurrentLanguage>">
-                <g:languageLink params="${params}" locale="en" islocaleclass="nopointer">
+              <li class="<<ddb:isCurrentLanguage locale="en">selected-language</<ddb:isCurrentLanguage>">
+                <ddb:getLanguageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message code="ddbnext.language_en" />
-                </g:languageLink>
+                </ddb:getLanguageLink>
               </li>
             </ul>
           </li>
           <li class="">
-            <g:isNotLoggedIn>
+            <ddb:isNotLoggedIn>
               <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
-            </g:isNotLoggedIn>
-            <g:isLoggedIn>
-              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<g:getUserName />)</g:link>
-            </g:isLoggedIn>
+            </ddb:isNotLoggedIn>
+            <ddb:isLoggedIn>
+              <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<ddb:getUserName />)</g:link>
+            </ddb:isLoggedIn>
           </li>
         </ul>
       </div>
@@ -188,7 +188,7 @@ limitations under the License.
                   class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"]]}">active-default</ddb:isMappingActive>">
                   <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
                 </li>
-                <g:isLoggedIn>
+                <ddb:isLoggedIn>
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
@@ -210,40 +210,40 @@ limitations under the License.
                       </li>
                     </ul>
                   </li>
-                </g:isLoggedIn>
+                </ddb:isLoggedIn>
               </ul>
             </div>
           </div>
           <div class="span5 toolbar">
             <div class="status-bar">
-              <g:isNotLoggedIn>
+              <ddb:isNotLoggedIn>
                 <div class="login-wrapper">
                   <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
                 </div>
-              </g:isNotLoggedIn>
-              <g:isLoggedIn>
+              </ddb:isNotLoggedIn>
+              <ddb:isLoggedIn>
                 <div class="login-wrapper">
                   <span style="vertical-align:top;"><g:message code="ddbnext.You_are_currently_logged_in_as" /></span>
-                  <g:link controller="user" action="profile" class="login-username"><g:getUserName /></g:link>
+                  <g:link controller="user" action="profile" class="login-username"><ddb:getUserName /></g:link>
                   <div class="login-dropdown"></div>
                   <ul class="selector logout">
                     <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
                   </ul>
                 </div>
-              </g:isLoggedIn>
+              </ddb:isLoggedIn>
               <div class="header-spacer"></div>
               <div class="language-wrapper">
-                <a href="#"> <g:currentLanguage />
+                <a href="#"> <ddb:getCurrentLanguage />
                 </a>
                 <ul class="selector language">
-                  <li><g:languageLink params="${params}" locale="de"
+                  <li><ddb:getLanguageLink params="${params}" locale="de"
                       islocaleclass="nopointer">
                       <g:message code="ddbnext.language_de" />
-                    </g:languageLink></li>
-                    <li><g:languageLink params="${params}" locale="en"
+                    </ddb:getLanguageLink></li>
+                    <li><ddb:getLanguageLink params="${params}" locale="en"
                       islocaleclass="nopointer">
                       <g:message code="ddbnext.language_en" />
-                    </g:languageLink></li>
+                    </ddb:getLanguageLink></li>
                 </ul>
               </div>
             </div>

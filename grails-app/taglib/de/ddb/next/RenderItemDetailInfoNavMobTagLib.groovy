@@ -17,17 +17,17 @@ package de.ddb.next
 
 import de.ddb.next.constants.DDBConstants
 
-class RenderMediaTypesList {
+class RenderItemDetailInfoNavMobTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
     /**
-     * Renders the media types icons.
+     * Renders the navigation bar for the item detail view mobile.
      *
-     * @attrs mediaTypesArray REQUIRED media types array
+     * @attrs navData REQUIRED data for page navigation
      */
 
-    def renderMediaTypesList = { attrs, body ->
-        out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
+    def renderItemDetailInfoNavMob = { attrs, body ->
+        out << render(template:"/search/itemNavigationMob", model:[navData: attrs.navData])
     }
 }

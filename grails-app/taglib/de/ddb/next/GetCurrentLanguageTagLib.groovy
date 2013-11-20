@@ -13,21 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package de.ddb.next
+
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.constants.DDBConstants
 
-class RenderResultsPaginatorOptions {
+class GetCurrentLanguageTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
-    /**
-     * Renders the paginator bar for the results.
-     *
-     * @attrs paginatorData REQUIRED data for paginator
-     */
+    def messageSource
 
-    def renderResultsPaginatorOptions = { attrs, body ->
-        out << render(template:"/search/paginator", model:[paginatorData: attrs.paginatorData])
+    /**
+     * Prints out the currently selected language. The language itself is internationalized. The language must be
+     * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
+     */
+    def getCurrentLanguage = { attrs, body ->
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        def localeLanguage = locale.getLanguage()
+        def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)
+
+        out << i18nLanguageString
     }
 }

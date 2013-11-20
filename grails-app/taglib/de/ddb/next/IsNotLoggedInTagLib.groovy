@@ -15,19 +15,22 @@
  */
 package de.ddb.next
 
+import de.ddb.next.beans.User
 import de.ddb.next.constants.DDBConstants
 
-class RenderItemDetailInfoNav {
+class IsNotLoggedInTagLib {
 
     static namespace = DDBConstants.TAGLIB_NAMESPACE
 
-    /**
-     * Renders the navigation bar for the item detail view.
-     *
-     * @attrs navData REQUIRED data for page navigation
-     */
+    def sessionService
 
-    def renderItemDetailInfoNav = { attrs, body ->
-        out << render(template:"/search/itemNavigation", model:[navData: attrs.navData])
+    def isNotLoggedIn = { attrs, body ->
+        def isLoggedIn = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if(!isLoggedIn){
+            out << body()
+        }else{
+            out << ""
+        }
     }
 }

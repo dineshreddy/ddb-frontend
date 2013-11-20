@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<g:redirectIfNotLoggedIn />
+<ddb:doRedirectIfNotLoggedIn />
 
 <title><g:message code="ddbnext.Password_Change" /> - <g:message
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
@@ -36,7 +36,7 @@ limitations under the License.
       <input type="hidden" name="id" value="${ user.id }" />
       <div class="well">
         <div class="profile-nav">
-          <g:set var="userLabel"><g:getUserLabel /></g:set>
+          <g:set var="userLabel"><ddb:getUserLabel /></g:set>
           <div>
             <h1>
               <g:message code="ddbnext.Change_Password_Label"
