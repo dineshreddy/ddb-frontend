@@ -76,15 +76,15 @@ $(document).ready(function() {
   
   function initializeJwPlayer(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
     jwplayer(divId).setup({
-      'flashplayer': jsContextPath + '/jwplayer/jwplayer.flash.swf',
-      'html5player': jsContextPath + '/jwplayer/jwplayer.html5.js',
-      'modes': [{type: "html5", src: jsContextPath + "/jwplayer/jwplayer.html5.js"}, 
-                {type: "flash", src: jsContextPath + "/jwplayer/jwplayer.flash.swf"}, 
+      'flashplayer': jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf',
+      'html5player': jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js',
+      'modes': [{type: "html5", src: jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js"}, 
+                {type: "flash", src: jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf"}, 
                 {type: "download"}],
       'fallback': true,
       'autostart': false,
       'file': videoFile,
-      'skin': jsContextPath + '/jwplayer/skins/five.xml',
+      'skin': jsContextPath + '/js/vendor/jwplayer-6.2.3115/skins/five.xml',
       'image': previewImage,
       'controls': true,
       'controlbar': 'bottom',

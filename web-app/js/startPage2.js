@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-/// <reference path="/Scripts/jquery.carouFredSel-6.2.0-packed.js"/>
-/// <reference path="/Scripts/jquery.dotdotdot-1.5.1.js"/>
+
 $(document).ready(function() {
     $(function() {
         $('#form-search input[type="search"]').focus();
