@@ -22,31 +22,31 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/css/bootstrap.css', bundle: 'screen'
-        resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/vendor/fancybox-2.1.4/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
-        resource url:'/css/institutionList.css', bundle: 'screen'
+        resource url:'/css/institutionList2.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
-        resource url:'/css/institution-map.css', bundle: 'screen'
+        resource url:'/css/institutionMap2.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/favorites.css', bundle: 'screen'
-        resource url:'/css/staticcontent.css', bundle: 'screen'
+        resource url:'/css/staticContent2.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
-        resource url:'/css/jquery.fancybox.css', bundle: 'screen'
         resource url:'/css/viewer.css', bundle: 'screen'
-        resource url:'/css/item-hierarchy.css', bundle: 'screen'
-        resource url:'/css/modalDialog.css', bundle: 'screen'
-        resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/itemHierarchy2.css', bundle: 'screen'
+        resource url:'/css/modalDialog2.css', bundle: 'screen'
+        resource url:'/css/advancedSearch2.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
         resource url:'/css/registration.css', bundle: 'screen'
-        resource url:'/css/user-profile.css', bundle: 'screen'
+        resource url:'/css/userProfile2.css', bundle: 'screen'
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
-        resource url:'/css/saved-searches.css', bundle: 'screen'
-        resource url:'/css/socialmedia.css', bundle: 'screen'
-        resource url:'/css/apikey.css', bundle: 'screen'
+        resource url:'/css/savedSearches2.css', bundle: 'screen'
+        resource url:'/css/socialMedia2.css', bundle: 'screen'
+        resource url:'/css/apiKey2.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -54,7 +54,7 @@ modules = {
     cssprint {
         resource url:'/css/ddb.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/item.css', attrs:[media:'print'], bundle: 'print'
-        resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
+        resource url:'/css/institutionList2.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/third-party/map/css/style.css', attrs:[media:'print'], bundle: 'print'
@@ -106,15 +106,15 @@ modules = {
     }
 
     autocomplete {
-        resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
+        resource url:'/css/vendor/autocomplete-1.10.2/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
         resource url:'/js/myautocomplete.js'
     }
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {
-        resource url:'/css/start-page.css', bundle: 'startpage'
-        resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
+        resource url:'/css/startPage2.css', bundle: 'startpage'
+        resource url:'/css/startPage2.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
     //These are pages that include third party components
