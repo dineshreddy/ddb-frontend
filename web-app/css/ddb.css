@@ -302,7 +302,7 @@ textarea:focus,input[type="text"]:focus,input[type="password"]:focus,input[type=
 /* header */
 
 header, .header {
-  background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
+  background:transparent url("../images/bg/backHeader.png") no-repeat center bottom;
   margin-bottom:20px;
 }
 
@@ -1181,7 +1181,7 @@ button,input[type="button"],input[type="submit"],.button {
   font-size: 0.938em;
   font-weight: bold;
   border: none;
-  background: #ec0a3c url("../images/bg/primary_button_bg.png") repeat-x bottom center;
+  background: #ec0a3c url("../images/bg/primaryButtonBg.png") repeat-x bottom center;
   margin: 0;
   padding: 2px 10px;
   cursor: pointer;
@@ -1200,7 +1200,7 @@ button:hover,input[type="button"]:hover,input[type="submit"]:hover {
 }
 
 button[disabled],input[type="button"][disabled],input[type="submit"][disabled] {
-  background: #999 url("../images/bg/primary_button_bg_disabled.png") repeat-x
+  background: #999 url("../images/bg/primaryButtonBgDisabled.png") repeat-x
     bottom center;
   cursor: default;
 }

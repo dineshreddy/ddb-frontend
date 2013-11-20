@@ -844,12 +844,12 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_standard_top_first.png") no-repeat 0px -68px;
+  background: url("../images/bg/advancedSearchSolidJointStandardTopFirst.png") no-repeat 0px -68px;
   position:relative;
   border-top: none;
 }
 .selected-items .role-facet:last-child {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
+  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -10px;
 }
 
 .role-facet .role-facet-value {  
@@ -872,7 +872,7 @@ input[type="checkbox"],input[type="radio"] {
   margin-left: 0
 }
 .role-facets-list .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -16px;
+  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -16px;
   position:relative;
   border-top: none;
   margin=0px;
