@@ -16,7 +16,9 @@
 package de.ddb.next
 
 
-import grails.util.Environment;
+import de.ddb.next.constants.DDBConstants
+
+import grails.util.Environment
 
 /**
  * Taglib for automatic integration of the piwik tracking sourcecode. The taglib ensures that the correct version
@@ -24,7 +26,9 @@ import grails.util.Environment;
  * 
  * @author hla
  */
-class PiwikTrackingTagLib {
+class GetPiwikTrackingTagLib {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
 
     def static trackingCodeCache = null
     def configurationService
@@ -32,7 +36,7 @@ class PiwikTrackingTagLib {
     /**
      * Tag closure <g:piwik />, this tag has no attributes. 
      */
-    def piwik = { attrs, body ->
+    def getPiwikTracking = { attrs, body ->
 
         //Only load the piwik tracking code one
         if(trackingCodeCache == null){
@@ -43,7 +47,7 @@ class PiwikTrackingTagLib {
                 log.info "Loaded and cached the Piwik tracking file from: "+piwikFile
             } catch (Exception e){
                 log.error "The PiwikTrackingTagLib could not find the piwikFile: "+piwikFile, e
-                trackingCodeCache = "";
+                trackingCodeCache = ""
             }
         }
 

@@ -225,7 +225,7 @@ limitations under the License.
                   </g:form>
                 </div>
                 <div class="span4 results-pagination fr">
-                  <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+                  <ddb:renderPaginationControls navData="${navigationData}"></ddb:renderPaginationControls>
                 </div>
               </div>
               <div class="results-sorter">

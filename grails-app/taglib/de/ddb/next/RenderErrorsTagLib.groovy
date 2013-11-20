@@ -15,13 +15,19 @@
  */
 package de.ddb.next
 
-class InPageMessagesTagLib {
+import de.ddb.next.constants.DDBConstants
+
+class RenderErrorsTagLib {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+
     /**
-     * Renders the in page messages in a list
+     * Renders the in page errors in a list
      *
-     * @attr messages REQUIRED messages list
+     * @attr errors REQUIRED errors list
      */
-    def renderMessages = { attrs, body ->
-       out << render(template:"/message/inPageMessages", model:[messages: attrs.messages])
+    def renderErrors = { attrs, body ->
+        out << render(template:"/error/inPageErrors", model:[errors: attrs.errors])
     }
 }

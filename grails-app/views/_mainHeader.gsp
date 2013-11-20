@@ -44,37 +44,37 @@ limitations under the License.
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
                 placeholder="Suche"
-                value="<g:getCookieFieldValue fieldname="query" />">
+                value="<ddb:getCookieFieldValue fieldname="query" />">
               <button type="submit">
                 <g:message code="ddbnext.Go_Button" />
               </button>
             </g:form></li>
 
-          <li class="<g:isMappingActive context="${params}"
-              testif="${[[controller: "content", dir: "about"]]}">active</g:isMappingActive>">
+          <li class="<ddb:isMappingActive context="${params}"
+              testif="${[[controller: "content", dir: "about"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'about']">
               <g:message code="ddbnext.AboutUs" />
             </g:link>
             <ul class="nav">
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</g:isMappingActive>">
+              <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
                 <g:link controller="content" params="[dir: 'news']"><g:message code="ddbnext.News" /></g:link>
               </li>
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active</g:isMappingActive>">
+              <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active</ddb:isMappingActive>">
                 <g:link controller="institution" action="show" fragment="list"><g:message code="ddbnext.Institutions" /></g:link>
               </li>
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active</g:isMappingActive>">
+              <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active</ddb:isMappingActive>">
                 <g:link controller="content" params="[dir: 'ddb']"><g:message code="ddbnext.Participate" /></g:link>
               </li>
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active</g:isMappingActive>">
+              <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active</ddb:isMappingActive>">
                 <g:link controller="content" params="[dir: 'competence-network']"><g:message code="ddbnext.CompetenceNetwork" /></g:link>
               </li>
-              <li class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active</g:isMappingActive>">
+              <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active</ddb:isMappingActive>">
                 <g:link controller="content" params="[dir: 'faq']"><g:message code="ddbnext.Faq" /></g:link>
               </li>
             </ul><!-- /end of .nav -->
           </li>
-          <li class="<g:isMappingActive context="${params}"
-            testif="${[[controller: "content", dir: "help"]]}">active</g:isMappingActive>">
+          <li class="<ddb:isMappingActive context="${params}"
+            testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
           </li><!-- /end of help -->
             <g:isLoggedIn>
@@ -149,60 +149,60 @@ limitations under the License.
             <div role="navigation">
               <ul class="navigation inline">
                 <li
-                  class="root <g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive><g:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-closed</g:isMappingActive>">
+                  class="root <ddb:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</ddb:isMappingActive><ddb:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-closed</ddb:isMappingActive>">
                   <g:link uri="/"><g:message code="ddbnext.Search" /></g:link>
                   <ul>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="advancedsearch"><g:message code="ddbnext.Advanced_search" /></g:link>
                     </li>
                   </ul>
                 </li>
                 <li
-                  class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
+                  class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</ddb:isMappingActive>">
                   <g:link controller="content" params="[dir: 'about']"><g:message code="ddbnext.AboutUs" /></g:link>
                   <ul>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="content" params="[dir: 'news']"><g:message code="ddbnext.News" /></g:link>
                     </li>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="institution" action="show"><g:message code="ddbnext.Institutions" /></g:link>
                     </li>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="content" params="[dir: 'ddb']"><g:message code="ddbnext.Participate" /></g:link>
                     </li>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "competence-network"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="content" params="[dir: 'competence-network']"><g:message code="ddbnext.CompetenceNetwork" /></g:link>
                     </li>
                     <li
-                      class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active-default</g:isMappingActive>">
+                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "faq"]]}">active-default</ddb:isMappingActive>">
                       <g:link controller="content" params="[dir: 'faq']"><g:message code="ddbnext.Faq" /></g:link>
                     </li>
                   </ul>
                 </li>
                 <li
-                  class="<g:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"]]}">active-default</g:isMappingActive>">
+                  class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"]]}">active-default</ddb:isMappingActive>">
                   <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
                 </li>
                 <g:isLoggedIn>
                   <li
-                    class="keep-in-front <g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
+                    class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                     <ul>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"]]}">active-default</g:isMappingActive>">
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="favorites" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                       </li>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</g:isMappingActive>">
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Searches" /></g:link>
                       </li>
                       <li
-                        class="<g:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</g:isMappingActive>">
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="user" action="profile"><g:message code="ddbnext.Profile" /></g:link>
                       </li>
                       <li class="">
@@ -254,10 +254,10 @@ limitations under the License.
                       code="ddbnext.Search_text_field" /></span>
                 </label>
                 <input type="hidden" id="querycache"
-                  value="<g:getCookieFieldValue fieldname="query" />" />
+                  value="<ddb:getCookieFieldValue fieldname="query" />" />
                 <input type="search" id="search-small" class="query"
                   name="query"
-                  value="<g:getCookieFieldValue fieldname="query" />"
+                  value="<ddb:getCookieFieldValue fieldname="query" />"
                   autocomplete="off" />
                 <button type="submit">
                   <!--[if !IE]><!-->

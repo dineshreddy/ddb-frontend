@@ -29,7 +29,7 @@ limitations under the License.
           <li><g:link controller="content" params="[dir: 'sitemap']"><g:message code="ddbnext.Sitemap"/></g:link></li>
           <li><g:link controller="content" params="[dir: 'contact']"><g:message code="ddbnext.Contact"/></g:link></li>
         </ul>
-        <div class="build"><g:meta name="app.version"/> / <g:backendVersion/></div>
+        <div class="build"><g:meta name="app.version"/> / <ddb:getBackendVersion/></div>
       </div>
     </div>
   </div>

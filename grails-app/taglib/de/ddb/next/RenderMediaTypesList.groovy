@@ -15,24 +15,19 @@
  */
 package de.ddb.next
 
-class CommonTagLib {  
-  /**
-   * Renders the paginator bar for the results.
-   *
-   * @attrs navData REQUIRED data for paginator
-   */
-  
-  def paginationControlsRender = { attrs, body ->
-      out << render(template:"/common/pageNavigationControls", model:[navData: attrs.navData])
-  }
-  
-  /**
-   * Renders the media types icons.
-   *
-   * @attrs mediaTypesArray REQUIRED media types array
-   */
-  
-  def mediaTypesListRender = { attrs, body ->
-      out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
-  }
+import de.ddb.next.constants.DDBConstants
+
+class RenderMediaTypesList {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+    /**
+     * Renders the media types icons.
+     *
+     * @attrs mediaTypesArray REQUIRED media types array
+     */
+
+    def renderMediaTypesList = { attrs, body ->
+        out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
+    }
 }

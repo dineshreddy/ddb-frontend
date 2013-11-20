@@ -131,7 +131,7 @@ limitations under the License.
             <div class="favorites-results-controls">
               <div class="row delete-container">
                 <div class="results-pagination">
-                  <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+                  <ddb:renderPaginationControls navData="${navigationData}"></ddb:renderPaginationControls>
                 </div>
               </div>
               <div class="results-sorter">

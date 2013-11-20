@@ -38,10 +38,10 @@ limitations under the License.
             <g:set var="newsletterCheck">checked="checked"</g:set>
         </g:if>
         <g:if test="${errors != null && errors.size()>0}">
-          <g:renderErrors errors="${errors}"></g:renderErrors>
+          <ddb:renderErrors errors="${errors}" />
         </g:if>
         <g:if test="${messages != null && messages.size()>0}">
-          <g:renderMessages messages="${messages}"></g:renderMessages>
+          <ddb:renderMessages messages="${messages}" />
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="well">

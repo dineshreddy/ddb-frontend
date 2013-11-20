@@ -15,15 +15,19 @@
  */
 package de.ddb.next
 
-class FacetsResultsManagerTagLib {
-	
-  /**
-   * Renders the navigation bar for the results.
-   *
-   * @attr facetValues REQUIRED data for page navigation
-   */
+import de.ddb.next.constants.DDBConstants
 
-  def facetListRender = { attrs, body ->
-    out << render(template:"/search/facetList", model:[facetValues: attrs.facetValues, facetType: attrs.facetType, roleFacetsUrl: attrs.roleFacetsUrl])
-   }
+class RenderItemDetailInfoNav {
+
+    static namespace = DDBConstants.TAGLIB_NAMESPACE
+
+    /**
+     * Renders the navigation bar for the item detail view.
+     *
+     * @attrs navData REQUIRED data for page navigation
+     */
+
+    def renderItemDetailInfoNav = { attrs, body ->
+        out << render(template:"/search/itemNavigation", model:[navData: attrs.navData])
+    }
 }

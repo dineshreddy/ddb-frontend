@@ -36,6 +36,6 @@ limitations under the License.
     </ul>
   </div>
   <div class="extra">
-    <g:mediaTypesListRender mediaTypesArray="${item.preview.media}"></g:mediaTypesListRender>
+    <ddb:renderMediaTypesList mediaTypesArray="${item.preview.media}"></ddb:renderMediaTypesList>
   </div>
 </div>
