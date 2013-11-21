@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="print-logo off">
-  <r:img dir="images" file="logo_header.png" alt="" />
+  <r:img dir="images" file="logoHeader.png" alt="" />
 </div>
 
 <!--[if lt IE 9]>
@@ -34,7 +34,7 @@ limitations under the License.
       <g:link uri="/" class="brand"
         title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
         tabindex="-1">
-        <r:img dir="images" file="mobile-logo.png"
+        <r:img dir="images" file="mobileLogo.png"
           alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" />
       </g:link>
       <div class="nav-collapse collapse">
@@ -143,7 +143,7 @@ limitations under the License.
             <g:link uri="/" class="navigation-header-logo"
               title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
               tabindex="-1">
-              <r:img dir="images" file="logo_header.png"
+              <r:img dir="images" file="logoHeader.png"
                 alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" />
             </g:link>
             <div role="navigation">

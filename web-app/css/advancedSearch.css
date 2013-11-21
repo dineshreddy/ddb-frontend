@@ -57,7 +57,7 @@
   height:20px;
   box-shadow:none;
   background:none;
-  background:url("../images/icons/adv_search_row_actions.png") no-repeat;
+  background:url("../images/icons/advSearchRowActions.png") no-repeat;
 }
 .advanced-search .add-group-button {
   width:205px;

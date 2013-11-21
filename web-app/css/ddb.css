@@ -416,7 +416,7 @@ header .language-wrapper>a,.header .language-wrapper>a {
 }
 
 header .language-wrapper >a,.header .language-wrapper >a {
-  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 46px -42px;
+  background: transparent url("../images/icons/auxNavIcons.png") no-repeat 46px -42px;
 }
 
 
@@ -445,7 +445,7 @@ header .login-dropdown,.header .login-dropdown {
   display: inline-block;
   width: 15px;
   height: 15px;
-  background: transparent url("../images/icons/aux_nav_icons.png") no-repeat 3px -40px;
+  background: transparent url("../images/icons/auxNavIcons.png") no-repeat 3px -40px;
   cursor: pointer;
   vertical-align: top;
 }
@@ -918,7 +918,7 @@ noscript .caption {
   width: 45px;
   height: 50px;
   display: block;
-  background: url('../images/icons/homepage_carousel_controls.png') no-repeat transparent;
+  background: url('../images/icons/homepageCarouselControls.png') no-repeat transparent;
   position: absolute;
   top: 85px;
 }
@@ -1461,7 +1461,7 @@ select {
 
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href^="http://www.deutsche-digitale-bibliothek.de"]):not([href^="https://www.deutsche-digitale-bibliothek.de"]), .external-link-icon {
   padding-left: 20px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
 }
 
 /* Exception for links in the openstreetmap */
