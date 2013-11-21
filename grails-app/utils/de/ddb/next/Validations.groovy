@@ -15,9 +15,6 @@
  */
 package de.ddb.next
 
-import javax.mail.internet.AddressException
-import javax.mail.internet.InternetAddress
-
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.validator.EmailValidator
 
@@ -94,16 +91,8 @@ public static List<String> validatorRegistration(String username, String firstna
  * @return true or false (valid or not)
  */
 public static validatorEmail(String email){
-    String encodedEmail = email
-    //String encodedEmail = IDN.toASCII(email)
     EmailValidator emailValidator = EmailValidator.getInstance()
-    if (emailValidator.isValid(encodedEmail)) {
-        return true
-    }
-    else {
-        return false
-    }
-    boolean result = true
+    return emailValidator.isValid(email)
 }
 
 /**

@@ -15,21 +15,14 @@
  */
 package de.ddb.next
 
-import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import grails.converters.JSON
-import net.sf.json.util.JSONBuilder
+import java.text.SimpleDateFormat
 
 import org.codehaus.groovy.grails.web.json.*
-import java.text.DateFormat
-import java.text.SimpleDateFormat
-import java.util.List
-import java.util.Locale
-
 import org.springframework.context.i18n.LocaleContextHolder
-import org.springframework.web.servlet.support.RequestContextUtils
 import org.springframework.web.context.request.RequestContextHolder
+
+import de.ddb.next.beans.Folder
+import de.ddb.next.beans.User
 
 class FavoritesService {
 
@@ -41,7 +34,7 @@ class FavoritesService {
     def configurationService
     def messageSource
 
-    def private createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
+    def createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
         def first = createFavoritesLinkNavigation(0, rows, order, by, folderId)
         if (offset < rows){
             first = null
@@ -62,7 +55,7 @@ class FavoritesService {
         return g.createLink(controller:'favorites', action: 'favorites',params:[offset:offset,rows:rows,order:order,by:by,id:folderId])
     }
 
-    def private createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
+    def createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
         def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId, by)
         if (offset < rows){
             first = null
@@ -88,10 +81,8 @@ class FavoritesService {
      * @param items
      * @return
      */
-    def private retriveItemMD(List items, Locale locale){
-        def totalResults= items.size()
+    def retriveItemMD(List items, Locale locale){
         def step = 20
-        def queryItems
         def orQuery=""
         def allRes = []
 
@@ -167,7 +158,7 @@ class FavoritesService {
         return resultsItems["results"]["docs"]
     }
 
-    def private getAllFoldersPerUser(User user){
+    def getAllFoldersPerUser(User user){
         if (user != null) {
             return bookmarksService.findAllFolders(user.getId())
         }
@@ -177,7 +168,7 @@ class FavoritesService {
         }
     }
 
-    private List addBookmarkToFavResults(allRes, List items, Locale locale) {
+    List addBookmarkToFavResults(allRes, List items, Locale locale) {
         def all = []
         def temp = []
         allRes.each { searchItem->
@@ -196,7 +187,7 @@ class FavoritesService {
         return all
     }
 
-    private List addFolderToFavResults(allRes, Folder folder) {
+    List addFolderToFavResults(allRes, Folder folder) {
         def all = []
         def temp = []
         allRes.each { searchItem->
@@ -210,11 +201,10 @@ class FavoritesService {
     private String formatDate(Date oldDate, Locale locale) {
         SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
         return newFormat.format(oldDate)
     }
 
-    private List addCurrentUserToFavResults(allRes, User user) {
+    List addCurrentUserToFavResults(allRes, User user) {
         def userJson = [:]
         userJson["id"] = user.id
         userJson["username"] = user.username

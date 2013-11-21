@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 package de.ddb.next
-import javax.servlet.http.HttpSession
-
 import grails.converters.JSON
 
 import org.apache.commons.logging.LogFactory
 
 import de.ddb.next.beans.User
-
-import groovy.json.JsonSlurper
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
 
 class InstitutionController {
 

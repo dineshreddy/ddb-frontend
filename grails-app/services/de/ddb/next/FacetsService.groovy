@@ -15,12 +15,10 @@
  */
 package de.ddb.next
 
-import groovy.json.JsonSlurper
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.ContentType.JSON
-import net.sf.json.JSONArray
+import static groovyx.net.http.Method.GET
 
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
  * Get facetted searchfields and values for facet from Backend.

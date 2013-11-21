@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import groovy.json.*
-import groovyx.net.http.HTTPBuilder
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -40,7 +39,7 @@ class SearchController {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
-            
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"

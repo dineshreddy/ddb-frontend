@@ -18,17 +18,7 @@ package de.ddb.next
 
 import grails.converters.JSON
 import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
-
-import javax.servlet.http.HttpServletResponse
-
 import net.sf.json.JSONNull
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.util.WebUtils
-
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
@@ -565,31 +555,6 @@ class BookmarksService {
         }
         log.info "isBookmarkOfUser ${itemId} returns: " + result
         return result
-    }
-
-    //    /*
-    //     * Given a list of bookmark ID, update its folder values to [folderId]
-    //     *
-    //     * bookmarkIds, list of bookmarks to update
-    //     * folderIds, list of folderId as input
-    //     */
-    //    void copyBookmarksToFolders(List<String> bookmarkIds, List<String> folderIds) {
-    //        log.info "copyBookmarksToFolders()"
-    //
-    //        def postBody = ''
-    //        bookmarkIds.each { it ->
-    //            postBody = postBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
-    //                    '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
-    //        }
-    //        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
-    //
-    //        if(apiResponse.isOk()){
-    //            refresh()
-    //        }
-    //    }
-
-    private void surroundWithQuotes(stringInList) {
-        stringInList.collect { it ->  '"' + it + '"'}
     }
 
     Bookmark findBookmarkById(bookmarkId) {

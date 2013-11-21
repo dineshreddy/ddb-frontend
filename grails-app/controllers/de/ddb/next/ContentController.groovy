@@ -94,14 +94,6 @@ class ContentController {
         return cleanHtml(params.id, 'none')
     }
 
-    private def getShortLocale() {
-        def locale = RCU.getLocale(request)
-        if(locale.toString().substring(0, 2)=="de") {
-            return "de"
-        }
-        return "en"
-    }
-
     private def retrieveArguments(def content){
         def title = fetchTitle(content)
         def author = fetchAuthor(content)

@@ -133,7 +133,6 @@ class FavoritesController {
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-            def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
             lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
 
             if (totalPages.toFloat()<page.toFloat()){
@@ -311,7 +310,6 @@ class FavoritesController {
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-                def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
                 lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
 
                 if (totalPages.toFloat()<page.toFloat()){

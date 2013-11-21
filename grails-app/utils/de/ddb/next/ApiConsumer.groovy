@@ -17,13 +17,10 @@ package de.ddb.next
 
 import grails.util.Holders
 import groovy.json.*
-import groovy.util.slurpersupport.GPathResult
 import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
-import groovyx.net.http.ParserRegistry
 
-import java.rmi.registry.Registry
 import java.util.regex.Pattern
 
 import javax.servlet.http.HttpServletRequest
@@ -33,11 +30,9 @@ import org.apache.catalina.connector.ClientAbortException
 import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
-import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.User
-import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.BadRequestException
