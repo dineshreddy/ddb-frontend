@@ -16,10 +16,9 @@
 
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.context.ServletContextHolder
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import de.ddb.next.exception.ConfigurationException
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 /**
  * Service for accessing the configuration.
