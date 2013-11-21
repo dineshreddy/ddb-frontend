@@ -290,7 +290,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <ddb:renderPublicFavoritesResults results="${results}" />
+              <ddb:renderFavoritesResults results="${results}" />
             </div>
           </g:if>
           <g:else>
@@ -374,7 +374,7 @@ limitations under the License.
         <select name="copyTargets" size="10" multiple="multiple" class="favorites-copy-selection">
           <g:each in="${allFolders}">
             <g:if test="${it.folder.folderId != selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}" >
-              <option value="${it.folder.folderId}">${it.folder.title}</option>
+              <option value="${it.folder.folderId}">${it.folder.title.capitalize()}</option>
             </g:if>
           </g:each>
         </select>
