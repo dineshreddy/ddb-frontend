@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.json.JSONArray;
 import org.codehaus.groovy.grails.web.util.WebUtils;
 
+import de.ddb.next.constants.FacetEnum;
 import groovy.json.JsonLexer;
 import groovy.json.JsonSlurper;
 import groovy.json.JsonToken;
@@ -83,7 +84,7 @@ class ApiInstitution {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
         def uriPath = "/search"
-        def query = ['query':"*","facet":"provider_fct", "provider_fct":"${provName}","rows":"0" ]
+        def query = ['query':"*","facet":FacetEnum.PROVIDER.getName(), (FacetEnum.PROVIDER.getName()):"${provName}","rows":"0" ]
         log.debug("query = '" + query + "'");
         def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
         if(!apiResponse.isOk()){

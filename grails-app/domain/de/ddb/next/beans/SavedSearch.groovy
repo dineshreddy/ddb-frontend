@@ -15,6 +15,7 @@
  */
 package de.ddb.next.beans
 
+import de.ddb.next.constants.FacetEnum;
 import groovy.transform.ToString
 
 @ToString(includeNames=true)
@@ -60,14 +61,15 @@ class SavedSearch {
 
         // add empty list elements to get the correct order of the facet values
         result.put("facetValues[]", [
-            new SearchQueryTerm("time_fct"),
-            new SearchQueryTerm("place_fct"),
-            new SearchQueryTerm("affiliate_fct"),
-            new SearchQueryTerm("keywords_fct"),
-            new SearchQueryTerm("language_fct"),
-            new SearchQueryTerm("type_fct"),
-            new SearchQueryTerm("sector_fct"),
-            new SearchQueryTerm("provider_fct")
+            //TODO Create this list dynamically from the FacetEnum
+            new SearchQueryTerm(FacetEnum.TIME.getName()),
+            new SearchQueryTerm(FacetEnum.PLACE.getName()),
+            new SearchQueryTerm(FacetEnum.AFFILIATE.getName()),
+            new SearchQueryTerm(FacetEnum.KEYWORDS.getName()),
+            new SearchQueryTerm(FacetEnum.LANGUAGE.getName()),
+            new SearchQueryTerm(FacetEnum.TYPE.getName()),
+            new SearchQueryTerm(FacetEnum.SECTOR.getName()),
+            new SearchQueryTerm(FacetEnum.PROVIDER.getName())
         ])
 
         queryString.split('&').each {

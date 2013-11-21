@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
+import de.ddb.next.constants.FacetEnum;
 import groovy.json.*
 
 /**
@@ -68,29 +69,29 @@ class ApisService {
         if(queryParameters.sort)
             query["sort"] = queryParameters.sort
             
-        evaluateFacetParameter(query, queryParameters.time_fct, "time_fct")
+        evaluateFacetParameter(query, queryParameters.time_fct, FacetEnum.TIME.getName())
         
-        evaluateFacetParameter(query, queryParameters.place_fct, "place_fct")
+        evaluateFacetParameter(query, queryParameters.place_fct, FacetEnum.PLACE.getName())
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct, FacetEnum.AFFILIATE.getName())
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved, "affiliate_fct_involved")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved, FacetEnum.AFFILIATE_INVOLVED.getName())
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject, "affiliate_fct_subject")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject, FacetEnum.AFFILIATE_SUBJECT.getName())
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject_normdata, "affiliate_fct_subject_normdata")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject_normdata, FacetEnum.AFFILIATE_SUBJECT_NORMDATA.getName())
         
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved_normdata, "affiliate_fct_involved_normdata")
+        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved_normdata, FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
         
-        evaluateFacetParameter(query, queryParameters.keywords_fct, "keywords_fct")
+        evaluateFacetParameter(query, queryParameters.keywords_fct, FacetEnum.KEYWORDS.getName())
 
-        evaluateFacetParameter(query, queryParameters.language_fct, "language_fct")
+        evaluateFacetParameter(query, queryParameters.language_fct, FacetEnum.LANGUAGE.getName())
                
-        evaluateFacetParameter(query, queryParameters.type_fct, "type_fct")
+        evaluateFacetParameter(query, queryParameters.type_fct, FacetEnum.TYPE.getName())
         
-        evaluateFacetParameter(query, queryParameters.sector_fct, "sector_fct")
+        evaluateFacetParameter(query, queryParameters.sector_fct, FacetEnum.SECTOR.getName())
         
-        evaluateFacetParameter(query, queryParameters.provider_fct, "provider_fct")
+        evaluateFacetParameter(query, queryParameters.provider_fct, FacetEnum.PROVIDER.getName())
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview

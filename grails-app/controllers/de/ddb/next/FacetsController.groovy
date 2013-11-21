@@ -17,6 +17,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.FacetEnum;
+
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
@@ -41,8 +43,7 @@ class FacetsController {
         def maxResults = 301
 
         // Key based facet value -> Search filtering must be done in the frontend
-        if(facetName == "time_fct" || facetName == "sector_fct" || facetName == "language_fct" || facetName == "type_fct"){
-
+        if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
             //resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets

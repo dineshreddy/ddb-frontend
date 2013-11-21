@@ -16,10 +16,10 @@
 package de.ddb.next
 
 import groovy.json.*
-import groovyx.net.http.HTTPBuilder
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.FacetEnum
 import de.ddb.next.exception.BadRequestException
 
 class SearchController {
@@ -175,7 +175,7 @@ class SearchController {
 
                 def gndLinkItems = []
                 resultItems.facets.each { facet ->
-                    if(facet.field == "affiliate_fct_involved_normdata" || facet.field == "affiliate_fct_subject") {
+                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA || facet.field == FacetEnum.AFFILIATE_SUBJECT) {
                         facet.facetValues.each { entry ->
                             if(cultureGraphService.isValidGndUri(entry.value)){
                                 gndLinkItems.addAll(entry)
@@ -227,29 +227,29 @@ class SearchController {
             //iterate over all facets
             jsonSubresp.facet.each(){ facet ->
 
-                if(facet['@name'] == 'time_fct') {
-                    addFacetItems(properties, facet,'time_fct','ddbnext.time_fct_')
+                if(facet['@name'] == FacetEnum.TIME.getName()) {
+                    addFacetItems(properties, facet, FacetEnum.TIME.getName(), FacetEnum.TIME.getI18nPrefix())
                 }
-                else if(facet['@name'] == 'place_fct') {
-                    addFacetItems(properties, facet,'place_fct',null)
+                else if(facet['@name'] == FacetEnum.PLACE.getName()) {
+                    addFacetItems(properties, facet, FacetEnum.PLACE.getName(), null)
                 }
-                else if(facet['@name'] == 'affiliate_fct') {
-                    addFacetItems(properties, facet,'affiliate_fct',null)
+                else if(facet['@name'] == FacetEnum.AFFILIATE.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.AFFILIATE.getName(),null)
                 }
-                else if(facet['@name'] == 'keywords_fct') {
-                    addFacetItems(properties, facet,'keywords_fct',null)
+                else if(facet['@name'] == FacetEnum.KEYWORDS.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.KEYWORDS.getName(),null)
                 }
-                else if(facet['@name'] == 'type_fct') {
-                    addFacetItems(properties, facet,'type_fct','ddbnext.type_fct_')
+                else if(facet['@name'] == FacetEnum.TYPE.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.TYPE.getName(),FacetEnum.TYPE.getI18nPrefix())
                 }
-                else if(facet['@name'] == 'sector_fct') {
-                    addFacetItems(properties, facet,'sector_fct','ddbnext.sector_fct_')
+                else if(facet['@name'] == FacetEnum.SECTOR.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.SECTOR.getName(),FacetEnum.SECTOR.getI18nPrefix())
                 }
-                else if(facet['@name'] == 'provider_fct') {
-                    addFacetItems(properties, facet,'provider_fct', null)
+                else if(facet['@name'] == FacetEnum.PROVIDER.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.PROVIDER.getName(), null)
                 }
-                else if(facet['@name'] == 'language_fct') {
-                    addFacetItems(properties, facet,'language_fct', 'ddbnext.language_fct_')
+                else if(facet['@name'] == FacetEnum.LANGUAGE.getName()) {
+                    addFacetItems(properties, facet,FacetEnum.LANGUAGE.getName(), FacetEnum.LANGUAGE.getI18nPrefix())
                 }
             }
         }
