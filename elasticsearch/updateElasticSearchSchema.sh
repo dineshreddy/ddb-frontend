@@ -4,7 +4,6 @@
 # Parameter settings          #
 ###############################
 
-
 elasticSearchServer=$1
 
 if [ -z "$elasticSearchServer" ] 
@@ -15,6 +14,7 @@ then
     echo "       Schema was not updated."
     exit 1 #exit script
 fi
+
 echo
 echo Using ElasticSearch server
 echo --------------------------
@@ -37,13 +37,21 @@ echo $index
 # Reading schema files        #
 ###############################
 
+readSchemaFile() {
+  if [ ! -f "$1" ]; then
+    echo "ERROR: no content in mandatory file $1. Exiting script. ElasticSearch schema was not updated"
+    exit 1 #exit script
+  fi
+  cat $1
+}
+
 echo
 echo Reading schema files
 echo --------------------
 
-contentFolder=`cat folder.json`
-contentBookmark=`cat bookmark.json`
-contentSavedSearch=`cat savedSearch.json`
+contentFolder=`readSchemaFile folder.json`
+contentBookmark=`readSchemaFile bookmark.json`
+contentSavedSearch=`readSchemaFile savedSearch.json`
 
 echo "folder: " $contentFolder
 echo
@@ -52,30 +60,6 @@ echo
 echo "savedSearch: " $contentSavedSearch
 echo
 
-###############################
-# Validating schema files     #
-###############################
-
-echo Validate schema files
-echo ---------------------
-
-if [ -z "$contentFolder" ]
-then
-    echo "ERROR: no content in mandatory file folder.json. Exiting script. ElasticSearch schema was not updated"
-    exit 1 #exit script
-fi
-
-if [ -z "$contentBookmark" ]
-then
-    echo "ERROR: no content in mandatory file bookmark.json. Exiting script. ElasticSearch schema was not updated"
-    exit 1 #exit script
-fi
-        
-if [ -z "$contentSavedSearch" ]
-then
-    echo "ERROR: no content in mandatory file savedSearch.json. Exiting script. ElasticSearch schema was not updated"
-    exit 1 #exit script
-fi
 echo "Schema files ok"
 echo
 
@@ -83,23 +67,30 @@ echo
 # Posting schemas to server   #
 ###############################
 
+postSchemaFile() {
+  response=`curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
+  case "`echo $response | jshon -k`" in
+    *ok*) echo "ok"
+          ;;
+    *)    echo "ERROR: "
+          echo $response | jshon
+          ;;
+  esac
+}
+
 echo Curling new schema to elasticsearch
 echo -----------------------------------
                 
 
-echo curl -XPOST $elasticSearchServer/$index/folder/_mapping -d "$contentFolder"
-curl -XPOST $elasticSearchServer/$index/folder/_mapping -d "$contentFolder"
+postSchemaFile "folder" "$contentFolder"
 echo
 
-echo curl -XPOST $elasticSearchServer/$index/bookmark/_mapping -d "$contentBookmark"
-curl -XPOST $elasticSearchServer/$index/bookmark/_mapping -d "$contentBookmark"
+postSchemaFile "bookmark" "$contentBookmark"
 echo
 
-echo curl -XPOST $elasticSearchServer/$index/savedSearch/_mapping -d "$contentSavedSearch"
-curl -XPOST $elasticSearchServer/$index/savedSearch/_mapping -d "$contentSavedSearch"
+postSchemaFile "savedSearch" "$contentSavedSearch"
 echo
 
 echo Script finished. Exit.
 echo ----------------------
 echo
-
