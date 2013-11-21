@@ -15,9 +15,6 @@
  */
 package de.ddb.next
 
-import javax.mail.internet.AddressException
-import javax.mail.internet.InternetAddress
-
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.validator.EmailValidator
 

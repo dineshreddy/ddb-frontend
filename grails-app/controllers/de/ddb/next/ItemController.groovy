@@ -15,18 +15,11 @@
  */
 package de.ddb.next
 
-import java.lang.reflect.Array
-
-import javax.servlet.http.HttpSession
-
-import com.sun.org.apache.bcel.internal.generic.RETURN
-
-import de.ddb.next.beans.User
-import de.ddb.next.constants.CortexNamespace
-
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {

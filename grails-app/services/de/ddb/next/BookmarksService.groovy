@@ -18,17 +18,7 @@ package de.ddb.next
 
 import grails.converters.JSON
 import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
-
-import javax.servlet.http.HttpServletResponse
-
 import net.sf.json.JSONNull
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.util.WebUtils
-
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants

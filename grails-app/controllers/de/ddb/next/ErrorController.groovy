@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.BackendErrorException
-import de.ddb.next.exception.ItemNotFoundException
 import grails.util.Environment
 
 /**
@@ -185,7 +183,7 @@ class ErrorController {
     def entityNotFound() {
         notFound(Type404.ENTITY_NOT_FOUND)
     }
-    
+
     /**
      * Handler method for error 401 situations
      * @return The auth view

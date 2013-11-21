@@ -16,14 +16,7 @@
 package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.json.JSONArray;
-import org.codehaus.groovy.grails.web.util.WebUtils;
-
-import groovy.json.JsonLexer;
-import groovy.json.JsonSlurper;
-import groovy.json.JsonToken;
-import groovyx.net.http.ContentType;
-import groovyx.net.http.Method
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 class ApiInstitution {
 
