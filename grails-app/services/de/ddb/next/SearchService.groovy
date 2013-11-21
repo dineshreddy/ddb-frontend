@@ -88,14 +88,14 @@ class SearchService {
      * @param reqParameters the requestParameter
      * @return the url encoded query String for facetValues parameter
      */
-    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){        
+    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){
         def res = ""
         def facetValues = facetValuesRequestParameterToList(reqParameters)
-        
-        if(facetValues != null){                   
+
+        if(facetValues != null){
             res = facetValuesToUrlQueryString(facetValues)
         }
-        
+
         return res
     }
 
@@ -107,14 +107,14 @@ class SearchService {
      */
     def facetValuesToUrlQueryString(List facetValues){
         def res = ""
-        
+
         facetValues.each{
             res += "&facetValues%5B%5D="+it.encodeAsURL()
         }
-        
+
         return res
     }
-    
+
     /**
      * This methods get all "facetValues[]" parameter from the request and returns them as a list
      * 
@@ -123,8 +123,8 @@ class SearchService {
      */
     def facetValuesRequestParameterToList(GrailsParameterMap reqParameters) {
         def urlFacetValues = []
-        def requestParamValues = reqParameters.get("facetValues[]") 
-        
+        def requestParamValues = reqParameters.get("facetValues[]")
+
         if (requestParamValues != null){
             //The facetValues request parameter could be of type Array or String
             if(requestParamValues.getClass().isArray()){
@@ -133,10 +133,10 @@ class SearchService {
                 urlFacetValues.add(requestParamValues)
             }
         }
-        
+
         return urlFacetValues;
     }
-    
+
     /**
      * Creates the urls for the main facets of the non js version of the facet search
      * 
@@ -149,10 +149,10 @@ class SearchService {
      */
     def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def mainFacetsUrls = [:]
-        
+
         facetsList.each {
             def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
-            
+
             //remove the main facet from the URL (the main facet is selected in this request)
             if(urlQuery["facet"] && urlQuery["facet"].contains(it)){
                 mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+facetValuesToUrlQueryString(reqParameters))
@@ -179,7 +179,7 @@ class SearchService {
      */
     def buildSubFacetsUrl(GrailsParameterMap reqParameters, List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
-        
+
         def res = [:]
         urlQuery["facet"].each{
             if(it!="grid_preview"){
@@ -189,30 +189,30 @@ class SearchService {
                         x.facetValues.each{ y->
                             //only proceed if the facetValue is of type main facet. Role facets will be ignored
                             if (mainFacetsUrl[x.field] != null) {
-                                
+
                                 //Create a map which contains the facet name, count and url for the view
                                 def tmpFacetValuesMap = ["fctValue": y["value"].encodeAsHTML(),"url":"",cnt: y["count"],selected:""]
-                                
+
                                 //Convert the facetValues[] parameter of the request from an array/string to a list. List entries can be changed (add/remove)!
                                 def urlFacetValues = facetValuesRequestParameterToList(reqParameters)
-                                
+
                                 //The current facetValue in the target request parameter form
                                 def facetValueParameter = x.field+"="+y["value"]
-                                
+
                                 if(urlFacetValues.contains(facetValueParameter)){
                                     //remove the facetValueParameter from the urlFacetValues (the facet was selected in this request)
                                     urlFacetValues.remove(facetValueParameter)
                                     def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
-                                    
+
                                     tmpFacetValuesMap["url"] = url
                                     tmpFacetValuesMap["selected"] = "selected"
-                                }                                
+                                }
                                 else{
-                                  //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
-                                  urlFacetValues.add(facetValueParameter)
-                                  
-                                  def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
-                                  tmpFacetValuesMap["url"] = url
+                                    //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
+                                    urlFacetValues.add(facetValueParameter)
+
+                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    tmpFacetValuesMap["url"] = url
                                 }
 
                                 res[x.field].add(tmpFacetValuesMap)
@@ -239,7 +239,7 @@ class SearchService {
      * 
      * @return a list with all roleFacetsUrls
      */
-        def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
+    def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
         def res = []
         def allBackendRolefacets = getRoleFacets()
 
@@ -442,7 +442,6 @@ class SearchService {
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
         def index = cleanTitle.length() > length ? cleanTitle.substring(0,length).lastIndexOf(" ") : -1
         def tmpTitle = index >= 0 ? cleanTitle.substring(0,index) + "..." : cleanTitle
-        def replacedMatches = []
         StringBuilder replacementsRegex = new StringBuilder("(")
         if(matchesMatch.size()>0){
             matchesMatch.each{
@@ -559,7 +558,6 @@ class SearchService {
      */
     def convertQueryParametersToSearchFacetsParameters(Map reqParameters) {
         def urlQuery = [:]
-        def numbersRangeRegex = /^[0-9]+$/
 
         if (reqParameters["searchQuery"]!=null && reqParameters["searchQuery"].length()>0){
             urlQuery["searchQuery"] = getMapElementOfUnsureType(reqParameters, "searchQuery", "*")

@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 
 import org.codehaus.groovy.grails.web.json.*
@@ -83,9 +82,7 @@ class FavoritesService {
      * @return
      */
     def private retriveItemMD(List items, Locale locale){
-        def totalResults= items.size()
         def step = 20
-        def queryItems
         def orQuery=""
         def allRes = []
 
@@ -204,7 +201,6 @@ class FavoritesService {
     private String formatDate(Date oldDate, Locale locale) {
         SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, locale)
         return newFormat.format(oldDate)
     }
 

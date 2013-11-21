@@ -28,9 +28,6 @@ class ApisController {
 
     def search() {
         def resultList = [:]
-        def facets = []
-        def highlightedTerms = []
-        def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
 

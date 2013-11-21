@@ -226,8 +226,6 @@ class ItemController {
 
     def convertToHtmlLink = { field ->
         for(int i=0; i<field.value.size(); i++) {
-            def value = field.value[i]
-
             def fieldValue = field.value[i].toString()
             if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
                 field.value[i] = '<a href="' + fieldValue + '">' + fieldValue + '</a>'

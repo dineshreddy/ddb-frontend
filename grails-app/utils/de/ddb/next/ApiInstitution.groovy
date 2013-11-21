@@ -35,7 +35,6 @@ class ApiInstitution {
 
     def getChildrenOfInstitutionByItemId(String id, String url) {
         log.debug("get children of institution by item id: ${id}")
-        def jsonResult;
         def uriPath = "/hierarchy/" + id + "/children"
         def apiResponse = ApiConsumer.getJson(url, uriPath)
         if(!apiResponse.isOk()){
@@ -47,7 +46,6 @@ class ApiInstitution {
 
     def getParentsOfInstitutionByItemId(String id, String url) {
         log.debug("get parent of institution by item id: ${id}")
-        def jsonResult;
         def uriPath = "/hierarchy/" + id + "/parent"
         def apiResponse = ApiConsumer.getJson(url, uriPath)
         if(!apiResponse.isOk()){
@@ -59,7 +57,6 @@ class ApiInstitution {
 
     def getFacetValuesX(String provName, String url) {
         log.debug("get facets values for: ${provName}")
-        def jsonResult;
         int shortLength = 50;
         String shortQuery = (provName.length() > shortLength ? provName.substring(0, shortLength) : provName);
         def uriPath = "/search/facets/provider_fct"
