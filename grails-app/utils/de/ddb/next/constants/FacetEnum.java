@@ -15,8 +15,6 @@
  */
 package de.ddb.next.constants;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Enum for the facets.
@@ -32,12 +30,11 @@ public enum FacetEnum {
     LANGUAGE("language_fct", "ddbnext.language_fct_", true),
     TYPE("type_fct", "ddbnext.type_fct_", true),
     SECTOR("sector_fct", "ddbnext.sector_fct_", true),
-    PROVIDER("provider_fct",null, true),
-    
-    //role facets
+    PROVIDER("provider_fct",null, true),   
     AFFILIATE_INVOLVED("affiliate_fct_involved",null, false),
+ AFFILIATE_SUBJECT("affiliate_fct_subject",
+        null, false),
     AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata",null, false),
-    AFFILIATE_SUBJECT("affiliate_fct_subject",null, false),
     AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata",null, false);
 
     /** The facet name as used by the cortex */
@@ -59,22 +56,6 @@ public enum FacetEnum {
         this.name = name;
         this.i18nPrefix = i18nPrefix;
         this.isSearchFacet = isSearchFacet;
-    }
-
-    
-    /**
-     * Return all {@link FacetEnum} that has the isSearchFacet flag set
-     * @return all {@link FacetEnum} that has the isSearchFacet flag set
-     */
-    public List<FacetEnum> getSearchFacets() {
-        List<FacetEnum> retVal = new ArrayList<FacetEnum>();
-        for (FacetEnum facetEnum : FacetEnum.values()) {
-            if (facetEnum.isSearchFacet){
-                retVal.add(facetEnum);
-            }
-        }
-        
-        return retVal;
     }
 
     /**

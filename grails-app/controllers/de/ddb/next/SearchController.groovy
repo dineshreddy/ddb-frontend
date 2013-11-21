@@ -40,7 +40,7 @@ class SearchController {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
-            
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
@@ -122,6 +122,13 @@ class SearchController {
                 render (contentType:"text/json"){jsonReturn}
             }else{
                 //We want to build the subfacets urls only if a main facet has been selected
+                def mainFacets = []
+                FacetEnum.values().each {
+                    if (it.isSearchFacet()) {
+                        mainFacets.add(it)
+                    }
+                }
+
                 def keepFiltersChecked = ""
                 if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
@@ -139,6 +146,7 @@ class SearchController {
                 }
 
                 render(view: "results", model: [
+                    facetsList:mainFacets,
                     title: urlQuery["query"],
                     results: resultsItems,
                     gndResults: gndItems,
@@ -226,31 +234,13 @@ class SearchController {
         if(jsonSubresp.facet){
             //iterate over all facets
             jsonSubresp.facet.each(){ facet ->
+                //iterate over all values of the FacetEnum and add matching names to the information
+                for (FacetEnum facetItem : FacetEnum.values()) {
+                    if (facet['@name'] == facetItem.getName()) {
+                        addFacetItems(properties, facet, facetItem);
+                    }
+                }
 
-                if(facet['@name'] == FacetEnum.TIME.getName()) {
-                    addFacetItems(properties, facet, FacetEnum.TIME.getName(), FacetEnum.TIME.getI18nPrefix())
-                }
-                else if(facet['@name'] == FacetEnum.PLACE.getName()) {
-                    addFacetItems(properties, facet, FacetEnum.PLACE.getName(), null)
-                }
-                else if(facet['@name'] == FacetEnum.AFFILIATE.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.AFFILIATE.getName(),null)
-                }
-                else if(facet['@name'] == FacetEnum.KEYWORDS.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.KEYWORDS.getName(),null)
-                }
-                else if(facet['@name'] == FacetEnum.TYPE.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.TYPE.getName(),FacetEnum.TYPE.getI18nPrefix())
-                }
-                else if(facet['@name'] == FacetEnum.SECTOR.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.SECTOR.getName(),FacetEnum.SECTOR.getI18nPrefix())
-                }
-                else if(facet['@name'] == FacetEnum.PROVIDER.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.PROVIDER.getName(), null)
-                }
-                else if(facet['@name'] == FacetEnum.LANGUAGE.getName()) {
-                    addFacetItems(properties, facet,FacetEnum.LANGUAGE.getName(), FacetEnum.LANGUAGE.getI18nPrefix())
-                }
             }
         }
         render (contentType:"text/json"){properties}
@@ -262,25 +252,24 @@ class SearchController {
      *
      * @param properties a map that holds all facet items (for rendering)
      * @param facetMap the facet map containing a key and a value element for one facet type. The value can be a single String or a List of Strings
-     * @param facetName the name of the facet-type to process
-     * @param i18nCode the i18ncode is concatenated with the value if internationalization is used for the facet-type; can be <code>null</code>
+     * @param facet the facet to add
      *
      */
-    private addFacetItems(Map properties, Map facetMap, String facetName, String i18nCode) {
-        properties[facetName]=[]
+    private addFacetItems(Map properties, Map facetMap, FacetEnum facet) {
+        properties[facet.getName()]=[]
 
         if(facetMap['value'] instanceof String) {
-            if (i18nCode != null) {
-                properties[facetName].add(message(code:i18nCode+facetMap['value']))
+            if (facet.getI18nPrefix() != null) {
+                properties[facet.getName()].add(message(code:facet.getI18nPrefix()+facetMap['value']))
             } else {
-                properties[facetName].add(facetMap['value'])
+                properties[facet.getName()].add(facetMap['value'])
             }
         } else if(facetMap['value'] instanceof List) {
             facetMap['value'].each() { value ->
-                if (i18nCode != null) {
-                    properties[facetName].add(message(code:i18nCode+value))
+                if (facet.getI18nPrefix() != null) {
+                    properties[facet.getName()].add(message(code:facet.getI18nPrefix()+value))
                 } else {
-                    properties[facetName].add(value)
+                    properties[facet.getName()].add(value)
                 }
             }
         }
