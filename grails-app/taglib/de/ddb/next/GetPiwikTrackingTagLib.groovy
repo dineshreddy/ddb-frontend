@@ -28,7 +28,6 @@ class GetPiwikTrackingTagLib {
 
     def static trackingCodeCache = null
     def configurationService
-    def log
 
     /**
      * Tag closure <g:piwik />, this tag has no attributes. 

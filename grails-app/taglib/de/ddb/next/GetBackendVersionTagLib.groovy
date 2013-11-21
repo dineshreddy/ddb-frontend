@@ -20,7 +20,6 @@ class GetBackendVersionTagLib {
     static namespace = "ddb"
 
     def configurationService
-    def log
 
     def getBackendVersion = { attrs, body ->
         try{
