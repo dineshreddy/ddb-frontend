@@ -51,7 +51,7 @@ limitations under the License.
                 <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
-                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetsUrl="${facets.roleFacetsUrl}"></g:facetListRender>
+                    <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetsUrl="${facets.roleFacetsUrl}"></ddb:renderFacetList>
                   </ul>
                 </g:if>
               </div>
@@ -71,7 +71,7 @@ limitations under the License.
         <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
 
-      <g:isLoggedIn>
+      <ddb:isLoggedIn>
         <div id="addToSavedSearches">
           <div class="add-to-saved-searches"></div>
           <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
@@ -101,13 +101,13 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </g:isLoggedIn>
+      </ddb:isLoggedIn>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
       <g:if test="${correctedQuery!='null'}">
         <g:if test="${correctedQuery}">
-          <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
         </g:if>
       </g:if>
       <g:render template="noResults" />
@@ -115,9 +115,9 @@ limitations under the License.
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
     
-      <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
+      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
       
-      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"></g:pageInfoNavRender>
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
       
       <div class="row">
         <div class="span9">
@@ -153,7 +153,7 @@ limitations under the License.
       </div>
       <g:if test="${correctedQuery!='null'}">
 	      <g:if test="${correctedQuery}">
-	        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+	        <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
 	      </g:if>
       </g:if>
       
@@ -162,14 +162,14 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:itemResultsRender results="${results.results["docs"]}" gndResults="${gndResults}"></g:itemResultsRender>
+                <ddb:renderSearchResultsList results="${results.results["docs"]}" gndResults="${gndResults}" />
               </g:if>
             </div>
           </div>
         </div>
       </div>
       <div id="print-nav">
-        <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
       </div>
     </div>
   </div>

@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!DOCTYPE html>
-<html lang="${g.currentLocale()}">
+<html lang="${ddb.getCurrentLocale()}">
   <head>
     <meta charset="utf-8" />
     
@@ -62,6 +62,6 @@ limitations under the License.
     </script>
     --%>
     
-    <g:piwik />
+    <ddb:getPiwikTracking />
   </body>
 </html>

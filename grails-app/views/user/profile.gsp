@@ -16,7 +16,7 @@ limitations under the License.
 <html>
 <head>
 
-<g:redirectIfNotLoggedIn />
+<ddb:doRedirectIfNotLoggedIn />
 
 <title><g:message code="ddbnext.Profile" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
@@ -38,15 +38,15 @@ limitations under the License.
             <g:set var="newsletterCheck">checked="checked"</g:set>
         </g:if>
         <g:if test="${errors != null && errors.size()>0}">
-          <g:renderErrors errors="${errors}"></g:renderErrors>
+          <ddb:renderErrors errors="${errors}" />
         </g:if>
         <g:if test="${messages != null && messages.size()>0}">
-          <g:renderMessages messages="${messages}"></g:renderMessages>
+          <ddb:renderMessages messages="${messages}" />
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="well">
             <div class="profile-nav bb-white">
-                <div><h1><g:message code="ddbnext.User_Profile"/> <g:getUserLabel /></h1></div>
+                <div><h1><g:message code="ddbnext.User_Profile"/> <ddb:getUserLabel /></h1></div>
             </div>
             <div class="row">
               <div class="span9 control-groups">

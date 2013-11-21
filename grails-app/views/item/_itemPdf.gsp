@@ -48,16 +48,16 @@ limitations under the License.
       </div>
       <div class="row item borderbottom printrow">
         <div class="row printrow">
-          <h2><g:removeTags>${title}</g:removeTags></h2>
+          <h2><ddb:getWithoutTags>${title}</ddb:getWithoutTags></h2>
         </div>
         
         <div class="row printrow previewrow">
           <g:each in="${binaryList}">
             <div class="row">
-              <img src="${it.preview.uri}" alt="<g:removeTags>${it.orig.title}</g:removeTags>" />
+              <img src="${it.preview.uri}" alt="<ddb:getWithoutTags>${it.orig.title}</ddb:getWithoutTags>" />
             </div>
             <div class="row printrow label">
-              <g:removeTags>${it.orig.title}</g:removeTags>
+              <ddb:getWithoutTags>${it.orig.title}</ddb:getWithoutTags>
             </div>
           </g:each>
         </div>
@@ -65,13 +65,13 @@ limitations under the License.
         <g:each in="${fields}">
           <div class="row printrow">
             <div class="fieldtitle"><strong><g:message code="${'ddbnext.'+ it.@id}" />: </strong></div>
-            <div class="value fieldvalue"><g:removeTags>${it.value}</g:removeTags></div>
+            <div class="value fieldvalue"><ddb:getWithoutTags>${it.value}</ddb:getWithoutTags></div>
           </div>
         </g:each>
           <div class="row printrow">
             <div class="rights">
               <div class="fieldtitle"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
-              <div class="value fieldvalue"><g:removeTags>${item.rights}</g:removeTags></div>
+              <div class="value fieldvalue"><ddb:getWithoutTags>${item.rights}</ddb:getWithoutTags></div>
             </div>
           </div>
       </div>
@@ -79,7 +79,7 @@ limitations under the License.
         <div><strong><g:message code="ddbnext.CulturalItem_Deeplink" />:</strong></div>
         <div class="value">${grailsApplication.config.ddb.frontend.url}${itemUri}</div>
       </div>
-      <g:hasHierarchy item="${itemId}">
+      <ddb:isItemHierarchyAvailable item="${itemId}">
         <div class="row hierarchy printrow">
           <div class="row item-hierarchy off printrow">
             <div class="field-header">
@@ -88,12 +88,12 @@ limitations under the License.
           
             <div class="row printrow">
               <div class="item-hierarchy-result printrow fixprintwidth" >
-                <g:renderHierarchy item="${itemId}" />
+                <ddb:getItemHierarchy item="${itemId}" />
               </div>
             </div>
           </div>
         </div>
-      </g:hasHierarchy>
+      </ddb:isItemHierarchyAvailable>
     </div>
     <r:layoutResources />
   </body>
