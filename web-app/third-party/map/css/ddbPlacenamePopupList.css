@@ -39,12 +39,12 @@ ul.ddbPopupInnerUL {
 }
 
 ul.ddbPopupRootUL li {
-    background: url("../images/listArrowPlum.png") no-repeat scroll 0 -1px transparent;
+    background: url("../images/list_arrow_plum.png") no-repeat scroll 0 -1px transparent;
     padding-left: 17px;
 }
 
 ul.ddbPopupInnerUL li {
-    background: url("../images/listArrowGrey.png") no-repeat scroll 0 -1px transparent;
+    background: url("../images/list_arrow_grey.png") no-repeat scroll 0 -1px transparent;
     padding-left: 17px;
 }
 
