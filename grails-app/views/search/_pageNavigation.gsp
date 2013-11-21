@@ -25,5 +25,5 @@ limitations under the License.
         <span class="results-label"><g:message code="ddbnext.Results_lowercase" /></span>
     </g:else>
   </div>
-  <g:paginationControlsRender navData="${navData}"></g:paginationControlsRender>
+  <ddb:renderPaginationControls navData="${navData}"></ddb:renderPaginationControls>
 </div>

@@ -23,7 +23,7 @@ limitations under the License.
 </head>
 <body>
     <g:if test="${errors != null && errors.size()>0}">
-      <g:renderErrors errors="${errors}"></g:renderErrors>
+      <ddb:renderErrors errors="${errors}" />
     </g:if>
     <div class="well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >

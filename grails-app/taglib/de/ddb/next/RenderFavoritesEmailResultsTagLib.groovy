@@ -15,24 +15,12 @@
  */
 package de.ddb.next
 
-class CommonTagLib {  
-  /**
-   * Renders the paginator bar for the results.
-   *
-   * @attrs navData REQUIRED data for paginator
-   */
-  
-  def paginationControlsRender = { attrs, body ->
-      out << render(template:"/common/pageNavigationControls", model:[navData: attrs.navData])
-  }
-  
-  /**
-   * Renders the media types icons.
-   *
-   * @attrs mediaTypesArray REQUIRED media types array
-   */
-  
-  def mediaTypesListRender = { attrs, body ->
-      out << render(template:"/common/mediaTypesIcons", model:[mediaTypesArray: attrs.mediaTypesArray])
-  }
+
+class RenderFavoritesEmailResultsTagLib {
+
+    static namespace = "ddb"
+
+    def renderFavoritesEmailResults = { attrs, body ->
+        out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
+    }
 }

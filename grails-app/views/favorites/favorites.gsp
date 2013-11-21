@@ -26,7 +26,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
     
-    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
     
   </head>
   <body>
@@ -96,7 +96,7 @@ limitations under the License.
           </g:if>
           <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
             <div class="share-block">
-              <g:socialmediaBody />
+              <ddb:getSocialmediaBody />
             </div>
           </g:if>
           <div class="results-paginator-options">
@@ -225,7 +225,7 @@ limitations under the License.
                   </g:form>
                 </div>
                 <div class="span4 results-pagination fr">
-                  <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+                  <ddb:renderPaginationControls navData="${navigationData}"></ddb:renderPaginationControls>
                 </div>
               </div>
               <div class="results-sorter">
@@ -290,7 +290,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <g:favoritesResultsRender results="${results}"></g:favoritesResultsRender>
+              <ddb:renderPublicFavoritesResults results="${results}" />
             </div>
           </g:if>
           <g:else>

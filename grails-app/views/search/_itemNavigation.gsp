@@ -43,7 +43,7 @@ limitations under the License.
     <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}"><g:message code="ddbnext.Previous_Label" /></g:link>
   </li>
   <li class="<g:if test="${!displayRightPagination}">last-item-noicon</g:if>">
-    <span class="result-label"><g:message code="ddbnext.Hit" /> </span><span class="hit-number"><g:localizeNumber>${navData.hitNumber}</g:localizeNumber></span><span> <g:message code="ddbnext.Of" /> </span><span class="hit-count"><g:localizeNumber>${navData.results["numberOfResults"]}</g:localizeNumber></span>
+    <span class="result-label"><g:message code="ddbnext.Hit" /> </span><span class="hit-number"><ddb:getLocalizedNumber>${navData.hitNumber}</ddb:getLocalizedNumber></span><span> <g:message code="ddbnext.Of" /> </span><span class="hit-count"><ddb:getLocalizedNumber>${navData.results["numberOfResults"]}</ddb:getLocalizedNumber></span>
   </li>
   <li class="next-item bl-white <g:if test="${!displayRightPagination}">off</g:if>">
     <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}"><g:message code="ddbnext.Next_Label" /></g:link>

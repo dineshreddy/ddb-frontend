@@ -17,7 +17,7 @@ limitations under the License.
 
   <div class="span6 share">
 
-    <g:socialmediaBody />
+    <ddb:getSocialmediaBody />
   
   </div>
 </div>

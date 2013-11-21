@@ -14,20 +14,21 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div style="margin-top: 20px; margin-bottom: 20px">
-  <g:message code="ddbnext.Send_Savedsearches_Email_Body_Pre"
-    args="${[userName]}" />
+  <g:message code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}" />
   <br />
 </div>
 <table border="1" style="width: 100%; margin-bottom: 20px; border-spacing: 0">
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th style="margin-top: 20px"><g:message
-            code="ddbnext.HierarchyHelp_Leaf" /></th>
+        <th style="margin-top: 20px">
+          <g:message code="ddbnext.HierarchyHelp_Leaf" />
+        </th>
       </g:if>
       <g:else>
-        <th style="margin-top: 20px"><g:message
-            code="ddbnext.Searches" /></th>
+        <th style="margin-top: 20px">
+          <g:message code="ddbnext.Searches" />
+        </th>
       </g:else>
     </tr>
   </thead>
@@ -36,16 +37,12 @@ limitations under the License.
       <tr>
         <td style="height: 130px; padding: 10px;">
           <h2>
-            <a style="color: #a5003b"
-              href="${contextUrl + '/search?' + (search.queryString).encodeAsHTML()}"
-              title="${truncateHovercardTitle(title: search.label, length: 350)}">
-              <g:truncateItemTitle title="${search.label}"
-                length="${100}" />
+            <a style="color: #a5003b" href="${contextUrl + '/search?' + (search.queryString).encodeAsHTML()}" title="${ddb.getTruncatedHovercardTitle(title: search.label, length: 350)}">
+              <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
             </a>
           </h2>
           <div>
-            <g:render template="savedSearchEntry"
-              model="['search':search]" />
+            <g:render template="savedSearchEntry" model="['search':search]" />
           </div>
         </td>
       </tr>

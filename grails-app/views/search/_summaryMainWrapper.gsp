@@ -16,8 +16,8 @@ limitations under the License.
 <div class="summary-main-wrapper <g:if test="${viewType != 'grid'}">span6</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${truncateHovercardTitle(title: item.label, length: 350)}">
-      <g:truncateItemTitle title="${ item.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+      <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${ddb.getTruncatedHovercardTitle(title: item.label, length: 350)}">
+      <ddb:getTruncatedItemTitle title="${ item.preview.title }" length="${ 100 }" />
       </g:link>
     </h2>
     <div class="subtitle">
@@ -36,6 +36,6 @@ limitations under the License.
     </ul>
   </div>
   <div class="extra">
-    <g:mediaTypesListRender mediaTypesArray="${item.preview.media}"></g:mediaTypesListRender>
+    <ddb:renderMediaTypesList mediaTypesArray="${item.preview.media}"></ddb:renderMediaTypesList>
   </div>
 </div>

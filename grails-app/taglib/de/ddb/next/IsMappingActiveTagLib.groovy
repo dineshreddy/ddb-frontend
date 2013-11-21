@@ -15,14 +15,16 @@
  */
 package de.ddb.next
 
+
 /**
  * Taglib for checking if the currently displayed page fits a controller/action/dir combination
  * given as params to the tag. If the param-combination matches the the current page, the body
  * of the tag is displayed. Otherwise not.
  * @author hla
  */
-class ActiveUrlMappingTagLib {
+class IsMappingActiveTagLib {
 
+    static namespace = "ddb"
 
     /**
      * Renders the body of the tag if the given controller/action/dir combination fits the currently 

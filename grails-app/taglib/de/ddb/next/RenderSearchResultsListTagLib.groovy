@@ -15,21 +15,17 @@
  */
 package de.ddb.next
 
-class SearchResultsListRenderTagLib {
+
+class RenderSearchResultsListTagLib {
+
+    static namespace = "ddb"
+
     /**
      * Renders the item results.
      *
      * @attr results REQUIRED organizations list
      */
-    def searchService
-    def itemResultsRender = { attrs, body ->
+    def renderSearchResultsList = { attrs, body ->
         out << render(template:"/search/resultsList", model:[results: attrs.results, gndResults: attrs.gndResults, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
-    }
-
-    def truncateItemTitle = { attrs, body ->
-        out << searchService.trimTitle(attrs.title.toString(), attrs.length)
-    }
-    def truncateHovercardTitle = { attrs, body ->
-        out << searchService.trimString(attrs.title.toString().replaceAll("<match>", "").replaceAll("</match>", ""), attrs.length)
     }
 }

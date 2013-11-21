@@ -21,6 +21,6 @@ limitations under the License.
     ${item.label}
   </g:else>
   <g:if test="${item.hasChildren}">
-    <g:renderItemChilds item="${item.item}" mainItem="${item.mainItem}"/>
+    <ddb:renderHierarchyItemChilds item="${item.item}" mainItem="${item.mainItem}"/>
   </g:if>
 </li>

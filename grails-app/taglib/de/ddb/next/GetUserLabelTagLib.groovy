@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package de.ddb.next
 
-class SocialmediaTagLib {
+import de.ddb.next.beans.User
 
-    def configurationService
+class GetUserLabelTagLib {
 
-    def socialmediaMeta = { attrs, body ->
-        def likeUrl = attrs.likeUrl
-        def likeTitle = attrs.likeTitle
+    static namespace = "ddb"
 
-        out << render(template:"/common/socialmediaMeta", model:[likeUrl: likeUrl, likeTitle: likeTitle])
-    }
+    def sessionService
 
-    def socialmediaBody = { attrs, body ->
-        out << render(template:"/common/socialmediaBody", model:[errors: attrs.errors])
+    def getUserLabel = { attrs, body ->
+        def isLoggedIn = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if(isLoggedIn){
+            out << sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)?.getFirstnameAndLastnameOrNickname()
+        }else{
+            out << ""
+        }
     }
 }

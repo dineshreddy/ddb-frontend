@@ -18,5 +18,5 @@ limitations under the License.
     data-js-language="<g:message code="ddbnext.language"/>"
     data-js-longitude="${selectedOrgXML?.locations?.location?.geocode?.longitude}" 
     data-js-latitude="${selectedOrgXML?.locations?.location?.geocode?.latitude}"
-    data-js-loggedin="<g:isLoggedIn>true</g:isLoggedIn><g:isNotLoggedIn>false</g:isNotLoggedIn>">
+    data-js-loggedin="<ddb:isLoggedIn>true</ddb:isLoggedIn><ddb:isNotLoggedIn>false</ddb:isNotLoggedIn>">
 </div>

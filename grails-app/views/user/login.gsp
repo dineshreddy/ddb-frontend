@@ -35,7 +35,7 @@ limitations under the License.
         <div class="row">
           <div class="span12">
           
-            <g:isNotLoggedIn>
+            <ddb:isNotLoggedIn>
               
               <div class="span4 dialog">
                 <g:form controller="user" action="doLogin">
@@ -126,9 +126,9 @@ limitations under the License.
                 </div>
               </div>
               
-            </g:isNotLoggedIn>
+            </ddb:isNotLoggedIn>
         
-            <g:isLoggedIn>
+            <ddb:isLoggedIn>
               <div class="span4 feedback">
                 <g:if test="${loginStatus == LoginStatus.SUCCESS}">
                   <g:message code="ddbnext.Login_Success" />
@@ -138,7 +138,7 @@ limitations under the License.
                 </g:else>
               </div>
             
-            </g:isLoggedIn>
+            </ddb:isLoggedIn>
                 
           </div>
         </div>           

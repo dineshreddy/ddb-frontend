@@ -16,7 +16,7 @@ limitations under the License.
 
 <div class="row">
   <div class="span12 item-links bb">
-    <g:isLoggedIn>
+    <ddb:isLoggedIn>
       <div class="favorite" >
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
@@ -27,12 +27,12 @@ limitations under the License.
       <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-body">
           <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-          <g:hasPersonalFavorites>
+          <ddb:isPersonalFavoritesAvailable>
             <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
             <g:select name="favorite-folders" from="" multiple="true"/>
-          </g:hasPersonalFavorites>
+          </ddb:isPersonalFavoritesAvailable>
         </div>
-        <g:hasPersonalFavorites>
+        <ddb:isPersonalFavoritesAvailable>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message code="ddbnext.Close"/>
@@ -41,20 +41,20 @@ limitations under the License.
               <g:message code="ddbnext.Save"/>
             </button>
           </div>
-        </g:hasPersonalFavorites>
+        </ddb:isPersonalFavoritesAvailable>
       </div>
-    </g:isLoggedIn>
+    </ddb:isLoggedIn>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
-    <g:isLoggedIn>
+    <ddb:isLoggedIn>
       <div class="link-block">
         <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
               <g:message code="ddbnext.View" />
         </g:link>
       </div>
-    </g:isLoggedIn>
+    </ddb:isLoggedIn>
   </div>
 </div>

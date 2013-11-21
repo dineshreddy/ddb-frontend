@@ -14,9 +14,22 @@
  * limitations under the License.
  */
 package de.ddb.next
-//the search/searchSuggestion has been
-class SearchSuggestionTagLib {
-    def searchSuggestion = { correctedQuery, body ->
-        out << render(template:"/search/searchSuggestion", model:[correctedQuery])
+
+import de.ddb.next.beans.User
+
+class IsNotLoggedInTagLib {
+
+    static namespace = "ddb"
+
+    def sessionService
+
+    def isNotLoggedIn = { attrs, body ->
+        def isLoggedIn = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+
+        if(!isLoggedIn){
+            out << body()
+        }else{
+            out << ""
+        }
     }
 }

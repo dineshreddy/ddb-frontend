@@ -20,17 +20,17 @@ limitations under the License.
         
         <g:if test="${item.preview.thumbnail != null}">        
 	        <g:if test="${ (item.preview.thumbnail.toString().contains('binary'))}">       
-	        	<img src="${request.getContextPath() + item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        	<img src="${request.getContextPath() + item.preview.thumbnail}" title="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" /> 
 	        </g:if>
 	        <g:else>       
-	        	<img src="${item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
+	        	<img src="${item.preview.thumbnail}" title="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" /> 
 	        </g:else>
         </g:if>
         
       </g:link>
 	  
 	  <div class="caption">
-	  	<g:truncateItemTitle title="${item.preview.subtitle}" length="${ 40 }"></g:truncateItemTitle>        
+	  	<ddb:getTruncatedItemTitle title="${item.preview.subtitle}" length="${ 40 }" />        
       </div>
     </div>
 </g:each>
