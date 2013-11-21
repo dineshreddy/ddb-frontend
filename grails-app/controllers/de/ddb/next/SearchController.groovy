@@ -19,6 +19,7 @@ import groovy.json.*
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.FacetEnum
 import de.ddb.next.exception.BadRequestException
 
 class SearchController {
@@ -121,6 +122,13 @@ class SearchController {
                 render (contentType:"text/json"){jsonReturn}
             }else{
                 //We want to build the subfacets urls only if a main facet has been selected
+                def mainFacets = []
+                FacetEnum.values().each {
+                    if (it.isSearchFacet()) {
+                        mainFacets.add(it)
+                    }
+                }
+
                 def keepFiltersChecked = ""
                 if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
@@ -138,6 +146,7 @@ class SearchController {
                 }
 
                 render(view: "results", model: [
+                    facetsList:mainFacets,
                     title: urlQuery["query"],
                     results: resultsItems,
                     gndResults: gndItems,
@@ -174,7 +183,7 @@ class SearchController {
 
                 def gndLinkItems = []
                 resultItems.facets.each { facet ->
-                    if(facet.field == "affiliate_fct_involved_normdata" || facet.field == "affiliate_fct_subject") {
+                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA || facet.field == FacetEnum.AFFILIATE_SUBJECT) {
                         facet.facetValues.each { entry ->
                             if(cultureGraphService.isValidGndUri(entry.value)){
                                 gndLinkItems.addAll(entry)
@@ -225,31 +234,13 @@ class SearchController {
         if(jsonSubresp.facet){
             //iterate over all facets
             jsonSubresp.facet.each(){ facet ->
+                //iterate over all values of the FacetEnum and add matching names to the information
+                for (FacetEnum facetItem : FacetEnum.values()) {
+                    if (facet['@name'] == facetItem.getName()) {
+                        addFacetItems(properties, facet, facetItem);
+                    }
+                }
 
-                if(facet['@name'] == 'time_fct') {
-                    addFacetItems(properties, facet,'time_fct','ddbnext.time_fct_')
-                }
-                else if(facet['@name'] == 'place_fct') {
-                    addFacetItems(properties, facet,'place_fct',null)
-                }
-                else if(facet['@name'] == 'affiliate_fct') {
-                    addFacetItems(properties, facet,'affiliate_fct',null)
-                }
-                else if(facet['@name'] == 'keywords_fct') {
-                    addFacetItems(properties, facet,'keywords_fct',null)
-                }
-                else if(facet['@name'] == 'type_fct') {
-                    addFacetItems(properties, facet,'type_fct','ddbnext.type_fct_')
-                }
-                else if(facet['@name'] == 'sector_fct') {
-                    addFacetItems(properties, facet,'sector_fct','ddbnext.sector_fct_')
-                }
-                else if(facet['@name'] == 'provider_fct') {
-                    addFacetItems(properties, facet,'provider_fct', null)
-                }
-                else if(facet['@name'] == 'language_fct') {
-                    addFacetItems(properties, facet,'language_fct', 'ddbnext.language_fct_')
-                }
             }
         }
         render (contentType:"text/json"){properties}
@@ -261,25 +252,24 @@ class SearchController {
      *
      * @param properties a map that holds all facet items (for rendering)
      * @param facetMap the facet map containing a key and a value element for one facet type. The value can be a single String or a List of Strings
-     * @param facetName the name of the facet-type to process
-     * @param i18nCode the i18ncode is concatenated with the value if internationalization is used for the facet-type; can be <code>null</code>
+     * @param facet the facet to add
      *
      */
-    private addFacetItems(Map properties, Map facetMap, String facetName, String i18nCode) {
-        properties[facetName]=[]
+    private addFacetItems(Map properties, Map facetMap, FacetEnum facet) {
+        properties[facet.getName()]=[]
 
         if(facetMap['value'] instanceof String) {
-            if (i18nCode != null) {
-                properties[facetName].add(message(code:i18nCode+facetMap['value']))
+            if (facet.getI18nPrefix() != null) {
+                properties[facet.getName()].add(message(code:facet.getI18nPrefix()+facetMap['value']))
             } else {
-                properties[facetName].add(facetMap['value'])
+                properties[facet.getName()].add(facetMap['value'])
             }
         } else if(facetMap['value'] instanceof List) {
             facetMap['value'].each() { value ->
-                if (i18nCode != null) {
-                    properties[facetName].add(message(code:i18nCode+value))
+                if (facet.getI18nPrefix() != null) {
+                    properties[facet.getName()].add(message(code:facet.getI18nPrefix()+value))
                 } else {
-                    properties[facetName].add(value)
+                    properties[facet.getName()].add(value)
                 }
             }
         }

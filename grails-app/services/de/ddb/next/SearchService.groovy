@@ -27,6 +27,8 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
+import de.ddb.next.constants.FacetEnum;
+
 /**
  * Set of services used in the SearchController for views/search
  * 
@@ -47,15 +49,16 @@ class SearchService {
     //Name of search-cookie
     private searchCookieName = "searchParameters"
 
+    //FIXME get this list from the FacetEnum
     private static facetsList = [
-        "time_fct",
-        "place_fct",
-        "affiliate_fct",
-        "keywords_fct",
-        "language_fct",
-        "type_fct",
-        "sector_fct",
-        "provider_fct"
+        FacetEnum.TIME.getName(),
+        FacetEnum.PLACE.getName(),
+        FacetEnum.AFFILIATE.getName(),
+        FacetEnum.KEYWORDS.getName(),
+        FacetEnum.LANGUAGE.getName(),
+        FacetEnum.TYPE.getName(),
+        FacetEnum.SECTOR.getName(),
+        FacetEnum.PROVIDER.getName()
     ]
 
     def transactional=false
@@ -544,8 +547,8 @@ class SearchService {
         }
 
         // This is needed for the entity search results that are displayed on top of the regular search results.
-        urlQuery["facet"].add("affiliate_fct_involved_normdata")
-        urlQuery["facet"].add("affiliate_fct_subject")
+        urlQuery["facet"].add(FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
+        urlQuery["facet"].add(FacetEnum.AFFILIATE_SUBJECT.getName())
 
         return urlQuery
     }
@@ -778,20 +781,20 @@ class SearchService {
 
         def res = ""
 
-        if(facetName == 'affiliate_fct' || facetName == 'keywords_fct' || facetName == 'place_fct' || facetName == 'provider_fct'){
+        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
             res = facetValue
         }
-        else if(facetName == 'type_fct'){
-            res = appCtx.getMessage('ddbnext.type_fct_'+facetValue, null, LocaleContextHolder.getLocale() )
+        else if(facetName == FacetEnum.TYPE.getName()){
+            res = appCtx.getMessage(FacetEnum.TYPE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
         }
-        else if(facetName == 'time_fct'){
-            res = appCtx.getMessage('ddbnext.time_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.TIME.getName()){
+            res = appCtx.getMessage(FacetEnum.TIME.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
-        else if(facetName == 'language_fct'){
-            res = appCtx.getMessage('ddbnext.language_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.LANGUAGE.getName()){
+            res = appCtx.getMessage(FacetEnum.LANGUAGE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
-        else if(facetName == 'sector_fct'){
-            res = appCtx.getMessage('ddbnext.sector_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.SECTOR.getName()){
+            res = appCtx.getMessage(FacetEnum.SECTOR.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
         return res
     }
