@@ -65,15 +65,15 @@
 }
 
 .socialmedia .social-locked .icon-facebook {
-  background: url(../images/icons/socialmedia.png) no-repeat 0 0px;
+  background: url(../images/icons/socialMedia.png) no-repeat 0 0px;
 }
 
 .socialmedia .social-locked .icon-twitter {
-  background: url(../images/icons/socialmedia.png) no-repeat 0 -50px;
+  background: url(../images/icons/socialMedia.png) no-repeat 0 -50px;
 }
 
 .socialmedia .social-locked .icon-googleplus {
-  background: url(../images/icons/socialmedia.png) no-repeat 0 -25px;
+  background: url(../images/icons/socialMedia.png) no-repeat 0 -25px;
 }
 
 .socialmedia .social-open {
@@ -110,7 +110,7 @@
 
 .socialmedia .social-open .icon-lockagain {
   cursor: pointer;
-  background: url(../images/icons/socialmedia.png) no-repeat 0 -72px;
+  background: url(../images/icons/socialMedia.png) no-repeat 0 -72px;
 }
 
 

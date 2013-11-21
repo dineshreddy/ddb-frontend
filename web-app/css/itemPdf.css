@@ -28,7 +28,7 @@ body {
 }
 
 header {
-  background:transparent url("../images/bg/back_header.png") no-repeat center bottom;
+  background:transparent url("../images/bg/backHeader.png") no-repeat center bottom;
   margin-bottom: 20px;
   display: block;
 }
@@ -96,7 +96,7 @@ li {
 }
 
 .institution-name {
-  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
   font-size: 1.214em;
   font-weight: bold;
   height: 25px;

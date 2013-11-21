@@ -171,7 +171,7 @@
   width: 40px;
   height: 25px;
   margin-left: 14px;
-  background:url("../images/icons/objectviewer_carousel_controls.png") no-repeat;
+  background:url("../images/icons/objectViewerCarouselControls.png") no-repeat;
 }
 
 .page-nav-mob .prev-page a div {
@@ -462,7 +462,7 @@ input[type="checkbox"],input[type="radio"] {
   margin: 0 4px 0 0;
   text-indent: -999em;
   margin-top: 12px;
-  background: url("../images/icons/result_types.png") no-repeat center top;
+  background: url("../images/icons/resultTypes.png") no-repeat center top;
 }
 
 .search-results .results-list .summary .extra .types .image {
@@ -506,7 +506,7 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .information {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -180px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -180px;
   cursor: pointer;
 }
 
@@ -517,7 +517,7 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .compare {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -122px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -122px;
   cursor: pointer;
 }
 
@@ -532,7 +532,7 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .add-to-favorites {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -60px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -60px;
   cursor: pointer;
 }
 
@@ -547,21 +547,21 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .summary .added-to-favorites {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat 0 0;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 0;
 }
 
 .search-results .results-list .summary .added-to-favorites:hover {
-    background: url("../images/icons/item_actions_sprite.png") no-repeat 0 -30px;
+    background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -30px;
 }
 
 @media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
   .search-results .results-list .summary .add-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px -60px;
+    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px -60px;
   }
   .search-results .results-list .summary .added-to-favorites {
     width: 40px;
-    background: url("../images/icons/item_actions_sprite.png") no-repeat 0px 0px;
+    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px 0px;
   }
 }
 
@@ -834,7 +834,7 @@ input[type="checkbox"],input[type="radio"] {
 .selected-items .facet-remove, .add-more-filters .icon {
   width:20px;
   height:20px;
-  background: url("../images/icons/search_actions.png") no-repeat 5px -40px;
+  background: url("../images/icons/searchActions.png") no-repeat 5px -40px;
   position: absolute;
   top: 4px;
   right: 0;
@@ -844,12 +844,12 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_standard_top_first.png") no-repeat 0px -68px;
+  background: url("../images/bg/advancedSearchSolidJointStandardTopFirst.png") no-repeat 0px -68px;
   position:relative;
   border-top: none;
 }
 .selected-items .role-facet:last-child {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -10px;
+  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -10px;
 }
 
 .role-facet .role-facet-value {  
@@ -872,7 +872,7 @@ input[type="checkbox"],input[type="radio"] {
   margin-left: 0
 }
 .role-facets-list .role-facet {
-  background: url("../images/bg/advanced_search_solid_joint_last_item.png") no-repeat 0px -16px;
+  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -16px;
   position:relative;
   border-top: none;
   margin=0px;
@@ -893,7 +893,7 @@ input[type="checkbox"],input[type="radio"] {
 .small-loader{
   height:24px;
   width:24px;
-  background: url("../images/icons/loader_small.gif") no-repeat 0 0;
+  background: url("../images/icons/loaderSmall.gif") no-repeat 0 0;
   margin:10px;
 }
 /*Flyout end*/
@@ -1039,7 +1039,7 @@ color: #a5003b;
 .add-to-saved-searches {
   width: 19px;
   height: 19px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -66px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat -5px -66px;
   cursor: pointer;
   padding-left: 3px;
   float: left;
@@ -1052,7 +1052,7 @@ color: #a5003b;
 .added-to-saved-searches {
   width: 19px;
   height: 19px;
-  background: url("../images/icons/item_actions_sprite.png") no-repeat -5px -6px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat -5px -6px;
   padding-left: 3px;
   float: left;
 }

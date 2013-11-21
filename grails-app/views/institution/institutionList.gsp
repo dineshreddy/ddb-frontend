@@ -53,7 +53,7 @@ limitations under the License.
       <div class="off">
     </noscript>
     <div class="loader">
-      <img alt="" src="../images/icons/loader_small.gif">
+      <img alt="" src="../images/icons/loaderSmall.gif">
     </div>
     <noscript>
       </div>

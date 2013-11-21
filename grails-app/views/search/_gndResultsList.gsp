@@ -47,7 +47,7 @@ limitations under the License.
               <%-- 
               <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
               --%>
-              <g:img dir="images/placeholder" file="search_result_entity.png" alt="${ gndItem.person.name }"/>
+              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ gndItem.person.name }"/>
             </g:link>
           </div>
           <%-- 
