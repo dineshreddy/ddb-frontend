@@ -59,7 +59,6 @@ A list of some predefined variables is set below:
     ddb.backend.apikey=                                                             (put a valid API key here or leave it empty)
     ddb.aas.url=http://ddbaas1-t1.deutsche-digitale-bibliothek.de:8081
     ddb.culturegraph.url=http://hub.culturegraph.org
-    ddb.dnb.url=http://d-nb.info
     ddb.bookmark.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
     ddb.newsletter.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
 
