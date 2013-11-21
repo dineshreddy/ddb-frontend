@@ -21,7 +21,6 @@ import groovy.json.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
-
 import de.ddb.next.beans.User
 
 /**
@@ -66,7 +65,6 @@ class NewsletterService {
 
     def isSubscriber(User user) {
         def apiResponse = ApiConsumer.getJson(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
-        def statusCode = apiResponse.status != ApiResponse.HttpStatus.HTTP_404
 
         // when 200 return true
         // when 404 return false

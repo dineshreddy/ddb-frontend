@@ -16,14 +16,10 @@
 package de.ddb.next
 
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.json.JSONArray;
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
-import groovy.json.JsonLexer;
-import groovy.json.JsonSlurper;
-import groovy.json.JsonToken;
-import groovyx.net.http.ContentType;
-import groovyx.net.http.Method
+import de.ddb.next.constants.FacetEnum
+
 
 class ApiInstitution {
 
@@ -42,7 +38,6 @@ class ApiInstitution {
 
     def getChildrenOfInstitutionByItemId(String id, String url) {
         log.debug("get children of institution by item id: ${id}")
-        def jsonResult;
         def uriPath = "/hierarchy/" + id + "/children"
         def apiResponse = ApiConsumer.getJson(url, uriPath)
         if(!apiResponse.isOk()){
@@ -54,7 +49,6 @@ class ApiInstitution {
 
     def getParentsOfInstitutionByItemId(String id, String url) {
         log.debug("get parent of institution by item id: ${id}")
-        def jsonResult;
         def uriPath = "/hierarchy/" + id + "/parent"
         def apiResponse = ApiConsumer.getJson(url, uriPath)
         if(!apiResponse.isOk()){
@@ -66,7 +60,6 @@ class ApiInstitution {
 
     def getFacetValuesX(String provName, String url) {
         log.debug("get facets values for: ${provName}")
-        def jsonResult;
         int shortLength = 50;
         String shortQuery = (provName.length() > shortLength ? provName.substring(0, shortLength) : provName);
         def uriPath = "/search/facets/provider_fct"
@@ -83,7 +76,7 @@ class ApiInstitution {
         log.debug("get facets values for: ${provName}")
         def jsonResult;
         def uriPath = "/search"
-        def query = ['query':"*","facet":"provider_fct", "provider_fct":"${provName}","rows":"0" ]
+        def query = ['query':"*","facet":FacetEnum.PROVIDER.getName(), (FacetEnum.PROVIDER.getName()):"${provName}","rows":"0" ]
         log.debug("query = '" + query + "'");
         def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
         if(!apiResponse.isOk()){

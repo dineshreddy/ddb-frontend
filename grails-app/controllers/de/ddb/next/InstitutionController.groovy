@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 package de.ddb.next
-import javax.servlet.http.HttpSession
-
 import grails.converters.JSON
 
 import org.apache.commons.logging.LogFactory
 
 import de.ddb.next.beans.User
-
-import groovy.json.JsonSlurper
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
 
 class InstitutionController {
 
@@ -111,7 +105,7 @@ class InstitutionController {
 
             def organisationLogo
             if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
             }else{
                 organisationLogo = selectedOrgXML.logo
             }

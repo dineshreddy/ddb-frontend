@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.util.WebUtils
 
 class CultureGraphService {
 

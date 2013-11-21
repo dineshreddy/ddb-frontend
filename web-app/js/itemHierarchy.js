@@ -314,7 +314,7 @@ var itemHierarchy = {
   addWaitSymbol : function(currentNode) {
     var waitSymbol = document.createElement("img");
 
-    waitSymbol.src = "../images/icons/loader_small.gif";
+    waitSymbol.src = "../images/icons/loaderSmall.gif";
     currentNode.prepend(waitSymbol);
   },
 

@@ -15,10 +15,6 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpServletRequest
-
-import de.ddb.next.exception.BackendErrorException
-import de.ddb.next.exception.ItemNotFoundException
 
 /**
  * Wrapper for all responses of the backend servers.

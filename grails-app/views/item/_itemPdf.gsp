@@ -30,7 +30,7 @@ limitations under the License.
   </head>
   <body class="print">
     <header class="header fixprintwidth">
-      <r:img dir="images" file="logo_header.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
+      <r:img dir="images" file="logoHeader.png" class="siteLogo" alt="Deutsche Digitale Bibliothek"/>
     </header>
     <div class="container fixprintwidth" role="print">
       

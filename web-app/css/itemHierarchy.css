@@ -44,7 +44,7 @@
 
 /* draw a text page symbol in front of the label */
 .item-hierarchy-result div.leaf-indicator {
-  background: url("../images/bg/hierarchy_leaf.png") no-repeat;
+  background: url("../images/bg/hierarchyLeaf.png") no-repeat;
   float: left;
   height: 19px;
   margin: 2px 5px 2px 8px;
@@ -53,7 +53,7 @@
 
 /* highlight the current node */
 .item-hierarchy-result div.leaf-indicator.current-node {
-  background: transparent url("../images/bg/hierarchy_active_leaf.png")
+  background: transparent url("../images/bg/hierarchyActiveLeaf.png")
     no-repeat;
 }
 
@@ -66,14 +66,14 @@
 /* draw a plus sign */
 .item-hierarchy-result i.collapsed {
   background: #a5003b
-    url("../images/bg/advanced_search_parent_node_default.png");
+    url("../images/bg/advancedSearchParentNodeDefault.png");
   cursor: pointer;
 }
 
 /* draw a minus sign */
 .item-hierarchy-result i.expanded {
   background: #a5003b
-    url("../images/bg/advanced_search_parent_node_collapse.png");
+    url("../images/bg/advancedSearchParentNodeCollapse.png");
   cursor: pointer;
 }
 
@@ -89,12 +89,12 @@
 
 /* draw a circle in front of the leaf indicator */
 .item-hierarchy-result li.leaf i {
-  background: url("../images/bg/advanced_search_empty_node.png") no-repeat;
+  background: url("../images/bg/advancedSearchEmptyNode.png") no-repeat;
 }
 
 .item-hierarchy-result li.node {
   background:
-    url("../images/bg/advanced_search_solid_joint_standard_top.png")
+    url("../images/bg/advancedSearchSolidJointStandardTop.png")
     no-repeat 7px 0;
   min-height: 26px;
   padding: 17px 0 0 56px;
@@ -103,7 +103,7 @@
 
 .item-hierarchy-result li.leaf {
   background:
-    url("../images/bg/advanced_search_solid_joint_standard_top.png" )
+    url("../images/bg/advancedSearchSolidJointStandardTop.png" )
     no-repeat 7px 0;
   min-height: 26px;
   padding: 17px 0 0 56px;
@@ -113,13 +113,13 @@
 /* last node in the tree */
 .item-hierarchy-result li.last {
   background:
-    url("../images/bg/advanced_search_solid_joint_last_item.png")
+    url("../images/bg/advancedSearchSolidJointLastItem.png")
     no-repeat 7px 0;
 }
 
 /* draw a dotted line */
 .item-hierarchy-result li.more-available {
-  background: url("../images/bg/advanced_search_dotted_end.png") no-repeat
+  background: url("../images/bg/advancedSearchDottedEnd.png") no-repeat
     scroll 7px 0 transparent;
   min-height: 26px;
 }
@@ -127,18 +127,18 @@
 /* draw 2 ellipsis */
 .item-hierarchy-result li.leaf.more-available {
   background:
-    url("../images/bg/advanced_search_solid_joint_break_top.png")
+    url("../images/bg/advancedSearchSolidJointBreakTop.png")
     no-repeat -1px 0;
 }
 
 /* draw a dotted line */
 .item-hierarchy-result li.node.more-hidden {
-  background: url("../images/bg/advanced_search_dotted_joint.png")
+  background: url("../images/bg/advancedSearchDottedJoint.png")
     no-repeat 7px 0;
 }
 
 .item-hierarchy-result ul.has-name>li.node.more-hidden {
-  background: url("../images/bg/advanced_search_dotted_joint_first.png")
+  background: url("../images/bg/advancedSearchDottedJointFirst.png")
     no-repeat 7px -30px;
 }
 
@@ -219,14 +219,14 @@
 
 .item-hierarchy-result ul.has-name>li:first-child {
   background:
-    url("../images/bg/advanced_search_solid_joint_standard_top_first.png")
+    url("../images/bg/advancedSearchSolidJointStandardTopFirst.png")
     no-repeat 7px -38px;
   padding-top: 36px;
 }
 
 .item-hierarchy-result ul.has-name>li.last.leaf:first-child {
   background:
-    url("../images/bg/advanced_search_solid_joint_last_item_first.png")
+    url("../images/bg/advancedSearchSolidJointLastItemFirst.png")
     no-repeat 7px -30px;
 }
 

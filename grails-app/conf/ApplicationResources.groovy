@@ -22,9 +22,9 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap.css', bundle: 'screen'
-        resource url:'/css/vendor/bootstrap-2.2.2/bootstrap-responsive.css', bundle: 'screen'
-        resource url:'/css/vendor/fancybox-2.1.4/jquery.fancybox-2.1.4.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/vendor/fancybox-2.1.4/lib/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'

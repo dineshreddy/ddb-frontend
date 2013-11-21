@@ -17,6 +17,7 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
+import de.ddb.next.constants.FacetEnum
 
 /**
  * Set of services used in the ApisController for views/search
@@ -50,8 +51,8 @@ class ApisService {
         if(queryParameters.rows)
             query["rows"] = queryParameters.rows
 
-		if(queryParameters.callback)
-			query["callback"] = queryParameters.callback
+        if(queryParameters.callback)
+            query["callback"] = queryParameters.callback
 
         if(queryParameters.facet){
             if(queryParameters.facet.getClass().isArray()){
@@ -61,36 +62,18 @@ class ApisService {
                 }
             }else query["facet"]=queryParameters.facet
         }
-        
+
         if(queryParameters.minDocs)
             query["minDocs"] = queryParameters.minDocs
 
         if(queryParameters.sort)
             query["sort"] = queryParameters.sort
-            
-        evaluateFacetParameter(query, queryParameters.time_fct, "time_fct")
-        
-        evaluateFacetParameter(query, queryParameters.place_fct, "place_fct")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved, "affiliate_fct_involved")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject, "affiliate_fct_subject")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject_normdata, "affiliate_fct_subject_normdata")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved_normdata, "affiliate_fct_involved_normdata")
-        
-        evaluateFacetParameter(query, queryParameters.keywords_fct, "keywords_fct")
 
-        evaluateFacetParameter(query, queryParameters.language_fct, "language_fct")
-               
-        evaluateFacetParameter(query, queryParameters.type_fct, "type_fct")
-        
-        evaluateFacetParameter(query, queryParameters.sector_fct, "sector_fct")
-        
-        evaluateFacetParameter(query, queryParameters.provider_fct, "provider_fct")
+        //Evaluates the facetValues from the API request
+        FacetEnum.values().each() {
+            evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
+        }
+
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
@@ -102,7 +85,7 @@ class ApisService {
 
         return query
     }
-    
+
     /**
      * 
      * @param query
@@ -117,10 +100,10 @@ class ApisService {
                 queryParameter.each {
                     query[facetName].add(it)
                 }
-            }else { 
+            }else {
                 query[facetName]=queryParameter
             }
         }
     }
-    
+
 }

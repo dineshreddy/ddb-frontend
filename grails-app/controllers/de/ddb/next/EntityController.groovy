@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import de.ddb.next.constants.FacetEnum;
 import de.ddb.next.exception.EntityNotFoundException
 
 class EntityController {
@@ -212,13 +213,13 @@ class EntityController {
             //These parameters are for the frontend to create a search link
             searchUrlParameter = ["query":query, "facetValues[]": [(rolefacet+'_normdata')+ "="+(gndUrl + entityid)]]
         } else {
-            searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], "affiliate_fct": query]
+            searchQuery = ["query": query, "rows": rows, "offset": offset, "sort": "RELEVANCE","facet": [], (FacetEnum.AFFILIATE.getName()) : query]
             searchQuery[rolefacet] = query;
-            searchQuery["facet"].add("affiliate_fct");
+            searchQuery["facet"].add(FacetEnum.AFFILIATE.getName());
             searchQuery["facet"].add(rolefacet);
             
             //These parameters are for the frontend to create a search link
-            searchUrlParameter = ["query":query, "facetValues[]": ["affiliate_fct="+query, "affiliate_fct_involved="+query]]
+            searchUrlParameter = ["query":query, "facetValues[]": [FacetEnum.AFFILIATE.getName() + "="+query, FacetEnum.AFFILIATE_INVOLVED.getName()+"="+query]]
         }
         
         
@@ -246,7 +247,7 @@ class EntityController {
     
     private def getResultCountsForFacetType(def searchString, def facetType) {
 
-        def searchQuery = ["query": searchString, "rows": 0, "offset": 0, "sort": "RELEVANCE", "facet": "type_fct", "type_fct": facetType]
+        def searchQuery = ["query": searchString, "rows": 0, "offset": 0, "sort": "RELEVANCE", "facet": FacetEnum.TYPE.getName(), (FacetEnum.TYPE.getName()): facetType]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponse.isOk()){
             log.error "getResultCountsForFacetType(): Search response contained error"

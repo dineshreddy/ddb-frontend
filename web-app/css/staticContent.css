@@ -69,10 +69,10 @@
   padding-top: 3px;
 }
 .plum-arrow li {
-  background: url("../images/icons/list_arrow_plum.png") no-repeat 0 4px;
+  background: url("../images/icons/listArrowPlum.png") no-repeat 0 4px;
 }
 .grey-arrow li {
-  background: url("../images/icons/list_arrow_grey.png") no-repeat 0 4px;
+  background: url("../images/icons/listArrowGrey.png") no-repeat 0 4px;
 }
 .no-arrow {
   background: none !important;
@@ -106,13 +106,13 @@ a.help-link:link, a.help-bc-link:link {
 .link_up {
   padding-left: 17px;
   text-decoration: none !important;
-  background: url("../images/icons/list_arrow_plum_up.png") no-repeat -3px 6px;
+  background: url("../images/icons/listArrowPlumUp.png") no-repeat -3px 6px;
 }
 
 .link_down {
   padding-left: 17px;
   text-decoration: none !important;
-  background: url("../images/icons/list_arrow_plum_down.png") no-repeat -3px 6px;
+  background: url("../images/icons/listArrowPlumDown.png") no-repeat -3px 6px;
 }
 
 a.help-kw-link:link, a.help-kw-link-first:link {

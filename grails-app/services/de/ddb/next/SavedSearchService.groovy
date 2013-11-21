@@ -15,13 +15,8 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import grails.converters.JSON
 import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
 import net.sf.json.JSONNull
 
 /**

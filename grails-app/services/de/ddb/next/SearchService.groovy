@@ -27,6 +27,8 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
+import de.ddb.next.constants.FacetEnum;
+
 /**
  * Set of services used in the SearchController for views/search
  * 
@@ -47,15 +49,16 @@ class SearchService {
     //Name of search-cookie
     private searchCookieName = "searchParameters"
 
+    //FIXME get this list from the FacetEnum
     private static facetsList = [
-        "time_fct",
-        "place_fct",
-        "affiliate_fct",
-        "keywords_fct",
-        "language_fct",
-        "type_fct",
-        "sector_fct",
-        "provider_fct"
+        FacetEnum.TIME.getName(),
+        FacetEnum.PLACE.getName(),
+        FacetEnum.AFFILIATE.getName(),
+        FacetEnum.KEYWORDS.getName(),
+        FacetEnum.LANGUAGE.getName(),
+        FacetEnum.TYPE.getName(),
+        FacetEnum.SECTOR.getName(),
+        FacetEnum.PROVIDER.getName()
     ]
 
     def transactional=false
@@ -88,14 +91,14 @@ class SearchService {
      * @param reqParameters the requestParameter
      * @return the url encoded query String for facetValues parameter
      */
-    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){        
+    def facetValuesToUrlQueryString(GrailsParameterMap reqParameters){
         def res = ""
         def facetValues = facetValuesRequestParameterToList(reqParameters)
-        
-        if(facetValues != null){                   
+
+        if(facetValues != null){
             res = facetValuesToUrlQueryString(facetValues)
         }
-        
+
         return res
     }
 
@@ -107,14 +110,14 @@ class SearchService {
      */
     def facetValuesToUrlQueryString(List facetValues){
         def res = ""
-        
+
         facetValues.each{
             res += "&facetValues%5B%5D="+it.encodeAsURL()
         }
-        
+
         return res
     }
-    
+
     /**
      * This methods get all "facetValues[]" parameter from the request and returns them as a list
      * 
@@ -123,8 +126,8 @@ class SearchService {
      */
     def facetValuesRequestParameterToList(GrailsParameterMap reqParameters) {
         def urlFacetValues = []
-        def requestParamValues = reqParameters.get("facetValues[]") 
-        
+        def requestParamValues = reqParameters.get("facetValues[]")
+
         if (requestParamValues != null){
             //The facetValues request parameter could be of type Array or String
             if(requestParamValues.getClass().isArray()){
@@ -133,10 +136,10 @@ class SearchService {
                 urlFacetValues.add(requestParamValues)
             }
         }
-        
+
         return urlFacetValues;
     }
-    
+
     /**
      * Creates the urls for the main facets of the non js version of the facet search
      * 
@@ -149,10 +152,10 @@ class SearchService {
      */
     def buildMainFacetsUrl(GrailsParameterMap reqParameters, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def mainFacetsUrls = [:]
-        
+
         facetsList.each {
             def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
-            
+
             //remove the main facet from the URL (the main facet is selected in this request)
             if(urlQuery["facet"] && urlQuery["facet"].contains(it)){
                 mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+facetValuesToUrlQueryString(reqParameters))
@@ -179,7 +182,7 @@ class SearchService {
      */
     def buildSubFacetsUrl(GrailsParameterMap reqParameters, List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery, HttpServletRequest requestObject){
         def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
-        
+
         def res = [:]
         urlQuery["facet"].each{
             if(it!="grid_preview"){
@@ -189,30 +192,30 @@ class SearchService {
                         x.facetValues.each{ y->
                             //only proceed if the facetValue is of type main facet. Role facets will be ignored
                             if (mainFacetsUrl[x.field] != null) {
-                                
+
                                 //Create a map which contains the facet name, count and url for the view
                                 def tmpFacetValuesMap = ["fctValue": y["value"].encodeAsHTML(),"url":"",cnt: y["count"],selected:""]
-                                
+
                                 //Convert the facetValues[] parameter of the request from an array/string to a list. List entries can be changed (add/remove)!
                                 def urlFacetValues = facetValuesRequestParameterToList(reqParameters)
-                                
+
                                 //The current facetValue in the target request parameter form
                                 def facetValueParameter = x.field+"="+y["value"]
-                                
+
                                 if(urlFacetValues.contains(facetValueParameter)){
                                     //remove the facetValueParameter from the urlFacetValues (the facet was selected in this request)
                                     urlFacetValues.remove(facetValueParameter)
                                     def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
-                                    
+
                                     tmpFacetValuesMap["url"] = url
                                     tmpFacetValuesMap["selected"] = "selected"
-                                }                                
+                                }
                                 else{
-                                  //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
-                                  urlFacetValues.add(facetValueParameter)
-                                  
-                                  def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
-                                  tmpFacetValuesMap["url"] = url
+                                    //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
+                                    urlFacetValues.add(facetValueParameter)
+
+                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    tmpFacetValuesMap["url"] = url
                                 }
 
                                 res[x.field].add(tmpFacetValuesMap)
@@ -239,7 +242,7 @@ class SearchService {
      * 
      * @return a list with all roleFacetsUrls
      */
-        def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
+    def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
         def res = []
         def allBackendRolefacets = getRoleFacets()
 
@@ -442,7 +445,6 @@ class SearchService {
         def cleanTitle = title.replaceAll("<match>", "").replaceAll("</match>", "")
         def index = cleanTitle.length() > length ? cleanTitle.substring(0,length).lastIndexOf(" ") : -1
         def tmpTitle = index >= 0 ? cleanTitle.substring(0,index) + "..." : cleanTitle
-        def replacedMatches = []
         StringBuilder replacementsRegex = new StringBuilder("(")
         if(matchesMatch.size()>0){
             matchesMatch.each{
@@ -545,8 +547,8 @@ class SearchService {
         }
 
         // This is needed for the entity search results that are displayed on top of the regular search results.
-        urlQuery["facet"].add("affiliate_fct_involved_normdata")
-        urlQuery["facet"].add("affiliate_fct_subject")
+        urlQuery["facet"].add(FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
+        urlQuery["facet"].add(FacetEnum.AFFILIATE_SUBJECT.getName())
 
         return urlQuery
     }
@@ -559,7 +561,6 @@ class SearchService {
      */
     def convertQueryParametersToSearchFacetsParameters(Map reqParameters) {
         def urlQuery = [:]
-        def numbersRangeRegex = /^[0-9]+$/
 
         if (reqParameters["searchQuery"]!=null && reqParameters["searchQuery"].length()>0){
             urlQuery["searchQuery"] = getMapElementOfUnsureType(reqParameters, "searchQuery", "*")
@@ -780,20 +781,20 @@ class SearchService {
 
         def res = ""
 
-        if(facetName == 'affiliate_fct' || facetName == 'keywords_fct' || facetName == 'place_fct' || facetName == 'provider_fct'){
+        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
             res = facetValue
         }
-        else if(facetName == 'type_fct'){
-            res = appCtx.getMessage('ddbnext.type_fct_'+facetValue, null, LocaleContextHolder.getLocale() )
+        else if(facetName == FacetEnum.TYPE.getName()){
+            res = appCtx.getMessage(FacetEnum.TYPE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
         }
-        else if(facetName == 'time_fct'){
-            res = appCtx.getMessage('ddbnext.time_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.TIME.getName()){
+            res = appCtx.getMessage(FacetEnum.TIME.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
-        else if(facetName == 'language_fct'){
-            res = appCtx.getMessage('ddbnext.language_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.LANGUAGE.getName()){
+            res = appCtx.getMessage(FacetEnum.LANGUAGE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
-        else if(facetName == 'sector_fct'){
-            res = appCtx.getMessage('ddbnext.sector_fct_'+facetValue, null, LocaleContextHolder.getLocale())
+        else if(facetName == FacetEnum.SECTOR.getName()){
+            res = appCtx.getMessage(FacetEnum.SECTOR.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
         return res
     }

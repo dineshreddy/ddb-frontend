@@ -78,15 +78,15 @@
   height: 90px;
 }
 .scroller li a .thumbnail.audio {
-  background:#fff url("../images/icons/search_result_media_audio.png") no-repeat center center;
+  background:#fff url("../images/icons/searchResultMediaAudio.png") no-repeat center center;
   background-size:90px auto;
 }
 .scroller li a .thumbnail.video {
-  background:#fff url("../images/icons/search_result_media_video.png") no-repeat center center;
+  background:#fff url("../images/icons/searchResultMediaVideo.png") no-repeat center center;
   background-size:90px auto;
 }
 .scroller li a .thumbnail.image {
-  background:#fff url("../images/icons/search_result_media_image.png") no-repeat center center;
+  background:#fff url("../images/icons/searchResultMediaImage.png") no-repeat center center;
   background-size:90px auto;
 }
 .scroller li a .thumbnail img {
@@ -123,7 +123,7 @@
   left:3px;
   height:24px;
   width:20px;
-  background-image:url("../images/icons/objectviewer_carousel_controls.png");
+  background-image:url("../images/icons/objectViewerCarouselControls.png");
 }
 .slide-viewer .btn-prev span {
   background-position:0 -91px;
@@ -225,10 +225,10 @@ noscript .scroller {
   float: right;
   width: 18px;
   height: 18px;
-  background: url("../images/icons/adv_search_row_actions.png") no-repeat left -60px;
+  background: url("../images/icons/advSearchRowActions.png") no-repeat left -60px;
 }
 .fancybox-toolbar-close:hover {
-  background: url("../images/icons/adv_search_row_actions.png") no-repeat left -80px;
+  background: url("../images/icons/advSearchRowActions.png") no-repeat left -80px;
 }
 .fancybox-prev, .fancybox-next {
   width: 42px;
@@ -237,18 +237,18 @@ noscript .scroller {
 }
 .fancybox-prev {
   left: -40px;
-  background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -105px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -105px;
 }
 
 .fancybox-prev:hover {
-  background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -55px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -55px;
 }
 .fancybox-next {
   right: -45px;
-  background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -253px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -253px;
 }
 .fancybox-next:hover {
-  background: url("../images/icons/homepage_carousel_controls.png") no-repeat left -203px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -203px;
 }
 
 @media (max-width: 767px) {

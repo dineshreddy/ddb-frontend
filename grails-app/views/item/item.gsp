@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:set var="itemTitle" value="${g.truncateItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 
 <html>
   <head>
