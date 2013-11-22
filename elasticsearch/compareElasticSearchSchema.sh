@@ -77,8 +77,8 @@ compareSchemaFile() {
   fi
 }
 
-echo Curling new schema to elasticsearch
-echo -----------------------------------
+echo Comparing current schema with elasticsearch
+echo -------------------------------------------
                 
 
 compareSchemaFile "folder" "$contentFolder"
