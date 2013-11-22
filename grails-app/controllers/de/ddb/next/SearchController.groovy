@@ -52,8 +52,8 @@ class SearchController {
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
                 firstLastQuery[SearchParamEnum.SORT.getName()] = resultsItems["randomSeed"]
-                if (!params.sort) {
-                    params.sort = urlQuery["randomSeed"]
+                if (!params[SearchParamEnum.SORT.getName()]) {
+                    params[SearchParamEnum.SORT.getName()] = urlQuery["randomSeed"]
                 }
             }
 
@@ -102,8 +102,8 @@ class SearchController {
 
             def queryString = request.getQueryString()
 
-            if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
-                queryString = queryString+"&sort="+urlQuery["randomSeed"]
+            if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             def gndItems = getGndItems(resultsItems, page)
 

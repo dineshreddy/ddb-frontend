@@ -79,7 +79,7 @@ class AdvancedsearchController {
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
         String query = converter.convertFormParameters()
-        redirect(uri: "/searchresults?query=" + query + "&"+SearchParamEnum.OFFSET.getName()+"=" + offset + "&"+SearchParamEnum.ROWS.getName()+"=" + rows)
+        redirect(uri: "/searchresults?"+SearchParamEnum.QUERY.getName()+"=" + query + "&"+SearchParamEnum.OFFSET.getName()+"=" + offset + "&"+SearchParamEnum.ROWS.getName()+"=" + rows)
     }
 
     /**

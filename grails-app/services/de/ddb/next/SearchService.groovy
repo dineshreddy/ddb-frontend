@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2013 FIZ Karlsruhe
  *
@@ -159,11 +160,11 @@ class SearchService {
 
             //remove the main facet from the URL (the main facet is selected in this request)
             if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()].contains(it)){
-                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+facetValuesToUrlQueryString(reqParameters))
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?'+SearchParamEnum.QUERY.getName()+'='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+facetValuesToUrlQueryString(reqParameters))
             }
             //add the main facet from the URL (the main facet is deselected in this request)
             else{
-                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+it+facetValuesToUrlQueryString(reqParameters))
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?'+SearchParamEnum.QUERY.getName()+'='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+it+facetValuesToUrlQueryString(reqParameters))
             }
         }
 
@@ -206,7 +207,7 @@ class SearchService {
                                 if(urlFacetValues.contains(facetValueParameter)){
                                     //remove the facetValueParameter from the urlFacetValues (the facet was selected in this request)
                                     urlFacetValues.remove(facetValueParameter)
-                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    def url = requestObject.forwardURI+'?'+SearchParamEnum.QUERY.getName()+'='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
 
                                     tmpFacetValuesMap["url"] = url
                                     tmpFacetValuesMap["selected"] = "selected"
@@ -215,7 +216,7 @@ class SearchService {
                                     //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
                                     urlFacetValues.add(facetValueParameter)
 
-                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    def url = requestObject.forwardURI+'?'+SearchParamEnum.QUERY.getName()+'='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
                                     tmpFacetValuesMap["url"] = url
                                 }
 
@@ -520,7 +521,7 @@ class SearchService {
             urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
         }
 
-        if(reqParameters[SearchParamEnum.SORT.getName()] != null && ((reqParameters[SearchParamEnum.SORT.getName()]=~ /^random_[0-9]+$/) || reqParameters[SearchParamEnum.SORT.getName()]=='ALPHA_ASC' || reqParameters[SearchParamEnum.SORT.getName()]=='ALPHA_DESC')){
+        if(reqParameters[SearchParamEnum.SORT.getName()] != null && ((reqParameters[SearchParamEnum.SORT.getName()]=~ /^random_[0-9]+$/) || reqParameters[SearchParamEnum.SORT.getName()]==SearchParamEnum.SORT_ALPHA_ASC.getName() || reqParameters[SearchParamEnum.SORT.getName()]==SearchParamEnum.SORT_ALPHA_DESC.getName())){
             urlQuery[SearchParamEnum.SORT.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.SORT.getName(), "")
         }else{
             if(urlQuery[SearchParamEnum.QUERY.getName()]!="*"){
@@ -528,9 +529,9 @@ class SearchService {
             }
         }
 
-        if(reqParameters.viewType == null || (!(reqParameters.viewType=~ /^list$/) && !(reqParameters.viewType=~ /^grid$/))) {
-            urlQuery[SearchParamEnum.VIEWTYPE.getName()] = "list"
-            reqParameters.viewType = "list"
+        if(reqParameters[SearchParamEnum.VIEWTYPE.getName()] == null || (!(reqParameters[SearchParamEnum.VIEWTYPE.getName()]=~ /^list$/) && !(reqParameters[SearchParamEnum.VIEWTYPE.getName()]=~ /^grid$/))) {
+            urlQuery[SearchParamEnum.VIEWTYPE.getName()] = SearchParamEnum.VIEWTYPE_LIST.getName()
+            reqParameters[SearchParamEnum.VIEWTYPE.getName()] = SearchParamEnum.VIEWTYPE_LIST.getName()
         } else {
             urlQuery[SearchParamEnum.VIEWTYPE.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.VIEWTYPE.getName(), "")
         }

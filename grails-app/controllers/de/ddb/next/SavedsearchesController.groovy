@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import grails.converters.JSON
+
 import de.ddb.next.beans.User
 
 class SavedsearchesController {

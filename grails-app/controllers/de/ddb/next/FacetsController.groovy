@@ -38,7 +38,7 @@ class FacetsController {
     def facetsList() {
 
         def facetName = params.name
-        def facetQuery = params.query
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
 
         def facetValues
         def maxResults = 301

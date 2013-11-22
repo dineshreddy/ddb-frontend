@@ -64,7 +64,7 @@ class ApiInstitution {
         int shortLength = 50
         String shortQuery = (provName.length() > shortLength ? provName.substring(0, shortLength) : provName)
         def uriPath = "/search/facets/provider_fct"
-        def query = ['query':"${shortQuery}" ]
+        def query = [(SearchParamEnum.QUERY.getName()):"${shortQuery}" ]
         def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: json file was not found"
@@ -77,8 +77,8 @@ class ApiInstitution {
         log.debug("get facets values for: ${provName}")
         def jsonResult
         def uriPath = "/search"
-        def query = ['query':"*",(SearchParamEnum.FACET.getName()):FacetEnum.PROVIDER.getName(), (FacetEnum.PROVIDER.getName()):"${provName}", (SearchParamEnum.ROWS.getName()):"0" ]
-        log.debug("query = '" + query + "'")
+        def query = [(SearchParamEnum.QUERY.getName()):"*",(SearchParamEnum.FACET.getName()):FacetEnum.PROVIDER.getName(), (FacetEnum.PROVIDER.getName()):"${provName}", (SearchParamEnum.ROWS.getName()):"0" ]
+        log.debug(SearchParamEnum.QUERY.getName()+" = '" + query + "'")
         def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: json file was not found"

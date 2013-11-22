@@ -130,7 +130,7 @@ class EntityController {
 
     public def getAjaxSearchResultsAsJson() {
 
-        def query = params.query
+        def query = params[SearchParamEnum.QUERY.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
         def rows = params.long(SearchParamEnum.ROWS.getName())
 
@@ -176,7 +176,7 @@ class EntityController {
 
 
     public def getAjaxRoleSearchResultsAsJson() {
-        def query = params.query
+        def query = params[SearchParamEnum.QUERY.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
         def rows = params.long(SearchParamEnum.ROWS.getName())
         def normdata = params.boolean("normdata")

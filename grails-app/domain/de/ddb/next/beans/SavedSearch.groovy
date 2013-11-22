@@ -23,7 +23,7 @@ import de.ddb.next.constants.SearchParamEnum
 @ToString(includeNames=true)
 
 class SavedSearch {
-    static SEARCH_PARAMETERS = [query: "", (SearchParamEnum.FACETVALUES.getName()): ""]
+    static SEARCH_PARAMETERS = [(SearchParamEnum.QUERY.getName()): "", (SearchParamEnum.FACETVALUES.getName()): ""]
 
     String id
     String label

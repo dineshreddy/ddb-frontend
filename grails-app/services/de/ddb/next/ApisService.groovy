@@ -45,7 +45,7 @@ class ApisService {
      */
     def getQueryParameters(Map queryParameters){
 
-        def query = [ query: queryParameters.query ]
+        def query = [ (SearchParamEnum.QUERY.getName()): queryParameters.query ]
 
         if(queryParameters[SearchParamEnum.OFFSET.getName()])
             query[SearchParamEnum.OFFSET.getName()]= queryParameters[SearchParamEnum.OFFSET.getName()]
@@ -68,8 +68,8 @@ class ApisService {
         if(queryParameters.minDocs)
             query["minDocs"] = queryParameters.minDocs
 
-        if(queryParameters.sort)
-            query[SearchParamEnum.SORT.getName()] = queryParameters.sort
+        if(queryParameters[SearchParamEnum.SORT.getName()])
+            query[SearchParamEnum.SORT.getName()] = queryParameters[SearchParamEnum.SORT.getName()]
 
         //Evaluates the facetValues from the API request
         FacetEnum.values().each() {

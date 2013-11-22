@@ -8,6 +8,7 @@ public enum SearchParamEnum {
     SORT_RELEVANCE("RELEVANCE"),
     SORT_ALPHA_ASC("ALPHA_ASC"),
     SORT_ALPHA_DESC("ALPHA_DESC"),
+    SORT_RANDOM("random"),
     SORT("sort"),
     QUERY("query"),
     VIEWTYPE_LIST("list"),
