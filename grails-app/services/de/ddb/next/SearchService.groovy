@@ -27,7 +27,8 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
-import de.ddb.next.constants.FacetEnum;
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Set of services used in the SearchController for views/search
@@ -66,17 +67,17 @@ class SearchService {
     def getFacets(Map reqParameters, Map urlQuery, String key, int currentDepth){
         List facetValues = []
         def facets = urlQuery
-        facets["facet"] = []
-        if(reqParameters.get("facetValues[]").getClass().isArray()){
-            reqParameters.get("facetValues[]").each{ facetValues.add(it) }
+        facets[SearchParamEnum.FACET.getName()] = []
+        if(reqParameters.get(SearchParamEnum.FACETVALUES.getName()).getClass().isArray()){
+            reqParameters.get(SearchParamEnum.FACETVALUES.getName()).each{ facetValues.add(it) }
         }else{
-            facetValues.add(reqParameters.get("facetValues[]").toString())
+            facetValues.add(reqParameters.get(SearchParamEnum.FACETVALUES.getName()).toString())
         }
         facetValues.each {
             def tmpVal = java.net.URLDecoder.decode(it.toString(), "UTF-8")
             List tmpSubVal = tmpVal.split("=")
-            if(!facets["facet"].contains(tmpSubVal[0]))
-                facets["facet"].add(tmpSubVal[0].toString())
+            if(!facets[SearchParamEnum.FACET.getName()].contains(tmpSubVal[0]))
+                facets[SearchParamEnum.FACET.getName()].add(tmpSubVal[0].toString())
             if(!facets[tmpSubVal[0]]){
                 facets[tmpSubVal[0]]=[tmpSubVal[1]]
             }else
@@ -126,7 +127,7 @@ class SearchService {
      */
     def facetValuesRequestParameterToList(GrailsParameterMap reqParameters) {
         def urlFacetValues = []
-        def requestParamValues = reqParameters.get("facetValues[]")
+        def requestParamValues = reqParameters.get(SearchParamEnum.FACETVALUES.getName())
 
         if (requestParamValues != null){
             //The facetValues request parameter could be of type Array or String
@@ -137,7 +138,7 @@ class SearchService {
             }
         }
 
-        return urlFacetValues;
+        return urlFacetValues
     }
 
     /**
@@ -154,15 +155,15 @@ class SearchService {
         def mainFacetsUrls = [:]
 
         facetsList.each {
-            def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
+            def searchQuery = (urlQuery[SearchParamEnum.QUERY.getName()]) ? urlQuery[SearchParamEnum.QUERY.getName()] : ""
 
             //remove the main facet from the URL (the main facet is selected in this request)
-            if(urlQuery["facet"] && urlQuery["facet"].contains(it)){
-                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+facetValuesToUrlQueryString(reqParameters))
+            if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()].contains(it)){
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+facetValuesToUrlQueryString(reqParameters))
             }
             //add the main facet from the URL (the main facet is deselected in this request)
             else{
-                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+it+facetValuesToUrlQueryString(reqParameters))
+                mainFacetsUrls.put(it,requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+it+facetValuesToUrlQueryString(reqParameters))
             }
         }
 
@@ -181,10 +182,10 @@ class SearchService {
      * @return a map containing the main facet name as key and a map as value (containing all subfacets storing the name, count and url)  
      */
     def buildSubFacetsUrl(GrailsParameterMap reqParameters, List facets, LinkedHashMap mainFacetsUrl, LinkedHashMap urlQuery, HttpServletRequest requestObject){
-        def searchQuery = (urlQuery["query"]) ? urlQuery["query"] : ""
+        def searchQuery = (urlQuery[SearchParamEnum.QUERY.getName()]) ? urlQuery[SearchParamEnum.QUERY.getName()] : ""
 
         def res = [:]
-        urlQuery["facet"].each{
+        urlQuery[SearchParamEnum.FACET.getName()].each{
             if(it!="grid_preview"){
                 facets.each { x->
                     if(x.field == it && x.numberOfFacets>0){
@@ -205,7 +206,7 @@ class SearchService {
                                 if(urlFacetValues.contains(facetValueParameter)){
                                     //remove the facetValueParameter from the urlFacetValues (the facet was selected in this request)
                                     urlFacetValues.remove(facetValueParameter)
-                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
 
                                     tmpFacetValuesMap["url"] = url
                                     tmpFacetValuesMap["selected"] = "selected"
@@ -214,7 +215,7 @@ class SearchService {
                                     //add the facetValueParameter to the urlFacetValues (the facet was deselected in this request)
                                     urlFacetValues.add(facetValueParameter)
 
-                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&offset=0&rows="+urlQuery["rows"]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
+                                    def url = requestObject.forwardURI+'?query='+searchQuery+"&"+SearchParamEnum.OFFSET.getName()+"=0&"+SearchParamEnum.ROWS.getName()+"="+urlQuery[SearchParamEnum.ROWS.getName()]+"&facets%5B%5D="+x.field+facetValuesToUrlQueryString(urlFacetValues)
                                     tmpFacetValuesMap["url"] = url
                                 }
 
@@ -311,12 +312,12 @@ class SearchService {
         //We want only the first 10 facets
         urlQuery["facet.limit"] = 10
 
-        urlQuery["facet"].each{
+        urlQuery[SearchParamEnum.FACET.getName()].each{
             if(it != "grid_preview"){
                 emptyFacets.remove(it)
                 def tmpUrlQuery = urlQuery.clone()
-                tmpUrlQuery["rows"]=1
-                tmpUrlQuery["offset"]=0
+                tmpUrlQuery[SearchParamEnum.ROWS.getName()]=1
+                tmpUrlQuery[SearchParamEnum.OFFSET.getName()]=0
                 tmpUrlQuery.remove(it)
                 def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, tmpUrlQuery)
                 if(!apiResponse.isOk()){
@@ -374,10 +375,10 @@ class SearchService {
     def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
         def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination
-        def currentRows = queryParameters.rows.toInteger()
-        def currentOffset = queryParameters.offset.toInteger()
-        if(!getQuery.contains("rows"))
-            getQuery += "&rows=20"
+        def currentRows = queryParameters[SearchParamEnum.ROWS.getName()].toInteger()
+        def currentOffset = queryParameters[SearchParamEnum.OFFSET.getName()].toInteger()
+        if(!getQuery.contains(SearchParamEnum.ROWS.getName()))
+            getQuery += "&"+SearchParamEnum.ROWS.getName()+"=20"
         if(resultsNumber>currentRows){
             //We are not at the first page
             if(currentOffset>0){
@@ -385,12 +386,12 @@ class SearchService {
                 def firstUrl
                 def offsetPrev = currentOffset - currentRows
                 def offsetFirst = 0
-                if(getQuery.contains("offset")){
-                    prevUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetPrev)
-                    firstUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetFirst)
+                if(getQuery.contains(SearchParamEnum.OFFSET.getName())){
+                    prevUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetPrev)
+                    firstUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetFirst)
                 }else{
-                    prevUrl = getQuery+'&offset='+offsetPrev
-                    firstUrl = getQuery+'&offset='+offsetFirst
+                    prevUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetPrev
+                    firstUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetFirst
                 }
                 res["firstPg"]= firstUrl
                 res["prevPg"]= prevUrl
@@ -401,12 +402,12 @@ class SearchService {
                 def offsetLast = ((Math.ceil(resultsNumber/currentRows)*currentRows)-currentRows).toInteger()
                 def nextUrl
                 def lastUrl
-                if(getQuery.contains("offset")){
-                    nextUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetNext)
-                    lastUrl = getQuery.replaceAll('offset='+currentOffset, 'offset='+offsetLast)
+                if(getQuery.contains(SearchParamEnum.OFFSET.getName())){
+                    nextUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetNext)
+                    lastUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetLast)
                 }else{
-                    nextUrl = getQuery+'&offset='+offsetNext
-                    lastUrl = getQuery+'&offset='+offsetLast
+                    nextUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetNext
+                    lastUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetLast
                 }
                 res["lastPg"]= lastUrl
                 res["nextPg"]= nextUrl
@@ -417,15 +418,15 @@ class SearchService {
 
     def buildPaginatorOptions(LinkedHashMap queryMap){
         def pageFilter = [10, 20, 40, 60, 100]
-        if(!pageFilter.contains(queryMap["rows"].toInteger()))
-            pageFilter.add(queryMap["rows"].toInteger())
-        return [pageFilter: pageFilter.sort(), pageFilterSelected: queryMap["rows"].toInteger(), sortResultsSwitch: queryMap["sort"]]
+        if(!pageFilter.contains(queryMap[SearchParamEnum.ROWS.getName()].toInteger()))
+            pageFilter.add(queryMap[SearchParamEnum.ROWS.getName()].toInteger())
+        return [pageFilter: pageFilter.sort(), pageFilterSelected: queryMap[SearchParamEnum.ROWS.getName()].toInteger(), sortResultsSwitch: queryMap[SearchParamEnum.SORT.getName()]]
     }
 
     def buildClearFilter(LinkedHashMap urlQuery, String baseURI){
         def res = baseURI+'?'
         urlQuery.each{ key, value ->
-            if(!key.toString().contains("facet") && !key.toString().contains("facetValues[]") && !key.toString().contains("fct")){
+            if(!key.toString().contains(SearchParamEnum.FACET.getName()) && !key.toString().contains(SearchParamEnum.FACETVALUES.getName()) && !key.toString().contains("fct")){
                 res+='&'+key+'='+value
             }
         }
@@ -483,72 +484,72 @@ class SearchService {
         def urlQuery = [:]
         def numbersRangeRegex = /^[0-9]+$/
 
-        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
+        if (reqParameters[SearchParamEnum.QUERY.getName()]!=null && reqParameters[SearchParamEnum.QUERY.getName()].length()>0){
+            urlQuery[SearchParamEnum.QUERY.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.QUERY.getName(), "*")
         }else{
-            urlQuery["query"] = "*"
+            urlQuery[SearchParamEnum.QUERY.getName()] = "*"
         }
 
-        if (reqParameters.rows == null || !(reqParameters.rows=~ numbersRangeRegex)) {
-            urlQuery["rows"] = 20.toInteger()
+        if (reqParameters[SearchParamEnum.ROWS.getName()] == null || !(reqParameters[SearchParamEnum.ROWS.getName()]=~ numbersRangeRegex)) {
+            urlQuery[SearchParamEnum.ROWS.getName()] = 20.toInteger()
         } else {
-            urlQuery["rows"] = getMapElementOfUnsureType(reqParameters, "rows", "20").toInteger()
+            urlQuery[SearchParamEnum.ROWS.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.ROWS.getName(), "20").toInteger()
         }
-        reqParameters.rows = urlQuery["rows"]
+        reqParameters[SearchParamEnum.ROWS.getName()] = urlQuery[SearchParamEnum.ROWS.getName()]
 
-        if (reqParameters.offset == null || !(reqParameters.offset=~ numbersRangeRegex)) {
-            urlQuery["offset"] = 0.toInteger()
+        if (reqParameters[SearchParamEnum.OFFSET.getName()] == null || !(reqParameters[SearchParamEnum.OFFSET.getName()]=~ numbersRangeRegex)) {
+            urlQuery[SearchParamEnum.OFFSET.getName()] = 0.toInteger()
         } else {
-            urlQuery["offset"] = getMapElementOfUnsureType(reqParameters, "offset", "0").toInteger()
+            urlQuery[SearchParamEnum.OFFSET.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.OFFSET.getName(), "0").toInteger()
         }
-        reqParameters.offset = urlQuery["offset"]
+        reqParameters[SearchParamEnum.OFFSET.getName()] = urlQuery[SearchParamEnum.OFFSET.getName()]
 
         //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
         //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-        if(reqParameters["facetValues[]"]){
-            urlQuery = this.getFacets(reqParameters, urlQuery,"facet", 0)
+        if(reqParameters[SearchParamEnum.FACETVALUES.getName()]){
+            urlQuery = this.getFacets(reqParameters, urlQuery,SearchParamEnum.FACET.getName(), 0)
         }
 
-        if(reqParameters.get("facets[]")){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains(reqParameters.get("facets[]")))
-                urlQuery["facet"].add(reqParameters.get("facets[]"))
+        if(reqParameters.get(SearchParamEnum.FACETS.getName())){
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains(reqParameters.get(SearchParamEnum.FACETS.getName())))
+                urlQuery[SearchParamEnum.FACET.getName()].add(reqParameters.get(SearchParamEnum.FACETS.getName()))
         }
 
         if(reqParameters.minDocs) {
             urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
         }
 
-        if(reqParameters["sort"] != null && ((reqParameters["sort"]=~ /^random_[0-9]+$/) || reqParameters["sort"]=='ALPHA_ASC' || reqParameters["sort"]=='ALPHA_DESC')){
-            urlQuery["sort"] = getMapElementOfUnsureType(reqParameters, "sort", "")
+        if(reqParameters[SearchParamEnum.SORT.getName()] != null && ((reqParameters[SearchParamEnum.SORT.getName()]=~ /^random_[0-9]+$/) || reqParameters[SearchParamEnum.SORT.getName()]=='ALPHA_ASC' || reqParameters[SearchParamEnum.SORT.getName()]=='ALPHA_DESC')){
+            urlQuery[SearchParamEnum.SORT.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.SORT.getName(), "")
         }else{
-            if(urlQuery["query"]!="*"){
-                urlQuery["sort"] = "RELEVANCE"
+            if(urlQuery[SearchParamEnum.QUERY.getName()]!="*"){
+                urlQuery[SearchParamEnum.SORT.getName()] = SearchParamEnum.SORT_RELEVANCE.getName()
             }
         }
 
         if(reqParameters.viewType == null || (!(reqParameters.viewType=~ /^list$/) && !(reqParameters.viewType=~ /^grid$/))) {
-            urlQuery["viewType"] = "list"
+            urlQuery[SearchParamEnum.VIEWTYPE.getName()] = "list"
             reqParameters.viewType = "list"
         } else {
-            urlQuery["viewType"] = getMapElementOfUnsureType(reqParameters, "viewType", "")
+            urlQuery[SearchParamEnum.VIEWTYPE.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.VIEWTYPE.getName(), "")
         }
 
         if(reqParameters.isThumbnailFiltered){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
-                urlQuery["facet"].add("grid_preview")
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
         }
 
-        if(!urlQuery["facet"]){
-            urlQuery["facet"] = []
+        if(!urlQuery[SearchParamEnum.FACET.getName()]){
+            urlQuery[SearchParamEnum.FACET.getName()] = []
         }
 
         // This is needed for the entity search results that are displayed on top of the regular search results.
-        urlQuery["facet"].add(FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
-        urlQuery["facet"].add(FacetEnum.AFFILIATE_SUBJECT.getName())
+        urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
+        urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_SUBJECT.getName())
 
         return urlQuery
     }
@@ -568,22 +569,22 @@ class SearchService {
             urlQuery["searchQuery"] = "*"
         }
 
-        if (reqParameters["query"]!=null && reqParameters["query"].length()>0){
-            urlQuery["query"] = getMapElementOfUnsureType(reqParameters, "query", "*")
+        if (reqParameters[SearchParamEnum.QUERY.getName()]!=null && reqParameters[SearchParamEnum.QUERY.getName()].length()>0){
+            urlQuery[SearchParamEnum.QUERY.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.QUERY.getName(), "*")
         }else{
-            urlQuery["query"] = "*"
+            urlQuery[SearchParamEnum.QUERY.getName()] = "*"
         }
 
         //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
         //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-        if(reqParameters["facetValues[]"]){
-            urlQuery = this.getFacets(reqParameters, urlQuery,"facet", 0)
+        if(reqParameters[SearchParamEnum.FACETVALUES.getName()]){
+            urlQuery = this.getFacets(reqParameters, urlQuery,SearchParamEnum.FACET.getName(), 0)
         }
 
-        if(reqParameters.get("facets[]")){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains(reqParameters.get("facets[]")))
-                urlQuery["facet"].add(reqParameters.get("facets[]"))
+        if(reqParameters.get(SearchParamEnum.FACETS.getName())){
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains(reqParameters.get(SearchParamEnum.FACETS.getName())))
+                urlQuery[SearchParamEnum.FACET.getName()].add(reqParameters.get(SearchParamEnum.FACETS.getName()))
         }
 
         if(reqParameters["sortDesc"] != null && ((reqParameters["sortDesc"]== "true") || (reqParameters["sortDesc"]== "false"))){
@@ -591,9 +592,9 @@ class SearchService {
         }
 
         if(reqParameters.isThumbnailFiltered){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
-                urlQuery["facet"].add("grid_preview")
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
         }
@@ -639,15 +640,15 @@ class SearchService {
     def getSearchGetParameters(Map reqParameters) {
         def searchParams = [:]
         def requiredParams = [
-            "query",
-            "offset",
-            "rows",
-            "sort",
-            "viewType",
-            "clustered",
-            "isThumbnailFiltered",
-            "facetValues[]",
-            "facets[]"
+            SearchParamEnum.QUERY.getName(),
+            SearchParamEnum.OFFSET.getName(),
+            SearchParamEnum.ROWS.getName(),
+            SearchParamEnum.SORT.getName(),
+            SearchParamEnum.VIEWTYPE.getName(),
+            SearchParamEnum.CLUSTERED.getName(),
+            SearchParamEnum.IS_THUMBNAILS_FILTERED.getName(),
+            SearchParamEnum.FACETVALUES.getName(),
+            SearchParamEnum.FACETS.getName()
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
@@ -666,18 +667,18 @@ class SearchService {
     def getSearchCookieParameters(Map reqParameters) {
         def searchCookieParameters = [:]
         def requiredParams = [
-            "query",
-            "offset",
-            "rows",
-            "sort",
-            "viewType",
-            "clustered",
-            "isThumbnailFiltered",
-            "facetValues[]",
-            "facets[]",
-            "firstHit",
-            "lastHit",
-            "keepFilters"
+            SearchParamEnum.QUERY.getName(),
+            SearchParamEnum.OFFSET.getName(),
+            SearchParamEnum.ROWS.getName(),
+            SearchParamEnum.SORT.getName(),
+            SearchParamEnum.VIEWTYPE.getName(),
+            SearchParamEnum.CLUSTERED.getName(),
+            SearchParamEnum.IS_THUMBNAILS_FILTERED.getName(),
+            SearchParamEnum.FACETVALUES.getName(),
+            SearchParamEnum.FACETS.getName(),
+            SearchParamEnum.FIRSTHIT.getName(),
+            SearchParamEnum.LASTHIT.getName(),
+            SearchParamEnum.KEEPFILTERS.getName()
         ]
         for (entry in reqParameters) {
             if (requiredParams.contains(entry.key)) {
@@ -886,34 +887,34 @@ class SearchService {
         def urlQuery = [:]
 
         if (reqParameters.searchQuery == null)
-            urlQuery["query"] = '*'
-        else urlQuery["query"] = reqParameters.searchQuery
+            urlQuery[SearchParamEnum.QUERY.getName()] = '*'
+        else urlQuery[SearchParamEnum.QUERY.getName()] = reqParameters.searchQuery
 
-        if (reqParameters.rows == null || reqParameters.rows == -1)
-            urlQuery["rows"] = 1
-        else urlQuery["rows"] = reqParameters.rows
+        if (reqParameters[SearchParamEnum.ROWS.getName()] == null || reqParameters[SearchParamEnum.ROWS.getName()] == -1)
+            urlQuery[SearchParamEnum.ROWS.getName()] = 1
+        else urlQuery[SearchParamEnum.ROWS.getName()] = reqParameters[SearchParamEnum.ROWS.getName()]
 
-        if (reqParameters.offset == null)
-            urlQuery["offset"] = 0
-        else urlQuery["offset"] = reqParameters.offset
+        if (reqParameters[SearchParamEnum.OFFSET.getName()] == null)
+            urlQuery[SearchParamEnum.OFFSET.getName()] = 0
+        else urlQuery[SearchParamEnum.OFFSET.getName()] = reqParameters[SearchParamEnum.OFFSET.getName()]
 
         //<--input query=rom&offset=0&rows=20&facetValues%5B%5D=time_fct%3Dtime_61800&facetValues%5B%5D=time_fct%3Dtime_60100&facetValues%5B%5D=place_fct%3DItalien
         //-->output query=rom&offset=0&rows=20&facet=time_fct&time_fct=time_61800&facet=time_fct&time_fct=time_60100&facet=place_fct&place_fct=Italien
-        if(reqParameters["facetValues[]"]){
-            urlQuery = getFacets(reqParameters, urlQuery,"facet", 0)
+        if(reqParameters[SearchParamEnum.FACETVALUES.getName()]){
+            urlQuery = getFacets(reqParameters, urlQuery,SearchParamEnum.FACET.getName(), 0)
         }
 
         if(reqParameters.get("name")){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains(reqParameters.get("name")))
-                urlQuery["facet"].add(reqParameters.get("name"))
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains(reqParameters.get("name")))
+                urlQuery[SearchParamEnum.FACET.getName()].add(reqParameters.get("name"))
         }
 
 
         if(reqParameters.isThumbnailFiltered){
-            urlQuery["facet"] = (!urlQuery["facet"])?[]:urlQuery["facet"]
-            if(!urlQuery["facet"].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
-                urlQuery["facet"].add("grid_preview")
+            urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+                urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
         }
@@ -934,10 +935,10 @@ class SearchService {
      * @return boolean
      */
     def checkPersistentFacets(Map cookieMap, Map requestParameters, Map additionalParams) {
-        if (cookieMap["keepFilters"] && cookieMap["keepFilters"] == "true") {
-            additionalParams["keepFilters"] = "true"
-            if (!requestParameters["facetValues[]"] && cookieMap["facetValues[]"]) {
-                requestParameters["facetValues[]"] = cookieMap["facetValues[]"]
+        if (cookieMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+            additionalParams[SearchParamEnum.KEEPFILTERS.getName()] = "true"
+            if (!requestParameters[SearchParamEnum.FACETVALUES.getName()] && cookieMap[SearchParamEnum.FACETVALUES.getName()]) {
+                requestParameters[SearchParamEnum.FACETVALUES.getName()] = cookieMap[SearchParamEnum.FACETVALUES.getName()]
                 return true
             }
             else {

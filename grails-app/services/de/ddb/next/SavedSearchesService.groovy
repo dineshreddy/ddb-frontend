@@ -21,6 +21,7 @@ import org.codehaus.groovy.grails.web.json.*
 
 import de.ddb.next.beans.SavedSearch
 import de.ddb.next.beans.User
+import de.ddb.next.constants.SearchParamEnum
 
 class SavedSearchesService {
     def transactional = false
@@ -123,7 +124,7 @@ class SavedSearchesService {
     private def String getPaginationUrl(int offset, int rows, String order) {
         def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
         return g.createLink(controller:'user', action: 'savedsearches',
-        params: [offset: offset, rows: rows, order: order])
+        params: [(SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.ROWS.getName()): rows, order: order])
     }
 
     /**

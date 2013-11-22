@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.next.constants.SearchParamEnum
+
 
 
 /**
@@ -77,7 +79,7 @@ class AdvancedsearchController {
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
         String query = converter.convertFormParameters()
-        redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
+        redirect(uri: "/searchresults?query=" + query + "&"+SearchParamEnum.OFFSET.getName()+"=" + offset + "&"+SearchParamEnum.ROWS.getName()+"=" + rows)
     }
 
     /**

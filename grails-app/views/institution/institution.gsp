@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
 <html>
@@ -39,8 +40,7 @@ limitations under the License.
                  <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-                    <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
-                               rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
+                    <g:link class="count" controller="search" action="results" params="${[query: '', offset: '0', (SearchParamEnum.ROWS.getName()): '20', 'facetValues[]': facetvalue]}" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
                             <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />

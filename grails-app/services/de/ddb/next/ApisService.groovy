@@ -17,7 +17,9 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
+
 import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Set of services used in the ApisController for views/search
@@ -45,29 +47,29 @@ class ApisService {
 
         def query = [ query: queryParameters.query ]
 
-        if(queryParameters.offset)
-            query["offset"]= queryParameters.offset
+        if(queryParameters[SearchParamEnum.OFFSET.getName()])
+            query[SearchParamEnum.OFFSET.getName()]= queryParameters[SearchParamEnum.OFFSET.getName()]
 
-        if(queryParameters.rows)
-            query["rows"] = queryParameters.rows
+        if(queryParameters[SearchParamEnum.ROWS.getName()])
+            query[SearchParamEnum.ROWS.getName()] = queryParameters[SearchParamEnum.ROWS.getName()]
 
         if(queryParameters.callback)
             query["callback"] = queryParameters.callback
 
         if(queryParameters.facet){
             if(queryParameters.facet.getClass().isArray()){
-                query["facet"] = []
+                query[SearchParamEnum.FACET.getName()] = []
                 queryParameters.facet.each {
-                    query["facet"].add(it)
+                    query[SearchParamEnum.FACET.getName()].add(it)
                 }
-            }else query["facet"]=queryParameters.facet
+            }else query[SearchParamEnum.FACET.getName()]=queryParameters.facet
         }
 
         if(queryParameters.minDocs)
             query["minDocs"] = queryParameters.minDocs
 
         if(queryParameters.sort)
-            query["sort"] = queryParameters.sort
+            query[SearchParamEnum.SORT.getName()] = queryParameters.sort
 
         //Evaluates the facetValues from the API request
         FacetEnum.values().each() {

@@ -33,6 +33,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
@@ -124,8 +125,8 @@ class UserController {
         if (isUserLoggedIn()) {
             def user = getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
-            def offset = params.offset ? params.offset.toInteger() : 0
-            def rows = params.rows ? params.rows.toInteger() : 20
+            def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
+            def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
             def urlsForOrder
 
@@ -157,14 +158,14 @@ class UserController {
             if (params.order == "asc") {
                 urlsForOrder = [
                     desc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "desc"]),
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, order: "desc"]),
                     asc: "#"
                 ]
             } else {
                 urlsForOrder = [
                     desc: "#",
                     asc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "asc"])
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, order: "asc"])
                 ]
             }
             render(view: "savedsearches", model: [
