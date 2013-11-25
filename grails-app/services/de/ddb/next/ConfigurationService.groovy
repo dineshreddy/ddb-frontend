@@ -16,10 +16,9 @@
 
 package de.ddb.next
 
-import de.ddb.next.exception.ConfigurationException
-
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.codehaus.groovy.runtime.NullObject
+
+import de.ddb.next.exception.ConfigurationException
 
 /**
  * Service for accessing the configuration.
@@ -221,6 +220,11 @@ class ConfigurationService {
         log.info "app.grails.version = "+grailsApplication.metadata["app.grails.version"]
         log.info "app.name = "+grailsApplication.metadata["app.name"]
         log.info "app.version = "+grailsApplication.metadata["app.version"]
+        log.info "build.number = "+grailsApplication.metadata["build.number"]
+        log.info "build.id = "+grailsApplication.metadata["build.id"]
+        log.info "build.url = "+grailsApplication.metadata["build.url"]
+        log.info "build.git.commit = "+grailsApplication.metadata["build.git.commit"]
+        log.info "build.bit.branch = "+grailsApplication.metadata["build.bit.branch"]
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
