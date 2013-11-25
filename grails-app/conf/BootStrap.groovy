@@ -22,7 +22,11 @@ class BootStrap {
     def configurationService
 
     def init = { servletContext ->
-        configurationService.logConfigurationSettings()
+        try {
+            configurationService.logConfigurationSettings()
+        }
+        catch (UnsupportedOperationException e) {
+        }
 
         NodeChild.metaClass.toXmlString = {
             def self = delegate

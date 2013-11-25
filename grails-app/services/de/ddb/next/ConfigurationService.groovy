@@ -16,9 +16,10 @@
 
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-
 import de.ddb.next.exception.ConfigurationException
+
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.codehaus.groovy.runtime.NullObject
 
 /**
  * Service for accessing the configuration.
@@ -270,9 +271,16 @@ class ConfigurationService {
         for (String keyPart : key.split("\\.")) {
             if (!(value instanceof ConfigObject)) {
                 value = null
-                break;
+                break
             }
             value = value[keyPart]
+        }
+        try {
+            if (value?.isEmpty()) {
+                value = null
+            }
+        }
+        catch (MissingMethodException e) {
         }
         return value
     }
@@ -293,7 +301,7 @@ class ConfigurationService {
         if(value == null){
             throw new ConfigurationException("Configuration entry does not exist -> " + key)
         }
-        return value;
+        return value
     }
 
     private Integer getIntegerConfigValue(String key, def value = getValueFromConfig(key)) {
