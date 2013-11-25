@@ -26,7 +26,7 @@ class EntityController {
 
 
     def index() {
-        log.info "index(): entityId=" + params.id + " / rows=" + params[SearchParamEnum.ROWS.getName()] + " / offset=" + params.offset
+        log.info "index(): entityId=" + params.id + " / rows=" + params[SearchParamEnum.ROWS.getName()] + " / offset=" + params[SearchParamEnum.OFFSET.getName()]
 
         if(!configurationService.isCulturegraphFeaturesEnabled()){
             redirect(controller: 'index', action: 'index')
@@ -179,7 +179,7 @@ class EntityController {
         def query = params[SearchParamEnum.QUERY.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
         def rows = params.long(SearchParamEnum.ROWS.getName())
-        def normdata = params.boolean("normdata")
+        def normdata = params.boolean(SearchParamEnum.NORMDATA.getName())
         def rolefacet = params.facetname
         def entityid = params.entityid
 

@@ -22,6 +22,10 @@ public enum SearchParamEnum {
     FIRSTHIT("firstHit"),
     LASTHIT("lastHit"),
     KEEPFILTERS("keepFilters"),
+    NORMDATA("normdata"),
+    CALLBACK("callback"),
+    MINDOCS("minDocs"),
+
 
 
     private String name

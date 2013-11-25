@@ -518,8 +518,8 @@ class SearchService {
                 urlQuery[SearchParamEnum.FACET.getName()].add(reqParameters.get(SearchParamEnum.FACETS.getName()))
         }
 
-        if(reqParameters.minDocs) {
-            urlQuery["minDocs"] = getMapElementOfUnsureType(reqParameters, "minDocs", "")
+        if(reqParameters[SearchParamEnum.MINDOCS.getName()]) {
+            urlQuery[SearchParamEnum.MINDOCS.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.MINDOCS.getName(), "")
         }
 
         if(reqParameters[SearchParamEnum.SORT.getName()] != null && ((reqParameters[SearchParamEnum.SORT.getName()]=~ /^random_[0-9]+$/) || reqParameters[SearchParamEnum.SORT.getName()]==SearchParamEnum.SORT_ALPHA_ASC.getName() || reqParameters[SearchParamEnum.SORT.getName()]==SearchParamEnum.SORT_ALPHA_DESC.getName())){

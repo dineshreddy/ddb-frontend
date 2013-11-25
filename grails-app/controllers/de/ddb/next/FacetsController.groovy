@@ -20,7 +20,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales;
+import de.ddb.next.constants.SupportedLocales
 
 
 /**
@@ -58,15 +58,6 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse().facets
 
-            //            //def numberOfElements = (urlQuery[SearchParamEnum.ROWS.getName()])?urlQuery[SearchParamEnum.ROWS.getName()].toInteger():-1
-            //            def numberOfElements = 0
-            //            if(resultsItems.size() < maxResults){
-            //                numberOfElements = resultsItems.size()
-            //            }else{
-            //                numberOfElements = maxResults
-            //                resultsItems = resultsItems.subList(0,301)
-            //            }
-
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
@@ -84,8 +75,6 @@ class FacetsController {
             }
 
             def resultsItems = apiResponse.getResponse()
-
-            //            def numberOfElements = (urlQuery[SearchParamEnum.ROWS.getName()])?urlQuery[SearchParamEnum.ROWS.getName()].toInteger():maxResults
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 

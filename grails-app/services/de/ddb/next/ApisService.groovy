@@ -53,20 +53,20 @@ class ApisService {
         if(queryParameters[SearchParamEnum.ROWS.getName()])
             query[SearchParamEnum.ROWS.getName()] = queryParameters[SearchParamEnum.ROWS.getName()]
 
-        if(queryParameters.callback)
-            query["callback"] = queryParameters.callback
+        if(queryParameters[SearchParamEnum.CALLBACK.getName()])
+            query[SearchParamEnum.CALLBACK.getName()] = queryParameters[SearchParamEnum.CALLBACK.getName()]
 
-        if(queryParameters.facet){
-            if(queryParameters.facet.getClass().isArray()){
+        if(queryParameters[SearchParamEnum.FACET.getName()]){
+            if(queryParameters[SearchParamEnum.FACET.getName()].getClass().isArray()){
                 query[SearchParamEnum.FACET.getName()] = []
-                queryParameters.facet.each {
+                queryParameters[SearchParamEnum.FACET.getName()].each {
                     query[SearchParamEnum.FACET.getName()].add(it)
                 }
-            }else query[SearchParamEnum.FACET.getName()]=queryParameters.facet
+            }else query[SearchParamEnum.FACET.getName()]=queryParameters[SearchParamEnum.FACET.getName()]
         }
 
-        if(queryParameters.minDocs)
-            query["minDocs"] = queryParameters.minDocs
+        if(queryParameters[SearchParamEnum.MINDOCS.getName()])
+            query[SearchParamEnum.MINDOCS.getName()] = queryParameters[SearchParamEnum.MINDOCS.getName()]
 
         if(queryParameters[SearchParamEnum.SORT.getName()])
             query[SearchParamEnum.SORT.getName()] = queryParameters[SearchParamEnum.SORT.getName()]
