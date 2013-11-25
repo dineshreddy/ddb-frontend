@@ -10,6 +10,8 @@ public enum SearchParamEnum {
     SORT_ALPHA_DESC("ALPHA_DESC"),
     SORT_RANDOM("random"),
     SORT("sort"),
+    ORDER("order"),
+    BY("by"),
     QUERY("query"),
     VIEWTYPE_LIST("list"),
     VIEWTYPE_GRID("grid"),

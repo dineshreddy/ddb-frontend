@@ -27,8 +27,8 @@ import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales;
-import de.ddb.next.constants.Type;
+import de.ddb.next.constants.SupportedLocales
+import de.ddb.next.constants.Type
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
@@ -55,14 +55,14 @@ class FavoritesController {
         }
         def folderId = params.folderId
         def by = ORDER_DATE
-        if (params.by){
-            if (params.by.toString()==ORDER_TITLE){
-                by = params.by
+        if (params[SearchParamEnum.BY.getName()]){
+            if (params[SearchParamEnum.BY.getName()].toString()==ORDER_TITLE){
+                by = params[SearchParamEnum.BY.getName()]
             }else{
-                params.by= ORDER_DATE
+                params[SearchParamEnum.BY.getName()] = ORDER_DATE
             }
         }
-        def order = params.order
+        def order = params[SearchParamEnum.ORDER.getName()]
 
         //def user = aasService.getPerson(params.userId) // does not work yet because of security constraints in AAS
         User user = new User()
@@ -158,30 +158,30 @@ class FavoritesController {
             }
             def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
-            def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
-            def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
+            def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
+            def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
             if (order=="asc"){
                 if(by.toString()==ORDER_DATE){
                     allResultsWithAdditionalInfo.sort{ a, b ->
                         a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
                     }
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
                 }else{
                     allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
                 }
             }else{
                 //desc
                 if(by.toString()==ORDER_TITLE){
-                    urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
                     allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                 }else{
                     //by date
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
                 }
             }
 
@@ -244,14 +244,14 @@ class FavoritesController {
                 folderId = params.id
             }
             def by = ORDER_DATE
-            if (params.by){
-                if (params.by.toString()==ORDER_TITLE){
-                    by = params.by
+            if (params[SearchParamEnum.BY.getName()]){
+                if (params[SearchParamEnum.BY.getName()].toString()==ORDER_TITLE){
+                    by = params[SearchParamEnum.BY.getName()]
                 }else{
-                    params.by= ORDER_DATE
+                    params[SearchParamEnum.BY.getName()]= ORDER_DATE
                 }
             }
-            def order = params.order
+            def order = params[SearchParamEnum.ORDER.getName()]
 
             Folder selectedFolder = bookmarksService.findFolderById(folderId)
             List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
@@ -335,30 +335,30 @@ class FavoritesController {
                 }
                 def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_DATE,id:folderId])]
-                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_TITLE,id:folderId])]
+                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])]
+                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])]
                 if (order=="asc"){
                     if(by.toString()==ORDER_DATE){
                         allResultsWithAdditionalInfo.sort{ a, b->
                             a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
                         }
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,id:folderId])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,id:folderId])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
                     }else{
                         allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,id:folderId])
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
                     }
                 }else{
                     //desc
                     if(by.toString()==ORDER_TITLE){
-                        urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"asc",by:ORDER_TITLE,id:folderId])
-                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
+                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
                         allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
                     }else{
                         //by date
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_DATE,id:folderId])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows,order:"desc",by:ORDER_TITLE,id:folderId])
+                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
+                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
                     }
                 }
 

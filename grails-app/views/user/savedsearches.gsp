@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"/>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: paginationUrls["firstPg"],
@@ -107,7 +108,7 @@ limitations under the License.
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span>
                 <span>
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
                       <g:message code="ddbnext.Saved_Search"/>
                       <span>
@@ -139,7 +140,7 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span class="favorite-dateheader"> 
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On"/>
                       <span>
