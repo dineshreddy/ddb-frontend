@@ -17,7 +17,10 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.FacetEnum;
+import de.ddb.next.constants.CortexConstants
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
 
 
 /**
@@ -37,10 +40,10 @@ class FacetsController {
     def facetsList() {
 
         def facetName = params.name
-        def facetQuery = params.query
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
 
         def facetValues
-        def maxResults = 301
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
         // Key based facet value -> Search filtering must be done in the frontend
         if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){
@@ -55,15 +58,6 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse().facets
 
-            //            //def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():-1
-            //            def numberOfElements = 0
-            //            if(resultsItems.size() < maxResults){
-            //                numberOfElements = resultsItems.size()
-            //            }else{
-            //                numberOfElements = maxResults
-            //                resultsItems = resultsItems.subList(0,301)
-            //            }
-
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
@@ -71,8 +65,8 @@ class FacetsController {
         }else{
 
             def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
-            urlQuery["query"] = (facetQuery)?facetQuery:""
-            urlQuery["sort"] = "count_desc"
+            urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
+            urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
             if(!apiResponse.isOk()){
@@ -82,8 +76,6 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse()
 
-            //            def numberOfElements = (urlQuery["rows"])?urlQuery["rows"].toInteger():maxResults
-
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale)
@@ -91,15 +83,15 @@ class FacetsController {
 
         render (contentType:"text/json"){facetValues}
     }
-    
+
     /**
      * Returns all role facets from the backend
      * 
      * @return a list of all role facets in the json format
      */
-    def roleFacets() {     
+    def roleFacets() {
         def roleFacets = searchService.getRoleFacets()
-        
+
         render (contentType:"text/json"){roleFacets}
     }
 

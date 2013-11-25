@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <g:set var="facetValues" value="" />
 <g:each var="mapEntry" in="${search.queryMap}">
-  <g:if test="${mapEntry.key == "facetValues[]"}">
+  <g:if test="${mapEntry.key == SearchParamEnum.FACETVALUES.getName()}">
     <g:each var="searchQueryTerm" in="${mapEntry.value}">
       <g:set var="facetName" value="${searchQueryTerm.name}" />
       <g:set var="facetValue" value="" />

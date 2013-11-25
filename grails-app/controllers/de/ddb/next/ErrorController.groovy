@@ -58,8 +58,7 @@ class ErrorController {
             log.error "serverError(): Grails did not provide an error object. No stacktrace available. Most probably an earlier try-catch already consumed it. Check your log."
         }
 
-        // Return response code 500
-        response.status = 500
+        response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -98,8 +97,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 409
-        response.status = 409
+        response.status = response.SC_CONFLICT // Return response code 409
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -142,8 +140,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 404
-        response.status = 404
+        response.status = response.SC_NOT_FOUND // Return response code 404
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -200,8 +197,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 401
-        response.status = 401
+        response.status = response.SC_UNAUTHORIZED // Return response code 401
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -242,8 +238,7 @@ class ErrorController {
 
         apiResponse = request.getAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE)
 
-        // Return response code 400
-        response.status = 400
+        response.status = response.SC_BAD_REQUEST // Return response code 400
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime

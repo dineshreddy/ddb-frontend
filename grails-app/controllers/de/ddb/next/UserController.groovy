@@ -33,6 +33,11 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.LoginStatus
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
+import de.ddb.next.constants.SupportedOpenIdProviders
+import de.ddb.next.constants.UserStatus
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
@@ -124,19 +129,19 @@ class UserController {
         if (isUserLoggedIn()) {
             def user = getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
-            def offset = params.offset ? params.offset.toInteger() : 0
-            def rows = params.rows ? params.rows.toInteger() : 20
+            def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
+            def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
             def urlsForOrder
 
             if (!params.criteria) {
                 params.criteria = "creationDate"
             }
-            if (!params.order) {
-                params.order = "desc"
+            if (!params[SearchParamEnum.ORDER.getName()]) {
+                params[SearchParamEnum.ORDER.getName()] = "desc"
             }
             if (params.criteria == "creationDate") {
-                if (params.order == "asc") {
+                if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                     savedSearches.sort {a, b -> a.creationDate <=> b.creationDate}
                 }
                 else {
@@ -144,7 +149,7 @@ class UserController {
                 }
             }
             else {
-                if (params.order == "asc") {
+                if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                     savedSearches.sort {a, b -> a.label.toLowerCase() <=> b.label.toLowerCase()}
                 }
                 else {
@@ -154,24 +159,24 @@ class UserController {
             if (totalPages * rows < savedSearches.size()) {
                 totalPages++
             }
-            if (params.order == "asc") {
+            if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                 urlsForOrder = [
                     desc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "desc"]),
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "desc"]),
                     asc: "#"
                 ]
             } else {
                 urlsForOrder = [
                     desc: "#",
                     asc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "asc"])
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "asc"])
                 ]
             }
             render(view: "savedsearches", model: [
                 dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
-                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params[SearchParamEnum.ORDER.getName()], totalPages),
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 rows: rows,
                 totalPages: totalPages,

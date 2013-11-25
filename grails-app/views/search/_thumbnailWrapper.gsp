@@ -13,17 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
-<div class="thumbnail-wrapper <g:if test="${viewType != 'grid'}">span3</g:if>">
+<div class="thumbnail-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span3</g:if>">
   <div class="thumbnail">
     <g:link controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" />
     </g:link>
   </div>
-  <div class="item-options <g:if test="${viewType != 'grid'}">bl</g:if>">
+  <div class="item-options <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bl</g:if>">
     <ul class="item-options-ul">
       <li>
-        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>">
+        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bb</g:if>">
           <div class="hovercard-info-item" data-iid="${item.id}">
             <h4><ddb:getTruncatedHovercardTitle title="${ item.preview.title }" length="${ 350 }" /></h4>
             <ul class="unstyled">
@@ -35,7 +36,7 @@ limitations under the License.
         </div>
       </li>
   <!--<li> 
-        <div class="compare<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>"></div>
+        <div class="compare<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bb</g:if>"></div>
       </li>   -->  
       <ddb:isLoggedIn>
         <li>

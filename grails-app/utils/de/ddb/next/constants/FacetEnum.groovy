@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.constants;
+package de.ddb.next.constants
 
 
 /**
@@ -23,29 +23,28 @@ package de.ddb.next.constants;
  */
 public enum FacetEnum {
     //Main facets
-    TIME("time_fct", "ddbnext.time_fct_", true), 
+    TIME("time_fct", "ddbnext.time_fct_", true),
     PLACE("place_fct", null, true),
-    AFFILIATE("affiliate_fct",null, true),
-    KEYWORDS("keywords_fct",null, true),
+    AFFILIATE("affiliate_fct", null, true),
+    KEYWORDS("keywords_fct", null, true),
     LANGUAGE("language_fct", "ddbnext.language_fct_", true),
     TYPE("type_fct", "ddbnext.type_fct_", true),
     SECTOR("sector_fct", "ddbnext.sector_fct_", true),
-    PROVIDER("provider_fct",null, true),   
-    AFFILIATE_INVOLVED("affiliate_fct_involved",null, false),
- AFFILIATE_SUBJECT("affiliate_fct_subject",
-        null, false),
-    AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata",null, false),
-    AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata",null, false);
+    PROVIDER("provider_fct", null, true),
+    AFFILIATE_INVOLVED("affiliate_fct_involved", null, false),
+    AFFILIATE_SUBJECT("affiliate_fct_subject", null, false),
+    AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata", null, false),
+    AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata", null, false)
 
     /** The facet name as used by the cortex */
-    private String name;
-    
+    private String name
+
     /** The i18n prefix for this facet  */
-    private String i18nPrefix = null;
-    
+    private String i18nPrefix = null
+
     /** Indicates if this facet is used in the item search */
-    private boolean isSearchFacet;
-    
+    private boolean isSearchFacet
+
     /**
      * Constructor
      * 
@@ -53,9 +52,9 @@ public enum FacetEnum {
      * @param isSearchFacet <code>true</code> if this facet is used in the item search
      */
     private FacetEnum(String name, String i18nPrefix, boolean isSearchFacet) {
-        this.name = name;
-        this.i18nPrefix = i18nPrefix;
-        this.isSearchFacet = isSearchFacet;
+        this.name = name
+        this.i18nPrefix = i18nPrefix
+        this.isSearchFacet = isSearchFacet
     }
 
     /**
@@ -64,7 +63,7 @@ public enum FacetEnum {
      * @return the name of the enum
      */
     public String getName() {
-        return name;
+        return name
     }
 
     /**
@@ -73,7 +72,7 @@ public enum FacetEnum {
      * @return <code>true</code> if this enum is used for item search
      */
     public boolean isSearchFacet() {
-        return isSearchFacet;
+        return isSearchFacet
     }
 
     /**
@@ -81,7 +80,7 @@ public enum FacetEnum {
      * @return the i18nPrefix for the values in the resource bundles
      */
     public String getI18nPrefix() {
-        return i18nPrefix;
+        return i18nPrefix
     }
-    
+
 }

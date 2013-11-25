@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <div class="objects">
 
 <%--  <g:set var="showPictures" value="${entity.searchPreview.pictureCount > 0}" />--%>
@@ -23,11 +24,11 @@ limitations under the License.
   <g:set var="showVideos" value="true" />
   <g:set var="showAudios" value="true" />
   
-  <g:set var="offset" value="${params.offset?.toInteger()}" />
+  <g:set var="offset" value="${params[SearchParamEnum.OFFSET.getName()]?.toInteger()}" />
   <g:if test="${!offset}" >
     <g:set var="offset" value="${0}" />
   </g:if>
-  <g:set var="rows" value="${params.rows?.toInteger()}" />
+  <g:set var="rows" value="${params[SearchParamEnum.ROWS.getName()]?.toInteger()}" />
   <g:if test="${!rows}" >
     <g:set var="rows" value="${4}" />
   </g:if>
@@ -50,7 +51,7 @@ limitations under the License.
   
   <div>
     <g:if test="${showPictures}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facetValues[]": "type_fct=mediatype_002"]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): entity.title, (SearchParamEnum.FACETVALUES.getName()): "type_fct=mediatype_002"]}">
       	<g:message code="ddbnext.Entity_All_Pictures" /> (${entity.searchPreview.pictureCount})
       </g:link>  
     </g:if>
@@ -58,7 +59,7 @@ limitations under the License.
       |
     </g:if>
     <g:if test="${showVideos}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facetValues[]": "type_fct=mediatype_005"]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): entity.title, (SearchParamEnum.FACETVALUES.getName()): "type_fct=mediatype_005"]}">
       	<g:message code="ddbnext.Entity_All_Videos" /> (${entity.searchPreview.videoCount})
       </g:link> 
     </g:if>
@@ -66,7 +67,7 @@ limitations under the License.
       |
     </g:if>
     <g:if test="${showAudios}">
-      <g:link controller="search" action="results" params="${["query": entity.title, "facetValues[]": "type_fct=mediatype_001"]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): entity.title, (SearchParamEnum.FACETVALUES.getName()): "type_fct=mediatype_001"]}">
         <g:message code="ddbnext.Entity_All_Audios" /> (${entity.searchPreview.audioCount})
       </g:link>
     </g:if>

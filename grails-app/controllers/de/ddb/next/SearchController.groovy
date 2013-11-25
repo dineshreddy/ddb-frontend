@@ -20,6 +20,8 @@ import groovy.json.*
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
 import de.ddb.next.exception.BadRequestException
 
 class SearchController {
@@ -50,17 +52,17 @@ class SearchController {
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
-                firstLastQuery["sort"] = resultsItems["randomSeed"]
-                if (!params.sort) {
-                    params.sort = urlQuery["randomSeed"]
+                firstLastQuery[SearchParamEnum.SORT.getName()] = resultsItems["randomSeed"]
+                if (!params[SearchParamEnum.SORT.getName()]) {
+                    params[SearchParamEnum.SORT.getName()] = urlQuery["randomSeed"]
                 }
             }
 
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
                 //firstHit
-                firstLastQuery["rows"] = 1
-                firstLastQuery["offset"] = 0
+                firstLastQuery[SearchParamEnum.ROWS.getName()] = 1
+                firstLastQuery[SearchParamEnum.OFFSET.getName()] = 0
                 apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, firstLastQuery)
                 if(!apiResponse.isOk()){
                     log.error "Json: Json file was not found"
@@ -68,13 +70,13 @@ class SearchController {
                 }
                 def firstHit = apiResponse.getResponse()
                 if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
-                    params["firstHit"] = firstHit["results"]["docs"][0].id
+                    params[SearchParamEnum.FIRSTHIT.getName()] = firstHit["results"]["docs"][0].id
                 }
 
                 //lastHit
                 //Workaround, find id of last hit when calling last hit.
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
-                params["lastHit"] = "lasthit"
+                params[SearchParamEnum.LASTHIT.getName()] = SearchParamEnum.LASTHIT.getName()
 
             }
 
@@ -85,15 +87,15 @@ class SearchController {
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
 
             //Calculating results details info (number of results in page, total results number)
-            def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
-                    ((urlQuery["offset"].toInteger()+
-                    urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
+            def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
+                    ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
+                    urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((int)Math.floor(urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
-            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
+            def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
             def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
 
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
@@ -101,15 +103,15 @@ class SearchController {
 
             def queryString = request.getQueryString()
 
-            if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
-                queryString = queryString+"&sort="+urlQuery["randomSeed"]
+            if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             def gndItems = getGndItems(resultsItems, page)
 
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery["viewType"],confBinary: request.getContextPath(),
-                    offset: params["offset"]]).replaceAll("\r\n", '')
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                    offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
@@ -117,7 +119,7 @@ class SearchController {
                     totalPages: totalPagesFormatted,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
-                    offset: params["offset"]
+                    offset: params[SearchParamEnum.OFFSET.getName()]
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }else{
@@ -130,30 +132,30 @@ class SearchController {
                 }
 
                 def keepFiltersChecked = ""
-                if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
+                if (searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
                 }
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery)
-                if(urlQuery["facet"]){
+                if(urlQuery[SearchParamEnum.FACET.getName()]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
 
                 def roleFacetsUrl = [:]
                 def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
-                if(urlQuery["facet"]){
+                if(urlQuery[SearchParamEnum.FACET.getName()]){
                     roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
                 }
 
                 render(view: "results", model: [
                     facetsList:mainFacets,
-                    title: urlQuery["query"],
+                    title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     gndResults: gndItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
-                    viewType:  urlQuery["viewType"],
+                    viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
                     facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
@@ -161,7 +163,7 @@ class SearchController {
                     totalPages: totalPages,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: params["offset"],
+                    offset: params[SearchParamEnum.OFFSET.getName()],
                     keepFiltersChecked: keepFiltersChecked
                 ])
             }
@@ -237,7 +239,7 @@ class SearchController {
                 //iterate over all values of the FacetEnum and add matching names to the information
                 for (FacetEnum facetItem : FacetEnum.values()) {
                     if (facet['@name'] == facetItem.getName()) {
-                        addFacetItems(properties, facet, facetItem);
+                        addFacetItems(properties, facet, facetItem)
                     }
                 }
 

@@ -19,13 +19,17 @@ import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.CortexNamespace
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
 
     private static final def HTTP ='http://'
     private static final def HTTPS ='https://'
+
     static defaultAction = "findById"
 
     def itemService
@@ -151,8 +155,8 @@ class ItemController {
                         fields: fields,
                         binaryList: binaryList,
                         pageLabel: item.pageLabel,
-                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"],
-                        lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        firstHit: searchResultParameters["searchParametersMap"][SearchParamEnum.FIRSTHIT.getName()],
+                        lastHit: searchResultParameters["searchParametersMap"][SearchParamEnum.LASTHIT.getName()],
                         hitNumber: params["hitNumber"],
                         results: searchResultParameters["resultsItems"],
                         searchResultUri: searchResultParameters["searchResultUri"],
@@ -172,8 +176,8 @@ class ItemController {
                         fields: fields,
                         binaryList: binaryList,
                         pageLabel: item.pageLabel,
-                        firstHit: searchResultParameters["searchParametersMap"]["firstHit"],
-                        lastHit: searchResultParameters["searchParametersMap"]["lastHit"],
+                        firstHit: searchResultParameters["searchParametersMap"][SearchParamEnum.FIRSTHIT.getName()],
+                        lastHit: searchResultParameters["searchParametersMap"][SearchParamEnum.LASTHIT.getName()],
                         hitNumber: params["hitNumber"],
                         results: searchResultParameters["resultsItems"],
                         searchResultUri: searchResultParameters["searchResultUri"],
@@ -248,7 +252,7 @@ class ItemController {
     def children() {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
                 "/hierarchy/" + params.id + "/children", false,
-                ["rows":501])
+                [(SearchParamEnum.ROWS.getName()): CortexConstants.MAX_HIERARCHY_SEARCH_RESULTS])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -272,17 +276,17 @@ class ItemController {
         def resultsItems
         def searchResultUri
 
-        if (reqParameters["hitNumber"] && reqParameters["query"] != null) {
+        if (reqParameters["hitNumber"] && reqParameters[SearchParamEnum.QUERY.getName()] != null) {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
 
             //Search and return 3 Hits: previous, current and last
             reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
-            urlQuery["rows"] = 3
+            urlQuery[SearchParamEnum.ROWS.getName()] = 3
             if (reqParameters["hitNumber"] > 1) {
-                urlQuery["offset"] = reqParameters["hitNumber"] - 2
+                urlQuery[SearchParamEnum.OFFSET.getName()] = reqParameters["hitNumber"] - 2
             }
             else {
-                urlQuery["offset"] = 0
+                urlQuery[SearchParamEnum.OFFSET.getName()] = 0
             }
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -292,7 +296,7 @@ class ItemController {
             resultsItems = apiResponse.getResponse()
 
             //Workaround for last-hit (Performance-issue)
-            if (reqParameters.id && reqParameters.id.equals("lasthit")) {
+            if (reqParameters.id && reqParameters.id.equals(SearchParamEnum.LASTHIT.getName())) {
                 reqParameters.id = resultsItems.results["docs"][1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
@@ -300,10 +304,10 @@ class ItemController {
             //generate link back to search-result. Calculate Offset.
             def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
             def offset = 0
-            if (reqParameters["rows"]) {
-                offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters["rows"]))*reqParameters["rows"]
+            if (reqParameters[SearchParamEnum.ROWS.getName()]) {
+                offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters[SearchParamEnum.ROWS.getName()]))*reqParameters[SearchParamEnum.ROWS.getName()]
             }
-            searchGetParameters["offset"] = offset
+            searchGetParameters[SearchParamEnum.OFFSET.getName()] = offset
             searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
             searchResultParameters["searchResultUri"] = searchResultUri
             searchResultParameters["searchParametersMap"] = reqParameters

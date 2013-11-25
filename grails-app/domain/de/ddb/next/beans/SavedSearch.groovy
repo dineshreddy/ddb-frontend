@@ -16,12 +16,14 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
+
 import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 @ToString(includeNames=true)
 
 class SavedSearch {
-    static SEARCH_PARAMETERS = [query: "", "facetValues[]": ""]
+    static SEARCH_PARAMETERS = [(SearchParamEnum.QUERY.getName()): "", (SearchParamEnum.FACETVALUES.getName()): ""]
 
     String id
     String label
@@ -46,7 +48,7 @@ class SavedSearch {
         def result
 
         queryMap.each {
-            if (it.key == "query") {
+            if (it.key == SearchParamEnum.QUERY.getName()) {
                 result = it.value[0].name
             }
         }
@@ -67,7 +69,7 @@ class SavedSearch {
         }
 
         // add empty list elements to get the correct order of the facet values
-        result.put("facetValues[]", searchQueryTermList)
+        result.put(SearchParamEnum.FACETVALUES.getName(), searchQueryTermList)
 
         queryString.split('&').each {
             def parameter = it.split('=')

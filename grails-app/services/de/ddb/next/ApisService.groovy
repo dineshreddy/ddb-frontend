@@ -17,7 +17,9 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
+
 import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Set of services used in the ApisController for views/search
@@ -43,31 +45,31 @@ class ApisService {
      */
     def getQueryParameters(Map queryParameters){
 
-        def query = [ query: queryParameters.query ]
+        def query = [ (SearchParamEnum.QUERY.getName()): queryParameters.query ]
 
-        if(queryParameters.offset)
-            query["offset"]= queryParameters.offset
+        if(queryParameters[SearchParamEnum.OFFSET.getName()])
+            query[SearchParamEnum.OFFSET.getName()]= queryParameters[SearchParamEnum.OFFSET.getName()]
 
-        if(queryParameters.rows)
-            query["rows"] = queryParameters.rows
+        if(queryParameters[SearchParamEnum.ROWS.getName()])
+            query[SearchParamEnum.ROWS.getName()] = queryParameters[SearchParamEnum.ROWS.getName()]
 
-        if(queryParameters.callback)
-            query["callback"] = queryParameters.callback
+        if(queryParameters[SearchParamEnum.CALLBACK.getName()])
+            query[SearchParamEnum.CALLBACK.getName()] = queryParameters[SearchParamEnum.CALLBACK.getName()]
 
-        if(queryParameters.facet){
-            if(queryParameters.facet.getClass().isArray()){
-                query["facet"] = []
-                queryParameters.facet.each {
-                    query["facet"].add(it)
+        if(queryParameters[SearchParamEnum.FACET.getName()]){
+            if(queryParameters[SearchParamEnum.FACET.getName()].getClass().isArray()){
+                query[SearchParamEnum.FACET.getName()] = []
+                queryParameters[SearchParamEnum.FACET.getName()].each {
+                    query[SearchParamEnum.FACET.getName()].add(it)
                 }
-            }else query["facet"]=queryParameters.facet
+            }else query[SearchParamEnum.FACET.getName()]=queryParameters[SearchParamEnum.FACET.getName()]
         }
 
-        if(queryParameters.minDocs)
-            query["minDocs"] = queryParameters.minDocs
+        if(queryParameters[SearchParamEnum.MINDOCS.getName()])
+            query[SearchParamEnum.MINDOCS.getName()] = queryParameters[SearchParamEnum.MINDOCS.getName()]
 
-        if(queryParameters.sort)
-            query["sort"] = queryParameters.sort
+        if(queryParameters[SearchParamEnum.SORT.getName()])
+            query[SearchParamEnum.SORT.getName()] = queryParameters[SearchParamEnum.SORT.getName()]
 
         //Evaluates the facetValues from the API request
         FacetEnum.values().each() {
