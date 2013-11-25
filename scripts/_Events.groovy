@@ -17,14 +17,25 @@ eventCreateWarStart = { warName, stagingDir ->
         }
                 
         def buildNumber = System.getProperty("build.number", "NONE")
-        def buildTest = System.getProperty("build.test", "NONE")
+        def buildId = System.getProperty("build.id", "NONE")
+        def buildUrl = System.getProperty("build.url", "NONE")
+        def buildGitCommit = System.getProperty("build.git.commit", "NONE")
+        def buildGitBranch = System.getProperty("build.git.branch", "NONE")
         
         println "| buildNumber = " + buildNumber
-        println "| buildTest = " + buildTest
+        println "| buildId = " + buildId
+        println "| buildUrl = " + buildUrl
+        println "| buildGitCommit = " + buildGitCommit
+        println "| buildGitBranch = " + buildGitBranch
         
-        // ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/test.properties") {
-        //     entry(key:"build.number.1", value:buildNumber1)
-        // }
+        ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/application.properties") {
+            entry(key:"build.number", value:buildNumber)
+            entry(key:"build.id", value:buildId)
+            entry(key:"build.url", value:buildUrl)
+            entry(key:"build.git.commit", value:buildGitCommit)
+            entry(key:"build.git.branch", value:buildGitBranch)
+        }
+        
     }catch(Exception e){
         e.printStackTrace()
     }
