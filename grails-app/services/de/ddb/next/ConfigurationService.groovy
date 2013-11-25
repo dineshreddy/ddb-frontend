@@ -290,7 +290,7 @@ class ConfigurationService {
     }
 
     private def getExistingConfigValue(String key, def value = getValueFromConfig(key)) {
-        if(!value){
+        if(value == null){
             throw new ConfigurationException("Configuration entry does not exist -> " + key)
         }
         return value;
