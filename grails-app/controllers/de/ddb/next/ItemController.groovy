@@ -19,14 +19,17 @@ import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.User
+import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
 
     private static final def HTTP ='http://'
     private static final def HTTPS ='https://'
+
     static defaultAction = "findById"
 
     def itemService
@@ -249,7 +252,7 @@ class ItemController {
     def children() {
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
                 "/hierarchy/" + params.id + "/children", false,
-                [(SearchParamEnum.ROWS.getName()):501])
+                [(SearchParamEnum.ROWS.getName()): CortexConstants.MAX_HIERARCHY_SEARCH_RESULTS])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)

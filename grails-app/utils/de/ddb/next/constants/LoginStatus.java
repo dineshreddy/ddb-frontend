@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next;
+package de.ddb.next.constants;
 
-public enum UserStatus {
+public enum LoginStatus {
 
-    CREATED, CONFIRMED, CHANGE_REQUEST, PW_RESET_REQUESTED
+    SUCCESS, ALREADY_LOGGED_IN, FAILURE, LOGGED_OUT, AUTH_PROVIDER_REQUEST, AUTH_PROVIDER_UNKNOWN, AUTH_PROVIDER_DENIED, NO_COOKIES
 
 }

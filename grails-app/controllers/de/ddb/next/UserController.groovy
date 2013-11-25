@@ -33,7 +33,11 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.LoginStatus;
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
+import de.ddb.next.constants.SupportedOpenIdProviders;
+import de.ddb.next.constants.UserStatus;
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException

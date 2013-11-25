@@ -17,8 +17,10 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
 
 
 /**
@@ -41,7 +43,7 @@ class FacetsController {
         def facetQuery = params[SearchParamEnum.QUERY.getName()]
 
         def facetValues
-        def maxResults = 301
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
         // Key based facet value -> Search filtering must be done in the frontend
         if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){

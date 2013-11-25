@@ -27,6 +27,8 @@ import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales;
+import de.ddb.next.constants.Type;
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
@@ -43,11 +45,11 @@ class FavoritesController {
     def publicFavorites() {
         log.info "publicFavorites()"
 
-        def rows=20 //default
+        def rows = configurationService.getSearchRows() //default
         if (params[SearchParamEnum.ROWS.getName()]){
             rows = params[SearchParamEnum.ROWS.getName()].toInteger()
         }
-        def offset = 0 // default
+        def offset = configurationService.getSearchOffset() // default
         if(params[SearchParamEnum.OFFSET.getName()]){
             offset = params[SearchParamEnum.OFFSET.getName()].toInteger()
         }
@@ -226,11 +228,11 @@ class FavoritesController {
     def favorites(){
         log.info "favorites()"
         if(isUserLoggedIn()){
-            def rows=20 //default
+            def rows = configurationService.getSearchRows() //default
             if (params[SearchParamEnum.ROWS.getName()]){
                 rows = params[SearchParamEnum.ROWS.getName()].toInteger()
             }
-            def offset = 0 // default
+            def offset = configurationService.getSearchOffset() // default
             if(params[SearchParamEnum.OFFSET.getName()]){
                 offset = params[SearchParamEnum.OFFSET.getName()].toInteger()
             }

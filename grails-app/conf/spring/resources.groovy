@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import de.ddb.next.SupportedLocales;
+import de.ddb.next.constants.SupportedLocales;
 
 // Place your Spring DSL code here
 beans = {

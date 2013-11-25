@@ -28,6 +28,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
+import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
@@ -46,7 +47,7 @@ class SearchService {
     def configurationService
 
     //CharacterEncoding of query-String
-    private characterEncoding = "UTF-8"
+    private static final String CHARACTER_ENCODING = "UTF-8"
 
     //Name of search-cookie
     private searchCookieName = "searchParameters"
@@ -601,7 +602,7 @@ class SearchService {
         }
 
         //We ask for a maximum of 301 facets
-        urlQuery["facet.limit"] = 301
+        urlQuery["facet.limit"] = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
         return urlQuery
     }
@@ -821,11 +822,11 @@ class SearchService {
         for (entry in paramMap) {
             if (entry.value instanceof String[]) {
                 for (entry1 in entry.value) {
-                    jSonObject.accumulate(entry.key, URLEncoder.encode(entry1, characterEncoding))
+                    jSonObject.accumulate(entry.key, URLEncoder.encode(entry1, CHARACTER_ENCODING))
                 }
             }
             else if (entry.value instanceof String){
-                jSonObject.put(entry.key, URLEncoder.encode(entry.value, characterEncoding))
+                jSonObject.put(entry.key, URLEncoder.encode(entry.value, CHARACTER_ENCODING))
             }
             else {
                 jSonObject.put(entry.key, entry.value)
@@ -859,14 +860,14 @@ class SearchService {
             }
             for (entry in searchParamsMap) {
                 if (entry.value instanceof String) {
-                    entry.value = URLDecoder.decode(entry.value, characterEncoding)
+                    entry.value = URLDecoder.decode(entry.value, CHARACTER_ENCODING)
                 }
                 else if (entry.value instanceof List) {
                     String[] arr = new String[entry.value.size()]
                     def i = 0
                     for (entry1 in entry.value) {
                         if (entry1 instanceof String) {
-                            entry1 = URLDecoder.decode(entry1, characterEncoding)
+                            entry1 = URLDecoder.decode(entry1, CHARACTER_ENCODING)
                         }
                         arr[i] = entry1
                         i++

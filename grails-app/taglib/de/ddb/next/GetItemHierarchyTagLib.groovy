@@ -16,15 +16,11 @@
 package de.ddb.next
 
 import de.ddb.next.beans.Item
+import de.ddb.next.constants.CortexConstants
 
 class GetItemHierarchyTagLib {
 
     static namespace = "ddb"
-
-    /**
-     * Maximum number of hierarchy-entries to display
-     */
-    public static final int MAX_HIERARCHY_SIZE = 501
 
     def itemService
 
@@ -54,8 +50,8 @@ class GetItemHierarchyTagLib {
         // Remove the starting item from the hierarchy, it will come again with the sibling list
         rootItem.removeItemFromHierarchy(itemId)
         // Cut list after 501 items
-        if(childListJson.size() > MAX_HIERARCHY_SIZE){
-            childListJson = childListJson.subList(0, MAX_HIERARCHY_SIZE)
+        if(childListJson.size() > CortexConstants.MAX_HIERARCHY_SEARCH_RESULTS){
+            childListJson = childListJson.subList(0, CortexConstants.MAX_HIERARCHY_SEARCH_RESULTS)
         }
         // Add them to the hierarchie tree
         rootItem.addItemsToHierarchy(childListJson)
