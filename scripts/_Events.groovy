@@ -19,8 +19,8 @@ eventCreateWarStart = { warName, stagingDir ->
         def buildNumber = System.getProperty("build.number", "eclipse")
         def buildId = System.getProperty("build.id", "eclipse")
         def buildUrl = System.getProperty("build.url", "eclipse")
-        def buildGitCommit = System.getProperty("build.git.commit", "none")
-        def buildGitBranch = System.getProperty("build.git.branch", "none")
+        def buildGitCommit = System.getProperty("build.git.commit", "eclipse")
+        def buildGitBranch = System.getProperty("build.git.branch", "eclipse")
         
         println "| buildNumber = " + buildNumber
         println "| buildId = " + buildId
