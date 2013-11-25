@@ -5,34 +5,26 @@ import groovy.xml.StreamingMarkupBuilder
 
 
 eventCreateWarStart = { warName, stagingDir ->
+    println ""
     println "| Hook WAR creation"
     
     try{
-        println "| "+warName    
-        println "| "+stagingDir
-        
-        def buildNumber1 = System.getProperty("build.number", "NONE")
-        def buildNumber2 = System.getProperty("BUILD_NUMBER", "NONE")
-        //        def buildId = System.getProperty("BUILD_ID", "NONE")
-        //        def buildTimeStamp= System.getProperty("build.timeStamp", "NONE")
-        //        def buildUserName= System.getProperty("build.userName", "")
-        //        def repositoryRepositoryUrl= System.getProperty("repository.repositoryUrl",  "")
-        //        def repositoryRevisionNumber= System.getProperty("repository.revision.number", "")
-        //        def repositoryBranch= System.getProperty("repository.branch", "")
+        println "| " + warName    
+        println "| " + stagingDir
 
-        println "| buildNumber1 = "+buildNumber1
-        println "| buildNumber2 = "+buildNumber2
-        //        println "| buildId = "+buildId
-        //        println "| buildTimeStamp = "+buildTimeStamp
-    
-    
-  
-        //        ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/test.properties") {
-        //            entry(key:"build.number.1", value:buildNumber1)
-        //            entry(key:"build.number.2", value:buildNumber2)
-        //            entry(key:"build.id", value:buildId)
-        //            entry(key:"build.timestamp", value:buildTimeStamp)
-        //        }
+        System.getProperties().each {
+            println "| System.property: " + it
+        }
+                
+        def buildNumber = System.getProperty("build.number", "NONE")
+        def buildTest = System.getProperty("build.test", "NONE")
+        
+        println "| buildNumber = " + buildNumber
+        println "| buildTest = " + buildTest
+        
+        // ant.propertyfile(file: "${stagingDir}/WEB-INF/classes/test.properties") {
+        //     entry(key:"build.number.1", value:buildNumber1)
+        // }
     }catch(Exception e){
         e.printStackTrace()
     }
