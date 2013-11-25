@@ -536,9 +536,9 @@ class SearchService {
             urlQuery[SearchParamEnum.VIEWTYPE.getName()] = getMapElementOfUnsureType(reqParameters, SearchParamEnum.VIEWTYPE.getName(), "")
         }
 
-        if(reqParameters.isThumbnailFiltered){
+        if(reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]){
             urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
-            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()] == "true"){
                 urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
@@ -592,9 +592,9 @@ class SearchService {
             urlQuery["sortDesc"] = getMapElementOfUnsureType(reqParameters, "sortDesc", "")
         }
 
-        if(reqParameters.isThumbnailFiltered){
+        if(reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]){
             urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
-            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()] == "true"){
                 urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
@@ -912,9 +912,9 @@ class SearchService {
         }
 
 
-        if(reqParameters.isThumbnailFiltered){
+        if(reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]){
             urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
-            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters.isThumbnailFiltered == "true"){
+            if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()] == "true"){
                 urlQuery[SearchParamEnum.FACET.getName()].add("grid_preview")
                 urlQuery["grid_preview"] = "true"
             }
