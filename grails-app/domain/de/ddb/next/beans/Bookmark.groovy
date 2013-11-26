@@ -15,12 +15,12 @@
  */
 package de.ddb.next.beans
 
+import groovy.transform.ToString
+import net.sf.json.JSONNull
+
 import org.codehaus.groovy.runtime.NullObject
 
-import net.sf.json.JSONNull
-import groovy.transform.ToString
-
-import de.ddb.next.constants.Type;
+import de.ddb.next.constants.Type
 
 @ToString(includeNames=true)
 class Bookmark {
@@ -34,27 +34,27 @@ class Bookmark {
     Type type
     Collection folders
 
-    public Bookmark(String bookmarkId, String userId, String itemId, Long creationDateAsLong, Type type, def folders, def description, Long updateDateAsLong) {
+    public Bookmark(String bookmarkId, String userId, String itemId, def creationDateAsLong, def type, def folders, def description, def updateDateAsLong) {
         this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
-        if(description == null || description instanceof JSONNull || description instanceof NullObject){
+        if(isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
         }
-        if(creationDateAsLong == null || creationDateAsLong instanceof JSONNull || creationDateAsLong instanceof NullObject){
+        if(isAnyNull(creationDateAsLong)){
             this.creationDate = new Date()
         }else{
             this.creationDate = new Date(creationDateAsLong)
         }
-        if(updateDateAsLong == null || updateDateAsLong instanceof JSONNull || updateDateAsLong instanceof NullObject){
+        if(isAnyNull(updateDateAsLong)){
             this.updateDate = new Date()
         }else{
             this.updateDate = new Date(updateDateAsLong)
         }
         this.type = type
-        if(folders instanceof net.sf.json.JSONNull){
+        if(isAnyNull(folders)){
             this.folders = null
         }else if(folders instanceof String){
             String folderString = folders.toString()
@@ -69,7 +69,7 @@ class Bookmark {
         }
     }
 
-    public def getAsMap() {
+    public Map getAsMap() {
         def out = [:]
         out["bookmarkId"] = bookmarkId
         out["userId"] = userId
@@ -82,7 +82,7 @@ class Bookmark {
         return out
     }
 
-    boolean isValid() {
+    public boolean isValid() {
         if(bookmarkId != null
         && userId != null
         && itemId != null
@@ -92,5 +92,13 @@ class Bookmark {
             return true
         }
         return false
+    }
+
+    private boolean isAnyNull(def variable){
+        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
+            return true
+        }else{
+            false
+        }
     }
 }
