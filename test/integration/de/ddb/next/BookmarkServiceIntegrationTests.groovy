@@ -5,6 +5,7 @@ import static org.junit.Assert.*
 import org.junit.*
 
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.Type;
 
 
 

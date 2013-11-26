@@ -16,13 +16,9 @@
 package de.ddb.next
 import grails.converters.JSON
 
-import org.apache.commons.logging.LogFactory
-
 import de.ddb.next.beans.User
 
 class InstitutionController {
-
-    private static final log = LogFactory.getLog(this)
 
     def institutionService
     def configurationService
@@ -33,7 +29,6 @@ class InstitutionController {
         def allInstitution = institutionService.findAll()
         def institutionByFirstLetter = allInstitution.data
 
-        // TODO: make this more idiomatic Groovy
         def all = []
         institutionByFirstLetter?.each { all.addAll(it.value) }
 
@@ -46,7 +41,6 @@ class InstitutionController {
             }
         }
 
-        // TODO: move to service
         def index = []
         institutionByFirstLetter.each { index.add(it) }
 

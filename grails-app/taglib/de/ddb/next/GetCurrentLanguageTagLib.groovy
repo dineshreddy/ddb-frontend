@@ -18,6 +18,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.SupportedLocales;
+
 class GetCurrentLanguageTagLib {
 
     static namespace = "ddb"

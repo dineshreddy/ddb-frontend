@@ -20,7 +20,7 @@ import org.codehaus.groovy.runtime.NullObject
 import net.sf.json.JSONNull
 import groovy.transform.ToString
 
-import de.ddb.next.Type
+import de.ddb.next.constants.Type;
 
 @ToString(includeNames=true)
 class Bookmark {

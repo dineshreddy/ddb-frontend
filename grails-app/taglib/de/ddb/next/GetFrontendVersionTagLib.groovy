@@ -15,26 +15,29 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils
-
-import de.ddb.next.constants.SupportedLocales;
-
-class GetLocalizedNumberTagLib {
+class GetFrontendVersionTagLib {
 
     static namespace = "ddb"
 
-    /**
-     * Gives you back a localized representation of the number
-     */
-    def getLocalizedNumber = { attrs, body ->
+    def configurationService
 
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+    def getFrontendVersion = { attrs, body ->
+        try{
+            String appVersion = g.meta(name: "app.version")
+            String buildNumber = g.meta(name: "build.number")
 
-        def inputString = body()
-        def outputString = ""
-        if(inputString){
-            outputString = String.format(locale, "%,d", inputString.toInteger())
+            if(buildNumber == null || buildNumber.trim().isEmpty()) {
+                buildNumber = "eclipse"
+            }
+
+            String frontendVersion = appVersion
+            if(appVersion == "develop" ){
+                frontendVersion += "#"+buildNumber
+            }
+
+            out << frontendVersion
+        }catch(Exception e) {
+            out << "error"
         }
-        out << outputString
     }
 }

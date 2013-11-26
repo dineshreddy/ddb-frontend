@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"/>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: paginationUrls["firstPg"],
@@ -107,7 +108,7 @@ limitations under the License.
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span>
                 <span>
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
                       <g:message code="ddbnext.Saved_Search"/>
                       <span>
@@ -139,7 +140,7 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span class="favorite-dateheader"> 
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On"/>
                       <span>
@@ -189,33 +190,35 @@ limitations under the License.
       </div>
     </div>
 
-    <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
-         aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
-      <div class="modal-header">
-        <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="sendSavedSearchesLabel">
-          <g:message code="ddbnext.Send_Savedsearches"/>
-        </h3>
+    <g:if test="${numberOfResults > 0}">
+      <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+           aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
+        <div class="modal-header">
+          <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+          <h3 id="sendSavedSearchesLabel">
+            <g:message code="ddbnext.Send_Savedsearches"/>
+          </h3>
+        </div>
+        <form method="POST">
+          <div class="modal-body">
+            <fieldset>
+              <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required">
+              <br/>
+              <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients"/></small>
+              <br/>
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+              <g:message code="ddbnext.Close"/>
+            </button>
+            <button class="btn-padding" type="submit" id="btnSubmit">
+              <g:message code="ddbnext.send_now"/>
+            </button>
+          </div>
+        </form>
       </div>
-      <form method="POST">
-        <div class="modal-body">
-          <fieldset>
-            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" type="email" name="email" required>
-            <br/>
-            <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients"/></small>
-            <br/>
-          </fieldset>
-        </div>
-        <div class="modal-footer">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbnext.Close"/>
-          </button>
-          <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now"/>
-          </button>
-        </div>
-      </form>
-    </div>
+    </g:if>
 
     <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
          aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">

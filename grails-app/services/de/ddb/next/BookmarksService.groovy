@@ -19,9 +19,11 @@ package de.ddb.next
 import grails.converters.JSON
 import groovy.json.*
 import net.sf.json.JSONNull
+
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.Type;
 
 
 /**

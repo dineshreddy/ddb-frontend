@@ -209,9 +209,6 @@ class ConfigurationServiceTests {
 
         setupServiceWithoutConfigValues()
         configTest_WrongType()
-
-        setupService(EMPTY_STRING_VALUE)
-        configTest_Success(EMPTY_STRING_VALUE)
     }
 
     private Map createMimetypeValueMap(def value) {
@@ -313,7 +310,7 @@ class ConfigurationServiceTests {
             configCall(service)
             fail()
         } catch (ConfigurationException e) {
-            assert e.getMessage() == key + " is not " + typeName
+            assert e.getMessage().startsWith(key + " is not a")
         }
     }
 
