@@ -30,7 +30,7 @@ LargeCookie = (function ($, defaultCookieService) {
             this.del();
             return;
         }
-        
+
         // dont bother creating extra cookies for small values
         if (value.length <= this.limit) {
             this.del();

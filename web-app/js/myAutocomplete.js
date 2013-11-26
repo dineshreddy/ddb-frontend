@@ -16,8 +16,8 @@
 function monkeyPatchAutocomplete() {
     $.ui.autocomplete.prototype._renderItem = function( ul, item) {
         var re = new RegExp("^" + this.term) ;
-        var t = item.label.replace(re,"<span style='font-weight:bold;'>" + 
-                this.term + 
+        var t = item.label.replace(re,"<span style='font-weight:bold;'>" +
+                this.term +
                 "</span>");
         return $( "<li></li>" )
             .data( "item.autocomplete", item )
@@ -29,38 +29,38 @@ $(function() {
   monkeyPatchAutocomplete();
   $('input.query').autocomplete(
     {
-	  source : function(request, response) {
-		$.ajax(
-		  {			
-			url : jsContextPath+"/apis/autocomplete/",
-			dataType : "jsonp",
-			data : {
-			  query : request.term
-			},
-			success : function(data) {
-			  response($.map(data, function(n,i) {
-			    //console.log(n)
-			    return {
-				  label : n.substring(0,45),
-				  value : n
-				}
-			  }));
-			}
-		});
+      source : function(request, response) {
+      $.ajax(
+        {
+            url : jsContextPath+"/apis/autocomplete/",
+            dataType : "jsonp",
+            data : {
+              query : request.term
+            },
+            success : function(data) {
+              response($.map(data, function(n,i) {
+                //console.log(n)
+                return {
+                  label : n.substring(0,45),
+                  value : n
+                }
+              }));
+            }
+         });
       },
-	  minLength : 2,
-	  open : function() {
-	    $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-	    $(this).autocomplete("widget").css('width',(parseInt($(this).outerWidth())-6)+'px');
-	  },
-	  select : function (a, b) {
-	      $(this).val(b.item.value);
-	        $(this).parents('form').submit();
-	    },
-	  close : function() {
-	    $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-	  }
-	});
+      minLength : 2,
+      open : function() {
+        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+        $(this).autocomplete("widget").css('width',(parseInt($(this).outerWidth())-6)+'px');
+      },
+      select : function (a, b) {
+            $(this).val(b.item.value);
+            $(this).parents('form').submit();
+      },
+      close : function() {
+        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+      }
+    });
     $(window).resize(function() {
         var mainInputs = $('input[type="search"].query');
         mainInputs.each(function(index, input){

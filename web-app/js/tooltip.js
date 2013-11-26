@@ -18,18 +18,15 @@ $(function() {
     Tooltip = function(element){
         this.init(element);
     }
-    
+
     $.extend(Tooltip.prototype,{
-        
+
         hint: null,
         tooltip: null,
-        
         opened: false,
         lock:false,
-        
         hoverTime: 0,
         hoverTimeout:300,
-    
         init: function(element){
             var currObjInstance = this;
             this.hint = element.attr("data-content");
@@ -75,7 +72,7 @@ $(function() {
             this.lock = false;
         }
     });
-    
+
     $("span.contextual-help").each(function(){
         new Tooltip($(this));
     });

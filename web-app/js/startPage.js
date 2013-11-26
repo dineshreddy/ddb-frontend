@@ -31,7 +31,7 @@ $(document).ready(function() {
                     button : "#articles-prev",
                     key    : "left"
                 },
-                next    : { 
+                next    : {
                     button  : "#articles-next",
                     key     : "right"
                 }

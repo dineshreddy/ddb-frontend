@@ -29,7 +29,6 @@ $(document).ready(function() {
     $(".navigation li").removeClass("active");
     $(".active-default ul").css('display', 'block');
   });
-  
   //Accessibility: keyboard for language selection
   $('.language-wrapper >a').focus(function() {
     $('.selector').fadeIn();

@@ -67,7 +67,7 @@ var page = {};
             }
         }
 
-        // Each facet dropdown has an associated text field or a select list.  
+        // Each facet dropdown has an associated text field or a select list.
         // Each option element in the facet select list has a custom data-* attribute which points to the associated input.
         // This improves performance to avoid searching through all fields and selecting it directly
         function getTargetFacetValueElement($row) {
@@ -305,8 +305,8 @@ var page = {};
             });
         }
 
-//FUNCTIONS TO INITIALIZE        
-        
+//FUNCTIONS TO INITIALIZE
+
         function upgradeNonJsFacetSelectLists() {
             var $textOnlyFacets = $(selectors.facet, root);
             var $allFacets = $(selectors.facetDisabled, root);
@@ -329,12 +329,12 @@ var page = {};
 
         //
         function initializeGroups() {
-        	//bind events to change from input field to controlled select-box for search string
+            //bind events to change from input field to controlled select-box for search string
             bindFacetChangeEvents();
-            
+
             //bind events to add/remove group
             bindGroupButtonEvents();
-            
+
             //formats groups and rows in groups
             setGroupInitialState();
 
@@ -343,7 +343,7 @@ var page = {};
         }
 
         // bind change event for facets to trigger input reflow
-    	// change from input field to controlled select-box for search string
+        // change from input field to controlled select-box for search string
         function bindFacetChangeEvents() {
             $(selectors.facet, root).change(function () {
                 var $row = $(this).closest(selectors.row);
@@ -352,7 +352,7 @@ var page = {};
         }
 
         function bindGroupButtonEvents() {
-        	//bind events for add/removal of group
+            //bind events for add/removal of group
             $(selectors.removeGroupButton, root).click(function () {
                 var $groupWidget = $(this).closest(selectors.groupWidget);
                 removeGroup($groupWidget);
@@ -409,7 +409,7 @@ var page = {};
         }
 
         function bindRowButtonEvents(group) {
-        	//bind events for add/removal of row
+            //bind events for add/removal of row
             $(selectors.addButton, group).click(function () {
                 showNextRow(group);
                 return false;
@@ -491,10 +491,10 @@ var page = {};
 
         //switch facet select box to the one with facets-selection
         upgradeNonJsFacetSelectLists();
-        
+
         //initialize cookie for stored last search query
         initializeStateStorage();
-        
+
         //format adn hide/display correct groups + rows + buttons
         initializeGroups();
 
@@ -504,7 +504,7 @@ var page = {};
         //contextual help
         bindContextualHelp();
     };
-} 
+}
 (jQuery));
 
 if($(".advanced-search")){

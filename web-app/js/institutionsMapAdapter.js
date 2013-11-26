@@ -52,8 +52,8 @@ var InstitutionsMapAdapter = (function($, undefined) {
     };
 
     Public.selectSectors = function() {
-        if(mapInitialized){
-            var sectors = _getSectorSelection();          
+            if (mapInitialized) {
+            var sectors = _getSectorSelection();
             InstitutionsMapController.selectSectors(sectors);
         }
     };
@@ -74,7 +74,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
         });
         return sectors;
     };
-
 
     Public.fetchAllInstitutions = function(successFn) {
         _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
@@ -134,17 +133,16 @@ var InstitutionsMapAdapter = (function($, undefined) {
         }
     };
 
-    var _getWindowWidth = function() { 
-        if (window.innerWidth) { 
-            return window.innerWidth; 
-        } 
-        else if (window.document.documentElement &&
-            window.document.documentElement.clientWidth) { 
-            return window.document.documentElement.clientWidth; 
+    var _getWindowWidth = function() {
+        if (window.innerWidth) {
+            return window.innerWidth;
+        }
+        else if (window.document.documentElement && window.document.documentElement.clientWidth) {
+            return window.document.documentElement.clientWidth;
         }
         else {
-            return window.document.body.offsetWidth; 
-        } 
+            return window.document.body.offsetWidth;
+        }
     };
 
     Public.setupDom4MapDisplay = function() {

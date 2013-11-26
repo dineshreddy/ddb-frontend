@@ -18,7 +18,7 @@
     event.preventDefault();
     changeFavoriteState();
     return false;
-    
+
   });
 
   function changeFavoriteState() {
@@ -35,7 +35,7 @@
         complete: function(data) {
           if (vActn=="POST") {
             addToFavorites(data);
-          } else {       
+          } else {
           }
         }
       });
@@ -69,7 +69,7 @@
               $.each($("#favorite-folders").val(), function(index, value) {
                 $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
               });
-              
+
               $("#idFavorite").parent().parent().attr('title', messages.ddbnext.favorites_already_saved);
             });
           } else {
@@ -93,7 +93,6 @@
         break;
     }
   }
-  
 
   /**
    * Disable a favorite button.

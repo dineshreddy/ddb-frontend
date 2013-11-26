@@ -14,22 +14,21 @@
  * limitations under the License.
  */
 $(document).ready(function(){
-  
+
   if(jsPageName == "apikey"){
 
-    
     $("#apikey-delete").click(function(event) {
       event.preventDefault();
-      
+
       $("#msDeleteApiKey").modal("show");
 
       $("#delete-apikey-confirm").click(function() {
         $("#msDeleteApiKey").modal("hide");
-        $("#apikey-form").submit();        
+        $("#apikey-form").submit();
       });
-      
+
       return false;
     });
   }
-  
+
 });
