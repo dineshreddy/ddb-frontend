@@ -16,10 +16,8 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-import net.sf.json.JSONNull
 
-import org.codehaus.groovy.runtime.NullObject
-
+import de.ddb.next.JsonUtil
 import de.ddb.next.constants.Type
 
 @ToString(includeNames=true)
@@ -38,23 +36,23 @@ class Bookmark {
         this.bookmarkId = bookmarkId
         this.userId = userId
         this.itemId = itemId
-        if(isAnyNull(description)){
+        if(JsonUtil.isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
         }
-        if(isAnyNull(creationDateAsLong)){
+        if(JsonUtil.isAnyNull(creationDateAsLong)){
             this.creationDate = new Date()
         }else{
             this.creationDate = new Date(creationDateAsLong)
         }
-        if(isAnyNull(updateDateAsLong)){
+        if(JsonUtil.isAnyNull(updateDateAsLong)){
             this.updateDate = new Date()
         }else{
             this.updateDate = new Date(updateDateAsLong)
         }
         this.type = type
-        if(isAnyNull(folders)){
+        if(JsonUtil.isAnyNull(folders)){
             this.folders = null
         }else if(folders instanceof String){
             String folderString = folders.toString()
@@ -92,13 +90,5 @@ class Bookmark {
             return true
         }
         return false
-    }
-
-    private boolean isAnyNull(def variable){
-        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
-            return true
-        }else{
-            false
-        }
     }
 }

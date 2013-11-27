@@ -16,10 +16,8 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-import net.sf.json.JSONNull
 
-import org.codehaus.groovy.runtime.NullObject
-
+import de.ddb.next.JsonUtil
 import de.ddb.next.constants.FolderConstants
 
 @ToString(includeNames=true)
@@ -39,12 +37,12 @@ class Folder {
         this.folderId = folderId
         this.userId = userId
         this.title = title
-        if(isAnyNull(description)){
+        if(JsonUtil.isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
         }
-        if(isAnyNull(isPublic)){
+        if(JsonUtil.isAnyNull(isPublic)){
             this.isPublic = false
         }else{
             this.isPublic = isPublic
@@ -52,12 +50,12 @@ class Folder {
         if(publishingName){
             this.publishingName = publishingName
         }
-        if(isAnyNull(isBlocked)){
+        if(JsonUtil.isAnyNull(isBlocked)){
             this.isBlocked = false
         }else{
             this.isBlocked = isBlocked
         }
-        if(isAnyNull(blockingToken)){
+        if(JsonUtil.isAnyNull(blockingToken)){
             this.blockingToken = ""
         }else{
             this.blockingToken = blockingToken.toString()
@@ -84,13 +82,5 @@ class Folder {
             return true
         }
         return false
-    }
-
-    private boolean isAnyNull(def variable){
-        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
-            return true
-        }else{
-            false
-        }
     }
 }
