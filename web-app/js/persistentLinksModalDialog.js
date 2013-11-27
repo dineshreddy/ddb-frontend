@@ -89,7 +89,7 @@ $.extend(PopupManager.prototype, {
     });
 
     $(anchorTag).click(function(event) {
-      if (event.which == 1) {
+      if (event.which === 1) {
         event.preventDefault();
         popupDialogWrapper.fadeIn('fast', function() {
           popupDialogWrapper.find('input')[0].select();

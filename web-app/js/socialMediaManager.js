@@ -180,7 +180,7 @@ $(document)
                      */
                     isSocialMediaCookieAllowed : function() {
                       var socialMediaAllowed = $.cookies.get(this.socialMediaCookieName);
-                      if (socialMediaAllowed == this.socialMediaCookieValue) {
+                      if (socialMediaAllowed === this.socialMediaCookieValue) {
                         return true;
                       }
                       return false;

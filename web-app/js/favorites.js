@@ -48,7 +48,7 @@ $(function() {
 
     $('.page-input').keyup(
         function(e) {
-          if (e.keyCode == 13) {
+          if (e.keyCode === 13) {
             if (/^[0-9]+$/.test(this.value)) {
               if (parseInt(this.value) <= 0) {
                 this.value = 1;
@@ -348,7 +348,7 @@ $(function() {
 
       var originalComment = $(dynamicTextField).text().trim();
       var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
-      if (originalComment == defaultMessage) {
+      if (originalComment === defaultMessage) {
         $(inputField).val("");
       }
       else {

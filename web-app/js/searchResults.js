@@ -146,7 +146,7 @@ $.extend(HovercardInfoItem.prototype, {
     if (!this.opened) {
       this.opened = true;
       this.hovercard.fadeIn('fast');
-      if (this.hovercard.find('.small-loader').length != 0) {
+      if (this.hovercard.find('.small-loader').length !== 0) {
         this.fetchInformationItem();
       }
     }
@@ -277,7 +277,7 @@ function searchResultsInitializer() {
       if (queryParameters[value[0]]
           && (paramIndex = $.inArray(value[1], queryParameters[value[0]])) > -1) {
         queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue) {
-          return cValue != value[1];
+          return cValue !== value[1];
         });
       }
     });
@@ -296,7 +296,7 @@ function searchResultsInitializer() {
     if (params.length > 0) {
       params += '&'
     }
-    if (params.indexOf('&') == 0) {
+    if (params.indexOf('&') === 0) {
       params = params.substring(1);
     }
     var pattern = /(.*?\?).*?(lang=\w*)/;
@@ -349,7 +349,7 @@ function searchResultsInitializer() {
       var c = ca[i];
       while (c.charAt(0) == ' ')
         c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) == 0)
+      if (c.indexOf(nameEQ) === 0)
         return c.substring(nameEQ.length, c.length);
     }
     return null;
@@ -391,7 +391,7 @@ function searchResultsInitializer() {
         }
       });
   $('#form-search-header input').keyup(function(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
         $('#form-search-header button').click();
       }
@@ -407,7 +407,7 @@ function searchResultsInitializer() {
                 newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ")
                     + "...";
               }
-              if ($(this).closest('.summary-main').find('.matches li span strong').length == 0
+              if ($(this).closest('.summary-main').find('.matches li span strong').length === 0
                   && jQuery.trim($(value).find('strong')).length > 0) {
                 newTitle = jQuery.trim($(value).html());
               }
@@ -465,7 +465,7 @@ function searchResultsInitializer() {
         setSearchCookieParameter(paramsArray);
       });
   $('.page-input').keyup(function(e) {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       if (/^[0-9]+$/.test(this.value)) {
         var resultPagesCountText = $('.result-pages-count').text();
         var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
@@ -512,7 +512,7 @@ function searchResultsInitializer() {
                 newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ")
                     + "...";
               }
-              if ($(this).closest('.summary-main').find('.matches li span strong').length == 0
+              if ($(this).closest('.summary-main').find('.matches li span strong').length === 0
                   && jQuery.trim($(value).find('strong')).length > 0) {
                 newTitle = jQuery.trim($(value).html());
               }
@@ -633,7 +633,7 @@ function searchResultsInitializer() {
             'fast',
             function() {
               var JSONresponse = data;
-              if (JSONresponse.numberOfResults == 0) {
+              if (JSONresponse.numberOfResults === 0) {
                 $('.search-noresults-content').removeClass("off");
                 $('.search-results-content').addClass("off");
               }
@@ -902,7 +902,7 @@ function searchResultsInitializer() {
                     currObjInstance.currentFacetValuesSelected.push(tmpFacetValue);
                     currObjInstance.currentFacetValuesNotSelected = jQuery.grep(
                         currObjInstance.currentFacetValuesNotSelected, function(element) {
-                          return element.value != tmpFacetValue;
+                          return element.value !== tmpFacetValue;
                         });
                   });
                 }
@@ -941,7 +941,7 @@ function searchResultsInitializer() {
               this.currentFacetValuesSelected.push(facetValue);
               this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected,
                   function(element) {
-                    return element.value != facetValue;
+                    return element.value !== facetValue;
                   });
 
               // render the selected facet
@@ -965,7 +965,7 @@ function searchResultsInitializer() {
               });
 
               // add event listener for add more facet filters
-              if (this.currentFacetValuesSelected.length == 1) {
+              if (this.currentFacetValuesSelected.length === 1) {
                 this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
                 this.connectedflyoutWidget.addMoreFilters.click(function(event) {
                   currObjInstance.connectedflyoutWidget.build($(this));
@@ -1009,13 +1009,13 @@ function searchResultsInitializer() {
                 this.connectedflyoutWidget.close();
                 this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected,
                     function(el) {
-                      return el != element.attr('data-fctvalue');
+                      return el !== element.attr('data-fctvalue');
                     });
               }
               // if in the list there is only one element means that is the case
               // of the
               // last element that we are going to remove
-              if (facetFieldFilter.find('.selected-items li[data-fctvalue]').length == 1) {
+              if (facetFieldFilter.find('.selected-items li[data-fctvalue]').length === 1) {
                 var facetFieldFilter = element.parents('.facets-item');
                 this.connectedflyoutWidget.removeAddMoreFiltersButton(facetFieldFilter,
                     facetFieldFilter.find('.add-more-filters'));
@@ -1045,7 +1045,7 @@ function searchResultsInitializer() {
               }
               element.remove();
 
-              if ($('.facets-list').find('li[data-fctvalue]').length == 0)
+              if ($('.facets-list').find('li[data-fctvalue]').length === 0)
                 $('.clear-filters').addClass('off');
             },
 
@@ -1093,15 +1093,15 @@ function searchResultsInitializer() {
                   .keyup(function(e) {
                     var code = (e.keyCode ? e.keyCode : e.which);
                     var inputValue = this.value;
-                    if (code != currObjInstance.keyCode.SHIFT
-                        && code != currObjInstance.keyCode.CONTROL
-                        && code != currObjInstance.keyCode.ALT
-                        && code != currObjInstance.keyCode.LEFT
-                        && code != currObjInstance.keyCode.UP
-                        && code != currObjInstance.keyCode.RIGHT
-                        && code != currObjInstance.keyCode.DOWN
-                        && code != currObjInstance.keyCode.ENTER
-                        && code != currObjInstance.keyCode.TAB) {
+                    if (code !== currObjInstance.keyCode.SHIFT
+                        && code !== currObjInstance.keyCode.CONTROL
+                        && code !== currObjInstance.keyCode.ALT
+                        && code !== currObjInstance.keyCode.LEFT
+                        && code !== currObjInstance.keyCode.UP
+                        && code !== currObjInstance.keyCode.RIGHT
+                        && code !== currObjInstance.keyCode.DOWN
+                        && code !== currObjInstance.keyCode.ENTER
+                        && code !== currObjInstance.keyCode.TAB) {
                       var d = new Date();
                       currObjInstance.searchFacetValuesTimeout = d.getTime();
                       setTimeout(function() {
@@ -1304,9 +1304,9 @@ function searchResultsInitializer() {
             },
 
             build : function(element) {
-              if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length == 0)
+              if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length === 0)
                   || element.attr('class') == 'add-more-filters') {
-                if ((element.attr('data-fctname') != this.fctManager.currentFacetField || (element
+                if ((element.attr('data-fctname') !== this.fctManager.currentFacetField || (element
                     .attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))) {
                   if (this.opened)
                     this.close();
@@ -1525,7 +1525,7 @@ function searchResultsInitializer() {
 
               var newUl = false;
               var roleFacetValueUl = facetValueContainer.find('ul');
-              if (roleFacetValueUl.length == 0) {
+              if (roleFacetValueUl.length === 0) {
                 newUl = true;
                 roleFacetValueUl = $(document.createElement('ul'));
                 roleFacetValueUl.addClass('unstyled');
@@ -1539,7 +1539,7 @@ function searchResultsInitializer() {
                   function(index, value) {
                     // The role search could return more than one role. So the
                     // roleFacetValue must match exactly the facetValue!
-                    if (facetValue == value.value) {
+                    if (facetValue === value.value) {
                       var roleFacetValueLi = $(document.createElement('li'));
                       var roleFacetValueSpan = $(document.createElement('span'));
                       var roleFacetValueCheckbox = $(document.createElement('input'));
@@ -1628,7 +1628,7 @@ function searchResultsInitializer() {
 
             setFacetValuesPage : function(pageNumber) {
               var spanPGNumber = this.paginationLiSeite.find('span');
-              if (spanPGNumber.length == 0) {
+              if (spanPGNumber.length === 0) {
                 ($(document.createElement('span')).html(pageNumber))
                     .appendTo(this.paginationLiSeite)
               }
@@ -1645,7 +1645,7 @@ function searchResultsInitializer() {
             manageOutsideClicks : function(thisInstance) {
               $(document).mouseup(function(e) {
                 var container = $(".facets-list");
-                if (container.has(e.target).length === 0 && thisInstance.opened == true) {
+                if (container.has(e.target).length === 0 && thisInstance.opened === true) {
                   thisInstance.close();
                 }
               });

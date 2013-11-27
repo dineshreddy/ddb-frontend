@@ -29,7 +29,7 @@ $(document)
               initializeJwPlayer(id, file, image, width, height, function(event) {
               }, function(event) {
                 var playerDiv = $("#mediaspace_wrapper");
-                if (playerDiv.length == 0) {
+                if (playerDiv.length === 0) {
                   playerDiv = $("#mediaspace");
                 }
                 if (playerDiv.length > 0) {
@@ -114,7 +114,7 @@ $(document)
               if (mediaQueryMatches) {
                 // window width is at least 530px
                 if (tot > 1) {
-                  if (tot == 2) {
+                  if (tot === 2) {
                     pos = "1-2";
                   }
                   else {
@@ -218,7 +218,7 @@ $(document)
               return text;
             }
             function jwPlayerSetup(content, poster) {
-              if ($("#binary-viewer").length == 0)
+              if ($("#binary-viewer").length === 0)
                 return;
               $(".previews").parent().addClass("off");
               $("#binary-viewer").append('<div id="jwplayer-container"></div>');
@@ -333,7 +333,7 @@ $(document)
             $("p.images").click(
                 function() {
                   var tab = $("div.images");
-                  if (tab.find("li").size() == 0)
+                  if (tab.find("li").size() === 0)
                     return false;
                   currentTab(this);
                   $("div.scroller").hide();
@@ -346,7 +346,7 @@ $(document)
             $("p.videos").click(
                 function() {
                   var tab = $("div.videos");
-                  if (tab.find("li").size() == 0)
+                  if (tab.find("li").size() === 0)
                     return false;
                   currentTab(this);
                   $("div.scroller").hide();
@@ -359,7 +359,7 @@ $(document)
             $("p.audios").click(
                 function() {
                   var tab = $("div.audios");
-                  if (tab.find("li").size() == 0)
+                  if (tab.find("li").size() === 0)
                     return false;
                   currentTab(this);
                   $("div.scroller").hide();
@@ -399,7 +399,7 @@ $(document)
                                   $("div.fancybox-pagination span").text(position);
                                 }
                               });
-                      if ($("#previews-list li").size() == 1) {
+                      if ($("#previews-list li").size() === 1) {
                         $(".fancybox-pagination").addClass("off");
                       }
                       return false;

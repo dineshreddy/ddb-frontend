@@ -215,12 +215,12 @@ var page = {};
         function updateGroupButtons() {
             var groups = $(selectors.groupWidget, root);
 
-            if (groups.filter(":hidden").length == 0) {
+            if (groups.filter(":hidden").length === 0) {
                 $(selectors.addGroupButton, root).hide();
                 $(selectors.removeGroupButton, root).show();
                 $(selectors.globalOperator, root).show();
             }
-            else if (groups.filter(":visible").length == 1) {
+            else if (groups.filter(":visible").length === 1) {
                 $(selectors.addGroupButton, root).show();
                 $(selectors.removeGroupButton, root).hide();
                 $(selectors.globalOperator, root).hide();
@@ -296,7 +296,7 @@ var page = {};
         function resetFields($fields) {
             $fields.each(function (index, item) {
                 if ($(item).is("select")) {
-                    if (item.selectedIndex != 0) {
+                    if (item.selectedIndex !== 0) {
                         item.selectedIndex = 0;
                     }
                 } else if (item.value) {

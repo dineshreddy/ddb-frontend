@@ -197,7 +197,7 @@ var itemHierarchy = {
           var parents = JSON.parse(dataBind);
 
           $.each(parents, function(index, value) {
-            if (value.id == parentId) {
+            if (value.id === parentId) {
               if (index > 0) {
                 id = parents[index - 1].id;
               }
@@ -346,7 +346,7 @@ var itemHierarchy = {
           if (index < parents.length - 1) {
             var ul = $("<ul>");
             var hasName = value.type != null;
-            var isRoot = index == 0;
+            var isRoot = index === 0;
             var parentId = null;
 
             if (!isRoot) {
@@ -369,7 +369,7 @@ var itemHierarchy = {
               currentNode.append(ul);
             }
             itemHierarchy.addParentNode(url, li, parentId, value, false, true,
-                index == parents.length - 2, true, false, index == parents.length - 2
+                index === parents.length - 2, true, false, index === parents.length - 2
                     && parents[parents.length - 1].leaf);
             currentNode = li;
           }
@@ -380,7 +380,7 @@ var itemHierarchy = {
 
         if (!value.leaf) {
           var ul = $("<ul>");
-          var isRoot = parents.length == 1;
+          var isRoot = parents.length === 1;
           var hasName = !isRoot && value.type != null;
           var parentId = !isRoot ? parents[parents.length - 2].id : null;
 
@@ -421,7 +421,7 @@ var itemHierarchy = {
 
           $.each(children, function(index, value) {
             var hasName = value.type != null;
-            var isCurrent = value.id == parents[parents.length - 1].id;
+            var isCurrent = value.id === parents[parents.length - 1].id;
             var leafNode = $("<li>");
             var showName = false;
 
@@ -442,20 +442,20 @@ var itemHierarchy = {
               ul.append(leafNode);
             }
             if (value.leaf) {
-              itemHierarchy.addLeafNode(leafNode, value, isCurrent, index == length - 1,
-                  length == 501);
+              itemHierarchy.addLeafNode(leafNode, value, isCurrent, index === length - 1,
+                  length === 501);
             }
             else {
               leafNode.addClass("node");
               leafNode.attr("data-bind", JSON.stringify(parents));
               itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false,
-                  index == length - 1, false, false, false);
+                  index === length - 1, false, false, false);
             }
           });
           currentNode.append(ul);
 
           // add current node if it is not within the first 500 children
-          if (length == 501) {
+          if (length === 501) {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         });
@@ -567,7 +567,7 @@ var itemHierarchy = {
     if (dataBind != null) {
       parents = JSON.parse(dataBind);
       $.each(parents, function(index, value) {
-        if (value.id == currentId && index < parents.length - 1) {
+        if (value.id === currentId && index < parents.length - 1) {
           id = parents[index + 1].id;
           return;
         }
@@ -589,8 +589,8 @@ var itemHierarchy = {
       var type = null;
 
       $.each(children, function(index, value) {
-        var isCurrent = value.id == id;
-        var isLast = index == length - 1;
+        var isCurrent = value.id === id;
+        var isLast = index === length - 1;
         var li = $(document.createElement("li"));
 
         if (isCurrent) {
@@ -611,10 +611,10 @@ var itemHierarchy = {
 
         currentNode.append(li);
         if (value.leaf) {
-          itemHierarchy.addLeafNode(li, value, isCurrent, isLast, length == 501);
+          itemHierarchy.addLeafNode(li, value, isCurrent, isLast, length === 501);
 
           // add current node if it is not within the first 500 children
-          if (isLast && length == 501) {
+          if (isLast && length === 501) {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         }

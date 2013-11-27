@@ -47,7 +47,7 @@ $(function() {
     });
 
     $('.page-input').keyup(function(e) {
-      if (e.keyCode == 13) {
+      if (e.keyCode === 13) {
         if (/^[0-9]+$/.test(this.value)) {
           if (parseInt(this.value) <= 0) {
             this.value = 1;
