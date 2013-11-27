@@ -1,4 +1,4 @@
-<div class="searchSuggestion">
+<div class="searchSuggestion off">
   <div>
     <g:message code="ddbnext.Search_Suggestion"/>
    <a href="${createLink(controller="search",action: 'results', params:[query: correctedQuery])}" class="subtitle">${correctedQuery}</a> 
