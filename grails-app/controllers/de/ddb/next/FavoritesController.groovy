@@ -414,14 +414,7 @@ class FavoritesController {
                 // Only when no blockingToken is set.
                 if(folder.blockingToken?.isEmpty()){
                     folder.setBlockingToken(UUID.randomUUID().toString())
-                    bookmarksService.updateFolder(
-                            folder.getFolderId(),
-                            folder.getTitle(),
-                            folder.getDescription(),
-                            folder.getIsPublic(),
-                            folder.getPublishingName(),
-                            folder.getIsBlocked(),
-                            folder.getBlockingToken())
+                    bookmarksService.updateFolder(folder)
                 }
 
                 def List emails = [
@@ -461,14 +454,7 @@ class FavoritesController {
                 try {
                     folder.setIsPublic(false)
                     folder.setIsBlocked(true)
-                    bookmarksService.updateFolder(
-                            folder.getFolderId(),
-                            folder.getTitle(),
-                            folder.getDescription(),
-                            folder.getIsPublic(),
-                            folder.getPublishingName(),
-                            folder.getIsBlocked(),
-                            folder.getBlockingToken())
+                    bookmarksService.updateFolder(folder)
 
                     flash.message = "ddbnext.favorites_list_blocked"
 
@@ -492,14 +478,7 @@ class FavoritesController {
                 try {
                     folder.setIsBlocked(false)
                     folder.setBlockingToken("")
-                    bookmarksService.updateFolder(
-                            folder.getFolderId(),
-                            folder.getTitle(),
-                            folder.getDescription(),
-                            folder.getIsPublic(),
-                            folder.getPublishingName(),
-                            folder.getIsBlocked(),
-                            folder.getBlockingToken())
+                    bookmarksService.updateFolder(folder)
 
                     flash.message = "ddbnext.favorites_list_unblocked"
 
@@ -590,7 +569,17 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.addBookmark(user.getId(), itemId)) {
+            Bookmark newBookmark = new Bookmark(
+                    null,
+                    user.getId(),
+                    itemId,
+                    new Date().getTime(),
+                    Type.CULTURAL_ITEM,
+                    null,
+                    "",
+                    new Date().getTime())
+            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
+            if (newBookmarkId) {
                 result = response.SC_CREATED
             }
         } else {
@@ -607,7 +596,17 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = getUserFromSession()
         if (user != null) {
-            if (bookmarksService.saveBookmark(user.getId(), params.folderId, params.itemId)) {
+            Bookmark newBookmark = new Bookmark(
+                    null,
+                    user.getId(),
+                    params.itemId,
+                    new Date().getTime(),
+                    Type.CULTURAL_ITEM,
+                    [params.folderId],
+                    "",
+                    new Date().getTime())
+            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
+            if(newBookmarkId != null){
                 result = response.SC_CREATED
             }
         } else {
@@ -662,7 +661,6 @@ class FavoritesController {
                     result = response.SC_OK
                 }else{
                     // Special case: if bookmarks are deleted in the main favorites folder -> delete them everywhere
-                    //def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
                     def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
                     if(folderId == mainFavoriteFolder.folderId) {
@@ -707,7 +705,7 @@ class FavoritesController {
         def result = response.SC_NOT_FOUND
         def User user = getUserFromSession()
         if (user != null) {
-            def bookmark = bookmarksService.findBookmarksByItemId(user.getId(), params.id)
+            def bookmark = bookmarksService.findBookmarkedItemsInFolder(user.getId(), [params.id], null)
             log.info "getFavorite returns " + bookmark
             render(bookmark as JSON)
         } else {
@@ -782,7 +780,17 @@ class FavoritesController {
         if (user != null) {
             def publishingName = user.getUsername()
 
-            if (bookmarksService.newFolder(user.getId(), title, false, publishingName, description)) {
+            Folder newFolder = new Folder(
+                    null,
+                    user.getId(),
+                    title,
+                    description,
+                    false,
+                    publishingName,
+                    false,
+                    "")
+            String newFolderId = bookmarksService.createFolder(newFolder)
+            if(newFolderId){
                 result = response.SC_CREATED
                 flash.message = "ddbnext.favorites_folder_create_succ"
             }
@@ -876,16 +884,24 @@ class FavoritesController {
             }
 
             if(foldersOwnedByUser){
-                //def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
                 folderIds.each { folderId ->
                     favoriteIds.each { favoriteId ->
                         Bookmark favoriteToCopy = bookmarksService.findBookmarkById(favoriteId)
                         String itemId = favoriteToCopy.itemId
                         // Check if the item already exists in the list
-                        List favoritesInTargetFolder = bookmarksService.findBookmarksByItemId(user.getId(), itemId, folderId)
+                        List favoritesInTargetFolder = bookmarksService.findBookmarkedItemsInFolder(user.getId(), [itemId], folderId)
                         // if not -> add it
                         if(favoritesInTargetFolder.size() == 0){
-                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM, favoriteToCopy.creationDate.getTime())
+                            Bookmark newBookmark = new Bookmark(
+                                    null,
+                                    user.getId(),
+                                    itemId,
+                                    favoriteToCopy.creationDate.getTime(),
+                                    Type.CULTURAL_ITEM,
+                                    [folderId],
+                                    "",
+                                    new Date().getTime())
+                            bookmarksService.createBookmark(newBookmark)
                         }
                     }
                 }
@@ -953,14 +969,11 @@ class FavoritesController {
                 }
             }
             if(isFolderOfUser && !isDefaultFavoritesFolder){
-                bookmarksService.updateFolder(
-                        folder.getFolderId(),
-                        title,
-                        description,
-                        isPublic,
-                        publishingName,
-                        folder.getIsBlocked(),
-                        folder.getBlockingToken())
+                folder.title = title
+                folder.description = description
+                folder.isPublic = isPublic
+                folder.publishingName = publishingName
+                bookmarksService.updateFolder(folder)
 
                 result = response.SC_OK
                 flash.message = "ddbnext.folder_edit_succ"
@@ -998,7 +1011,7 @@ class FavoritesController {
                 isBookmarkOfUser = true
             }
             if(isBookmarkOfUser){
-                bookmarksService.updateBookmark(id, cleanedText)
+                bookmarksService.updateBookmarkDescription(id, cleanedText)
                 result = response.SC_OK
             } else {
                 result = response.SC_UNAUTHORIZED
@@ -1029,14 +1042,9 @@ class FavoritesController {
                 isFolderOfUser = true
             }
             if(isFolderOfUser && !folder.isBlocked){
-                bookmarksService.updateFolder(
-                        folder.folderId,
-                        folder.title,
-                        folder.description,
-                        !folder.isPublic,
-                        folder.publishingName,
-                        folder.isBlocked,
-                        folder.blockingToken)
+                folder.isPublic = !folder.isPublic
+                bookmarksService.updateFolder(folder)
+
                 result = response.SC_OK
             } else {
                 result = response.SC_UNAUTHORIZED
