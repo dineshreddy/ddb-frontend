@@ -25,7 +25,7 @@ limitations under the License.
           <g:else>
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
-          <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li>
               <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
@@ -91,6 +91,7 @@ limitations under the License.
                 data-type="image"
                 data-author="${it.preview.author}"
                 data-rights="${it.preview.rights}"
+                title="${(it.full.title).encodeAsHTML()}"
                 <g:set var="type" value="image"/>
               </g:if>
               <g:elseif test="${it.orig.uri.video != ''}">
@@ -103,7 +104,8 @@ limitations under the License.
                 data-content="${it.orig.uri.video}"
                 data-type="video"
                 data-author="${it.orig.author}"
-                data-rights="${it.orig.rights}"                
+                data-rights="${it.orig.rights}"
+                title="${(it.orig.title).encodeAsHTML()}"
                 <g:set var="type" value="video"/>
               </g:elseif>
               <g:elseif test="${it.orig.uri.audio != ''}">
@@ -117,13 +119,20 @@ limitations under the License.
                 data-type="audio"
                 data-author="${it.orig.author}"
                 data-rights="${it.orig.rights}"
+                title="${(it.orig.title).encodeAsHTML()}"
                 <g:set var="type" value="audio"/>
-              </g:elseif>
-                title="${(it.orig.title).encodeAsHTML()}">
+              </g:elseif>>
               <div class="thumbnail ${type}">
                 <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
               </div>
-              <span class="label off">${it.orig.title}</span>
+              <span class="label off">
+                <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                  ${it.full.title}
+                </g:if>
+                <g:else>
+                  ${it.orig.title}
+                </g:else>
+              </span>
             </a>
           </li>
         </g:each>
@@ -145,22 +154,31 @@ limitations under the License.
             <li>
               <a class="group" 
                 <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                  href="${it.orig.uri.image}"
+                  href="${it.full.uri}"
+                  title="${(it.full.title).encodeAsHTML()}"
                   <g:set var="type" value="image"/>
                 </g:if>
                 <g:elseif test="${it.orig.uri.video != ''}">
                   href="${it.orig.uri.video}"
+                  title="${(it.orig.title).encodeAsHTML()}"
                   <g:set var="type" value="video"/>
                 </g:elseif>
                 <g:elseif test="${it.orig.uri.audio != ''}">
                   href="${it.orig.uri.audio}"
+                  title="${(it.orig.title).encodeAsHTML()}"
                   <g:set var="type" value="audio"/>
-                </g:elseif>
-                  title="${(it.orig.title).encodeAsHTML()}">
+                </g:elseif>>
                 <div class="thumbnail ${type}">
                   <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                 </div>
-                <span class="label off">${it.orig.title}</span>
+                <span class="label off">
+                  <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                    ${it.full.title}
+                  </g:if>
+                  <g:else>
+                    ${it.orig.title}
+                  </g:else>
+                </span>
               </a>
             </li>
           </g:each>
@@ -180,7 +198,7 @@ limitations under the License.
           <g:else>
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
-          <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
               <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
@@ -206,9 +224,9 @@ limitations under the License.
       <div class="scroller images" role="tabpanel">
         <ul class="gallery-images">
           <g:each in="${binaryList}">
-            <g:if test="${it.orig.uri.image != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+            <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
               <li>
-                <a class="group" href="${it.orig.uri.image}" title="${(it.preview.title).encodeAsHTML()}">
+                <a class="group" href="${it.full.uri}" title="${(it.preview.title).encodeAsHTML()}">
                   <div class="thumbnail image">
                     <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
                   </div>
