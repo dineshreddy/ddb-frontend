@@ -18,11 +18,13 @@ package de.ddb.next
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
 import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales;
+import de.ddb.next.constants.SupportedLocales
+import de.ddb.next.constants.Type
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
@@ -77,7 +79,17 @@ class ItemController {
         log.info "non-JavaScript: addFavorite " + itemId
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
-            if (bookmarksService.addBookmark(user.getId(), itemId)) {
+            Bookmark newBookmark = new Bookmark(
+                    null,
+                    user.getId(),
+                    itemId,
+                    new Date().getTime(),
+                    Type.CULTURAL_ITEM,
+                    null,
+                    "",
+                    new Date().getTime())
+            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
+            if (newBookmarkId) {
                 log.info "non-JavaScript: addFavorite " + itemId + " - success!"
                 vResult = true
             }

@@ -16,7 +16,9 @@
 package de.ddb.next
 import grails.converters.JSON
 
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
+import de.ddb.next.constants.Type
 
 class InstitutionController {
 
@@ -146,7 +148,17 @@ class InstitutionController {
         log.info "non-JavaScript: addFavorite " + itemId
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
-            if (bookmarksService.addBookmark(user.getId(), itemId)) {
+            Bookmark newBookmark = new Bookmark(
+                    null,
+                    user.getId(),
+                    itemId,
+                    new Date().getTime(),
+                    Type.INSTITUTION,
+                    null,
+                    "",
+                    new Date().getTime())
+            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
+            if (newBookmarkId) {
                 log.info "non-JavaScript: addFavorite " + itemId + " - success!"
                 vResult = true
             }
