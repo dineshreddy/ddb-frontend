@@ -49,6 +49,7 @@ class AdvancedsearchController {
         int searchFieldCount = configurationService.getSearchFieldCount()
         String url = configurationService.getBackendUrl()
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,
@@ -117,5 +118,28 @@ class AdvancedsearchController {
             }
         }
         return facetValuesMap
+    }
+
+    private List filterOnlyAdvancedSearchFacets(List allFacets){
+        List filteredFacets = []
+        List allowedFacets = [
+            "search_all",
+            "title",
+            "description",
+            "time",
+            "place",
+            "affiliate",
+            "keywords",
+            "language",
+            "type",
+            "sector",
+            "provider"
+        ]
+        allFacets.each {
+            if(allowedFacets.contains(it.name)){
+                filteredFacets.add(it)
+            }
+        }
+        return filteredFacets
     }
 }
