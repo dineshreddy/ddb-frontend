@@ -3,15 +3,15 @@ function StringBuilder() {
     this.iCount = -1;
 }
 
-StringBuilder.prototype.append = function append(string) {
+StringBuilder.prototype.append = function(string) {
     this.buffer[++this.iCount] = string;
     return this;
 };
 
-StringBuilder.prototype.toString = function toString() {
+StringBuilder.prototype.toString = function() {
     return this.buffer.join("");
 };
 
-StringBuilder.prototype.getLength = function getLength() {
+StringBuilder.prototype.getLength = function() {
     return this.buffer.length;
 };

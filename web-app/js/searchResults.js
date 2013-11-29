@@ -168,27 +168,25 @@ $.extend(HovercardInfoItem.prototype, {
         content.empty();
         var JSONresponse = jQuery.parseJSON(data.responseText);
         $.each(JSONresponse, function(key, value) {
-          if (key !== 'last_update') {
-            if (value != "") {
-              var li = $(document.createElement('li'));
-              var fieldName = $(document.createElement('span'));
-              var fieldContent = $(document.createElement('span'));
+          if (key !== 'last_update' && value != "") {
+            var li = $(document.createElement('li'));
+            var fieldName = $(document.createElement('span'));
+            var fieldContent = $(document.createElement('span'));
 
-              fieldName.addClass('fieldName');
-              fieldContent.addClass('fieldContent');
+            fieldName.addClass('fieldName');
+            fieldContent.addClass('fieldContent');
 
-              facetValues = new Array();
-              for (i = 0; i < value.length; i++) {
-                facetValues.push(value[i]);
-              }
-
-              fieldName.text(getLocalizedFacetField(key));
-              fieldContent.text(facetValues.join());
-
-              li.append(fieldName);
-              li.append(fieldContent);
-              content.append(li);
+            facetValues = new Array();
+            for (i = 0; i < value.length; i++) {
+              facetValues.push(value[i]);
             }
+
+            fieldName.text(getLocalizedFacetField(key));
+            fieldContent.text(facetValues.join());
+
+            li.append(fieldName);
+            li.append(fieldContent);
+            content.append(li);
           }
         });
       }
@@ -391,10 +389,8 @@ function searchResultsInitializer() {
         }
       });
   $('#form-search-header input').keyup(function(e) {
-    if (e.keyCode === 13) {
-      if ($.browser.msie && parseFloat($.browser.version) <= 8.0) {
-        $('#form-search-header button').click();
-      }
+    if (e.keyCode === 13 && $.browser.msie && parseFloat($.browser.version) <= 8.0) {
+      $('#form-search-header button').click();
     }
     return false;
   });

@@ -175,7 +175,7 @@ var itemHierarchy = {
         return;
       }
 
-      var isRoot = currentNode.hasClass("root");
+      isRoot = currentNode.hasClass("root");
       var li = $(this).parent().parent();
       var hasName = li.parent().hasClass("has-name");
       var parentLi;

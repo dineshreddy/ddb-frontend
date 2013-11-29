@@ -35,7 +35,6 @@
         complete: function(data) {
           if (vActn=="POST") {
             addToFavorites(data);
-          } else {
           }
         }
       });

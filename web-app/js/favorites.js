@@ -444,11 +444,9 @@ function updateNavigationUrl() {
   try {
     var offset_endPg = $(".last-page").find('a').attr("href").match(/offset=([0-9]+)/);
     var offset_nextPg = $(".next-page").find('a').attr("href").match(/offset=([0-9]+)/);
-    if (offset_endPg && offset_nextPg) {
-      if (parseInt(offset_nextPg[1]) > parseInt(offset_endPg[1])) {
-        $(".page-nav .next-page").addClass("off");
-        $(".page-nav .last-page").addClass("off");
-      }
+    if (offset_endPg && offset_nextPg && parseInt(offset_nextPg[1]) > parseInt(offset_endPg[1])) {
+      $(".page-nav .next-page").addClass("off");
+      $(".page-nav .last-page").addClass("off");
     }
   } catch (e) {
     // TODO: the endPg / nextPg throws errors on empty favorites list

@@ -272,15 +272,10 @@
 
         var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
         var filteredBySector = _.reduce(filteredByFirstLetter, function(memory, institution) {
-          // assert
-          if (institution.firstChar !== firstLetter) {
-            // do nothing.
-          }
-          else {
+          if (institution.firstChar === firstLetter) {
             if (_.contains(sectors, institution.sector)) {
               memory.push(institution);
             }
-
             ddb.filterDescendants(institution, memory, sectors, parentList);
           }
 
