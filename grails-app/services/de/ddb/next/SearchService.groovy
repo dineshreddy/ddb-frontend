@@ -959,7 +959,7 @@ class SearchService {
             preview.thumbnail instanceof net.sf.json.JSONNull ||
             preview.thumbnail.toString().trim().isEmpty() ||
             (preview.thumbnail.toString().startsWith("http://content") &&
-            preview.thumbnail.toString().contains("/placeholder/search_result_"))
+            preview.thumbnail.toString().contains("/placeholder/searchResult"))
             ){
                 def mediaTypes = []
                 if(preview.media instanceof String){
@@ -981,7 +981,7 @@ class SearchService {
                     mediaType = "unknown"
                 }
                 def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/search_result_media_"+mediaType+".png").toString()
+                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMedia"+mediaType+".png").toString()
             }
         }
         return searchResult
