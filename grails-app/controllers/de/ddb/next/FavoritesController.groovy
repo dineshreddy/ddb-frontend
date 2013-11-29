@@ -42,26 +42,24 @@ class FavoritesController {
     def searchService
     def sessionService
 
+    private int getIntegerParam(String paramKey, int defaultValue) {
+        if (params[paramKey]){
+            return params[paramKey].toInteger()
+        }
+        return defaultValue
+    }
+
     def publicFavorites() {
         log.info "publicFavorites()"
 
-        def rows = configurationService.getSearchRows() //default
-        if (params[SearchParamEnum.ROWS.getName()]){
-            rows = params[SearchParamEnum.ROWS.getName()].toInteger()
-        }
-        def offset = configurationService.getSearchOffset() // default
-        if(params[SearchParamEnum.OFFSET.getName()]){
-            offset = params[SearchParamEnum.OFFSET.getName()].toInteger()
-        }
+        def rows = getIntegerParam(SearchParamEnum.ROWS.getName(), configurationService.getSearchRows())
+        def offset = getIntegerParam(SearchParamEnum.OFFSET.getName(), configurationService.getSearchOffset())
         def folderId = params.folderId
         def by = ORDER_DATE
-        if (params[SearchParamEnum.BY.getName()]){
-            if (params[SearchParamEnum.BY.getName()].toString()==ORDER_TITLE){
-                by = params[SearchParamEnum.BY.getName()]
-            }else{
-                params[SearchParamEnum.BY.getName()] = ORDER_DATE
-            }
+        if (params[SearchParamEnum.BY.getName()] == ORDER_TITLE){
+            by = ORDER_TITLE
         }
+
         def order = params[SearchParamEnum.ORDER.getName()]
 
         //def user = aasService.getPerson(params.userId) // does not work yet because of security constraints in AAS
@@ -70,30 +68,11 @@ class FavoritesController {
         user.username = "TODO"
 
         // A user want to report this list to DDB
-        if(params.report){
-            reportFavoritesList(user.id, folderId)
-            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+        if (handleReportingOrBlocking(user, folderId, params)) {
             return
         }
 
-        if(params.blockingToken) {
-            blockFavoritesList(user.id, folderId, params.blockingToken)
-            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
-            return
-        }
-
-        if(params.unblockingToken) {
-            unblockFavoritesList(user.id, folderId, params.unblockingToken)
-            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
-            return
-        }
-
-        def selectedFolder = bookmarksService.findPublicFolderById(folderId)
-
-        // If the folder does not exist (maybe deleted) or the user does not exist -> 404
-        if(selectedFolder == null || user == null){
-            throw new FavoritelistNotFoundException("publicFavorites(): favorites list or user do not exist")
-        }
+        def selectedFolder = getSelectedFolder(folderId, user)
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
         publicFolders.sort{ a, b ->
@@ -107,9 +86,7 @@ class FavoritesController {
         def lastPgOffset=0
 
         if (totalResults <1){
-
             def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
-
             render(view: "publicFavorites", model: [
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
@@ -122,120 +99,140 @@ class FavoritesController {
                 contextUrl: configurationService.getContextUrl()
             ])
             return
+        }
+        def locale = getLocale()
+        def allRes = favoritesService.retriveItemMD(items,locale)
+        def resultsItems
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+
+        // convertQueryParametersToSearchParameters modifies params
+        params.remove(SearchParamEnum.QUERY.getName())
+
+        urlQuery[SearchParamEnum.OFFSET.getName()] = 0
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def page = ((offset/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+        def totalPages = (Math.ceil(items.size()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+
+        if (totalPages.toFloat()<page.toFloat()){
+            offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
+            if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                lastPgOffset=20
+            }
+            page=totalPages
+        }
+        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+        def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
+
+        def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+        allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
+        allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
+
+        //Default ordering is newest on top == DESC
+        allResultsWithAdditionalInfo.sort{ a, b ->
+            b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
+        }
+        def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
+
+        def createLink = linkGenerator('publicFavorites', offset, rows, [userId:user.id, folderId:selectedFolder.folderId])
+
+        def urlsForOrder=[desc:"#",asc: createLink("asc", ORDER_DATE)]
+        def urlsForOrderTitle=[desc:"#",asc: createLink("asc", ORDER_TITLE)]
+        if (order=="asc"){
+            if(by.toString()==ORDER_DATE){
+                allResultsWithAdditionalInfo.sort{ a, b ->
+                    a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
+                }
+                urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+                urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
+            }else{
+                allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
+                urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
+                urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+            }
         }else{
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-            def allRes = favoritesService.retriveItemMD(items,locale)
-            def resultsItems
-
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-
-            // convertQueryParametersToSearchParameters modifies params
-            params.remove(SearchParamEnum.QUERY.getName())
-
-            urlQuery[SearchParamEnum.OFFSET.getName()] = 0
-            //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((offset/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-            def totalPages = (Math.ceil(items.size()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-            lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-
-            if (totalPages.toFloat()<page.toFloat()){
-                offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                    lastPgOffset=20
-                }
-                page=totalPages
-            }
-            def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-            def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-
-            def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
-            allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
-            allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
-
-            //Default ordering is newest on top == DESC
-            allResultsWithAdditionalInfo.sort{ a, b ->
-                b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
-            }
-            def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
-
-            def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
-            def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
-            if (order=="asc"){
-                if(by.toString()==ORDER_DATE){
-                    allResultsWithAdditionalInfo.sort{ a, b ->
-                        a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
-                    }
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                }else{
-                    allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                }
+            //desc
+            if(by.toString()==ORDER_TITLE){
+                urlsForOrderTitle["asc"]=createLink("asc", ORDER_TITLE)
+                urlsForOrder["asc"]=createLink("desc", ORDER_DATE)
+                allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
             }else{
-                //desc
-                if(by.toString()==ORDER_TITLE){
-                    urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
-                }else{
-                    //by date
-                    urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-                    urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-                }
+                //by date
+                urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+                urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
             }
-
-            if (offset != 0){
-                resultsItems=allResultsWithAdditionalInfo.drop(offset)
-                resultsItems=resultsItems.take(rows)
-            }else{
-                resultsItems=allResultsWithAdditionalInfo.take(rows)
-            }
-
-            if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,allResultsOrdered)
-            }
-
-            def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
-
-            render(view: "publicFavorites", model: [
-                results: resultsItems,
-                selectedFolder: selectedFolder,
-                mainFavoriteFolder: null,
-                allResultsOrdered: allResultsOrdered,
-                viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
-                resultsPaginatorOptions: resultsPaginatorOptions,
-                page: page,
-                resultsNumber: totalResults,
-                createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
-                totalPages: totalPages,
-                numberOfResultsFormatted: numberOfResultsFormatted,
-                offset: offset,
-                rows: rows,
-                selectedUser: user,
-                publicFolders: publicFolders,
-                dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                urlsForOrderTitle: urlsForOrderTitle,
-                urlsForOrder: urlsForOrder,
-                fullPublicLink: fullPublicLink,
-                baseUrl: configurationService.getSelfBaseUrl(),
-                contextUrl: configurationService.getContextUrl()
-            ])
         }
 
+        if (offset != 0){
+            resultsItems=allResultsWithAdditionalInfo.drop(offset)
+            resultsItems=resultsItems.take(rows)
+        }else{
+            resultsItems=allResultsWithAdditionalInfo.take(rows)
+        }
+
+        if (request.method=="POST"){
+            sendBookmarkPerMail(params.email,allResultsOrdered)
+        }
+
+        def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+
+        render(view: "publicFavorites", model: [
+            results: resultsItems,
+            selectedFolder: selectedFolder,
+            mainFavoriteFolder: null,
+            allResultsOrdered: allResultsOrdered,
+            viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
+            resultsPaginatorOptions: resultsPaginatorOptions,
+            page: page,
+            resultsNumber: totalResults,
+            createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
+            totalPages: totalPages,
+            numberOfResultsFormatted: numberOfResultsFormatted,
+            offset: offset,
+            rows: rows,
+            selectedUser: user,
+            publicFolders: publicFolders,
+            dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+            urlsForOrderTitle: urlsForOrderTitle,
+            urlsForOrder: urlsForOrder,
+            fullPublicLink: fullPublicLink,
+            baseUrl: configurationService.getSelfBaseUrl(),
+            contextUrl: configurationService.getContextUrl()
+        ])
+
+    }
+
+    private Closure linkGenerator(String action, int offset, int rows, Map extraParams) {
+        Map commonParams = [
+            (SearchParamEnum.OFFSET.getName()):offset,
+            (SearchParamEnum.ROWS.getName()):rows
+        ]
+        commonParams.putAll(extraParams)
+        return { String order, String by ->
+            createFavoritesLink(order, by, commonParams, action)
+        }
+    }
+
+    private def createFavoritesLink(String order, String by, Map commonParams, String action) {
+        Map currentParams = [
+            (SearchParamEnum.ORDER.getName()):order,
+            (SearchParamEnum.BY.getName()):by
+        ]
+        currentParams.putAll(commonParams)
+        return g.createLink(controller:'favorites', action:action, params: currentParams)
     }
 
     def favorites(){
         log.info "favorites()"
         if(isUserLoggedIn()){
-            def rows = configurationService.getSearchRows() //default
-            if (params[SearchParamEnum.ROWS.getName()]){
-                rows = params[SearchParamEnum.ROWS.getName()].toInteger()
+            def rows = getIntegerParam(SearchParamEnum.ROWS.getName(), configurationService.getSearchRows())
+            def offset = getIntegerParam(SearchParamEnum.OFFSET.getName(), configurationService.getSearchOffset())
+            def by = ORDER_DATE
+            if (params[SearchParamEnum.BY.getName()] == ORDER_TITLE){
+                by = ORDER_TITLE
             }
-            def offset = configurationService.getSearchOffset() // default
-            if(params[SearchParamEnum.OFFSET.getName()]){
-                offset = params[SearchParamEnum.OFFSET.getName()].toInteger()
-            }
+            def order = params[SearchParamEnum.ORDER.getName()]
             def user = getUserFromSession()
             def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
@@ -243,15 +240,6 @@ class FavoritesController {
             if(params.id){
                 folderId = params.id
             }
-            def by = ORDER_DATE
-            if (params[SearchParamEnum.BY.getName()]){
-                if (params[SearchParamEnum.BY.getName()].toString()==ORDER_TITLE){
-                    by = params[SearchParamEnum.BY.getName()]
-                }else{
-                    params[SearchParamEnum.BY.getName()]= ORDER_DATE
-                }
-            }
-            def order = params[SearchParamEnum.ORDER.getName()]
 
             Folder selectedFolder = bookmarksService.findFolderById(folderId)
             List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
@@ -300,108 +288,140 @@ class FavoritesController {
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,"desc","title",0,folderId),
                 ])
                 return
-            }else{
-                def locale = getLocale()
-                def allRes = favoritesService.retriveItemMD(items,locale)
-                def resultsItems
-                def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-
-                // convertQueryParametersToSearchParameters modifies params
-                params.remove(SearchParamEnum.QUERY.getName())
-
-                urlQuery[SearchParamEnum.OFFSET.getName()] = 0
-                //Calculating results pagination (previous page, next page, first page, and last page)
-                def page = ((offset/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-                def totalPages = (Math.ceil(items.size()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-                lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-
-                if (totalPages.toFloat()<page.toFloat()){
-                    offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                    if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
-                        lastPgOffset=20
-                    }
-                    page=totalPages
-                }
-                def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-                def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-
-                def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
-                allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
-                allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
-
-                //Default ordering is newest on top == DESC
-                allResultsWithAdditionalInfo.sort{ a, b ->
-                    b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
-                }
-                def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
-
-                def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])]
-                def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])]
-                if (order=="asc"){
-                    if(by.toString()==ORDER_DATE){
-                        allResultsWithAdditionalInfo.sort{ a, b->
-                            a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
-                        }
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
-                    }else{
-                        allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
-                    }
-                }else{
-                    //desc
-                    if(by.toString()==ORDER_TITLE){
-                        urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"asc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
-                        urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
-                        allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
-                    }else{
-                        //by date
-                        urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_DATE,id:folderId])
-                        urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):"desc", (SearchParamEnum.BY.getName()):ORDER_TITLE,id:folderId])
-                    }
-                }
-
-                if (offset != 0){
-                    resultsItems=allResultsWithAdditionalInfo.drop(offset)
-                    resultsItems=resultsItems.take( rows)
-                }else{
-                    resultsItems=allResultsWithAdditionalInfo.take( rows)
-                }
-
-                if (request.method=="POST"){
-                    sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
-                }
-
-                render(view: "favorites", model: [
-                    results: resultsItems,
-                    selectedFolder: selectedFolder,
-                    mainFavoriteFolder: mainFavoriteFolder,
-                    allResultsOrdered: allResultsOrdered,
-                    allFolders: allFoldersInformation,
-                    viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
-                    resultsPaginatorOptions: resultsPaginatorOptions,
-                    page: page,
-                    resultsNumber: totalResults,
-                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(offset, rows, order, by, lastPgOffset,folderId),
-                    totalPages: totalPages,
-                    numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: offset,
-                    rows: rows,
-                    userName: userName,
-                    fullName: fullName,
-                    nickName: nickName,
-                    fullPublicLink: fullPublicLink,
-                    dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                    urlsForOrderTitle:urlsForOrderTitle,
-                    urlsForOrder:urlsForOrder,
-                    baseUrl: configurationService.getSelfBaseUrl(),
-                    contextUrl: configurationService.getContextUrl()
-                ])
             }
+            def createLink = linkGenerator('favorites', offset, rows, [id:folderId])
+
+            def locale = getLocale()
+            def allRes = favoritesService.retriveItemMD(items,locale)
+            def resultsItems
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+
+            // convertQueryParametersToSearchParameters modifies params
+            params.remove(SearchParamEnum.QUERY.getName())
+
+            urlQuery[SearchParamEnum.OFFSET.getName()] = 0
+            //Calculating results pagination (previous page, next page, first page, and last page)
+            def page = ((offset/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+            def totalPages = (Math.ceil(items.size()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+            lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+
+            if (totalPages.toFloat()<page.toFloat()){
+                offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
+                if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                    lastPgOffset=20
+                }
+                page=totalPages
+            }
+            def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+            def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
+
+            def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
+            allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
+            allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
+
+            //Default ordering is newest on top == DESC
+            allResultsWithAdditionalInfo.sort{ a, b ->
+                b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
+            }
+            def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
+
+            def urlsForOrder=[desc:"#",asc:createLink("asc", ORDER_DATE)]
+            def urlsForOrderTitle=[desc:"#",asc:createLink("asc", ORDER_TITLE)]
+            if (order=="asc"){
+                if(by.toString()==ORDER_DATE){
+                    allResultsWithAdditionalInfo.sort{ a, b->
+                        a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
+                    }
+                    urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+                    urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
+                }else{
+                    allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
+                    urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
+                    urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+                }
+            }else{
+                //desc
+                if(by.toString()==ORDER_TITLE){
+                    urlsForOrderTitle["asc"]=createLink("asc", ORDER_TITLE)
+                    urlsForOrder["asc"]=createLink("desc", ORDER_DATE)
+                    allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
+                }else{
+                    //by date
+                    urlsForOrder["desc"]=createLink("desc", ORDER_DATE)
+                    urlsForOrderTitle["desc"]=createLink("desc", ORDER_TITLE)
+                }
+            }
+
+            if (offset != 0){
+                resultsItems=allResultsWithAdditionalInfo.drop(offset)
+                resultsItems=resultsItems.take( rows)
+            }else{
+                resultsItems=allResultsWithAdditionalInfo.take( rows)
+            }
+
+            if (request.method=="POST"){
+                sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
+            }
+
+            render(view: "favorites", model: [
+                results: resultsItems,
+                selectedFolder: selectedFolder,
+                mainFavoriteFolder: mainFavoriteFolder,
+                allResultsOrdered: allResultsOrdered,
+                allFolders: allFoldersInformation,
+                viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
+                resultsPaginatorOptions: resultsPaginatorOptions,
+                page: page,
+                resultsNumber: totalResults,
+                createAllFavoritesLink:favoritesService.createAllFavoritesLink(offset, rows, order, by, lastPgOffset,folderId),
+                totalPages: totalPages,
+                numberOfResultsFormatted: numberOfResultsFormatted,
+                offset: offset,
+                rows: rows,
+                userName: userName,
+                fullName: fullName,
+                nickName: nickName,
+                fullPublicLink: fullPublicLink,
+                dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                urlsForOrderTitle:urlsForOrderTitle,
+                urlsForOrder:urlsForOrder,
+                baseUrl: configurationService.getSelfBaseUrl(),
+                contextUrl: configurationService.getContextUrl()
+            ])
         } else{
             redirect(controller:"user", action:"index")
         }
+    }
+
+    private Folder getSelectedFolder(String folderId, User user) {
+        def selectedFolder = bookmarksService.findPublicFolderById(folderId)
+
+        // If the folder does not exist (maybe deleted) or the user does not exist -> 404
+        if(selectedFolder == null || user == null){
+            throw new FavoritelistNotFoundException("publicFavorites(): favorites list or user do not exist")
+        }
+        return selectedFolder
+    }
+
+    private boolean handleReportingOrBlocking(User user, String folderId, Map params) {
+        if(params.report){
+            reportFavoritesList(user.id, folderId)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return true
+        }
+
+        if(params.blockingToken) {
+            blockFavoritesList(user.id, folderId, params.blockingToken)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return true
+        }
+
+        if(params.unblockingToken) {
+            unblockFavoritesList(user.id, folderId, params.unblockingToken)
+            redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+            return true
+        }
+        return false
     }
 
     private def reportFavoritesList(String userId, String folderId){
