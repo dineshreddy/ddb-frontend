@@ -19,7 +19,6 @@ package de.ddb.next
 import grails.converters.JSON
 import groovy.json.*
 import net.sf.json.JSONNull
-
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
@@ -74,6 +73,28 @@ class BookmarksService {
     }
 
 
+    int getFolderCount() {
+        log.info "getFolderCount()"
+        return getIndexCount("folder")
+    }
+
+    int getBookmarkCount() {
+        log.info "getBookmarkCount()"
+        return getIndexCount("bookmark")
+    }
+
+    int getIndexCount(String type) {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/" + type + "/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
 
     List<Folder> findAllPublicFolders(String userId) {
         log.info "findAllPublicFolders()"
@@ -426,6 +447,22 @@ class BookmarksService {
         return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
     }
 
+    /**
+     * Removed the bookmarks and folder for a given userId
+     * 
+     * @param userId the id of the user
+     */
+    void deleteAllUserContent(String userId) {
+        deleteAllUserBookmarks(userId)
+        deleteAllUserFolders(userId)
+    }
+
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if the user bookmarks has been deleted
+     */
     boolean deleteAllUserBookmarks(String userId) {
         log.info "deleteAllUserBookmarks()"
         def bookmarkIds = []
@@ -434,6 +471,26 @@ class BookmarksService {
             bookmarkIds.add(it.bookmarkId)
         }
         return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+    }
+
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * 
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if at least one folder has been deleted for the given userId
+     */
+    boolean deleteAllUserFolders(String userId) {
+        boolean retval = false
+        log.info "deleteAllUserFolders()"
+        List<Folder> allUserFolders = findAllFolders(userId)
+
+        allUserFolders.each { it ->
+            deleteFolder(it.folderId)
+            retval = true
+        }
+
+        return retval
     }
 
     List<Bookmark> findBookmarkedItemsInFolder(String userId, List<String> itemIdList, String folderId) {

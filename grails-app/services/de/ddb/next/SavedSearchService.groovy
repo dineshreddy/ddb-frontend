@@ -51,6 +51,17 @@ class SavedSearchService {
         }
     }
 
+    def deleteSavedSearchesByUserId(userId) {
+        def userSearches = []
+
+        findSavedSearchByUserId(userId).each{ it ->
+            userSearches.add(it['id'])
+        }
+
+        deleteSavedSearch(userSearches)
+    }
+
+
     def findSavedSearchByUserId(userId) {
         log.info "findSavedSearchByUserId(): find saved searches for the user (${userId})"
         return findSavedSearch(["q": "user:\"${userId}\"".encodeAsURL(), "size": DEFAULT_SIZE])
@@ -150,4 +161,18 @@ class SavedSearchService {
             return savedSearchId
         }
     }
+
+    int getSavedSearchesCount() {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
+
 }
