@@ -969,16 +969,16 @@ class SearchService {
                 }
                 def mediaType = mediaTypes[0]
                 if(mediaType != null){
-                    mediaType = mediaType.toString().toLowerCase()
+                    mediaType = mediaType.toString().toLowerCase().capitalize()
                 }
-                if(mediaType != "audio" &&
-                mediaType != "image" &&
-                mediaType != "institution" &&
-                mediaType != "sonstiges" &&
-                mediaType != "text" &&
-                mediaType != "unknown" &&
-                mediaType != "video"){
-                    mediaType = "unknown"
+                if(mediaType != "Audio" &&
+                mediaType != "Image" &&
+                mediaType != "Institution" &&
+                mediaType != "Sonstiges" &&
+                mediaType != "Text" &&
+                mediaType != "Unknown" &&
+                mediaType != "Video"){
+                    mediaType = "Unknown"
                 }
                 def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
                 preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMedia"+mediaType+".png").toString()
