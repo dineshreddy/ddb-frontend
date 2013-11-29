@@ -100,7 +100,7 @@ class InstitutionController {
 
 			def organisationLogo
 			if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
-				organisationLogo = g.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+				organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
 			}else{
 				organisationLogo = selectedOrgXML.logo
 			}

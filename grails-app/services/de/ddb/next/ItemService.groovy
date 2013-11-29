@@ -70,7 +70,7 @@ class ItemService {
 		//def institution= xml.institution
 		def institution= xml.item.institution
 
-		String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+		String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
 		if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
 			institutionLogoUrl = filterOutSurroundingTag(xml.item.institution.logo.toString())
 		}
