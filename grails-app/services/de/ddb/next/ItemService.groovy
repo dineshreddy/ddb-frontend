@@ -256,7 +256,7 @@ class ItemService {
                 if(it.'orig'.'uri'.'video'){
                     videos++
                 }
-            } else if (it.'orig'.'uri'.'image'){
+            } else if (it.'full'.'uri'){
                 images++
             }
         }

@@ -189,33 +189,35 @@ limitations under the License.
       </div>
     </div>
 
-    <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
-         aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
-      <div class="modal-header">
-        <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="sendSavedSearchesLabel">
-          <g:message code="ddbnext.Send_Savedsearches"/>
-        </h3>
+    <g:if test="${numberOfResults > 0}">
+      <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+           aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
+        <div class="modal-header">
+          <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+          <h3 id="sendSavedSearchesLabel">
+            <g:message code="ddbnext.Send_Savedsearches"/>
+          </h3>
+        </div>
+        <form method="POST">
+          <div class="modal-body">
+            <fieldset>
+              <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required">
+              <br/>
+              <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients"/></small>
+              <br/>
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+              <g:message code="ddbnext.Close"/>
+            </button>
+            <button class="btn-padding" type="submit" id="btnSubmit">
+              <g:message code="ddbnext.send_now"/>
+            </button>
+          </div>
+        </form>
       </div>
-      <form method="POST">
-        <div class="modal-body">
-          <fieldset>
-            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" type="email" name="email" required>
-            <br/>
-            <small class="muted"><g:message code="ddbnext.send_favorites_more_recipients"/></small>
-            <br/>
-          </fieldset>
-        </div>
-        <div class="modal-footer">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbnext.Close"/>
-          </button>
-          <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now"/>
-          </button>
-        </div>
-      </form>
-    </div>
+    </g:if>
 
     <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
          aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">

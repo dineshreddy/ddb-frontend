@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ###############################
 # Parameter settings          #
@@ -10,8 +10,8 @@ if [ -z "$elasticSearchServer" ]
 then
     echo "ERROR: You must provide an ElasticSearch server!"
     echo "       A valid call could be: "
-    echo "       shell> $0 htp://whvmescidev6.fiz-karlsruhe.de:9200/"
-    echo "       Schema was not updated."
+    echo "       shell> $0 http://whvmescidev6.fiz-karlsruhe.de:9200/"
+    echo "       Schema was not compared."
     exit 1 #exit script
 fi
 
@@ -42,7 +42,7 @@ readSchemaFile() {
     echo "ERROR: no content in mandatory file $1. Exiting script. ElasticSearch schema was not updated"
     exit 1 #exit script
   fi
-  cat $1
+  cat $1 | jshon
 }
 
 echo
@@ -63,32 +63,31 @@ echo
 echo "Schema files ok"
 echo
 
-###############################
-# Posting schemas to server   #
-###############################
+#################################
+# Comparing schemas from server #
+#################################
 
-postSchemaFile() {
-  response=`curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
-  case "`echo $response | jshon -k`" in
-    *ok*) echo "ok"
-          ;;
-    *)    echo "ERROR: "
-          echo $response | jshon
-          ;;
-  esac
+compareSchemaFile() {
+  response=`curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
+  diff --brief <(echo "$2") <(echo "$response")
+  if [ $? -ne 0 ]; then
+    diff --side-by-side <(echo "$2") <(echo "$response") | less
+  else
+    echo "no difference found"
+  fi
 }
 
-echo Curling new schema to elasticsearch
-echo -----------------------------------
+echo Comparing current schema with elasticsearch
+echo -------------------------------------------
                 
 
-postSchemaFile "folder" "$contentFolder"
+compareSchemaFile "folder" "$contentFolder"
 echo
 
-postSchemaFile "bookmark" "$contentBookmark"
+compareSchemaFile "bookmark" "$contentBookmark"
 echo
 
-postSchemaFile "savedSearch" "$contentSavedSearch"
+compareSchemaFile "savedSearch" "$contentSavedSearch"
 echo
 
 echo Script finished. Exit.

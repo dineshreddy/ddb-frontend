@@ -47,6 +47,7 @@ class AdvancedsearchController {
         int searchFieldCount = configurationService.getSearchFieldCount()
         String url = configurationService.getBackendUrl()
         List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
         render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,
@@ -96,7 +97,7 @@ class AdvancedsearchController {
                 def facetDisplayValuesMap = new TreeMap()
                 for (facetValue in facetValues) {
                     //translate because of sorting
-                    facetDisplayValuesMap[facetValue] = getMessage("ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
+                    facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
                 }
                 if (facetSearchfield.sortType != null && facetSearchfield.sortType.equals(labelSortType)) {
                     facetDisplayValuesMap = facetDisplayValuesMap.sort {it.value}
@@ -117,13 +118,26 @@ class AdvancedsearchController {
         return facetValuesMap
     }
 
-    /**
-     * get display-value language-dependent.
-     * 
-     * @param name fieldname
-     * @return String translated display-value
-     */
-    private String getMessage(name) {
-        return messageSource.getMessage(name,null, request.getLocale())
+    private List filterOnlyAdvancedSearchFacets(List allFacets){
+        List filteredFacets = []
+        List allowedFacets = [
+            "search_all",
+            "title",
+            "description",
+            "time",
+            "place",
+            "affiliate",
+            "keywords",
+            "language",
+            "type",
+            "sector",
+            "provider"
+        ]
+        allFacets.each {
+            if(allowedFacets.contains(it.name)){
+                filteredFacets.add(it)
+            }
+        }
+        return filteredFacets
     }
 }
