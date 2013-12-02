@@ -16,14 +16,13 @@
 
 package de.ddb.next.filter
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Cookie
+import javax.servlet.http.HttpServletResponse
 
-import org.apache.commons.logging.LogFactory;
-import org.ccil.cowan.tagsoup.Parser;
+import org.apache.commons.logging.LogFactory
+import org.ccil.cowan.tagsoup.Parser
 
-import de.ddb.next.exception.InvalidUrlException;
+import de.ddb.next.exception.InvalidUrlException
 
 
 /**
@@ -50,6 +49,7 @@ class SecurityHelper {
         sanitizeRequestParameters(request, slurper)
         sanitizeRequestCookies(request, slurper)
         sanitizeRequestHeaders(request)
+        addReponseSecurityHeaders(request, response)
     }
 
     private void sanitizeRequestUrl(ServletRequestWrapper request, HttpServletResponse response) {
@@ -148,5 +148,10 @@ class SecurityHelper {
                 cookie.setValue(parsedCookieValue)
             }
         }
+    }
+
+    private void addReponseSecurityHeaders(ServletRequestWrapper request, HttpServletResponse response) {
+        response.addHeader("X-Frame-Options", "SAMEORIGIN")
+        response.addHeader("X-Content-Type-Options", "nosniff")
     }
 }
