@@ -75,15 +75,15 @@ class BookmarksService {
 
     int getFolderCount() {
         log.info "getFolderCount()"
-        return getIndexCount("folder")
+        return getDocumentCountByType("folder")
     }
 
     int getBookmarkCount() {
         log.info "getBookmarkCount()"
-        return getIndexCount("bookmark")
+        return getDocumentCountByType("bookmark")
     }
 
-    int getIndexCount(String type) {
+    private int getDocumentCountByType(String type) {
         int count = -1
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/" + type + "/_search", false)
@@ -326,19 +326,20 @@ class BookmarksService {
     }
 
     /**
-     * Delete all bookmarks of cultural items in the {bookmarkIdList} belong to the user.
+     * Delete all entries of a given indexType for a userId.
      *
-     * @param userId         the ID who bookmarked the cultural items.
-     * @param bookmarkIdList a list of bookmark IDs. NOTE: These are _not_ a list of cultural item IDs.
+     * @param userId    the ID who belong these items.
+     * @param idList    a list of ids
+     * @param indexType the index type of the items to delete
      */
-    boolean deleteBookmarksByBookmarkIds(String userId, List<String> bookmarkIdList) {
-        log.info "deleteBookmarksByBookmarkIds()"
+    private boolean deleteDocumentsByTypeAndIds(String userId, List<String> idList, String indexType) {
+        log.info "deleteIndexTypeByIds()"
 
         def postBody = ''
-        bookmarkIdList.each { id ->
-            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "bookmark", "_id" : "' + id + '" } }\n'
+        idList.each { id ->
+            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -444,7 +445,7 @@ class BookmarksService {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
     }
 
     /**
@@ -470,7 +471,7 @@ class BookmarksService {
         allBookmarksOfUser.each { it ->
             bookmarkIds.add(it.bookmarkId)
         }
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
     }
 
     /**
@@ -481,16 +482,17 @@ class BookmarksService {
      * @return <code>true</code> if at least one folder has been deleted for the given userId
      */
     boolean deleteAllUserFolders(String userId) {
-        boolean retval = false
         log.info "deleteAllUserFolders()"
         List<Folder> allUserFolders = findAllFolders(userId)
 
+        List<String> folderIds = []
+
         allUserFolders.each { it ->
-            deleteFolder(it.folderId)
-            retval = true
+            folderIds.add(it.folderId)
         }
 
-        return retval
+        return deleteDocumentsByTypeAndIds(userId, folderIds, "folder")
+
     }
 
     List<Bookmark> findBookmarkedItemsInFolder(String userId, List<String> itemIdList, String folderId) {
@@ -668,5 +670,6 @@ class BookmarksService {
             refresh()
         }
     }
+
 
 }
