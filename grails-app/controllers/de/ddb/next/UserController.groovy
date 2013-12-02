@@ -55,6 +55,7 @@ class UserController {
     def searchService
     def newsletterService
     def savedSearchesService
+    def savedSearchService
     def bookmarksService
 
     def index() {
@@ -573,6 +574,15 @@ class UserController {
             }
             try {
                 aasService.deletePerson(user.id)
+
+                //remove all saved searches
+                log.info "delete SavedSearches"
+                savedSearchService.deleteSavedSearchesByUserId(user.id)
+
+                //remove all bookmark related content
+                log.info "delete bookmark content"
+                bookmarksService.deleteAllUserContent(user.id)
+
             } catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }

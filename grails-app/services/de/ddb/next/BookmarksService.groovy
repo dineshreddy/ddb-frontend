@@ -19,7 +19,6 @@ package de.ddb.next
 import grails.converters.JSON
 import groovy.json.*
 import net.sf.json.JSONNull
-
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
@@ -74,6 +73,28 @@ class BookmarksService {
     }
 
 
+    int getFolderCount() {
+        log.info "getFolderCount()"
+        return getDocumentCountByType("folder")
+    }
+
+    int getBookmarkCount() {
+        log.info "getBookmarkCount()"
+        return getDocumentCountByType("bookmark")
+    }
+
+    private int getDocumentCountByType(String type) {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/" + type + "/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
 
     List<Folder> findAllPublicFolders(String userId) {
         log.info "findAllPublicFolders()"
@@ -305,19 +326,20 @@ class BookmarksService {
     }
 
     /**
-     * Delete all bookmarks of cultural items in the {bookmarkIdList} belong to the user.
+     * Delete all entries of a given indexType for a userId.
      *
-     * @param userId         the ID who bookmarked the cultural items.
-     * @param bookmarkIdList a list of bookmark IDs. NOTE: These are _not_ a list of cultural item IDs.
+     * @param userId    the ID who belong these items.
+     * @param idList    a list of ids
+     * @param indexType the index type of the items to delete
      */
-    boolean deleteBookmarksByBookmarkIds(String userId, List<String> bookmarkIdList) {
-        log.info "deleteBookmarksByBookmarkIds()"
+    private boolean deleteDocumentsByTypeAndIds(String userId, List<String> idList, String indexType) {
+        log.info "deleteIndexTypeByIds()"
 
         def postBody = ''
-        bookmarkIdList.each { id ->
-            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "bookmark", "_id" : "' + id + '" } }\n'
+        idList.each { id ->
+            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -423,9 +445,25 @@ class BookmarksService {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
     }
 
+    /**
+     * Removed the bookmarks and folder for a given userId
+     * 
+     * @param userId the id of the user
+     */
+    void deleteAllUserContent(String userId) {
+        deleteAllUserBookmarks(userId)
+        deleteAllUserFolders(userId)
+    }
+
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if the user bookmarks has been deleted
+     */
     boolean deleteAllUserBookmarks(String userId) {
         log.info "deleteAllUserBookmarks()"
         def bookmarkIds = []
@@ -433,7 +471,28 @@ class BookmarksService {
         allBookmarksOfUser.each { it ->
             bookmarkIds.add(it.bookmarkId)
         }
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
+    }
+
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * 
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if at least one folder has been deleted for the given userId
+     */
+    boolean deleteAllUserFolders(String userId) {
+        log.info "deleteAllUserFolders()"
+        List<Folder> allUserFolders = findAllFolders(userId)
+
+        List<String> folderIds = []
+
+        allUserFolders.each { it ->
+            folderIds.add(it.folderId)
+        }
+
+        return deleteDocumentsByTypeAndIds(userId, folderIds, "folder")
+
     }
 
     List<Bookmark> findBookmarkedItemsInFolder(String userId, List<String> itemIdList, String folderId) {
@@ -611,5 +670,6 @@ class BookmarksService {
             refresh()
         }
     }
+
 
 }
