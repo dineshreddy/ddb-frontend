@@ -88,10 +88,10 @@ $(document)
           if (jsPageName == "item") {
             if (navigator.appName.indexOf("Internet Explorer") == -1) {
               if ($(window).width() > 530) {
-                mediaQuery = true
+                mediaQuery = true;
               }
               else {
-                mediaQuery = false
+                mediaQuery = false;
               }
             }
             $(function() {
@@ -127,8 +127,9 @@ $(document)
                     pos = a + "-" + b;
                   }
                 }
-                else
+                else {
                   pos = "1";
+                }
               }
               else {
                 // window width is less than 530px
@@ -141,21 +142,21 @@ $(document)
                   }
                   pos = a + "-" + b;
                 }
-                else
+                else {
                   pos = "1";
+                }
               }
-              $("p.gallery-pagination").text(pos + "/" + tot)
+              $("p.gallery-pagination").text(pos + "/" + tot);
             }
             ;
             function currentTab(el) {
-              $("p.tab").removeClass("current-tab")
+              $("p.tab").removeClass("current-tab");
               $(el).addClass("current-tab");
             }
             ;
             function updatePreview(gallerydiv) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
               var previewUri = $(a).attr("href");
-              var previewTitle = $(a).attr("title");
               var previewHref = $(a).attr("data-content");
               var type = $(a).attr("data-type");
               var title = $(a).find("span").text();
@@ -181,10 +182,12 @@ $(document)
 
               hideErrors();
               if (type == "image") {
-                if ($("#jwplayer-container"))
+                if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
-                if ($("#jwplayer-container_wrapper"))
+                }
+                if ($("#jwplayer-container_wrapper")) {
                   $("#jwplayer-container_wrapper").remove();
+                }
                 $(".previews").parent().addClass("off");
                 $(".previews").each(function() {
                   if ($(this).attr("href") == previewHref) {
@@ -218,8 +221,9 @@ $(document)
               return text;
             }
             function jwPlayerSetup(content, poster) {
-              if ($("#binary-viewer").length === 0)
+              if ($("#binary-viewer").length === 0) {
                 return;
+              }
               $(".previews").parent().addClass("off");
               $("#binary-viewer").append('<div id="jwplayer-container"></div>');
               var w = 445;
@@ -236,14 +240,16 @@ $(document)
               initializeJwPlayer("jwplayer-container", content, poster, w, h, function(event) {
                 if ($.browser.msie && this.getRenderingMode() === "html5") {
                   $("#binary-viewer").find("[id*='jwplayer']").each(function() {
-                    $(this).attr("unselectable", "on")
-                  })
+                    $(this).attr("unselectable", "on");
+                  });
                 }
               }, function(event) {
-                if ($("#jwplayer-container"))
+                if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
-                if ($("#jwplayer-container_wrapper"))
+                }
+                if ($("#jwplayer-container_wrapper")) {
                   $("#jwplayer-container_wrapper").remove();
+                }
                 if ($("#jwplayer-container").attr("type") == "application/x-shockwave-flash") {
                   $("binary-viewer-flash-upgrade").removeClass("off");
                 }
@@ -333,8 +339,9 @@ $(document)
             $("p.images").click(
                 function() {
                   var tab = $("div.images");
-                  if (tab.find("li").size() === 0)
+                  if (tab.find("li").size() === 0) {
                     return false;
+                  }
                   currentTab(this);
                   $("div.scroller").hide();
                   tab.show();
@@ -346,8 +353,9 @@ $(document)
             $("p.videos").click(
                 function() {
                   var tab = $("div.videos");
-                  if (tab.find("li").size() === 0)
+                  if (tab.find("li").size() === 0) {
                     return false;
+                  }
                   currentTab(this);
                   $("div.scroller").hide();
                   tab.show();
@@ -359,8 +367,9 @@ $(document)
             $("p.audios").click(
                 function() {
                   var tab = $("div.audios");
-                  if (tab.find("li").size() === 0)
+                  if (tab.find("li").size() === 0) {
                     return false;
+                  }
                   currentTab(this);
                   $("div.scroller").hide();
                   tab.show();
@@ -407,16 +416,17 @@ $(document)
             $("a.group").click(function(e) {
               e.preventDefault();
               var previewUri = $(this).attr("href");
-              var previewTitle = $(this).attr("title");
               var previewHref = $(this).attr("data-content");
               var type = $(this).attr("data-type");
               var title = $(this).find("span").text();
               hideErrors();
               if (type == "image") {
-                if ($("#jwplayer-container"))
+                if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
-                if ($("#jwplayer-container_wrapper"))
+                }
+                if ($("#jwplayer-container_wrapper")) {
                   $("#jwplayer-container_wrapper").remove();
+                }
                 $(".previews").parent().addClass("off");
                 $(".previews").each(function() {
                   if ($(this).attr("href") == previewHref) {

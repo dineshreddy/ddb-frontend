@@ -84,11 +84,11 @@ $(function() {
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
-        var folderId = $('#folder-list').attr('data-folder-selected')
+        var folderId = $('#folder-list').attr('data-folder-selected');
         var body = {
           ids : selected,
           folderId : folderId
-        }
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -122,7 +122,7 @@ $(function() {
         var body = {
           title : $('#folder-create-name').val(),
           description : $('#folder-create-description').val()
-        }
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -141,7 +141,7 @@ $(function() {
 
     /** Delete folder */
     $(".deletefolders").click(function(event) {
-      event.preventDefault()
+      event.preventDefault();
       $('#folderDeleteConfirmDialog').modal('show');
 
       var folderId = $(this).attr('data-folder-id');
@@ -150,7 +150,7 @@ $(function() {
         var body = {
           folderId : folderId,
           deleteItems : $('#folder-delete-check').is(':checked')
-        }
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -183,12 +183,12 @@ $(function() {
             selected.push($(this).attr('data-bookmark-id'));
           });
 
-          var selectedFolders = $('.favorites-copy-selection').val()
+          var selectedFolders = $('.favorites-copy-selection').val();
 
           var body = {
             ids : selected,
             folders : selectedFolders
-          }
+          };
           jQuery.ajax({
             type : 'POST',
             contentType : "application/json; charset=utf-8",
@@ -264,7 +264,7 @@ $(function() {
                   description : $('#folder-edit-description').val(),
                   isPublic : isPublic,
                   name : $('#folder-edit-publish-name').find(":selected").val()
-                }
+                };
                 jQuery.ajax({
                   type : 'POST',
                   contentType : "application/json; charset=utf-8",
@@ -291,7 +291,7 @@ $(function() {
       var folderId = $(this).attr('data-folder-id');
       var body = {
         id : folderId
-      }
+      };
 
       jQuery.ajax({
         type : 'POST',
@@ -312,7 +312,6 @@ $(function() {
 
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-" + bookmarksId);
-      var dynamicTextField = $("#comment-text-dyn-" + bookmarksId);
       var inputField = $("#comment-input-" + bookmarksId);
       var buttonField = $("#comment-button-" + bookmarksId);
 
@@ -370,7 +369,7 @@ $(function() {
       var body = {
         id : bookmarksId,
         text : $(inputField).val()
-      }
+      };
       jQuery.ajax({
         type : 'POST',
         contentType : "application/json; charset=utf-8",
@@ -434,7 +433,7 @@ function updateNavigationUrl() {
   $.urlParam = function(name) {
     var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
-  }
+  };
   var offset = getParam('offset');
   if ((offset == null) || (offset < 1)) {
     $(".page-nav .prev-page").addClass("off");
@@ -458,10 +457,12 @@ function getParam(name) {
   var regex = new RegExp(regexS);
   var tmpURL = window.location.href;
   var results = regex.exec(tmpURL);
-  if (results == null)
+  if (results == null) {
     return "";
-  else
+  }
+  else {
     return results[1];
+  }
 }
 
 function getParamWithDefault(name, defaultValue) {

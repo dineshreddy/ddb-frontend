@@ -120,8 +120,6 @@ $(document)
                       if (this.titleToLike != null) {
                         pageTitle = encodeURIComponent(this.titleToLike);
                       }
-                      var serverUrl = encodeURIComponent(window.location.protocol + "//"
-                          + window.location.hostname);
                       var languageISO2 = $(".socialmedia").attr("data-lang-iso2");
                       var languageFull = $(".socialmedia").attr("data-lang-full");
 

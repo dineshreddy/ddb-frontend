@@ -77,7 +77,6 @@
       var idList = _.pluck(list, 'id');
 
       return $('li.institution-listitem').filter(function() {
-        var institutionId = $(this).data('institution-id');
         return _.contains(idList, $(this).data('institution-id'));
       });
     },
@@ -327,7 +326,7 @@
         return memory;
       }, []);
 
-      return reduced
+      return reduced;
     },
 
     showAll : function() {

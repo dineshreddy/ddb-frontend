@@ -102,7 +102,7 @@ function getLocalizedFacetField(facetField) {
 // Hovercard Information Item Manager
 HovercardInfoItem = function(element) {
   this.init(element);
-}
+};
 
 $.extend(HovercardInfoItem.prototype, {
 
@@ -137,8 +137,9 @@ $.extend(HovercardInfoItem.prototype, {
       setTimeout(function() {
         var currentD = new Date();
         if (!currObjInstance.lock
-            && currObjInstance.hoverTime + currObjInstance.hoverTimeout - 100 < currentD.getTime())
+            && currObjInstance.hoverTime + currObjInstance.hoverTimeout - 100 < currentD.getTime()) {
           currObjInstance.close();
+        }
       }, currObjInstance.hoverTimeout);
     });
   },
@@ -164,7 +165,7 @@ $.extend(HovercardInfoItem.prototype, {
       async : true,
       url : jsContextPath + '/informationitem/' + this.iid,
       complete : function(data) {
-        var content = currObjInstance.hovercard.find('ul.unstyled')
+        var content = currObjInstance.hovercard.find('ul.unstyled');
         content.empty();
         var JSONresponse = jQuery.parseJSON(data.responseText);
         $.each(JSONresponse, function(key, value) {
@@ -292,7 +293,7 @@ function searchResultsInitializer() {
   function updateLanguageSwitch(params) {
     params = params.replace(/\&?lang=[^\&]*/g, '');
     if (params.length > 0) {
-      params += '&'
+      params += '&';
     }
     if (params.indexOf('&') === 0) {
       params = params.substring(1);
@@ -345,10 +346,12 @@ function searchResultsInitializer() {
     var ca = document.cookie.split(';');
     for ( var i = 0; i < ca.length; i++) {
       var c = ca[i];
-      while (c.charAt(0) == ' ')
+      while (c.charAt(0) == ' ') {
         c = c.substring(1, c.length);
-      if (c.indexOf(nameEQ) === 0)
+      }
+      if (c.indexOf(nameEQ) === 0) {
         return c.substring(nameEQ.length, c.length);
+      }
     }
     return null;
   }
@@ -368,23 +371,23 @@ function searchResultsInitializer() {
           searchParameters = searchParameters.replace(/\\"/g, '"');
           var json = $.parseJSON(searchParameters);
           if (json["rows"]) {
-            $(this).append('<input type="hidden" name="rows" value="' + json["rows"] + '"/>')
+            $(this).append('<input type="hidden" name="rows" value="' + json["rows"] + '"/>');
           }
           if (json["clustered"]) {
             $(this).append(
-                '<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>')
+                '<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>');
           }
           if (json["isThumbnailFiltered"]) {
             $(this).append(
                 '<input type="hidden" name="isThumbnailFiltered" value="'
-                    + json["isThumbnailFiltered"] + '"/>')
+                    + json["isThumbnailFiltered"] + '"/>');
           }
           if (json["viewType"]) {
             $(this).append(
-                '<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>')
+                '<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>');
           }
           if (json["sort"]) {
-            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>')
+            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>');
           }
         }
       });
@@ -574,10 +577,12 @@ function searchResultsInitializer() {
       });
   $('#keep-filters').click(function() {
     var valueCheck = $(this);
-    if (valueCheck.is(':checked'))
+    if (valueCheck.is(':checked')) {
       var paramsArray = new Array(new Array('keepFilters', 'true'));
-    else
+    }
+    else {
       var paramsArray = new Array(new Array('keepFilters', 'false'));
+    }
     addParamToCurrentUrl(paramsArray);
     setSearchCookieParameter(paramsArray);
   });
@@ -728,7 +733,7 @@ function searchResultsInitializer() {
    */
   FacetsManager = function() {
     this.init();
-  }
+  };
 
   $
       .extend(
@@ -823,14 +828,14 @@ function searchResultsInitializer() {
             },
 
             fetchFacetValues : function(flyoutWidget, query) {
-              if (flyoutWidget != null)
+              if (flyoutWidget != null) {
                 this.connectedflyoutWidget = flyoutWidget;
+              }
               var oldParams = this.getUrlVars();
               var currObjInstance = this;
               var fctValues = '';
               var isThumbnailFIltered = '';
               var queryParam = '';
-              var resp = new Array();
               if (oldParams['facetValues%5B%5D']) {
                 $.each(oldParams['facetValues%5B%5D'], function(key, value) {
                   fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues
@@ -1041,8 +1046,9 @@ function searchResultsInitializer() {
               }
               element.remove();
 
-              if ($('.facets-list').find('li[data-fctvalue]').length === 0)
+              if ($('.facets-list').find('li[data-fctvalue]').length === 0) {
                 $('.clear-filters').addClass('off');
+              }
             },
 
             selectRoleFacetValue : function(facetField, facetValue) {
@@ -1231,7 +1237,6 @@ function searchResultsInitializer() {
 
             getUrlVars : function() {
               var vars = {}, hash;
-              var windowLocation = window.location.href;
               var hashes = (historySupport) ? window.location.href.slice(
                   window.location.href.indexOf('?') + 1).split('&') : globalUrl.split('&');
               for ( var i = 0; i < hashes.length; i++) {
@@ -1261,7 +1266,7 @@ function searchResultsInitializer() {
    */
   FlyoutFacetsWidget = function() {
     this.init();
-  }
+  };
 
   $
       .extend(
@@ -1304,8 +1309,9 @@ function searchResultsInitializer() {
                   || element.attr('class') == 'add-more-filters') {
                 if ((element.attr('data-fctname') !== this.fctManager.currentFacetField || (element
                     .attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))) {
-                  if (this.opened)
+                  if (this.opened) {
                     this.close();
+                  }
                   this.mainElement = element.parents('.facets-item').find('.h3');
                   this.parentMainElement = this.mainElement.parent();
                   this.fctManager.currentFacetField = this.mainElement.attr('data-fctname');
@@ -1318,8 +1324,9 @@ function searchResultsInitializer() {
                   this.opened = true;
                   this.parentMainElement.find('.input-search-fct').focus();
                 }
-                else if (this.opened)
+                else if (this.opened) {
                   this.close();
+                }
               }
               else if (element.attr('class') == 'h3' && this.opened) {
                 this.close();
@@ -1588,7 +1595,7 @@ function searchResultsInitializer() {
                       roleFacetValueCheckbox.appendTo(roleFacetValueLi);
                       roleFacetValueLi.appendTo(roleFacetValueUl);
                     }
-                  })
+                  });
 
               if (newUl) {
                 roleFacetValueUl.insertAfter(facetValueSpan);
@@ -1614,7 +1621,7 @@ function searchResultsInitializer() {
 
               this.addMoreFilters.click(function(event) {
                 $(this).hide();
-              })
+              });
             },
 
             removeAddMoreFiltersButton : function(FacetFieldFilter, addMoreFiltersElement) {
@@ -1654,7 +1661,6 @@ function searchResultsInitializer() {
 
             close : function() {
               var currObjInstance = this;
-              var oldMainElement = this.mainElement;
               var oldParentMainElement = this.parentMainElement;
               oldParentMainElement.find('.input-search-fct-container').hide('100', function() {
                 if (oldParentMainElement.find('.flyout-left-container ul li').length > 0) {
@@ -1716,7 +1722,7 @@ function searchResultsInitializer() {
       else {
         return results[1] || "";
       }
-    }
+    };
     $.truncateTitle = function(string) {
       var result = "";
       var words = string.split(/\s+/);
@@ -1727,7 +1733,7 @@ function searchResultsInitializer() {
         result += words[index];
       }
       return result;
-    }
+    };
     var queryString = decodeURIComponent($.urlParam("query").replace(/\+/g, '%20'));
     // take only the first 3 words as title
     $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));

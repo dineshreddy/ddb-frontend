@@ -54,8 +54,9 @@ $(function() {
             element.mouseleave(function(){
                 setTimeout(function(){
                     var currentD = new Date();
-                    if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime())
-                        currObjInstance.close();
+                    if(!currObjInstance.lock && currObjInstance.hoverTime+currObjInstance.hoverTimeout-100<currentD.getTime()) {
+                      currObjInstance.close();
+                    }
                 },currObjInstance.hoverTimeout);
             });
         },

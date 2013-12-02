@@ -168,8 +168,6 @@ $(document).ready(
                 if ((nextVisbleItem > (currentLoadItems.length - 1))
                     && (currentLoadItems.length < allRowCount)) {
                   var query = $("#entity-title").html();
-                  var entityid = $("#entity-id").attr("data-entityid");
-
                   var History = window.History;
                   var urlParameters = "?query=" + query + "&offset=" + currentLoadItems.length
                       + "&rows=" + defaultRowCount;

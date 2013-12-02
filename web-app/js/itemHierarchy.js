@@ -491,7 +491,7 @@ var itemHierarchy = {
   },
 
   parseUrl : function(url) {
-    var result = []
+    var result = [];
     var lastSlash = url.lastIndexOf("/");
 
     result.dir = url.substring(0, lastSlash + 1);

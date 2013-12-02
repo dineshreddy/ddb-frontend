@@ -38,5 +38,5 @@ $(document).ready(function() {
     languageSelector.fadeOut('fast', function(){
       languageSelector.removeAttr('style');
     });
-  })
+  });
 });
