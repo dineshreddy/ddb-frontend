@@ -19,17 +19,26 @@ limitations under the License.
       <ul id="previews-list">
         <g:set var="counter" value="${0}" />
         <g:each in="${binaryList}">
-          <g:if test="${it.full.uri == ''}">
-            <g:set var="content" value="${it.preview.uri}"/>
+          <g:if test="${it.full.uri == '' && it.preview.uri == ''}">
+            <g:set var="content" value="${it.thumbnail.uri}"/>
           </g:if>
+          <g:elseif test="${it.full.uri == ''}">
+            <g:set var="content" value="${it.preview.uri}"/>
+          </g:elseif>
           <g:else>
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
-          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:if test="${it.preview.uri == ''}">
+            <g:set var="viewerContent" value="${it.thumbnail.uri}"/>
+          </g:if>
+          <g:else>
+            <g:set var="viewerContent" value="${it.preview.uri}"/>
+          </g:else>
+          <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li>
               <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
-                <img src="${it.preview.uri}" alt="${(it.preview.title).encodeAsHTML()}" />
+                <img src="${viewerContent}" alt="${(it.preview.title).encodeAsHTML()}" />
               </a>
             </li>
           </g:if>
