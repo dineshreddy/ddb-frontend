@@ -89,8 +89,7 @@ $(document)
             if (navigator.appName.indexOf("Internet Explorer") == -1) {
               if ($(window).width() > 530) {
                 mediaQuery = true;
-              }
-              else {
+              } else {
                 mediaQuery = false;
               }
             }
@@ -116,8 +115,7 @@ $(document)
                 if (tot > 1) {
                   if (tot === 2) {
                     pos = "1-2";
-                  }
-                  else {
+                  } else {
                     a = 1 + pag * 3;
                     b = 3 + pag * 3;
                     while (b > tot) {
@@ -126,12 +124,10 @@ $(document)
                     }
                     pos = a + "-" + b;
                   }
-                }
-                else {
+                } else {
                   pos = "1";
                 }
-              }
-              else {
+              } else {
                 // window width is less than 530px
                 if (tot > 1) {
                   a = 1 + pag * 2;
@@ -141,8 +137,7 @@ $(document)
                     b--;
                   }
                   pos = a + "-" + b;
-                }
-                else {
+                } else {
                   pos = "1";
                 }
               }
@@ -193,13 +188,11 @@ $(document)
                   if ($(this).attr("href") == previewHref) {
                     $(this).parent().removeClass("off");
                     return false;
-                  }
-                  else {
+                  } else {
                     $(this).parent().appendTo($("#previews-list"));
                   }
                 });
-              }
-              else {
+              } else {
                 jwPlayerSetup(previewHref, previewUri);
               }
               $("div.binary-title span").text(title_text);
@@ -252,8 +245,7 @@ $(document)
                 }
                 if ($("#jwplayer-container").attr("type") == "application/x-shockwave-flash") {
                   $("binary-viewer-flash-upgrade").removeClass("off");
-                }
-                else {
+                } else {
                   $("div.binary-viewer-error").removeClass("off");
                 }
               });
@@ -289,8 +281,7 @@ $(document)
               if (el.find('li').size() < 4) {
                 $(".btn-next").addClass("disabled");
                 $(".btn-next").attr("disabled", true);
-              }
-              else {
+              } else {
                 $(".btn-next").attr("disabled", false);
               }
             }
@@ -432,13 +423,11 @@ $(document)
                   if ($(this).attr("href") == previewHref) {
                     $(this).parent().removeClass("off");
                     return false;
-                  }
-                  else {
+                  } else {
                     $(this).parent().appendTo($("#previews-list"));
                   }
                 });
-              }
-              else {
+              } else {
                 jwPlayerSetup(previewHref, previewUri);
               }
               $("div.binary-title span").text(title);

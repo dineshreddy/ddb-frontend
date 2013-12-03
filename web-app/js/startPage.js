@@ -15,27 +15,27 @@
  */
 
 $(document).ready(function() {
-    $(function() {
-        $('#form-search input[type="search"]').focus();
-        $('div.carousel').show();
-        if ($(".article .caption").length > 0) {
-            $(".article .caption").dotdotdot({});
+  $(function() {
+    $('#form-search input[type="search"]').focus();
+    $('div.carousel').show();
+    if ($(".article .caption").length > 0) {
+      $(".article .caption").dotdotdot({});
+    }
+    var carouselItems = $("#articles");
+    if (carouselItems.length) {
+      carouselItems.carouFredSel({
+        scroll : 1,
+        infinite : false,
+        auto : false,
+        prev : {
+          button : "#articles-prev",
+          key : "left"
+        },
+        next : {
+          button : "#articles-next",
+          key : "right"
         }
-        var carouselItems = $("#articles");
-        if (carouselItems.length) {
-            carouselItems.carouFredSel({
-                scroll: 1,
-                infinite: false,
-                auto    : false,
-                prev    : {
-                    button : "#articles-prev",
-                    key    : "left"
-                },
-                next    : {
-                    button  : "#articles-next",
-                    key     : "right"
-                }
-            });
-        }
-    });
+      });
+    }
+  });
 });

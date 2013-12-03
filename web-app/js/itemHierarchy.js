@@ -23,17 +23,17 @@ $(document).ready(function() {
 var itemHierarchy = {
   /*
    * Add a leaf node to the current node.
-   *
+   * 
    * @param {Element} currentNode current node (li element)
-   *
+   * 
    * @param {JSON} value data object
-   *
+   * 
    * @param {boolean} isCurrent true if the value points to the currently
    * displayed object
-   *
+   * 
    * @param {boolean} isLast true if the current node is the last node in the
    * list
-   *
+   * 
    * @param {boolean} moreHidden true if there are more children which are not
    * displayed
    */
@@ -44,8 +44,7 @@ var itemHierarchy = {
       if (!moreHidden) {
         currentNode.addClass("last");
       }
-    }
-    else {
+    } else {
       currentNode.removeClass("last");
     }
 
@@ -99,29 +98,29 @@ var itemHierarchy = {
 
   /*
    * Add a parent (branch) node to the current node.
-   *
+   * 
    * @param {String} url URL to the item service
-   *
+   * 
    * @param {Element} currentNode current node (li element)
-   *
+   * 
    * @param {String} parentId id of the parent node in the hierarchy
-   *
+   * 
    * @param {JSON} value data object
-   *
+   * 
    * @param {boolean} isCurrent true if the value points to the currently
    * displayed object
-   *
+   * 
    * @param {boolean} isCurrentPath true if the value is a parent of the
    * currently displayed object
-   *
+   * 
    * @param {boolean} isLast true if the current node is the last node in the
    * list
-   *
+   * 
    * @param {boolean} countSiblings true if the number of siblings must be
    * counted
-   *
+   * 
    * @param {boolean} drawBorder draw a border around the plus sign if true
-   *
+   * 
    * @param {boolean} isExpanded show a minus sign if true
    */
   addParentNode : function(url, currentNode, parentId, value, isCurrent, isCurrentPath, isLast,
@@ -129,8 +128,7 @@ var itemHierarchy = {
     currentNode.empty();
     if (isLast) {
       currentNode.addClass("last");
-    }
-    else {
+    } else {
       currentNode.removeClass("last");
     }
 
@@ -149,8 +147,7 @@ var itemHierarchy = {
 
     if (isRoot) {
       i.addClass("root");
-    }
-    else {
+    } else {
       i.addClass("collapsed");
       if (value.type != null) {
         currentNode.attr("data-type", value.type);
@@ -182,8 +179,7 @@ var itemHierarchy = {
 
       if (hasName) {
         parentLi = li.parent().parent().parent().parent();
-      }
-      else {
+      } else {
         parentLi = li.parent().parent();
       }
 
@@ -210,8 +206,7 @@ var itemHierarchy = {
         itemHierarchy.setNodeIcon(parentLi.children("span").children("i"), true);
 
         itemHierarchy.showChildren(url, parentLi, parentId, id, true);
-      }
-      else {
+      } else {
         // expand node
         if (!isRoot) {
           // remove siblings
@@ -233,8 +228,7 @@ var itemHierarchy = {
           + (isCurrentPath ? " current-path" : ""));
       label.append(itemHierarchy.truncateTitle(value.label, 350));
       currentNode.append(label);
-    }
-    else {
+    } else {
       var leafIndicator = $(document.createElement("div"));
       leafIndicator.addClass("leaf-indicator" + (isCurrentPath ? " current-path" : ""));
 
@@ -254,11 +248,11 @@ var itemHierarchy = {
 
   /*
    * Add the number of siblings to the current node's parent.
-   *
+   * 
    * @param {String} url URL to the item service
-   *
+   * 
    * @param {Element} currentNode current node (ul element)
-   *
+   * 
    * @param {String} parentId id of the parent node in the hierarchy
    */
   addSiblingCount : function(url, currentNode, parentId) {
@@ -272,13 +266,11 @@ var itemHierarchy = {
         if (children.length > 1) {
           if (children.length > 500) {
             siblingCount.append(messages.ddbnext.Hierarchy_SiblingCountRestricted_Format(500));
-          }
-          else {
+          } else {
             siblingCount.append("+" + (children.length - 1));
           }
           li.addClass("more-hidden");
-        }
-        else {
+        } else {
           li.addClass("last");
           itemHierarchy.setNodeIcon(currentNode.parent().children("span").children("i"), true);
         }
@@ -290,11 +282,11 @@ var itemHierarchy = {
 
   /*
    * Add the hierarchy type name to the current node.
-   *
+   * 
    * @param {Element} currentNode current node (ul element)
-   *
+   * 
    * @param {String} type hierarchy type name
-   *
+   * 
    * @return {Element} replacement for the "ul" child
    */
   addTypeName : function(currentNode, type) {
@@ -317,7 +309,7 @@ var itemHierarchy = {
 
   /*
    * Add a wait image to the current node.
-   *
+   * 
    * @param {Element} currentNode current node (li element)
    */
   addWaitSymbol : function(currentNode) {
@@ -329,7 +321,7 @@ var itemHierarchy = {
 
   /*
    * Create the item hierarchy (main function).
-   *
+   * 
    * @param {String} url URL to the item service
    */
   createHierarchy : function(url) {
@@ -407,8 +399,7 @@ var itemHierarchy = {
         // show children / siblings
         if (value.leaf) {
           parentId = parents[parents.length - 2].id;
-        }
-        else {
+        } else {
           parentId = parents[parents.length - 1].id;
         }
 
@@ -444,8 +435,7 @@ var itemHierarchy = {
             if (value.leaf) {
               itemHierarchy.addLeafNode(leafNode, value, isCurrent, index === length - 1,
                   length === 501);
-            }
-            else {
+            } else {
               leafNode.addClass("node");
               leafNode.attr("data-bind", JSON.stringify(parents));
               itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false,
@@ -501,9 +491,9 @@ var itemHierarchy = {
 
   /*
    * Set the node icon to a plus or a minus symbol
-   *
+   * 
    * @param {Element} currentNode current node of type "i"
-   *
+   * 
    * @param {boolean} setExpanded draw a minus symbol if true, otherwise draw a
    * plus symbol
    */
@@ -511,8 +501,7 @@ var itemHierarchy = {
     if (setExpanded) {
       currentNode.removeClass("collapsed");
       currentNode.addClass("expanded");
-    }
-    else {
+    } else {
       currentNode.removeClass("expanded");
       currentNode.addClass("collapsed");
     }
@@ -520,15 +509,15 @@ var itemHierarchy = {
 
   /*
    * Show all children of the current node.
-   *
+   * 
    * @param {String} url URL to the item service
-   *
+   * 
    * @param {Element} currentNode current node (li element)
-   *
+   * 
    * @param {String} currentId id of the current node in the hierarchy
-   *
+   * 
    * @param {String} parentId id of the parent node in the hierarchy
-   *
+   * 
    * @param {boolean} drawBorder draw a border around the plus sign if true
    */
   showChildren : function(url, currentNode, currentId, parentId, drawBorder) {
@@ -543,8 +532,7 @@ var itemHierarchy = {
     if (isLeaf) {
       itemHierarchy.setNodeIcon(currentNode.parent().parent().children("span.branch-type")
           .children("i"), false);
-    }
-    else {
+    } else {
       currentNode.removeClass("last-exited");
     }
 
@@ -617,8 +605,7 @@ var itemHierarchy = {
           if (isLast && length === 501) {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
-        }
-        else {
+        } else {
           itemHierarchy.addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast,
               false, drawBorder, false);
         }
@@ -628,9 +615,9 @@ var itemHierarchy = {
 
   /*
    * Truncate a label to a given number of characters.
-   *
+   * 
    * @param {String} title the title to be truncated
-   *
+   * 
    * @param {int} length maximum length until the title will be truncated
    */
   truncateTitle : function(title, length) {

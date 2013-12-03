@@ -109,8 +109,7 @@ $(document).ready(
 
           if (results == null) {
             return "";
-          }
-          else {
+          } else {
             return decodeURIComponent(results[1].replace(/\+/g, " "));
           }
         }

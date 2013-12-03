@@ -19,8 +19,8 @@ $(document).ready(
       var popupAnchor = $('.page-link-popup-anchor');
 
       var content = $(document.createElement('input'));
-      content.attr('value', window.location.protocol + "//"
-          + window.location.host + popupAnchor.attr('href'));
+      content.attr('value', window.location.protocol + "//" + window.location.host
+          + popupAnchor.attr('href'));
       content.attr('type', 'text');
       var title = $(document.createElement('a'));
       title.addClass('page-link');
@@ -101,8 +101,7 @@ $.extend(PopupManager.prototype, {
       if (popupDialogWrapper.has(event.target).length === 0) {
         popupDialogWrapper.fadeOut('fast', function() {
         });
-      }
-      else {
+      } else {
         popupDialogWrapper.find('input')[0].select();
       }
     });

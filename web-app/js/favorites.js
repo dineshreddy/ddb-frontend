@@ -52,12 +52,10 @@ $(function() {
             if (/^[0-9]+$/.test(this.value)) {
               if (parseInt(this.value) <= 0) {
                 this.value = 1;
-              }
-              else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
                 this.value = $('.result-pages-count').text();
               }
-            }
-            else {
+            } else {
               this.value = 1;
             }
             $('.page-input').attr('value', this.value);
@@ -236,16 +234,14 @@ $(function() {
               $('#folder-edit-description').val(oldFolderDescription);
               if (isPublic) {
                 $('#folder-edit-privacy-public').attr('checked', 'checked');
-              }
-              else {
+              } else {
                 $('#folder-edit-privacy-private').attr('checked', 'checked');
               }
               $('#folder-edit-publish-name option[value="' + publishingName + '"]').attr(
                   'selected', 'selected');
               if (isBlocked) {
                 $('#folder-edit-privacy-area').addClass('off');
-              }
-              else {
+              } else {
                 $('#folder-edit-privacy-area').removeClass('off');
               }
 
@@ -349,8 +345,7 @@ $(function() {
       var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
       if (originalComment === defaultMessage) {
         $(inputField).val("");
-      }
-      else {
+      } else {
         $(inputField).val(originalComment.trim());
       }
 
@@ -382,8 +377,7 @@ $(function() {
           var newInput = $(inputField).val();
           if (newInput.trim()) {
             $(dynamicTextField).text(newInput);
-          }
-          else {
+          } else {
             $(dynamicTextField).text(messages.ddbnext.Favorites_Comment_Label);
           }
 
@@ -423,8 +417,7 @@ function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
   var tmp = jQuery.param(queryParameters, true);
   if (path == null) {
     return window.location.pathname + '?' + tmp;
-  }
-  else {
+  } else {
     return path + '?' + tmp;
   }
 }
@@ -459,8 +452,7 @@ function getParam(name) {
   var results = regex.exec(tmpURL);
   if (results == null) {
     return "";
-  }
-  else {
+  } else {
     return results[1];
   }
 }

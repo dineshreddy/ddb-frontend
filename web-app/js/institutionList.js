@@ -113,8 +113,7 @@
          */
         if ($('.multiselect').is(':visible')) {
           var isChecked = $('.multiselect option:selected').filter(':selected').length;
-        }
-        else {
+        } else {
           var isChecked = $('.sector-facet input:checked').filter(':checked').length;
         }
 
@@ -122,8 +121,7 @@
         if (isChecked) {
           ddb.applyFilter();
         }
-      }
-      else {
+      } else {
         ddb.applyFilter();
       }
     },
@@ -148,8 +146,7 @@
         $allLi.addClass('active');
         $allHref.addClass('selected');
         // $allHref.css('color', '#a5003b');
-      }
-      else {
+      } else {
         var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
         var $li = $aHref.parent();
 
@@ -183,8 +180,7 @@
     getInstitutionAsList : function() {
       if (ddb.institutionList) {
         return ddb.institutionList;
-      }
-      else {
+      } else {
         ddb.institutionList = _.chain(ddb.institutionsByFirstChar).values().flatten().value();
       }
       return ddb.institutionList;
@@ -219,8 +215,7 @@
        */
       if ($('.multiselect').is(':visible')) {
         var allSelectedSectors = $('.multiselect option:selected');
-      }
-      else {
+      } else {
         var allSelectedSectors = $('.sector-facet input:checked');
       }
 
@@ -250,8 +245,7 @@
         var hasNoMember = ddb.findNoMember(visible);
         ddb.showResult(_.union(parentList, filteredBySector), filteredBySector);
         ddb.updateIndex(hasNoMember);
-      }
-      else if (sectors.length > 0 && firstLetter !== '') {
+      } else if (sectors.length > 0 && firstLetter !== '') {
         /*
          * when at least one sector selected _and_ one of the first
          * letter is selected, e.g., sector = ['Library', 'Media'],
@@ -294,15 +288,13 @@
         var filtered = ddb.filterBySectors(institutionList, sectors, parentList);
         var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
         ddb.updateIndex(hasNoMember);
-      }
-      else if (sectors.length === 0 && firstLetter !== '') {
+      } else if (sectors.length === 0 && firstLetter !== '') {
         /*
          * When no sector selected _and_ one of the first letter is
          * selected. e.g. sector = [], index = 'C'
          */
         ddb.showByFirstLetter(firstLetter);
-      }
-      else {
+      } else {
         // the last case: sectors.length === 0 && firstLetter === ''.
         // when no sector is selected _and_ no first letter filter.
         // e.g. sector = [], index = All
@@ -368,8 +360,7 @@
         var $visible = ddb.findElements(visibleInstitution);
         // $visible.css('display', '');
         $visible.removeClass('off');
-      }
-      else {
+      } else {
         // $msg.css('display', 'block');
         $msg.removeClass('off');
         $msg.addClass('visible');
@@ -462,8 +453,7 @@
           history.pushState({}, '', $this.attr('href'));
           // TODO for android 2.3.3 we have to pass the clicked first letter.
           ddb.applyFilter();
-        }
-        else {
+        } else {
           // TODO: test on IE8,9
           window.location.hash = this.hash;
           //window.location.reload(false);
@@ -487,11 +477,9 @@
           var textNode = $(document.createElement('span')).html(this.field_NoneSelected);
           textNode.append($(document.createElement('b')).addClass('caret'));
           return textNode;
-        }
-        else if (options.length > 4) {
+        } else if (options.length > 4) {
           return options.length + ' selected <b class="caret"></b>';
-        }
-        else {
+        } else {
           var selected = '';
           options.each(function() {
             selected += $(this).text() + ', ';
