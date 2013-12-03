@@ -1462,7 +1462,7 @@ select {
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href^="http://www.deutsche-digitale-bibliothek.de"]):not([href^="https://www.deutsche-digitale-bibliothek.de"]):not([href^="http://www-t1.deutsche-digitale-bibliothek.de"]):not([href^="http://www-t3.deutsche-digitale-bibliothek.de"]),
 .external-link-icon {
   padding-left: 20px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
+  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
 }
 
 /* Exception for links in the openstreetmap */
