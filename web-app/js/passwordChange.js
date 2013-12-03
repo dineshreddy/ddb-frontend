@@ -13,37 +13,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
+$(document).ready(function() {
 
   $("#password-change-form").validate({
 
-    rules:{
-      oldpassword:{
-        required:true
+    rules : {
+      oldpassword : {
+        required : true
       },
-      newpassword:{
-        required:true,
-        minlength: 8 //TODO change the minimum if different
+      newpassword : {
+        required : true,
+        minlength : 8
+      // TODO change the minimum if different
       },
-      confnewpassword:{
-        required:true,
-        equalTo: "#newpassword"
+      confnewpassword : {
+        required : true,
+        equalTo : "#newpassword"
       },
-      errorClass: "help-inline"
+      errorClass : "help-inline"
     },
-    messages: {
+    messages : {
 
-      oldpassword: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        minlength: $("#error-messages").children('li').eq(1).children('a').text()
+      oldpassword : {
+        required : $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength : $("#error-messages").children('li').eq(1).children('a').text()
       },
-      newpassword: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        minlength: $("#error-messages").children('li').eq(1).children('a').text()
+      newpassword : {
+        required : $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength : $("#error-messages").children('li').eq(1).children('a').text()
       },
-      confnewpassword: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        equalTo: $("#error-messages").children('li').eq(2).children('a').text()
+      confnewpassword : {
+        required : $("#error-messages").children('li').eq(0).children('a').text(),
+        equalTo : $("#error-messages").children('li').eq(2).children('a').text()
       }
 
     }

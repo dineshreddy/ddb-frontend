@@ -123,8 +123,8 @@ var itemHierarchy = {
    * 
    * @param {boolean} isExpanded show a minus sign if true
    */
-  addParentNode : function(url, currentNode, parentId, value, isCurrent, isCurrentPath, isLast, countSiblings,
-      drawBorder, isExpanded) {
+  addParentNode : function(url, currentNode, parentId, value, isCurrent, isCurrentPath, isLast,
+      countSiblings, drawBorder, isExpanded) {
     currentNode.empty();
     if (isLast) {
       currentNode.addClass("last");
@@ -172,7 +172,7 @@ var itemHierarchy = {
         return;
       }
 
-      var isRoot = currentNode.hasClass("root");
+      isRoot = currentNode.hasClass("root");
       var li = $(this).parent().parent();
       var hasName = li.parent().hasClass("has-name");
       var parentLi;
@@ -193,7 +193,7 @@ var itemHierarchy = {
           var parents = JSON.parse(dataBind);
 
           $.each(parents, function(index, value) {
-            if (value.id == parentId) {
+            if (value.id === parentId) {
               if (index > 0) {
                 id = parents[index - 1].id;
               }
@@ -224,7 +224,8 @@ var itemHierarchy = {
     if (value.aggregationEntity) {
       var label = $(document.createElement("span"));
 
-      label.addClass("label" + (isCurrent ? " current-node" : "") + (isCurrentPath ? " current-path" : ""));
+      label.addClass("label" + (isCurrent ? " current-node" : "")
+          + (isCurrentPath ? " current-path" : ""));
       label.append(itemHierarchy.truncateTitle(value.label, 350));
       currentNode.append(label);
     } else {
@@ -337,7 +338,7 @@ var itemHierarchy = {
           if (index < parents.length - 1) {
             var ul = $("<ul>");
             var hasName = value.type != null;
-            var isRoot = index == 0;
+            var isRoot = index === 0;
             var parentId = null;
 
             if (!isRoot) {
@@ -359,8 +360,9 @@ var itemHierarchy = {
             if (isRoot || !hasName) {
               currentNode.append(ul);
             }
-            itemHierarchy.addParentNode(url, li, parentId, value, false, true, index == parents.length - 2, true,
-                false, index == parents.length - 2 && parents[parents.length - 1].leaf);
+            itemHierarchy.addParentNode(url, li, parentId, value, false, true,
+                index === parents.length - 2, true, false, index === parents.length - 2
+                    && parents[parents.length - 1].leaf);
             currentNode = li;
           }
         });
@@ -370,7 +372,7 @@ var itemHierarchy = {
 
         if (!value.leaf) {
           var ul = $("<ul>");
-          var isRoot = parents.length == 1;
+          var isRoot = parents.length === 1;
           var hasName = !isRoot && value.type != null;
           var parentId = !isRoot ? parents[parents.length - 2].id : null;
 
@@ -389,7 +391,8 @@ var itemHierarchy = {
           if (!hasName) {
             currentNode.append(ul);
           }
-          itemHierarchy.addParentNode(url, li, parentId, value, true, true, false, true, false, true);
+          itemHierarchy.addParentNode(url, li, parentId, value, true, true, false, true, false,
+              true);
           currentNode = li;
         }
 
@@ -409,7 +412,7 @@ var itemHierarchy = {
 
           $.each(children, function(index, value) {
             var hasName = value.type != null;
-            var isCurrent = value.id == parents[parents.length - 1].id;
+            var isCurrent = value.id === parents[parents.length - 1].id;
             var leafNode = $("<li>");
             var showName = false;
 
@@ -430,18 +433,19 @@ var itemHierarchy = {
               ul.append(leafNode);
             }
             if (value.leaf) {
-              itemHierarchy.addLeafNode(leafNode, value, isCurrent, index == length - 1, length == 501);
+              itemHierarchy.addLeafNode(leafNode, value, isCurrent, index === length - 1,
+                  length === 501);
             } else {
               leafNode.addClass("node");
               leafNode.attr("data-bind", JSON.stringify(parents));
-              itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false, index == length - 1, false,
-                  false, false);
+              itemHierarchy.addParentNode(url, leafNode, parentId, value, false, false,
+                  index === length - 1, false, false, false);
             }
           });
           currentNode.append(ul);
 
           // add current node if it is not within the first 500 children
-          if (length == 501) {
+          if (length === 501) {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         });
@@ -477,7 +481,7 @@ var itemHierarchy = {
   },
 
   parseUrl : function(url) {
-    var result = []
+    var result = [];
     var lastSlash = url.lastIndexOf("/");
 
     result.dir = url.substring(0, lastSlash + 1);
@@ -526,7 +530,8 @@ var itemHierarchy = {
     var isLeaf = currentNode.hasClass("leaf");
 
     if (isLeaf) {
-      itemHierarchy.setNodeIcon(currentNode.parent().parent().children("span.branch-type").children("i"), false);
+      itemHierarchy.setNodeIcon(currentNode.parent().parent().children("span.branch-type")
+          .children("i"), false);
     } else {
       currentNode.removeClass("last-exited");
     }
@@ -550,7 +555,7 @@ var itemHierarchy = {
     if (dataBind != null) {
       parents = JSON.parse(dataBind);
       $.each(parents, function(index, value) {
-        if (value.id == currentId && index < parents.length - 1) {
+        if (value.id === currentId && index < parents.length - 1) {
           id = parents[index + 1].id;
           return;
         }
@@ -572,8 +577,8 @@ var itemHierarchy = {
       var type = null;
 
       $.each(children, function(index, value) {
-        var isCurrent = value.id == id;
-        var isLast = index == length - 1;
+        var isCurrent = value.id === id;
+        var isLast = index === length - 1;
         var li = $(document.createElement("li"));
 
         if (isCurrent) {
@@ -594,15 +599,15 @@ var itemHierarchy = {
 
         currentNode.append(li);
         if (value.leaf) {
-          itemHierarchy.addLeafNode(li, value, isCurrent, isLast, length == 501);
+          itemHierarchy.addLeafNode(li, value, isCurrent, isLast, length === 501);
 
           // add current node if it is not within the first 500 children
-          if (isLast && length == 501) {
+          if (isLast && length === 501) {
             itemHierarchy.addMoreHiddenNode(ul, currentNodeFound, parents[parents.length - 1]);
           }
         } else {
-          itemHierarchy
-              .addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast, false, drawBorder, false);
+          itemHierarchy.addParentNode(url, li, currentId, value, isCurrent, isCurrent, isLast,
+              false, drawBorder, false);
         }
       });
     });

@@ -13,30 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
+$(document).ready(function() {
 
   $("#user-profile-form").validate({
 
-    rules:{
-      username:{
-        required:true,
-        minlength:2 //TODO change the minimum if different
+    rules : {
+      username : {
+        required : true,
+        minlength : 2
+      // TODO change the minimum if different
       },
-      email:{
-        required:true,
-        email: true
+      email : {
+        required : true,
+        email : true
       },
-      errorClass: "help-inline"
+      errorClass : "help-inline"
     },
-    messages: {
+    messages : {
 
-      username: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        minlength: $("#error-messages").children('li').eq(1).children('a').text()
+      username : {
+        required : $("#error-messages").children('li').eq(0).children('a').text(),
+        minlength : $("#error-messages").children('li').eq(1).children('a').text()
       },
-      email: {
-        required: $("#error-messages").children('li').eq(0).children('a').text(),
-        email: $("#error-messages").children('li').eq(2).children('a').text()
+      email : {
+        required : $("#error-messages").children('li').eq(0).children('a').text(),
+        email : $("#error-messages").children('li').eq(2).children('a').text()
       }
 
     }
