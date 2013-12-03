@@ -1473,3 +1473,12 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 /* external links - end */
+
+/* Multiselect jquery plugin */
+
+.multiselect-selected-folder {
+  background-color: highlight;
+  color: highlighttext;
+}
+
+/* Multiselect jquery plugin - end */

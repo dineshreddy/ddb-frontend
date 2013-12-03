@@ -22,6 +22,9 @@ $(function() {
     socialMediaManager.integrateSocialMedia();
     
     
+    $("#favoritesCopyDialog select").MultiSelect({css_class_selected: "multiselect-selected-folder"});
+    
+    
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
