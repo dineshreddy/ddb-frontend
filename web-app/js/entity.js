@@ -13,187 +13,189 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
-  
-  if(jsPageName == "entity"){
-  
-    var defaultRowCount = 10;
-    
-    var allRowCount = 0;
+$(document).ready(
+    function() {
 
-    var offset = 0;
-    
-    $('.normdata_involved_checkbox').bind('click', function() {
-    	var container = $(".works_result");
-	    var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-        var normdata = false;
-        var facetname = 'affiliate_fct_involved';
-        
-    	if($(this).is(":checked")) {
-            normdata = true;
-        }
-    	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
-    });
+      if (jsPageName == "entity") {
 
-    
-    $('.normdata_subject_checkbox').bind('click', function() {
-	    var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-    	var container = $(".themes_result");
-        var normdata = false;
-        var facetname = 'affiliate_fct_subject';
-        
-    	if($(this).is(":checked")) {
+        var defaultRowCount = 10;
+
+        var allRowCount = 0;
+
+        var offset = 0;
+
+        $('.normdata_involved_checkbox').bind('click', function() {
+          var container = $(".works_result");
+          var query = $("#entity-title").html();
+          var entityid = $("#entity-id").attr("data-entityid");
+          var normdata = false;
+          var facetname = 'affiliate_fct_involved';
+
+          if ($(this).is(":checked")) {
             normdata = true;
-        }
-    	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
-    });
-    
-    
-    function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid, offset, rows){
-        var request = $.ajax({
-          type: 'GET',
-          dataType: 'json',
-          async: true,
-          url: jsContextPath+'/entity/ajax/rolesearchresults?query='+query+'&offset='+offset+'&rows='+rows+'&normdata='+normdata+'&facetname='+facetname+'&entityid='+entityid,
-          complete: function(data){
-        	var jsonResponse = $.parseJSON(data.responseText);
-        	
-        	renderRoleBasedSearchResults(itemContainer, jsonResponse);           
           }
+
+          getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
         });
-    }
-    
-    function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
-        itemContainer.empty();
-        itemContainer.html(jsonResponse.html);
-    }
-    
-    
-    function getNewSearchResults(query, offset, rows){
-    	var request = $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        url: jsContextPath+'/entity/ajax/searchresults?query='+query+'&offset='+offset+'&rows='+rows,
-        complete: function(data){          
-          var jsonResponse = $.parseJSON(data.responseText);
-          var items = $.parseHTML(jsonResponse.html);
-          
-          $.each(items, function(index, value) {        	          	  
-        	  if (value.tagName == 'DIV') {
-        		  $("#items").triggerHandler("insertItem", [value, "end", true]);
-        	  }
+
+        $('.normdata_subject_checkbox').bind('click', function() {
+          var query = $("#entity-title").html();
+          var entityid = $("#entity-id").attr("data-entityid");
+          var container = $(".themes_result");
+          var normdata = false;
+          var facetname = 'affiliate_fct_subject';
+
+          if ($(this).is(":checked")) {
+            normdata = true;
+          }
+
+          getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+        });
+
+        function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid,
+            offset, rows) {
+          var request = $.ajax({
+            type : 'GET',
+            dataType : 'json',
+            async : true,
+            url : jsContextPath + '/entity/ajax/rolesearchresults?query=' + query + '&offset='
+                + offset + '&rows=' + rows + '&normdata=' + normdata + '&facetname=' + facetname
+                + '&entityid=' + entityid,
+            complete : function(data) {
+              var jsonResponse = $.parseJSON(data.responseText);
+
+              renderRoleBasedSearchResults(itemContainer, jsonResponse);
+            }
           });
-          
-          allRowCount = jsonResponse.resultCount;
         }
-    	});
-      
-    }
-    
-    function getUrlParam(name){
-      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-      var regexS = "[\\?&]" + name + "=([^&#]*)";
-      var regex = new RegExp(regexS);
-      var results = regex.exec(window.location.hash);
-      
-      if(results == null) {
-        results = regex.exec(window.location.search);
-      }
-      
-      if(results == null) {
-        return "";
-      }else{
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
-      }
-    }
 
-    function initPage(){
-		initCarousel();
-    	
-    	var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-	    
-	    var History = window.History;
-	    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
-	    History.pushState("", document.title, decodeURI(urlParameters));  
-	    
-	    //Initialize Search results
-	    getNewSearchResults(query, 0, defaultRowCount);
-	    
-	    //Initialize Search results for facet: affiliate_fct_subject
-	    var containerSubject = $(".themes_result");
-	    var normdata = true;
-	    var facetname = 'affiliate_fct_subject';
-		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
-	
-	    //Initialize Search results for facet: affiliate_fct_involved
-	    var containerInvolved = $(".works_result");
-		facetname = 'affiliate_fct_involved';
-		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
-		
-
-    }
-    
-    function initCarousel() {        
-    	var carouselItems = $("#items");
-    	
-    	$('div.carousel').show();
-        
-        if ($(".item .caption").length > 0) {
-            $(".item .caption").dotdotdot({});
+        function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
+          itemContainer.empty();
+          itemContainer.html(jsonResponse.html);
         }
-        
-        $("#next").click(function() {        	
-        	carouselItems.trigger("next", 1);
-        	
-        	var currentLoadItems = $(".preview-item");
-        	
-        	var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
-        	var numberOfVisibleItems = currentVisibleItems.length;
 
-        	var currentPosition = carouselItems.triggerHandler("currentPosition");
-        	var nextVisbleItem = currentPosition + numberOfVisibleItems;
-        	        	        	
-        	//console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
-        	
-        	if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
-        	    var query = $("#entity-title").html();
-        	    var entityid = $("#entity-id").attr("data-entityid");
-        	    
-        	    var History = window.History;
-        	    var urlParameters = "?query="+query+"&offset=" + currentLoadItems.length +"&rows=" + defaultRowCount;
-        	    History.pushState("", document.title, decodeURI(urlParameters));  
-        	    
-        	    //Initialize Search results
-        	    getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
-        	}        	
-        });
-        
-        $("#previous").click(function() {
-        	carouselItems.trigger("prev", 1);
-        });
-        
-        
-        if (carouselItems.length) {
-            carouselItems.carouFredSel({
-                infinite: false,
-                auto: false,
-                scroll: 1,
-                prev    : {
-                    button : "#previous"
-                },
-                next    : { 
-                    button  : "#next"
+        function getNewSearchResults(query, offset, rows) {
+          var request = $.ajax({
+            type : 'GET',
+            dataType : 'json',
+            async : true,
+            url : jsContextPath + '/entity/ajax/searchresults?query=' + query + '&offset=' + offset
+                + '&rows=' + rows,
+            complete : function(data) {
+              var jsonResponse = $.parseJSON(data.responseText);
+              var items = $.parseHTML(jsonResponse.html);
+
+              $.each(items, function(index, value) {
+                if (value.tagName == 'DIV') {
+                  $("#items").triggerHandler("insertItem", [ value, "end", true ]);
                 }
-            });
+              });
+
+              allRowCount = jsonResponse.resultCount;
+            }
+          });
+
         }
-    }
-    
-    initPage();    
-  }
-});
+
+        function getUrlParam(name) {
+          name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+          var regexS = "[\\?&]" + name + "=([^&#]*)";
+          var regex = new RegExp(regexS);
+          var results = regex.exec(window.location.hash);
+
+          if (results == null) {
+            results = regex.exec(window.location.search);
+          }
+
+          if (results == null) {
+            return "";
+          } else {
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+          }
+        }
+
+        function initPage() {
+          initCarousel();
+
+          var query = $("#entity-title").html();
+          var entityid = $("#entity-id").attr("data-entityid");
+
+          var History = window.History;
+          var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
+          History.pushState("", document.title, decodeURI(urlParameters));
+
+          // Initialize Search results
+          getNewSearchResults(query, 0, defaultRowCount);
+
+          // Initialize Search results for facet: affiliate_fct_subject
+          var containerSubject = $(".themes_result");
+          var normdata = true;
+          var facetname = 'affiliate_fct_subject';
+          getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
+
+          // Initialize Search results for facet: affiliate_fct_involved
+          var containerInvolved = $(".works_result");
+          facetname = 'affiliate_fct_involved';
+          getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
+
+        }
+
+        function initCarousel() {
+          var carouselItems = $("#items");
+
+          $('div.carousel').show();
+
+          if ($(".item .caption").length > 0) {
+            $(".item .caption").dotdotdot({});
+          }
+
+          $("#next").click(
+              function() {
+                carouselItems.trigger("next", 1);
+
+                var currentLoadItems = $(".preview-item");
+
+                var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
+                var numberOfVisibleItems = currentVisibleItems.length;
+
+                var currentPosition = carouselItems.triggerHandler("currentPosition");
+                var nextVisbleItem = currentPosition + numberOfVisibleItems;
+
+                // console.log( "The carousel is at number " + currentPosition +
+                // " of " + currentLoadItems.length + "items");
+
+                if ((nextVisbleItem > (currentLoadItems.length - 1))
+                    && (currentLoadItems.length < allRowCount)) {
+                  var query = $("#entity-title").html();
+                  var History = window.History;
+                  var urlParameters = "?query=" + query + "&offset=" + currentLoadItems.length
+                      + "&rows=" + defaultRowCount;
+                  History.pushState("", document.title, decodeURI(urlParameters));
+
+                  // Initialize Search results
+                  getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
+                }
+              });
+
+          $("#previous").click(function() {
+            carouselItems.trigger("prev", 1);
+          });
+
+          if (carouselItems.length) {
+            carouselItems.carouFredSel({
+              infinite : false,
+              auto : false,
+              scroll : 1,
+              prev : {
+                button : "#previous"
+              },
+              next : {
+                button : "#next"
+              }
+            });
+          }
+        }
+
+        initPage();
+      }
+    });

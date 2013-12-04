@@ -14,13 +14,24 @@
  * limitations under the License.
  */
 
-$(document)
-    .ready(
-        function() {
+package de.ddb.next
 
-          // Open all external links in a new window
-          $(
-              'a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href^="https://www.deutsche-digitale-bibliothek.de"])')
-              .attr('target', '_blank');
+class DoHideIfEmbeddedTagLib {
 
-        });
+    static namespace = "ddb"
+
+    def sessionService
+
+    def doHideIfEmbedded = { attrs, body ->
+        boolean isEmbedded = false
+        if(params.embedded == "true"){
+            isEmbedded = true
+        }
+
+        if(isEmbedded){
+            out << ""
+        }else{
+            out << body()
+        }
+    }
+}

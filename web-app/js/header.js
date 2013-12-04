@@ -19,8 +19,7 @@ $(document).ready(function() {
       $(".navigation li").removeClass("active");
       if (!$(this).hasClass('active-default')) {
         $(".active-default ul").css('display', 'none');
-      }
-      else {
+      } else {
         $(".active-default ul").css('display', 'block');
       }
       $(this).addClass("active");
@@ -29,15 +28,14 @@ $(document).ready(function() {
     $(".navigation li").removeClass("active");
     $(".active-default ul").css('display', 'block');
   });
-  
   //Accessibility: keyboard for language selection
   $('.language-wrapper >a').focus(function() {
     $('.selector').fadeIn();
   });
   $('.language-wrapper .selector a').blur(function() {
     var languageSelector = $('.selector');
-    languageSelector.fadeOut('fast', function(){
+    languageSelector.fadeOut('fast', function() {
       languageSelector.removeAttr('style');
     });
-  })
+  });
 });

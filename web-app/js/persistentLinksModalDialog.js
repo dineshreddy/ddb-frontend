@@ -19,8 +19,8 @@ $(document).ready(
       var popupAnchor = $('.page-link-popup-anchor');
 
       var content = $(document.createElement('input'));
-      content.attr('value', window.location.protocol + "//"
-          + window.location.host + popupAnchor.attr('href'));
+      content.attr('value', window.location.protocol + "//" + window.location.host
+          + popupAnchor.attr('href'));
       content.attr('type', 'text');
       var title = $(document.createElement('a'));
       title.addClass('page-link');
@@ -45,16 +45,15 @@ $.extend(PopupManager.prototype, {
   },
 
   registerPopup : function(anchorTag, title, content, offsetX, offsetY) {
-    
-    var closeTitle = messages.ddbnext.Close
-    
+
+    var closeTitle = messages.ddbnext.Close;
     var popupDialogWrapper = $(document.createElement('div'));
     var popupDialogTitle = $(document.createElement('div'));
     var popupDialogFooter = $(document.createElement('div'));
     var popupDialogCloseImage = $(document.createElement('div'));
     var popupDialogCloseButton = $(document.createElement('a'));
     var popupDialogContent = $(document.createElement('div'));
-    
+
     popupDialogCloseImage.attr('title', closeTitle);
 
     popupDialogWrapper.addClass('popup-dialog-wrapper');
@@ -90,7 +89,7 @@ $.extend(PopupManager.prototype, {
     });
 
     $(anchorTag).click(function(event) {
-      if (event.which == 1) {
+      if (event.which === 1) {
         event.preventDefault();
         popupDialogWrapper.fadeIn('fast', function() {
           popupDialogWrapper.find('input')[0].select();
@@ -102,8 +101,7 @@ $.extend(PopupManager.prototype, {
       if (popupDialogWrapper.has(event.target).length === 0) {
         popupDialogWrapper.fadeOut('fast', function() {
         });
-      }
-      else {
+      } else {
         popupDialogWrapper.find('input')[0].select();
       }
     });

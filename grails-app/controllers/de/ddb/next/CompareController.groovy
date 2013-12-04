@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next
 
-$(document)
-    .ready(
-        function() {
+class CompareController {
 
-          // Open all external links in a new window
-          $(
-              'a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href^="https://www.deutsche-digitale-bibliothek.de"])')
-              .attr('target', '_blank');
+    def configurationService
 
-        });
+    def index() {
+        log.info "index()"
+
+        def firstId = params.firstId
+        def secondId = params.secondId
+        log.info "index(): firstId="+firstId
+        log.info "index(): secondId="+secondId
+
+        def itemUri = request.forwardURI
+
+        render(view: "compare", model: [
+            firstId: firstId,
+            secondId: secondId,
+            itemUri: itemUri,
+            baseUrl: configurationService.getSelfBaseUrl()
+        ])
+    }
+}

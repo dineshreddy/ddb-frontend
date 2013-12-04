@@ -26,7 +26,9 @@ $(function() {
 
     $("#sendSavedSearches").click(function(event) {
       event.preventDefault();
-      $('#sendSavedSearchesModal').modal({remote: $(this).attr("href")});
+      $('#sendSavedSearchesModal').modal({
+        remote : $(this).attr("href")
+      });
     });
 
     $('.page-filter select').change(function() {
@@ -40,34 +42,34 @@ $(function() {
     });
 
     $('#checkall').checkAll('#slaves input:checkbox', {
-      reportTo: function () {
+      reportTo : function() {
         var prefix = this.prop('checked') ? 'un' : '';
         this.next().text(prefix + 'check all');
       }
-    });	
-
-    $('.page-input').keyup(function(e) {
-      if (e.keyCode == 13) {
-        if (/^[0-9]+$/.test(this.value)) {
-          if (parseInt(this.value) <= 0) {
-            this.value = 1;
-          }
-          else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-            this.value = $('.result-pages-count').text();
-          }
-        }
-        else {
-          this.value = 1;
-        }
-        $('.page-input').val(this.value);
-
-        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParamWithDefault("rows", 20)),
-                                    new Array('rows', getParamWithDefault("rows", 20)),
-                                    new Array('order', getParam("order")));
-
-        window.location.href = addParamToUrl(jsContextPath + "/user/savedsearches/", paramsArray, null, paramsArray);
-      }
     });
+
+    $('.page-input').keyup(
+        function(e) {
+          if (e.keyCode === 13) {
+            if (/^[0-9]+$/.test(this.value)) {
+              if (parseInt(this.value) <= 0) {
+                this.value = 1;
+              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+                this.value = $('.result-pages-count').text();
+              }
+            } else {
+              this.value = 1;
+            }
+            $('.page-input').val(this.value);
+
+            var paramsArray = new Array(new Array('offset', (this.value - 1)
+                * getParamWithDefault("rows", 20)), new Array('rows', getParamWithDefault("rows",
+                20)), new Array('order', getParam("order")));
+
+            window.location.href = addParamToUrl(jsContextPath + "/user/savedsearches/",
+                paramsArray, null, paramsArray);
+          }
+        });
 
     $('#deleteSavedSearches').submit(function() {
       var selected = new Array();
@@ -82,7 +84,7 @@ $(function() {
           selected.push($(this).val());
         });
         var body = {
-            ids : selected
+          ids : selected
         }
         jQuery.ajax({
           type : 'POST',
@@ -111,11 +113,13 @@ $(function() {
         $("#editSavedSearchModal").modal("hide");
         var title = $("#editSavedSearchTitle").val();
         $.ajax({
-          type: "PUT",
-          contentType: "application/json",
-          dataType: "json",
-          url: jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
-          data: JSON.stringify({title: title})
+          type : "PUT",
+          contentType : "application/json",
+          dataType : "json",
+          url : jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
+          data : JSON.stringify({
+            title : title
+          })
         }).done(function() {
           var editAnchor = $("#" + $("#editSavedSearchId").val());
           editAnchor.attr("data-label", title);
