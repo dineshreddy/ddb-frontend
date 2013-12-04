@@ -53,7 +53,7 @@ limitations under the License.
                  </h2>
              </div>
              <div>
-               <a href="${selectedOrgXML.uri }/">${String.valueOf(selectedOrgXML.uri).trim() }</a>
+               <a href="${selectedOrgXML.uri}">${String.valueOf(selectedOrgXML.uri).trim()}</a>
              </div>
            </div>
            <div class="span3">
