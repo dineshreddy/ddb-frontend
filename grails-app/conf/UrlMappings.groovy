@@ -194,7 +194,7 @@ class UrlMappings {
             controller="entity"
             action="getAjaxRoleSearchResultsAsJson"
         }
-        
+
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -278,6 +278,11 @@ class UrlMappings {
         "/login/doOpenIdLogin" {
             controller="user"
             action="doOpenIdLogin"
+        }
+
+        "/compare/$firstId/with/$secondId" {
+            controller="compare"
+            action="index"
         }
 
 
