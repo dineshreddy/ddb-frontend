@@ -1067,3 +1067,41 @@ color: #a5003b;
 #addToSavedSearchesTitle {
   width: 100%;
 }
+
+.compare-objects {
+	
+}
+
+.compare-objects hr {
+	border:solid 3px;
+	color: #EFEBE8;
+}
+
+.compare-header {
+	margin-bottom: 12px;
+}
+
+.compare-text {	
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.compare-img {
+	max-height: 105px;
+    max-width: 130px;
+}
+
+.compare-object {	
+	float: left;
+	display: table;
+	padding: 5% 0;
+	text-align: center;
+	border: 1px solid black;
+	height: 155px;
+	width: 130px;
+	background-color: #EFEBE8;
+}
+
+#compare-object2 {
+	float: right;
+}

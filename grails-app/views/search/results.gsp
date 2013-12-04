@@ -104,6 +104,21 @@ limitations under the License.
           </div>
         </div>
       </ddb:isLoggedIn>
+      
+      <div class="compare-objects off">      	
+      	<div class="compare-header">
+      		<hr/>
+      		<b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
+      	</div>
+        <div id="compare-object1" class="compare-object">
+        	<div class="compare-text"><g:message code="ddbnext.SearchResultsChooseObject1"/></div>
+        	<img class="compare-img off"></img>
+        </div>
+        <div id="compare-object2" class="compare-object">
+        	<div class="compare-text"><g:message code="ddbnext.SearchResultsChooseObject2"/></div>
+        	<img class="compare-img off" src=""></img>
+        </div>
+      </div>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">

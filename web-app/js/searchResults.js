@@ -198,6 +198,7 @@ $.extend(HovercardInfoItem.prototype, {
 function searchResultsInitializer() {
   $(this).on("searchChange", function() {
     setHovercardEvents();
+    setComparisonEvents();
     checkFavorites();
     checkSavedSearch();
   });
@@ -303,6 +304,25 @@ function searchResultsInitializer() {
     });
   }
 
+  function setCompareCookieParameter(itemId) {
+	  var compareParameters = readCookie("compareParameters" + jsContextPath);
+//	  
+//	  if (compareParameters != null && compareParameters.length > 0) {
+//		  //Try to save the id at position 1
+//		  
+//		  
+//		  //Try to save at position 2
+//		  //Error message
+//	  }
+//	  
+//      document.cookie = "compareParameters" + jsContextPath + "=\""
+//      + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
+  }
+  
+  function removeCompareCookieParameter(paramName) {
+	  
+  }
+  
   function setSearchCookieParameter(arrayParamVal) {
     var searchParameters = readCookie("searchParameters" + jsContextPath);
     if (searchParameters != null && searchParameters.length > 0) {
@@ -1685,6 +1705,46 @@ function searchResultsInitializer() {
     });
   }
 
+  function setComparisonEvents() {
+    //Comparison should only works with Javascript. So remove the CSS class to make the compare components visible
+    $('.compare').removeClass("off");	  
+    $('.compare-objects').removeClass("off");    
+    
+    //Add a click event to each compare icon
+	$('.compare').click(function(event) {
+    	var item = $(event.target);
+    	var itemId = item.attr('data-iid');
+    	compareItem(itemId);
+    });
+    
+  }
+  
+  function compareItem(id) {	  
+	  var itemId = id;
+	  //search for a free position
+	  
+	  //set cookie
+	  setCompareCookieParameter(itemId);
+	  
+	  //put the image/text into the compare div
+	  $('#compare-object1 .compare-text').addClass("off");
+	  $('#compare-object1 .compare-img').removeClass("off");
+	  
+	  var image = $('#thumbnail-' + itemId + ' img').filter(function() {
+		  var src = $(this).attr("src");		  
+		  if ((src != null) && (src.indexOf(itemId) != -1)) {
+			  console.log("retrun true :-/");
+			  return true;
+		  }
+		  
+		  return false;
+	  });
+	  	  
+	  $('#compare-object1 .compare-img').attr("src", image.attr("src"));
+	  $('#compare-object1 .compare-img').attr("alt", image.attr("alt"));
+  }
+  
+  
   function addToSavedSearches() {
     $.urlParam = function(name) {
       var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
