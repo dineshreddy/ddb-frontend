@@ -18,14 +18,15 @@ package de.ddb.next
 class CompareController {
 
     def configurationService
+    def itemService
 
     def index() {
         log.info "index()"
 
         def firstId = params.firstId
         def secondId = params.secondId
-        log.info "index(): firstId="+firstId
-        log.info "index(): secondId="+secondId
+
+        def searchResultParameters = itemService.handleSearchResultParameters(params, request)
 
         def itemUri = request.forwardURI
 
@@ -33,6 +34,7 @@ class CompareController {
             firstId: firstId,
             secondId: secondId,
             itemUri: itemUri,
+            searchResultUri: searchResultParameters["searchResultUri"],
             baseUrl: configurationService.getSelfBaseUrl()
         ])
     }

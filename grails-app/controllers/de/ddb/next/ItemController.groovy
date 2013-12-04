@@ -106,7 +106,7 @@ class ItemController {
     def findById() {
         try {
             //Check if Item-Detail was called from search-result and fill parameters
-            def searchResultParameters = handleSearchResultParameters(params, request)
+            def searchResultParameters = itemService.handleSearchResultParameters(params, request)
             def id = params.id
             def item = itemService.findItemById(id)
 
@@ -275,58 +275,6 @@ class ItemController {
     }
 
 
-    /**
-     * Get Data to build Search Result Navigation Bar for Item Detail View
-     *
-     * @param reqParameters requestParameters
-     * @return Map with searchResult to build back + next links
-     *  and searchResultUri for Link "Back to Search Result"
-     */
-    def handleSearchResultParameters(reqParameters, httpRequest) {
-        def searchResultParameters = [:]
-        searchResultParameters["searchParametersMap"] = [:]
-        def resultsItems
-        def searchResultUri
-
-        if (reqParameters["hitNumber"] && reqParameters[SearchParamEnum.QUERY.getName()] != null) {
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
-
-            //Search and return 3 Hits: previous, current and last
-            reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
-            urlQuery[SearchParamEnum.ROWS.getName()] = 3
-            if (reqParameters["hitNumber"] > 1) {
-                urlQuery[SearchParamEnum.OFFSET.getName()] = reqParameters["hitNumber"] - 2
-            }
-            else {
-                urlQuery[SearchParamEnum.OFFSET.getName()] = 0
-            }
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-            if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
-                apiResponse.throwException(request)
-            }
-            resultsItems = apiResponse.getResponse()
-
-            //Workaround for last-hit (Performance-issue)
-            if (reqParameters.id && reqParameters.id.equals(SearchParamEnum.LASTHIT.getName())) {
-                reqParameters.id = resultsItems.results["docs"][1].id
-            }
-            searchResultParameters["resultsItems"] = resultsItems
-
-            //generate link back to search-result. Calculate Offset.
-            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
-            def offset = 0
-            if (reqParameters[SearchParamEnum.ROWS.getName()]) {
-                offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters[SearchParamEnum.ROWS.getName()]))*reqParameters[SearchParamEnum.ROWS.getName()]
-            }
-            searchGetParameters[SearchParamEnum.OFFSET.getName()] = offset
-            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
-            searchResultParameters["searchResultUri"] = searchResultUri
-            searchResultParameters["searchParametersMap"] = reqParameters
-        }
-
-        return searchResultParameters
-    }
 
     private def buildLicenseInformation(def item){
         def licenseInformation
