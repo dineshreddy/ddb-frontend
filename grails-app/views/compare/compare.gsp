@@ -35,12 +35,12 @@ limitations under the License.
       <div class="row">
         <div class="span6">
           <div class="compare-body">
-            <iframe src="<g:createLink controller="item" action="findById" id="${firstId}"/>"></iframe>
+            <iframe src="<g:createLink controller="item" action="findById" params="${[id: firstId, embedded: "true"]}"  />"></iframe>
           </div>
         </div>
         <div class="span6">
           <div class="compare-body">
-            <iframe src="<g:createLink controller="item" action="findById" id="${secondId}"/>"></iframe>
+            <iframe src="<g:createLink controller="item" action="findById" params="${[id: secondId, embedded: "true"]}"/>"></iframe>
           </div>
         </div>
       </div>

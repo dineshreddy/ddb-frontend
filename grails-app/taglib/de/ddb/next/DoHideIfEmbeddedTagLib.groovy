@@ -13,37 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-.compare .compare-header {
-  border: 1px solid #e9e5e2;
-  border-width: 0 0 5px;
-  font-size: 0.938em;
-}
 
-.compare .compare-links {
-  font-size: 1em;
-  margin-bottom: 20px;
-  padding: 10px 0 10px 0;
-}
+package de.ddb.next
 
-.compare .compare-links .link-block {
-  display: inline-block;
-  margin-right: 10px;
-}
+class DoHideIfEmbeddedTagLib {
 
-.compare .compare-links .share-block {
-  display: inline-block;
-  margin-right: 10px;
-  min-width: 400px;
-}
+    static namespace = "ddb"
 
-.compare .compare-body {
-  border: 1px solid #e9e5e2;
-}
+    def sessionService
 
-.compare .compare-body iframe {
-  width: 100%;
-  min-height: 1400px;
-  border: 0px;
-  max-width: 700px;
+    def doHideIfEmbedded = { attrs, body ->
+        boolean isEmbedded = false
+        if(params.embedded == "true"){
+            isEmbedded = true
+        }
+
+        if(isEmbedded){
+            out << ""
+        }else{
+            out << body()
+        }
+    }
 }

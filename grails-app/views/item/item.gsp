@@ -27,7 +27,9 @@ limitations under the License.
     
   </head>
   <body>
-    <g:render template="controls" />
+    <ddb:doHideIfEmbedded>
+      <g:render template="controls" />
+    </ddb:doHideIfEmbedded>
     <g:render template="institution" />
     <g:render template="itemLinks" />
     <div class="row item-detail item-content">
