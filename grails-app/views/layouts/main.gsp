@@ -45,7 +45,9 @@ limitations under the License.
         </div>
       </div>
     </noscript>
-    <g:render template="/mainHeader" />
+    <ddb:doHideIfEmbedded>
+      <g:render template="/mainHeader" />
+    </ddb:doHideIfEmbedded>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>
