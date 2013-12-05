@@ -105,8 +105,8 @@ $(document).ready(function(){
       var languageISO2 = $(".socialmedia").attr("data-lang-iso2");
       var languageFull = $(".socialmedia").attr("data-lang-full");
       
-      var urlFacebook = "http://www.facebook.com/plugins/like.php?locale="+languageFull+"&href="+urlSelfEncoded+"&send=false&layout=button_count&width=130&show_faces=false&action=like&colorscheme=light&amp;font&height=21";
-      var urlTwitter = "http://platform.twitter.com/widgets/tweet_button.html?url="+urlSelfEncoded+"&counturl="+urlSelfEncoded+"&text="+pageTitle+"&count=horizontal&lang="+languageISO2;
+      var urlFacebook = "https://www.facebook.com/plugins/like.php?locale="+languageFull+"&href="+urlSelfEncoded+"&send=false&layout=button_count&width=130&show_faces=false&action=like&colorscheme=light&amp;font&height=21";
+      var urlTwitter = "https://platform.twitter.com/widgets/tweet_button.html?url="+urlSelfEncoded+"&counturl="+urlSelfEncoded+"&text="+pageTitle+"&count=horizontal&lang="+languageISO2;
       var htmlGooglePlus = '<div class="g-plusone" data-size="medium" data-href="'+urlSelf+'"></div><script type="text/javascript">window.___gcfg = {lang: "'+languageISO2+'"}; (function() { var po = document.createElement("script"); po.type = "text/javascript"; po.async = true; po.src = "https://apis.google.com/js/plusone.js"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(po, s); })(); </script>';
       
       $(".socialmedia .social-open .social-facebook iframe").attr("src", urlFacebook);
