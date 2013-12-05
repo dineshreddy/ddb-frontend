@@ -111,13 +111,18 @@ limitations under the License.
       		<b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
       	</div>
         <div id="compare-object1" class="compare-object">
-        	<div class="compare-text"><g:message code="ddbnext.SearchResultsChooseObject1"/></div>
+        	<div class="compare-text"></div>
         	<img class="compare-img off"></img>
+        	<span data-index="1" class="remove-icon"></span>
         </div>
         <div id="compare-object2" class="compare-object">
-        	<div class="compare-text"><g:message code="ddbnext.SearchResultsChooseObject2"/></div>
+        	<div class="compare-text"></div>
         	<img class="compare-img off" src=""></img>
+        	<span data-index="2" class="remove-icon"></span>
         </div>
+        <div class="compare-footer">
+        	<a href="#" class="button" id="compare-button"><g:message code="ddbnext.SearchResultsCompareObject"/></a>			
+      	</div>
       </div>
     </div>
     

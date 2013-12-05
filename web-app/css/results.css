@@ -1069,39 +1069,63 @@ color: #a5003b;
 }
 
 .compare-objects {
-	
+	margin-top: 15px;
 }
 
 .compare-objects hr {
-	border:solid 3px;
+	border:solid 1px;
 	color: #EFEBE8;
+	margin-bottom: 5px;
+}
+
+.compare-object {	
+	float: left;
+	position: relative;
+	display: table;	
+	text-align: center;
+	border: 1px solid black;
+	height: 130px;
+	width: 130px;
+	background-color: #EFEBE8;
+	margin-bottom: 15px;
 }
 
 .compare-header {
-	margin-bottom: 12px;
+	margin-bottom: 15px;
+}
+
+.compare-footer {
+	margin-top: 15px;
 }
 
 .compare-text {	
     display: table-cell;
     vertical-align: middle;
+    max-height: 105px;
+    max-width: 130px;
+    margin: 0px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .compare-img {
+	display: table-cell;
+    vertical-align: middle;
 	max-height: 105px;
     max-width: 130px;
-}
-
-.compare-object {	
-	float: left;
-	display: table;
-	padding: 5% 0;
-	text-align: center;
-	border: 1px solid black;
-	height: 155px;
-	width: 130px;
-	background-color: #EFEBE8;
+    margin: 0px;
 }
 
 #compare-object2 {
 	float: right;
+}
+
+.compare-object .remove-icon {
+  width:20px;
+  height:20px;
+  background: url("../images/icons/searchActions.png") no-repeat 5px -40px;
+  position: absolute;  
+  top: 4px;
+  right: 4px;
+  cursor: pointer;
 }

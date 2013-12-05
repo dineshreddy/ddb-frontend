@@ -198,7 +198,7 @@ $.extend(HovercardInfoItem.prototype, {
 function searchResultsInitializer() {
   $(this).on("searchChange", function() {
     setHovercardEvents();
-    setComparisonEvents();
+    initComparison();
     checkFavorites();
     checkSavedSearch();
   });
@@ -302,25 +302,6 @@ function searchResultsInitializer() {
       var matches = pattern.exec($(this).attr('href'));
       $(this).attr('href', matches[1] + params + matches[2]);
     });
-  }
-
-  function setCompareCookieParameter(itemId) {
-	  var compareParameters = readCookie("compareParameters" + jsContextPath);
-//	  
-//	  if (compareParameters != null && compareParameters.length > 0) {
-//		  //Try to save the id at position 1
-//		  
-//		  
-//		  //Try to save at position 2
-//		  //Error message
-//	  }
-//	  
-//      document.cookie = "compareParameters" + jsContextPath + "=\""
-//      + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
-  }
-  
-  function removeCompareCookieParameter(paramName) {
-	  
   }
   
   function setSearchCookieParameter(arrayParamVal) {
@@ -1705,43 +1686,158 @@ function searchResultsInitializer() {
     });
   }
 
-  function setComparisonEvents() {
-    //Comparison should only works with Javascript. So remove the CSS class to make the compare components visible
+  function initComparison() {
+    //Comparison should only works with Javascript. So remove the CSS class 'off' from the compare components
     $('.compare').removeClass("off");	  
     $('.compare-objects').removeClass("off");    
     
-    //Add a click event to each compare icon
+    //Add a click event handler to each compare button
 	$('.compare').click(function(event) {
     	var item = $(event.target);
     	var itemId = item.attr('data-iid');
-    	compareItem(itemId);
+    	selectCompareItem(itemId);
     });
     
+	$('.compare-objects .remove-icon').click(function(event) {
+		event.preventDefault();
+		//Get the index of the compare-object.
+		var index = $(event.target).attr("data-index");
+		removeCompareCookieParameter(index);
+		renderCompareObjects();
+    });
+	
+	renderCompareObjects();
   }
   
-  function compareItem(id) {	  
-	  var itemId = id;
-	  //search for a free position
-	  
-	  //set cookie
-	  setCompareCookieParameter(itemId);
-	  
-	  //put the image/text into the compare div
-	  $('#compare-object1 .compare-text').addClass("off");
-	  $('#compare-object1 .compare-img').removeClass("off");
-	  
-	  var image = $('#thumbnail-' + itemId + ' img').filter(function() {
-		  var src = $(this).attr("src");		  
-		  if ((src != null) && (src.indexOf(itemId) != -1)) {
-			  console.log("retrun true :-/");
-			  return true;
-		  }
-		  
-		  return false;
-	  });
+  function selectCompareItem(id) {	  
+	  var itemId = id;	  
 	  	  
-	  $('#compare-object1 .compare-img').attr("src", image.attr("src"));
-	  $('#compare-object1 .compare-img').attr("alt", image.attr("alt"));
+	  //select the thumbnail image of the selected item
+	  var image = $('#thumbnail-' + itemId + ' img');
+	  var imageSrc = null;
+	  
+	  if (image.attr("src").indexOf(itemId) != -1) {
+		  imageSrc = image.attr("src");
+	  }
+	  
+	  var text = image.attr("alt");
+	  if (text.length > 30) {
+		  text = text.substr(0,30) + "...";
+	  }
+
+	  setCompareCookieParameter(itemId, imageSrc, text);
+	  	  
+	  renderCompareObjects();
+  }
+  
+  function renderCompareObjects() {
+	  var cookieName = 'compareParameters' + jsContextPath
+	  var cookieVal = $.cookies.get(cookieName);
+	  
+	  //if the cookie exists, check if the first or second compare slot is free	  
+	  $('.compare-object').each(function(index) {
+		  //There are two compar-objects. closure index starts with 0!
+		  var itemNumber = index + 1;
+		  
+		  //Retrieve the compare elements via JQuery
+		  var compareObjectId = '#compare-object' + itemNumber; 
+		  var compareImage = $(compareObjectId + ' .compare-img');
+		  var compareText = $(compareObjectId + ' .compare-text');
+
+		  //Get the id from the cookie
+		  var cookieId = (cookieVal != null) ? cookieVal['id' + itemNumber] : null;
+		  
+		  //Set default message if no cookie exists or itemId is nulle
+		  if (cookieVal === null || cookieId === null) {				  
+			  compareText.removeClass("off");
+			  compareImage.addClass("off");
+			  compareText.html(messages.ddbnext['SearchResultsChooseObject' + itemNumber]);
+		  } else {			  
+			  var cookieSrc = cookieVal['src' + itemNumber];
+			  var cookieText = cookieVal['text' + itemNumber];
+
+			  //show the item image or text
+			  if (cookieSrc != null && cookieSrc.length != -1) {
+				  compareText.addClass("off");
+				  compareImage.removeClass("off");
+				  
+				  compareImage.attr("src", cookieSrc);
+				  compareImage.attr("alt", cookieText);		  
+			  } else {
+				  compareText.removeClass("off");
+				  compareImage.addClass("off");
+				  		  
+				  compareText.html(cookieText);
+			  }
+		  }
+	  });
+	  
+	  var compareButton = $('#compare-button');
+	  if (cookieVal != null) {
+		  if ((cookieVal.id1 != null) && (cookieVal.id2 != null)){
+			  var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2;
+			  compareButton.removeClass('off');
+			  compareButton.attr("href", url)
+		  } else {
+			  compareButton.addClass('off');
+		  }
+	  } else {
+		  compareButton.addClass('off');
+	  }
+  }
+  
+  function setCompareCookieParameter(itemId, imgSrc, text) {
+	  var itemAdded = false;
+	  var cookieName = 'compareParameters' + jsContextPath;
+	  var cookieVal = $.cookies.get(cookieName);
+	  	  
+	  //if the cookie exists, check if the first or second compare slot is free
+	  if (cookieVal != null) {		  
+		  if (cookieVal.id1 == null) {
+			  cookieVal.id1 = itemId;
+			  cookieVal.src1 = imgSrc;
+			  cookieVal.text1 = text;			  
+			  itemAdded = true;
+		  } else if(cookieVal.id2 == null) {
+			  cookieVal.id2 = itemId;
+			  cookieVal.src2 = imgSrc;
+			  cookieVal.text2 = text;
+			  itemAdded = true;
+		  }		  
+	  } 
+	  //if the cookie don't exist create a new value and set the item on the first position
+	  else {		
+		  cookieVal = {
+		     id1: itemId,
+		     src1: imgSrc,
+		     text1: text,
+		     id2: null,
+		     src2: null,
+		     text2: null
+		  }		  		  
+		  itemAdded = true;		  
+	  }
+	  
+	  //Check if the item could be set to one of the two compare slots
+	  if (itemAdded) {
+		 //Set the cookie
+		 $.cookies.set(cookieName, cookieVal);		
+	  } else {	  
+		 alert("Can only compare 2 items!");  
+	  }
+  }
+  
+  function removeCompareCookieParameter(index) {
+	  var cookieName = 'compareParameters' + jsContextPath;
+	  var cookieVal = $.cookies.get(cookieName);
+
+	  if (cookieVal != null) {
+		  cookieVal['id' + index] = null;
+		  cookieVal['src' + index] = null;
+		  cookieVal['text' + index] = null;
+		  
+		  $.cookies.set(cookieName, cookieVal);
+	  }
   }
   
   
