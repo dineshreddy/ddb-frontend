@@ -1732,7 +1732,7 @@ function searchResultsInitializer() {
   
   function renderCompareObjects() {
 	  var cookieName = 'compareParameters' + jsContextPath
-	  var cookieVal = $.cookies.get(cookieName);
+	  var cookieVal = $.cookies.get(cookieName);	  	  
 	  
 	  //if the cookie exists, check if the first or second compare slot is free	  
 	  $('.compare-object').each(function(index) {
@@ -1743,6 +1743,7 @@ function searchResultsInitializer() {
 		  var compareObjectId = '#compare-object' + itemNumber; 
 		  var compareImage = $(compareObjectId + ' .compare-img');
 		  var compareText = $(compareObjectId + ' .compare-text');
+		  var compareRemove = $(compareObjectId + ' span');
 
 		  //Get the id from the cookie
 		  var cookieId = (cookieVal != null) ? cookieVal['id' + itemNumber] : null;
@@ -1751,11 +1752,14 @@ function searchResultsInitializer() {
 		  if (cookieVal === null || cookieId === null) {				  
 			  compareText.removeClass("off");
 			  compareImage.addClass("off");
+			  compareRemove.addClass("off");
 			  compareText.html(messages.ddbnext['SearchResultsChooseObject' + itemNumber]);
 		  } else {			  
 			  var cookieSrc = cookieVal['src' + itemNumber];
 			  var cookieText = cookieVal['text' + itemNumber];
 
+			  compareRemove.removeClass("off");
+			  
 			  //show the item image or text
 			  if (cookieSrc != null && cookieSrc.length != -1) {
 				  compareText.addClass("off");
@@ -1787,13 +1791,18 @@ function searchResultsInitializer() {
   }
   
   function setCompareCookieParameter(itemId, imgSrc, text) {
-	  var itemAdded = false;
 	  var cookieName = 'compareParameters' + jsContextPath;
 	  var cookieVal = $.cookies.get(cookieName);
 	  	  
+	  hideError();
+	  
 	  //if the cookie exists, check if the first or second compare slot is free
-	  if (cookieVal != null) {		  
-		  if (cookieVal.id1 == null) {
+	  if (cookieVal != null) {
+		  if ((cookieVal.id1 != null) && (cookieVal.id2 != null)) {
+			  showError(messages.ddbnext.SearchResultsCompareItemOnly2);
+		  } else if ((cookieVal.id1 == itemId) || (cookieVal.id2 == itemId)) {
+			  showError(messages.ddbnext.SearchResultsCompareItemAlreadySet);
+		  } else if (cookieVal.id1 == null) {
 			  cookieVal.id1 = itemId;
 			  cookieVal.src1 = imgSrc;
 			  cookieVal.text1 = text;			  
@@ -1803,7 +1812,7 @@ function searchResultsInitializer() {
 			  cookieVal.src2 = imgSrc;
 			  cookieVal.text2 = text;
 			  itemAdded = true;
-		  }		  
+		  }
 	  } 
 	  //if the cookie don't exist create a new value and set the item on the first position
 	  else {		
@@ -1815,22 +1824,18 @@ function searchResultsInitializer() {
 		     src2: null,
 		     text2: null
 		  }		  		  
-		  itemAdded = true;		  
 	  }
 	  
-	  //Check if the item could be set to one of the two compare slots
-	  if (itemAdded) {
-		 //Set the cookie
-		 $.cookies.set(cookieName, cookieVal);		
-	  } else {	  
-		 alert("Can only compare 2 items!");  
-	  }
+	 //Set the cookie
+	 $.cookies.set(cookieName, cookieVal);		
   }
   
   function removeCompareCookieParameter(index) {
 	  var cookieName = 'compareParameters' + jsContextPath;
 	  var cookieVal = $.cookies.get(cookieName);
 
+	  hideError();
+	  
 	  if (cookieVal != null) {
 		  cookieVal['id' + index] = null;
 		  cookieVal['src' + index] = null;
