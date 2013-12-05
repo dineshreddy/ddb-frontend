@@ -1078,16 +1078,21 @@ color: #a5003b;
 	margin-bottom: 5px;
 }
 
-.compare-object {	
-	float: left;
+.compare-object {
 	position: relative;
-	display: table;	
 	text-align: center;
 	border: 1px solid black;
 	height: 130px;
 	width: 130px;
+	max-height: 130px;
+	max-width: 130px;
 	background-color: #EFEBE8;
+}
+
+.compare-main{
 	margin-bottom: 15px;
+	height: 130px;
+	max-height: 130px;
 }
 
 .compare-header {
@@ -1099,9 +1104,7 @@ color: #a5003b;
 }
 
 .compare-text {	
-    display: table-cell;
-    vertical-align: middle;
-    max-height: 105px;
+    max-height: 130px;
     max-width: 130px;
     margin: 0px;
     text-overflow: ellipsis;
@@ -1109,11 +1112,15 @@ color: #a5003b;
 }
 
 .compare-img {
-	display: table-cell;
-    vertical-align: middle;
-	max-height: 105px;
+	overflow: hidden;
+	max-height: 130px;
     max-width: 130px;
-    margin: 0px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#compare-object1 {
+	float: left;
 }
 
 #compare-object2 {

@@ -1743,13 +1743,13 @@ function searchResultsInitializer() {
 		  var compareObjectId = '#compare-object' + itemNumber; 
 		  var compareImage = $(compareObjectId + ' .compare-img');
 		  var compareText = $(compareObjectId + ' .compare-text');
-		  var compareRemove = $(compareObjectId + ' span');
+		  var compareRemove = $(compareObjectId + ' .remove-icon');
 
 		  //Get the id from the cookie
 		  var cookieId = (cookieVal != null) ? cookieVal['id' + itemNumber] : null;
 		  
 		  //Set default message if no cookie exists or itemId is nulle
-		  if (cookieVal === null || cookieId === null) {				  
+		  if (cookieVal === null || cookieId === null) {
 			  compareText.removeClass("off");
 			  compareImage.addClass("off");
 			  compareRemove.addClass("off");
