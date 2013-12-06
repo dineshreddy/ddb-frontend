@@ -16,7 +16,7 @@ limitations under the License.
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span3</g:if>">
-  <div class="thumbnail">
+  <div class="thumbnail" id="thumbnail-${item.id}">
     <g:link controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" />
     </g:link>
@@ -24,7 +24,7 @@ limitations under the License.
   <div class="item-options <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bl</g:if>">
     <ul class="item-options-ul">
       <li>
-        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bb</g:if>">
+        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
           <div class="hovercard-info-item" data-iid="${item.id}">
             <h4><ddb:getTruncatedHovercardTitle title="${ item.preview.title }" length="${ 350 }" /></h4>
             <ul class="unstyled">
@@ -35,12 +35,9 @@ limitations under the License.
           </div>
         </div>
       </li>
-  <!--<li> 
-        <div class="compare<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bb</g:if>"></div>
-      </li>   -->  
       <ddb:isLoggedIn>
         <li>
-          <div id="favorite-${item.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+          <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
           <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
               <p><g:message code="ddbnext.Added_To_Favorites"/></p>
@@ -62,6 +59,11 @@ limitations under the License.
           </div>
         </li>
       </ddb:isLoggedIn>
+      
+      <li>
+        <div class="compare bb off" data-iid="${item.id}"></div>
+      </li>
+      
     </ul>
   </div>
 </div>
