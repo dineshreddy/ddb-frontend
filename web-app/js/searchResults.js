@@ -1746,7 +1746,7 @@ function searchResultsInitializer() {
 		  var compareRemove = $(compareObjectId + ' .remove-icon');
 
 		  //Get the id from the cookie
-		  var cookieId = (cookieVal != null) ? cookieVal['id' + itemNumber] : null;
+		  var cookieId = (cookieVal !== null) ? cookieVal['id' + itemNumber] : null;
 		  
 		  //Set default message if no cookie exists or itemId is nulle
 		  if (cookieVal === null || cookieId === null) {
@@ -1761,7 +1761,7 @@ function searchResultsInitializer() {
 			  compareRemove.removeClass("off");
 			  
 			  //show the item image or text
-			  if (cookieSrc != null && cookieSrc.length != -1) {
+			  if (cookieSrc !== null && cookieSrc.length !== -1) {
 				  compareText.addClass("off");
 				  compareImage.removeClass("off");
 				  
@@ -1777,8 +1777,8 @@ function searchResultsInitializer() {
 	  });
 	  
 	  var compareButton = $('#compare-button');
-	  if (cookieVal != null) {
-		  if ((cookieVal.id1 != null) && (cookieVal.id2 != null)){
+	  if (cookieVal !== null) {
+		  if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)){
 			  var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2;
 			  compareButton.removeClass('off');
 			  compareButton.attr("href", url)
@@ -1797,17 +1797,17 @@ function searchResultsInitializer() {
 	  hideError();
 	  
 	  //if the cookie exists, check if the first or second compare slot is free
-	  if (cookieVal != null) {
-		  if ((cookieVal.id1 != null) && (cookieVal.id2 != null)) {
+	  if (cookieVal !== null) {
+		  if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
 			  showError(messages.ddbnext.SearchResultsCompareItemOnly2);
-		  } else if ((cookieVal.id1 == itemId) || (cookieVal.id2 == itemId)) {
+		  } else if ((cookieVal.id1 === itemId) || (cookieVal.id2 === itemId)) {
 			  showError(messages.ddbnext.SearchResultsCompareItemAlreadySet);
-		  } else if (cookieVal.id1 == null) {
+		  } else if (cookieVal.id1 === null) {
 			  cookieVal.id1 = itemId;
 			  cookieVal.src1 = imgSrc;
 			  cookieVal.text1 = text;			  
 			  itemAdded = true;
-		  } else if(cookieVal.id2 == null) {
+		  } else if(cookieVal.id2 === null) {
 			  cookieVal.id2 = itemId;
 			  cookieVal.src2 = imgSrc;
 			  cookieVal.text2 = text;
@@ -1836,7 +1836,7 @@ function searchResultsInitializer() {
 
 	  hideError();
 	  
-	  if (cookieVal != null) {
+	  if (cookieVal !== null) {
 		  cookieVal['id' + index] = null;
 		  cookieVal['src' + index] = null;
 		  cookieVal['text' + index] = null;
