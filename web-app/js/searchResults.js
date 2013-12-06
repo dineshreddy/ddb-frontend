@@ -1701,7 +1701,7 @@ function searchResultsInitializer() {
     	selectCompareItem(itemId);
     });
     
-	$('.compare-objects .remove-icon').click(function(event) {
+	$('.compare-objects .fancybox-toolbar-close').click(function(event) {
 		event.preventDefault();
 		//Get the index of the compare-object.
 		var index = $(event.target).attr("data-index");
@@ -1761,7 +1761,7 @@ function searchResultsInitializer() {
 		  var compareObjectId = '#compare-object' + itemNumber; 
 		  var compareImage = $(compareObjectId + ' .compare-img');
 		  var compareText = $(compareObjectId + ' .compare-text');
-		  var compareRemove = $(compareObjectId + ' .remove-icon');
+		  var compareRemove = $(compareObjectId + ' .fancybox-toolbar-close');
 
 		  //Get the associated item id from the cookie
 		  var cookieId = (cookieVal !== null) ? cookieVal['id' + itemNumber] : null;
@@ -1771,6 +1771,7 @@ function searchResultsInitializer() {
 			  compareText.removeClass("off");
 			  compareImage.addClass("off");
 			  compareRemove.addClass("off");
+			  $(this).addClass("compare-object-table");
 			  compareText.html(messages.ddbnext['SearchResultsChooseObject' + itemNumber]);
 		  } else {			  
 			  var cookieSrc = cookieVal['src' + itemNumber];
@@ -1784,12 +1785,15 @@ function searchResultsInitializer() {
 				  compareImage.removeClass("off");
 				  
 				  compareImage.attr("src", cookieSrc);
-				  compareImage.attr("alt", cookieText);		  
+				  compareImage.attr("alt", cookieText);
+				  compareImage.attr("title", cookieText);
+				  
+				  $( this ).removeClass("compare-object-table");
 			  } else {
 				  compareText.removeClass("off");
 				  compareImage.addClass("off");
-				  		  
 				  compareText.html(cookieText);
+				  $( this ).addClass("compare-object-table");
 			  }
 		  }
 	  });
@@ -1798,15 +1802,28 @@ function searchResultsInitializer() {
 	  var compareButton = $('#compare-button');
 	  if (cookieVal !== null) {
 		  if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)){
-			  //Adjust the url of the selected items
-			  var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2;
-			  compareButton.removeClass('off');
-			  compareButton.attr("href", url)
+			  compareButton.removeClass('button-disabled');
+			  compareButton.addClass('button');
+			  compareButton.off();
+			  compareButton.click(function( event ) {
+	              //On every click be sure to get the latest compare items and url queries
+			      var urlQuery = window.location.search
+	              var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2 + urlQuery;
+	              compareButton.attr("href", url);
+              });
 		  } else {
-			  compareButton.addClass('off');
+	          compareButton.removeClass('button');
+	          compareButton.addClass('button-disabled')
+	          compareButton.click(function( event ) {
+                  event.preventDefault();
+              });
 		  }
 	  } else {
-		  compareButton.addClass('off');
+          compareButton.removeClass('button');
+          compareButton.addClass('button-disabled')
+          compareButton.click(function( event ) {
+              event.preventDefault();
+          });
 	  }
   }
   
