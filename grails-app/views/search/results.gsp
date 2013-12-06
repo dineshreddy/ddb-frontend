@@ -114,16 +114,16 @@ limitations under the License.
 	        <div id="compare-object1" class="compare-object">
 	        	<span class="compare-text"></span>
 	        	<img class="compare-img off"></img>
-	        	<span data-index="1" class="remove-icon"></span>
+	        	<span data-index="1" class="fancybox-toolbar-close"></span>
 	        </div>
 	        <div id="compare-object2" class="compare-object">
 	        	<span class="compare-text"></span>
 	        	<img class="compare-img off" src=""></img>
-	        	<span data-index="2" class="remove-icon"></span>
+	        	<span data-index="2" class="fancybox-toolbar-close"></span>
 	        </div>
         </div>
         <div class="compare-footer">
-        	<a href="#" class="button" id="compare-button"><g:message code="ddbnext.SearchResultsCompareObject"/></a>			
+        	<a class="button" id="compare-button"><g:message code="ddbnext.SearchResultsStartComparison"/></a>
       	</div>
       </div>
     </div>
