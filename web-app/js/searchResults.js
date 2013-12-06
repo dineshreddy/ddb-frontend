@@ -1798,10 +1798,18 @@ function searchResultsInitializer() {
 		  }
 	  });
 	  
-	  //Show the compare button only if two items are selected for comparison
+	  //The compare buton is disabled by default
 	  var compareButton = $('#compare-button');
+	  compareButton.removeClass('button');      
+      compareButton.addClass('button-disabled')
+      compareButton.off();
+      compareButton.click(function( event ) {
+          event.preventDefault();
+      });
+	  
 	  if (cookieVal !== null) {
-		  if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)){
+	      //Enable the compare button only if two items are selected for comparison
+	      if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)){
 			  compareButton.removeClass('button-disabled');
 			  compareButton.addClass('button');
 			  compareButton.off();
@@ -1811,20 +1819,8 @@ function searchResultsInitializer() {
 	              var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2 + urlQuery;
 	              compareButton.attr("href", url);
               });
-		  } else {
-	          compareButton.removeClass('button');
-	          compareButton.addClass('button-disabled')
-	          compareButton.click(function( event ) {
-                  event.preventDefault();
-              });
 		  }
-	  } else {
-          compareButton.removeClass('button');
-          compareButton.addClass('button-disabled')
-          compareButton.click(function( event ) {
-              event.preventDefault();
-          });
-	  }
+	  } 
   }
   
   /**

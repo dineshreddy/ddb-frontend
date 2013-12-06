@@ -61,7 +61,7 @@ limitations under the License.
       </ddb:isLoggedIn>
       
       <li>
-        <div class="compare bb off" data-iid="${item.id}"></div>
+        <div class="compare bb off" data-iid="${item.id}" title="<g:message code="ddbnext.SearchResultsCompareObject"/>"></div>
       </li>
       
     </ul>
