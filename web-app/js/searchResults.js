@@ -1686,6 +1686,9 @@ function searchResultsInitializer() {
     });
   }
 
+  /**
+   * Initialize the components for the object comparison
+   */
   function initComparison() {
     //Comparison should only works with Javascript. So remove the CSS class 'off' from the compare components
     $('.compare').removeClass("off");	  
@@ -1709,6 +1712,9 @@ function searchResultsInitializer() {
 	renderCompareObjects();
   }
   
+  /**
+   * This functions selects the item from the result list and try to store some parameters in the comparison cookie.
+   */
   function selectCompareItem(id) {	  
 	  var itemId = id;	  
 	  	  
@@ -1730,25 +1736,37 @@ function searchResultsInitializer() {
 	  renderCompareObjects();
   }
   
+  /**
+   * This funtion is responsible for rendering the compare components.
+   * There are two compare obejects which can hold either
+   * <ul>
+   * <li>a default text</li>
+   * <li>an image of the item</li>
+   * <li>a text of the item</li>
+   * </ul>
+   * 
+   * The rendering is based on the item values stored in the comparison cookie.
+   * 
+   */
   function renderCompareObjects() {
 	  var cookieName = 'compareParameters' + jsContextPath
 	  var cookieVal = $.cookies.get(cookieName);	  	  
 	  
-	  //if the cookie exists, check if the first or second compare slot is free	  
+	  //Rendering the value for bothe compare-objects	  
 	  $('.compare-object').each(function(index) {
-		  //There are two compar-objects. closure index starts with 0!
+		  //closure index starts with 0!
 		  var itemNumber = index + 1;
 		  
-		  //Retrieve the compare elements via JQuery
+		  //Retrieve the elements via JQuery
 		  var compareObjectId = '#compare-object' + itemNumber; 
 		  var compareImage = $(compareObjectId + ' .compare-img');
 		  var compareText = $(compareObjectId + ' .compare-text');
 		  var compareRemove = $(compareObjectId + ' .remove-icon');
 
-		  //Get the id from the cookie
+		  //Get the associated item id from the cookie
 		  var cookieId = (cookieVal !== null) ? cookieVal['id' + itemNumber] : null;
 		  
-		  //Set default message if no cookie exists or itemId is nulle
+		  //Set default message if no cookie exists or itemId is null
 		  if (cookieVal === null || cookieId === null) {
 			  compareText.removeClass("off");
 			  compareImage.addClass("off");
@@ -1760,7 +1778,7 @@ function searchResultsInitializer() {
 
 			  compareRemove.removeClass("off");
 			  
-			  //show the item image or text
+			  //show the item's image or text
 			  if (cookieSrc !== null && cookieSrc.length !== -1) {
 				  compareText.addClass("off");
 				  compareImage.removeClass("off");
@@ -1776,9 +1794,11 @@ function searchResultsInitializer() {
 		  }
 	  });
 	  
+	  //Show the compare button only if two items are selected for comparison
 	  var compareButton = $('#compare-button');
 	  if (cookieVal !== null) {
 		  if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)){
+			  //Adjust the url of the selected items
 			  var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/' + cookieVal.id2;
 			  compareButton.removeClass('off');
 			  compareButton.attr("href", url)
@@ -1790,6 +1810,13 @@ function searchResultsInitializer() {
 	  }
   }
   
+  /**
+   * Try to set an item to the comparison cookie. The cookie has two slots for holding two unequal items. Equalsness is checked via the item id.
+   * 
+   * An item is set to the first free slot found in the cookie.
+   * 
+   * The value of the cookie is in JSON format and can hold the id, src and text of an item. 
+   */
   function setCompareCookieParameter(itemId, imgSrc, text) {
 	  var cookieName = 'compareParameters' + jsContextPath;
 	  var cookieVal = $.cookies.get(cookieName);
@@ -1830,11 +1857,18 @@ function searchResultsInitializer() {
 	 $.cookies.set(cookieName, cookieVal);		
   }
   
+  /**
+   * Removes an comparison item from the cookie. 
+   * The index parameters can have the values 1 and 2 
+   */
   function removeCompareCookieParameter(index) {
 	  var cookieName = 'compareParameters' + jsContextPath;
 	  var cookieVal = $.cookies.get(cookieName);
-
-	  hideError();
+      hideError();
+	  
+	  if ((1 != index) && (2 != index)) {
+	      return;
+	  }
 	  
 	  if (cookieVal !== null) {
 		  cookieVal['id' + index] = null;
