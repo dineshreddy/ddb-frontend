@@ -1,4 +1,4 @@
-import de.ddb.next.constants.FacetEnum;
+import de.ddb.next.constants.FacetEnum
 
 /*
  * Copyright (C) 2013 FIZ Karlsruhe

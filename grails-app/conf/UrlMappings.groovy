@@ -285,6 +285,11 @@ class UrlMappings {
             action="index"
         }
 
+        "/map" {
+            controller="map"
+            action="index"
+        }
+
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)

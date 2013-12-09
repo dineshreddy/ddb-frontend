@@ -50,6 +50,8 @@ modules = {
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
+
+        resource url:'/js/map/map.css', bundle: 'screen'
     }
 
     cssprint {
@@ -106,6 +108,8 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
 
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.debug.js'
+        resource url:'/js/map/map.js'
 
     }
 
