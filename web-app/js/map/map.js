@@ -39,7 +39,7 @@ $(document).ready(function() {
             theme: this.themeFolder, 
           };
           this.osmMap = new OpenLayers.Map(this.rootDivId, options);
-          //this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
+          this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
           this.osmMap.addControlToMap(new OpenLayers.Control.PanZoomBar(), new OpenLayers.Pixel(5,-25));
           this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
           
@@ -50,11 +50,14 @@ $(document).ready(function() {
    
           this.osmMap.addLayer(tiles);
           this.osmMap.setCenter(position, zoom); 
+          
         }
         
       },
       
       addInstitutionsLayer : function() {
+        var self = this;
+        
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
         
@@ -73,14 +76,69 @@ $(document).ready(function() {
         this.osmMap.addLayer(vectorLayer);
         
         // Variant 1 to add points
-        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4});
-        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8});
-        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12});
+        var institution1 = {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum"};
+        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4, institution: institution1});
+        var institution2 = {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv"};
+        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8, institution: institution2});
+        var institution3 = {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum"};
+        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12, institution: institution3});
 
         var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
         
         vectorLayer.addFeatures(institutionCollections);
 
+        
+
+        var selectionEventControl = new OpenLayers.Control.SelectFeature(vectorLayer);
+        this.osmMap.addControl(selectionEventControl);
+        selectionEventControl.activate();
+        vectorLayer.events.on({
+            'featureselected': onFeatureSelect,
+            'featureunselected': onFeatureUnselect
+        });          
+        
+        
+        function onFeatureSelect(event) {
+          var feature = event.feature;
+          var institution = feature.data.institution;
+          
+          var popup = new OpenLayers.Popup.FramedCloud(
+            "institutionPopup", 
+            feature.geometry.getBounds().getCenterLonLat(),
+            new OpenLayers.Size(100,100),
+            "<h2>" + institution.name + "</h2>",
+            null, 
+            true, 
+            this.onPopupClose);
+          
+          feature.popup = popup;
+          popup.feature = feature;
+          self.osmMap.addPopup(popup, true);
+        };
+        
+        function onFeatureUnselect(event) {
+//          feature = event.feature;
+//          if (feature.popup) {
+//              popup.feature = null;
+//              self.osmMap.removePopup(feature.popup);
+//              feature.popup.destroy();
+//              feature.popup = null;
+//          }
+        };
+        
+        function onPopupClose(event) {
+          // 'this' is the popup.
+          var feature = this.feature;
+          if (feature.layer) { 
+              selectControl.unselect(feature);
+          } else { // After "moveend" or "refresh" events on POIs layer all 
+                   //     features have been destroyed by the Strategy.BBOX
+              this.destroy();
+          }
+        };
+
+        
+        
       },
 
       applyConfiguration : function(config) {
@@ -104,6 +162,8 @@ $(document).ready(function() {
       getPoint : function(lon, lat) {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
+      
+      
 
   });  
   
