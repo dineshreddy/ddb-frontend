@@ -17,6 +17,7 @@ $(document).ready(function() {
       imageFolder: jsContextPath+"/js/map/img/",
       themeFolder: jsContextPath+"/js/vendor/openlayers-2.13.1/theme/default/style.css",
       osmMap: null,
+      vectorLayer: null,
       fromProjection: new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
 
@@ -56,12 +57,10 @@ $(document).ready(function() {
       },
       
       addInstitutionsLayer : function() {
-        var self = this;
-        
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
         
-        var vectorLayer = new OpenLayers.Layer.Vector("Institutions", {
+        this.vectorLayer = new OpenLayers.Layer.Vector("Institutions", {
           styleMap: new OpenLayers.StyleMap({'default':{
               strokeColor: "#A5003B",
               strokeOpacity: 1,
@@ -73,7 +72,7 @@ $(document).ready(function() {
           }}),
           renderers: renderer
         });
-        this.osmMap.addLayer(vectorLayer);
+        this.osmMap.addLayer(this.vectorLayer);
         
         // Variant 1 to add points
         var institution1 = {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum"};
@@ -85,14 +84,16 @@ $(document).ready(function() {
 
         var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
         
-        vectorLayer.addFeatures(institutionCollections);
+        this.vectorLayer.addFeatures(institutionCollections);
+      },
 
+      addInstitutionsClickListener : function(){
+        var self = this;
         
-
-        var selectionEventControl = new OpenLayers.Control.SelectFeature(vectorLayer);
+        var selectionEventControl = new OpenLayers.Control.SelectFeature(this.vectorLayer);
         this.osmMap.addControl(selectionEventControl);
         selectionEventControl.activate();
-        vectorLayer.events.on({
+        this.vectorLayer.events.on({
             'featureselected': onFeatureSelect,
             'featureunselected': onFeatureUnselect
         });          
@@ -137,10 +138,9 @@ $(document).ready(function() {
           }
         };
 
-        
-        
-      },
 
+      },
+      
       applyConfiguration : function(config) {
         for (var key in config) {
           if (config.hasOwnProperty(key)) {
@@ -173,5 +173,6 @@ $(document).ready(function() {
   var map = new DDBMap();
   map.display({});
   map.addInstitutionsLayer();
+  map.addInstitutionsClickListener();
   
 });
