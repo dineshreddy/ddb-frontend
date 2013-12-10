@@ -15,10 +15,13 @@
  */
 package de.ddb.next
 
-class CompareController {
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
+class CompareController {
+    def searchService
     def configurationService
     def itemService
+    def LinkGenerator grailsLinkGenerator
 
     def index() {
         log.info "index()"
@@ -26,7 +29,7 @@ class CompareController {
         def firstId = params.firstId
         def secondId = params.secondId
 
-        def searchResultParameters = itemService.handleSearchResultParameters(params, request)
+        def searchResultParameters = handleSearchResultParameters(params, request)
 
         def itemUri = request.forwardURI
 
@@ -37,5 +40,28 @@ class CompareController {
             searchResultUri: searchResultParameters["searchResultUri"],
             baseUrl: configurationService.getSelfBaseUrl()
         ])
+    }
+
+
+    /**
+     * Get Data to build Search Result Navigation Bar for Item Detail View
+     *
+     * @param reqParameters requestParameters
+     * @return Map with searchResult to build back + next links
+     *  and searchResultUri for Link "Back to Search Result"
+     */
+    def handleSearchResultParameters(reqParameters, httpRequest) {
+        def searchResultParameters = [:]
+        searchResultParameters["searchParametersMap"] = [:]
+        def resultsItems
+        def searchResultUri
+
+        //generate link back to search-result. Calculate Offset.
+        def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
+        searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
+        searchResultParameters["searchResultUri"] = searchResultUri
+        searchResultParameters["searchParametersMap"] = reqParameters
+
+        return searchResultParameters
     }
 }
