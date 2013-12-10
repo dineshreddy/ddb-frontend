@@ -15,15 +15,10 @@
  */
 package de.ddb.next
 
-import org.springframework.context.NoSuchMessageException
-import org.springframework.web.servlet.support.RequestContextUtils
-
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
-import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
 import de.ddb.next.exception.ItemNotFoundException
 
@@ -138,7 +133,7 @@ class ItemController {
                 item.pageLabel = item.title
             }
 
-            def licenseInformation = buildLicenseInformation(item)
+            def licenseInformation = itemService.buildLicenseInformation(item, request)
 
             // TODO: handle 404 and failure separately. HTTP Status Code 404, should
             // to `not found` page _and_ Internal Error should go to `internal server
@@ -213,7 +208,7 @@ class ItemController {
             def valueTags = it.value
             valueTags.each { valueTag ->
 
-                def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
+                def resource = itemService.getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
 
                 if(resource != null && !resource.isEmpty()){
                     if(cultureGraphService.isValidGndUri(resource)){
@@ -252,97 +247,17 @@ class ItemController {
     }
 
     def parents() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/hierarchy/" + params.id + "/parent")
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def jsonResp = apiResponse.getResponse()
+        def jsonResp = itemService.getParent(params.id)
+
         render(contentType:"application/json", text: jsonResp)
     }
 
     def children() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
-                "/hierarchy/" + params.id + "/children", false,
-                [(SearchParamEnum.ROWS.getName()): CortexConstants.MAX_HIERARCHY_SEARCH_RESULTS])
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def jsonResp = apiResponse.getResponse()
+        def jsonResp = itemService.getChildren( params.id)
 
         render(contentType:"application/json", text: jsonResp)
     }
 
-
-
-    private def buildLicenseInformation(def item){
-        def licenseInformation
-
-        if(item.item?.license && !item.item.license.isEmpty()){
-
-            def licenseId = getTagAttribute(item.item.license, CortexNamespace.RDF.prefix, "resource")
-
-            def propertyId = convertUriToProperties(licenseId)
-
-            licenseInformation = [:]
-
-
-            def text
-            def url
-            def img
-            try{
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                text = messageSource.getMessage("ddbnext.license.text."+propertyId, null, locale)
-                url = messageSource.getMessage("ddbnext.license.url."+propertyId, null, locale)
-                img = messageSource.getMessage("ddbnext.license.img."+propertyId, null, locale)
-            }catch(NoSuchMessageException e){
-                log.error "findById(): no I18N information for license '"+licenseInformation.id+"' in license.properties"
-            }
-            if(!text){
-                text = item.item.license.toString()
-            }
-            if(!url){
-                url = item.item.license["@url"].toString()
-            }
-
-            licenseInformation.text = text
-            licenseInformation.url = url
-            licenseInformation.img = img
-
-        }
-
-        return licenseInformation
-    }
-
-    def convertUriToProperties(def uri){
-        if(uri){
-            // http://creativecommons.org/licenses/by-nc-nd/3.0/de/
-
-            def converted = uri.toString()
-            converted = converted.replaceAll("http://","")
-            converted = converted.replaceAll("https://","")
-            converted = converted.replaceAll("[^A-Za-z0-9]", ".")
-            if(converted.startsWith(".")){
-                converted = converted.substring(1)
-            }
-            if(converted.endsWith(".")){
-                converted = converted.substring(0, converted.size()-1)
-            }
-            return converted
-        }else{
-            return ""
-        }
-    }
-
-    private String getTagAttribute(def tag, String namespacePrefix, String attributeName ) {
-        String out = null
-        out = tag["@"+namespacePrefix+":"+attributeName].toString().trim()
-        if(out == null || out.isEmpty()){
-            out = tag["@"+CortexNamespace.NS2.prefix+":"+attributeName].toString().trim()
-        }
-        return out
-    }
 
     def showXml() {
 
