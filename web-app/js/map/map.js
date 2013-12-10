@@ -10,13 +10,16 @@ $(document).ready(function() {
 
       /** Configuration * */
       rootDivId: "ddb-map",
-      initLat: 49.00,
-      initLon: 9.00,
-      initZoom: 8,
+      initLat: 49.1,
+      initLon: 8.24,
+      initZoom: 5,
       tileServerUrls: ["http://a.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://b.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://c.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png"],
-      imageFolder: jsContextPath+"/js/vendor/openlayers-2.13.1/img/",
+      imageFolder: jsContextPath+"/js/map/img/",
       themeFolder: jsContextPath+"/js/vendor/openlayers-2.13.1/theme/default/style.css",
       osmMap: null,
+      fromProjection: new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
+      toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
+
 
       /** Initialization * */
       init : function() {
@@ -34,136 +37,50 @@ $(document).ready(function() {
           
           var options = {
             theme: this.themeFolder, 
-            controls: [
-//              new OpenLayers.Control.Navigation(),
-//              new OpenLayers.Control.PanZoomBar(),
-//              new OpenLayers.Control.Attribution(),
-                new OpenLayers.Control.MousePosition()
-            ]
           };
           this.osmMap = new OpenLayers.Map(this.rootDivId, options);
+          //this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
+          this.osmMap.addControlToMap(new OpenLayers.Control.PanZoomBar(), new OpenLayers.Pixel(5,-25));
+          this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
           
-          //var tiles          = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
-          var tiles          = new OpenLayers.Layer.OSM();
-          var fromProjection = new OpenLayers.Projection("EPSG:4326");   // Transform from WGS 1984
-          var toProjection   = new OpenLayers.Projection("EPSG:900913"); // to Spherical Mercator Projection
-          var position       = new OpenLayers.LonLat(this.initLon, this.initLat).transform( fromProjection, toProjection);
+          var tiles          = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+          //var tiles          = new OpenLayers.Layer.OSM();
+          var position       = this.getLonLat(this.initLon, this.initLat);
           var zoom           = this.initZoom; 
    
           this.osmMap.addLayer(tiles);
-          this.osmMap.setCenter(position, zoom );
-          
-
+          this.osmMap.setCenter(position, zoom); 
         }
         
       },
       
       addInstitutionsLayer : function() {
-        this.log("################### 01: addInstitutionsLayer");
-        // allow testing of specific renderers via "?renderer=Canvas", etc
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
         
-        var vectorLayer = new OpenLayers.Layer.Vector("Simple Geometry", {
+        var vectorLayer = new OpenLayers.Layer.Vector("Institutions", {
           styleMap: new OpenLayers.StyleMap({'default':{
-              strokeColor: "#00FF00",
+              strokeColor: "#A5003B",
               strokeOpacity: 1,
               strokeWidth: 3,
-              fillColor: "#FF5500",
+              fillColor: "#EF7E89",
               fillOpacity: 0.5,
-              pointRadius: 6,
+              pointRadius: "${radius}",
               pointerEvents: "visiblePainted",
-              // label with \n linebreaks
-              label : "name: ${name}\n\nage: ${age}",
-              
-              fontColor: "${favColor}",
-              fontSize: "12px",
-              fontFamily: "Courier New, monospace",
-              fontWeight: "bold",
-              labelAlign: "${align}",
-              labelXOffset: "${xOffset}",
-              labelYOffset: "${yOffset}",
-              labelOutlineColor: "white",
-              labelOutlineWidth: 3
           }}),
           renderers: renderer
         });
-        
-        // create a point feature
-        var point = new OpenLayers.Geometry.Point(-111.04, 45.68);
-        var pointFeature = new OpenLayers.Feature.Vector(point);
-        pointFeature.attributes = {
-            name: "toto",
-            age: 20,
-            favColor: 'red',
-            align: "cm"
-        };
-        
-        // create a polygon feature from a linear ring of points
-        var pointList = [];
-        for(var p=0; p<6; ++p) {
-            var a = p * (2 * Math.PI) / 7;
-            var r = Math.random(1) + 1;
-            var newPoint = new OpenLayers.Geometry.Point(point.x + 5 + (r * Math.cos(a)),
-                                                         point.y + 5 + (r * Math.sin(a)));
-            pointList.push(newPoint);
-        }
-        pointList.push(pointList[0]);
-        
-        var linearRing = new OpenLayers.Geometry.LinearRing(pointList);
-        var polygonFeature = new OpenLayers.Feature.Vector(
-            new OpenLayers.Geometry.Polygon([linearRing]));
-        polygonFeature.attributes = {
-            name: "dude",
-            age: 21,
-            favColor: 'purple',
-            align: 'lb'
-        };
-        
-        multiFeature = new OpenLayers.Feature.Vector(
-            new OpenLayers.Geometry.Collection([
-                new OpenLayers.Geometry.LineString([
-                    new OpenLayers.Geometry.Point(-105,40),
-                    new OpenLayers.Geometry.Point(-95,45)
-                ]),
-                new OpenLayers.Geometry.Point(-105, 40)
-            ]),
-            {
-                name: "ball-and-chain",
-                age: 30,
-                favColor: 'black',
-                align: 'rt'
-            });
-  
-        // Create a point feature to show the label offset options
-        var labelOffsetPoint = new OpenLayers.Geometry.Point(-101.04, 35.68);
-        var labelOffsetFeature = new OpenLayers.Feature.Vector(labelOffsetPoint);
-        labelOffsetFeature.attributes = {
-            name: "offset",
-            age: 22,
-            favColor: 'blue',
-            align: "cm",
-            // positive value moves the label to the right
-            xOffset: 50,
-            // negative value moves the label down
-            yOffset: -15
-        };
-  
-  
-        var nullFeature = new OpenLayers.Feature.Vector(null);
-        nullFeature.attributes = {
-            name: "toto is some text about the world",
-            age: 20,
-            favColor: 'red',
-            align: "cm"
-        };
-        
         this.osmMap.addLayer(vectorLayer);
-        vectorLayer.drawFeature(multiFeature);
-        this.osmMap.setCenter(new OpenLayers.LonLat(50.04, 9.68), 4);
-        vectorLayer.addFeatures([pointFeature, polygonFeature, multiFeature, labelOffsetFeature, nullFeature ]);
+        
+        // Variant 1 to add points
+        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4});
+        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8});
+        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12});
 
-        this.log("################### 02: addInstitutionsLayer");
+        var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
+        
+        vectorLayer.addFeatures(institutionCollections);
+
       },
 
       applyConfiguration : function(config) {
@@ -178,6 +95,14 @@ $(document).ready(function() {
         if("console" in window && "log" in window.console){
           console.log(text);
         }
+      },
+      
+      getLonLat : function(lon, lat) {
+        return new OpenLayers.LonLat(lon, lat).transform(this.fromProjection, this.toProjection);
+      },
+
+      getPoint : function(lon, lat) {
+        return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
 
   });  

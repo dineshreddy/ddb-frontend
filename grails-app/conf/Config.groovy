@@ -252,12 +252,16 @@ jawr {
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 
+development {
+    //To disable bundling for testing, comment in this line
+    grails.resources.debug=true
+}
 
 compress {
     enabled = true
-
     debug = false
     statsEnabled = true
+
     compressionThreshold = 1024
     // filter's url-patterns
     //urlPatterns = ["/*"]

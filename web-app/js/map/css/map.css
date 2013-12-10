@@ -1,0 +1,45 @@
+
+#ddb-map {
+  border: 1px solid black;
+  width: 800px; 
+  height: 400px;
+  background-color: silver; 
+}
+
+#ddb-map #OpenLayers_Map_2_OpenLayers_Container {
+  width: 100%;
+  height: 100%;
+}
+
+#ddb-map #OpenLayers_Control_PanZoomBar_18_zoomin {
+  top: 55px !important;
+  left: 18px !important;
+}
+
+#ddb-map #OpenLayers_Control_PanZoomBar_18_zoomout {
+  top: 201px !important;
+  left: 18px !important;
+
+}
+
+#ddb-map #OpenLayers_Control_PanZoomBar_ZoombarOpenLayers_Map_2 {
+  width: 24px !important;
+  height: 180px !important;
+}
+
+#ddb-map #OpenLayers_Control_PanZoomBar_18_OpenLayers_Map_2_innerImage {
+  left: 4px !important;
+  top: -45px !important;
+}
+
+#ddb-map #OpenLayers_Control_PanZoomBar_28_panup, 
+#ddb-map #OpenLayers_Control_PanZoomBar_28_panleft, 
+#ddb-map #OpenLayers_Control_PanZoomBar_28_panright, 
+#ddb-map #OpenLayers_Control_PanZoomBar_18_pandown {
+  display: none !important;
+}
+
+#ddb-map #OpenLayers_Control_Zoom_5 {
+  display: none !important;
+}
+
