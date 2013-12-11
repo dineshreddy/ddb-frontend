@@ -1061,6 +1061,64 @@ class FavoritesController {
 		return output
 	}
 
+	private int getIntegerParam(String paramKey, int defaultValue) {
+		if (params[paramKey]){
+			return params[paramKey].toInteger()
+		}
+		return defaultValue
+	}
+
+	private Closure linkGenerator(String action, int offset, int rows, Map extraParams) {
+		Map commonParams = [
+			(SearchParamEnum.OFFSET.getName()):offset,
+			(SearchParamEnum.ROWS.getName()):rows
+		]
+		commonParams.putAll(extraParams)
+		return { String order, String by ->
+			createFavoritesLink(order, by, commonParams, action)
+		}
+	}
+
+	private def createFavoritesLink(String order, String by, Map commonParams, String action) {
+		Map currentParams = [
+			(SearchParamEnum.ORDER.getName()):order,
+			(SearchParamEnum.BY.getName()):by
+		]
+		currentParams.putAll(commonParams)
+		return g.createLink(controller:'favorites', action:action, params: currentParams)
+	}
+
+	private Folder getSelectedFolder(String folderId, User user) {
+		def selectedFolder = bookmarksService.findPublicFolderById(folderId)
+	
+		// If the folder does not exist (maybe deleted) or the user does not exist -> 404
+		if(selectedFolder == null || user == null){
+			throw new FavoritelistNotFoundException("publicFavorites(): favorites list or user do not exist")
+		}
+		return selectedFolder
+	}
+
+	private boolean handleReportingOrBlocking(User user, String folderId, Map params) {
+		if(params.report){
+			reportFavoritesList(user.id, folderId)
+			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			return true
+		}
+	
+		if(params.blockingToken) {
+			blockFavoritesList(user.id, folderId, params.blockingToken)
+			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			return true
+		}
+	
+		if(params.unblockingToken) {
+			unblockFavoritesList(user.id, folderId, params.unblockingToken)
+			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			return true
+		}
+		return false
+	}
+
 
 
 }
