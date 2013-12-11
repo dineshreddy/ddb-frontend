@@ -119,8 +119,8 @@ The file tracking.txt must contain the full Piwik tracking code. It will be rend
 
 ##DDB service infrastructure
 The DDB infrastructure is build of a set of services providing digital items, metadata, user data and many more. Hence the operation of the DDB Next portal has several dependencies to external services. 
-Almost all DDB services are web services and use the HTTP protocol for communication. Each DDB service provider is referenced via an entry in the configuration file containing an URL. 
-Some services needs some extra configuration, like the API key for the DDB backend. The following gives s short overview about the services used by the frontend.
+Almost all DDB services are web services and use the HTTP protocol for communication. Each DDB service provider is referenced via an url in the configuration file containing. 
+Some services needs some extra configuration, like the API key for the DDB backend. The following gives a short overview about the services used by the frontend.
 
 
 ####Binary service
@@ -145,10 +145,12 @@ Configuration parameter:
 * 'ddb.apis.url' defines the url to reach the API service
 
 
-###Backend service
-The backend service provides metadata for all items and institutions served by the DDB. The service is based on the IAIS-Cortex (http://www.iais.fraunhofer.de/iais-cortex.html).
-IAIS Cortex is developed by [Fraunhofer Institute for Intelligent Analysis and Information System] (http://www.iais.fraunhofer.de/) (IAIS).
+####Backend service
+The backend service provides metadata for all items and institutions served by the DDB. The service is based on the [IAIS Cortex][IAIS Cortex].
+IAIS Cortex is developed by [IAIS][IAIS] (Fraunhofer Institute for Intelligent Analysis and Information System).
 The access to the DDB backend is limited and access is restricted via an API key.
+[IAIS Cortex]: http://www.iais.fraunhofer.de/iais-cortex.html
+[IAIS]:http://www.iais.fraunhofer.de/
 
 Configuration parameter:
 * 'ddb.backend.url' defines the url to reach the backend.
@@ -158,7 +160,7 @@ More information about the backend API can be found here:
 https://api.deutsche-digitale-bibliothek.de/doku/display/ADD/API+der+Deutschen+Digitalen+Bibliothek
 
 
-####AAS
+####AAS service
 OpenSource service for handling registration, authentication and authorization functionality for DDB users. 
  
 Configuration parameter:
@@ -168,7 +170,7 @@ More info's about this service can be found here:
 https://github.com/Deutsche-Digitale-Bibliothek/aas-AASWebServices
 
 
-####CultureGraph
+####CultureGraph service
 CultureGraph is a service platform for Data Integration, Persistent Identifier and Linked Open Data for cultural entities. 
 It's a project of the Deutsche Nationalbibliothek (http://www.dnb.de).
 
