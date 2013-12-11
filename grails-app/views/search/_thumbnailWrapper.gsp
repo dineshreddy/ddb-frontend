@@ -23,22 +23,13 @@ limitations under the License.
   </div>
   <div class="item-options <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bl</g:if>">
     <ul class="item-options-ul">
-      <li>
-        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
-          <div class="hovercard-info-item" data-iid="${item.id}">
-            <h4><ddb:getTruncatedHovercardTitle title="${ item.preview.title }" length="${ 350 }" /></h4>
-            <ul class="unstyled">
-              <li>
-                <div class="small-loader"></div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </li>
-      <ddb:isLoggedIn>
+  <!--<li> 
+        <div class="compare<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>"></div>
+      </li>   -->  
+      <g:isLoggedIn>
         <li>
           <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
-          <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
               <p><g:message code="ddbnext.Added_To_Favorites"/></p>
               <ddb:isPersonalFavoritesAvailable>
@@ -58,12 +49,19 @@ limitations under the License.
             </div>
           </div>
         </li>
-      </ddb:isLoggedIn>
-      
+      </g:isLoggedIn>
       <li>
-        <div class="compare bb off" data-iid="${item.id}" title="<g:message code="ddbnext.SearchResultsCompareObject"/>"></div>
+        <div class="information<g:isLoggedIn> show-favorites</g:isLoggedIn> <g:if test="${viewType != 'grid'}">bb</g:if>">
+          <div class="hovercard-info-item" data-iid="${item.id}">
+            <h4><g:truncateHovercardTitle title="${ item.preview.title }" length="${ 350 }"></g:truncateHovercardTitle></h4>
+            <ul class="unstyled">
+              <li>
+                <div class="small-loader"></div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </li>
-      
     </ul>
   </div>
 </div>
