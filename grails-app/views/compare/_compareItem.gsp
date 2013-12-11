@@ -17,10 +17,9 @@ limitations under the License.
 <g:render template="/item/institution" />
 <g:render template="/item/itemLinks" />
 <div class="row item-detail item-content">
-	<div
-		class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
+	<div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
 		<h2>
-			${itemTitle}
+			${title}
 		</h2>
 		<g:render template="/item/fields" />
 		<g:render template="/item/rights" />
@@ -28,9 +27,9 @@ limitations under the License.
 		<g:render template="/item/origin" />
 		<g:render template="/item/share" />
 	</div>
-<%--	<g:if test="${binaryList}">--%>
-<%--		<g:render template="/item/binaries" />--%>
-<%--	</g:if>--%>
+	<g:if test="${binaryList}">
+		<g:render template="/item/binaries" />
+	</g:if>
 </div>
 <g:render template="/item/hierarchy" />
 <g:render template="/item/linkurl" />
