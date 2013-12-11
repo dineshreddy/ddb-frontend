@@ -563,7 +563,8 @@ class ItemService {
         fields.each {
             it = convertToHtmlLink(it)
             def messageKey = 'ddbnext.' + it.'@id'
-            def translated = messageSource.getMessage(messageKey, null, locale)
+
+            def translated = messageSource.getMessage(messageKey, null, messageKey, locale)
             if(translated != messageKey) {
                 it.name = translated
             } else {
