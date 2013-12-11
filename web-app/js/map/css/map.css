@@ -61,5 +61,38 @@
   background-color: #FFFFFF;
 }
 
+.olMap .olPopupCloseBox {
+  background: url("../img/ddb_PopupCancel.png") no-repeat scroll 0 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+.olMap .olPopupDDBContent {
+  margin: 2px;
+}
+
+.olMap .olPopupDDBHeader {
+  height: 20px;
+  font-weight: bold;
+}
+
+.olMap .olPopupDDBContent {
+  min-height: 20px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.olMap .olPopupDDBContent ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.olMap .olPopupDDBContent ul li {
+  background: url("../img/list_arrow_plum.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
+}
+
+
 
 /* Popup end */

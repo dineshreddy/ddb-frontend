@@ -27,8 +27,6 @@ $(document).ready(function() {
       },
 
       display : function(config) {
-        this.log("################ 00 : display");
-        
         this.applyConfiguration(config);
         
         var rootDiv = $("#"+this.rootDivId);
@@ -80,11 +78,11 @@ $(document).ready(function() {
         this.osmMap.addLayer(this.vectorLayer);
         
         // Variant 1 to add points
-        var institution1 = {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum"};
+        var institution1 = {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum", type: "Museum"};
         var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4, institution: institution1});
-        var institution2 = {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv"};
+        var institution2 = {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv", type: "Archiv"};
         var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8, institution: institution2});
-        var institution3 = {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum"};
+        var institution3 = {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum", type: "Museum"};
         var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12, institution: institution3});
 
         var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
@@ -106,16 +104,17 @@ $(document).ready(function() {
         
         function onFeatureSelect(event) {
           var feature = event.feature;
-          var institution = feature.data.institution;
+          var institutionList = [feature.data.institution];
           
           var popup = new OpenLayers.Popup.FramedDDB(
             "institutionPopup", 
             feature.geometry.getBounds().getCenterLonLat(),
             new OpenLayers.Size(315,100),
-            "<h2>" + institution.name + "</h2>",
+            self.getContentHtml(institutionList),
             null, 
             true, 
-            this.onPopupClose);
+            this.onPopupClose, 
+            self.imageFolder);
           
           feature.popup = popup;
           popup.feature = feature;
@@ -124,10 +123,11 @@ $(document).ready(function() {
         
         function onFeatureUnselect(event) {
           feature = event.feature;
+          var popup = feature.popup;
           if (feature.popup) {
               popup.feature = null;
-              self.osmMap.removePopup(feature.popup);
-              feature.popup.destroy();
+              self.osmMap.removePopup(popup);
+              popup.destroy();
               feature.popup = null;
           }
         };
@@ -166,6 +166,25 @@ $(document).ready(function() {
 
       getPoint : function(lon, lat) {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
+      },
+      
+      getContentHtml : function(institutionList) {
+        var html = "";
+        html += "<div class='olPopupDDBContent'>";
+        html += "  <div class='olPopupDDBHeader'>";
+        html += "    " + institutionList.length + " Institutionen";
+        html += "  </div>";
+        html += "  <div class='olPopupDDBContent'>";
+        html += "    <ul>";
+        for(var i=0; i<institutionList.length; i++){
+          html += "    <li>";
+          html += "      "+institutionList[i].name + "(" + institutionList[i].type + ")";
+          html += "    </li>";
+        }
+        html += "    </ul>";
+        html += "  </div>";
+        html += "</div>";
+        return html;
       },
       
       
@@ -220,28 +239,28 @@ $(document).ready(function() {
        */
       positionBlocks: {
         "tl": {
-          'offset': new OpenLayers.Pixel(44, 0),
-          'padding': new OpenLayers.Bounds(8, 40, 8, 9),
+          'offset': new OpenLayers.Pixel(20, 0),
+          'padding': new OpenLayers.Bounds(10, 10, 10, 10),
           'blocks': [
               { // top-left
                   size: new OpenLayers.Size('auto', 'auto'),
                   anchor: new OpenLayers.Bounds(0, 51, 22, 0),
-                  position: new OpenLayers.Pixel(0, 0)
+                  position: new OpenLayers.Pixel(-9999, -9999)
               },
               { //top-right
                   size: new OpenLayers.Size(22, 'auto'),
                   anchor: new OpenLayers.Bounds(null, 50, 0, 0),
-                  position: new OpenLayers.Pixel(-1238, 0)
+                  position: new OpenLayers.Pixel(-9999, -9999)
               },
               { //bottom-left
                   size: new OpenLayers.Size('auto', 19),
                   anchor: new OpenLayers.Bounds(0, 32, 22, null),
-                  position: new OpenLayers.Pixel(0, -631)
+                  position: new OpenLayers.Pixel(-9999, -9999)
               },
               { //bottom-right
-                  size: new OpenLayers.Size(22, 18),
-                  anchor: new OpenLayers.Bounds(null, 32, 0, null),
-                  position: new OpenLayers.Pixel(-1238, -632)
+                  size: new OpenLayers.Size(25, 25),
+                  anchor: new OpenLayers.Bounds(null, 0, 20, null), //left, bottom, right, top
+                  position: new OpenLayers.Pixel(0, 0)
               },
               { // stem
                   size: new OpenLayers.Size(81, 35),
@@ -251,28 +270,28 @@ $(document).ready(function() {
           ]
         },
         "tr": {
-            'offset': new OpenLayers.Pixel(-45, 0),
-            'padding': new OpenLayers.Bounds(8, 40, 8, 9),
+            'offset': new OpenLayers.Pixel(0, 0),
+            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
                     anchor: new OpenLayers.Bounds(0, 51, 22, 0),
-                    position: new OpenLayers.Pixel(0, 0)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //top-right
                     size: new OpenLayers.Size(22, 'auto'),
                     anchor: new OpenLayers.Bounds(null, 50, 0, 0),
-                    position: new OpenLayers.Pixel(-1238, 0)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //bottom-left
-                    size: new OpenLayers.Size('auto', 19),
-                    anchor: new OpenLayers.Bounds(0, 32, 22, null),
-                    position: new OpenLayers.Pixel(0, -631)
+                    size: new OpenLayers.Size('auto', 25),
+                    anchor: new OpenLayers.Bounds(0, 0, 0, null), //left, bottom, right, top
+                    position: new OpenLayers.Pixel(0, 0)
                 },
                 { //bottom-right
                     size: new OpenLayers.Size(22, 19),
                     anchor: new OpenLayers.Bounds(null, 32, 0, null),
-                    position: new OpenLayers.Pixel(-1238, -631)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { // stem
                     size: new OpenLayers.Size(81, 35),
@@ -282,28 +301,28 @@ $(document).ready(function() {
             ]
         },
         "bl": {
-            'offset': new OpenLayers.Pixel(45, 0),
-            'padding': new OpenLayers.Bounds(8, 9, 8, 40),
+            'offset': new OpenLayers.Pixel(20, 0),
+            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
                     anchor: new OpenLayers.Bounds(0, 21, 22, 32),
-                    position: new OpenLayers.Pixel(0, 0)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //top-right
-                    size: new OpenLayers.Size(22, 'auto'),
-                    anchor: new OpenLayers.Bounds(null, 21, 0, 32),
-                    position: new OpenLayers.Pixel(-1238, 0)
+                    size: new OpenLayers.Size(25, 'auto'),
+                    anchor: new OpenLayers.Bounds(null, 20, 17, -3), //left, bottom, right, top
+                    position: new OpenLayers.Pixel(0, 0)
                 },
                 { //bottom-left
                     size: new OpenLayers.Size('auto', 21),
                     anchor: new OpenLayers.Bounds(0, 0, 22, null),
-                    position: new OpenLayers.Pixel(0, -629)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //bottom-right
                     size: new OpenLayers.Size(22, 21),
                     anchor: new OpenLayers.Bounds(null, 0, 0, null),
-                    position: new OpenLayers.Pixel(-1238, -629)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { // stem
                     size: new OpenLayers.Size(81, 33),
@@ -313,28 +332,28 @@ $(document).ready(function() {
             ]
         },
         "br": {
-            'offset': new OpenLayers.Pixel(-44, 0),
-            'padding': new OpenLayers.Bounds(8, 9, 8, 40),
+            'offset': new OpenLayers.Pixel(0, 0),
+            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
-                    anchor: new OpenLayers.Bounds(0, 21, 22, 32),
+                    anchor: new OpenLayers.Bounds(0, 20, 0, -3), //left, bottom, right, top
                     position: new OpenLayers.Pixel(0, 0)
                 },
                 { //top-right
                     size: new OpenLayers.Size(22, 'auto'),
                     anchor: new OpenLayers.Bounds(null, 21, 0, 32),
-                    position: new OpenLayers.Pixel(-1238, 0)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //bottom-left
                     size: new OpenLayers.Size('auto', 21),
                     anchor: new OpenLayers.Bounds(0, 0, 22, null),
-                    position: new OpenLayers.Pixel(0, -629)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { //bottom-right
                     size: new OpenLayers.Size(22, 21),
                     anchor: new OpenLayers.Bounds(null, 0, 0, null),
-                    position: new OpenLayers.Pixel(-1238, -629)
+                    position: new OpenLayers.Pixel(-9999, -9999)
                 },
                 { // stem
                     size: new OpenLayers.Size(81, 33),
@@ -386,7 +405,7 @@ $(document).ready(function() {
        * closeBoxCallback - {Function} Function to be called on closeBox click.
        */
       initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
-                          closeBoxCallback) {
+                          closeBoxCallback, imageSrc) {
 
           OpenLayers.Popup.Anchored.prototype.initialize.apply(this, arguments);
 
@@ -416,6 +435,8 @@ $(document).ready(function() {
           this.groupDiv.style.width = "100%";
           
           this.contentDiv.className = this.contentDisplayClass;
+          
+          this.imageSrc = imageSrc;
       },
 
       /** 
@@ -501,6 +522,9 @@ $(document).ready(function() {
           //update the padding
           this.padding = this.positionBlocks[this.relativePosition].padding;
 
+          var closeDivShiftRight = 19;
+          var closeDivShiftTop = 2;
+          
           //update the position of our close box to new padding
           if (this.closeDiv) {
               // use the content div's css padding to determine if we should
@@ -508,9 +532,9 @@ $(document).ready(function() {
               var contentDivPadding = this.getContentDivPadding();
 
               this.closeDiv.style.right = contentDivPadding.right + 
-                                          this.padding.right + "px";
+                                          this.padding.right + closeDivShiftRight + "px";
               this.closeDiv.style.top = contentDivPadding.top + 
-                                        this.padding.top + "px";
+                                        this.padding.top + closeDivShiftTop + "px";
           }
 
           this.updateBlocks();
@@ -543,6 +567,7 @@ $(document).ready(function() {
        * Method: createBlocks
        */
       createBlocks: function() {
+//        console.log("################## 01 createBlocks");
           this.blocks = [];
 
           //since all positions contain the same number of blocks, we can 
@@ -570,10 +595,8 @@ $(document).ready(function() {
                   (this.isAlphaImage) ? OpenLayers.Util.createAlphaImageDiv
                                       : OpenLayers.Util.createImage;
 
-              block.image = imageCreator(imgId, 
-                  null, this.imageSize, this.imageSrc, 
-                  "absolute", null, null, null
-              );
+              var imageUrl = this.imageSrc + imgId + ".png";
+              block.image = imageCreator(imgId, null, this.imageSize, imageUrl, "absolute", null, null, null);
 
               block.div.appendChild(block.image);
               this.groupDiv.appendChild(block.div);
@@ -587,12 +610,15 @@ $(document).ready(function() {
        *     the popup's blocks in their appropropriate places.
        */
       updateBlocks: function() {
+//        console.log("################## 02 updateBlocks");
           if (!this.blocks) {
               this.createBlocks();
           }
           
+//          console.log("################## 03 relativePosition: "+this.relativePosition);
           if (this.size && this.relativePosition) {
               var position = this.positionBlocks[this.relativePosition];
+//              console.log("################## 04 position: "+position);
               for (var i = 0; i < position.blocks.length; i++) {
       
                   var positionBlock = position.blocks[i];
