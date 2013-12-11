@@ -71,7 +71,6 @@ A list of some predefined variables is set below:
 	#Favorites configuration
     ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
     ddb.favorites.reportMailTo=geschaeftsstelle@deutsche-digitale-bibliothek.de
-	ddb.favorites.basedomain=http://dev.escidoc.org
 	ddb.favorites.reportMailTo=noreply@deutsche-digitale-bibliothek.de
 
 	#Filter configuration
@@ -119,7 +118,7 @@ The file tracking.txt must contain the full Piwik tracking code. It will be rend
 
 ##DDB service infrastructure
 The DDB infrastructure is build of a set of services providing digital items, metadata, user data and many more. Hence the operation of the DDB Next portal has several dependencies to external services. 
-Almost all DDB services are web services and use the HTTP protocol for communication. Each DDB service provider is referenced via an url in the configuration file containing. 
+Almost all DDB services are web services and use the HTTP protocol for communication. Each DDB service provider is referenced via an url in the configuration file. 
 Some services needs some extra configuration, like the API key for the DDB backend. The following gives a short overview about the services used by the frontend.
 
 
@@ -198,7 +197,7 @@ The DDB Next is a Web Application use the following Grails plugins
 * cache:1.0.0
 * cache-headers:1.1.5
 * rendering:0.4.3
-* resources:1.1.6
+* resources:1.2.1
 * zipped-resources:1.0
 * compress:0.4
 
