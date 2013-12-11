@@ -52,13 +52,33 @@
   right: 10px;
 }
 
+.olMap .olControlDDBHome {
+  left: 19px;
+  top: 205px;   
+}
+
 /* Controls end */
 
 /* Popup start */
 
+.olMap img {
+  margin: 0px !important; 
+}
+
+.olMap #institutionPopup {
+  height: auto !important;
+  overflow: visible !important; 
+}
+
+.olMap #institutionPopup_GroupDiv {
+  position: relative !important;
+  overflow: visible !important; 
+}
 
 .olMap .olFramedDDBPopupContent {
   background-color: #FFFFFF;
+  position: relative !important;
+  height: auto !important;
 }
 
 .olMap .olPopupCloseBox {
@@ -68,7 +88,7 @@
 }
 
 .olMap .olPopupDDBContent {
-  margin: 2px;
+  margin: 0px 4px 4px 4px;
 }
 
 .olMap .olPopupDDBHeader {
@@ -76,10 +96,16 @@
   font-weight: bold;
 }
 
-.olMap .olPopupDDBContent {
-  min-height: 20px;
+.olMap .olPopupDDBBody {
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+
+.olMap .olPopupDDBScroll {
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: auto; 
+  max-height: 150px;
+  height: auto;
 }
 
 .olMap .olPopupDDBContent ul {

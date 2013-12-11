@@ -22,8 +22,6 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/js/map/css/map.css', bundle: 'screen'
-
         resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap.css', bundle: 'screen'
         resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap-responsive.css', bundle: 'screen'
         resource url:'/css/vendor/fancybox-2.1.4/lib/jquery.fancybox-2.1.4.css', bundle: 'screen'
@@ -52,6 +50,7 @@ modules = {
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
+        resource url:'/js/map/css/map.css', bundle: 'screen'
     }
 
     cssprint {
@@ -108,8 +107,8 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
 
-        resource url:'/js/vendor/openlayers-2.14/OpenLayers.debug.js'
-        //resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        //resource url:'/js/vendor/openlayers-2.14/OpenLayers.debug.js'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         //resource url:'/js/vendor/openlayers-2.13.1/OpenLayers.debug.js'
         resource url:'/js/map/map.js'
 

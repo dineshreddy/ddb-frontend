@@ -41,6 +41,7 @@ $(document).ready(function() {
           this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
           this.osmMap.addControlToMap(new OpenLayers.Control.PanZoomBar(), new OpenLayers.Pixel(5,-25));
           this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
+          this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder), new OpenLayers.Pixel(150,150));
           
           var tiles          = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
           //var tiles          = new OpenLayers.Layer.OSM();
@@ -78,12 +79,28 @@ $(document).ready(function() {
         this.osmMap.addLayer(this.vectorLayer);
         
         // Variant 1 to add points
-        var institution1 = {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum", type: "Museum"};
-        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4, institution: institution1});
-        var institution2 = {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv", type: "Archiv"};
-        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8, institution: institution2});
-        var institution3 = {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum", type: "Museum"};
-        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12, institution: institution3});
+        var institutions1 = [
+          {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum", type: "Museum"},
+          {id: "EGD2452DFGDHN23dBSDRS242SDFV", name: "Faust Museum", type: "Museum"},
+          {id: "FGD2452DFGDHN23dBSDRS242SDFV", name: "Nietzsche Museum", type: "Museum"}
+        ];
+        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4, institutions: institutions1});
+        var institutions2 = [
+          {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv", type: "Archiv"}
+        ];
+        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8, institutions: institutions2});
+        var institutions3 = [
+          {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum", type: "Museum"},
+          {id: "4523ASDGSDFHSDFG4562BSDFG47V", name: "Archivalien", type: "Archiv"},
+          {id: "5672ASDGSDFHSDFG4562BSDFG47V", name: "Lesezirkel Süd", type: "Bibliothek"},
+          {id: "6782ASDGSDFHSDFG4562BSDFG47V", name: "Universalmuseum Neckarsulm-Buxtehude", type: "Museum"},
+          {id: "8462ASDGSDFHSDFG4562BSDFG47V", name: "Freelancereimuseum", type: "Museum"},
+          {id: "9462ASDGSDFHSDFG4562BSDFG47V", name: "Imperiale Droidenmuseum", type: "Museum"},
+          {id: "1062ASDGSDFHSDFG4562BSDFG47V", name: "Museum dies sein muss", type: "Archiv"},
+          {id: "1162ASDGSDFHSDFG4562BSDFG47V", name: "Richtig sein Archiv dies", type: "Archiv"},
+          {id: "1262ASDGSDFHSDFG4562BSDFG47V", name: "Naturalienmuseum", type: "Museum"}
+        ];
+        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12, institutions: institutions3});
 
         var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
         
@@ -104,7 +121,7 @@ $(document).ready(function() {
         
         function onFeatureSelect(event) {
           var feature = event.feature;
-          var institutionList = [feature.data.institution];
+          var institutionList = feature.data.institutions;
           
           var popup = new OpenLayers.Popup.FramedDDB(
             "institutionPopup", 
@@ -174,14 +191,16 @@ $(document).ready(function() {
         html += "  <div class='olPopupDDBHeader'>";
         html += "    " + institutionList.length + " Institutionen";
         html += "  </div>";
-        html += "  <div class='olPopupDDBContent'>";
-        html += "    <ul>";
+        html += "  <div class='olPopupDDBBody'>";
+        html += "    <div class='olPopupDDBScroll'>";
+        html += "      <ul>";
         for(var i=0; i<institutionList.length; i++){
-          html += "    <li>";
-          html += "      "+institutionList[i].name + "(" + institutionList[i].type + ")";
-          html += "    </li>";
+          html += "      <li>";
+          html += "        "+institutionList[i].name + " (" + institutionList[i].type + ")";
+          html += "      </li>";
         }
-        html += "    </ul>";
+        html += "      </ul>";
+        html += "    </div>";
         html += "  </div>";
         html += "</div>";
         return html;
@@ -239,8 +258,8 @@ $(document).ready(function() {
        */
       positionBlocks: {
         "tl": {
-          'offset': new OpenLayers.Pixel(20, 0),
-          'padding': new OpenLayers.Bounds(10, 10, 10, 10),
+          'offset': new OpenLayers.Pixel(5, -40),
+          'padding': new OpenLayers.Bounds(0, 0, 0, 0),
           'blocks': [
               { // top-left
                   size: new OpenLayers.Size('auto', 'auto'),
@@ -259,7 +278,7 @@ $(document).ready(function() {
               },
               { //bottom-right
                   size: new OpenLayers.Size(25, 25),
-                  anchor: new OpenLayers.Bounds(null, 0, 20, null), //left, bottom, right, top
+                  anchor: new OpenLayers.Bounds(null, -10, 5, null), //left, bottom, right, top
                   position: new OpenLayers.Pixel(0, 0)
               },
               { // stem
@@ -270,8 +289,8 @@ $(document).ready(function() {
           ]
         },
         "tr": {
-            'offset': new OpenLayers.Pixel(0, 0),
-            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
+            'offset': new OpenLayers.Pixel(10, -40),
+            'padding': new OpenLayers.Bounds(0, 0, 0, 0),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
@@ -285,7 +304,7 @@ $(document).ready(function() {
                 },
                 { //bottom-left
                     size: new OpenLayers.Size('auto', 25),
-                    anchor: new OpenLayers.Bounds(0, 0, 0, null), //left, bottom, right, top
+                    anchor: new OpenLayers.Bounds(-10, -10, 0, null), //left, bottom, right, top
                     position: new OpenLayers.Pixel(0, 0)
                 },
                 { //bottom-right
@@ -301,8 +320,8 @@ $(document).ready(function() {
             ]
         },
         "bl": {
-            'offset': new OpenLayers.Pixel(20, 0),
-            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
+            'offset': new OpenLayers.Pixel(7, 10),
+            'padding': new OpenLayers.Bounds(0, 0, 0, 0),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
@@ -311,7 +330,7 @@ $(document).ready(function() {
                 },
                 { //top-right
                     size: new OpenLayers.Size(25, 'auto'),
-                    anchor: new OpenLayers.Bounds(null, 20, 17, -3), //left, bottom, right, top
+                    anchor: new OpenLayers.Bounds(null, 20, 7, -13), //left, bottom, right, top
                     position: new OpenLayers.Pixel(0, 0)
                 },
                 { //bottom-left
@@ -332,12 +351,12 @@ $(document).ready(function() {
             ]
         },
         "br": {
-            'offset': new OpenLayers.Pixel(0, 0),
-            'padding': new OpenLayers.Bounds(10, 10, 10, 10),
+            'offset': new OpenLayers.Pixel(10, 10),
+            'padding': new OpenLayers.Bounds(0, 0, 0, 0),
             'blocks': [
                 { // top-left
                     size: new OpenLayers.Size('auto', 'auto'),
-                    anchor: new OpenLayers.Bounds(0, 20, 0, -3), //left, bottom, right, top
+                    anchor: new OpenLayers.Bounds(-10, 0, 0, -13), //left, bottom, right, top
                     position: new OpenLayers.Pixel(0, 0)
                 },
                 { //top-right
@@ -531,10 +550,8 @@ $(document).ready(function() {
               //  padd the close div
               var contentDivPadding = this.getContentDivPadding();
 
-              this.closeDiv.style.right = contentDivPadding.right + 
-                                          this.padding.right + closeDivShiftRight + "px";
-              this.closeDiv.style.top = contentDivPadding.top + 
-                                        this.padding.top + closeDivShiftTop + "px";
+              this.closeDiv.style.right = contentDivPadding.right + this.padding.right + closeDivShiftRight + "px";
+              this.closeDiv.style.top = contentDivPadding.top + this.padding.top + closeDivShiftTop + "px";
           }
 
           this.updateBlocks();
@@ -554,6 +571,7 @@ $(document).ready(function() {
        *     relative to the passed-in px.
        */
       calculateNewPx:function(px) {
+
           var newPx = OpenLayers.Popup.Anchored.prototype.calculateNewPx.apply(
               this, arguments
           );
@@ -567,7 +585,6 @@ $(document).ready(function() {
        * Method: createBlocks
        */
       createBlocks: function() {
-//        console.log("################## 01 createBlocks");
           this.blocks = [];
 
           //since all positions contain the same number of blocks, we can 
@@ -610,15 +627,17 @@ $(document).ready(function() {
        *     the popup's blocks in their appropropriate places.
        */
       updateBlocks: function() {
-//        console.log("################## 02 updateBlocks");
+
           if (!this.blocks) {
               this.createBlocks();
           }
           
-//          console.log("################## 03 relativePosition: "+this.relativePosition);
+//          var height = $(".olPopupDDBContent")
+//          //var height = document.getElementById('top').offsetHeight
+//          $("#institutionPopup_GroupDiv").css("height", height);
+          
           if (this.size && this.relativePosition) {
               var position = this.positionBlocks[this.relativePosition];
-//              console.log("################## 04 position: "+position);
               for (var i = 0; i < position.blocks.length; i++) {
       
                   var positionBlock = position.blocks[i];
@@ -660,6 +679,102 @@ $(document).ready(function() {
 
       CLASS_NAME: "OpenLayers.Popup.FramedDDB"
   });
+  
+  
+  OpenLayers.Control.DDBHome = OpenLayers.Class(OpenLayers.Control, {
+      
+      /**
+       * APIProperty: zoomInId
+       * {String}
+       * Instead of having the control create a zoom in link, you can provide 
+       *     the identifier for an anchor element already added to the document.
+       *     By default, an element with id "olZoomInLink" will be searched for
+       *     and used if it exists.
+       */
+      ddbHomeId: "olDDBHomeLink",
+
+      ddbHomeImg: "ddb_ResetMap.png",
+      
+      imageFolder: "",
+
+      initialize:function(imageFolder) {
+        this.imageFolder = imageFolder;
+      },
+  
+      /**
+       * Method: draw
+       *
+       * Returns:
+       * {DOMElement} A reference to the DOMElement containing the zoom links.
+       */
+      draw: function() {
+          var div = OpenLayers.Control.prototype.draw.apply(this),
+              links = this.getOrCreateLinks(div),
+              ddbHome = links.ddbHome,
+              eventsInstance = this.map.events;
+          
+          eventsInstance.register("buttonclick", this, this.onDDBHomeClick);
+          
+          this.ddbHome = ddbHome;
+          $(div).addClass("olControlDDBHome");
+          return div;
+      },
+      
+      /**
+       * Method: getOrCreateLinks
+       * 
+       * Parameters:
+       * el - {DOMElement}
+       *
+       * Return: 
+       * {Object} Object with zoomIn and zoomOut properties referencing links.
+       */
+      getOrCreateLinks: function(el) {
+          var ddbHome = document.getElementById(this.ddbHome);
+          if (!ddbHome) {
+            ddbHome = document.createElement("a");
+            ddbHome.href = "#ddbHome";
+            var ddbHomeImg = document.createElement("img");
+            $(ddbHomeImg).attr("src", this.imageFolder + this.ddbHomeImg);
+            $(ddbHomeImg).addClass("olDDBHomeImg");
+            ddbHome.appendChild(ddbHomeImg);
+            ddbHome.className = "olControlDDBLink";
+              el.appendChild(ddbHome);
+          }
+          OpenLayers.Element.addClass(ddbHome, "olButton");
+          
+          return {
+            ddbHome: ddbHome
+          };
+      },
+      
+      /**
+       * Method: onZoomClick
+       * Called when zoomin/out link is clicked.
+       */
+      onDDBHomeClick: function(evt) {
+          var button = evt.buttonElement;
+          if (button === this.ddbHome) {
+              this.map.zoomIn();
+              //TODO
+          } 
+      },
+  
+      /** 
+       * Method: destroy
+       * Clean up.
+       */
+      destroy: function() {
+          if (this.map) {
+              this.map.events.unregister("buttonclick", this, this.onDDBHomeClick);
+          }
+          delete this.ddbHomeLink;
+          OpenLayers.Control.prototype.destroy.apply(this);
+      },
+  
+      CLASS_NAME: "OpenLayers.Control.DDBHome"
+  });  
+  
   
   
   var map = new DDBMap();
