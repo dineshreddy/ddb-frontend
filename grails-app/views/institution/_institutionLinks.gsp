@@ -59,7 +59,7 @@ limitations under the License.
     </ddb:isLoggedIn>
 
     <div class="link-block">
-      <a class="page-link page-link-popup-anchor" href="${itemUri}"
+      <a class="page-link page-link-popup-anchor" href="${url}"
         title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message
             code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
