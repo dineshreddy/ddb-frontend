@@ -521,7 +521,15 @@ input[type="checkbox"],input[type="radio"] {
   cursor: pointer;
 }
 
-.search-results .results-list .summary .compare:hover {
+.search-results .results-list .summary .compare.disabled {
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat -30px -122px;
+  cursor: default;
+}
+
+
+.search-results .results-list .summary .compare:hover :not(.disabled) {
   background-position: 0 -152px;
 }
 
@@ -983,6 +991,7 @@ input[type="checkbox"],input[type="radio"] {
     margin-left: 13px;
     width: 100px;
   }
+  
 }
 
 @media (min-width: 481px) {
