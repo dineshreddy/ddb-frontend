@@ -154,8 +154,8 @@ class ItemController {
                     fields = createEntityLinks(fields)
                 }
 
-                if(params.print){
-                    renderPdf(template: "itemPdf", model: [
+                if(params.pdf){
+                    render(view: "itemPdf", model: [
                         itemUri: itemUri,
                         viewerUri: item.viewerUri,
                         title: item.title,
@@ -173,8 +173,10 @@ class ItemController {
                         results: searchResultParameters["resultsItems"],
                         searchResultUri: searchResultParameters["searchResultUri"],
                         flashInformation: flashInformation,
-                        license: licenseInformation],
-                    filename: "Item-Detail.pdf")
+                        license: licenseInformation,
+						isFavorite: isFavorite,
+						baseUrl: configurationService.getSelfBaseUrl()
+                    ])
                 }else{
                     render(view: "item", model: [
                         itemUri: itemUri,

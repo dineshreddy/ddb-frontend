@@ -13,10 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<!DOCTYPE html>
-<html lang="${ddb.getCurrentLocale()}">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="${ddb.getCurrentLocale()}">
   <head>
-    <meta charset="utf-8" />
 
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
@@ -29,41 +29,17 @@ limitations under the License.
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
-    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
 
   </head>
   <body>
-    <noscript>
-      <div class="container">
-        <div class="row">
-          <div class="span12 warning">
-            <span><g:message code="ddbnext.Warning_Non_Javascript"/></span>
-          </div>
-        </div>
-      </div>
-    </noscript>
-    <ddb:doHideIfEmbedded>
-      <g:render template="/mainHeader" />
-    </ddb:doHideIfEmbedded>
+    <g:render template="/pdfHeader" />
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>
-    <g:render template="/footer" />
-    <g:render template="/jsVariables" />
-    <jawr:script src="/i18n/messages.js"/>
+    <g:render template="/pdfFooter" />
     <r:layoutResources />
-    
-    <%-- 
-    <script>
-        $('#header-menu-btn').click(function(event) {
-            console.log('menu btn clicked');
-        });
-    </script>
-    --%>
-    
-    <ddb:getPiwikTracking />
   </body>
 </html>
