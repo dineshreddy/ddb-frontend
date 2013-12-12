@@ -22,24 +22,17 @@ class ItemController {
 
     def itemService
 
+    /**
+     * Handle the default show Item logic
+     * The business logic is moved to ItemService
+     * Errors and validation are handled in the ItemService. If an error an ItemNotFoundException will be thrown
+     */
     def findById() {
         try {
             def id = params.id
             def model = itemService.getFullItemModel(id)
 
-            if("404".equals(model)){
-                throw new ItemNotFoundException()
-            }
-
-            // TODO: handle 404 and failure separately. HTTP Status Code 404, should
-            // to `not found` page _and_ Internal Error should go to `internal server
-            // error` page. We should send also the HTTP Status Code 404 or 500 to the
-            // Client.
-            if(model == '404' || model?.failure) {
-                redirect(controller: 'error')
-            } else {
-                render(view: "item", model: model)
-            }
+            render(view: "item", model: model)
         } catch(ItemNotFoundException infe){
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "itemNotFound"
