@@ -65,26 +65,19 @@
   margin: 0px !important; 
 }
 
-.olMap #institutionPopup {
-  height: auto !important;
-  overflow: visible !important; 
-}
-
 .olMap #institutionPopup_GroupDiv {
-  position: relative !important;
-  overflow: visible !important; 
 }
 
 .olMap .olFramedDDBPopupContent {
   background-color: #FFFFFF;
-  position: relative !important;
-  height: auto !important;
 }
 
 .olMap .olPopupCloseBox {
   background: url("../img/ddb_PopupCancel.png") no-repeat scroll 0 0 !important;
   width: 20px !important;
   height: 20px !important;
+  right: 35px !important;
+  top: 17px !important;
 }
 
 .olMap .olPopupDDBContent {
@@ -103,9 +96,10 @@
 
 .olMap .olPopupDDBScroll {
   overflow-x: hidden;
-  overflow-y: auto; 
+  overflow-y: scroll; 
   max-height: 150px;
   height: auto;
+  background-color: green;
 }
 
 .olMap .olPopupDDBContent ul {
