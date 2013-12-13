@@ -41,6 +41,6 @@ limitations under the License.
       </g:if>
     </div>
     <g:render template="hierarchyPdf" />
-    <g:render template="linkurl" />
+    <g:render template="linkurlPdf" />
   </body>
 </html>

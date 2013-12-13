@@ -83,124 +83,116 @@ limitations under the License.
                    default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
       </p>
     </div>
-    <noscript>
-      <div class="scroller all">
-        <ul class="gallery-all">
-          <g:each in="${binaryList}">
-            <li>
-              <div class="group">
-                <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                  <g:set var="type" value="image"/>
-                </g:if>
-                <g:elseif test="${it.orig.uri.video != ''}">
-                  <g:set var="type" value="video"/>
-                </g:elseif>
-                <g:elseif test="${it.orig.uri.audio != ''}">
-                  <g:set var="type" value="audio"/>
-                </g:elseif>
-                <div class="thumbnail ${type}">
-                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                </div>
-                <span class="label off">
-                  <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                    ${it.full.title}
-                  </g:if>
-                  <g:else>
-                    ${it.orig.title}
-                  </g:else>
-                </span>
+    <div class="scroller all pdf-scroller">
+      <ul class="gallery-all">
+        <g:each in="${binaryList}">
+          <li>
+            <div class="group">
+              <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                <g:set var="type" value="image"/>
+              </g:if>
+              <g:elseif test="${it.orig.uri.video != ''}">
+                <g:set var="type" value="video"/>
+              </g:elseif>
+              <g:elseif test="${it.orig.uri.audio != ''}">
+                <g:set var="type" value="audio"/>
+              </g:elseif>
+              <div class="thumbnail ${type}">
+                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
               </div>
-            </li>
-          </g:each>
-        </ul>
-      </div>
-    </noscript>
+              <span class="label off">
+                <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+                  ${it.full.title}
+                </g:if>
+                <g:else>
+                  ${it.orig.title}
+                </g:else>
+              </span>
+            </div>
+          </li>
+        </g:each>
+      </ul>
+    </div>
 
     <div>
       <p class="tab images"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
     </div>
-    <noscript>
-      <div class="scroller images">
-        <g:each in="${binaryList}">
-          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-            <g:set var="images" value="true"/>
-          </g:if>
-        </g:each>
-        <g:if test="${images}">
-          <ul class="gallery-images">
-            <g:each in="${binaryList}">
-              <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                <li>
-                  <div class="group">
-                    <div class="thumbnail image">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.preview.title}</span>
-                  </div>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
+    <div class="scroller images pdf-scroller">
+      <g:each in="${binaryList}">
+        <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:set var="images" value="true"/>
         </g:if>
-      </div>
-    </noscript>
+      </g:each>
+      <g:if test="${images}">
+        <ul class="gallery-images">
+          <g:each in="${binaryList}">
+            <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+              <li>
+                <div class="group">
+                  <div class="thumbnail image">
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                  </div>
+                  <span class="label off">${it.preview.title}</span>
+                </div>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </g:if>
+    </div>
 
     <div>
       <p class="tab videos"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
     </div>
-    <noscript>
-      <div class="scroller videos">
-        <g:each in="${binaryList}">
-          <g:if test="${it.orig.uri.video != '' }">
-            <g:set var="videos" value="true"/>
-          </g:if>
-        </g:each>
-        <g:if test="${videos}">
-          <ul class="gallery-videos">
-            <g:each in="${binaryList}">
-              <g:if test="${it.orig.uri.video != '' }">
-                <li>
-                  <div class="group">
-                    <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.orig.title}</span>
-                  </div>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
+    <div class="scroller videos pdf-scroller">
+      <g:each in="${binaryList}">
+        <g:if test="${it.orig.uri.video != '' }">
+          <g:set var="videos" value="true"/>
         </g:if>
-      </div>
-    </noscript>
+      </g:each>
+      <g:if test="${videos}">
+        <ul class="gallery-videos">
+          <g:each in="${binaryList}">
+            <g:if test="${it.orig.uri.video != '' }">
+              <li>
+                <div class="group">
+                  <div class="thumbnail video">
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                  </div>
+                  <span class="label off">${it.orig.title}</span>
+                </div>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </g:if>
+    </div>
 
     <div>
       <p class="tab audios"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     </div>
-    <noscript>
-      <div class="scroller audios">
-        <g:each in="${binaryList}">
-          <g:if test="${it.orig.uri.audio != '' }">
-            <g:set var="audios" value="true"/>
-          </g:if>
-        </g:each>
-        <g:if test="${audios}">
-          <ul class="gallery-audios">
-            <g:each in="${binaryList}">
-              <g:if test="${it.orig.uri.audio != '' }">
-                <li>
-                  <div class="group">
-                    <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.orig.title}</span>
-                  </div>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
+    <div class="scroller audios pdf-scroller">
+      <g:each in="${binaryList}">
+        <g:if test="${it.orig.uri.audio != '' }">
+          <g:set var="audios" value="true"/>
         </g:if>
-      </div>
-    </noscript>
+      </g:each>
+      <g:if test="${audios}">
+        <ul class="gallery-audios">
+          <g:each in="${binaryList}">
+            <g:if test="${it.orig.uri.audio != '' }">
+              <li>
+                <div class="group">
+                  <div class="thumbnail video">
+                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                  </div>
+                  <span class="label off">${it.orig.title}</span>
+                </div>
+              </li>
+            </g:if>
+          </g:each>
+        </ul>
+      </g:if>
+    </div>
   </div>
 </div>

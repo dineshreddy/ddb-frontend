@@ -203,7 +203,7 @@
   overflow:hidden;
   background-color:white;
 }
-noscript .scroller {
+noscript .scroller, .pdf-scroller {
   position: relative !important;
   display: block !important;
   overflow: auto !important;
