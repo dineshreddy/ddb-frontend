@@ -285,7 +285,7 @@ class UrlMappings {
             action="index"
         }
 
-        "/map" {
+        "/maptest" {
             controller="map"
             action="index"
         }

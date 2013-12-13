@@ -10,8 +10,8 @@ $(document).ready(function() {
 
       /** Configuration * */
       rootDivId: "ddb-map",
-      initLat: 49.1,
-      initLon: 8.24,
+      initLat: 51.55,
+      initLon: 10.00,
       initZoom: 5,
       tileServerUrls: ["http://a.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://b.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://c.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png"],
       imageFolder: jsContextPath+"/js/map/img/",
@@ -36,28 +36,43 @@ $(document).ready(function() {
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
+          //Set the base folder for images
           OpenLayers.ImgPath = this.imageFolder;
           
+          //Initialize Map
           var options = {
             theme: this.themeFolder, 
+            projection: "EPSG:900913"
           };
           this.osmMap = new OpenLayers.Map(this.rootDivId, options);
+          this.osmMap.displayProjection = this.fromProjection;
+
+          //Add controls to map
           this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
           this.osmMap.addControlToMap(new OpenLayers.Control.PanZoomBar(), new OpenLayers.Pixel(5,-25));
           this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
           this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
           
-          var tiles          = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
-          //var tiles          = new OpenLayers.Layer.OSM();
-          var position       = this.getLonLat(this.initLon, this.initLat);
-          var zoom           = this.initZoom; 
-   
+          //Set the tiles data provider
+          var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
           this.osmMap.addLayer(tiles);
-          this.osmMap.setCenter(position, zoom); 
           
+          //Centers and zooms the map to the initial point
+          var position = this.getLonLat(this.initLon, this.initLat);   
+          this.osmMap.setCenter(position, this.initZoom); 
+
+          //Add the institutions vector layer
+          this.addInstitutionsLayer();
+
+          //Add the popup functionality to the institutions layer
+          this.addInstitutionsClickListener();
+
+          //Register a zoom listener
           this.osmMap.events.register("zoomend", null, function(event){
             self.drawClustersOnMap();
           });
+          
+          
           
         }
         
@@ -165,21 +180,24 @@ $(document).ready(function() {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
       
-      getPopupContentHtml : function(institutionList) {
-        console.log(institutionList);
-        var institutions = institutionList[0].elements;
+      getPopupContentHtml : function(dataObjectList) {
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
-        html += "    " + institutionList.length + " Institutionen";
+        if(dataObjectList.length > 1){
+          html += "    " + dataObjectList.length + " "+ messages.ddbnext.Institutions();
+        }else{
+          html += "    " + dataObjectList.length + " "+ messages.ddbnext.Institution();
+        }
         html += "  </div>";
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
-        for(var i=0; i<institutions.length; i++){
+        for(var i=0; i<dataObjectList.length; i++){
+          var institutionItem = dataObjectList[i].description.node;
           html += "      <li>";
-          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutions[i].index + ">";
-          html += "          "+institutions[i].placeDetails[0][0];
+          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
+          html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
           html += "      </li>";
         }
@@ -225,22 +243,9 @@ $(document).ready(function() {
         var self = this;
         
         GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
-          console.log("#################### 310 buildModel GeoPublisher.GeoSubscribe data:");
-          console.log(filteredInstitutions);
           
-          //################################################### Temp workaround to prevent exception
-          var temp = [];          
-          for(var i=0; i<20; i++){
-            temp.push(filteredInstitutions[0].objects[i]);
-          }
-          filteredInstitutions[0].objects = temp;
-          //###################################################
-          
-          console.log("#################### 311 buildModel transformFilteredInstitutions transformedInstitutionList:");
           transformedInstitutionList = self.transformFilteredInstitutions(filteredInstitutions)
-          console.log(transformedInstitutionList);
           
-          console.log("################ 38 binning: "+osmMap);
           var options = {
             mapIndex: 0,
             circleGap: 0,
@@ -253,8 +258,6 @@ $(document).ready(function() {
           var binning = new Binning(osmMap, options);
           binning.setObjects(transformedInstitutionList);
           var circles = binning.getSet().circleSets;
-          console.log("################ 39 binning circles");
-          console.log(circles);
 
           self.clusters = circles;
           
@@ -262,12 +265,8 @@ $(document).ready(function() {
         });
         
         InstitutionsMapModel.prepareInstitutionsData(institutionList);
-        console.log("#################### 36 buildModel InstitutionsMapModel._allMapData");
-        //var allMapData = InstitutionsMapModel.getAllMapData();
 
         var selectedSectors = this.getSectorSelection();
-        console.log("#################### 37 buildModel selectedSectors");
-        console.log(selectedSectors);
         InstitutionsMapModel.selectSectors(selectedSectors);
 
     },
@@ -282,21 +281,19 @@ $(document).ready(function() {
     },
     
     drawClustersOnMap : function() {
-      console.log("####################### 01 drawClustersOnMap: "+this.clusters.length);
       var zoomLevel = this.osmMap.getZoom();
-      console.log("####################### 01 drawClustersOnMap: zoomLevel: "+zoomLevel);
-      var clustersToDisplay = this.clusters[zoomLevel];
-      console.log("####################### 01 drawClustersOnMap: clustersToDisplay: "+clustersToDisplay.length);
-      console.log(clustersToDisplay);
+      var clustersToDisplay = this.clusters[zoomLevel][0];
 
       var institutionCollections = [];
       for(var i=0;i<clustersToDisplay.length; i++){
-        var clusterParent = clustersToDisplay[i][0];
-        var lon = clusterParent.originX;
-        var lat = clusterParent.originY;
-        var radius = clusterParent.radius;
+        var clusterItem = clustersToDisplay[i];
+        var lon = clusterItem.originX;
+        var lat = clusterItem.originY;
+        var radius = clusterItem.radius;
+
+        var point = new OpenLayers.Geometry.Point(lon, lat);
+        var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.elements});
         
-        var institutionCollection = new OpenLayers.Feature.Vector(this.getPoint(lon, lat), {radius: radius, institutions: clustersToDisplay[i]});
         institutionCollections.push(institutionCollection);
       }
 
@@ -691,15 +688,10 @@ $(document).ready(function() {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
   
-  
-  
-  
 
   
   var map = new DDBMap();
   map.display({});
-  map.addInstitutionsLayer();
-  map.addInstitutionsClickListener();
   
   
 });

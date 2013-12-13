@@ -844,7 +844,6 @@ Binning = function(map, options) {
 Binning.prototype = {
 
 	getSet : function() {
-  console.log("#################### 318 Binning getSet");
 		var type = this.options.binning;
 		if (!type) {
 			return this.getExactBinning();
@@ -867,7 +866,6 @@ Binning.prototype = {
 	},
 
 	getGenericBinning : function() {
-  console.log("#################### 318 Binning getGenericBinning");
 		if ( typeof this.binnings['generic'] == 'undefined') {
 			this.genericBinning();
 		}
@@ -910,6 +908,9 @@ Binning.prototype = {
 	},
 
 	setObjects : function(objects) {
+		  console.log("#################### 310 Binning setObjects");
+		  //console.log(objects);
+		  //console.log("#################### 310 Binning setObject objects[0].length: "+objects[0].length);
 		this.objects = objects;
 		for (var i = 0; i < this.objects.length; i++) {
 			var weight = 0;
@@ -1127,12 +1128,10 @@ Binning.prototype = {
 
 	genericBinning : function() {
   console.log("#################### 318 Binning genericBinning");
-  console.log("#################### 318 Binning options:");
-  console.log(this.options);
-  console.log("#################### 318 Binning objects:");
-  console.log(this.objects);
 		if (this.options.circlePackings || this.objects.length == 1) {
 			this.binnings['generic'] = this.genericClustering(this.objects);
+  //console.log(this.binnings['generic']);
+			
 		} else {
 			var circleSets = [];
 			var hashMaps = [];
@@ -2127,11 +2126,6 @@ Clustering.prototype.CreateBoundingTriangle = function() {
 }
 
 Clustering.prototype.mergeVertices = function(e) {
-  if(e.length == 1.0636266792645501) {
-  console.log("#################### 313 Clustering.prototype.mergeVertices");
-  console.log(e);
-	console.log("#################### 313 Clustering.prototype.mergeVertices problem edge");
-  }
 	this.collapses++;
 	var s0 = e.v0.size;
 	var s1 = e.v1.size;
@@ -2240,11 +2234,6 @@ Clustering.prototype.mergeVertices = function(e) {
 
 	for (var i = 0; i < holeEdges.length; i++) {
 		var e = holeEdges[i];
-		if(e == null) {
-	  console.log("#################### 313 Clustering.prototype.mergeVertices holeEdges.length="+holeEdges.length);
-	  console.log("#################### 313 Clustering.prototype.mergeVertices undefined index="+i);
-	  console.log(holeEdges);
-		}
 		if (hole[i].leftFace == null) {
 			hole[i].leftFace = e.leftFace;
 			hole[i].leftFace.replace(e, hole[i]);
@@ -2309,20 +2298,10 @@ Clustering.prototype.JordanTest = function(pol, e) {
 }
 
 Clustering.prototype.mergeForResolution = function(resolution, circleGap) {
-  console.log("#################### 314 Clustering.prototype.mergeForResolution: resolution="+resolution+" / circleGap=" +circleGap);
-  if(resolution == 0.5971642833948135){
-	  console.log("#################### 314 Clustering.prototype.mergeForResolution: this.edges: "+this.edges.length);
-	  console.log(this.edges);
-  }
 	this.deleteEdges = new BinaryHeap(function(e) {
 		return e.weight;
 	});
 	this.weightEdges(resolution, circleGap);
-	
-if(resolution == 0.5971642833948135){
-	console.log("#################### 314 Clustering.prototype.mergeForResolution: weightEdges() this.edges: "+this.edges.length);
-	console.log(this.edges);
-}
 
 	var index = 0;
 	while (this.deleteEdges.size() > 0) {
@@ -2705,7 +2684,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
          * @param {object} optional. specific Map options
          */
         var f_initialize = function (mapDivId, language, startupOptions) {
-  console.log("#################### 31 f_initialize");
+  //console.log("#################### 31 f_initialize");
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionsMapModel.js");
 
             var MSVersion = f_getInternetExplorerVersion();
@@ -2733,18 +2712,18 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         };
 
         var f_makeSectorsObject = function (selectorList) {
-  console.log("#################### 32 f_makeSectorsObject");
+  //console.log("#################### 32 f_makeSectorsObject");
             var sectorObject = {};
             for (var xel = 0; xel < selectorList.length; xel++) {
                 var el = selectorList[xel];
                 sectorObject[el.sector] = {count: 0, name: el.name};
             };
-  console.log("#################### 32 f_makeSectorsObject sectorObject="+sectorObject);
+  //console.log("#################### 32 f_makeSectorsObject sectorObject="+sectorObject);
             return sectorObject;
         };
 
         var f_selectSectors = function (aSectorSelection) {
-  console.log("#################### 33 f_selectSectors");
+  //console.log("#################### 33 f_selectSectors");
 //            if (typeof console != 'undefined') {
 //                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
 //            }
@@ -2777,8 +2756,8 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
                 var datasets = [];
                 datasets.push(new Dataset(_sectorsMapData, "institutions"));
-  console.log("#################### 33 f_selectSectors datasets="+datasets);
-  console.log(datasets);
+  //console.log("#################### 33 f_selectSectors datasets="+datasets);
+  //console.log(datasets);
                 GeoPublisher.GeoPublish('filter', datasets, null);
             }
 
@@ -2801,7 +2780,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         }
 
         var f_getMapNameAndClusterSet = function(filterSet) {
-  console.log("#################### 34 f_getMapNameAndClusterSet");
+  //console.log("#################### 34 f_getMapNameAndClusterSet");
             var urlPrefix = GeoTemConfig.urlPrefix + "ddb-map/";
             var sectorsName = "";
             var sortedSectorNames = [];
@@ -2835,15 +2814,9 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
          * for map presentation and sorting subsets of all institutions
          */
         var f_prepareInstitutionsData = function (institutionMapData) {
-  console.log("#################### 35 f_prepareInstitutionsData institutionMapData: "+institutionMapData.size);
-  //console.log(institutionMapData);
-
             var allInstitutionsArray = flatten(institutionMapData.institutions);
-  console.log("#################### 35 f_prepareInstitutionsData allInstitutionsArray: "+allInstitutionsArray.length);
-  //console.log(allInstitutionsArray);
-
             _allMapData = GeoTemConfig.loadJson(allInstitutionsArray);
-  console.log("#################### 35 f_prepareInstitutionsData _allMapData: "+_allMapData.length);
+  //console.log("#################### 35 f_prepareInstitutionsData _allMapData: "+_allMapData.length);
   //console.log(_allMapData);
 
             _institutionsById = {};
