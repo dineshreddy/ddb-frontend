@@ -699,7 +699,7 @@ input[type="checkbox"],input[type="radio"] {
   text-align: left;
   position: absolute;
   right: 0;
-  top: 90px;
+  top: 30px;
   display:none;
 }
 
