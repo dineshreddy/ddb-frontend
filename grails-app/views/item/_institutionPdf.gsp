@@ -32,7 +32,7 @@ limitations under the License.
                   </g:if>
                   <!-- (DFG) viewer -->
                   <g:if test="${!viewerUri?.isEmpty()}">
-                      <a target="_blank" href="${viewerUri}" class="no-external-link-icon">
+                      <a href="${viewerUri}" class="no-external-link-icon">
                         <span class="viewer dfg"><g:message code="ddbnext.ObjectViewer_dfgKey" /></span>
                       </a>
                   </g:if>
