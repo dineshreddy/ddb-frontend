@@ -48,10 +48,12 @@ var InstitutionsMapAdapter = (function($, undefined) {
   var Public = {}; // for public properties. avoid the reserved keyword "public"
 
   Public.drawInstitution = function(mapDiv, lang, lon, lat) {
+    console.log("#################### 01 Public.drawInstitution");
     InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
   };
 
   Public.selectSectors = function() {
+    console.log("#################### 02 Public.selectSectors");
     if (mapInitialized) {
       var sectors = _getSectorSelection();
       InstitutionsMapController.selectSectors(sectors);
@@ -59,6 +61,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   var _getSectorSelection = function() {
+    console.log("#################### 03 _getSectorSelection");
     var sectors = {};
     sectors['selected'] = [];
     sectors['deselected'] = [];
@@ -76,6 +79,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   Public.fetchAllInstitutions = function(successFn) {
+    console.log("#################### 04 Public.fetchAllInstitutions");
     _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
   };
 
@@ -90,6 +94,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   var _enableListView = function() {
+    console.log("#################### 05 _enableListView");
     window.location.hash = 'list';
     $('#institution-map').addClass('off');
     $('#institution-list').removeClass('off');
@@ -108,6 +113,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   var _enableMapView = function() {
+    console.log("#################### 06 _enableMapView");
     window.location.hash = 'map';
     $('#institution-list').addClass('off');
     $('#institution-map').removeClass('off');
@@ -126,6 +132,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   var _initializeMap = function() {
+    console.log("#################### 07 _initializeMap");
     if (!mapInitialized && !$('#institution-map').hasClass('off')) {
       InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
       mapInitialized = true;
@@ -143,6 +150,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
   };
 
   Public.setupDom4MapDisplay = function() {
+    console.log("#################### 08 Public.setupDom4MapDisplay");
     var hash = window.location.hash.substring(1);
     if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
       _enableMapView();
@@ -174,6 +182,7 @@ $('#institution-list').ready(function() {
 
 $(document).ready(
     function() {
+      console.log("#################### 09 $(document).ready");
       INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
       MAP_DIR = jsContextPath + MAP_DIR;
       GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//'

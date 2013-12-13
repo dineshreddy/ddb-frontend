@@ -20,6 +20,8 @@ $(document).ready(function() {
       vectorLayer: null,
       fromProjection: new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
+      apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
+      clusters: null,
 
 
       /** Initialization * */
@@ -27,6 +29,8 @@ $(document).ready(function() {
       },
 
       display : function(config) {
+        var self = this;
+        
         this.applyConfiguration(config);
         
         var rootDiv = $("#"+this.rootDivId);
@@ -41,7 +45,7 @@ $(document).ready(function() {
           this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
           this.osmMap.addControlToMap(new OpenLayers.Control.PanZoomBar(), new OpenLayers.Pixel(5,-25));
           this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
-          this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder), new OpenLayers.Pixel(150,150));
+          this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
           
           var tiles          = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
           //var tiles          = new OpenLayers.Layer.OSM();
@@ -50,6 +54,10 @@ $(document).ready(function() {
    
           this.osmMap.addLayer(tiles);
           this.osmMap.setCenter(position, zoom); 
+          
+          this.osmMap.events.register("zoomend", null, function(event){
+            self.drawClustersOnMap();
+          });
           
         }
         
@@ -78,33 +86,7 @@ $(document).ready(function() {
         });
         this.osmMap.addLayer(this.vectorLayer);
         
-        // Variant 1 to add points
-        var institutions1 = [
-          {id: "DGD2452DFGDHN23dBSDRS242SDFV", name: "Goethe Museum", type: "Museum"},
-          {id: "EGD2452DFGDHN23dBSDRS242SDFV", name: "Faust Museum", type: "Museum"},
-          {id: "FGD2452DFGDHN23dBSDRS242SDFV", name: "Nietzsche Museum", type: "Museum"}
-        ];
-        var institutionCollection1 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 0, this.initLat + 0), {radius: 4, institutions: institutions1});
-        var institutions2 = [
-          {id: "ASDVASRG3456236521DFGBSDFV34", name: "Faust Archiv", type: "Archiv"}
-        ];
-        var institutionCollection2 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 1, this.initLat + 2), {radius: 8, institutions: institutions2});
-        var institutions3 = [
-          {id: "3462ASDGSDFHSDFG4562BSDFG47V", name: "Naturkundemuseum", type: "Museum"},
-          {id: "4523ASDGSDFHSDFG4562BSDFG47V", name: "Archivalien", type: "Archiv"},
-          {id: "5672ASDGSDFHSDFG4562BSDFG47V", name: "Lesezirkel Süd", type: "Bibliothek"},
-          {id: "6782ASDGSDFHSDFG4562BSDFG47V", name: "Universalmuseum Neckarsulm-Buxtehude", type: "Museum"},
-          {id: "8462ASDGSDFHSDFG4562BSDFG47V", name: "Freelancereimuseum", type: "Museum"},
-          {id: "9462ASDGSDFHSDFG4562BSDFG47V", name: "Imperiale Droidenmuseum", type: "Museum"},
-          {id: "1062ASDGSDFHSDFG4562BSDFG47V", name: "Museum dies sein muss", type: "Archiv"},
-          {id: "1162ASDGSDFHSDFG4562BSDFG47V", name: "Richtig sein Archiv dies", type: "Archiv"},
-          {id: "1262ASDGSDFHSDFG4562BSDFG47V", name: "Naturalienmuseum", type: "Museum"}
-        ];
-        var institutionCollection3 = new OpenLayers.Feature.Vector(this.getPoint(this.initLon + 3, this.initLat + 1), {radius: 12, institutions: institutions3});
-
-        var institutionCollections = [institutionCollection1, institutionCollection2, institutionCollection3]
-        
-        this.vectorLayer.addFeatures(institutionCollections);
+        this.loadFullInstitutionList();
       },
 
       addInstitutionsClickListener : function(){
@@ -127,7 +109,7 @@ $(document).ready(function() {
             "institutionPopup", 
             feature.geometry.getBounds().getCenterLonLat(),
             new OpenLayers.Size(315,100),
-            self.getContentHtml(institutionList),
+            self.getPopupContentHtml(institutionList),
             null, 
             true, 
             onPopupClose, 
@@ -136,6 +118,7 @@ $(document).ready(function() {
           feature.popup = popup;
           popup.feature = feature;
           self.osmMap.addPopup(popup, true);
+          
         };
         
         function onFeatureUnselect(event) {
@@ -182,18 +165,22 @@ $(document).ready(function() {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
       
-      getContentHtml : function(institutionList) {
+      getPopupContentHtml : function(institutionList) {
+        console.log(institutionList);
+        var institutions = institutionList[0].elements;
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
         html += "    " + institutionList.length + " Institutionen";
         html += "  </div>";
         html += "  <div class='olPopupDDBBody'>";
-        html += "    <div class='olPopupDDBScroll'>";
+        html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
-        for(var i=0; i<institutionList.length; i++){
+        for(var i=0; i<institutions.length; i++){
           html += "      <li>";
-          html += "        "+institutionList[i].name + " (" + institutionList[i].type + ")";
+          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutions[i].index + ">";
+          html += "          "+institutions[i].placeDetails[0][0];
+          html += "        </a>";
           html += "      </li>";
         }
         html += "      </ul>";
@@ -203,7 +190,124 @@ $(document).ready(function() {
         return html;
       },
       
+      getSectorSelection : function() {
+        var sectors = {};
+        sectors['selected'] = [];
+        sectors['deselected'] = [];
+        $('.sector-facet').each(function() {
+          var sectorData = {};
+          sectorData['sector'] = $(this).find('input').data('sector');
+          sectorData['name'] = $.trim($(this).children('label').text());
+          if ($(this).find('input').is(':checked')) {
+            sectors['selected'].push(sectorData);
+          } else {
+            sectors['deselected'].push(sectorData);
+          }
+        });
+        return sectors;
+      },
+
       
+      loadFullInstitutionList : function() {
+        var self = this;
+        $.ajax({
+          type : 'GET',
+          dataType : 'json',
+          async : true,
+          url : jsContextPath + this.apiInstitutionsUrl,
+          success : function(institutionList){
+            self.buildModel(self.osmMap, institutionList);
+          }
+        });
+      },
+      
+      buildModel : function(osmMap, institutionList) {
+        var self = this;
+        
+        GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
+          console.log("#################### 310 buildModel GeoPublisher.GeoSubscribe data:");
+          console.log(filteredInstitutions);
+          
+          //################################################### Temp workaround to prevent exception
+          var temp = [];          
+          for(var i=0; i<20; i++){
+            temp.push(filteredInstitutions[0].objects[i]);
+          }
+          filteredInstitutions[0].objects = temp;
+          //###################################################
+          
+          console.log("#################### 311 buildModel transformFilteredInstitutions transformedInstitutionList:");
+          transformedInstitutionList = self.transformFilteredInstitutions(filteredInstitutions)
+          console.log(transformedInstitutionList);
+          
+          console.log("################ 38 binning: "+osmMap);
+          var options = {
+            mapIndex: 0,
+            circleGap: 0,
+            circlePackings: true,
+            binning: "generic",
+            minimumRadius: 4,
+            noBinningRadii: "dynamic",
+            binCount: 10
+          };
+          var binning = new Binning(osmMap, options);
+          binning.setObjects(transformedInstitutionList);
+          var circles = binning.getSet().circleSets;
+          console.log("################ 39 binning circles");
+          console.log(circles);
+
+          self.clusters = circles;
+          
+          self.drawClustersOnMap();
+        });
+        
+        InstitutionsMapModel.prepareInstitutionsData(institutionList);
+        console.log("#################### 36 buildModel InstitutionsMapModel._allMapData");
+        //var allMapData = InstitutionsMapModel.getAllMapData();
+
+        var selectedSectors = this.getSectorSelection();
+        console.log("#################### 37 buildModel selectedSectors");
+        console.log(selectedSectors);
+        InstitutionsMapModel.selectSectors(selectedSectors);
+
+    },
+    
+    transformFilteredInstitutions : function(datasets) {
+      var mapObjects = [];
+      for (var i = 0; i < datasets.length; i++) {
+        mapObjects.push(datasets[i].objects);
+      }
+
+      return mapObjects;
+    },
+    
+    drawClustersOnMap : function() {
+      console.log("####################### 01 drawClustersOnMap: "+this.clusters.length);
+      var zoomLevel = this.osmMap.getZoom();
+      console.log("####################### 01 drawClustersOnMap: zoomLevel: "+zoomLevel);
+      var clustersToDisplay = this.clusters[zoomLevel];
+      console.log("####################### 01 drawClustersOnMap: clustersToDisplay: "+clustersToDisplay.length);
+      console.log(clustersToDisplay);
+
+      var institutionCollections = [];
+      for(var i=0;i<clustersToDisplay.length; i++){
+        var clusterParent = clustersToDisplay[i][0];
+        var lon = clusterParent.originX;
+        var lat = clusterParent.originY;
+        var radius = clusterParent.radius;
+        
+        var institutionCollection = new OpenLayers.Feature.Vector(this.getPoint(lon, lat), {radius: radius, institutions: clustersToDisplay[i]});
+        institutionCollections.push(institutionCollection);
+      }
+
+      this.vectorLayer.addFeatures(institutionCollections);      
+      
+    },
+
+    
+    refresh : function() {
+      this.loadFullInstitutionList();
+    }
 
   });  
   
@@ -473,6 +577,8 @@ $(document).ready(function() {
               this.groupDiv.appendChild(block.div);
           }
       },
+      
+
 
       CLASS_NAME: "OpenLayers.Popup.FramedDDB"
   });
@@ -499,9 +605,12 @@ $(document).ready(function() {
       ddbHomeImg: "ddb_ResetMap.png",
       
       imageFolder: "",
+      
+      ddbMap: null,
 
-      initialize:function(imageFolder) {
+      initialize:function(imageFolder, ddbMap) {
         this.imageFolder = imageFolder;
+        this.ddbMap = ddbMap;
       },
   
       /**
@@ -558,8 +667,8 @@ $(document).ready(function() {
       onDDBHomeClick: function(evt) {
           var button = evt.buttonElement;
           if (button === this.ddbHome) {
-              this.map.zoomIn();
-              //TODO
+              var position = this.ddbMap.getLonLat(this.ddbMap.initLon, this.ddbMap.initLat);
+              this.map.setCenter(position, this.ddbMap.initZoom, false, true);
           } 
       },
   
@@ -578,11 +687,19 @@ $(document).ready(function() {
       CLASS_NAME: "OpenLayers.Control.DDBHome"
   });  
   
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
   
+  
+  
+  
+
   
   var map = new DDBMap();
   map.display({});
   map.addInstitutionsLayer();
   map.addInstitutionsClickListener();
+  
   
 });

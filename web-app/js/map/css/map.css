@@ -95,11 +95,21 @@
 }
 
 .olMap .olPopupDDBScroll {
-  overflow-x: hidden;
-  overflow-y: scroll; 
   max-height: 150px;
-  height: auto;
-  background-color: green;
+  width: 300px;
+  
+  overflow-x: hidden;
+  overflow-y: auto; 
+  /*
+  overflow: scroll;
+  */
+  -webkit-overflow-scrolling: touch;
+  /*
+  overflow-scrolling: touch;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: static;
+  */
 }
 
 .olMap .olPopupDDBContent ul {
