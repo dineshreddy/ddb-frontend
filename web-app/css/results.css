@@ -508,6 +508,7 @@ input[type="checkbox"],input[type="radio"] {
   height: 30px;
   background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -180px;
   cursor: pointer;
+  position: relative;
 }
 
 .search-results .results-list .summary .information:hover {
