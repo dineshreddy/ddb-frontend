@@ -165,6 +165,11 @@ class UrlMappings {
             action=[POST: "isSavedSearch"]
         }
 
+        "/apis/clusteredInstitutionsmap" {
+            controller="apis"
+            action=[POST:"clusteredInstitutionsmap"]
+        }
+
         "/about-us/institutions" {
             controller="institution"
             action="show"

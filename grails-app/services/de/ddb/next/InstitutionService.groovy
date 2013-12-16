@@ -17,6 +17,8 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.next.cluster.Point
+
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -71,6 +73,13 @@ class InstitutionService {
         }
 
         return allInstitutions
+    }
+
+    def getClusteredInstitutions(def institutions){
+        Point newPoint = new Point("49.2", "8.3")
+        newPoint.transform("EPSG:4326", "EPSG:900913")
+
+        return ["a": "b"]
     }
 
     private getTotal(rootList) {
@@ -150,4 +159,5 @@ class InstitutionService {
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
+
 }

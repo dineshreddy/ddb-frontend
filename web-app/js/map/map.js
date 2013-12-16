@@ -21,6 +21,7 @@ $(document).ready(function() {
       fromProjection: new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
       apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
+      apiClusteredInstitutionsUrl: "/apis/clusteredInstitutionsmap",
       clusters: null,
       waitingLayer: null,
       institutionList: null,
@@ -56,8 +57,8 @@ $(document).ready(function() {
           this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
           
           //Set the tiles data provider
-          //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
-          var tiles = new OpenLayers.Layer.OSM();
+          var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+          //var tiles = new OpenLayers.Layer.OSM();
           this.osmMap.addLayer(tiles);
           
           //Adds the waiting overlay
@@ -296,18 +297,31 @@ $(document).ready(function() {
     applyFilters : function() {
       var self = this;
       
-      //Show the waiting layer 
-      self._showWaitingLayer();
-
-      self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
-
-        //Draws the institutions on the vector layer
-        self._drawClustersOnMap();
-
-        //Hide the waiting layer again
-        self._hideWaitingLayer();
-
+      $.ajax({
+        type : 'POST',
+        dataType : 'json',
+        async : true,
+        url : jsContextPath + this.apiClusteredInstitutionsUrl,
+        success : function(clusters){
+          console.log("######################### 01 "+clusters);
+        }
       });
+      
+      
+//      //Show the waiting layer 
+//      self._showWaitingLayer();
+//
+//      window.setTimeout(function(){ //Give the browser time to display waiting gif
+//        self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
+//  
+//          //Draws the institutions on the vector layer
+//          self._drawClustersOnMap();
+//  
+//          //Hide the waiting layer again
+//          self._hideWaitingLayer();
+//  
+//        });
+//      }, 100);
     },
     
     _transformFilteredInstitutions : function(datasets) {

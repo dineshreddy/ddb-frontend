@@ -19,14 +19,15 @@ import grails.converters.JSON
 
 import java.text.SimpleDateFormat
 
-import de.ddb.next.constants.SupportedLocales;
-
 import net.sf.json.JSONNull
+
+import de.ddb.next.constants.SupportedLocales
 
 class ApisController {
 
     def apisService
     def configurationService
+    def institutionService
 
     def search() {
         def resultList = [:]
@@ -109,6 +110,20 @@ class ApisController {
         def jsonResp = apiResponse.getResponse()
         render (contentType:"text/json"){jsonResp}
     }
+
+    def clusteredInstitutionsmap(){
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def institutions = apiResponse.getResponse()
+
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions)
+        render (contentType:"text/json"){clusteredInstitutions}
+    }
+
+
 
     /**
      * This function should be obsolete once the
