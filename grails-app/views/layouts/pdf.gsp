@@ -36,7 +36,7 @@ limitations under the License.
   </head>
   <body>
     <g:render template="/pdfHeader" />
-    <div id="main-container" class="container" role="main">
+    <div id="main-container" class="container">
       <g:layoutBody/>
     </div>
 <%--    <g:render template="/pdfFooter" />--%>

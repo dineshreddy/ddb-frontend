@@ -27,14 +27,14 @@ limitations under the License.
   <body>
     <g:render template="controls" />
     <g:render template="institutionPdf" />
-    <g:render template="itemLinks" />
+    <g:render template="itemLinksPdf" />
     <div class="row item-detail item-content">
       <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
         <h2>${itemTitle}</h2>
         <g:render template="fields" />
         <g:render template="rights" />
         <g:render template="license" />
-        <g:render template="origin" />
+        <g:render template="originPdf" />
       </div>
       <g:if test="${binaryList}">
         <g:render template="binariesPdf" />
