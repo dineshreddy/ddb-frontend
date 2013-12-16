@@ -33,7 +33,7 @@ class ItemController {
             def model = itemService.getFullItemModel(id)
 
             if(params.pdf){
-              render(view: "itemPdf", model: model)
+              renderPdf(view: "itemPdf", model: model, filename: "Item-Detail.pdf")
             } else {
                 render(view: "item", model: model)
               }
