@@ -32,8 +32,13 @@ class ItemController {
             def id = params.id
             def model = itemService.getFullItemModel(id)
 
-            render(view: "item", model: model)
-        } catch(ItemNotFoundException infe){
+            if(params.pdf){
+              render(view: "itemPdf", model: model)
+            } else {
+                render(view: "item", model: model)
+              }
+
+        } catch(ItemNotFoundException infe) {
             log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
             forward controller: "error", action: "itemNotFound"
         }
