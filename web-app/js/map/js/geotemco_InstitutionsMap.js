@@ -908,7 +908,7 @@ Binning.prototype = {
 	},
 
 	setObjects : function(objects) {
-		  console.log("#################### 310 Binning setObjects");
+		  //console.log("#################### 310 Binning setObjects");
 		  //console.log(objects);
 		  //console.log("#################### 310 Binning setObject objects[0].length: "+objects[0].length);
 		this.objects = objects;
@@ -998,20 +998,23 @@ Binning.prototype = {
 	},
 
 	genericClustering : function(objects, id) {
-  console.log("#################### 318 Binning genericClustering");
+  //console.log("#################### 318 Binning genericClustering");
 		var binSets = [];
 		var circleSets = [];
 		var hashMaps = [];
 		var selectionHashs = [];
 		var clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
+		
+		var self = this;
 		for (var i = 0; i < objects.length; i++) {
 			for (var j = 0; j < objects[i].length; j++) {
 				var o = objects[i][j];
 				if (o.isGeospatial) {
-					var p = new OpenLayers.Geometry.Point(o.getLongitude(this.options.mapIndex), o.getLatitude(this.options.mapIndex), null);
-					p.transform(this.map.displayProjection, this.map.projection);
-					var point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, this);
+					var p = new OpenLayers.Geometry.Point(o.getLongitude(self.options.mapIndex), o.getLatitude(self.options.mapIndex), null);
+					p.transform(self.map.displayProjection, self.map.projection);
+					var point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, self);
 					point.addElement(o, o.weight, i);
+					/* IE8 problem */
 					clustering.add(point);
 				}
 			}
@@ -1127,7 +1130,7 @@ Binning.prototype = {
 	},
 
 	genericBinning : function() {
-  console.log("#################### 318 Binning genericBinning");
+  //console.log("#################### 318 Binning genericBinning");
 		if (this.options.circlePackings || this.objects.length == 1) {
 			this.binnings['generic'] = this.genericClustering(this.objects);
   //console.log(this.binnings['generic']);
@@ -1559,133 +1562,8 @@ Binning.prototype = {
 	}
 }
 
-/*
-* MapDataSource.js
-*
-* Copyright (c) 2012, Stefan Jänicke. All rights reserved.
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 3 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-* MA 02110-1301  USA
-*/
 
-/**
- * @class MapDataSource
- * implementation for aggregation of map items
- * @author Stefan Jänicke (stjaenicke@informatik.uni-leipzig.de)
- * @release 1.0
- * @release date: 2012-07-27
- * @version date: 2012-07-27
- *
- * @param {OpenLayers.Map} olMap openlayers map object of the map widget
- * @param {JSON} options map configuration
- */
-function MapDataSource(olMap, options) {
 
-	this.olMap = olMap;
-	this.circleSets = [];
-	this.binning = new Binning(olMap, options);
-
-};
-
-MapDataSource.prototype = {
-
-	/**
-	 * initializes the MapDataSource
-	 * @param {MapObject[][]} mapObjects an array of map objects of different sets
-	 */
-	initialize : function(mapObjects) {
-
-		if (mapObjects != this.mapObjects) {
-			this.binning.reset();
-			this.binning.setObjects(mapObjects);
-		}
-		this.mapObjects = mapObjects;
-
-        var time0 = (new Date()).getTime();
-		var set = this.binning.getSet();
-		this.circleSets = set.circleSets;
-		this.binSets = set.binSets;
-		this.hashMapping = set.hashMaps;
-
-        timeCluster = (new Date()).getTime();
-        var timeClusterInfo = (this.mapObjects[0].length +
-                               " elements clustered in " + (timeCluster - time0) + "ms");
-// XXXXX   alert(timeClusterInfo);
-//        if (typeof console != 'undefined') {
-//            console.log(timeClusterInfo);
-//        }
-    
-
-    },
-
-	getObjectsByZoom : function() {
-		var zoom = Math.floor(this.olMap.getZoom());
-		if (this.circleSets.length < zoom) {
-			return null;
-		}
-		return this.circleSets[zoom];
-	},
-
-	getAllObjects : function() {
-		if (this.circleSets.length == 0) {
-			return null;
-		}
-		return this.circleSets;
-	},
-
-	getAllBins : function() {
-		if (this.binSets.length == 0) {
-			return null;
-		}
-		return this.binSets;
-	},
-
-	clearOverlay : function() {
-		var zoom = Math.floor(this.olMap.getZoom());
-		var circles = this.circleSets[zoom];
-		for (var i in circles ) {
-			for (var j in circles[i] ) {
-				circles[i][j].reset();
-			}
-		}
-	},
-
-	setOverlay : function(mapObjects) {
-		var zoom = Math.floor(this.olMap.getZoom());
-		for (var j in mapObjects ) {
-			for (var k in mapObjects[j] ) {
-				var o = mapObjects[j][k];
-				if (o.isGeospatial) {
-					this.hashMapping[zoom][j][o.index].overlay += o.weight;
-				}
-			}
-		}
-	},
-
-	size : function() {
-		if (this.circleSets.length == 0) {
-			return 0;
-		}
-		return this.circleSets[0].length;
-	},
-
-	getCircle : function(index, id) {
-		var zoom = Math.floor(this.olMap.getZoom());
-		return this.hashMapping[zoom][index][id];
-	}
-};
 /*
 * Clustering.js
 *
@@ -2082,6 +1960,7 @@ Clustering.prototype.addVertex = function(v, simplex) {
 		this.legalize(v, tr1.e_p, t2);
 		this.legalize(v, tr0.e_s, t3);
 	} else {
+		/* IE8 problem */
 		this.vertices.push(v);
 		var e_i = new Edge(simplex.vertices[0], v);
 		var e_j = new Edge(simplex.vertices[1], v);
@@ -2348,7 +2227,7 @@ Clustering.prototype.weightEdges = function(resolution, circleGap) {
 }
 
 Clustering.prototype.ValidityTest = function() {
-	console.info("Test 1: Valid Delaunay ...");
+	//console.info("Test 1: Valid Delaunay ...");
 	/*
 	var leafs = [];
 	var triangles = this.boundingTriangle.descendants;
@@ -2391,8 +2270,8 @@ Clustering.prototype.ValidityTest = function() {
 	for (i in this.edges ) {
 		var e = this.edges[i];
 		if (e.leftFace == null || e.rightFace == null) {
-			console.info(e);
-			alert();
+			//console.info(e);
+			//alert();
 		}
 	}
 
@@ -2414,9 +2293,9 @@ Clustering.prototype.ValidityTest = function() {
 		var t2 = e.rightFace.getTriple(e);
 		if (e.v0.y == e.v1.y) {
 			if (t1.u.y > t2.u.y) {
-				console.info("equal y conflict ...");
-				console.info(e);
-				alert();
+				//console.info("equal y conflict ...");
+				//console.info(e);
+				//alert();
 				c++;
 			}
 		} else {
@@ -2429,15 +2308,15 @@ Clustering.prototype.ValidityTest = function() {
 				v2 = e.v0;
 			}
 			if (!leftOf(v1, v2, t1.u)) {
-				console.info("left right conflict ... left is right");
-				console.info(e);
-				alert();
+				//console.info("left right conflict ... left is right");
+				//console.info(e);
+				//alert();
 				c++;
 			}
 			if (leftOf(v1, v2, t2.u)) {
-				console.info("left right conflict ... right is left");
-				console.info(e);
-				alert();
+				//console.info("left right conflict ... right is left");
+				//console.info(e);
+				//alert();
 				c++;
 			}
 		}
@@ -2451,8 +2330,8 @@ Clustering.prototype.ValidityTest = function() {
 			var tr0 = e.leftFace.getTriple(e);
 			var tr1 = e.rightFace.getTriple(e);
 			if (!tr0.e_p.legal || !tr0.e_s.legal || !tr1.e_p.legal || !tr1.e_s.legal) {
-				console.info(e);
-				console.info("conflict in edge continuity");
+				//console.info(e);
+				//console.info("conflict in edge continuity");
 				return;
 			}
 		}

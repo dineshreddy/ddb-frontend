@@ -22,6 +22,8 @@ $(document).ready(function() {
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
       apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
       clusters: null,
+      waitingLayer: null,
+      institutionList: null,
 
 
       /** Initialization * */
@@ -31,7 +33,7 @@ $(document).ready(function() {
       display : function(config) {
         var self = this;
         
-        this.applyConfiguration(config);
+        this._applyConfiguration(config);
         
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
@@ -54,31 +56,54 @@ $(document).ready(function() {
           this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
           
           //Set the tiles data provider
-          var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+          //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+          var tiles = new OpenLayers.Layer.OSM();
           this.osmMap.addLayer(tiles);
           
+          //Adds the waiting overlay
+          this._createWaitingLayer();
+          
           //Centers and zooms the map to the initial point
-          var position = this.getLonLat(this.initLon, this.initLat);   
+          var position = this._getLonLat(this.initLon, this.initLat);   
           this.osmMap.setCenter(position, this.initZoom); 
 
           //Add the institutions vector layer
-          this.addInstitutionsLayer();
+          this._addInstitutionsLayer();
 
           //Add the popup functionality to the institutions layer
-          this.addInstitutionsClickListener();
+          this._addInstitutionsClickListener();
 
           //Register a zoom listener
           this.osmMap.events.register("zoomend", null, function(event){
-            self.drawClustersOnMap();
+            self._drawClustersOnMap();
           });
           
-          
+          //Register a load tiles finished event listener
+          function onTilesLoaded() { //on load finished
+            
+            //Show the waiting layer 
+            self._showWaitingLayer();
+            
+            //Loads all institutions over ajax
+            self._loadFullInstitutionList(function() { //on build model finished
+
+              //Draws the institutions on the vector layer
+              self._drawClustersOnMap();
+
+              //Hide the waiting layer again
+              self._hideWaitingLayer();
+
+              //Remove the tiles load listener again. We only want it on initialization.
+              tiles.events.unregister("loadend", tiles, onTilesLoaded);
+            });
+          }
+          tiles.events.register("loadend", tiles, onTilesLoaded);   
           
         }
         
       },
       
-      addInstitutionsLayer : function() {
+      _addInstitutionsLayer : function() {
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
         
@@ -101,10 +126,9 @@ $(document).ready(function() {
         });
         this.osmMap.addLayer(this.vectorLayer);
         
-        this.loadFullInstitutionList();
       },
 
-      addInstitutionsClickListener : function(){
+      _addInstitutionsClickListener : function(){
         var self = this;
         
         var selectionEventControl = new OpenLayers.Control.SelectFeature(this.vectorLayer);
@@ -124,7 +148,7 @@ $(document).ready(function() {
             "institutionPopup", 
             feature.geometry.getBounds().getCenterLonLat(),
             new OpenLayers.Size(315,100),
-            self.getPopupContentHtml(institutionList),
+            self._getPopupContentHtml(institutionList),
             null, 
             true, 
             onPopupClose, 
@@ -151,14 +175,12 @@ $(document).ready(function() {
           var feature = this.feature;
           if (feature.popup) {
             selectionEventControl.unselect(feature);
-          } 
-
+          }
         };
-
 
       },
       
-      applyConfiguration : function(config) {
+      _applyConfiguration : function(config) {
         for (var key in config) {
           if (config.hasOwnProperty(key)) {
             this[key] = config[key];
@@ -166,21 +188,21 @@ $(document).ready(function() {
         }
       },
       
-      log : function(text){
+      _log : function(text){
         if("console" in window && "log" in window.console){
           console.log(text);
         }
       },
       
-      getLonLat : function(lon, lat) {
+      _getLonLat : function(lon, lat) {
         return new OpenLayers.LonLat(lon, lat).transform(this.fromProjection, this.toProjection);
       },
 
-      getPoint : function(lon, lat) {
+      _getPoint : function(lon, lat) {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
       
-      getPopupContentHtml : function(dataObjectList) {
+      _getPopupContentHtml : function(dataObjectList) {
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
@@ -208,7 +230,7 @@ $(document).ready(function() {
         return html;
       },
       
-      getSectorSelection : function() {
+      _getSectorSelection : function() {
         var sectors = {};
         sectors['selected'] = [];
         sectors['deselected'] = [];
@@ -226,7 +248,7 @@ $(document).ready(function() {
       },
 
       
-      loadFullInstitutionList : function() {
+      _loadFullInstitutionList : function(onCompleteCallbackFunction) {
         var self = this;
         $.ajax({
           type : 'GET',
@@ -234,17 +256,18 @@ $(document).ready(function() {
           async : true,
           url : jsContextPath + this.apiInstitutionsUrl,
           success : function(institutionList){
-            self.buildModel(self.osmMap, institutionList);
+            self.institutionList = institutionList;
+            self._buildModel(self.osmMap, institutionList, onCompleteCallbackFunction);
           }
         });
       },
       
-      buildModel : function(osmMap, institutionList) {
+      _buildModel : function(osmMap, institutionList, onCompleteCallbackFunction) {
         var self = this;
         
         GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
           
-          transformedInstitutionList = self.transformFilteredInstitutions(filteredInstitutions)
+          transformedInstitutionList = self._transformFilteredInstitutions(filteredInstitutions)
           
           var options = {
             mapIndex: 0,
@@ -258,20 +281,36 @@ $(document).ready(function() {
           var binning = new Binning(osmMap, options);
           binning.setObjects(transformedInstitutionList);
           var circles = binning.getSet().circleSets;
-
           self.clusters = circles;
           
-          self.drawClustersOnMap();
+          onCompleteCallbackFunction();
         });
         
         InstitutionsMapModel.prepareInstitutionsData(institutionList);
 
-        var selectedSectors = this.getSectorSelection();
+        var selectedSectors = this._getSectorSelection();
         InstitutionsMapModel.selectSectors(selectedSectors);
 
     },
     
-    transformFilteredInstitutions : function(datasets) {
+    applyFilters : function() {
+      var self = this;
+      
+      //Show the waiting layer 
+      self._showWaitingLayer();
+
+      self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
+
+        //Draws the institutions on the vector layer
+        self._drawClustersOnMap();
+
+        //Hide the waiting layer again
+        self._hideWaitingLayer();
+
+      });
+    },
+    
+    _transformFilteredInstitutions : function(datasets) {
       var mapObjects = [];
       for (var i = 0; i < datasets.length; i++) {
         mapObjects.push(datasets[i].objects);
@@ -280,30 +319,74 @@ $(document).ready(function() {
       return mapObjects;
     },
     
-    drawClustersOnMap : function() {
-      var zoomLevel = this.osmMap.getZoom();
-      var clustersToDisplay = this.clusters[zoomLevel][0];
-
-      var institutionCollections = [];
-      for(var i=0;i<clustersToDisplay.length; i++){
-        var clusterItem = clustersToDisplay[i];
-        var lon = clusterItem.originX;
-        var lat = clusterItem.originY;
-        var radius = clusterItem.radius;
-
-        var point = new OpenLayers.Geometry.Point(lon, lat);
-        var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.elements});
+    _drawClustersOnMap : function() {
+      this.vectorLayer.removeAllFeatures();
+      if(this.clusters != null) {
         
-        institutionCollections.push(institutionCollection);
+        var zoomLevel = this.osmMap.getZoom();
+        if(this.clusters[zoomLevel] != null) {
+          
+          var clustersToDisplay = this.clusters[zoomLevel][0];
+    
+          var institutionCollections = [];
+          for(var i=0;i<clustersToDisplay.length; i++){
+            var clusterItem = clustersToDisplay[i];
+            var lon = clusterItem.originX;
+            var lat = clusterItem.originY;
+            var radius = clusterItem.radius;
+    
+            var point = new OpenLayers.Geometry.Point(lon, lat);
+            var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.elements});
+            
+            institutionCollections.push(institutionCollection);
+          }
+    
+          this.vectorLayer.addFeatures(institutionCollections);
+        }
       }
-
-      this.vectorLayer.addFeatures(institutionCollections);      
-      
     },
 
+    _createWaitingLayer : function(){
+      var mapDiv = $("#"+this.rootDivId);
+      
+      //Create overlay div
+      this.waitingLayer = $(document.createElement("div"));
+      this.waitingLayer.addClass("osm-load-waiting");
+      this.waitingLayer.addClass("off");
+      
+      //Create waiting img div
+      var waitingImg = $(document.createElement("div"));
+      waitingImg.addClass("osm-load-waiting-img");
+
+      //Create transparancy div
+      var transparancyDiv = $(document.createElement("div"));
+      transparancyDiv.addClass("osm-load-waiting-div");
+      
+      
+      //Join stuff
+      this.waitingLayer.prepend(waitingImg);
+      this.waitingLayer.prepend(transparancyDiv);
+      mapDiv.prepend(this.waitingLayer);
+
+    },
     
+    _showWaitingLayer : function() {
+      this.waitingLayer.removeClass("off");
+    },
+
+    _hideWaitingLayer : function() {
+      this.waitingLayer.addClass("off");
+    },
+
     refresh : function() {
-      this.loadFullInstitutionList();
+      var self = this;
+      
+      //Loads all institutions over ajax
+      this._loadFullInstitutionList(function(){
+        
+        //Draws the institutions on the vector layer
+        self._drawClustersOnMap();
+      });
     }
 
   });  
@@ -664,7 +747,7 @@ $(document).ready(function() {
       onDDBHomeClick: function(evt) {
           var button = evt.buttonElement;
           if (button === this.ddbHome) {
-              var position = this.ddbMap.getLonLat(this.ddbMap.initLon, this.ddbMap.initLat);
+              var position = this.ddbMap._getLonLat(this.ddbMap.initLon, this.ddbMap.initLat);
               this.map.setCenter(position, this.ddbMap.initZoom, false, true);
           } 
       },
@@ -693,5 +776,11 @@ $(document).ready(function() {
   var map = new DDBMap();
   map.display({});
   
+  $('.sector-facet input').each(function() {
+    $(this).click(function(){
+      map.applyFilters();
+    });
+  });
+
   
 });

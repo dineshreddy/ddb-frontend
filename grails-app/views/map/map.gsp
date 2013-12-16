@@ -25,7 +25,7 @@ limitations under the License.
   
   <body>
     <div class="row map-prototype">
-      <div id="ddb-map" >
+      <div id="ddb-map">
       </div>
       
       <br />
@@ -54,6 +54,7 @@ limitations under the License.
       <div class="sector-facet">
         <label class="checkbox"> <input data-sector="sec_07" value="sec_07" type="checkbox">Other</label>
       </div>
+      
       
     </div>  
   </body>
