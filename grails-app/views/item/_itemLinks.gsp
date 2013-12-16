@@ -52,7 +52,7 @@ limitations under the License.
     <ddb:isLoggedIn>
       <div class="link-block">
         <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
-              <g:message code="ddbnext.View" />
+          <span><g:message code="ddbnext.View" /></span>
         </g:link>
       </div>
     </ddb:isLoggedIn>
