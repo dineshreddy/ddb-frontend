@@ -25,36 +25,36 @@ limitations under the License.
   
   <body>
     <div class="row map-prototype">
-      <div id="ddb-map">
+      <div class="row">
+        <div class="span8">
+          <div id="ddb-map">
+          </div>
+        </div>
+        <div class="span4">
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_01" value="sec_01" type="checkbox">Archive</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_02" value="sec_02" type="checkbox">Library</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_03" value="sec_03" type="checkbox">Monument protection</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_04" value="sec_04" type="checkbox">Research</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_05" value="sec_05" type="checkbox">Media</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_06" value="sec_06" type="checkbox">Museum</label>
+          </div>
+          <div class="sector-facet">
+            <label class="checkbox"> <input data-sector="sec_07" value="sec_07" type="checkbox">Other</label>
+          </div>
+          
+        </div>
       </div>
-      
-      <br />
-      <br />
-      <br />
-      <br />
-      
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_01" value="sec_01" type="checkbox">Archive</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_02" value="sec_02" type="checkbox">Library</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_03" value="sec_03" type="checkbox">Monument protection</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_04" value="sec_04" type="checkbox">Research</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_05" value="sec_05" type="checkbox">Media</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_06" value="sec_06" type="checkbox">Museum</label>
-      </div>
-      <div class="sector-facet">
-        <label class="checkbox"> <input data-sector="sec_07" value="sec_07" type="checkbox">Other</label>
-      </div>
-      
       
     </div>  
   </body>

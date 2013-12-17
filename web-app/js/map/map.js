@@ -301,27 +301,30 @@ $(document).ready(function() {
         type : 'POST',
         dataType : 'json',
         async : true,
-        url : jsContextPath + this.apiClusteredInstitutionsUrl,
+        //url : jsContextPath + this.apiClusteredInstitutionsUrl,
+        url : jsContextPath + this.apiInstitutionsUrl,
         success : function(clusters){
-          console.log("######################### 01 "+clusters);
+          //console.log("######################### 01 "+clusters);
+          
+          //Show the waiting layer 
+          self._showWaitingLayer();
+  
+          window.setTimeout(function(){ //Give the browser time to display waiting gif
+            self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
+    
+              //Draws the institutions on the vector layer
+              self._drawClustersOnMap();
+    
+              //Hide the waiting layer again
+              self._hideWaitingLayer();
+    
+            });
+          }, 100);
+          
         }
       });
       
       
-//      //Show the waiting layer 
-//      self._showWaitingLayer();
-//
-//      window.setTimeout(function(){ //Give the browser time to display waiting gif
-//        self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
-//  
-//          //Draws the institutions on the vector layer
-//          self._drawClustersOnMap();
-//  
-//          //Hide the waiting layer again
-//          self._hideWaitingLayer();
-//  
-//        });
-//      }, 100);
     },
     
     _transformFilteredInstitutions : function(datasets) {
