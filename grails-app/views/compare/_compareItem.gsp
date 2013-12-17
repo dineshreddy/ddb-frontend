@@ -27,9 +27,5 @@ limitations under the License.
 		<g:render template="/item/origin" />
 		<g:render template="/item/share" />
 	</div>
-	<g:if test="${binaryList}">
-		<g:render template="/item/binaries" />
-	</g:if>
 </div>
-<g:render template="/item/hierarchy" />
 <g:render template="/item/linkurl" />
