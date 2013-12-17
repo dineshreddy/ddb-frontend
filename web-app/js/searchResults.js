@@ -1891,10 +1891,10 @@ function searchResultsInitializer() {
     // Disable the item compare buttons for all selected items
     var selectedItems = $('.compare').filter(
         function(index) {
-          return ($(this).attr('data-iid') == cookieVal.id1 || $(this).attr(
-              'data-iid') == cookieVal.id2);
+          if (cookieVal) {
+            return ($(this).attr('data-iid') == cookieVal.id1 || $(this).attr('data-iid') == cookieVal.id2);
+          }
         });
-
     selectedItems.each(function(index) {
       $(this).off();
       $(this).addClass("disabled");
