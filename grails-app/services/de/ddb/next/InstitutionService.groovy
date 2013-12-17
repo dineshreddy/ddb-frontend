@@ -17,6 +17,10 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.next.cluster.Binning
+import de.ddb.next.cluster.InstitutionMapModel
+import de.ddb.next.cluster.Point
+
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -71,6 +75,35 @@ class InstitutionService {
         }
 
         return allInstitutions
+    }
+
+    def getClusteredInstitutions(def institutions){
+        println "####################### 00 getClusteredInstitutions"
+        println institutions
+
+        println "####################### 01 transformation"
+        Point newPoint = new Point("49.2", "8.3")
+        newPoint.transform("EPSG:4326", "EPSG:900913")
+
+        println "####################### 02 mapModel"
+        InstitutionMapModel institutionMapModel = new InstitutionMapModel()
+        institutionMapModel.prepareInstitutionsData(institutions)
+        def allMapData = institutionMapModel.getAllMapData()
+
+        def mapObjects = []
+        for (def i = 0; i < allMapData.size(); i++) {
+            mapObjects.push(allMapData[i].objects)
+        }
+        return mapObjects
+        println "####################### 03 mapObjects"
+        println mapObjects
+
+
+        println "####################### 04 Binning"
+        Binning binning = new Binning()
+
+
+        return ["a": "b"]
     }
 
     private getTotal(rootList) {
@@ -150,4 +183,5 @@ class InstitutionService {
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
+
 }
