@@ -31,17 +31,17 @@ class Clustering {
     }
 
     def locate(v) {
-        if (this.boundingTriangle.descendants.length == 0) {
+        if (this.boundingTriangle.descendants.size() == 0) {
             return this.boundingTriangle
         }
         def triangles = this.boundingTriangle.descendants
         while (true) {
-            for (def i = 0; i < triangles.length; i++) {
+            for (def i = 0; i < triangles.size(); i++) {
                 def simplex = triangles[i].interior(v)
                 if (simplex == null) {
                     continue
                 }
-                if ( simplex instanceof Vertex || this.isLeaf(triangles[i])) {
+                if (simplex instanceof Vertex || this.isLeaf(triangles[i])) {
                     return simplex
                 }
                 triangles = triangles[i].descendants
@@ -93,7 +93,8 @@ class Clustering {
     }
 
     def add(v) {
-        this.addVertex(v, this.locate(v))
+        def located = this.locate(v)
+        this.addVertex(v, located)
     }
 
     def addVertex(v, simplex) {
@@ -131,7 +132,6 @@ class Clustering {
             this.legalize(v, tr1.e_p, t2)
             this.legalize(v, tr0.e_s, t3)
         } else {
-            /* IE8 problem */
             this.vertices.push(v)
             def e_i = new Edge(simplex.vertices[0], v)
             def e_j = new Edge(simplex.vertices[1], v)
@@ -153,7 +153,7 @@ class Clustering {
     }
 
     def isLeaf(t) {
-        return t.descendants.length == 0
+        return t.descendants.size() == 0
     }
 
     def createBoundingTriangle() {
@@ -217,7 +217,7 @@ class Clustering {
         def s1 = e.v1.size
         def x = (e.v0.x * s0 + e.v1.x * s1 ) / (s0 + s1 )
         def y = (e.v0.y * s0 + e.v1.y * s1 ) / (s0 + s1 )
-        def v = new Vertex(x, y, e.v0.elements.length, e.v0.binning)
+        def v = new Vertex(x, y, e.v0.elements.size(), e.v0.binning)
         v.merge(e.v0, e.v1)
 
         e.v0.legal = false
@@ -372,8 +372,9 @@ class Clustering {
     def jordanTest(pol, e) {
         def p = new Vertex((e.v0.x + e.v1.x) * 0.5, (e.v0.y + e.v1.y) * 0.5)
         def inside = false
-        def i, j = pol.length - 1
-        for ( i = 0; i < pol.length; j = i++) {
+        def i
+        def j = pol.size() - 1
+        for ( i = 0; i < pol.size(); j = i++) {
             def p1 = pol[i]
             def p2 = pol[j]
             if ((((p1.y <= p.y) && (p.y < p2.y)) || ((p2.y <= p.y) && (p.y < p1.y))) && (p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x))
@@ -383,7 +384,8 @@ class Clustering {
     }
 
     def mergeForResolution(resolution, circleGap) {
-        this.deleteEdges = new BinaryHeap(function(e) { return e.weight })
+        //this.deleteEdges = new BinaryHeap(function(e) { return e.weight })
+        this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 
         def index = 0
@@ -407,13 +409,13 @@ class Clustering {
     }
 
     def weightEdges(resolution, circleGap) {
-        for (def i = 0; i < this.vertices.length; i++) {
+        for (def i = 0; i < this.vertices.size(); i++) {
             if (this.vertices[i].legal) {
-                this.vertices[i].CalculateRadius(resolution)
+                this.vertices[i].calculateRadius(resolution)
             }
         }
         def newEdges = []
-        for (def i = 0; i < this.edges.length; i++) {
+        for (def i = 0; i < this.edges.size(); i++) {
             def e = this.edges[i]
             if (e.legal) {
                 if (!e.v0.legal || !e.v1.legal) {
@@ -428,6 +430,17 @@ class Clustering {
             }
         }
         this.edges = newEdges
+    }
+
+    def leftOf(v1, v2, v) {
+        def x2 = v1.x - v2.x
+        def x3 = v1.x - v.x
+        def y2 = v1.y - v2.y
+        def y3 = v1.y - v.y
+        if (x2 * y3 - y2 * x3 < 0) {
+            return true
+        }
+        return false
     }
 
     def validityTest() {
@@ -477,16 +490,16 @@ class Clustering {
         }
 
         //console.info("Test 3: Edges Facets ...");
-        def leftOf = function(v1, v2, v) {
-            def x2 = v1.x - v2.x
-            def x3 = v1.x - v.x
-            def y2 = v1.y - v2.y
-            def y3 = v1.y - v.y
-            if (x2 * y3 - y2 * x3 < 0) {
-                return true
-            }
-            return false
-        }
+        //        def leftOf = function(v1, v2, v) {
+        //            def x2 = v1.x - v2.x
+        //            def x3 = v1.x - v.x
+        //            def y2 = v1.y - v2.y
+        //            def y3 = v1.y - v.y
+        //            if (x2 * y3 - y2 * x3 < 0) {
+        //                return true
+        //            }
+        //            return false
+        //        }
         def c = 0
         for (i in this.edges ) {
             def e = this.edges[i]

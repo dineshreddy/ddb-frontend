@@ -1,7 +1,5 @@
 package de.ddb.next.cluster
 
-import sun.security.provider.certpath.Vertex
-
 
 
 class Binning {
@@ -27,6 +25,8 @@ class Binning {
     }
 
     def getSet() {
+        println "####################### 40 getSet"
+
         def type = this.binning
         if (!type) {
             return this.getExactBinning()
@@ -42,37 +42,38 @@ class Binning {
     }
 
     def getExactBinning() {
-        if (this.binnings['exact'] == null) {
-            this.exactBinning()
-        }
+        //if (this.binnings['exact'].size() == 0) {
+        this.exactBinning()
+        //}
         return this.binnings['exact']
     }
 
     def getGenericBinning() {
-        if(this.binnings['generic'] == null) {
-            this.genericBinning()
-        }
+        println "####################### 40 getGenericBinning "+this.binnings['generic']
+        //if(this.binnings['generic'].size() == 0) {
+        this.genericBinning()
+        //}
         return this.binnings['generic']
     }
 
     def getSquareBinning() {
-        if (this.binnings['square'] == null) {
-            this.squareBinning()
-        }
+        //if (this.binnings['square'].size() == 0) {
+        this.squareBinning()
+        //}
         return this.binnings['square']
     }
 
     def getHexagonalBinning() {
-        if (this.binnings['hexagonal'] == null) {
-            this.hexagonalBinning()
-        }
+        //if (this.binnings['hexagonal'].size() == 0) {
+        this.hexagonalBinning()
+        //}
         return this.binnings['hexagonal']
     }
 
     def getTriangularBinning() {
-        if (this.binnings['triangular'] == null) {
-            this.triangularBinning()
-        }
+        //if (this.binnings['triangular'].size() == 0) {
+        this.triangularBinning()
+        //}
         return this.binnings['triangular']
     }
 
@@ -91,9 +92,9 @@ class Binning {
 
     def setObjects(objects) {
         this.objects = objects
-        for (def i = 0; i < this.objects.length; i++) {
+        for (def i = 0; i < this.objects.size(); i++) {
             def weight = 0
-            for (def j = 0; j < this.objects[i].length; j++) {
+            for (def j = 0; j < this.objects[i].size(); j++) {
                 if (this.objects[i][j].isGeospatial) {
                     weight += this.objects[i][j].weight
                 }
@@ -177,48 +178,104 @@ class Binning {
         ]
     }
 
-    def genericClustering(objects, id) {
+    def orderBalls(b1, b2) {
+        if (b1.radius > b2.radius) {
+            return -1
+        }
+        if (b2.radius > b1.radius) {
+            return 1
+        }
+        return 0
+    }
+
+    def createCircle(sx, sy, ball, point, fatherBin, circles, hashMap, selectionMap) {
+        def index = id ? id : ball.search
+        def circle = new CircleObject(point.x, point.y, sx, sy, ball.elements, ball.radius, index, ball.weight, fatherBin)
+        circles[ball.search].push(circle)
+        fatherBin.circles[index] = circle
+        fatherBin.length++
+        for (def k = 0; k < ball.elements.length; k++) {
+            hashMap[ball.search][ball.elements[k].index] = circle
+            selectionMap[ball.search][ball.elements[k].index] = false
+        }
+    }
+
+    def getResolutionForZoom(zoom){
+        def resolutionMap = [:]
+        resolutionMap["0"] = 0.5971642833948135
+        resolutionMap["1"] = 1.194328566789627
+        resolutionMap["2"] = 2.388657133579254
+        resolutionMap["3"] = 4.777314267158508
+        resolutionMap["4"] = 9.554628534317017
+        resolutionMap["5"] = 19.109257068634033
+        resolutionMap["6"] = 38.218514137268066
+        resolutionMap["7"] = 76.43702827453613
+        resolutionMap["8"] = 152.87405654907226
+        resolutionMap["9"] = 305.74811309814453
+        resolutionMap["10"] = 611.4962261962891
+        resolutionMap["11"] = 1222.9924523925781
+        resolutionMap["12"] = 2445.9849047851562
+        resolutionMap["13"] = 4891.9698095703125
+        resolutionMap["14"] = 9783.939619140625
+        resolutionMap["15"] = 19567.87923828125
+        resolutionMap["16"] = 39135.7584765625
+        resolutionMap["17"] = 78271.516953125
+        resolutionMap["18"] = 156543.03390625
+
+        return resolutionMap[""+zoom]
+    }
+
+    def genericClustering(objects, id = null) {
+        println "####################### 42 "+objects
         def binSets = []
         def circleSets = []
         def hashMaps = []
         def selectionHashs = []
         def clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
+        println "####################### 42a "
 
         def self = this
-        for (def i = 0; i < objects.length; i++) {
-            for (def j = 0; j < objects[i].length; j++) {
+        for (def i = 0; i < objects.size(); i++) {
+            println "####################### 42b "
+            //            for (def j = 0; j < objects[i].size(); j++) {
+            for (def j = 0; j < 100; j++) {
                 def o = objects[i][j]
                 if (o.isGeospatial) {
                     //def p = new OpenLayers.Geometry.Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
                     def p = new Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
-                    p.transform(self.map.displayProjection, self.map.projection)
-                    def point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, self)
+                    //p.transform(self.map.displayProjection, self.map.projection)
+                    p.transform(self.displayProjection, self.projection)
+                    def point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.size(), self)
                     point.addElement(o, o.weight, i)
-                    /* IE8 problem */
+                    println "####################### 42c "+j + " / "+point
+                    if(j==98){
+                        int m = 0
+                    }
                     clustering.add(point)
                 }
             }
         }
 
+        println "####################### 42z "
         for (def i = 0; i < this.zoomLevels; i++) {
             def bins = []
             def circles = []
             def hashMap = []
             def selectionMap = []
-            for (def j = 0; j < objects.length; j++) {
+            for (def j = 0; j < objects.size(); j++) {
                 circles.push([])
                 hashMap.push([])
                 selectionMap.push([])
             }
-            def resolution = this.map.getResolutionForZoom(this.zoomLevels - i - 1)
+            def resolution = this.getResolutionForZoom(this.zoomLevels - i - 1)
             clustering.mergeForResolution(resolution, this.circleGap)
-            for (def j = 0; j < clustering.vertices.length; j++) {
+            for (def j = 0; j < clustering.vertices.size(); j++) {
                 def point = clustering.vertices[j]
                 if (!point.legal) {
                     continue
                 }
                 def balls = []
-                for (def k = 0; k < point.elements.length; k++) {
+                for (def k = 0; k < point.elements.size(); k++) {
                     if (point.elements[k].length > 0) {
                         balls.push([
                             search : k,
@@ -228,15 +285,15 @@ class Binning {
                         ])
                     }
                 }
-                def orderBalls = function(b1, b2) {
-                    if (b1.radius > b2.radius) {
-                        return -1
-                    }
-                    if (b2.radius > b1.radius) {
-                        return 1
-                    }
-                    return 0
-                }
+                //                def orderBalls = function(b1, b2) {
+                //                    if (b1.radius > b2.radius) {
+                //                        return -1
+                //                    }
+                //                    if (b2.radius > b1.radius) {
+                //                        return 1
+                //                    }
+                //                    return 0
+                //                }
                 def fatherBin = [
                     circles : [],
                     length : 0,
@@ -244,27 +301,30 @@ class Binning {
                     x : point.x,
                     y : point.y
                 ]
-                for (def k = 0; k < objects.length; k++) {
+                for (def k = 0; k < objects.size(); k++) {
                     fatherBin.circles.push(false)
                 }
-                def createCircle = function(sx, sy, ball) {
-                    def index = id || ball.search
-                    def circle = new CircleObject(point.x, point.y, sx, sy, ball.elements, ball.radius, index, ball.weight, fatherBin)
-                    circles[ball.search].push(circle)
-                    fatherBin.circles[index] = circle
-                    fatherBin.length++
-                    for (def k = 0; k < ball.elements.length; k++) {
-                        hashMap[ball.search][ball.elements[k].index] = circle
-                        selectionMap[ball.search][ball.elements[k].index] = false
-                    }
-                }
+                //                def createCircle = function(sx, sy, ball) {
+                //                    def index = id ? id : ball.search
+                //                    def circle = new CircleObject(point.x, point.y, sx, sy, ball.elements, ball.radius, index, ball.weight, fatherBin)
+                //                    circles[ball.search].push(circle)
+                //                    fatherBin.circles[index] = circle
+                //                    fatherBin.length++
+                //                    for (def k = 0; k < ball.elements.length; k++) {
+                //                        hashMap[ball.search][ball.elements[k].index] = circle
+                //                        selectionMap[ball.search][ball.elements[k].index] = false
+                //                    }
+                //                }
                 if (balls.length == 1) {
-                    createCircle(0, 0, balls[0])
+                    //createCircle(0, 0, balls[0])
+                    createCircle(0, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
                 } else if (balls.length == 2) {
                     def r1 = balls[0].radius
                     def r2 = balls[1].radius
-                    createCircle(-1 * r2, 0, balls[0])
-                    createCircle(r1, 0, balls[1])
+                    //createCircle(-1 * r2, 0, balls[0])
+                    createCircle(-1 * r2, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(r1, 0, balls[1])
+                    createCircle(r1, 0, balls[1], point, fatherBin, circles, hashMap, selectionMap)
                 } else if (balls.length == 3) {
                     balls.sort(orderBalls)
                     def r1 = balls[0].radius
@@ -273,9 +333,12 @@ class Binning {
                     def d = ((2 / 3 * Math.sqrt(3) - 1) / 2) * r2
                     def delta1 = point.radius / resolution - r1 - d
                     def delta2 = r1 - delta1
-                    createCircle(-delta1, 0, balls[0])
-                    createCircle(delta2 + r2 - 3 * d, r2, balls[1])
-                    createCircle(delta2 + r3 - (3 * d * r3 / r2), -1 * r3, balls[2])
+                    //createCircle(-delta1, 0, balls[0])
+                    createCircle(-delta1, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(delta2 + r2 - 3 * d, r2, balls[1])
+                    createCircle(delta2 + r2 - 3 * d, r2, balls[1], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(delta2 + r3 - (3 * d * r3 / r2), -1 * r3, balls[2])
+                    createCircle(delta2 + r3 - (3 * d * r3 / r2), -1 * r3, balls[2], point, fatherBin, circles, hashMap, selectionMap)
                 } else if (balls.length == 4) {
                     balls.sort(orderBalls)
                     def r1 = balls[0].radius
@@ -283,10 +346,14 @@ class Binning {
                     def r3 = balls[2].radius
                     def r4 = balls[3].radius
                     def d = (Math.sqrt(2) - 1) * r2
-                    createCircle(-1 * d - r2, 0, balls[0])
-                    createCircle(r1 - r2, -1 * d - r4, balls[3])
-                    createCircle(r1 - r2, d + r3, balls[2])
-                    createCircle(d + r1, 0, balls[1])
+                    //createCircle(-1 * d - r2, 0, balls[0])
+                    createCircle(-1 * d - r2, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(r1 - r2, -1 * d - r4, balls[3])
+                    createCircle(r1 - r2, -1 * d - r4, balls[3], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(r1 - r2, d + r3, balls[2])
+                    createCircle(r1 - r2, d + r3, balls[2], point, fatherBin, circles, hashMap, selectionMap)
+                    //createCircle(d + r1, 0, balls[1])
+                    createCircle(d + r1, 0, balls[1], point, fatherBin, circles, hashMap, selectionMap)
                 }
                 if (fatherBin.length > 1) {
                     bins.push(fatherBin)
@@ -301,6 +368,8 @@ class Binning {
         binSets.reverse()
         hashMaps.reverse()
         selectionHashs.reverse()
+        println "####################### 43 "+objects
+
         return [
             circleSets : circleSets,
             binSets : binSets,
@@ -310,6 +379,7 @@ class Binning {
     }
 
     def genericBinning() {
+        println "####################### 41 "+this.objects
         if (this.circlePackings || this.objects.length == 1) {
             this.binnings['generic'] = this.genericClustering(this.objects)
         } else {

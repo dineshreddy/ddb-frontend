@@ -88,20 +88,64 @@ class InstitutionService {
         println "####################### 02 mapModel"
         InstitutionMapModel institutionMapModel = new InstitutionMapModel()
         institutionMapModel.prepareInstitutionsData(institutions)
-        def allMapData = institutionMapModel.getAllMapData()
+        //def allMapData = institutionMapModel.getAllMapData()
+
+        println "####################### 03 sectors"
+        def sectors = [:]
+        sectors['selected'] = []
+        sectors['deselected'] = []
+
+        def sectorData1 = [:]
+        sectorData1['sector'] = "sec_01"
+        sectorData1['name'] = "sec_01"
+        sectors['deselected'].push(sectorData1)
+
+        def sectorData2 = [:]
+        sectorData2['sector'] = "sec_02"
+        sectorData2['name'] = "sec_02"
+        sectors['deselected'].push(sectorData2)
+
+        def sectorData3 = [:]
+        sectorData3['sector'] = "sec_03"
+        sectorData3['name'] = "sec_03"
+        sectors['deselected'].push(sectorData3)
+
+        def sectorData4 = [:]
+        sectorData4['sector'] = "sec_04"
+        sectorData4['name'] = "sec_04"
+        sectors['deselected'].push(sectorData4)
+
+        def sectorData5 = [:]
+        sectorData5['sector'] = "sec_05"
+        sectorData5['name'] = "sec_05"
+        sectors['deselected'].push(sectorData5)
+
+        def sectorData6 = [:]
+        sectorData6['sector'] = "sec_06"
+        sectorData6['name'] = "sec_06"
+        sectors['deselected'].push(sectorData6)
+
+        def sectorData7 = [:]
+        sectorData7['sector'] = "sec_07"
+        sectorData7['name'] = "sec_07"
+        sectors['deselected'].push(sectorData7)
+
+        def dataSets = institutionMapModel.selectSectors(sectors)
+        println dataSets
 
         def mapObjects = []
-        for (def i = 0; i < allMapData.size(); i++) {
-            mapObjects.push(allMapData[i].objects)
+        for (def i = 0; i < dataSets.size(); i++) {
+            mapObjects.push(dataSets[i].objects)
         }
-        return mapObjects
-        println "####################### 03 mapObjects"
+        println "####################### 04 mapObjects"
         println mapObjects
 
 
-        println "####################### 04 Binning"
+        println "####################### 05 Binning"
         Binning binning = new Binning()
-
+        binning.setObjects(mapObjects)
+        println binning.getSet()
+        println "####################### 06 Binning"
 
         return ["a": "b"]
     }

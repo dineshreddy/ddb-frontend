@@ -12,7 +12,7 @@ class Vertex {
     def legal
     def binning
 
-    def Vertex(x, y, categories, binning) {
+    def Vertex(x, y, categories = null, binning = null) {
         this.x = x
         this.y = y
         this.radius
@@ -31,8 +31,9 @@ class Vertex {
     }
 
     def merge(v0, v1) {
-        for (def i = 0; i < v0.elements.length; i++) {
-            this.elements[i] = v0.elements[i].concat(v1.elements[i])
+        for (def i = 0; i < v0.elements.size(); i++) {
+            //this.elements[i] = v0.elements[i].concat(v1.elements[i])
+            this.elements[i] = v0.elements[i].addAll(v1.elements[i]) //TODO
             this.weights[i] = v0.weights[i] + v1.weights[i]
             this.size += this.weights[i]
         }
@@ -40,10 +41,10 @@ class Vertex {
 
     def calculateRadius(resolution) {
         this.radii = []
-        for (i in this.elements ) {
+        for (def i = 0; i<this.elements.size(); i++ ) {
             this.radii.push(this.binning.getRadius(this.weights[i]))
         }
-        if (this.radii.length == 1) {
+        if (this.radii.size() == 1) {
             this.radius = this.radii[0] * resolution
         } else {
             def count = 0
@@ -80,5 +81,9 @@ class Vertex {
         this.elements[index].push(e)
         this.size += weight
         this.weights[index] += weight
+    }
+
+    String toString(){
+        return "Vertex[x: "+x+", y: "+y+", radius: "+radius+", size: "+size+", elements: "+elements+", radii: "+radii+", weights: "+weights+", legal: "+legal+", binning: "+binning+"]"
     }
 }
