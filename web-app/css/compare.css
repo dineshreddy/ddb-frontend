@@ -38,10 +38,7 @@
 }
 
 .compare .compare-body {
-  border: 1px solid #e9e5e2;
-}
-
-.compare .span12 {
-  width: 100%;
-  margin-left: 30px;
+  border-right: 1px solid #e9e5e2;
+  overflow: scroll;
+  overflow-x: hidden;
 }

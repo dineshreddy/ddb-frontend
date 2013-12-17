@@ -13,16 +13,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
-<g:render template="institution" />
-<g:render template="itemLinks" />
-<div class="row item-detail item-content">
-  <div class="span6 item-description">
-    <h2>${title}</h2>
-    <g:render template="fields" />
-    <g:render template="rights" />
-    <g:render template="license" />
-    <g:render template="/item/origin" />
-    <g:render template="/item/share" />
-  </div>
+<div class="fields">
+  <g:each in="${fields}">
+    <div class="row">
+      <div class="span2"><strong>${it.name}: </strong></div>
+      <div class="value span4">
+        <g:each var="value" in="${it.value }">
+          <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}"> 
+            <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
+          </g:if>
+          <g:else>
+            ${value}
+          </g:else>
+          <br />
+        </g:each>
+      </div>
+    </div>
+  </g:each>
 </div>

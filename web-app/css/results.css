@@ -1103,17 +1103,17 @@ color: #a5003b;
   display: table;
 }
 
-.compare-main {
+.compare-objects .compare-main {
   margin-bottom: 15px;
   height: 130px;
   max-height: 130px;
 }
 
-.compare-header {
+.compare-objects .compare-header {
   margin-bottom: 15px;
 }
 
-.compare-footer {
+.compare-objects .compare-footer {
   margin-top: 15px;
 }
 
