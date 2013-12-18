@@ -76,6 +76,20 @@
   top: 205px;   
 }
 
+
+.olMap .olControlAttribution {
+    bottom: 8px;
+    color: #56524F;
+    font-size: 11px;
+    right: 5px;
+}
+
+.olMap .olControlAttribution a {
+  background: none !important;
+  padding-left: 0px !important;
+}
+
+
 /* Controls end */
 
 /* Popup start */
