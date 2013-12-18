@@ -63,20 +63,16 @@ limitations under the License.
         </div>
       </div>
     </div>
-  
     <div class="binary-title">
       <span></span>
     </div>
-    
     <div class="binary-author">
       <span></span>
     </div>
-  
     <div class="binary-rights">
       <span></span>
     </div>
-  
-    <div class="tabs">
+    <div class="tabs off">
       <div role="tablist">
         <p class="tab all" role="tab">
           <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
@@ -154,47 +150,7 @@ limitations under the License.
           <g:message code="ddbnext.Next_Label" />
           <span class="opaque"></span>
         </button>
-        <p class="gallery-pagination" data-pag="0"></p>
       </div>
-      <noscript>
-        <div class="scroller all" role="tabpanel">
-          <ul class="gallery-all">
-            <g:each in="${binaryList}">
-              <li>
-                <a class="group" 
-                  <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                    href="${it.full.uri}"
-                    title="${(it.full.title).encodeAsHTML()}"
-                    <g:set var="type" value="image"/>
-                  </g:if>
-                  <g:elseif test="${it.orig.uri.video != ''}">
-                    href="${it.orig.uri.video}"
-                    title="${(it.orig.title).encodeAsHTML()}"
-                    <g:set var="type" value="video"/>
-                  </g:elseif>
-                  <g:elseif test="${it.orig.uri.audio != ''}">
-                    href="${it.orig.uri.audio}"
-                    title="${(it.orig.title).encodeAsHTML()}"
-                    <g:set var="type" value="audio"/>
-                  </g:elseif>>
-                  <div class="thumbnail ${type}">
-                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                  </div>
-                  <span class="label off">
-                    <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                      ${it.full.title}
-                    </g:if>
-                    <g:else>
-                      ${it.orig.title}
-                    </g:else>
-                  </span>
-                </a>
-              </li>
-            </g:each>
-          </ul>
-        </div>
-      </noscript>
-  
       <div role="tablist">
         <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
       </div>
@@ -229,25 +185,6 @@ limitations under the License.
         </button>
         <p class="gallery-pagination" data-pag="0"></p>
       </div>
-      <noscript>
-        <div class="scroller images" role="tabpanel">
-          <ul class="gallery-images">
-            <g:each in="${binaryList}">
-              <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                <li>
-                  <a class="group" href="${it.full.uri}" title="${(it.preview.title).encodeAsHTML()}">
-                    <div class="thumbnail image">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.preview.title}</span>
-                  </a>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
-        </div>
-      </noscript>
-  
       <div role="tablist">
         <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
       </div>
@@ -283,25 +220,6 @@ limitations under the License.
         </button>
         <p class="gallery-pagination" data-pag="0"></p>
       </div>
-      <noscript>
-        <div class="scroller videos" role="tabpanel">
-          <ul class="gallery-videos">
-            <g:each in="${binaryList}">
-              <g:if test="${it.orig.uri.video != '' }">
-                <li>
-                  <a class="group" href="${it.orig.uri.video}" title="${(it.orig.title).encodeAsHTML()}">
-                    <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.orig.title}</span>
-                  </a>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
-        </div>
-      </noscript>
-  
       <div role="tablist">
         <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
       </div>
@@ -337,24 +255,6 @@ limitations under the License.
         </button>
         <p class="gallery-pagination" data-pag="0"></p>
       </div>
-      <noscript>
-        <div class="scroller audios" role="tabpanel">
-          <ul class="gallery-audios">
-            <g:each in="${binaryList}">
-              <g:if test="${it.orig.uri.audio != '' }">
-                <li>
-                  <a class="group" href="${it.orig.uri.audio}" title="${(it.orig.title).encodeAsHTML()}">
-                    <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
-                    </div>
-                    <span class="label off">${it.orig.title}</span>
-                  </a>
-                </li>
-              </g:if>
-            </g:each>
-          </ul>
-        </div>
-      </noscript>
     </div>
   </div>
 </div>

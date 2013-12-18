@@ -59,61 +59,9 @@ $(document)
               }
             }
             $(function() {
-              currentTab($("p.all"));
-              $("div.all").show();
-              $("p.divider").show();
-              $(".tab").addClass('show-divider');
-              $("div.tabs").addClass("fix");
               updatePreview($("div.all"));
-              createGallery($(".gallery-all"));
-              updateGalleryPagination(0, ".gallery-all li");
             });
-            function updateGalleryPagination(pag, list) {
-              var pos;
-              var tot = $(list).size();
-              var mediaQueryMatches = 1;
-              if (navigator.appName.indexOf("Internet Explorer") == -1) {
-                mediaQueryMatches = mediaQuery;
-              }
-              if (mediaQueryMatches) {
-                // window width is at least 530px
-                if (tot > 1) {
-                  if (tot === 2) {
-                    pos = "1-2";
-                  } else {
-                    a = 1 + pag * 3;
-                    b = 3 + pag * 3;
-                    while (b > tot) {
-                      a--;
-                      b--;
-                    }
-                    pos = a + "-" + b;
-                  }
-                } else {
-                  pos = "1";
-                }
-              } else {
-                // window width is less than 530px
-                if (tot > 1) {
-                  a = 1 + pag * 2;
-                  b = 2 + pag * 2;
-                  while (b > tot) {
-                    a--;
-                    b--;
-                  }
-                  pos = a + "-" + b;
-                } else {
-                  pos = "1";
-                }
-              }
-              $("p.gallery-pagination").text(pos + "/" + tot);
-            }
-            ;
-            function currentTab(el) {
-              $("p.tab").removeClass("current-tab");
-              $(el).addClass("current-tab");
-            }
-            ;
+
             function updatePreview(gallerydiv) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
               var previewUri = $(a).attr("href");
@@ -125,8 +73,7 @@ $(document)
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
 
-              // DDBNEXT-800 the title can use more than one line but should be
-              // limited to 200 characters
+              // Title limited to 200 characters
               title_text = cutoffStringAtSpace(title, 200);
 
               // The tooltip of the title should be limited to 270 characters
@@ -168,8 +115,7 @@ $(document)
 
               $("div.binary-rights span").text(rights);
               $("div.binary-rights").attr("title", rights);
-            }
-            ;
+            };
             function cutoffStringAtSpace(text, limit) {
               if (text != null && text.toString().length > limit) {
                 return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1)
@@ -214,126 +160,11 @@ $(document)
                   $("div.binary-viewer-error").removeClass("off");
                 }
               });
-            }
-            ;
-            function createGallery(el) {
-              var img = 3;
-              var mediaQueryMatches = 1;
-              if (navigator.appName.indexOf("Internet Explorer") == -1) {
-                mediaQueryMatches = mediaQuery;
-              }
-              if (!mediaQueryMatches) {
-                img = 2;
-              }
-              el.carouFredSel({
-                circular : false,
-                infinite : false,
-                width : 445,
-                align : false,
-                height : 110,
-                items : {
-                  visible : img,
-                  minimum : 1
-                },
-                scroll : {
-                  items : img,
-                  fx : "fade"
-                },
-                auto : false,
-                prev : ".btn-prev",
-                next : ".btn-next"
-              });
-              if (el.find('li').size() < 4) {
-                $(".btn-next").addClass("disabled");
-                $(".btn-next").attr("disabled", true);
-              } else {
-                $(".btn-next").attr("disabled", false);
-              }
-            }
-            ;
-            $(".btn-prev").click(function() {
-              if (!$(this).hasClass("disabled")) {
-                var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
-                var prevPage = parseInt(currentTabPage) - 1;
-                updateGalleryPagination(prevPage, $(this).parent().find(".gallery-tab li"));
-                $(this).parent().find(".gallery-pagination").attr("data-pag", prevPage);
-                $(this).addClass("disabled");
-                setTimeout(function() {
-                  $(this).removeClass("disabled");
-                }, 500);
-              }
-            });
-            $(".btn-next").click(function() {
-              if (!$(this).hasClass("disabled")) {
-                var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
-                var nextPage = parseInt(currentTabPage) + 1;
-                updateGalleryPagination(nextPage, $(this).parent().find(".gallery-tab li"));
-                $(this).parent().find(".gallery-pagination").attr("data-pag", nextPage);
-                $(this).addClass("disabled");
-                setTimeout(function() {
-                  $(this).removeClass("disabled");
-                }, 500);
-              }
-            });
+            };
             function hideErrors() {
               $("div.binary-viewer-error").addClass("off");
               $("div.binary-viewer-flash-upgrade").addClass("off");
             }
-            $("p.all").click(
-                function() {
-                  var tab = $("div.all");
-                  currentTab(this);
-                  $("div.scroller").hide();
-                  tab.show();
-                  if ($(".gallery-all").find('li').size() > 3) {
-                    createGallery($(".gallery-all"));
-                  }
-                  updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-all li");
-                });
-            $("p.images").click(
-                function() {
-                  var tab = $("div.images");
-                  if (tab.find("li").size() === 0) {
-                    return false;
-                  }
-                  currentTab(this);
-                  $("div.scroller").hide();
-                  tab.show();
-                  createGallery($(".gallery-images"));
-                  updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-images li");
-                });
-            $("p.videos").click(
-                function() {
-                  var tab = $("div.videos");
-                  if (tab.find("li").size() === 0) {
-                    return false;
-                  }
-                  currentTab(this);
-                  $("div.scroller").hide();
-                  tab.show();
-                  createGallery($(".gallery-videos"));
-                  updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-videos li");
-                });
-            $("p.audios").click(
-                function() {
-                  var tab = $("div.audios");
-                  if (tab.find("li").size() === 0) {
-                    return false;
-                  }
-                  currentTab(this);
-                  $("div.scroller").hide();
-                  tab.show();
-                  createGallery($(".gallery-audios"));
-                  updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-audios li");
-                });
             $(".previews")
                 .click(
                     function(e) {
@@ -369,34 +200,5 @@ $(document)
                       }
                       return false;
                     });
-            $("a.group").click(function(e) {
-              e.preventDefault();
-              var previewUri = $(this).attr("href");
-              var previewHref = $(this).attr("data-content");
-              var type = $(this).attr("data-type");
-              var title = $(this).find("span").text();
-              hideErrors();
-              if (type == "image") {
-                if ($("#jwplayer-container")) {
-                  $("#jwplayer-container").remove();
-                }
-                if ($("#jwplayer-container_wrapper")) {
-                  $("#jwplayer-container_wrapper").remove();
-                }
-                $(".previews").parent().addClass("off");
-                $(".previews").each(function() {
-                  if ($(this).attr("href") == previewHref) {
-                    $(this).parent().removeClass("off");
-                    return false;
-                  } else {
-                    $(this).parent().appendTo($("#previews-list"));
-                  }
-                });
-              } else {
-                jwPlayerSetup(previewHref, previewUri);
-              }
-              $("div.binary-title span").text(title);
-              return false;
-            });
           }
         });
