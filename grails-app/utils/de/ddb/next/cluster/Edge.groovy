@@ -8,6 +8,7 @@ class Edge {
     def rightFace
     def legal
     def length
+    def weight
 
     def Edge(v0, v1) {
         this.v0 = v0
@@ -70,5 +71,9 @@ class Edge {
             return true
         }
         return false
+    }
+
+    String toString(){
+        return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", length: "+length+"]"
     }
 }

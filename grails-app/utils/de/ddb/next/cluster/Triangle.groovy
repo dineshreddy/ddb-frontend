@@ -1,7 +1,5 @@
 package de.ddb.next.cluster
 
-import sun.security.provider.certpath.Vertex
-
 class Triangle {
 
     def edges
@@ -142,5 +140,15 @@ class Triangle {
         //            }
         //        }
         //        return -1
+    }
+
+    String toString() {
+        //        def edges
+        //        def descendants
+        //        def vertices
+        //        def radius_squared
+        //        def center
+        //
+        return "Triangle[edges: "+edges.getClass()+", descendants: "+descendants+", vertices: "+vertices+", radius_squared: "+radius_squared+", center: "+center+"]"
     }
 }

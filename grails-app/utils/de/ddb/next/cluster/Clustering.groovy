@@ -31,17 +31,17 @@ class Clustering {
     }
 
     def locate(v) {
-        if (this.boundingTriangle.descendants.length == 0) {
+        if (this.boundingTriangle.descendants.size() == 0) {
             return this.boundingTriangle
         }
         def triangles = this.boundingTriangle.descendants
         while (true) {
-            for (def i = 0; i < triangles.length; i++) {
+            for (def i = 0; i < triangles.size(); i++) {
                 def simplex = triangles[i].interior(v)
                 if (simplex == null) {
                     continue
                 }
-                if ( simplex instanceof Vertex || this.isLeaf(triangles[i])) {
+                if (simplex instanceof Vertex || this.isLeaf(triangles[i])) {
                     return simplex
                 }
                 triangles = triangles[i].descendants
@@ -93,7 +93,8 @@ class Clustering {
     }
 
     def add(v) {
-        this.addVertex(v, this.locate(v))
+        def located = this.locate(v)
+        this.addVertex(v, located)
     }
 
     def addVertex(v, simplex) {
@@ -131,7 +132,6 @@ class Clustering {
             this.legalize(v, tr1.e_p, t2)
             this.legalize(v, tr0.e_s, t3)
         } else {
-            /* IE8 problem */
             this.vertices.push(v)
             def e_i = new Edge(simplex.vertices[0], v)
             def e_j = new Edge(simplex.vertices[1], v)
@@ -153,7 +153,7 @@ class Clustering {
     }
 
     def isLeaf(t) {
-        return t.descendants.length == 0
+        return t.descendants.size() == 0
     }
 
     def createBoundingTriangle() {
@@ -184,12 +184,12 @@ class Clustering {
             if (eLeft.leftFace == triangle) {
                 triple = eLeft.rightFace.getTriple(eLeft)
                 oldFacets.push(eLeft.rightFace)
-                triple.e_s.removeFace(eLeft.rightFace)
+                //triple.e_s.removeFace(eLeft.rightFace) // TODO
                 triangle = eLeft.rightFace
             } else {
                 triple = eLeft.leftFace.getTriple(eLeft)
                 oldFacets.push(eLeft.leftFace)
-                triple.e_s.removeFace(eLeft.leftFace)
+                //triple.e_s.removeFace(eLeft.leftFace) //TODO
                 triangle = eLeft.leftFace
             }
             if (arrayIndex(hole, triple.e_s) == -1) {
@@ -217,7 +217,7 @@ class Clustering {
         def s1 = e.v1.size
         def x = (e.v0.x * s0 + e.v1.x * s1 ) / (s0 + s1 )
         def y = (e.v0.y * s0 + e.v1.y * s1 ) / (s0 + s1 )
-        def v = new Vertex(x, y, e.v0.elements.length, e.v0.binning)
+        def v = new Vertex(x, y, e.v0.elements.size(), e.v0.binning)
         v.merge(e.v0, e.v1)
 
         e.v0.legal = false
@@ -260,7 +260,7 @@ class Clustering {
 
         def hd = new Clustering(this.bbox.x1 - 10, this.bbox.y1 - 10, this.bbox.x2 + 10, this.bbox.y2 + 10)
         def hull = []
-        for (def i in hole ) {
+        for (def i = 0; i<hole.size(); i++ ) {
             if (!(hole[i].leftFace == null && hole[i].rightFace == null)) {
                 hull.push(hole[i].v0)
                 hull.push(hole[i].v1)
@@ -268,7 +268,7 @@ class Clustering {
         }
         def hullVertices = []
         def distinct = []
-        for (def i in vertices ) {
+        for (def i=0; i<vertices.size(); i++ ) {
             if (arrayIndex(distinct, vertices[i]) == -1) {
                 hd.add(vertices[i])
                 distinct.push(vertices[i])
@@ -287,10 +287,10 @@ class Clustering {
         //            }
         //            return -1
         //        }
-        def holeEdges = new ArrayList(hole.length)
+        def holeEdges = new ArrayList(hole.size())
         def nonHoleEdges = []
 
-        for (def i = 0; i < hd.edges.length; i++) {
+        for (def i = 0; i < hd.edges.size(); i++) {
             def e2 = hd.edges[i]
             def b = isBoundary(e2, hole)
             if (b != -1) {
@@ -318,7 +318,7 @@ class Clustering {
         }
 
 
-        for (def i = 0; i < holeEdges.length; i++) {
+        for (def i = 0; i < holeEdges.size(); i++) {
             def e2 = holeEdges[i]
             if (hole[i].leftFace == null) {
                 hole[i].leftFace = e2.leftFace
@@ -336,7 +336,7 @@ class Clustering {
             }
         }
 
-        for (def i = 0; i < nonHoleEdges.length; i++) {
+        for (def i = 0; i < nonHoleEdges.size(); i++) {
             def e2 = nonHoleEdges[i]
             if (!e2.legal) {
                 continue
@@ -352,11 +352,11 @@ class Clustering {
             }
         }
 
-        for (def i in oldFacets ) {
+        for (def i = 0; i<oldFacets.size(); i++ ) {
             oldFacets[i].descendants = newFacets
         }
 
-        for (def i = 0; i < newFacets.length; i++) {
+        for (def i = 0; i < newFacets.size(); i++) {
             def simplex = newFacets[i].interior(v)
             if (simplex == null) {
                 continue
@@ -372,8 +372,9 @@ class Clustering {
     def jordanTest(pol, e) {
         def p = new Vertex((e.v0.x + e.v1.x) * 0.5, (e.v0.y + e.v1.y) * 0.5)
         def inside = false
-        def i, j = pol.length - 1
-        for ( i = 0; i < pol.length; j = i++) {
+        def i
+        def j = pol.size() - 1
+        for ( i = 0; i < pol.size(); j = i++) {
             def p1 = pol[i]
             def p2 = pol[j]
             if ((((p1.y <= p.y) && (p.y < p2.y)) || ((p2.y <= p.y) && (p.y < p1.y))) && (p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x))
@@ -383,17 +384,18 @@ class Clustering {
     }
 
     def mergeForResolution(resolution, circleGap) {
-        this.deleteEdges = new BinaryHeap(function(e) { return e.weight })
+        //this.deleteEdges = new BinaryHeap(function(e) { return e.weight })
+        this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 
         def index = 0
         while (this.deleteEdges.size() > 0) {
             def e = this.deleteEdges.pop()
             if (e.legal) {
-                def l = this.edges.length
+                def l = this.edges.size()
                 def newVertex = this.mergeVertices(e)
                 newVertex.calculateRadius(resolution)
-                for (def k = l; k < this.edges.length; k++) {
+                for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]
                     if (eNew.legal) {
                         eNew.weight = eNew.length / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
@@ -407,13 +409,13 @@ class Clustering {
     }
 
     def weightEdges(resolution, circleGap) {
-        for (def i = 0; i < this.vertices.length; i++) {
+        for (def i = 0; i < this.vertices.size(); i++) {
             if (this.vertices[i].legal) {
-                this.vertices[i].CalculateRadius(resolution)
+                this.vertices[i].calculateRadius(resolution)
             }
         }
         def newEdges = []
-        for (def i = 0; i < this.edges.length; i++) {
+        for (def i = 0; i < this.edges.size(); i++) {
             def e = this.edges[i]
             if (e.legal) {
                 if (!e.v0.legal || !e.v1.legal) {
@@ -428,6 +430,17 @@ class Clustering {
             }
         }
         this.edges = newEdges
+    }
+
+    def leftOf(v1, v2, v) {
+        def x2 = v1.x - v2.x
+        def x3 = v1.x - v.x
+        def y2 = v1.y - v2.y
+        def y3 = v1.y - v.y
+        if (x2 * y3 - y2 * x3 < 0) {
+            return true
+        }
+        return false
     }
 
     def validityTest() {
@@ -477,16 +490,16 @@ class Clustering {
         }
 
         //console.info("Test 3: Edges Facets ...");
-        def leftOf = function(v1, v2, v) {
-            def x2 = v1.x - v2.x
-            def x3 = v1.x - v.x
-            def y2 = v1.y - v2.y
-            def y3 = v1.y - v.y
-            if (x2 * y3 - y2 * x3 < 0) {
-                return true
-            }
-            return false
-        }
+        //        def leftOf = function(v1, v2, v) {
+        //            def x2 = v1.x - v2.x
+        //            def x3 = v1.x - v.x
+        //            def y2 = v1.y - v2.y
+        //            def y3 = v1.y - v.y
+        //            if (x2 * y3 - y2 * x3 < 0) {
+        //                return true
+        //            }
+        //            return false
+        //        }
         def c = 0
         for (i in this.edges ) {
             def e = this.edges[i]
