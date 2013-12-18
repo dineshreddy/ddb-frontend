@@ -85,36 +85,70 @@ $(document).ready(function() {
             //Show the waiting layer 
             self._showWaitingLayer();
             
-//            self._loadClusteredInstitutionList(function() { //on clusters loaded
-//              
-//              //Draws the institutions on the vector layer
-//              self._drawClustersOnMap();
-//  
-//              //Hide the waiting layer again
-//              self._hideWaitingLayer();
-//  
-//              //Remove the tiles load listener again. We only want it on initialization.
-//              tiles.events.unregister("loadend", tiles, onTilesLoaded);
-//            });
-            
-            //Loads all institutions over ajax
-            self._loadFullInstitutionList(function() { //on build model finished
-
+            self._loadClusteredInstitutionList(function() { //on clusters loaded
+              
               //Draws the institutions on the vector layer
               self._drawClustersOnMap();
-
+  
               //Hide the waiting layer again
               self._hideWaitingLayer();
-
+  
               //Remove the tiles load listener again. We only want it on initialization.
               tiles.events.unregister("loadend", tiles, onTilesLoaded);
             });
+            
+//            //Loads all institutions over ajax
+//            self._loadFullInstitutionList(function() { //on build model finished
+//
+//              //Draws the institutions on the vector layer
+//              self._drawClustersOnMap();
+//
+//              //Hide the waiting layer again
+//              self._hideWaitingLayer();
+//
+//              //Remove the tiles load listener again. We only want it on initialization.
+//              tiles.events.unregister("loadend", tiles, onTilesLoaded);
+//            });
           }
           tiles.events.register("loadend", tiles, onTilesLoaded);   
           
         }
         
       },
+      
+      applyFilters : function() {
+        var self = this;
+        
+        //Show the waiting layer 
+        self._showWaitingLayer();
+          
+        self._loadClusteredInstitutionList(function(){
+          
+          //Draws the institutions on the vector layer
+          self._drawClustersOnMap();
+  
+          //Hide the waiting layer again
+          self._hideWaitingLayer();
+          
+        });
+        
+            
+//        //Show the waiting layer 
+//        self._showWaitingLayer();
+//
+//        window.setTimeout(function(){ //Give the browser time to display waiting gif
+//          self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
+//
+//            //Draws the institutions on the vector layer
+//            self._drawClustersOnMap();
+//
+//            //Hide the waiting layer again
+//            self._hideWaitingLayer();
+//
+//          });
+//        }, 100);
+      },
+      
       
       _addInstitutionsLayer : function() {
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
@@ -338,38 +372,6 @@ $(document).ready(function() {
 
     },
     
-    applyFilters : function() {
-      var self = this;
-      
-//      //Show the waiting layer 
-//      self._showWaitingLayer();
-//        
-//      self._loadClusteredInstitutionList(function(){
-//        
-//        //Draws the institutions on the vector layer
-//        self._drawClustersOnMap();
-//  
-//        //Hide the waiting layer again
-//        self._hideWaitingLayer();
-//        
-//      });
-      
-          
-      //Show the waiting layer 
-      self._showWaitingLayer();
-
-      window.setTimeout(function(){ //Give the browser time to display waiting gif
-        self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
-
-          //Draws the institutions on the vector layer
-          self._drawClustersOnMap();
-
-          //Hide the waiting layer again
-          self._hideWaitingLayer();
-
-        });
-      }, 100);
-    },
     
     _transformFilteredInstitutions : function(datasets) {
       var mapObjects = [];
@@ -1223,10 +1225,6 @@ $(document).ready(function() {
       * Change the location of the slider to match the current zoom level.
       */
       moveZoomBar:function() {
-        console.log("################### 01 "+this.map.getNumZoomLevels());
-        console.log("################### 02 "+this.map.getZoom());
-        console.log("################### 03 "+this.zoomStopHeight);
-        console.log("################### 04 "+this.startTop);
           var newTop = 
               ((this.map.getNumZoomLevels()-1) - this.map.getZoom()) * 
               this.zoomStopHeight + this.startTop + 1 + this.zoomBarOffsetTop;
