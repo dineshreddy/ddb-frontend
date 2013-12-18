@@ -18,7 +18,8 @@ limitations under the License.
 <g:render template="itemLinks" />
 <div class="row item-detail item-content">
   <div class="span6 item-description">
-    <h2>${title}</h2>
+    <h2 class="item-title">${title}</h2>
+    <g:render template="binaries" />
     <g:render template="fields" />
     <g:render template="rights" />
     <g:render template="license" />

@@ -18,7 +18,7 @@ limitations under the License.
   <head>
     <title><g:message code="ddbnext.Compare_Header" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
-    <meta name="page" content="item" />
+    <meta name="page" content="compare" />
     <meta name="layout" content="main" />
     
     <ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
