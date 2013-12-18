@@ -1223,10 +1223,6 @@ $(document).ready(function() {
       * Change the location of the slider to match the current zoom level.
       */
       moveZoomBar:function() {
-        console.log("################### 01 "+this.map.getNumZoomLevels());
-        console.log("################### 02 "+this.map.getZoom());
-        console.log("################### 03 "+this.zoomStopHeight);
-        console.log("################### 04 "+this.startTop);
           var newTop = 
               ((this.map.getNumZoomLevels()-1) - this.map.getZoom()) * 
               this.zoomStopHeight + this.startTop + 1 + this.zoomBarOffsetTop;
