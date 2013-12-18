@@ -10,7 +10,7 @@ class Point {
     def x
     def y
 
-    def Point(lon, lat, something = null){
+    def Point(lat, lon, something = null){
         if(lon instanceof String){
             this.x = lon.toDouble()
         }else{

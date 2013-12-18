@@ -34,6 +34,7 @@ class CircleObject {
         this.selected = false
     }
 
+
     /**
      * sets the OpenLayers point feature for this point object
      * @param {OpenLayers.Feature} pointFeature the point feature for this object
@@ -61,5 +62,9 @@ class CircleObject {
 
     def toggleSelection() {
         this.selected = !this.selected
+    }
+
+    String toString() {
+        return "CircleObject[originX: "+originX+", originY: "+originY+", shiftX: "+shiftX+", shiftY: "+shiftY+", radius: "+radius+", elements: "+elements+"]"
     }
 }

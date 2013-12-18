@@ -112,6 +112,13 @@ class ApisController {
     }
 
     def clusteredInstitutionsmap(){
+        def selectedSectors = params.selectedSectors
+        def sectors = selectedSectors.tokenize(',[]')
+        for(int i=0; i<sectors.size(); i++){
+            sectors[i] = sectors[i].replaceAll("\"", "")
+        }
+        println "##################### 01 "+sectors
+
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -119,7 +126,12 @@ class ApisController {
         }
         def institutions = apiResponse.getResponse()
 
-        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions)
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors)
+
+        response.addHeader("Expires", "Fri, 20 Dez 2013 12:45:26 GMT")
+        response.addHeader("Cache-Control", "max-age=100000")
+        response.addHeader("Pragma", "cache")
+        response.addHeader("Last-Modified", "Wed, 18 Dez 2013 12:45:26 GMT")
         render (contentType:"text/json"){clusteredInstitutions}
     }
 

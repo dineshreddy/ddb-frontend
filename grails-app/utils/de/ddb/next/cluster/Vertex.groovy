@@ -30,10 +30,14 @@ class Vertex {
         }
     }
 
+
     def merge(v0, v1) {
         for (def i = 0; i < v0.elements.size(); i++) {
             //this.elements[i] = v0.elements[i].concat(v1.elements[i])
-            this.elements[i] = v0.elements[i].addAll(v1.elements[i]) //TODO
+            def newElement = [] //TODO
+            newElement.addAll(v0.elements[i])
+            newElement.addAll(v1.elements[i])
+            this.elements[i] = newElement
             this.weights[i] = v0.weights[i] + v1.weights[i]
             this.size += this.weights[i]
         }

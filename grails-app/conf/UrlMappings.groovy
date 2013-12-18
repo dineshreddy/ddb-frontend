@@ -167,7 +167,7 @@ class UrlMappings {
 
         "/apis/clusteredInstitutionsmap" {
             controller="apis"
-            action=[POST:"clusteredInstitutionsmap"]
+            action=[GET:"clusteredInstitutionsmap"]
         }
 
         "/about-us/institutions" {

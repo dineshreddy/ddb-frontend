@@ -5,7 +5,7 @@ package de.ddb.next.cluster
 class Binning {
 
     def zoomLevels = 18
-    def binnings = []
+    def binnings = [:]
     def maximumRadius = 0
     def maximumPoints = 0
     def minArea = 0
@@ -189,12 +189,13 @@ class Binning {
     }
 
     def createCircle(sx, sy, ball, point, fatherBin, circles, hashMap, selectionMap) {
-        def index = id ? id : ball.search
+        //def index = id ? id : ball.search
+        def index = ball.search
         def circle = new CircleObject(point.x, point.y, sx, sy, ball.elements, ball.radius, index, ball.weight, fatherBin)
         circles[ball.search].push(circle)
         fatherBin.circles[index] = circle
         fatherBin.length++
-        for (def k = 0; k < ball.elements.length; k++) {
+        for (def k = 0; k < ball.elements.size(); k++) {
             hashMap[ball.search][ball.elements[k].index] = circle
             selectionMap[ball.search][ball.elements[k].index] = false
         }
@@ -226,19 +227,16 @@ class Binning {
     }
 
     def genericClustering(objects, id = null) {
-        println "####################### 42 "+objects
         def binSets = []
         def circleSets = []
         def hashMaps = []
         def selectionHashs = []
         def clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
-        println "####################### 42a "
 
         def self = this
         for (def i = 0; i < objects.size(); i++) {
-            println "####################### 42b "
-            //            for (def j = 0; j < objects[i].size(); j++) {
-            for (def j = 0; j < 100; j++) {
+            for (def j = 0; j < objects[i].size(); j++) {
+                //for (def j = 0; j < 100; j++) {
                 def o = objects[i][j]
                 if (o.isGeospatial) {
                     //def p = new OpenLayers.Geometry.Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
@@ -247,27 +245,24 @@ class Binning {
                     p.transform(self.displayProjection, self.projection)
                     def point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.size(), self)
                     point.addElement(o, o.weight, i)
-                    println "####################### 42c "+j + " / "+point
-                    if(j==98){
-                        int m = 0
-                    }
                     clustering.add(point)
                 }
             }
         }
 
-        println "####################### 42z "
         for (def i = 0; i < this.zoomLevels; i++) {
+            println "####################### 10 zoomlevel "+i
             def bins = []
             def circles = []
             def hashMap = []
             def selectionMap = []
             for (def j = 0; j < objects.size(); j++) {
                 circles.push([])
-                hashMap.push([])
-                selectionMap.push([])
+                hashMap.push([:])
+                selectionMap.push([:])
             }
             def resolution = this.getResolutionForZoom(this.zoomLevels - i - 1)
+            println "####################### 11 resolution "+resolution
             clustering.mergeForResolution(resolution, this.circleGap)
             for (def j = 0; j < clustering.vertices.size(); j++) {
                 def point = clustering.vertices[j]
@@ -276,7 +271,7 @@ class Binning {
                 }
                 def balls = []
                 for (def k = 0; k < point.elements.size(); k++) {
-                    if (point.elements[k].length > 0) {
+                    if (point.elements[k].size() > 0) {
                         balls.push([
                             search : k,
                             elements : point.elements[k],
@@ -315,17 +310,17 @@ class Binning {
                 //                        selectionMap[ball.search][ball.elements[k].index] = false
                 //                    }
                 //                }
-                if (balls.length == 1) {
+                if (balls.size() == 1) {
                     //createCircle(0, 0, balls[0])
                     createCircle(0, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
-                } else if (balls.length == 2) {
+                } else if (balls.size() == 2) {
                     def r1 = balls[0].radius
                     def r2 = balls[1].radius
                     //createCircle(-1 * r2, 0, balls[0])
                     createCircle(-1 * r2, 0, balls[0], point, fatherBin, circles, hashMap, selectionMap)
                     //createCircle(r1, 0, balls[1])
                     createCircle(r1, 0, balls[1], point, fatherBin, circles, hashMap, selectionMap)
-                } else if (balls.length == 3) {
+                } else if (balls.size() == 3) {
                     balls.sort(orderBalls)
                     def r1 = balls[0].radius
                     def r2 = balls[1].radius
@@ -339,7 +334,7 @@ class Binning {
                     createCircle(delta2 + r2 - 3 * d, r2, balls[1], point, fatherBin, circles, hashMap, selectionMap)
                     //createCircle(delta2 + r3 - (3 * d * r3 / r2), -1 * r3, balls[2])
                     createCircle(delta2 + r3 - (3 * d * r3 / r2), -1 * r3, balls[2], point, fatherBin, circles, hashMap, selectionMap)
-                } else if (balls.length == 4) {
+                } else if (balls.size() == 4) {
                     balls.sort(orderBalls)
                     def r1 = balls[0].radius
                     def r2 = balls[1].radius
@@ -368,7 +363,6 @@ class Binning {
         binSets.reverse()
         hashMaps.reverse()
         selectionHashs.reverse()
-        println "####################### 43 "+objects
 
         return [
             circleSets : circleSets,
@@ -379,9 +373,9 @@ class Binning {
     }
 
     def genericBinning() {
-        println "####################### 41 "+this.objects
         if (this.circlePackings || this.objects.length == 1) {
-            this.binnings['generic'] = this.genericClustering(this.objects)
+            def resultList = this.genericClustering(this.objects)
+            this.binnings['generic'] = resultList
         } else {
             def circleSets = []
             def hashMaps = []

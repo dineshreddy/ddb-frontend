@@ -184,12 +184,12 @@ class Clustering {
             if (eLeft.leftFace == triangle) {
                 triple = eLeft.rightFace.getTriple(eLeft)
                 oldFacets.push(eLeft.rightFace)
-                triple.e_s.removeFace(eLeft.rightFace)
+                //triple.e_s.removeFace(eLeft.rightFace) // TODO
                 triangle = eLeft.rightFace
             } else {
                 triple = eLeft.leftFace.getTriple(eLeft)
                 oldFacets.push(eLeft.leftFace)
-                triple.e_s.removeFace(eLeft.leftFace)
+                //triple.e_s.removeFace(eLeft.leftFace) //TODO
                 triangle = eLeft.leftFace
             }
             if (arrayIndex(hole, triple.e_s) == -1) {
@@ -260,7 +260,7 @@ class Clustering {
 
         def hd = new Clustering(this.bbox.x1 - 10, this.bbox.y1 - 10, this.bbox.x2 + 10, this.bbox.y2 + 10)
         def hull = []
-        for (def i in hole ) {
+        for (def i = 0; i<hole.size(); i++ ) {
             if (!(hole[i].leftFace == null && hole[i].rightFace == null)) {
                 hull.push(hole[i].v0)
                 hull.push(hole[i].v1)
@@ -268,7 +268,7 @@ class Clustering {
         }
         def hullVertices = []
         def distinct = []
-        for (def i in vertices ) {
+        for (def i=0; i<vertices.size(); i++ ) {
             if (arrayIndex(distinct, vertices[i]) == -1) {
                 hd.add(vertices[i])
                 distinct.push(vertices[i])
@@ -287,10 +287,10 @@ class Clustering {
         //            }
         //            return -1
         //        }
-        def holeEdges = new ArrayList(hole.length)
+        def holeEdges = new ArrayList(hole.size())
         def nonHoleEdges = []
 
-        for (def i = 0; i < hd.edges.length; i++) {
+        for (def i = 0; i < hd.edges.size(); i++) {
             def e2 = hd.edges[i]
             def b = isBoundary(e2, hole)
             if (b != -1) {
@@ -318,7 +318,7 @@ class Clustering {
         }
 
 
-        for (def i = 0; i < holeEdges.length; i++) {
+        for (def i = 0; i < holeEdges.size(); i++) {
             def e2 = holeEdges[i]
             if (hole[i].leftFace == null) {
                 hole[i].leftFace = e2.leftFace
@@ -336,7 +336,7 @@ class Clustering {
             }
         }
 
-        for (def i = 0; i < nonHoleEdges.length; i++) {
+        for (def i = 0; i < nonHoleEdges.size(); i++) {
             def e2 = nonHoleEdges[i]
             if (!e2.legal) {
                 continue
@@ -352,11 +352,11 @@ class Clustering {
             }
         }
 
-        for (def i in oldFacets ) {
+        for (def i = 0; i<oldFacets.size(); i++ ) {
             oldFacets[i].descendants = newFacets
         }
 
-        for (def i = 0; i < newFacets.length; i++) {
+        for (def i = 0; i < newFacets.size(); i++) {
             def simplex = newFacets[i].interior(v)
             if (simplex == null) {
                 continue
@@ -392,10 +392,10 @@ class Clustering {
         while (this.deleteEdges.size() > 0) {
             def e = this.deleteEdges.pop()
             if (e.legal) {
-                def l = this.edges.length
+                def l = this.edges.size()
                 def newVertex = this.mergeVertices(e)
                 newVertex.calculateRadius(resolution)
-                for (def k = l; k < this.edges.length; k++) {
+                for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]
                     if (eNew.legal) {
                         eNew.weight = eNew.length / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
