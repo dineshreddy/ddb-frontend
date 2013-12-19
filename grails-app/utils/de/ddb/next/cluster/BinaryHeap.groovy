@@ -3,18 +3,22 @@ package de.ddb.next.cluster
 class BinaryHeap {
 
     def content
-    def scoreFunction
+    //    def scoreFunction
 
-    def BinaryHeap(scoreFunction) {
+    //    def BinaryHeap(scoreFunction) {
+    //        this.content = []
+    //        this.scoreFunction = scoreFunction
+    //    }
+    def BinaryHeap() {
         this.content = []
-        this.scoreFunction = scoreFunction
     }
+
 
     def push(element) {
         // Add the new element to the end of the array.
         this.content.push(element)
         // Allow it to bubble up.
-        this.bubbleUp(this.content.length - 1)
+        this.bubbleUp(this.content.size() - 1)
     }
 
     def pop() {
@@ -24,7 +28,7 @@ class BinaryHeap {
         def end = this.content.pop()
         // If there are any elements left, put the end element at the
         // start, and let it sink down.
-        if (this.content.length > 0) {
+        if (this.content.size() > 0) {
             this.content[0] = end
             this.sinkDown(0)
         }
@@ -32,7 +36,7 @@ class BinaryHeap {
     }
 
     def remove(node) {
-        def len = this.content.length
+        def len = this.content.size()
         // To remove a value, we must search through the array to find
         // it.
         for (def i = 0; i < len; i++) {
@@ -42,7 +46,7 @@ class BinaryHeap {
                 def end = this.content.pop()
                 if (i != len - 1) {
                     this.content[i] = end
-                    if (this.scoreFunction(end) < this.scoreFunction(node))
+                    if (end.weight < node.weight)
                         this.bubbleUp(i)
                     else
                         this.sinkDown(i)
@@ -63,10 +67,10 @@ class BinaryHeap {
         // When at 0, an element can not go up any further.
         while (n > 0) {
             // Compute the parent element's index, and fetch it.
-            def parentN = Math.floor((n + 1) / 2) - 1
+            def parentN = (int)(Math.floor((n + 1) / 2) - 1)
             def parent = this.content[parentN]
             // Swap the elements if the parent is greater.
-            if (this.scoreFunction(element) < this.scoreFunction(parent)) {
+            if (element.weight < parent.weight) {
                 this.content[parentN] = element
                 this.content[n] = parent
                 // Update 'n' to continue at the new position.
@@ -83,7 +87,7 @@ class BinaryHeap {
         // Look up the target element and its score.
         def length = this.content.size()
         def element = this.content[n]
-        def elemScore = this.scoreFunction(element)
+        def elemScore = element.weight
 
         while (true) {
             // Compute the indices of the child elements.
@@ -97,7 +101,7 @@ class BinaryHeap {
             if (child1N < length) {
                 // Look it up and compute its score.
                 def child1 = this.content[child1N]
-                child1Score = this.scoreFunction(child1)
+                child1Score = child1.weight
                 // If the score is less than our element's, we need to swap.
                 if (child1Score < elemScore)
                     swap = child1N
@@ -105,7 +109,7 @@ class BinaryHeap {
             // Do the same checks for the other child.
             if (child2N < length) {
                 def child2 = this.content[child2N]
-                def child2Score = this.scoreFunction(child2)
+                def child2Score = child2.weight
                 if (child2Score < (swap == null ? elemScore : child1Score))
                     swap = child2N
             }

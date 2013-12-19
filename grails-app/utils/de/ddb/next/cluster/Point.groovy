@@ -10,9 +10,17 @@ class Point {
     def x
     def y
 
-    def Point(String lon, String lat){
-        this.x = lon.toDouble()
-        this.y = lat.toDouble()
+    def Point(lat, lon, something = null){
+        if(lon instanceof String){
+            this.x = lon.toDouble()
+        }else{
+            this.x = lon
+        }
+        if(lat instanceof String){
+            this.y = lat.toDouble()
+        }else{
+            this.y = lat
+        }
     }
 
     def transform(String fromProjection, String toProjection) {
@@ -28,5 +36,9 @@ class Point {
         this.x = destDirectPosition2D.x
         this.y = destDirectPosition2D.y
 
+    }
+
+    String toString() {
+        return "Point[x: "+x+", y: "+y+"]"
     }
 }

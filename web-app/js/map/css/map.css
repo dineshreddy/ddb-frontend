@@ -34,32 +34,31 @@
 
 /* Controls start */
 
-.olMap #OpenLayers_Control_PanZoomBar_28_zoomin {
-  top: 55px !important;
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_zoomin {
+  top: 53px !important;
   left: 18px !important;
   z-index: 1 !important;
 }
 
-.olMap #OpenLayers_Control_PanZoomBar_28_zoomout {
-  top: 201px !important;
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_zoomout {
+  top: 200px !important;
   left: 18px !important;
   z-index: 1 !important;
 }
 
-.olMap #OpenLayers_Control_PanZoomBar_ZoombarOpenLayers_Map_2 {
+.olMap #OpenLayers_Control_DDBPanZoomBar_ZoombarOpenLayers_Map_2 {
   width: 24px !important;
   height: 174px !important;
 }
 
-.olMap #OpenLayers_Control_PanZoomBar_28_OpenLayers_Map_2_innerImage {
-  left: 4px !important;
-  top: -45px !important;
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_OpenLayers_Map_2 {
+  left: 17px !important;
 }
 
-.olMap #OpenLayers_Control_PanZoomBar_28_panup, 
-.olMap #OpenLayers_Control_PanZoomBar_28_panleft, 
-.olMap #OpenLayers_Control_PanZoomBar_28_panright, 
-.olMap #OpenLayers_Control_PanZoomBar_28_pandown {
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panup, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panleft, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panright, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_pandown {
   display: none !important;
 }
 

@@ -1,5 +1,6 @@
 package de.ddb.next.cluster
 
+
 class InstitutionMapModel {
 
     def allMapData
@@ -99,13 +100,13 @@ class InstitutionMapModel {
                 //def item = json[i]
                 def item = i
                 //def index = item.index || item.id || runningIndex++
-                def index = item.id
+                def index = item.id ? item.id : runningIndex++
                 //def name = item.name || ""
-                def name = item.name
+                def name = item.name ? item.name : ""
                 //def description = item.description || ""
-                def description = item.description
+                def description = item.description ? item.description : ""
                 //def tableContent = item.tableContent || []
-                def tableContent = []
+                def tableContent = item.tableContent ? item.tableContent : []
                 def locations = []
                 //                if (item.location instanceof List) {
                 //                    for (def j = 0; j < item.location.size(); j++) {
@@ -152,7 +153,7 @@ class InstitutionMapModel {
                 //                }
 
 
-                def weight = item.weight || 1
+                def weight = item.weight ? item.weight : 1
                 def mapTimeObject = new DataObject(name, description, locations, dates, weight, tableContent)
                 mapTimeObject.setIndex(index)
                 mapTimeObjects.push(mapTimeObject)
@@ -163,6 +164,46 @@ class InstitutionMapModel {
         }
 
         return mapTimeObjects
+    }
+
+    def makeSectorsObject(selectorList) {
+        def sectorObject = [:]
+        for (def xel = 0; xel < selectorList.size(); xel++) {
+            def el = selectorList[xel]
+            sectorObject[el.sector] = [
+                count: 0,
+                name: el.name
+            ]
+        }
+        return sectorObject
+    }
+
+    def selectSectors(aSectorSelection) {
+        def sectorSelection = aSectorSelection // save the published state
+
+        def time0 = (new Date()).getTime()
+
+        def selectedSectors = makeSectorsObject(sectorSelection.selected)
+        def deselectedSectors = makeSectorsObject(sectorSelection.deselected)
+        def allSectors = []
+        //        $.extend(_allSectors, _selectedSectors)
+        //        $.extend(_allSectors, deselectedSectors)
+
+        def filterSectors = (sectorSelection.selected.size() == 0) ? deselectedSectors: selectedSectors
+        def sectorsMapData = []
+        for (def xel = 0; xel < this.allMapData.size(); xel++) {
+            def el = this.allMapData[xel]
+            def elSector = el.description.node.sector
+            if (filterSectors[elSector] != null) {
+                sectorsMapData.push(el)
+                filterSectors[elSector].count++
+            }
+        }
+
+        def datasets = []
+        datasets.push(new Dataset(sectorsMapData, "institutions"))
+
+        return datasets
     }
 
 

@@ -76,4 +76,8 @@ class DataObject {
     //            return SimileAjax.DateTime.getTimeString(this.granularity, this.timeStart) + ""
     //        }
     //    }
+
+    String toString() {
+        return "DataObject[name: "+name+", weight: "+weight+", locations: "+locations+", index: "+index+", isGeospatial: "+isGeospatial+"]"
+    }
 }
