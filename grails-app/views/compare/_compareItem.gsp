@@ -24,6 +24,5 @@ limitations under the License.
     <g:render template="rights" />
     <g:render template="license" />
     <g:render template="/item/origin" />
-    <g:render template="/item/share" />
   </div>
 </div>

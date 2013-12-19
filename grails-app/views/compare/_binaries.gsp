@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="row">
-  <div class="span6 slide-viewer item-detail">
+  <div class="span6 slide-viewer item-detail ${position}">
     <div class="binary-viewer-container">
       <div id="binary-viewer">
         <ul id="previews-list">
@@ -80,7 +80,7 @@ limitations under the License.
                      default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
         </p>
       </div>
-      <div class="scroller all" role="tabpanel">
+      <div class="scroller all ${position}" role="tabpanel">
         <ul class="gallery-all gallery-tab">
           <g:each in="${binaryList}">
             <g:if test="${it.full.uri == ''}">
