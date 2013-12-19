@@ -76,6 +76,7 @@ $(document).ready(function() {
 
           //Register a zoom listener
           this.osmMap.events.register("zoomend", null, function(event){
+            console.log("################ zoomLevel: "+self.osmMap.getZoom()); //TODO
             self._drawClustersOnMap();
           });
           
@@ -85,30 +86,30 @@ $(document).ready(function() {
             //Show the waiting layer 
             self._showWaitingLayer();
             
-            self._loadClusteredInstitutionList(function() { //on clusters loaded
-              
-              //Draws the institutions on the vector layer
-              self._drawClustersOnMap();
-  
-              //Hide the waiting layer again
-              self._hideWaitingLayer();
-  
-              //Remove the tiles load listener again. We only want it on initialization.
-              tiles.events.unregister("loadend", tiles, onTilesLoaded);
-            });
-            
-//            //Loads all institutions over ajax
-//            self._loadFullInstitutionList(function() { //on build model finished
-//
+//            self._loadClusteredInstitutionList(function() { //on clusters loaded
+//              
 //              //Draws the institutions on the vector layer
 //              self._drawClustersOnMap();
-//
+//  
 //              //Hide the waiting layer again
 //              self._hideWaitingLayer();
-//
+//  
 //              //Remove the tiles load listener again. We only want it on initialization.
 //              tiles.events.unregister("loadend", tiles, onTilesLoaded);
 //            });
+            
+            //Loads all institutions over ajax
+            self._loadFullInstitutionList(function() { //on build model finished
+
+              //Draws the institutions on the vector layer
+              self._drawClustersOnMap();
+
+              //Hide the waiting layer again
+              self._hideWaitingLayer();
+
+              //Remove the tiles load listener again. We only want it on initialization.
+              tiles.events.unregister("loadend", tiles, onTilesLoaded);
+            });
           }
           tiles.events.register("loadend", tiles, onTilesLoaded);   
           
@@ -285,11 +286,11 @@ $(document).ready(function() {
           var sectorData = {};
           sectorData['sector'] = $(this).find('input').data('sector');
           sectorData['name'] = $.trim($(this).children('label').text());
-          if ($(this).find('input').is(':checked')) {
-            sectors['selected'].push(sectorData);
-          } else {
+//          if ($(this).find('input').is(':checked')) {
+//            sectors['selected'].push(sectorData);
+//          } else {
             sectors['deselected'].push(sectorData);
-          }
+//          }
         });
         return sectors;
       },
@@ -385,7 +386,8 @@ $(document).ready(function() {
       this.vectorLayer.removeAllFeatures();
       if(this.clusters != null) {
         
-        var zoomLevel = this.osmMap.getZoom();
+        //var zoomLevel = this.osmMap.getZoom(); //TODO
+        zoomLevel = 0;
         if(this.clusters[zoomLevel] != null) {
           
           var clustersToDisplay = this.clusters[zoomLevel][0];

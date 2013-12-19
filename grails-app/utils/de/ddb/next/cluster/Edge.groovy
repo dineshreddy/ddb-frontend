@@ -7,7 +7,7 @@ class Edge {
     def leftFace
     def rightFace
     def legal
-    def length
+    def pLength
     def weight
 
     def Edge(v0, v1) {
@@ -22,7 +22,7 @@ class Edge {
     def setLength() {
         def dx = this.v0.x - this.v1.x
         def dy = this.v0.y - this.v1.y
-        this.length = Math.sqrt(dx * dx + dy * dy)
+        this.pLength = Math.sqrt(dx * dx + dy * dy)
     }
 
     def contains(v) {
@@ -74,6 +74,6 @@ class Edge {
     }
 
     String toString(){
-        return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", length: "+length+"]"
+        return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", pLength: "+pLength+"]"
     }
 }

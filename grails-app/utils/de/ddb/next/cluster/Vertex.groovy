@@ -54,7 +54,7 @@ class Vertex {
             def count = 0
             def max1 = 0
             def max2 = 0
-            for (i in this.radii ) {
+            for (def i=0; i<this.radii.size(); i++ ) {
                 if (this.radii[i] != 0) {
                     count++
                 }

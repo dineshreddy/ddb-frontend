@@ -149,6 +149,6 @@ class Triangle {
         //        def radius_squared
         //        def center
         //
-        return "Triangle[edges: "+edges.getClass()+", descendants: "+descendants+", vertices: "+vertices+", radius_squared: "+radius_squared+", center: "+center+"]"
+        return "Triangle[edges: "+edges.size()+", descendants: "+descendants+", vertices: "+vertices+", radius_squared: "+radius_squared+", center: "+center+"]"
     }
 }

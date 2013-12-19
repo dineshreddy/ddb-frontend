@@ -86,66 +86,68 @@ class InstitutionService {
         }
 
         ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
-        if(cache.getCluster(selectedSectorList) == null){
+        //        if(cache.getCluster(selectedSectorList) == null){
 
-            println "####################### 00 getClusteredInstitutions"
-            println institutions
+        println "####################### 00 getClusteredInstitutions"
+        println institutions
 
-            println "####################### 02 mapModel"
-            InstitutionMapModel institutionMapModel = new InstitutionMapModel()
-            institutionMapModel.prepareInstitutionsData(institutions)
-            //def allMapData = institutionMapModel.getAllMapData()
+        println "####################### 02 mapModel"
+        InstitutionMapModel institutionMapModel = new InstitutionMapModel()
+        institutionMapModel.prepareInstitutionsData(institutions)
+        //def allMapData = institutionMapModel.getAllMapData()
 
-            def sectors = ["selected":[], "deselected":[]]
-            def allSectors = [
-                "sec_01",
-                "sec_02",
-                "sec_03",
-                "sec_04",
-                "sec_05",
-                "sec_06",
-                "sec_07"
-            ]
-            selectedSectorList.each {
-                def entry = ["sector": it, "name": it]
-                sectors["selected"].push(entry)
-            }
-            def unselectedSectorList = allSectors.minus(selectedSectorList)
-            unselectedSectorList.each {
-                def entry = ["sector": it, "name": it]
-                sectors["deselected"].push(entry)
-            }
-            println "####################### 03 sectors: "+sectors
-
-
-            def dataSets = institutionMapModel.selectSectors(sectors)
-
-            println "####################### 04 mapObjects"
-            def mapObjects = []
-            for (def i = 0; i < dataSets.size(); i++) {
-                mapObjects.push(dataSets[i].objects)
-            }
-
-
-            println "####################### 05 Binning"
-            Binning binning = new Binning()
-            binning.setObjects(mapObjects)
-            def circleSets = binning.getSet().circleSets
-            println "####################### 06 Binning"
-            println "####################### 07 circleSets.size() = "+circleSets.size()
-            for(int i=0;i<circleSets.size() ;i++){
-                println "####################### 08 circleSets[i].size() = "+circleSets[i].size()
-                for(int j=0; j<circleSets[i].size(); j++) {
-                    println "####################### 09 circleSets[i][j].size() = "+circleSets[i][j].size()
-
-                }
-
-            }
-
-            cache.addCluster(selectedSectorList, circleSets)
-        }else{
-            println "####################### 10 found in cache"
+        def sectors = ["selected":[], "deselected":[]]
+        def allSectors = [
+            "sec_01",
+            "sec_02",
+            "sec_03",
+            "sec_04",
+            "sec_05",
+            "sec_06",
+            "sec_07"
+        ]
+        selectedSectorList.each {
+            def entry = ["sector": it, "name": it]
+            sectors["selected"].push(entry)
         }
+        def unselectedSectorList = allSectors.minus(selectedSectorList)
+        unselectedSectorList.each {
+            def entry = ["sector": it, "name": it]
+            sectors["deselected"].push(entry)
+        }
+        println "####################### 03 sectors: "+sectors
+        def dataSets = institutionMapModel.selectSectors(sectors)
+
+
+
+        println "####################### 04 mapObjects"
+        def mapObjects = []
+        for (def i = 0; i < dataSets.size(); i++) {
+            mapObjects.push(dataSets[i].objects)
+        }
+
+
+        println "####################### 05 Binning"
+        Binning binning = new Binning()
+        binning.setObjects(mapObjects)
+        def circleSets = binning.getSet().circleSets
+        println "####################### 06 Binning"
+        println "####################### 07 circleSets.size() = "+circleSets.size()
+        for(int i=0;i<circleSets.size() ;i++){
+            println "####################### 08 circleSets["+i+"].size() = "+circleSets[i].size()
+            for(int j=0; j<circleSets[i].size(); j++) {
+                println "####################### 09 circleSets["+i+"]["+j+"].size() = "+circleSets[i][j].size()
+
+            }
+
+        }
+        println "####################### 11 circleSets[0].size() = "+circleSets[0].size()
+        println "####################### 11 circleSets[0] = "+circleSets[0]
+
+        cache.addCluster(selectedSectorList, circleSets)
+        //        }else{
+        //            println "####################### 10 found in cache"
+        //        }
 
         return ["circleSets": cache.getCluster(selectedSectorList)]
     }

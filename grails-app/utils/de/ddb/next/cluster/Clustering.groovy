@@ -92,12 +92,17 @@ class Clustering {
         }
     }
 
-    def add(v) {
+    def add(v, j) {
         def located = this.locate(v)
-        this.addVertex(v, located)
+        this.addVertex(v, located, j)
     }
 
-    def addVertex(v, simplex) {
+    def addVertex(v, simplex, j) {
+        if(j==17){
+            println "####################### 30 addVertex"
+            println "####################### 31 v "+v
+            println "####################### 32 simplex "+simplex
+        }
         if ( simplex instanceof Vertex) {
             simplex.merge(simplex, v)
         } else if ( simplex instanceof Edge) {
@@ -136,9 +141,14 @@ class Clustering {
             def e_i = new Edge(simplex.vertices[0], v)
             def e_j = new Edge(simplex.vertices[1], v)
             def e_k = new Edge(simplex.vertices[2], v)
+            //            println "####################### 19 this.edges.size() "+this.edges.size()
+            //            println "####################### 20 e_i "+e_i
             this.edges.push(e_i)
+            //            println "####################### 21 e_j "+e_j
             this.edges.push(e_j)
+            //            println "####################### 22 e_k "+e_k
             this.edges.push(e_k)
+            //            println "####################### 23 this.edges.size() "+this.edges.size()
             def t0 = new Triangle([e_i, simplex.edges[0], e_j])
             def t1 = new Triangle([e_j, simplex.edges[1], e_k])
             def t2 = new Triangle([e_k, simplex.edges[2], e_i])
@@ -179,17 +189,17 @@ class Clustering {
         eLeft.legal = false
         boolean shouldLoop = true
         while(shouldLoop) {
-            shouldLoop = (eLeft != eRight)
             def triple
             if (eLeft.leftFace == triangle) {
                 triple = eLeft.rightFace.getTriple(eLeft)
                 oldFacets.push(eLeft.rightFace)
-                //triple.e_s.removeFace(eLeft.rightFace) // TODO
+                triple.e_s.removeFace(eLeft.rightFace) // TODO
                 triangle = eLeft.rightFace
             } else {
+                //println "########################## 51 eLeft.leftFace: "+eLeft.leftFace
                 triple = eLeft.leftFace.getTriple(eLeft)
                 oldFacets.push(eLeft.leftFace)
-                //triple.e_s.removeFace(eLeft.leftFace) //TODO
+                triple.e_s.removeFace(eLeft.leftFace) //TODO
                 triangle = eLeft.leftFace
             }
             if (arrayIndex(hole, triple.e_s) == -1) {
@@ -198,11 +208,16 @@ class Clustering {
             vertices.push(triple.u)
             eLeft = triple.e_p
             eLeft.legal = false
+
+            shouldLoop = (eLeft != eRight)
+            if(!shouldLoop) {
+                break
+            }
         }
     }
 
     def isBoundary(e, hole) {
-        for (def i = 0; i < hole.length; i++) {
+        for (def i = 0; i < hole.size(); i++) {
             if (hole[i].equals(e)) {
                 return i
             }
@@ -212,7 +227,7 @@ class Clustering {
 
 
     def mergeVertices(e) {
-        this.collapses++
+        this.collapses = this.collapses + 1
         def s0 = e.v0.size
         def s1 = e.v1.size
         def x = (e.v0.x * s0 + e.v1.x * s1 ) / (s0 + s1 )
@@ -255,6 +270,8 @@ class Clustering {
         def tr1 = e.rightFace.getTriple(e)
         oldFacets.push(e.leftFace)
         oldFacets.push(e.rightFace)
+        //        println "######################### 13f traverse "+tr0.e_p
+        //        println "######################### 13f traverse "+tr0.e_s
         traverse(tr0.e_p, tr1.e_s, e.leftFace, oldFacets, hole)
         traverse(tr1.e_p, tr0.e_s, e.rightFace, oldFacets, hole)
 
@@ -280,14 +297,17 @@ class Clustering {
 
         def newFacets = []
         //        def isBoundary = function(e) {
-        //            for (def i = 0; i < hole.length; i++) {
+        //            for (def i = 0; i < hole.size(); i++) {
         //                if (hole[i].equals(e)) {
         //                    return i
         //                }
         //            }
         //            return -1
-        //        }
-        def holeEdges = new ArrayList(hole.size())
+        //
+        //    }
+        println "######################### 13f hole "+hole.size()+" / "+hole
+        def holeEdges = new Object[hole.size()]
+        //def holeEdges = []
         def nonHoleEdges = []
 
         for (def i = 0; i < hd.edges.size(); i++) {
@@ -298,7 +318,7 @@ class Clustering {
                     def t1 = e2.leftFace.getTriple(e2)
                     def t2 = e2.rightFace.getTriple(e2)
                     def edge = new Edge(t1.u, t2.u)
-                    for (def j = 0; j < hd.edges.length; j++) {
+                    for (def j = 0; j < hd.edges.size(); j++) {
                         if (hd.edges[j].equals(edge) && hd.edges[j].legal) {
                             hd.edges[j].legal = false
                             break
@@ -388,17 +408,23 @@ class Clustering {
         this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 
+        println "####################### 13b this.edges.size() "+this.edges.size()
+        println "####################### 13c this.vertices.size() "+this.vertices.size()
+        println "####################### 13d this.deleteEdges.size() "+this.deleteEdges.size()
+
         def index = 0
         while (this.deleteEdges.size() > 0) {
             def e = this.deleteEdges.pop()
             if (e.legal) {
                 def l = this.edges.size()
+                println "####################### 13e mergeVertices before "+this.vertices.size()
                 def newVertex = this.mergeVertices(e)
+                println "####################### 13f mergeVertices after "+this.vertices.size()
                 newVertex.calculateRadius(resolution)
                 for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]
                     if (eNew.legal) {
-                        eNew.weight = eNew.length / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
+                        eNew.weight = eNew.size() / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
                         if (eNew.weight < 1) {
                             this.deleteEdges.push(eNew)
                         }
@@ -421,7 +447,10 @@ class Clustering {
                 if (!e.v0.legal || !e.v1.legal) {
                     e.weight = 1
                 } else {
-                    e.weight = e.length / (e.v0.radius + e.v1.radius + circleGap * resolution )
+                    e.weight = e.pLength / (e.v0.radius + e.v1.radius + circleGap * resolution )
+                    if(e.weight == 0){ // TODO? Added this line to fix different behaviour from JS
+                        e.weight = 1
+                    }
                     if (e.weight < 1) {
                         this.deleteEdges.push(e)
                     }
@@ -449,7 +478,7 @@ class Clustering {
          def leafs = [];
          def triangles = this.boundingTriangle.descendants;
          def j = 0;
-         while( triangles.length > j ){
+         while( triangles.size() > j ){
          def t = triangles[j];
          if( t.taken == undefined ){
          t.taken = true;
@@ -462,17 +491,17 @@ class Clustering {
          }
          j++;
          }
-         console.info("  Number of Triangles: "+leafs.length);
+         console.info("  Number of Triangles: "+leafs.size());
          def c = 0;
-         for( i in this.edges ){
+         for(def i=0;i<this.edges.size();i++ ){
          if( this.edges[i].legal ){
          c++;
          }
          }
          console.info("  Number of Edges: "+c);*/
         /*
-         for( def i=0; i<leafs.length; i++ ){
-         for( def j=0; j<vertices.length; j++ ){
+         for( def i=0; i<leafs.size(); i++ ){
+         for( def j=0; j<vertices.size(); j++ ){
          if( !leafs[i].contains(vertices[j]) && leafs[i].inCircumcircle(vertices[j]) ){
          console.info(leafs[i],vertices[j]);
          }
@@ -481,7 +510,7 @@ class Clustering {
          */
 
         //console.info("Test 2: Edges Facets (null) ...");
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size();i++ ) {
             def e = this.edges[i]
             if (e.leftFace == null || e.rightFace == null) {
                 //console.info(e);
@@ -501,7 +530,7 @@ class Clustering {
         //            return false
         //        }
         def c = 0
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size();i++ ) {
             def e = this.edges[i]
             def t1 = e.leftFace.getTriple(e)
             def t2 = e.rightFace.getTriple(e)
@@ -535,17 +564,13 @@ class Clustering {
                 }
             }
         }
-        //console.info("Number of Edges: "+this.edges.length);
-        //console.info("Number of Conflicts: "+c);
 
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size(); i++ ) {
             if (this.edges[i].legal) {
                 def e = this.edges[i]
                 def tr0 = e.leftFace.getTriple(e)
                 def tr1 = e.rightFace.getTriple(e)
                 if (!tr0.e_p.legal || !tr0.e_s.legal || !tr1.e_p.legal || !tr1.e_s.legal) {
-                    //console.info(e);
-                    //console.info("conflict in edge continuity");
                     return
                 }
             }
@@ -555,7 +580,7 @@ class Clustering {
 
     def arrayIndex(array, obj) {
         return array.indexOf(obj)
-        //        for (def i = 0; i < array.length; i++) {
+        //        for (def i = 0; i < array.size(); i++) {
         //            if (array[i] == obj) {
         //                return i
         //            }

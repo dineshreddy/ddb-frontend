@@ -112,11 +112,12 @@ class ApisController {
     }
 
     def clusteredInstitutionsmap(){
-        def selectedSectors = params.selectedSectors
-        def sectors = selectedSectors.tokenize(',[]')
-        for(int i=0; i<sectors.size(); i++){
-            sectors[i] = sectors[i].replaceAll("\"", "")
-        }
+        //        def selectedSectors = params.selectedSectors
+        //        def sectors = selectedSectors.tokenize(',[]')
+        //        for(int i=0; i<sectors.size(); i++){
+        //            sectors[i] = sectors[i].replaceAll("\"", "")
+        //        }
+        def sectors = []
         println "##################### 01 "+sectors
 
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])

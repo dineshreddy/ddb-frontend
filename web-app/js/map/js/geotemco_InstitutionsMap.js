@@ -1006,32 +1006,74 @@ Binning.prototype = {
 		var clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
 		
 		var self = this;
+		var geospatialObjectCounter = 0;
 		for (var i = 0; i < objects.length; i++) {
 			for (var j = 0; j < objects[i].length; j++) {
+			//for (var j = 0; j < 100; j++) {
+				//console.log("################################################# iteration "+j);
 				var o = objects[i][j];
 				if (o.isGeospatial) {
+				geospatialObjectCounter++;
 					var p = new OpenLayers.Geometry.Point(o.getLongitude(self.options.mapIndex), o.getLatitude(self.options.mapIndex), null);
 					p.transform(self.map.displayProjection, self.map.projection);
+                    if(j==17) {
+						console.log("################################### 07 j="+j);
+						console.log("################ 08 create vertex");
+					}
 					var point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, self);
+					if(j==17){
+						console.log("################ 09 o ");
+						console.log(o);
+						console.log("################ 10 point ");
+						console.log(point);
+					}
 					point.addElement(o, o.weight, i);
-					/* IE8 problem */
-					clustering.add(point);
+                    if(j==17){
+						console.log("################ 11 o ");
+						console.log(o);
+						console.log("################ 12 point ");
+						console.log(point);
+                        console.log("################ 12b point.radius "+point.radius);
+                        console.log("################ 12c point.size "+point.size);
+                        console.log("################ 12d point.elements.size() "+point.elements.length);
+                        console.log("################ 12e point.weights "+point.weights);
+					}
+					clustering.add(point, j);
+                    //if(j==17) {
+					//	console.log("################ 13 clustering.triangles.length "+clustering.triangles.length);
+					//	console.log("################ 14 clustering.edges.length "+clustering.edges.length);
+					//	console.log("################ 15 clustering.vertices.length "+clustering.vertices.length);
+					//}
 				}
 			}
 		}
+		console.log("################ 06 clustering.edges.length "+clustering.edges.length);
+		console.log("################ 07 clustering.vertices.length "+clustering.vertices.length);
+		console.log("################ 08 geospatialObjectCounter "+geospatialObjectCounter);
 
-		for (var i = 0; i < this.zoomLevels; i++) {
+		
+		//for (var i = 0; i < this.zoomLevels; i++) { //TODO
+		for (var i = 0; i < 1; i++) {
+		console.log("############################################################## 01 zoomlevel "+i);
 			var bins = [];
 			var circles = [];
 			var hashMap = [];
 			var selectionMap = [];
+			console.log("################ 04 objects.length "+objects.length);
 			for (var j = 0; j < objects.length; j++) {
 				circles.push([]);
 				hashMap.push([]);
 				selectionMap.push([]);
 			}
 			var resolution = this.map.getResolutionForZoom(this.zoomLevels - i - 1);
+		console.log("################ 11 resolution "+resolution);
+		console.log("################ 12b clustering.edges.length "+clustering.edges.length);
+		console.log("################ 12c clustering.vertices.length "+clustering.vertices.length);
+		//console.log("################ 12d clustering.deleteEdges.length "+clustering.deleteEdges.length);
 			clustering.mergeForResolution(resolution, this.options.circleGap);
+		console.log("################ 14b clustering.edges.length "+clustering.edges.length);
+		console.log("################ 14c clustering.vertices.length "+clustering.vertices.length);
+		console.log("################ 14d clustering.deleteEdges.size() "+clustering.deleteEdges.size());
 			for (var j = 0; j < clustering.vertices.length; j++) {
 				var point = clustering.vertices[j];
 				if (!point.legal) {
@@ -1118,6 +1160,17 @@ Binning.prototype = {
 			selectionHashs.push(selectionMap);
 		}
 		circleSets.reverse();
+		console.log("################ 03 circleSets.length "+circleSets.length);
+		for(var i=0;i<circleSets.length; i++){
+			console.log("################ 06 circleSets["+i+"].length "+circleSets[i].length);
+			for(var j=0;j<circleSets[i].length; j++){
+				console.log("################ 07 circleSets["+i+"]["+j+"].length "+circleSets[i][j].length);
+			}
+		}
+		
+		console.log("################ 04 circleSets[0].length "+circleSets[0].length);
+		console.log(circleSets[0]);
+		console.log("################ 05 circleSets[0][0].length "+circleSets[0][0].length);
 		binSets.reverse();
 		hashMaps.reverse();
 		selectionHashs.reverse();
@@ -1921,11 +1974,18 @@ Clustering.prototype.legalize = function(v, e, t0_old) {
 	}
 }
 
-Clustering.prototype.add = function(v) {
-	this.addVertex(v, this.locate(v));
+Clustering.prototype.add = function(v, j) {
+	this.addVertex(v, this.locate(v), j);
 }
 
-Clustering.prototype.addVertex = function(v, simplex) {
+Clustering.prototype.addVertex = function(v, simplex, j) {
+	if(j==17){
+		console.log("###################### 30 addVertex");
+		console.log("###################### 31 v");
+		console.log(v);
+		console.log("###################### 32 simplex");
+		console.log(simplex);
+	}
 	if ( simplex instanceof Vertex) {
 		simplex.merge(simplex, v);
 	} else if ( simplex instanceof Edge) {
@@ -1960,14 +2020,21 @@ Clustering.prototype.addVertex = function(v, simplex) {
 		this.legalize(v, tr1.e_p, t2);
 		this.legalize(v, tr0.e_s, t3);
 	} else {
-		/* IE8 problem */
 		this.vertices.push(v);
 		var e_i = new Edge(simplex.vertices[0], v);
 		var e_j = new Edge(simplex.vertices[1], v);
 		var e_k = new Edge(simplex.vertices[2], v);
+		//console.log("######################### 19 this.edges.length "+this.edges.length);
+		//console.log("######################### 20 e_i");
+		//console.log(e_i);
 		this.edges.push(e_i);
+		//console.log("######################### 21 e_j");
+		//console.log(e_j);
 		this.edges.push(e_j);
+		//console.log("######################### 22 e_k");
+		//console.log(e_k);
 		this.edges.push(e_k);
+		//console.log("######################### 23 this.edges.length "+this.edges.length);
 		var t0 = new Triangle([e_i, simplex.edges[0], e_j]);
 		var t1 = new Triangle([e_j, simplex.edges[1], e_k]);
 		var t2 = new Triangle([e_k, simplex.edges[2], e_i]);
@@ -2080,6 +2147,7 @@ Clustering.prototype.mergeVertices = function(e) {
 		}
 		return -1;
 	}
+        console.log("######################### 13f hole "+hole.length+" / "+hole);
 	var holeEdges = new Array(hole.length);
 	var nonHoleEdges = [];
 
@@ -2182,12 +2250,18 @@ Clustering.prototype.mergeForResolution = function(resolution, circleGap) {
 	});
 	this.weightEdges(resolution, circleGap);
 
+		console.log("################ 13b this.edges.length "+this.edges.length);
+		console.log("################ 13c this.vertices.length "+this.vertices.length);
+		console.log("################ 13d this.deleteEdges.size() "+this.deleteEdges.size());
+
 	var index = 0;
 	while (this.deleteEdges.size() > 0) {
 		var e = this.deleteEdges.pop();
 		if (e.legal) {
 			var l = this.edges.length;
+            console.log("################ 13e mergeVertices before "+this.vertices.length);
 			var newVertex = this.mergeVertices(e);
+            console.log("################ 13f mergeVertices after "+this.vertices.length);
 			newVertex.CalculateRadius(resolution);
 			for (var k = l; k < this.edges.length; k++) {
 				var eNew = this.edges[k];
