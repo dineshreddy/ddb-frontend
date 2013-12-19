@@ -18,29 +18,31 @@ limitations under the License.
   <head>
     <title><g:message code="ddbnext.Compare_Header" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
-    <meta name="page" content="item" />
+    <meta name="page" content="compare" />
     <meta name="layout" content="main" />
     
     <ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
     
   </head>
   <body>
-    <div class="compare">
-      <div class="row">
-        <div class="span12 compare-header">
-          <h1><g:message code="ddbnext.Compare_Header" /></h1>    
-        </div>
-      </div>
-      <g:render template="compareLinks" />
-      <div class="row">
-        <div class="span6">
-          <div class="compare-body">
-			<g:render template="compareItem" model="${modelItem1}"/>
+    <div class="row">
+      <div class="span12 compare">
+        <div class="row">
+          <div class="span12 compare-header">
+            <h1><g:message code="ddbnext.Compare_Header" /></h1>    
           </div>
         </div>
-        <div class="span6">
-          <div class="compare-body">
-			<g:render template="compareItem" model="${modelItem2}"/>
+        <g:render template="compareLinks" />
+        <div class="row">
+          <div class="span6">
+            <div class="compare-body">
+              <g:render template="compareItem" model="${modelItem1}"/>
+            </div>
+          </div>
+          <div class="span6">
+            <div class="compare-body">
+              <g:render template="compareItem" model="${modelItem2}"/>
+            </div>
           </div>
         </div>
       </div>

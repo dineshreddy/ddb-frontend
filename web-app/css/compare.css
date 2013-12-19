@@ -38,10 +38,20 @@
 }
 
 .compare .compare-body {
-  border: 1px solid #e9e5e2;
+  max-height: 800px;
+  border-right: 6px double #e9e5e2;
+  overflow: scroll;
+  overflow-x: hidden;
 }
 
-.compare .span12 {
-  width: 100%;
-  margin-left: 30px;
+.compare .slide-viewer {
+  float:none;
+}
+
+.compare .institution-name {
+  padding-right: 20px;
+}
+
+.compare .item-title {
+  padding-right: 20px;
 }

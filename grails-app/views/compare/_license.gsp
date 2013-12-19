@@ -14,15 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:render template="institution" />
-<g:render template="itemLinks" />
-<div class="row item-detail item-content">
-  <div class="span6 item-description">
-    <h2 class="item-title">${title}</h2>
-    <g:render template="binaries" />
-    <g:render template="fields" />
-    <g:render template="rights" />
-    <g:render template="license" />
-    <g:render template="/item/origin" />
+<g:if test="${license}" >
+  <div class="fields">
+    <div class="row">
+      <div class="span2"><strong><g:message code="ddbnext.License_Field" />: </strong></div>
+      <div class="value span3">
+        <a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span>${license.text}</span></a>
+      </div>
+    </div>
   </div>
-</div>
+</g:if>

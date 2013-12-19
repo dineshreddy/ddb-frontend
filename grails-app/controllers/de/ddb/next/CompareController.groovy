@@ -29,8 +29,8 @@ class CompareController {
         def firstId = params.firstId
         def secondId = params.secondId
 
-        def modelItem1 = itemService.getFullItemModel(firstId)
-        def modelItem2 = itemService.getFullItemModel(secondId)
+        def modelItem1 = itemService.getFullItemModel(firstId)+[position: "first"]
+        def modelItem2 = itemService.getFullItemModel(secondId)+[position: "second"]
 
         def searchResultParameters = handleSearchResultParameters(params, request)
 

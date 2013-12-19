@@ -13,16 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
-<g:render template="institution" />
-<g:render template="itemLinks" />
-<div class="row item-detail item-content">
-  <div class="span6 item-description">
-    <h2 class="item-title">${title}</h2>
-    <g:render template="binaries" />
-    <g:render template="fields" />
-    <g:render template="rights" />
-    <g:render template="license" />
-    <g:render template="/item/origin" />
+<g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
+  <div class="row item-detail">
+    <div class="rights">
+      <div class="span2"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
+      <div class="value span3">${item.rights}</div>
+    </div>
   </div>
-</div>
+</g:if>

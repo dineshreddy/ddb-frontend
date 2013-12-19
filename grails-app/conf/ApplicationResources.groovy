@@ -105,6 +105,7 @@ modules = {
         resource url:'/js/item.js'
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
+        resource url:'/js/compare.js'
 
     }
 
