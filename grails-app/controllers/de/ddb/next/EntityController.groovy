@@ -19,6 +19,8 @@ import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.EntityNotFoundException
 
+
+
 class EntityController {
 
     def cultureGraphService
@@ -59,51 +61,14 @@ class EntityController {
             throw new EntityNotFoundException()
         }
 
-
         def entityUri = request.forwardURI
 
-        def entity = [:]
 
-
-        //------------------------- Entity id -------------------------------
-
-        entity["id"] = entityId
-
-        //------------------------- External links -------------------------------
-
-        entity["externalLinks"] = jsonGraph.seeAlso
-
-        //------------------------- Thumbnail information -------------------------------
-
-        entity["thumbnail"] = jsonGraph.thumbnail
-
-        //------------------------- Entity type (person, etc) -------------------------------
-
-        def entityType = jsonGraph.type
-
-        //------------------------- Titel (Name of entity) -------------------------------
-
-        entity["title"] = jsonGraph[entityType].name
-
-        //------------------------- Birth/Death date -------------------------------
-        entity["dateOfBirth"] = jsonGraph[entityType].birth
-        entity["dateOfDeath"] = jsonGraph[entityType].death
-
-        //------------------------- Birth/Death place -------------------------------
-        entity["placeOfBirth"] = "Freiburg im Breisgau" //TODO get value from culturegraph service
-        entity["placeOfDeath"] = "Hamburg" //TODO get value from culturegraph service
-
-        //------------------------- Professions -------------------------------
-
-        entity["professions"] = "Schriftsteller" //TODO get value from culturegraph service
-        entity["description"] = jsonGraph[entityType].description
-
-        //------------------------- Search preview -------------------------------
+        def title = jsonGraph.person.preferredName
 
         def searchPreview = [:]
 
-        //def searchQuery = [(SearchParamEnum.QUERY.getName()): entity["title"], (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): "type_fct", "type_fct": "mediatype_002"]
-        def searchQuery = [(SearchParamEnum.QUERY.getName()): entity["title"], (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
+        def searchQuery = [(SearchParamEnum.QUERY.getName()): title, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponseSearch.isOk()){
             log.error "index(): Search response contained error"
@@ -116,16 +81,15 @@ class EntityController {
 
         //------------------------- Search preview media type count -------------------------------
 
-        searchPreview["pictureCount"] = getResultCountsForFacetType(entity["title"], "mediatype_002")
+        searchPreview["pictureCount"] = getResultCountsForFacetType(title, "mediatype_002")
 
-        searchPreview["videoCount"] = getResultCountsForFacetType(entity["title"], "mediatype_005")
+        searchPreview["videoCount"] = getResultCountsForFacetType(title, "mediatype_005")
 
-        searchPreview["audioCount"] = getResultCountsForFacetType(entity["title"], "mediatype_001")
+        searchPreview["audioCount"] = getResultCountsForFacetType(title, "mediatype_001")
 
-        entity["searchPreview"] = searchPreview
+        def model = ["entity": jsonGraph, "entityUri": entityUri, "entityId": entityId, "searchPreview": searchPreview]
 
-        render(view: 'entity', model: ["entity": entity,
-            "entityUri": entityUri])
+        render(view: 'entity', model: model)
     }
 
     public def getAjaxSearchResultsAsJson() {

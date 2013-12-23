@@ -13,14 +13,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="name">
-  <h2>${entity.title}</h2>
-  
-  <%-- 
-  <span>Schriftsteller, Politiker, Jurist, Naturwissenschaftler, Maler, Zeichner</span>
-  --%>
-  
-  <span class="todo-gnd">${entity.professions}</span><br>
-  <span>${entity.description}</span>
-  
+<div class="name fields">
+	<h2>
+		${entity.person.preferredName}
+	</h2>
+
+	<span> 
+		<strong><g:message code="ddbnext.Entity_Profession" /> :</strong> 
+		<g:each var="link" in="${entity.person.professionOrOccupation}">
+			<g:if test="${link.'@id'}">
+				<a href="${link.'@id'}" class="no-external-link-icon">
+					${link.value}
+				</a>
+			</g:if>
+			<g:else>
+				<span> ${link.value}
+				</span>
+			</g:else>
+		</g:each>
+	</span>
 </div>

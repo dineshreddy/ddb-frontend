@@ -21,7 +21,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales;
+import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.BadRequestException
 
 class SearchController {
@@ -185,7 +185,7 @@ class SearchController {
 
                 def gndLinkItems = []
                 resultItems.facets.each { facet ->
-                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA || facet.field == FacetEnum.AFFILIATE_SUBJECT) {
+                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName() || facet.field == FacetEnum.AFFILIATE_SUBJECT.getName()) {
                         facet.facetValues.each { entry ->
                             if(cultureGraphService.isValidGndUri(entry.value)){
                                 gndLinkItems.addAll(entry)
@@ -203,11 +203,15 @@ class SearchController {
                 int gndItemsRetrieved = 0
                 int i = 0
                 while (gndItemsRetrieved < displayCount) {
+                    def gndItem = [:]
                     def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
-
                     def gndData = cultureGraphService.getCultureGraph(gndId)
+
                     if(gndData != null) {
-                        gndItems.add(gndData)
+                        gndItem['id'] = gndId
+                        gndItem['data'] = gndData
+                        gndItems.add(gndItem)
+
                         gndItemsRetrieved ++
                     }
 
