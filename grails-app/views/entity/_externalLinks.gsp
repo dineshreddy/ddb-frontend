@@ -17,7 +17,7 @@ limitations under the License.
   <h3><g:message code="ddbnext.External_Links" />:</h3>
   <ul class="unstyled">
   
-    <g:each var="link" in="${entity.externalLinks}">
+    <g:each var="link" in="${entity.sameAs}">
       <li class="${ link.icon != null ? 'external-link-with-icon' : 'external-link'}">
         <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
           <i class="external-icon"><img src="${link.icon}" alt="" /></i>

@@ -15,16 +15,16 @@ limitations under the License.
 --%>
 <div class="thumb">
   <div class="thumbinner">
-    <a href="${entity.depiction.thumbnail}" class="image no-external-link-icon">
+    <a href="${entity.person.depiction.thumbnail}" class="image no-external-link-icon">
       <!-- TODO: refactor to use figure element -->
       <!-- TODO: remove width and height, use CSS -->
       <!-- TODO srcset is not a valid attribute -->
-      <img alt="${entity.title}" src="${entity.depiction.thumbnail}" width="220" height="271" class="thumbimage">
+      <img alt="${entity.title}" src="${entity.person.depiction.thumbnail}" width="220" height="271" class="thumbimage">
     </a>
     <div class="thumbcaption">
-      <i>${entity.title}</i>
+      <i>${entity.person.preferredName}</i>
       <br>
-      ${entity.depiction.decription}
+      ${entity.person.depiction.decription}
     </div>
   </div>
 </div>

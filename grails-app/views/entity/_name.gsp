@@ -15,12 +15,12 @@ limitations under the License.
 --%>
 <div class="name fields">
 	<h2>
-		${entity.title}
+		${entity.person.preferredName}
 	</h2>
 
 	<span> 
 		<strong><g:message code="ddbnext.Entity_Profession" /> :</strong> 
-		<g:each var="link" in="${entity.professions}">
+		<g:each var="link" in="${entity.person.professionOrOccupation}">
 			<g:if test="${link.'@id'}">
 				<a href="${link.'@id'}" class="no-external-link-icon">
 					${link.value}
