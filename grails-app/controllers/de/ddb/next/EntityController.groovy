@@ -64,6 +64,8 @@ class EntityController {
 
         def entity = [:]
 
+        //------------------------- Entity type (person, etc) -------------------------------
+        def entityType = 'person'
 
         //------------------------- Entity id -------------------------------
 
@@ -71,38 +73,31 @@ class EntityController {
 
         //------------------------- External links -------------------------------
 
-        entity["externalLinks"] = jsonGraph.seeAlso
+        entity["externalLinks"] = jsonGraph.sameAs
 
         //------------------------- Thumbnail information -------------------------------
 
-        entity["thumbnail"] = jsonGraph.thumbnail
-
-        //------------------------- Entity type (person, etc) -------------------------------
-
-        def entityType = jsonGraph.type
+        entity["depiction"] = jsonGraph[entityType].depiction
 
         //------------------------- Titel (Name of entity) -------------------------------
-
-        entity["title"] = jsonGraph[entityType].name
+        entity["title"] = jsonGraph[entityType].preferredName
 
         //------------------------- Birth/Death date -------------------------------
-        entity["dateOfBirth"] = jsonGraph[entityType].birth
-        entity["dateOfDeath"] = jsonGraph[entityType].death
+        entity["dateOfBirth"] = jsonGraph[entityType].dateOfBirth
+        entity["dateOfDeath"] = jsonGraph[entityType].dateOfDeath
 
         //------------------------- Birth/Death place -------------------------------
-        entity["placeOfBirth"] = "Freiburg im Breisgau" //TODO get value from culturegraph service
-        entity["placeOfDeath"] = "Hamburg" //TODO get value from culturegraph service
+        entity["placeOfBirth"] = jsonGraph[entityType].placeOfBirth
+        entity["placeOfDeath"] = jsonGraph[entityType].placeOfDeath
 
         //------------------------- Professions -------------------------------
 
-        entity["professions"] = "Schriftsteller" //TODO get value from culturegraph service
-        entity["description"] = jsonGraph[entityType].description
+        entity["professions"] = jsonGraph[entityType].professionOrOccupation
 
         //------------------------- Search preview -------------------------------
 
         def searchPreview = [:]
 
-        //def searchQuery = [(SearchParamEnum.QUERY.getName()): entity["title"], (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): "type_fct", "type_fct": "mediatype_002"]
         def searchQuery = [(SearchParamEnum.QUERY.getName()): entity["title"], (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponseSearch.isOk()){

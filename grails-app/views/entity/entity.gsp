@@ -40,7 +40,9 @@ limitations under the License.
       
       <div class="span3">
         <g:render template="thumb" />
+        <hr>
         <g:render template="search" />
+        <hr>
         <g:render template="externalLinks" />
       </div>
     </div>
