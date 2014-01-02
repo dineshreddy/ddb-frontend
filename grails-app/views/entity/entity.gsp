@@ -33,9 +33,9 @@ limitations under the License.
         <hr>
         <g:render template="objects" />
         <hr>        
-        <g:render template="works" />
+        <g:render template="affiliateInvolved" />
         <hr>
-        <g:render template="themes" />
+        <g:render template="affiliateSubject" />
       </div>
       
       <div class="span3">

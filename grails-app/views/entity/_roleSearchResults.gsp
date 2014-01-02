@@ -29,9 +29,9 @@ limitations under the License.
 
 <g:if test="${entity.roleSearch.resultCount > 0 }">
 	<g:link controller="search" action="results" params="${entity.roleSearch.searchUrlParameter }">
- 	Alle Objekte (${entity.roleSearch.resultCount})
+ 	<g:message code="ddbnext.Entity_All_Objects"/> (${entity.roleSearch.resultCount})
 	</g:link>
 </g:if>
 <g:if test="${entity.roleSearch.resultCount <= 0 }">
-	Kein Suchergebnisse
+	<g:message code="ddbnext.Entity_No_Search_Result"/>
 </g:if>
