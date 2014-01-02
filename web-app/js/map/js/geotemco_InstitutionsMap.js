@@ -908,9 +908,6 @@ Binning.prototype = {
 	},
 
 	setObjects : function(objects) {
-		  //console.log("#################### 310 Binning setObjects");
-		  //console.log(objects);
-		  //console.log("#################### 310 Binning setObject objects[0].length: "+objects[0].length);
 		this.objects = objects;
 		for (var i = 0; i < this.objects.length; i++) {
 			var weight = 0;
@@ -998,7 +995,6 @@ Binning.prototype = {
 	},
 
 	genericClustering : function(objects, id) {
-  //console.log("#################### 318 Binning genericClustering");
 		var binSets = [];
 		var circleSets = [];
 		var hashMaps = [];
@@ -1009,71 +1005,30 @@ Binning.prototype = {
 		var geospatialObjectCounter = 0;
 		for (var i = 0; i < objects.length; i++) {
 			for (var j = 0; j < objects[i].length; j++) {
-			//for (var j = 0; j < 100; j++) {
-				//console.log("################################################# iteration "+j);
 				var o = objects[i][j];
 				if (o.isGeospatial) {
 				geospatialObjectCounter++;
 					var p = new OpenLayers.Geometry.Point(o.getLongitude(self.options.mapIndex), o.getLatitude(self.options.mapIndex), null);
 					p.transform(self.map.displayProjection, self.map.projection);
-                    if(j==17) {
-						console.log("################################### 07 j="+j);
-						console.log("################ 08 create vertex");
-					}
 					var point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, self);
-					if(j==17){
-						console.log("################ 09 o ");
-						console.log(o);
-						console.log("################ 10 point ");
-						console.log(point);
-					}
 					point.addElement(o, o.weight, i);
-                    if(j==17){
-						console.log("################ 11 o ");
-						console.log(o);
-						console.log("################ 12 point ");
-						console.log(point);
-                        console.log("################ 12b point.radius "+point.radius);
-                        console.log("################ 12c point.size "+point.size);
-                        console.log("################ 12d point.elements.size() "+point.elements.length);
-                        console.log("################ 12e point.weights "+point.weights);
-					}
 					clustering.add(point, j);
-                    //if(j==17) {
-					//	console.log("################ 13 clustering.triangles.length "+clustering.triangles.length);
-					//	console.log("################ 14 clustering.edges.length "+clustering.edges.length);
-					//	console.log("################ 15 clustering.vertices.length "+clustering.vertices.length);
-					//}
 				}
 			}
 		}
-		console.log("################ 06 clustering.edges.length "+clustering.edges.length);
-		console.log("################ 07 clustering.vertices.length "+clustering.vertices.length);
-		console.log("################ 08 geospatialObjectCounter "+geospatialObjectCounter);
-
 		
-		//for (var i = 0; i < this.zoomLevels; i++) { //TODO
-		for (var i = 0; i < 1; i++) {
-		console.log("############################################################## 01 zoomlevel "+i);
+		for (var i = 0; i < this.zoomLevels; i++) { 
 			var bins = [];
 			var circles = [];
 			var hashMap = [];
 			var selectionMap = [];
-			console.log("################ 04 objects.length "+objects.length);
 			for (var j = 0; j < objects.length; j++) {
 				circles.push([]);
 				hashMap.push([]);
 				selectionMap.push([]);
 			}
 			var resolution = this.map.getResolutionForZoom(this.zoomLevels - i - 1);
-		console.log("################ 11 resolution "+resolution);
-		console.log("################ 12b clustering.edges.length "+clustering.edges.length);
-		console.log("################ 12c clustering.vertices.length "+clustering.vertices.length);
-		//console.log("################ 12d clustering.deleteEdges.length "+clustering.deleteEdges.length);
 			clustering.mergeForResolution(resolution, this.options.circleGap);
-		console.log("################ 14b clustering.edges.length "+clustering.edges.length);
-		console.log("################ 14c clustering.vertices.length "+clustering.vertices.length);
-		console.log("################ 14d clustering.deleteEdges.size() "+clustering.deleteEdges.size());
 			for (var j = 0; j < clustering.vertices.length; j++) {
 				var point = clustering.vertices[j];
 				if (!point.legal) {
@@ -1160,17 +1115,7 @@ Binning.prototype = {
 			selectionHashs.push(selectionMap);
 		}
 		circleSets.reverse();
-		console.log("################ 03 circleSets.length "+circleSets.length);
-		for(var i=0;i<circleSets.length; i++){
-			console.log("################ 06 circleSets["+i+"].length "+circleSets[i].length);
-			for(var j=0;j<circleSets[i].length; j++){
-				console.log("################ 07 circleSets["+i+"]["+j+"].length "+circleSets[i][j].length);
-			}
-		}
 		
-		console.log("################ 04 circleSets[0].length "+circleSets[0].length);
-		console.log(circleSets[0]);
-		console.log("################ 05 circleSets[0][0].length "+circleSets[0][0].length);
 		binSets.reverse();
 		hashMaps.reverse();
 		selectionHashs.reverse();
@@ -1183,10 +1128,8 @@ Binning.prototype = {
 	},
 
 	genericBinning : function() {
-  //console.log("#################### 318 Binning genericBinning");
 		if (this.options.circlePackings || this.objects.length == 1) {
 			this.binnings['generic'] = this.genericClustering(this.objects);
-  //console.log(this.binnings['generic']);
 			
 		} else {
 			var circleSets = [];
@@ -1673,6 +1616,10 @@ Vertex.prototype.merge = function(v0, v1) {
 	}
 }
 
+Vertex.prototype.getType = function() {
+	return "Vertex";
+}
+
 Vertex.prototype.CalculateRadius = function(resolution) {
 	this.radii = [];
 	for (i in this.elements ) {
@@ -1729,6 +1676,10 @@ Edge.prototype.setLength = function() {
 	var dx = this.v0.x - this.v1.x;
 	var dy = this.v0.y - this.v1.y;
 	this.length = Math.sqrt(dx * dx + dy * dy);
+}
+
+Edge.prototype.getType = function() {
+	return "Edge";
 }
 
 Edge.prototype.contains = function(v) {
@@ -1791,6 +1742,10 @@ Triangle.prototype.getTriple = function(e) {
 		e_p : this.edges[(i + 2) % 3],
 		u : this.vertices[(i + 2) % 3]
 	};
+}
+
+Triangle.prototype.getType = function() {
+	return "Triangle";
 }
 
 Triangle.prototype.leftOf = function(e) {
@@ -1912,7 +1867,7 @@ function Clustering(xMin, yMin, xMax, yMax) {
 	this.collapses = 0;
 }
 
-Clustering.prototype.locate = function(v) {
+Clustering.prototype.locate = function(v, index) {
 	if (this.boundingTriangle.descendants.length == 0) {
 		return this.boundingTriangle;
 	}
@@ -1974,18 +1929,12 @@ Clustering.prototype.legalize = function(v, e, t0_old) {
 	}
 }
 
-Clustering.prototype.add = function(v, j) {
-	this.addVertex(v, this.locate(v), j);
+Clustering.prototype.add = function(v, index) {
+	var located = this.locate(v, index);
+	this.addVertex(v, located, index);
 }
 
 Clustering.prototype.addVertex = function(v, simplex, j) {
-	if(j==17){
-		console.log("###################### 30 addVertex");
-		console.log("###################### 31 v");
-		console.log(v);
-		console.log("###################### 32 simplex");
-		console.log(simplex);
-	}
 	if ( simplex instanceof Vertex) {
 		simplex.merge(simplex, v);
 	} else if ( simplex instanceof Edge) {
@@ -2024,17 +1973,9 @@ Clustering.prototype.addVertex = function(v, simplex, j) {
 		var e_i = new Edge(simplex.vertices[0], v);
 		var e_j = new Edge(simplex.vertices[1], v);
 		var e_k = new Edge(simplex.vertices[2], v);
-		//console.log("######################### 19 this.edges.length "+this.edges.length);
-		//console.log("######################### 20 e_i");
-		//console.log(e_i);
 		this.edges.push(e_i);
-		//console.log("######################### 21 e_j");
-		//console.log(e_j);
 		this.edges.push(e_j);
-		//console.log("######################### 22 e_k");
-		//console.log(e_k);
 		this.edges.push(e_k);
-		//console.log("######################### 23 this.edges.length "+this.edges.length);
 		var t0 = new Triangle([e_i, simplex.edges[0], e_j]);
 		var t1 = new Triangle([e_j, simplex.edges[1], e_k]);
 		var t2 = new Triangle([e_k, simplex.edges[2], e_i]);
@@ -2147,7 +2088,6 @@ Clustering.prototype.mergeVertices = function(e) {
 		}
 		return -1;
 	}
-        console.log("######################### 13f hole "+hole.length+" / "+hole);
 	var holeEdges = new Array(hole.length);
 	var nonHoleEdges = [];
 
@@ -2250,18 +2190,12 @@ Clustering.prototype.mergeForResolution = function(resolution, circleGap) {
 	});
 	this.weightEdges(resolution, circleGap);
 
-		console.log("################ 13b this.edges.length "+this.edges.length);
-		console.log("################ 13c this.vertices.length "+this.vertices.length);
-		console.log("################ 13d this.deleteEdges.size() "+this.deleteEdges.size());
-
 	var index = 0;
 	while (this.deleteEdges.size() > 0) {
 		var e = this.deleteEdges.pop();
 		if (e.legal) {
 			var l = this.edges.length;
-            console.log("################ 13e mergeVertices before "+this.vertices.length);
 			var newVertex = this.mergeVertices(e);
-            console.log("################ 13f mergeVertices after "+this.vertices.length);
 			newVertex.CalculateRadius(resolution);
 			for (var k = l; k < this.edges.length; k++) {
 				var eNew = this.edges[k];
@@ -2637,7 +2571,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
          * @param {object} optional. specific Map options
          */
         var f_initialize = function (mapDivId, language, startupOptions) {
-  //console.log("#################### 31 f_initialize");
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionsMapModel.js");
 
             var MSVersion = f_getInternetExplorerVersion();
@@ -2665,18 +2598,15 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         };
 
         var f_makeSectorsObject = function (selectorList) {
-  //console.log("#################### 32 f_makeSectorsObject");
             var sectorObject = {};
             for (var xel = 0; xel < selectorList.length; xel++) {
                 var el = selectorList[xel];
                 sectorObject[el.sector] = {count: 0, name: el.name};
             };
-  //console.log("#################### 32 f_makeSectorsObject sectorObject="+sectorObject);
             return sectorObject;
         };
 
         var f_selectSectors = function (aSectorSelection) {
-  //console.log("#################### 33 f_selectSectors");
 //            if (typeof console != 'undefined') {
 //                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
 //            }
@@ -2709,8 +2639,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
                 var datasets = [];
                 datasets.push(new Dataset(_sectorsMapData, "institutions"));
-  //console.log("#################### 33 f_selectSectors datasets="+datasets);
-  //console.log(datasets);
                 GeoPublisher.GeoPublish('filter', datasets, null);
             }
 
@@ -2733,7 +2661,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         }
 
         var f_getMapNameAndClusterSet = function(filterSet) {
-  //console.log("#################### 34 f_getMapNameAndClusterSet");
             var urlPrefix = GeoTemConfig.urlPrefix + "ddb-map/";
             var sectorsName = "";
             var sortedSectorNames = [];
@@ -2769,8 +2696,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         var f_prepareInstitutionsData = function (institutionMapData) {
             var allInstitutionsArray = flatten(institutionMapData.institutions);
             _allMapData = GeoTemConfig.loadJson(allInstitutionsArray);
-  //console.log("#################### 35 f_prepareInstitutionsData _allMapData: "+_allMapData.length);
-  //console.log(_allMapData);
 
             _institutionsById = {};
             for (var xel = 0; xel < _allMapData.length; xel++) {

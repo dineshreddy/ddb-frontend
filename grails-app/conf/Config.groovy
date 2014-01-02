@@ -254,7 +254,7 @@ jawr {
 
 development {
     //To disable bundling for testing, comment in this line
-    //grails.resources.debug=true
+    grails.resources.debug=true
 }
 
 compress {

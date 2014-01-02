@@ -11,7 +11,6 @@ class Clustering {
     def legalizes
     def collapses
     def boundingTriangle
-
     def deleteEdges
 
     def Clustering(xMin, yMin, xMax, yMax) {
@@ -92,17 +91,12 @@ class Clustering {
         }
     }
 
-    def add(v, j) {
+    def add(v) {
         def located = this.locate(v)
-        this.addVertex(v, located, j)
+        this.addVertex(v, located)
     }
 
-    def addVertex(v, simplex, j) {
-        if(j==17){
-            println "####################### 30 addVertex"
-            println "####################### 31 v "+v
-            println "####################### 32 simplex "+simplex
-        }
+    def addVertex(v, simplex) {
         if ( simplex instanceof Vertex) {
             simplex.merge(simplex, v)
         } else if ( simplex instanceof Edge) {
@@ -141,14 +135,9 @@ class Clustering {
             def e_i = new Edge(simplex.vertices[0], v)
             def e_j = new Edge(simplex.vertices[1], v)
             def e_k = new Edge(simplex.vertices[2], v)
-            //            println "####################### 19 this.edges.size() "+this.edges.size()
-            //            println "####################### 20 e_i "+e_i
             this.edges.push(e_i)
-            //            println "####################### 21 e_j "+e_j
             this.edges.push(e_j)
-            //            println "####################### 22 e_k "+e_k
             this.edges.push(e_k)
-            //            println "####################### 23 this.edges.size() "+this.edges.size()
             def t0 = new Triangle([e_i, simplex.edges[0], e_j])
             def t1 = new Triangle([e_j, simplex.edges[1], e_k])
             def t2 = new Triangle([e_k, simplex.edges[2], e_i])
@@ -185,21 +174,43 @@ class Clustering {
         e2.setFaces(this.boundingTriangle, inf)
     }
 
-    def traverse(eLeft, eRight, triangle, oldFacets, hole) {
+    //        def traverse = function(eLeft, eRight, triangle) {
+    //            eLeft.legal = false
+    //            do {
+    //                def triple
+    //                if (eLeft.leftFace == triangle) {
+    //                    triple = eLeft.rightFace.getTriple(eLeft)
+    //                    oldFacets.push(eLeft.rightFace)
+    //                    triple.e_s.removeFace(eLeft.rightFace)
+    //                    triangle = eLeft.rightFace
+    //                } else {
+    //                    triple = eLeft.leftFace.getTriple(eLeft)
+    //                    oldFacets.push(eLeft.leftFace)
+    //                    triple.e_s.removeFace(eLeft.leftFace)
+    //                    triangle = eLeft.leftFace
+    //                }
+    //                if (arrayIndex(hole, triple.e_s) == -1) {
+    //                    hole.push(triple.e_s)
+    //                }
+    //                vertices.push(triple.u)
+    //                eLeft = triple.e_p
+    //                eLeft.legal = false
+    //            } while( eLeft != eRight )
+    //        }
+
+    def traverse(eLeft, eRight, triangle, oldFacets, hole, vertices) {
         eLeft.legal = false
-        boolean shouldLoop = true
-        while(shouldLoop) {
+        while(true) {
             def triple
             if (eLeft.leftFace == triangle) {
                 triple = eLeft.rightFace.getTriple(eLeft)
                 oldFacets.push(eLeft.rightFace)
-                triple.e_s.removeFace(eLeft.rightFace) // TODO
+                triple.e_s.removeFace(eLeft.rightFace)
                 triangle = eLeft.rightFace
             } else {
-                //println "########################## 51 eLeft.leftFace: "+eLeft.leftFace
                 triple = eLeft.leftFace.getTriple(eLeft)
                 oldFacets.push(eLeft.leftFace)
-                triple.e_s.removeFace(eLeft.leftFace) //TODO
+                triple.e_s.removeFace(eLeft.leftFace)
                 triangle = eLeft.leftFace
             }
             if (arrayIndex(hole, triple.e_s) == -1) {
@@ -209,8 +220,7 @@ class Clustering {
             eLeft = triple.e_p
             eLeft.legal = false
 
-            shouldLoop = (eLeft != eRight)
-            if(!shouldLoop) {
+            if(eLeft == eRight) {
                 break
             }
         }
@@ -226,7 +236,7 @@ class Clustering {
     }
 
 
-    def mergeVertices(e) {
+    def mergeVertices(e, resolution) {
         this.collapses = this.collapses + 1
         def s0 = e.v0.size
         def s1 = e.v1.size
@@ -270,10 +280,8 @@ class Clustering {
         def tr1 = e.rightFace.getTriple(e)
         oldFacets.push(e.leftFace)
         oldFacets.push(e.rightFace)
-        //        println "######################### 13f traverse "+tr0.e_p
-        //        println "######################### 13f traverse "+tr0.e_s
-        traverse(tr0.e_p, tr1.e_s, e.leftFace, oldFacets, hole)
-        traverse(tr1.e_p, tr0.e_s, e.rightFace, oldFacets, hole)
+        traverse(tr0.e_p, tr1.e_s, e.leftFace, oldFacets, hole, vertices)
+        traverse(tr1.e_p, tr0.e_s, e.rightFace, oldFacets, hole, vertices)
 
         def hd = new Clustering(this.bbox.x1 - 10, this.bbox.y1 - 10, this.bbox.x2 + 10, this.bbox.y2 + 10)
         def hull = []
@@ -305,9 +313,9 @@ class Clustering {
         //            return -1
         //
         //    }
-        println "######################### 13f hole "+hole.size()+" / "+hole
-        def holeEdges = new Object[hole.size()]
+        //def holeEdges = new Object[hole.size()]
         //def holeEdges = []
+        def holeEdges = [:]
         def nonHoleEdges = []
 
         for (def i = 0; i < hd.edges.size(); i++) {
@@ -338,7 +346,9 @@ class Clustering {
         }
 
 
-        for (def i = 0; i < holeEdges.size(); i++) {
+        //for (def i = 0; i < holeEdges.size(); i++) {
+        def holeEdgesKeys = holeEdges.keySet()
+        for (def i in holeEdgesKeys) {
             def e2 = holeEdges[i]
             if (hole[i].leftFace == null) {
                 hole[i].leftFace = e2.leftFace
@@ -408,24 +418,21 @@ class Clustering {
         this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 
-        println "####################### 13b this.edges.size() "+this.edges.size()
-        println "####################### 13c this.vertices.size() "+this.vertices.size()
-        println "####################### 13d this.deleteEdges.size() "+this.deleteEdges.size()
-
         def index = 0
         while (this.deleteEdges.size() > 0) {
             def e = this.deleteEdges.pop()
             if (e.legal) {
                 def l = this.edges.size()
-                println "####################### 13e mergeVertices before "+this.vertices.size()
-                def newVertex = this.mergeVertices(e)
-                println "####################### 13f mergeVertices after "+this.vertices.size()
+                def newVertex = this.mergeVertices(e, resolution)
                 newVertex.calculateRadius(resolution)
                 for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]
                     if (eNew.legal) {
-                        eNew.weight = eNew.size() / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
-                        if (eNew.weight < 1) {
+                        eNew.weight = 99999
+                        if(eNew.pLength != null && eNew.v0.radius != null && eNew.v1.radius != null && circleGap != null && resolution != null){
+                            eNew.weight = eNew.pLength / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
+                        }
+                        if (eNew.weight != null && eNew.weight < 1) {
                             this.deleteEdges.push(eNew)
                         }
                     }
@@ -586,6 +593,10 @@ class Clustering {
         //            }
         //        }
         //        return -1
+    }
+
+    public String toString() {
+        return "Clustering[triangles: "+triangles+", edges: "+edges+", vertices: "+vertices+", legalizes: "+legalizes+", bbox: "+bbox+", collapses: "+collapses+", newTriangles: "+newTriangles+", boundingTriangle: "+boundingTriangle+", deleteEdges: "+deleteEdges+"]"
     }
 
 }

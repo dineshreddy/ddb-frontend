@@ -65,6 +65,6 @@ class CircleObject {
     }
 
     String toString() {
-        return "CircleObject[originX: "+originX+", originY: "+originY+", shiftX: "+shiftX+", shiftY: "+shiftY+", radius: "+radius+", elements: "+elements+"]"
+        return "CircleObject[originX: "+originX+", originY: "+originY+", shiftX: "+shiftX+", shiftY: "+shiftY+", radius: "+radius+", elements: "+elements+", search: "+search+", weight: "+weight+", overlay: "+overlay+", selected: "+selected+"]"
     }
 }

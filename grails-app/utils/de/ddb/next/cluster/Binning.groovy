@@ -25,8 +25,6 @@ class Binning {
     }
 
     def getSet() {
-        println "####################### 40 getSet"
-
         def type = this.binning
         if (!type) {
             return this.getExactBinning()
@@ -49,7 +47,6 @@ class Binning {
     }
 
     def getGenericBinning() {
-        println "####################### 40 getGenericBinning "+this.binnings['generic']
         //if(this.binnings['generic'].size() == 0) {
         this.genericBinning()
         //}
@@ -237,8 +234,6 @@ class Binning {
         def geospatialObjectCounter = 0
         for (def i = 0; i < objects.size(); i++) {
             for (def j = 0; j < objects[i].size(); j++) {
-                //for (def j = 0; j < 100; j++) {
-                //println "####################################################### 01 iteration "+j
                 def o = objects[i][j]
                 if (o.isGeospatial) {
                     geospatialObjectCounter++
@@ -246,61 +241,25 @@ class Binning {
                     def p = new Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
                     //p.transform(self.map.displayProjection, self.map.projection)
                     p.transform(self.displayProjection, self.projection)
-                    if(j==17) {
-                        println "######################################### 07 j="+j
-                        println "####################### 08 create vertex"
-                    }
                     def point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.size(), self)
-                    if(j==17){
-                        println "####################### 09 o "+o
-                        println "####################### 10 point "+point
-                    }
                     point.addElement(o, o.weight, i)
-                    if(j==17){
-                        println "####################### 11 o "+o
-                        println "####################### 12 point "+point
-                        println "####################### 12b point.radius "+point.radius
-                        println "####################### 12c point.size "+point.size
-                        println "####################### 12d point.elements.size() "+point.elements.size()
-                        println "####################### 12e point.weights "+point.weights
-
-                    }
-                    clustering.add(point, j)
-                    //                    if(j==17) {
-                    //                    println "####################### 13 clustering.triangles.size() "+clustering.triangles.size()
-                    //                    println "####################### 14 clustering.edges.size() "+clustering.edges.size()
-                    //                    println "####################### 15 clustering.vertices.size() "+clustering.vertices.size()
-
-                    //                    }
+                    clustering.add(point)
                 }
             }
         }
-        println "####################### 06 clustering.edges.size() "+clustering.edges.size()
-        println "####################### 07 clustering.vertices.size() "+clustering.vertices.size()
-        println "####################### 08 geospatialObjectCounter "+geospatialObjectCounter
 
-
-        //for (def i = 0; i < this.zoomLevels; i++) {
-        for (def i = 0; i < 1; i++) {
-            println "########################################################### 10 zoomlevel "+i
+        for (def i = 0; i < this.zoomLevels; i++) {
             def bins = []
             def circles = []
             def hashMap = []
             def selectionMap = []
-            println "####################### 10b objects.size() "+objects.size()
             for (def j = 0; j < objects.size(); j++) {
                 circles.push([])
                 hashMap.push([:])
                 selectionMap.push([:])
             }
             def resolution = this.getResolutionForZoom(i)
-            println "####################### 11 resolution "+resolution
-            println "####################### 12b clustering.edges.size() "+clustering.edges.size()
-            println "####################### 12c clustering.vertices.size() "+clustering.vertices.size()
             clustering.mergeForResolution(resolution, this.circleGap)
-            println "####################### 14b clustering.edges.size() "+clustering.edges.size()
-            println "####################### 14c clustering.vertices.size() "+clustering.vertices.size()
-            println "####################### 14d this.deleteEdges.size() "+clustering.deleteEdges.size()
             for (def j = 0; j < clustering.vertices.size(); j++) {
                 def point = clustering.vertices[j]
                 if (!point.legal) {
@@ -396,10 +355,10 @@ class Binning {
             hashMaps.push(hashMap)
             selectionHashs.push(selectionMap)
         }
-        circleSets.reverse()
-        binSets.reverse()
-        hashMaps.reverse()
-        selectionHashs.reverse()
+        circleSets = circleSets.reverse()
+        binSets = binSets.reverse()
+        hashMaps = hashMaps.reverse()
+        selectionHashs = selectionHashs.reverse()
 
         return [
             circleSets : circleSets,
@@ -839,6 +798,6 @@ class Binning {
     }
 
     String toString() {
-        return "Binning[zoomLevels: "+zoomLevels+", minimumRadius: "+minimumRadius+", maximumRadius: "+maximumRadius+", maximumPoints: "+maximumPoints+", minArea: "+minArea+", maxArea: "+maxArea+"]"
+        return "Binning[zoomLevels: "+zoomLevels+", minimumRadius: "+minimumRadius+", maximumRadius: "+maximumRadius+", maximumPoints: "+maximumPoints+", minArea: "+minArea+", maxArea: "+maxArea+", binnings: "+binnings.size()+", objects: "+objects[0].size()+"]"
     }
 }

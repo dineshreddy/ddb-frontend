@@ -7,8 +7,8 @@ class Edge {
     def leftFace
     def rightFace
     def legal
-    def pLength
-    def weight
+    double pLength
+    double weight
 
     def Edge(v0, v1) {
         this.v0 = v0
@@ -20,8 +20,8 @@ class Edge {
     }
 
     def setLength() {
-        def dx = this.v0.x - this.v1.x
-        def dy = this.v0.y - this.v1.y
+        double dx = this.v0.x - this.v1.x
+        double dy = this.v0.y - this.v1.y
         this.pLength = Math.sqrt(dx * dx + dy * dy)
     }
 
@@ -74,6 +74,6 @@ class Edge {
     }
 
     String toString(){
-        return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", pLength: "+pLength+"]"
+        return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", pLength: "+pLength+", weight: "+weight+"]"
     }
 }

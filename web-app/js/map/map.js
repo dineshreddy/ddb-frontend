@@ -286,11 +286,11 @@ $(document).ready(function() {
           var sectorData = {};
           sectorData['sector'] = $(this).find('input').data('sector');
           sectorData['name'] = $.trim($(this).children('label').text());
-//          if ($(this).find('input').is(':checked')) {
-//            sectors['selected'].push(sectorData);
-//          } else {
+          if ($(this).find('input').is(':checked')) {
+            sectors['selected'].push(sectorData);
+          } else {
             sectors['deselected'].push(sectorData);
-//          }
+          }
         });
         return sectors;
       },
@@ -386,11 +386,11 @@ $(document).ready(function() {
       this.vectorLayer.removeAllFeatures();
       if(this.clusters != null) {
         
-        //var zoomLevel = this.osmMap.getZoom(); //TODO
-        zoomLevel = 0;
+        var zoomLevel = this.osmMap.getZoom(); 
         if(this.clusters[zoomLevel] != null) {
           
           var clustersToDisplay = this.clusters[zoomLevel][0];
+          console.log("####################### 08 clustersToDisplay "+zoomLevel+": "+clustersToDisplay.length);
     
           var institutionCollections = [];
           for(var i=0;i<clustersToDisplay.length; i++){
