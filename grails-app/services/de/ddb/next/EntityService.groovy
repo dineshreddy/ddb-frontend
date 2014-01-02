@@ -44,7 +44,7 @@ class EntityService {
      * @param facetName the name of the facet to search for
      * @param entityid the id of the entity
      * 
-     * @return the backend search result
+     * @return the search result
      */
     def doFacetSearch(def query, def offset, def rows, def normdata, def facetName, def entityid) {
         def facetSearch = [:]
@@ -76,18 +76,71 @@ class EntityService {
                 ]]
         }
 
-        ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
-        if(!apiResponseSearch.isOk()){
-            log.error "getAjaxSearchResultsAsJson(): Search response contained error"
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+
+        if(!apiResponse.isOk()){
+            def message = "doFacetSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
         }
 
-        def jsonSearchResult = apiResponseSearch.getResponse()
+        def jsonSearchResult = apiResponse.getResponse()
 
         facetSearch["items"] = jsonSearchResult?.results?.docs
         facetSearch["resultCount"] = jsonSearchResult?.numberOfResults
         facetSearch["searchUrlParameter"] = searchUrlParameter
 
         return facetSearch
+    }
+
+    /**
+     * Performs a search request on the backend. 
+     * 
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     * 
+     * @return the serach result
+     */
+    def doItemSearch(def query, def offset, def rows) {
+        def searchPreview = [:]
+
+        def searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+        if(!apiResponse.isOk()){
+            def message = "doItemSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+
+        searchPreview["items"] = jsonSearchResult.results?.docs
+        searchPreview["resultCount"] = jsonSearchResult?.numberOfResults
+
+        return searchPreview
+    }
+
+
+    /**
+     * Gets the number of results for a given query and facet type
+     * 
+     * @param searchString the search query
+     * @param facetType the facet type
+     * 
+     * @return the number of results for a given query and facet type
+     */
+    def getResultCountsForFacetType(def searchString, def facetType) {
+        def searchQuery = [(SearchParamEnum.QUERY.getName()): searchString, (SearchParamEnum.ROWS.getName()): 0, (SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): FacetEnum.TYPE.getName(), (FacetEnum.TYPE.getName()): facetType]
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+
+        if(!apiResponse.isOk()){
+            def message = "getResultCountsForFacetType(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        return apiResponse.getResponse().numberOfResults
     }
 
 }
