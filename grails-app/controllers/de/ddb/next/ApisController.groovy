@@ -127,10 +127,11 @@ class ApisController {
 
         def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors)
 
-        response.addHeader("Expires", "Fri, 20 Dez 2013 12:45:26 GMT")
+        response.addHeader("Expires", "Fri, 03 Jan 2014 12:45:26 GMT")
         response.addHeader("Cache-Control", "max-age=100000")
         response.addHeader("Pragma", "cache")
         response.addHeader("Last-Modified", "Wed, 18 Dez 2013 12:45:26 GMT")
+        //response.setStatus(HttpServletResponse.SC_NOT_MODIFIED)
         render (contentType:"text/json"){clusteredInstitutions}
     }
 
