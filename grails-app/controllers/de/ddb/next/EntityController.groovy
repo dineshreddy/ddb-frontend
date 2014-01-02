@@ -20,12 +20,18 @@ import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.EntityNotFoundException
 
 
-
+/**
+ * Controller class for all entity related views
+ *  
+ * @author boz
+ */
 class EntityController {
 
     def cultureGraphService
     def configurationService
+    def entityService
 
+    int PREVIEW_COUNT = 4
 
     def index() {
         log.info "index(): entityId=" + params.id + " / rows=" + params[SearchParamEnum.ROWS.getName()] + " / offset=" + params[SearchParamEnum.OFFSET.getName()]
@@ -62,11 +68,10 @@ class EntityController {
         }
 
         def entityUri = request.forwardURI
-
-
         def title = jsonGraph.person.preferredName
-
         def searchPreview = [:]
+
+        //------------------------- Object Search -------------------------------
 
         def searchQuery = [(SearchParamEnum.QUERY.getName()): title, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
         ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
@@ -80,12 +85,19 @@ class EntityController {
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
         //------------------------- Search preview media type count -------------------------------
-
         searchPreview["pictureCount"] = getResultCountsForFacetType(title, "mediatype_002")
-
         searchPreview["videoCount"] = getResultCountsForFacetType(title, "mediatype_005")
-
         searchPreview["audioCount"] = getResultCountsForFacetType(title, "mediatype_001")
+
+
+        //------------------------- Object involved in -------------------------------
+
+        //------------------------- Object involved in normdata -------------------------------
+
+        //------------------------- Object subject of -------------------------------
+
+        //------------------------- Object subject of normdata -------------------------------
+
 
         def model = ["entity": jsonGraph, "entityUri": entityUri, "entityId": entityId, "searchPreview": searchPreview]
 
@@ -139,6 +151,10 @@ class EntityController {
     }
 
 
+    /**
+     * 
+     * @return
+     */
     public def getAjaxRoleSearchResultsAsJson() {
         def query = params[SearchParamEnum.QUERY.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
@@ -163,48 +179,7 @@ class EntityController {
 
         def entity = [:]
 
-        def roleSearch = [:]
-
-        def searchQuery = []
-
-        def searchUrlParameter = []
-
-        def gndUrl = CultureGraphService.GND_URI_PREFIX
-
-        if (normdata) {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.FACET.getName()): [], (rolefacet+'_normdata') : (gndUrl + entityid)]
-            searchQuery[SearchParamEnum.FACET.getName()].add(rolefacet + "_normdata")
-
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    (rolefacet+'_normdata')+ "="+(gndUrl + entityid)
-                ]]
-        } else {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): [], (FacetEnum.AFFILIATE.getName()) : query]
-            searchQuery[rolefacet] = query
-            searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE.getName())
-            searchQuery[SearchParamEnum.FACET.getName()].add(rolefacet)
-
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    FacetEnum.AFFILIATE.getName() + "="+query,
-                    FacetEnum.AFFILIATE_INVOLVED.getName()+"="+query
-                ]]
-        }
-
-
-        ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
-        if(!apiResponseSearch.isOk()){
-            log.error "getAjaxSearchResultsAsJson(): Search response contained error"
-            apiResponseSearch.throwException(request)
-        }
-
-        def jsonSearchResult = apiResponseSearch.getResponse()
-
-        roleSearch["items"] = jsonSearchResult.results.docs
-        roleSearch["resultCount"] = jsonSearchResult.numberOfResults
-        roleSearch["searchUrlParameter"] = searchUrlParameter
-
+        def roleSearch = entityService.doFacetSearch(query, offset, rows, normdata, rolefacet, entityid)
         entity["roleSearch"] = roleSearch
 
         //Replace all the newlines. The resulting html is better parsable by JQuery
