@@ -156,6 +156,10 @@
   padding-left: 17px;
 }
 
+.olMap .olPopupDDBContent li ul li {
+  background: url("../img/list_arrow_grey.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
+}
 
 
 /* Popup end */

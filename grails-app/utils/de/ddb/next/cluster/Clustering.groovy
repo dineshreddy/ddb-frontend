@@ -174,30 +174,6 @@ class Clustering {
         e2.setFaces(this.boundingTriangle, inf)
     }
 
-    //        def traverse = function(eLeft, eRight, triangle) {
-    //            eLeft.legal = false
-    //            do {
-    //                def triple
-    //                if (eLeft.leftFace == triangle) {
-    //                    triple = eLeft.rightFace.getTriple(eLeft)
-    //                    oldFacets.push(eLeft.rightFace)
-    //                    triple.e_s.removeFace(eLeft.rightFace)
-    //                    triangle = eLeft.rightFace
-    //                } else {
-    //                    triple = eLeft.leftFace.getTriple(eLeft)
-    //                    oldFacets.push(eLeft.leftFace)
-    //                    triple.e_s.removeFace(eLeft.leftFace)
-    //                    triangle = eLeft.leftFace
-    //                }
-    //                if (arrayIndex(hole, triple.e_s) == -1) {
-    //                    hole.push(triple.e_s)
-    //                }
-    //                vertices.push(triple.u)
-    //                eLeft = triple.e_p
-    //                eLeft.legal = false
-    //            } while( eLeft != eRight )
-    //        }
-
     def traverse(eLeft, eRight, triangle, oldFacets, hole, vertices) {
         eLeft.legal = false
         while(true) {
@@ -253,29 +229,6 @@ class Clustering {
         e.legal = false
 
         def vertices = []
-        //        def traverse = function(eLeft, eRight, triangle) {
-        //            eLeft.legal = false
-        //            do {
-        //                def triple
-        //                if (eLeft.leftFace == triangle) {
-        //                    triple = eLeft.rightFace.getTriple(eLeft)
-        //                    oldFacets.push(eLeft.rightFace)
-        //                    triple.e_s.removeFace(eLeft.rightFace)
-        //                    triangle = eLeft.rightFace
-        //                } else {
-        //                    triple = eLeft.leftFace.getTriple(eLeft)
-        //                    oldFacets.push(eLeft.leftFace)
-        //                    triple.e_s.removeFace(eLeft.leftFace)
-        //                    triangle = eLeft.leftFace
-        //                }
-        //                if (arrayIndex(hole, triple.e_s) == -1) {
-        //                    hole.push(triple.e_s)
-        //                }
-        //                vertices.push(triple.u)
-        //                eLeft = triple.e_p
-        //                eLeft.legal = false
-        //            } while( eLeft != eRight )
-        //        }
         def tr0 = e.leftFace.getTriple(e)
         def tr1 = e.rightFace.getTriple(e)
         oldFacets.push(e.leftFace)
@@ -479,41 +432,6 @@ class Clustering {
     }
 
     def validityTest() {
-        //console.info("Test 1: Valid Delaunay ...");
-        /*
-         def leafs = [];
-         def triangles = this.boundingTriangle.descendants;
-         def j = 0;
-         while( triangles.size() > j ){
-         def t = triangles[j];
-         if( t.taken == undefined ){
-         t.taken = true;
-         if( this.isLeaf(t) ){
-         leafs.push(t);
-         }
-         else {
-         triangles = triangles.concat(t.descendants);
-         }
-         }
-         j++;
-         }
-         console.info("  Number of Triangles: "+leafs.size());
-         def c = 0;
-         for(def i=0;i<this.edges.size();i++ ){
-         if( this.edges[i].legal ){
-         c++;
-         }
-         }
-         console.info("  Number of Edges: "+c);*/
-        /*
-         for( def i=0; i<leafs.size(); i++ ){
-         for( def j=0; j<vertices.size(); j++ ){
-         if( !leafs[i].contains(vertices[j]) && leafs[i].inCircumcircle(vertices[j]) ){
-         console.info(leafs[i],vertices[j]);
-         }
-         }
-         }
-         */
 
         //console.info("Test 2: Edges Facets (null) ...");
         for (def i=0; i<this.edges.size();i++ ) {
@@ -524,17 +442,6 @@ class Clustering {
             }
         }
 
-        //console.info("Test 3: Edges Facets ...");
-        //        def leftOf = function(v1, v2, v) {
-        //            def x2 = v1.x - v2.x
-        //            def x3 = v1.x - v.x
-        //            def y2 = v1.y - v2.y
-        //            def y3 = v1.y - v.y
-        //            if (x2 * y3 - y2 * x3 < 0) {
-        //                return true
-        //            }
-        //            return false
-        //        }
         def c = 0
         for (def i=0; i<this.edges.size();i++ ) {
             def e = this.edges[i]

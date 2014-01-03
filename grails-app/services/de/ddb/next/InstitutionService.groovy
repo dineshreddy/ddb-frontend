@@ -135,28 +135,77 @@ class InstitutionService {
 
             // Transform the resulting data structure to a lot more bandwith friendly data structure (4MB -> 1MB)
             def clusterContainer = [:]
+
+            // Collect all institutions available for the given selection
             clusterContainer["institutions"] = [:]
             for (def i = 0; i<dataSets[0].objects.size(); i++) {
                 DataObject dataObject = dataSets[0].objects[i]
-                clusterContainer["institutions"][dataObject.index] = [:]
-                clusterContainer["institutions"][dataObject.index]["name"] = dataObject.description.node.name
-                clusterContainer["institutions"][dataObject.index]["sector"] = dataObject.description.node.sector
+                def institutionId = dataObject.index
+                clusterContainer["institutions"][institutionId] = [:]
+                clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
+                clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
+                clusterContainer["institutions"][institutionId]["children"] = []
+                clusterContainer["institutions"][institutionId]["parents"] = []
             }
 
+            // Go over all the Cortex institutions and transfer children/parents information
+            def childrenIds = []
+            for(int i=0;i<institutions.institutions.size();i++){
+                def institution = institutions.institutions[i]
+                def institutionId = institution.id
+                if(institution.children != null){
+
+                    // Transfer child informations, if the institution is in the current selection
+                    if(clusterContainer["institutions"][institutionId] != null){
+                        for(int j=0;j<institution.children.size();j++){
+                            def childId = institution.children[j].id
+                            if(clusterContainer["institutions"][childId] != null){ // only add child if child is also in sector selection
+                                clusterContainer["institutions"][institutionId].children.push(childId)
+                                childrenIds.push(childId)
+                            }
+                        }
+                    }
+
+                    // Transfer parent information, if a child is in the current selection
+                    for(int j=0;j<institution.children.size();j++){
+                        def childId = institution.children[j].id
+                        if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
+                            clusterContainer["institutions"][childId]["parents"].push(institutionId)
+
+                            // add the parent informations to the list of used institutions
+                            if(clusterContainer["institutions"][institutionId] == null){
+                                clusterContainer["institutions"][institutionId] = [:]
+                                clusterContainer["institutions"][institutionId]["name"] = institution.name
+                                clusterContainer["institutions"][institutionId]["sector"] = institution.sector
+                                clusterContainer["institutions"][institutionId]["children"] = [childId]
+                                clusterContainer["institutions"][institutionId]["parents"] = []
+                            }else{
+                                boolean alreadyContainsChild = clusterContainer["institutions"][institutionId]["children"].contains(childId)
+                                if(!alreadyContainsChild){
+                                    clusterContainer["institutions"][institutionId]["children"].push(childId)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Collect the cluster informations with institutionId references to the institution details above
             clusterContainer["clusters"] = []
-            for(int i=0;i<circleSets.size(); i++){
+            for(int zoom=0;zoom<circleSets.size(); zoom++){
                 clusterContainer.clusters.push([])
-                for(int j=0;j<circleSets[i][0].size();j++){
-                    def circleObject = circleSets[i][0][j]
+                for(int j=0;j<circleSets[zoom][0].size();j++){
+                    def circleObject = circleSets[zoom][0][j]
                     def cluster = [:]
                     cluster["x"] = circleObject.originX
                     cluster["y"] = circleObject.originY
                     cluster["radius"] = circleObject.radius
                     cluster["institutions"] = []
                     for(int k=0; k<circleObject.elements.size(); k++){
-                        cluster["institutions"].push(circleObject.elements[k].index)
+                        def institutionId = circleObject.elements[k].index
+                        cluster["institutions"].push(institutionId)
                     }
-                    clusterContainer.clusters[i].push(cluster)
+                    clusterContainer["clusters"][zoom].push(cluster)
                 }
             }
 
