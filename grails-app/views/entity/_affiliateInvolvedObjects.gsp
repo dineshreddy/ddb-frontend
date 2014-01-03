@@ -13,20 +13,20 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="themes rolefacet">
+<div class="works rolefacet">
   <div class="row">
     <div class="span6">
-      <h3>Thema in:</h3>
+      <h3><g:message code="ddbnext.Entity_Involved_In"/></h3>
     </div>
     <div class="span3">
       <label>
-        <input type="checkbox" class="normdata_subject_checkbox" checked="checked">
-        Nur Objekte mit Normdaten
+        <input type="checkbox" class="normdata_involved_checkbox" checked="checked">
+        <g:message code="ddbnext.Entity_Only_Normdata_Objects"/>
       </label>
       <span class="icon-question-sign"></span>
     </div>
   </div>
-  <div class="themes_result">
-  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>  
+  <div class="works_result">
+	  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>
   </div>
 </div>

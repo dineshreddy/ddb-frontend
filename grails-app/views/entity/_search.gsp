@@ -18,12 +18,6 @@ limitations under the License.
 <div class="search">
   <h3><g:message code="ddbnext.Search" />:</h3>
   <div class="">
-    
-    <%-- 
-    <span class="add-on"><i class="icon-search"></i></span>		
-    <input id="prependedInput" type="text" class="span3" value="${title}">
-    --%>
-    
     <div class="search-entity">   
       <div>
         <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.preferredName] }">
