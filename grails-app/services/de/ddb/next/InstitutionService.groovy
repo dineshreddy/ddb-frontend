@@ -19,6 +19,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
+import de.ddb.next.cluster.DataObject
 import de.ddb.next.cluster.InstitutionMapModel
 
 class InstitutionService {
@@ -79,20 +80,24 @@ class InstitutionService {
         return allInstitutions
     }
 
-    def getClusteredInstitutions(def institutions, List selectedSectorList){
+    def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays){
         log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
 
+        // Get the ClusterCache Object from the application context
         if(servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME) == null){
             servletContext.setAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME, new ClusterCache())
         }
-
         ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
+
+        // If the cache does not yet contain cluster data for the selected sectors
         if(cache.getCluster(selectedSectorList) == null){
             log.info "getClusteredInstitutions(): no cache available for selected sectors. Calculating...."
 
+            // Start of the actual javascript logic from IAIS
             InstitutionMapModel institutionMapModel = new InstitutionMapModel()
             institutionMapModel.prepareInstitutionsData(institutions)
 
+            // Transform sector data to the required format
             def sectors = ["selected":[], "deselected":[]]
             def allSectors = [
                 "sec_01",
@@ -112,34 +117,55 @@ class InstitutionService {
                 def entry = ["sector": it, "name": it]
                 sectors["deselected"].push(entry)
             }
+
+            // Filter the institutions with the the selected sectors
             def dataSets = institutionMapModel.selectSectors(sectors)
 
-
-
+            // Feed the cluster algorithm with the filtered institutions
             def mapObjects = []
             for (def i = 0; i < dataSets.size(); i++) {
                 mapObjects.push(dataSets[i].objects)
             }
 
-
+            // Perform the actual clustering
             Binning binning = new Binning()
             binning.setObjects(mapObjects)
             def circleSets = binning.getSet().circleSets
 
-            // Remove the "fatherBin" variable from the circles, otherwise the JSON-ing can throw errors.
+
+            // Transform the resulting data structure to a lot more bandwith friendly data structure (4MB -> 1MB)
+            def clusterContainer = [:]
+            clusterContainer["institutions"] = [:]
+            for (def i = 0; i<dataSets[0].objects.size(); i++) {
+                DataObject dataObject = dataSets[0].objects[i]
+                clusterContainer["institutions"][dataObject.index] = [:]
+                clusterContainer["institutions"][dataObject.index]["name"] = dataObject.description.node.name
+                clusterContainer["institutions"][dataObject.index]["sector"] = dataObject.description.node.sector
+            }
+
+            clusterContainer["clusters"] = []
             for(int i=0;i<circleSets.size(); i++){
+                clusterContainer.clusters.push([])
                 for(int j=0;j<circleSets[i][0].size();j++){
-                    circleSets[i][0][j].fatherBin = null
+                    def circleObject = circleSets[i][0][j]
+                    def cluster = [:]
+                    cluster["x"] = circleObject.originX
+                    cluster["y"] = circleObject.originY
+                    cluster["radius"] = circleObject.radius
+                    cluster["institutions"] = []
+                    for(int k=0; k<circleObject.elements.size(); k++){
+                        cluster["institutions"].push(circleObject.elements[k].index)
+                    }
+                    clusterContainer.clusters[i].push(cluster)
                 }
             }
 
-
-            cache.addCluster(selectedSectorList, circleSets)
+            cache.addCluster(selectedSectorList, clusterContainer, cacheValidInDays*24*60*60*1000)
         }else{
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
 
-        def result = ["circleSets": cache.getCluster(selectedSectorList)]
+        def result = ["data": cache.getCluster(selectedSectorList)]
         return result
     }
 

@@ -156,8 +156,8 @@ class InstitutionMapModel {
                 def mapTimeObject = new DataObject(name, description, locations, dates, weight, tableContent)
                 mapTimeObject.setIndex(index)
                 mapTimeObjects.push(mapTimeObject)
+
             } catch(Exception e) {
-                println e
                 continue
             }
         }

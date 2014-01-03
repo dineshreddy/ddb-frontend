@@ -69,15 +69,7 @@ class DataObject {
         this.index = index
     }
 
-    //    def getTimeString() {
-    //        if (this.timeStart != this.timeEnd) {
-    //            return (SimileAjax.DateTime.getTimeString(this.granularity, this.timeStart) + " - " + SimileAjax.DateTime.getTimeString(this.granularity, this.timeEnd))
-    //        } else {
-    //            return SimileAjax.DateTime.getTimeString(this.granularity, this.timeStart) + ""
-    //        }
-    //    }
-
     String toString() {
-        return "DataObject[name: "+name+", weight: "+weight+", locations: "+locations+", index: "+index+", isGeospatial: "+isGeospatial+"]"
+        return "DataObject[name: "+name+", weight: "+weight+", locations: "+locations+", index: "+index+", isGeospatial: "+isGeospatial+", description: "+description+"]"
     }
 }

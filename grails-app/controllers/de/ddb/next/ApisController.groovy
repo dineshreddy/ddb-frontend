@@ -113,6 +113,8 @@ class ApisController {
 
     def clusteredInstitutionsmap(){
 
+        int cacheValidInDays = 1
+
         // parse selected sector information from request
         def selectedSectors = params.selectedSectors
         def sectors = selectedSectors.tokenize(',[]')
@@ -129,17 +131,17 @@ class ApisController {
         def institutions = apiResponse.getResponse()
 
         // get the clustered institutions
-        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors)
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays)
 
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
-        int validInDays = 1
         Calendar expiresDate = Calendar.getInstance()
         response.addHeader("Last-Modified", dateFormatter.format(expiresDate.getTime()))
-        expiresDate.add(Calendar.DAY_OF_MONTH, validInDays)
+        expiresDate.add(Calendar.DAY_OF_MONTH, cacheValidInDays)
         response.addHeader("Expires", dateFormatter.format(expiresDate.getTime()))
-        response.addHeader("Cache-Control", "max-age="+(validInDays*24*60*60))
+        response.addHeader("Cache-Control", "max-age="+(cacheValidInDays*24*60*60))
         response.addHeader("Pragma", "cache")
+
 
         // render the data as json
         render (contentType:"text/json"){clusteredInstitutions}
