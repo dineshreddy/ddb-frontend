@@ -97,20 +97,13 @@ $(document).ready(function() {
               tiles.events.unregister("loadend", tiles, onTilesLoaded);
             });
             
-//            //Loads all institutions over ajax
-//            self._loadFullInstitutionList(function() { //on build model finished
-//
-//              //Draws the institutions on the vector layer
-//              self._drawClustersOnMap();
-//
-//              //Hide the waiting layer again
-//              self._hideWaitingLayer();
-//
-//              //Remove the tiles load listener again. We only want it on initialization.
-//              tiles.events.unregister("loadend", tiles, onTilesLoaded);
-//            });
           }
-          tiles.events.register("loadend", tiles, onTilesLoaded);   
+          
+          if(jQuery.browser.msie && jQuery.browser.version < 9) {
+            onTilesLoaded(); // just call immediatelly
+          }else{
+            tiles.events.register("loadend", tiles, onTilesLoaded); // current browser can use tile loaded event   
+          }
           
         }
         
@@ -121,6 +114,10 @@ $(document).ready(function() {
         
         //Show the waiting layer 
         self._showWaitingLayer();
+        
+        while( self.osmMap.popups.length ) {
+          self.osmMap.removePopup(self.osmMap.popups[0]);
+        }
           
         self._loadClusteredInstitutionList(function(){
           
@@ -133,20 +130,6 @@ $(document).ready(function() {
         });
         
             
-//        //Show the waiting layer 
-//        self._showWaitingLayer();
-//
-//        window.setTimeout(function(){ //Give the browser time to display waiting gif
-//          self._buildModel(self.osmMap, self.institutionList, function() { //on build model finished
-//
-//            //Draws the institutions on the vector layer
-//            self._drawClustersOnMap();
-//
-//            //Hide the waiting layer again
-//            self._hideWaitingLayer();
-//
-//          });
-//        }, 100);
       },
       
 
@@ -249,27 +232,111 @@ $(document).ready(function() {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
       
+      _prepareInstitutionHierarchy : function(institutionIds) {
+        var institutionHierarchy = [];
+        for(var i=0;i<institutionIds.length;i++){
+          var institutionId = institutionIds[i];
+          var institution = this.clusters.institutions[institutionId];
+          institution.id = institutionId;
+          institution.childInstitutions = [];
+
+          // First case: institution has no children or parents -> just add it
+          if(institution.parents.length == 0 && institution.children.length == 0){
+            institutionHierarchy.push(institution)
+
+          // Second case: institution is a child -> add parent and let it handle it
+          }else if(institution.parents.length > 0){
+            var parentId = institution.parents[0];
+            // If parent is also in cluster: just remove child from the institutionsList. It will get handled by the parent.
+            var isParentInCluster = false;
+            for(var j=0; j<institutionIds.length; j++){
+              if(institutionIds[j] == parentId){
+                isParentInCluster = true;
+                break;
+              }
+            }
+            if(isParentInCluster){
+              // do nothing
+            }else{ // If parent is not in Cluster: add it and let it handle the child
+              institutionIds.push(parentId);
+              institution.highlight = true;
+            }
+            
+          // Third case: institution is a parent
+          }else if(institution.children.length > 0){
+            
+            // Check if childs are in the cluster
+            for(var j=0;j<institution.children.length;j++){
+              var childId = institution.children[j];
+              var isChildInCluster = false;
+              for(var k=0; k<institutionIds.length; k++){
+                if(institutionIds[k] == childId){
+                  isChildInCluster = true;
+                  break;
+                }
+              }
+              // If child is in cluster, add it to the parent
+              if(isChildInCluster){
+                var childInstitution = this.clusters.institutions[childId];
+                childInstitution.id = childId;
+                institution.childInstitutions.push(childInstitution);
+              }
+              
+            }            
+            institutionHierarchy.push(institution);
+          }
+        }
+        
+        return institutionHierarchy;
+        
+      },
+      
       _getPopupContentHtml : function(dataObjectList) {
+        var institutionCount = dataObjectList.length;
+        var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
-        if(dataObjectList.length > 1){
-          html += "    " + dataObjectList.length + " "+ messages.ddbnext.Institutions();
+        if(institutionCount > 1){
+          html += "    " + institutionCount + " "+ messages.ddbnext.Institutions();
         }else{
-          html += "    " + dataObjectList.length + " "+ messages.ddbnext.Institution();
+          html += "    " + institutionCount + " "+ messages.ddbnext.Institution();
         }
         html += "  </div>";
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
-        for(var i=0; i<dataObjectList.length; i++){
-          var institutionId = dataObjectList[i];
-          var institutionItem = this.clusters.institutions[institutionId];
+        for(var i=0; i<institutionHierarchy.length; i++){
+          var institutionItem = institutionHierarchy[i];
+          var institutionChildren = institutionItem.childInstitutions;          
+            
           html += "      <li>";
-          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionId + ">";
+          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
           html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
+            
+          // If the institution has children -> display them
+          var childsToDisplay = [];
+          if(institutionChildren.length > 0){ 
+            html += "      <ul>";
+            for(var j=0; j<institutionChildren.length; j++){
+              var childInstitution = institutionChildren[j];
+              html += "      <li>";
+              html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + childInstitution.id + ">";
+              if(childInstitution.highlight){
+                html += "        <b>";
+              }
+              html += "            "+childInstitution.name + " (" + messages.ddbnext[childInstitution.sector]() + ")";
+              if(childInstitution.highlight){
+                html += "        </b>";
+              }
+              html += "        </a>";
+              html += "      </li>";
+            }
+            html += "      </ul>";
+          }
           html += "      </li>";
+          
         }
         html += "      </ul>";
         html += "    </div>";
@@ -307,20 +374,6 @@ $(document).ready(function() {
       },
 
       
-//      _loadFullInstitutionList : function(onCompleteCallbackFunction) {
-//        var self = this;
-//        $.ajax({
-//          type : 'GET',
-//          dataType : 'json',
-//          async : true,
-//          url : jsContextPath + this.apiInstitutionsUrl,
-//          success : function(institutionList){
-//            self.institutionList = institutionList;
-//            self._buildModel(self.osmMap, institutionList, onCompleteCallbackFunction);
-//          }
-//        });
-//      },
-
       _loadClusteredInstitutionList : function(onCompleteCallbackFunction) {
         var self = this;
         
@@ -341,46 +394,6 @@ $(document).ready(function() {
         });
       },
 
-//      _buildModel : function(osmMap, institutionList, onCompleteCallbackFunction) {
-//        var self = this;
-//        
-//        GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
-//          
-//          transformedInstitutionList = self._transformFilteredInstitutions(filteredInstitutions)
-//          
-//          var options = {
-//            mapIndex: 0,
-//            circleGap: 0,
-//            circlePackings: true,
-//            binning: "generic",
-//            minimumRadius: 4,
-//            noBinningRadii: "dynamic",
-//            binCount: 10
-//          };
-//          var binning = new Binning(osmMap, options);
-//          binning.setObjects(transformedInstitutionList);
-//          var circles = binning.getSet().circleSets;
-//
-//          self.clusters = circles;
-//          
-//          onCompleteCallbackFunction();
-//        });
-//        
-//        InstitutionsMapModel.prepareInstitutionsData(institutionList);
-//
-//        var selectedSectors = this._getSectorSelection();
-//        InstitutionsMapModel.selectSectors(selectedSectors);
-//
-//    },
-    
-//    _transformFilteredInstitutions : function(datasets) {
-//      var mapObjects = [];
-//      for (var i = 0; i < datasets.length; i++) {
-//        mapObjects.push(datasets[i].objects);
-//      }
-//
-//      return mapObjects;
-//    },
     
     _drawClustersOnMap : function() {
       this.vectorLayer.removeAllFeatures();
