@@ -414,7 +414,6 @@ class Clustering {
     }
 
     def mergeForResolution(resolution, circleGap) {
-        //this.deleteEdges = new BinaryHeap(function(e) { return e.weight })
         this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 

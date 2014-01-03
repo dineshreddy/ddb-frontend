@@ -20,7 +20,7 @@ $(document).ready(function() {
       vectorLayer: null,
       fromProjection: new OpenLayers.Projection("EPSG:4326"),   // Transform from WGS 1984
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
-      apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
+      //apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
       apiClusteredInstitutionsUrl: "/apis/clusteredInstitutionsmap",
       clusters: null,
       waitingLayer: null,
@@ -263,9 +263,10 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
         for(var i=0; i<dataObjectList.length; i++){
-          var institutionItem = dataObjectList[i].description.node;
+          var institutionId = dataObjectList[i];
+          var institutionItem = this.clusters.institutions[institutionId];
           html += "      <li>";
-          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
+          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionId + ">";
           html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
           html += "      </li>";
@@ -306,19 +307,19 @@ $(document).ready(function() {
       },
 
       
-      _loadFullInstitutionList : function(onCompleteCallbackFunction) {
-        var self = this;
-        $.ajax({
-          type : 'GET',
-          dataType : 'json',
-          async : true,
-          url : jsContextPath + this.apiInstitutionsUrl,
-          success : function(institutionList){
-            self.institutionList = institutionList;
-            self._buildModel(self.osmMap, institutionList, onCompleteCallbackFunction);
-          }
-        });
-      },
+//      _loadFullInstitutionList : function(onCompleteCallbackFunction) {
+//        var self = this;
+//        $.ajax({
+//          type : 'GET',
+//          dataType : 'json',
+//          async : true,
+//          url : jsContextPath + this.apiInstitutionsUrl,
+//          success : function(institutionList){
+//            self.institutionList = institutionList;
+//            self._buildModel(self.osmMap, institutionList, onCompleteCallbackFunction);
+//          }
+//        });
+//      },
 
       _loadClusteredInstitutionList : function(onCompleteCallbackFunction) {
         var self = this;
@@ -333,72 +334,72 @@ $(document).ready(function() {
           cache: true,
           url : jsContextPath + this.apiClusteredInstitutionsUrl+"?selectedSectors="+selectedSectorsText,
           success : function(dataText){
-            var data = JSON.parse(dataText);
-            self.clusters = data.circleSets;
+            var dataJson = JSON.parse(dataText);
+            self.clusters = dataJson.data;
             onCompleteCallbackFunction();
           }
         });
       },
 
-      _buildModel : function(osmMap, institutionList, onCompleteCallbackFunction) {
-        var self = this;
-        
-        GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
-          
-          transformedInstitutionList = self._transformFilteredInstitutions(filteredInstitutions)
-          
-          var options = {
-            mapIndex: 0,
-            circleGap: 0,
-            circlePackings: true,
-            binning: "generic",
-            minimumRadius: 4,
-            noBinningRadii: "dynamic",
-            binCount: 10
-          };
-          var binning = new Binning(osmMap, options);
-          binning.setObjects(transformedInstitutionList);
-          var circles = binning.getSet().circleSets;
-
-          self.clusters = circles;
-          
-          onCompleteCallbackFunction();
-        });
-        
-        InstitutionsMapModel.prepareInstitutionsData(institutionList);
-
-        var selectedSectors = this._getSectorSelection();
-        InstitutionsMapModel.selectSectors(selectedSectors);
-
-    },
+//      _buildModel : function(osmMap, institutionList, onCompleteCallbackFunction) {
+//        var self = this;
+//        
+//        GeoPublisher.GeoSubscribe('filter', this, function(filteredInstitutions) {
+//          
+//          transformedInstitutionList = self._transformFilteredInstitutions(filteredInstitutions)
+//          
+//          var options = {
+//            mapIndex: 0,
+//            circleGap: 0,
+//            circlePackings: true,
+//            binning: "generic",
+//            minimumRadius: 4,
+//            noBinningRadii: "dynamic",
+//            binCount: 10
+//          };
+//          var binning = new Binning(osmMap, options);
+//          binning.setObjects(transformedInstitutionList);
+//          var circles = binning.getSet().circleSets;
+//
+//          self.clusters = circles;
+//          
+//          onCompleteCallbackFunction();
+//        });
+//        
+//        InstitutionsMapModel.prepareInstitutionsData(institutionList);
+//
+//        var selectedSectors = this._getSectorSelection();
+//        InstitutionsMapModel.selectSectors(selectedSectors);
+//
+//    },
     
-    _transformFilteredInstitutions : function(datasets) {
-      var mapObjects = [];
-      for (var i = 0; i < datasets.length; i++) {
-        mapObjects.push(datasets[i].objects);
-      }
-
-      return mapObjects;
-    },
+//    _transformFilteredInstitutions : function(datasets) {
+//      var mapObjects = [];
+//      for (var i = 0; i < datasets.length; i++) {
+//        mapObjects.push(datasets[i].objects);
+//      }
+//
+//      return mapObjects;
+//    },
     
     _drawClustersOnMap : function() {
       this.vectorLayer.removeAllFeatures();
       if(this.clusters != null) {
         
         var zoomLevel = this.osmMap.getZoom(); 
-        if(this.clusters[zoomLevel] != null) {
+        if(this.clusters.clusters[zoomLevel] != null) {
           
-          var clustersToDisplay = this.clusters[zoomLevel][0];
+          var clustersToDisplay = this.clusters.clusters[zoomLevel];
     
           var institutionCollections = [];
           for(var i=0;i<clustersToDisplay.length; i++){
             var clusterItem = clustersToDisplay[i];
-            var lon = clusterItem.originX;
-            var lat = clusterItem.originY;
+            var lon = clusterItem.x;
+            var lat = clusterItem.y;
             var radius = clusterItem.radius;
     
             var point = new OpenLayers.Geometry.Point(lon, lat);
-            var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.elements});
+            var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.institutions});
             
             institutionCollections.push(institutionCollection);
           }
