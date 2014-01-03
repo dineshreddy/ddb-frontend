@@ -80,7 +80,7 @@ class InstitutionService {
     }
 
     def getClusteredInstitutions(def institutions, List selectedSectorList){
-        println "############## 01 "+selectedSectorList
+        log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
 
         if(servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME) == null){
             servletContext.setAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME, new ClusterCache())
@@ -88,7 +88,7 @@ class InstitutionService {
 
         ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
         if(cache.getCluster(selectedSectorList) == null){
-
+            log.info "getClusteredInstitutions(): no cache available for selected sectors. Calculating...."
 
             InstitutionMapModel institutionMapModel = new InstitutionMapModel()
             institutionMapModel.prepareInstitutionsData(institutions)
@@ -136,7 +136,7 @@ class InstitutionService {
 
             cache.addCluster(selectedSectorList, circleSets)
         }else{
-            println "####################### 10 found in cache"
+            log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
 
         def result = ["circleSets": cache.getCluster(selectedSectorList)]

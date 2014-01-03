@@ -76,7 +76,6 @@ $(document).ready(function() {
 
           //Register a zoom listener
           this.osmMap.events.register("zoomend", null, function(event){
-            console.log("################ zoomLevel: "+self.osmMap.getZoom()); //TODO
             self._drawClustersOnMap();
           });
           
@@ -390,7 +389,6 @@ $(document).ready(function() {
         if(this.clusters[zoomLevel] != null) {
           
           var clustersToDisplay = this.clusters[zoomLevel][0];
-          console.log("####################### 08 clustersToDisplay "+zoomLevel+": "+clustersToDisplay.length);
     
           var institutionCollections = [];
           for(var i=0;i<clustersToDisplay.length; i++){
