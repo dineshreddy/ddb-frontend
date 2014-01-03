@@ -41,7 +41,7 @@ class BinaryHeap {
         // it.
         for (def i = 0; i < len; i++) {
             if (this.content[i] == node) {
-                // When it is found, the process seen in 'pop' is repeated
+                // When it is found, the process seen ins 'pop' is repeated
                 // to fill up the hole.
                 def end = this.content.pop()
                 if (i != len - 1) {

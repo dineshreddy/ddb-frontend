@@ -80,6 +80,7 @@ class InstitutionService {
     }
 
     def getClusteredInstitutions(def institutions, List selectedSectorList){
+        log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
 
         if(servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME) == null){
             servletContext.setAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME, new ClusterCache())
@@ -87,14 +88,10 @@ class InstitutionService {
 
         ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
         if(cache.getCluster(selectedSectorList) == null){
+            log.info "getClusteredInstitutions(): no cache available for selected sectors. Calculating...."
 
-            println "####################### 00 getClusteredInstitutions"
-            println institutions
-
-            println "####################### 02 mapModel"
             InstitutionMapModel institutionMapModel = new InstitutionMapModel()
             institutionMapModel.prepareInstitutionsData(institutions)
-            //def allMapData = institutionMapModel.getAllMapData()
 
             def sectors = ["selected":[], "deselected":[]]
             def allSectors = [
@@ -115,39 +112,35 @@ class InstitutionService {
                 def entry = ["sector": it, "name": it]
                 sectors["deselected"].push(entry)
             }
-            println "####################### 03 sectors: "+sectors
-
-
             def dataSets = institutionMapModel.selectSectors(sectors)
 
-            println "####################### 04 mapObjects"
+
+
             def mapObjects = []
             for (def i = 0; i < dataSets.size(); i++) {
                 mapObjects.push(dataSets[i].objects)
             }
 
 
-            println "####################### 05 Binning"
             Binning binning = new Binning()
             binning.setObjects(mapObjects)
             def circleSets = binning.getSet().circleSets
-            println "####################### 06 Binning"
-            println "####################### 07 circleSets.size() = "+circleSets.size()
-            for(int i=0;i<circleSets.size() ;i++){
-                println "####################### 08 circleSets[i].size() = "+circleSets[i].size()
-                for(int j=0; j<circleSets[i].size(); j++) {
-                    println "####################### 09 circleSets[i][j].size() = "+circleSets[i][j].size()
 
+            // Remove the "fatherBin" variable from the circles, otherwise the JSON-ing can throw errors.
+            for(int i=0;i<circleSets.size(); i++){
+                for(int j=0;j<circleSets[i][0].size();j++){
+                    circleSets[i][0][j].fatherBin = null
                 }
-
             }
+
 
             cache.addCluster(selectedSectorList, circleSets)
         }else{
-            println "####################### 10 found in cache"
+            log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
 
-        return ["circleSets": cache.getCluster(selectedSectorList)]
+        def result = ["circleSets": cache.getCluster(selectedSectorList)]
+        return result
     }
 
     private getTotal(rootList) {

@@ -113,7 +113,7 @@ modules = {
         resource url:'/js/map/css/map.css', bundle: 'screen'
         //resource url:'/js/vendor/openlayers-2.14/OpenLayers.debug.js'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
-        resource url:'/js/map/js/geotemco_InstitutionsMap.js'
+        //resource url:'/js/map/js/geotemco_InstitutionsMap.js'
         resource url:'/js/map/map.js'
     }
 

@@ -908,9 +908,6 @@ Binning.prototype = {
 	},
 
 	setObjects : function(objects) {
-		  //console.log("#################### 310 Binning setObjects");
-		  //console.log(objects);
-		  //console.log("#################### 310 Binning setObject objects[0].length: "+objects[0].length);
 		this.objects = objects;
 		for (var i = 0; i < this.objects.length; i++) {
 			var weight = 0;
@@ -998,7 +995,6 @@ Binning.prototype = {
 	},
 
 	genericClustering : function(objects, id) {
-  //console.log("#################### 318 Binning genericClustering");
 		var binSets = [];
 		var circleSets = [];
 		var hashMaps = [];
@@ -1006,21 +1002,22 @@ Binning.prototype = {
 		var clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
 		
 		var self = this;
+		var geospatialObjectCounter = 0;
 		for (var i = 0; i < objects.length; i++) {
 			for (var j = 0; j < objects[i].length; j++) {
 				var o = objects[i][j];
 				if (o.isGeospatial) {
+				geospatialObjectCounter++;
 					var p = new OpenLayers.Geometry.Point(o.getLongitude(self.options.mapIndex), o.getLatitude(self.options.mapIndex), null);
 					p.transform(self.map.displayProjection, self.map.projection);
 					var point = new Vertex(Math.floor(p.x), Math.floor(p.y), objects.length, self);
 					point.addElement(o, o.weight, i);
-					/* IE8 problem */
-					clustering.add(point);
+					clustering.add(point, j);
 				}
 			}
 		}
-
-		for (var i = 0; i < this.zoomLevels; i++) {
+		
+		for (var i = 0; i < this.zoomLevels; i++) { 
 			var bins = [];
 			var circles = [];
 			var hashMap = [];
@@ -1118,6 +1115,7 @@ Binning.prototype = {
 			selectionHashs.push(selectionMap);
 		}
 		circleSets.reverse();
+		
 		binSets.reverse();
 		hashMaps.reverse();
 		selectionHashs.reverse();
@@ -1130,10 +1128,8 @@ Binning.prototype = {
 	},
 
 	genericBinning : function() {
-  //console.log("#################### 318 Binning genericBinning");
 		if (this.options.circlePackings || this.objects.length == 1) {
 			this.binnings['generic'] = this.genericClustering(this.objects);
-  //console.log(this.binnings['generic']);
 			
 		} else {
 			var circleSets = [];
@@ -1620,6 +1616,10 @@ Vertex.prototype.merge = function(v0, v1) {
 	}
 }
 
+Vertex.prototype.getType = function() {
+	return "Vertex";
+}
+
 Vertex.prototype.CalculateRadius = function(resolution) {
 	this.radii = [];
 	for (i in this.elements ) {
@@ -1676,6 +1676,10 @@ Edge.prototype.setLength = function() {
 	var dx = this.v0.x - this.v1.x;
 	var dy = this.v0.y - this.v1.y;
 	this.length = Math.sqrt(dx * dx + dy * dy);
+}
+
+Edge.prototype.getType = function() {
+	return "Edge";
 }
 
 Edge.prototype.contains = function(v) {
@@ -1738,6 +1742,10 @@ Triangle.prototype.getTriple = function(e) {
 		e_p : this.edges[(i + 2) % 3],
 		u : this.vertices[(i + 2) % 3]
 	};
+}
+
+Triangle.prototype.getType = function() {
+	return "Triangle";
 }
 
 Triangle.prototype.leftOf = function(e) {
@@ -1859,7 +1867,7 @@ function Clustering(xMin, yMin, xMax, yMax) {
 	this.collapses = 0;
 }
 
-Clustering.prototype.locate = function(v) {
+Clustering.prototype.locate = function(v, index) {
 	if (this.boundingTriangle.descendants.length == 0) {
 		return this.boundingTriangle;
 	}
@@ -1921,11 +1929,12 @@ Clustering.prototype.legalize = function(v, e, t0_old) {
 	}
 }
 
-Clustering.prototype.add = function(v) {
-	this.addVertex(v, this.locate(v));
+Clustering.prototype.add = function(v, index) {
+	var located = this.locate(v, index);
+	this.addVertex(v, located, index);
 }
 
-Clustering.prototype.addVertex = function(v, simplex) {
+Clustering.prototype.addVertex = function(v, simplex, j) {
 	if ( simplex instanceof Vertex) {
 		simplex.merge(simplex, v);
 	} else if ( simplex instanceof Edge) {
@@ -1960,7 +1969,6 @@ Clustering.prototype.addVertex = function(v, simplex) {
 		this.legalize(v, tr1.e_p, t2);
 		this.legalize(v, tr0.e_s, t3);
 	} else {
-		/* IE8 problem */
 		this.vertices.push(v);
 		var e_i = new Edge(simplex.vertices[0], v);
 		var e_j = new Edge(simplex.vertices[1], v);
@@ -2563,7 +2571,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
          * @param {object} optional. specific Map options
          */
         var f_initialize = function (mapDivId, language, startupOptions) {
-  //console.log("#################### 31 f_initialize");
             GeoTemConfig.determineAndSetUrlPrefix("InstitutionsMapModel.js");
 
             var MSVersion = f_getInternetExplorerVersion();
@@ -2591,18 +2598,15 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         };
 
         var f_makeSectorsObject = function (selectorList) {
-  //console.log("#################### 32 f_makeSectorsObject");
             var sectorObject = {};
             for (var xel = 0; xel < selectorList.length; xel++) {
                 var el = selectorList[xel];
                 sectorObject[el.sector] = {count: 0, name: el.name};
             };
-  //console.log("#################### 32 f_makeSectorsObject sectorObject="+sectorObject);
             return sectorObject;
         };
 
         var f_selectSectors = function (aSectorSelection) {
-  //console.log("#################### 33 f_selectSectors");
 //            if (typeof console != 'undefined') {
 //                console.log("sectors selected: " + aSectorSelection.selected.length + " deselected: " + aSectorSelection.deselected.length);
 //            }
@@ -2635,8 +2639,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
 
                 var datasets = [];
                 datasets.push(new Dataset(_sectorsMapData, "institutions"));
-  //console.log("#################### 33 f_selectSectors datasets="+datasets);
-  //console.log(datasets);
                 GeoPublisher.GeoPublish('filter', datasets, null);
             }
 
@@ -2659,7 +2661,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         }
 
         var f_getMapNameAndClusterSet = function(filterSet) {
-  //console.log("#################### 34 f_getMapNameAndClusterSet");
             var urlPrefix = GeoTemConfig.urlPrefix + "ddb-map/";
             var sectorsName = "";
             var sortedSectorNames = [];
@@ -2695,8 +2696,6 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
         var f_prepareInstitutionsData = function (institutionMapData) {
             var allInstitutionsArray = flatten(institutionMapData.institutions);
             _allMapData = GeoTemConfig.loadJson(allInstitutionsArray);
-  //console.log("#################### 35 f_prepareInstitutionsData _allMapData: "+_allMapData.length);
-  //console.log(_allMapData);
 
             _institutionsById = {};
             for (var xel = 0; xel < _allMapData.length; xel++) {

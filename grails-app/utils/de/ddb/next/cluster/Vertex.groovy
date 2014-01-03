@@ -2,10 +2,10 @@ package de.ddb.next.cluster
 
 class Vertex {
 
-    def x
-    def y
-    def radius
-    def size
+    double x
+    double y
+    double radius
+    double size
     def elements
     def radii
     def weights
@@ -25,7 +25,7 @@ class Vertex {
         if (categories != null) {
             for (def i = 0; i < categories; i++) {
                 this.elements.push([])
-                this.weights.push(0)
+                this.weights.push(0.0)
             }
         }
     }
@@ -52,9 +52,9 @@ class Vertex {
             this.radius = this.radii[0] * resolution
         } else {
             def count = 0
-            def max1 = 0
-            def max2 = 0
-            for (i in this.radii ) {
+            double max1 = 0
+            double max2 = 0
+            for (def i=0; i<this.radii.size(); i++ ) {
                 if (this.radii[i] != 0) {
                     count++
                 }
@@ -72,10 +72,10 @@ class Vertex {
             } else if (count == 2) {
                 this.radius = (max1 + max2) * resolution
             } else if (count == 3) {
-                def d = (2 / 3 * Math.sqrt(3) - 1) * max1
+                double d = (2 / 3 * Math.sqrt(3) - 1) * max1
                 this.radius = (d + max1 + max2) * resolution
             } else if (count == 4) {
-                def d = (Math.sqrt(2) - 1) * max2
+                double d = (Math.sqrt(2) - 1) * max2
                 this.radius = (d + max1 + max2) * resolution
             }
         }

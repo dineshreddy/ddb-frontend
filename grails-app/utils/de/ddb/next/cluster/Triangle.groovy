@@ -5,7 +5,7 @@ class Triangle {
     def edges
     def descendants
     def vertices
-    def radius_squared
+    double radius_squared
     def center
 
     Triangle(edges) {
@@ -79,28 +79,28 @@ class Triangle {
         def v0 = this.vertices[0]
         def v1 = this.vertices[1]
         def v2 = this.vertices[2]
-        def A = v1.x - v0.x
-        def B = v1.y - v0.y
-        def C = v2.x - v0.x
-        def D = v2.y - v0.y
-        def E = A * (v0.x + v1.x) + B * (v0.y + v1.y)
-        def F = C * (v0.x + v2.x) + D * (v0.y + v2.y)
-        def G = 2.0 * (A * (v2.y - v1.y) - B * (v2.x - v1.x))
-        def cx = (D * E - B * F) / G
-        def cy = (A * F - C * E) / G
+        double A = v1.x - v0.x
+        double B = v1.y - v0.y
+        double C = v2.x - v0.x
+        double D = v2.y - v0.y
+        double E = A * (v0.x + v1.x) + B * (v0.y + v1.y)
+        double F = C * (v0.x + v2.x) + D * (v0.y + v2.y)
+        double G = 2.0 * (A * (v2.y - v1.y) - B * (v2.x - v1.x))
+        double cx = (D * E - B * F) / G
+        double cy = (A * F - C * E) / G
         this.center = new Vertex(cx, cy)
-        def dx = this.center.x - v0.x
-        def dy = this.center.y - v0.y
+        double dx = this.center.x - v0.x
+        double dy = this.center.y - v0.y
         this.radius_squared = dx * dx + dy * dy
     }
 
     def inCircumcircle(v) {
-        if (this.radius_squared == null) {
+        if (this.radius_squared == null || this.radius_squared == 0) {
             this.calcCircumcircle()
         }
-        def dx = this.center.x - v.x
-        def dy = this.center.y - v.y
-        def dist_squared = dx * dx + dy * dy
+        double dx = this.center.x - v.x
+        double dy = this.center.y - v.y
+        double dist_squared = dx * dx + dy * dy
         return (dist_squared <= this.radius_squared )
     }
 
@@ -108,9 +108,9 @@ class Triangle {
         def v0 = this.vertices[0]
         def v1 = this.vertices[1]
         def v2 = this.vertices[2]
-        def dotAB = (v.x - v0.x ) * (v0.y - v1.y ) + (v.y - v0.y ) * (v1.x - v0.x )
-        def dotBC = (v.x - v1.x ) * (v1.y - v2.y ) + (v.y - v1.y ) * (v2.x - v1.x )
-        def dotCA = (v.x - v2.x ) * (v2.y - v0.y ) + (v.y - v2.y ) * (v0.x - v2.x )
+        double dotAB = (v.x - v0.x ) * (v0.y - v1.y ) + (v.y - v0.y ) * (v1.x - v0.x )
+        double dotBC = (v.x - v1.x ) * (v1.y - v2.y ) + (v.y - v1.y ) * (v2.x - v1.x )
+        double dotCA = (v.x - v2.x ) * (v2.y - v0.y ) + (v.y - v2.y ) * (v0.x - v2.x )
         if (dotAB > 0 || dotBC > 0 || dotCA > 0) {
             return null
         } else if (dotAB < 0 && dotBC < 0 && dotCA < 0) {
@@ -149,6 +149,6 @@ class Triangle {
         //        def radius_squared
         //        def center
         //
-        return "Triangle[edges: "+edges.getClass()+", descendants: "+descendants+", vertices: "+vertices+", radius_squared: "+radius_squared+", center: "+center+"]"
+        return "Triangle[edges: "+edges.size()+", descendants: "+descendants+", vertices: "+vertices+", radius_squared: "+radius_squared+", center: "+center+"]"
     }
 }

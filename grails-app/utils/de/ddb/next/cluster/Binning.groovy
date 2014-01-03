@@ -4,7 +4,7 @@ package de.ddb.next.cluster
 
 class Binning {
 
-    def zoomLevels = 18
+    def zoomLevels = 19
     def binnings = [:]
     def maximumRadius = 0
     def maximumPoints = 0
@@ -25,8 +25,6 @@ class Binning {
     }
 
     def getSet() {
-        println "####################### 40 getSet"
-
         def type = this.binning
         if (!type) {
             return this.getExactBinning()
@@ -49,7 +47,6 @@ class Binning {
     }
 
     def getGenericBinning() {
-        println "####################### 40 getGenericBinning "+this.binnings['generic']
         //if(this.binnings['generic'].size() == 0) {
         this.genericBinning()
         //}
@@ -120,10 +117,10 @@ class Binning {
 
         def circleAggregates = []
         def bins = []
-        for (def i = 0; i < this.objects.length; i++) {
+        for (def i = 0; i < this.objects.size(); i++) {
             bins.push([])
             circleAggregates.push([])
-            for (def j = 0; j < this.objects[i].length; j++) {
+            for (def j = 0; j < this.objects[i].size(); j++) {
                 def o = this.objects[i][j]
                 if (o.isGeospatial) {
                     if (circleAggregates[i]['' + o.getLongitude(this.mapIndex)] == null) {
@@ -141,17 +138,17 @@ class Binning {
         def circles = []
         def hashMap = []
         def selectionMap = []
-        for (def i = 0; i < bins.length; i++) {
+        for (def i = 0; i < bins.size(); i++) {
             circles.push([])
             hashMap.push([])
             selectionMap.push([])
-            for (def j = 0; j < bins[i].length; j++) {
+            for (def j = 0; j < bins[i].size(); j++) {
                 def bin = bins[i][j]
                 //def p = new OpenLayers.Geometry.Point(bin[0].getLongitude(this.mapIndex), bin[0].getLatitude(this.mapIndex), null)
                 def p = new Point(bin[0].getLongitude(this.mapIndex), bin[0].getLatitude(this.mapIndex))
                 p.transform(this.displayProjection, this.projection)
                 def weight = 0
-                for (def z = 0; z < bin.length; z++) {
+                for (def z = 0; z < bin.size(); z++) {
                     weight += bin[z].weight
                 }
                 def radius = this.minimumRadius
@@ -160,7 +157,7 @@ class Binning {
                 }
                 def circle = new CircleObject(p.x, p.y, 0, 0, bin, radius, i, weight)
                 circles[i].push(circle)
-                for (def z = 0; z < bin.length; z++) {
+                for (def z = 0; z < bin.size(); z++) {
                     hashMap[i][bin[z].index] = circle
                     selectionMap[i][bin[z].index] = false
                 }
@@ -194,7 +191,7 @@ class Binning {
         def circle = new CircleObject(point.x, point.y, sx, sy, ball.elements, ball.radius, index, ball.weight, fatherBin)
         circles[ball.search].push(circle)
         fatherBin.circles[index] = circle
-        fatherBin.length++
+        fatherBin.length = fatherBin.length ++
         for (def k = 0; k < ball.elements.size(); k++) {
             hashMap[ball.search][ball.elements[k].index] = circle
             selectionMap[ball.search][ball.elements[k].index] = false
@@ -234,11 +231,12 @@ class Binning {
         def clustering = new Clustering(-20037508.34, -20037508.34, 20037508.34, 20037508.34)
 
         def self = this
+        def geospatialObjectCounter = 0
         for (def i = 0; i < objects.size(); i++) {
             for (def j = 0; j < objects[i].size(); j++) {
-                //for (def j = 0; j < 100; j++) {
                 def o = objects[i][j]
                 if (o.isGeospatial) {
+                    geospatialObjectCounter++
                     //def p = new OpenLayers.Geometry.Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
                     def p = new Point(o.getLongitude(self.mapIndex), o.getLatitude(self.mapIndex), null)
                     //p.transform(self.map.displayProjection, self.map.projection)
@@ -251,7 +249,6 @@ class Binning {
         }
 
         for (def i = 0; i < this.zoomLevels; i++) {
-            println "####################### 10 zoomlevel "+i
             def bins = []
             def circles = []
             def hashMap = []
@@ -261,8 +258,7 @@ class Binning {
                 hashMap.push([:])
                 selectionMap.push([:])
             }
-            def resolution = this.getResolutionForZoom(this.zoomLevels - i - 1)
-            println "####################### 11 resolution "+resolution
+            def resolution = this.getResolutionForZoom(i)
             clustering.mergeForResolution(resolution, this.circleGap)
             for (def j = 0; j < clustering.vertices.size(); j++) {
                 def point = clustering.vertices[j]
@@ -305,7 +301,7 @@ class Binning {
                 //                    circles[ball.search].push(circle)
                 //                    fatherBin.circles[index] = circle
                 //                    fatherBin.length++
-                //                    for (def k = 0; k < ball.elements.length; k++) {
+                //                    for (def k = 0; k < ball.elements.size(); k++) {
                 //                        hashMap[ball.search][ball.elements[k].index] = circle
                 //                        selectionMap[ball.search][ball.elements[k].index] = false
                 //                    }
@@ -359,10 +355,10 @@ class Binning {
             hashMaps.push(hashMap)
             selectionHashs.push(selectionMap)
         }
-        circleSets.reverse()
-        binSets.reverse()
-        hashMaps.reverse()
-        selectionHashs.reverse()
+        circleSets = circleSets.reverse()
+        binSets = binSets.reverse()
+        hashMaps = hashMaps.reverse()
+        selectionHashs = selectionHashs.reverse()
 
         return [
             circleSets : circleSets,
@@ -373,21 +369,21 @@ class Binning {
     }
 
     def genericBinning() {
-        if (this.circlePackings || this.objects.length == 1) {
+        if (this.circlePackings || this.objects.size() == 1) {
             def resultList = this.genericClustering(this.objects)
             this.binnings['generic'] = resultList
         } else {
             def circleSets = []
             def hashMaps = []
             def selectionHashs = []
-            for (def i = 0; i < this.objects.length; i++) {
+            for (def i = 0; i < this.objects.size(); i++) {
                 def sets = this.genericClustering([this.objects[i]], i)
                 if (i == 0) {
                     circleSets = sets.circleSets
                     hashMaps = sets.hashMaps
                     selectionHashs = sets.selectionHashs
                 } else {
-                    for (def j = 0; j < circleSets.length; j++) {
+                    for (def j = 0; j < circleSets.size(); j++) {
                         circleSets[j] = circleSets[j].concat(sets.circleSets[j])
                         hashMaps[j] = hashMaps[j].concat(sets.hashMaps[j])
                         selectionHashs[j] = selectionHashs[j].concat(sets.selectionHashs[j])
@@ -436,9 +432,9 @@ class Binning {
 
         def x1 = bin.x, x2 = 0
         def y1 = bin.y, y2 = 0
-        for (def i = 0; i < elements.length; i++) {
-            x2 += elements[i].x / elements.length
-            y2 += elements[i].y / elements.length
+        for (def i = 0; i < elements.size(); i++) {
+            x2 += elements[i].x / elements.size()
+            y2 += elements[i].y / elements.size()
         }
 
         def sx = 0, sy = 0
@@ -465,7 +461,7 @@ class Binning {
 
     def binSize(elements) {
         def size = 0
-        for (def i in elements ) {
+        for (def i=0;i<elements.size();i++ ) {
             size += elements[i].weight
         }
         return size
@@ -475,11 +471,11 @@ class Binning {
         def circleSets = []
         def hashMaps = []
         def selectionHashs = []
-        for (def i = 0; i < binData.length; i++) {
+        for (def i = 0; i < binData.size(); i++) {
             def circles = []
             def hashMap = []
             def selectionMap = []
-            for (def j = 0; j < this.objects.length; j++) {
+            for (def j = 0; j < this.objects.size(); j++) {
                 circles.push([])
                 hashMap.push([])
                 selectionMap.push([])
@@ -488,8 +484,8 @@ class Binning {
             def max = 0
             def radius = 0
             def resolution = this.map.getResolutionForZoom(i)
-            for (def j = 0; j < binData[i].length; j++) {
-                for (def k = 0; k < binData[i][j].bin.length; k++) {
+            for (def j = 0; j < binData[i].size(); j++) {
+                for (def k = 0; k < binData[i][j].bin.size(); k++) {
                     def bs = this.binSize(binData[i][j].bin[k])
                     if (bs > max) {
                         max = bs
@@ -497,10 +493,10 @@ class Binning {
                     }
                 }
             }
-            for (def j = 0; j < binData[i].length; j++) {
+            for (def j = 0; j < binData[i].size(); j++) {
                 def bin = binData[i][j]
-                for (def k = 0; k < bin.bin.length; k++) {
-                    if (bin.bin[k].length == 0) {
+                for (def k = 0; k < bin.bin.size(); k++) {
+                    if (bin.bin[k].size() == 0) {
                         continue
                     }
                     def weight = this.binSize(bin.bin[k])
@@ -508,7 +504,7 @@ class Binning {
                     def shift = this.shift(id, bin, r * resolution, bin.bin[k], i)
                     def circle = new CircleObject(bin.x - shift.x, bin.y - shift.y, 0, 0, bin.bin[k], r, k, weight)
                     circles[k].push(circle)
-                    for (def z = 0; z < bin.bin[k].length; z++) {
+                    for (def z = 0; z < bin.bin[k].size(); z++) {
                         hashMap[k][bin.bin[k][z].index] = circle
                         selectionMap[k][bin.bin[k][z].index] = false
                     }
@@ -538,8 +534,8 @@ class Binning {
             binData.push([])
         }
 
-        for (def i = 0; i < this.objects.length; i++) {
-            for (def j = 0; j < this.objects[i].length; j++) {
+        for (def i = 0; i < this.objects.size(); i++) {
+            for (def j = 0; j < this.objects[i].size(); j++) {
                 def o = this.objects[i][j]
                 if (!o.isGeospatial) {
                     continue
@@ -559,7 +555,7 @@ class Binning {
                     }
                     if (bins[k][''+binX]['' + binY] == null) {
                         bins[k][''+binX]['' + binY] = []
-                        for (def z = 0; z < this.objects.length; z++) {
+                        for (def z = 0; z < this.objects.size(); z++) {
                             bins[k][''+binX]['' + binY].push([])
                         }
                         def x = binX * a + a / 2 - l
@@ -594,8 +590,8 @@ class Binning {
             binData.push([])
         }
 
-        for (def i = 0; i < this.objects.length; i++) {
-            for (def j = 0; j < this.objects[i].length; j++) {
+        for (def i = 0; i < this.objects.size(); i++) {
+            for (def j = 0; j < this.objects[i].size(); j++) {
                 def o = this.objects[i][j]
                 if (!o.isGeospatial) {
                     continue
@@ -636,7 +632,7 @@ class Binning {
                     }
                     if (bins[k][''+binY]['' + triangleIndex] == null) {
                         bins[k][''+binY]['' + triangleIndex] = []
-                        for (def z = 0; z < this.objects.length; z++) {
+                        for (def z = 0; z < this.objects.size(); z++) {
                             bins[k][''+binY]['' + triangleIndex].push([])
                         }
                         def r = Math.sqrt(3) / 6 * a
@@ -677,8 +673,8 @@ class Binning {
             binData.push([])
         }
 
-        for (def i = 0; i < this.objects.length; i++) {
-            for (def j = 0; j < this.objects[i].length; j++) {
+        for (def i = 0; i < this.objects.size(); i++) {
+            for (def j = 0; j < this.objects[i].size(); j++) {
                 def o = this.objects[i][j]
                 if (!o.isGeospatial) {
                     continue
@@ -719,7 +715,7 @@ class Binning {
                     }
                     if (bins[k][''+binY]['' + triangleIndex] == null) {
                         bins[k][''+binY]['' + triangleIndex] = []
-                        for (def z = 0; z < this.objects.length; z++) {
+                        for (def z = 0; z < this.objects.size(); z++) {
                             bins[k][''+binY]['' + triangleIndex].push([])
                         }
                         def r = Math.sqrt(3) / 6 * a
@@ -753,8 +749,8 @@ class Binning {
             hexaBinData.push([])
         }
 
-        for (def i = 0; i < binData.length; i++) {
-            for (def j = 0; j < binData[i].length; j++) {
+        for (def i = 0; i < binData.size(); i++) {
+            for (def j = 0; j < binData[i].size(); j++) {
                 def bin = binData[i][j]
                 def binY = Math.floor(bin.binY / 2)
                 def binX = Math.floor(bin.binX / 3)
@@ -779,7 +775,7 @@ class Binning {
                 }
                 if (hexaBins[i][''+binY]['' + binX] == null) {
                     hexaBins[i][''+binY]['' + binX] = []
-                    for (def z = 0; z < this.objects.length; z++) {
+                    for (def z = 0; z < this.objects.size(); z++) {
                         hexaBins[i][''+binY]['' + binX].push([])
                     }
                     hexaBinData[i].push([
@@ -790,8 +786,8 @@ class Binning {
                         r : bin.h
                     ])
                 }
-                for (def k = 0; k < bin.bin.length; k++) {
-                    for (def m = 0; m < bin.bin[k].length; m++) {
+                for (def k = 0; k < bin.bin.size(); k++) {
+                    for (def m = 0; m < bin.bin[k].size(); m++) {
                         hexaBins[i][''+binY][''+binX][k].push(bin.bin[k][m])
                     }
                 }
@@ -799,5 +795,9 @@ class Binning {
         }
 
         this.setCircleSet('hexagonal', hexaBinData)
+    }
+
+    String toString() {
+        return "Binning[zoomLevels: "+zoomLevels+", minimumRadius: "+minimumRadius+", maximumRadius: "+maximumRadius+", maximumPoints: "+maximumPoints+", minArea: "+minArea+", maxArea: "+maxArea+", binnings: "+binnings.size()+", objects: "+objects[0].size()+"]"
     }
 }

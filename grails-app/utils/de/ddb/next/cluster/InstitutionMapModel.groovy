@@ -95,10 +95,9 @@ class InstitutionMapModel {
     def loadJson(json) {
         def mapTimeObjects = []
         def runningIndex = 0
-        for (def i in json ) {
+        for (def i=0;i<json.size();i++) {
             try {
-                //def item = json[i]
-                def item = i
+                def item = json[i]
                 //def index = item.index || item.id || runningIndex++
                 def index = item.id ? item.id : runningIndex++
                 //def name = item.name || ""

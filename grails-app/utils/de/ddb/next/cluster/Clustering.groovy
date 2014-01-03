@@ -11,7 +11,6 @@ class Clustering {
     def legalizes
     def collapses
     def boundingTriangle
-
     def deleteEdges
 
     def Clustering(xMin, yMin, xMax, yMax) {
@@ -175,21 +174,43 @@ class Clustering {
         e2.setFaces(this.boundingTriangle, inf)
     }
 
-    def traverse(eLeft, eRight, triangle, oldFacets, hole) {
+    //        def traverse = function(eLeft, eRight, triangle) {
+    //            eLeft.legal = false
+    //            do {
+    //                def triple
+    //                if (eLeft.leftFace == triangle) {
+    //                    triple = eLeft.rightFace.getTriple(eLeft)
+    //                    oldFacets.push(eLeft.rightFace)
+    //                    triple.e_s.removeFace(eLeft.rightFace)
+    //                    triangle = eLeft.rightFace
+    //                } else {
+    //                    triple = eLeft.leftFace.getTriple(eLeft)
+    //                    oldFacets.push(eLeft.leftFace)
+    //                    triple.e_s.removeFace(eLeft.leftFace)
+    //                    triangle = eLeft.leftFace
+    //                }
+    //                if (arrayIndex(hole, triple.e_s) == -1) {
+    //                    hole.push(triple.e_s)
+    //                }
+    //                vertices.push(triple.u)
+    //                eLeft = triple.e_p
+    //                eLeft.legal = false
+    //            } while( eLeft != eRight )
+    //        }
+
+    def traverse(eLeft, eRight, triangle, oldFacets, hole, vertices) {
         eLeft.legal = false
-        boolean shouldLoop = true
-        while(shouldLoop) {
-            shouldLoop = (eLeft != eRight)
+        while(true) {
             def triple
             if (eLeft.leftFace == triangle) {
                 triple = eLeft.rightFace.getTriple(eLeft)
                 oldFacets.push(eLeft.rightFace)
-                //triple.e_s.removeFace(eLeft.rightFace) // TODO
+                triple.e_s.removeFace(eLeft.rightFace)
                 triangle = eLeft.rightFace
             } else {
                 triple = eLeft.leftFace.getTriple(eLeft)
                 oldFacets.push(eLeft.leftFace)
-                //triple.e_s.removeFace(eLeft.leftFace) //TODO
+                triple.e_s.removeFace(eLeft.leftFace)
                 triangle = eLeft.leftFace
             }
             if (arrayIndex(hole, triple.e_s) == -1) {
@@ -198,11 +219,15 @@ class Clustering {
             vertices.push(triple.u)
             eLeft = triple.e_p
             eLeft.legal = false
+
+            if(eLeft == eRight) {
+                break
+            }
         }
     }
 
     def isBoundary(e, hole) {
-        for (def i = 0; i < hole.length; i++) {
+        for (def i = 0; i < hole.size(); i++) {
             if (hole[i].equals(e)) {
                 return i
             }
@@ -211,8 +236,8 @@ class Clustering {
     }
 
 
-    def mergeVertices(e) {
-        this.collapses++
+    def mergeVertices(e, resolution) {
+        this.collapses = this.collapses + 1
         def s0 = e.v0.size
         def s1 = e.v1.size
         def x = (e.v0.x * s0 + e.v1.x * s1 ) / (s0 + s1 )
@@ -255,8 +280,8 @@ class Clustering {
         def tr1 = e.rightFace.getTriple(e)
         oldFacets.push(e.leftFace)
         oldFacets.push(e.rightFace)
-        traverse(tr0.e_p, tr1.e_s, e.leftFace, oldFacets, hole)
-        traverse(tr1.e_p, tr0.e_s, e.rightFace, oldFacets, hole)
+        traverse(tr0.e_p, tr1.e_s, e.leftFace, oldFacets, hole, vertices)
+        traverse(tr1.e_p, tr0.e_s, e.rightFace, oldFacets, hole, vertices)
 
         def hd = new Clustering(this.bbox.x1 - 10, this.bbox.y1 - 10, this.bbox.x2 + 10, this.bbox.y2 + 10)
         def hull = []
@@ -280,14 +305,17 @@ class Clustering {
 
         def newFacets = []
         //        def isBoundary = function(e) {
-        //            for (def i = 0; i < hole.length; i++) {
+        //            for (def i = 0; i < hole.size(); i++) {
         //                if (hole[i].equals(e)) {
         //                    return i
         //                }
         //            }
         //            return -1
-        //        }
-        def holeEdges = new ArrayList(hole.size())
+        //
+        //    }
+        //def holeEdges = new Object[hole.size()]
+        //def holeEdges = []
+        def holeEdges = [:]
         def nonHoleEdges = []
 
         for (def i = 0; i < hd.edges.size(); i++) {
@@ -298,7 +326,7 @@ class Clustering {
                     def t1 = e2.leftFace.getTriple(e2)
                     def t2 = e2.rightFace.getTriple(e2)
                     def edge = new Edge(t1.u, t2.u)
-                    for (def j = 0; j < hd.edges.length; j++) {
+                    for (def j = 0; j < hd.edges.size(); j++) {
                         if (hd.edges[j].equals(edge) && hd.edges[j].legal) {
                             hd.edges[j].legal = false
                             break
@@ -318,7 +346,9 @@ class Clustering {
         }
 
 
-        for (def i = 0; i < holeEdges.size(); i++) {
+        //for (def i = 0; i < holeEdges.size(); i++) {
+        def holeEdgesKeys = holeEdges.keySet()
+        for (def i in holeEdgesKeys) {
             def e2 = holeEdges[i]
             if (hole[i].leftFace == null) {
                 hole[i].leftFace = e2.leftFace
@@ -393,13 +423,16 @@ class Clustering {
             def e = this.deleteEdges.pop()
             if (e.legal) {
                 def l = this.edges.size()
-                def newVertex = this.mergeVertices(e)
+                def newVertex = this.mergeVertices(e, resolution)
                 newVertex.calculateRadius(resolution)
                 for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]
                     if (eNew.legal) {
-                        eNew.weight = eNew.length / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
-                        if (eNew.weight < 1) {
+                        eNew.weight = 99999
+                        if(eNew.pLength != null && eNew.v0.radius != null && eNew.v1.radius != null && circleGap != null && resolution != null){
+                            eNew.weight = eNew.pLength / (eNew.v0.radius + eNew.v1.radius + circleGap * resolution )
+                        }
+                        if (eNew.weight != null && eNew.weight < 1) {
                             this.deleteEdges.push(eNew)
                         }
                     }
@@ -421,7 +454,10 @@ class Clustering {
                 if (!e.v0.legal || !e.v1.legal) {
                     e.weight = 1
                 } else {
-                    e.weight = e.length / (e.v0.radius + e.v1.radius + circleGap * resolution )
+                    e.weight = e.pLength / (e.v0.radius + e.v1.radius + circleGap * resolution )
+                    if(e.weight == 0){ // TODO? Added this line to fix different behaviour from JS
+                        e.weight = 1
+                    }
                     if (e.weight < 1) {
                         this.deleteEdges.push(e)
                     }
@@ -449,7 +485,7 @@ class Clustering {
          def leafs = [];
          def triangles = this.boundingTriangle.descendants;
          def j = 0;
-         while( triangles.length > j ){
+         while( triangles.size() > j ){
          def t = triangles[j];
          if( t.taken == undefined ){
          t.taken = true;
@@ -462,17 +498,17 @@ class Clustering {
          }
          j++;
          }
-         console.info("  Number of Triangles: "+leafs.length);
+         console.info("  Number of Triangles: "+leafs.size());
          def c = 0;
-         for( i in this.edges ){
+         for(def i=0;i<this.edges.size();i++ ){
          if( this.edges[i].legal ){
          c++;
          }
          }
          console.info("  Number of Edges: "+c);*/
         /*
-         for( def i=0; i<leafs.length; i++ ){
-         for( def j=0; j<vertices.length; j++ ){
+         for( def i=0; i<leafs.size(); i++ ){
+         for( def j=0; j<vertices.size(); j++ ){
          if( !leafs[i].contains(vertices[j]) && leafs[i].inCircumcircle(vertices[j]) ){
          console.info(leafs[i],vertices[j]);
          }
@@ -481,7 +517,7 @@ class Clustering {
          */
 
         //console.info("Test 2: Edges Facets (null) ...");
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size();i++ ) {
             def e = this.edges[i]
             if (e.leftFace == null || e.rightFace == null) {
                 //console.info(e);
@@ -501,7 +537,7 @@ class Clustering {
         //            return false
         //        }
         def c = 0
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size();i++ ) {
             def e = this.edges[i]
             def t1 = e.leftFace.getTriple(e)
             def t2 = e.rightFace.getTriple(e)
@@ -535,17 +571,13 @@ class Clustering {
                 }
             }
         }
-        //console.info("Number of Edges: "+this.edges.length);
-        //console.info("Number of Conflicts: "+c);
 
-        for (i in this.edges ) {
+        for (def i=0; i<this.edges.size(); i++ ) {
             if (this.edges[i].legal) {
                 def e = this.edges[i]
                 def tr0 = e.leftFace.getTriple(e)
                 def tr1 = e.rightFace.getTriple(e)
                 if (!tr0.e_p.legal || !tr0.e_s.legal || !tr1.e_p.legal || !tr1.e_s.legal) {
-                    //console.info(e);
-                    //console.info("conflict in edge continuity");
                     return
                 }
             }
@@ -555,12 +587,16 @@ class Clustering {
 
     def arrayIndex(array, obj) {
         return array.indexOf(obj)
-        //        for (def i = 0; i < array.length; i++) {
+        //        for (def i = 0; i < array.size(); i++) {
         //            if (array[i] == obj) {
         //                return i
         //            }
         //        }
         //        return -1
+    }
+
+    public String toString() {
+        return "Clustering[triangles: "+triangles+", edges: "+edges+", vertices: "+vertices+", legalizes: "+legalizes+", bbox: "+bbox+", collapses: "+collapses+", newTriangles: "+newTriangles+", boundingTriangle: "+boundingTriangle+", deleteEdges: "+deleteEdges+"]"
     }
 
 }

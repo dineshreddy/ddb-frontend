@@ -7,8 +7,8 @@ import org.opengis.referencing.operation.MathTransform
 
 class Point {
 
-    def x
-    def y
+    double x
+    double y
 
     def Point(lat, lon, something = null){
         if(lon instanceof String){
