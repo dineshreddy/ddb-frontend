@@ -94,16 +94,6 @@ class EntityController {
         searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005")
         searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001")
 
-
-        //------------------------- Object involved in -------------------------------
-
-        //------------------------- Object involved in normdata -------------------------------
-
-        //------------------------- Object subject of -------------------------------
-
-        //------------------------- Object subject of normdata -------------------------------
-
-
         def model = ["entity": jsonGraph, "entityUri": entityUri, "entityId": entityId, "searchPreview": searchPreview]
 
         render(view: 'entity', model: model)
