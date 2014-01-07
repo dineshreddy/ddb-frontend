@@ -108,6 +108,7 @@ class InstitutionController {
                     view: "institution",
                     model: [
                         itemId: itemId,
+                        itemUri: request.forwardURI,
                         selectedItemId: id,
                         selectedOrgXML: selectedOrgXML,
                         organisationLogo: organisationLogo,
