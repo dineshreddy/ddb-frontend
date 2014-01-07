@@ -160,18 +160,20 @@
   margin-top: 3px;
 }
 
-.entity-page .external-link-with-icon span {
-  margin: -20px 0 0 20px;
-  display: block;
-  background: none;
+.entity-page .external-links ul {
+  margin-top: 15px;
 }
 
 .entity-page .external-link span {
-  margin:  3px 0 0 20px;
+  margin:  -20px 0 0 20px;
   display: block;
   background: none;
 }
 
 .entity-page hr {
     border-top: 2px solid #EFEBE8;
+}
+
+.entity-page .thumbimage {
+  margin:  5px 0 5px 0;
 }

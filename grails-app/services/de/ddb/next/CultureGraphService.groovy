@@ -25,7 +25,9 @@ class CultureGraphService {
     def transactional=false
 
     def getCultureGraph(String gndId) {
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId)
+        def query = [:]
+        query.thumbWidth=270
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId, false, query)
         if(!apiResponse.isOk()){
             log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
             return null

@@ -14,17 +14,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="thumb">
-  <div class="thumbinner">
-    <a href="${entity.person.depiction.thumbnail}" class="image no-external-link-icon">
-      <!-- TODO: refactor to use figure element -->
-      <!-- TODO: remove width and height, use CSS -->
-      <!-- TODO srcset is not a valid attribute -->
-      <img alt="${entity.title}" src="${entity.person.depiction.thumbnail}" width="220" height="271" class="thumbimage">
-    </a>
-    <div class="thumbcaption">
-      <i>${entity.person.preferredName}</i>
-      <br>
-      ${entity.person.depiction.decription}
-    </div>
-  </div>
+	<div class="thumbinner">
+		<!-- TODO: refactor to use figure element -->
+		<!-- TODO: remove width and height, use CSS -->
+		<img alt="${entity.title}" src="${entity.person.depiction.thumbnail}"
+			class="thumbimage">
+		<div class="thumbcaption">
+			<i>
+				${entity.person.preferredName}
+			</i> <br>
+			${entity.person.depiction.decription}
+		</div>
+	</div>
 </div>

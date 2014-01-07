@@ -22,7 +22,7 @@ limitations under the License.
   
 </head> 
 <body>
-  <div class="entity-page">
+  <div class="entity-page main">
     <div id="entity-title" class="off">${entity.person.preferredName}</div>
     <a href="#" id="entity-id" data-entityid="${entityId}"></a>
     <g:render template="controls" />
