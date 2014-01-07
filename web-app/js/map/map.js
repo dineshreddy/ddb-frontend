@@ -232,7 +232,8 @@ $(document).ready(function() {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
       
-      _prepareInstitutionHierarchy : function(institutionIds) {
+      _prepareInstitutionHierarchy : function(institutionIdsParam) {
+        var institutionIds = institutionIdsParam.slice();
         var institutionHierarchy = [];
         for(var i=0;i<institutionIds.length;i++){
           var institutionId = institutionIds[i];

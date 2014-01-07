@@ -23,7 +23,7 @@
 }
 
 .olMap .osm-load-waiting-img {
-  background: url(../../../images/icons/loaderSmall.gif) no-repeat 0 0;
+  background: url(../img/waiting.gif) no-repeat 0 0;
   width: 40px;
   height: 40px;
   position: absolute;
