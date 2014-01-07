@@ -24,6 +24,9 @@ limitations under the License.
   <g:if test="${keywords}">
     <meta name="keywords" content="${keywords}" />
   </g:if>
+  <g:if test="${metaDescription}">
+    <meta name="description" content="${metaDescription}" />
+  </g:if>
   <g:if test="${robots}">
     <meta name="robots" content="${robots}" />
   </g:if>
