@@ -1,0 +1,165 @@
+
+.olMap {
+  border: 1px solid black;
+  width: 100%; 
+  height: 400px;
+  background-color: silver; 
+  position: relative;
+}
+
+.olMap .osm-load-waiting {
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  position: absolute;
+}
+
+.olMap .osm-load-waiting-div {
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.2;
+  filter: Alpha(opacity=20);
+}
+
+.olMap .osm-load-waiting-img {
+  background: url(../img/waiting.gif) no-repeat 0 0;
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+
+/* Controls start */
+
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_zoomin {
+  top: 53px !important;
+  left: 18px !important;
+  z-index: 1 !important;
+}
+
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_zoomout {
+  top: 200px !important;
+  left: 18px !important;
+  z-index: 1 !important;
+}
+
+.olMap #OpenLayers_Control_DDBPanZoomBar_ZoombarOpenLayers_Map_2 {
+  width: 24px !important;
+  height: 174px !important;
+}
+
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_OpenLayers_Map_2 {
+  left: 17px !important;
+}
+
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panup, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panleft, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_panright, 
+.olMap #OpenLayers_Control_DDBPanZoomBar_28_pandown {
+  display: none !important;
+}
+
+.olMap #OpenLayers_Control_Zoom_5 {
+  display: none !important;
+}
+
+.olMap .olControlAttribution {
+  bottom: 5px;
+  right: 10px;
+}
+
+.olMap .olControlDDBHome {
+  left: 19px;
+  top: 205px;   
+}
+
+
+.olMap .olControlAttribution {
+    bottom: 8px;
+    color: #56524F;
+    font-size: 11px;
+    right: 5px;
+}
+
+.olMap .olControlAttribution a {
+  background: none !important;
+  padding-left: 0px !important;
+}
+
+
+/* Controls end */
+
+/* Popup start */
+
+.olMap img {
+  margin: 0px !important; 
+}
+
+.olMap #institutionPopup_GroupDiv {
+}
+
+.olMap .olFramedDDBPopupContent {
+  background-color: #FFFFFF;
+}
+
+.olMap .olPopupCloseBox {
+  background: url("../img/ddb_PopupCancel.png") no-repeat scroll 0 0 !important;
+  width: 20px !important;
+  height: 20px !important;
+  right: 35px !important;
+  top: 17px !important;
+}
+
+.olMap .olPopupDDBContent {
+  margin: 0px 4px 4px 4px;
+}
+
+.olMap .olPopupDDBHeader {
+  height: 20px;
+  font-weight: bold;
+}
+
+.olMap .olPopupDDBBody {
+  margin-top: 5px;
+  padding-bottom: 5px;
+}
+
+.olMap .olPopupDDBScroll {
+  max-height: 150px;
+  width: 300px;
+  
+  overflow-x: hidden;
+  overflow-y: auto; 
+  /*
+  overflow: scroll;
+  */
+  -webkit-overflow-scrolling: touch;
+  /*
+  overflow-scrolling: touch;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: static;
+  */
+}
+
+.olMap .olPopupDDBContent ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.olMap .olPopupDDBContent ul li {
+  background: url("../img/list_arrow_plum.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
+}
+
+.olMap .olPopupDDBContent li ul li {
+  background: url("../img/list_arrow_grey.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
+}
+
+
+/* Popup end */

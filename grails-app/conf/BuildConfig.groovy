@@ -45,6 +45,10 @@ grails.project.dependency.resolution = {
         // mavenRepo "http://repository.codehaus.org"
         // mavenRepo "http://download.java.net/maven/2/"
         // mavenRepo "http://repository.jboss.com/maven2/"
+
+        // This are the geotools repositories required for coordinate transformation
+        mavenRepo "http://repo.opengeo.org/"
+        mavenRepo "http://download.osgeo.org/webdav/geotools/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -54,6 +58,12 @@ grails.project.dependency.resolution = {
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
         runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
+
+        // This are the geotools dependencies required for coordinate transformation
+        runtime 'org.geotools:gt-referencing:10.2'
+        runtime 'org.geotools:gt-geometry:10.2'
+        runtime 'org.geotools:gt-epsg-hsql:10.2'
+        runtime 'org.geotools:gt-epsg-extension:10.2'
     }
 
     plugins {

@@ -43,7 +43,7 @@
   padding: 0 0 0 35px;
 }
 
-.entity-page .objects {
+.entity-page .objects, .entity-page .dates {
   padding-bottom: 20px;  
 }
 
@@ -156,7 +156,22 @@
   width: 16px;
 }
 
-.entity-page .external-link span {
-  margin: -18px 0 0 20px;
+.entity-page .external-link-with-icon, .entity-page .external-link {
+  margin-top: 3px;
+}
+
+.entity-page .external-link-with-icon span {
+  margin: -20px 0 0 20px;
   display: block;
+  background: none;
+}
+
+.entity-page .external-link span {
+  margin:  3px 0 0 20px;
+  display: block;
+  background: none;
+}
+
+.entity-page hr {
+    border-top: 2px solid #EFEBE8;
 }

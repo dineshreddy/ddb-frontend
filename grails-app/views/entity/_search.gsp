@@ -13,19 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+
 <div class="search">
   <h3><g:message code="ddbnext.Search" />:</h3>
   <div class="">
-    
-    <%-- 
-    <span class="add-on"><i class="icon-search"></i></span>		
-    <input id="prependedInput" type="text" class="span3" value="${title}">
-    --%>
-    
     <div class="search-entity">   
       <div>
-        <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.title] }">
-          "<i>${entity.title}</i>" <g:message code="ddbnext.Entity_Search_DDB" />
+        <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.preferredName] }">
+          "<i>${entity.person.preferredName}</i>" <g:message code="ddbnext.Entity_Search_DDB" />
         </g:link>
       </div>
     </div>

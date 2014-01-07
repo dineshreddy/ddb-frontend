@@ -1695,13 +1695,6 @@ function searchResultsInitializer() {
     $('.compare').removeClass("off");
     $('.compare-objects').removeClass("off");
 
-    // Add a click event handler to each compare button
-    $('.compare').click(function(event) {
-      var item = $(event.target);
-      var itemId = item.attr('data-iid');
-      selectCompareItem(itemId);
-    });
-
     $('.compare-objects .fancybox-toolbar-close').click(function(event) {
       event.preventDefault();
       // Get the index of the compare-object.
@@ -1712,6 +1705,7 @@ function searchResultsInitializer() {
 
     renderCompareObjects();
   }
+  
   
   /**
    * This functions selects the item from the result list and try to store some parameters in the comparison cookie.
@@ -1750,8 +1744,7 @@ function searchResultsInitializer() {
    * 
    */
   function renderCompareObjects() {
-    var cookieName = 'compareParameters' + jsContextPath
-    var cookieVal = $.cookies.get(cookieName);
+    var cookieVal = getComparisonCookieVal();
 
     // Rendering the value for bothe compare-objects
     $('.compare-object').each(
@@ -1802,31 +1795,8 @@ function searchResultsInitializer() {
           }
         });
 
-    // The compare buton is disabled by default
-    var compareButton = $('#compare-button');
-    compareButton.removeClass('button');
-    compareButton.addClass('button-disabled')
-    compareButton.off();
-    compareButton.click(function(event) {
-      event.preventDefault();
-    });
-
-    if (cookieVal !== null) {
-      // Enable the compare button only if two items are selected for comparison
-      if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
-        compareButton.removeClass('button-disabled');
-        compareButton.addClass('button');
-        compareButton.off();
-        compareButton.click(function(event) {
-          // On every click be sure to get the latest compare items and url
-          // queries
-          var urlQuery = window.location.search
-          var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
-              + cookieVal.id2 + urlQuery;
-          compareButton.attr("href", url);
-        });
-      }
-    } 
+    setComparisonButtonState();
+    setItemCompareButtonState();
   }
   
   /**
@@ -1837,8 +1807,7 @@ function searchResultsInitializer() {
    * The value of the cookie is in JSON format and can hold the id, src and text of an item. 
    */
   function setCompareCookieParameter(itemId, imgSrc, text) {
-    var cookieName = 'compareParameters' + jsContextPath;
-    var cookieVal = $.cookies.get(cookieName);
+    var cookieVal = getComparisonCookieVal();
 
     hideError();
 
@@ -1874,7 +1843,7 @@ function searchResultsInitializer() {
     }
 
     // Set the cookie
-    $.cookies.set(cookieName, cookieVal);		
+    setComparisonCookieVal(cookieVal);
   }
   
   /**
@@ -1882,8 +1851,7 @@ function searchResultsInitializer() {
    * The index parameters can have the values 1 and 2 
    */
   function removeCompareCookieParameter(index) {
-    var cookieName = 'compareParameters' + jsContextPath;
-    var cookieVal = $.cookies.get(cookieName);
+    var cookieVal = getComparisonCookieVal();
     hideError();
 
     if ((1 != index) && (2 != index)) {
@@ -1895,8 +1863,91 @@ function searchResultsInitializer() {
       cookieVal['src' + index] = null;
       cookieVal['text' + index] = null;
 
-      $.cookies.set(cookieName, cookieVal);
+      setComparisonCookieVal(cookieVal);
     }
+  }
+  
+
+  /**
+   * Activating and deactivating of the compare icon of each item.
+   * The state of the item depends on the item id's stored in the cookie
+   */
+  function setItemCompareButtonState() {
+    var cookieVal = getComparisonCookieVal();
+
+    // By default all compare buttons of the items are enabled
+    $('.compare').each(function() {
+      $(this).off();
+      $(this).removeClass("disabled");
+
+      $(this).click(function(event) {
+        event.stopPropagation();
+        var item = $(event.target);
+        var itemId = item.attr('data-iid');
+        selectCompareItem(itemId);
+      });
+    });
+
+    // Disable the item compare buttons for all selected items
+    var selectedItems = $('.compare').filter(
+        function(index) {
+          if (cookieVal) {
+            return ($(this).attr('data-iid') == cookieVal.id1 || $(this).attr('data-iid') == cookieVal.id2);
+          }
+        });
+    selectedItems.each(function(index) {
+      $(this).off();
+      $(this).addClass("disabled");
+    });
+  }
+
+  
+  /**
+   * Enable/Disable the comparison button.
+   * For this the selected items id's stored in the cookie are needed.
+   * 
+   * Activate the button if two items are selected. Otherwise disable the button.
+   */
+  function setComparisonButtonState() {
+    var cookieVal = getComparisonCookieVal();
+
+    // The compare buton is disabled by default
+    var compareButton = $('#compare-button');
+    compareButton.removeClass('button');
+    compareButton.addClass('button-disabled')
+    compareButton.off();
+    compareButton.click(function(event) {
+      event.preventDefault();
+    });
+
+    if (cookieVal !== null) {
+      // Enable the compare button only if two items are selected for comparison
+      if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
+        compareButton.removeClass('button-disabled');
+        compareButton.addClass('button');
+        compareButton.off();
+        compareButton.click(function(event) {
+          // On every click be sure to get the latest compare items and url
+          // queries
+          var urlQuery = window.location.search
+          var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
+              + cookieVal.id2 + urlQuery;
+          compareButton.attr("href", url);
+        });
+      }
+    }
+  }
+  
+  function getComparisonCookieVal() {
+    var cookieName = 'compareParameters' + jsContextPath;
+    var cookieVal = $.cookies.get(cookieName);
+    
+    return cookieVal;
+  }
+  
+  function setComparisonCookieVal(cookieVal) {
+    var cookieName = 'compareParameters' + jsContextPath;
+    $.cookies.set(cookieName, cookieVal);
   }
   
   

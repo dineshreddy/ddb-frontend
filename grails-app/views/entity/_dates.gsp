@@ -13,16 +13,24 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="dates">
+<div class="dates fields">
 
-  <div><g:message code="ddbnext.Entity_Birth" />: ${entity.dateOfBirth}
-    <g:if test="${entity.placeOfBirth}"> 
-      , <a href="" class="todo-gnd">${entity.placeOfBirth}</a>
+  <div>
+  	<strong><g:message code="ddbnext.Entity_Birth" />:</strong> ${entity.person.dateOfBirth}
+    <g:if test="${entity.person.placeOfBirth}">
+      , 
+       <a href="${entity.person.placeOfBirth.'@id'}" rel="external" class="no-external-link-icon">
+          <span>${entity.person.placeOfBirth.value}</span>         
+        </a>    
     </g:if>
   </div>
-  <div><g:message code="ddbnext.Entity_Death" />: ${entity.dateOfDeath}
-    <g:if test="${entity.placeOfDeath}"> 
-      , <a href="" class="todo-gnd">${entity.placeOfDeath}</a>
+  <div>
+  	<strong><g:message code="ddbnext.Entity_Death" />:</strong> ${entity.person.dateOfDeath}
+    <g:if test="${entity.person.placeOfDeath}"> 
+      , 
+      <a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
+          <span>${entity.person.placeOfDeath.value}</span>         
+        </a>
     </g:if>
   </div>
 </div>

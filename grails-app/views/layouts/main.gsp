@@ -17,7 +17,7 @@ limitations under the License.
 <html lang="${ddb.getCurrentLocale()}">
   <head>
     <meta charset="utf-8" />
-    
+
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
     <meta name="description" content="Deutsche Digitale Bibliothek" />

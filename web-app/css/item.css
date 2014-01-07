@@ -125,6 +125,10 @@
   background-position: -6px -37px;
 }
 
+.favorite-actions span {
+  background: white;
+}
+
 .modal-body {
   position: relative;
   max-height: 400px;
@@ -237,6 +241,9 @@
   padding-left: 27px;
   background: url(../images/icons/itemActionsSprite.png) no-repeat;
   background-position: -3px -247px;
+}
+.xml-link span {
+  background: white;
 }
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 

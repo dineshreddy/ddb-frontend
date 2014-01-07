@@ -29,6 +29,9 @@ class CompareController {
         def firstId = params.firstId
         def secondId = params.secondId
 
+        def modelItem1 = itemService.getFullItemModel(firstId)+[position: "first"]
+        def modelItem2 = itemService.getFullItemModel(secondId)+[position: "second"]
+
         def searchResultParameters = handleSearchResultParameters(params, request)
 
         def itemUri = request.forwardURI
@@ -37,6 +40,8 @@ class CompareController {
             firstId: firstId,
             secondId: secondId,
             itemUri: itemUri,
+            modelItem1: modelItem1,
+            modelItem2: modelItem2,
             searchResultUri: searchResultParameters["searchResultUri"],
             baseUrl: configurationService.getSelfBaseUrl()
         ])

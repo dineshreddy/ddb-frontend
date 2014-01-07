@@ -29,11 +29,11 @@ limitations under the License.
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:gndItem.id]}" >
-                <strong><ddb:getTruncatedItemTitle title="${ gndItem.person.name }" length="${ 100 }" /></strong>
+                <strong><ddb:getTruncatedItemTitle title="${ gndItem.data.person.preferredName }" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
-                ${ gndItem.person.description }
+                ${ gndItem.data.person.description }
             </div>
           </div>
           <div class="extra">
@@ -47,7 +47,7 @@ limitations under the License.
               <%-- 
               <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
               --%>
-              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ gndItem.person.name }"/>
+              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ gndItem.data.person.preferredName }"/>
             </g:link>
           </div>
           <%-- 

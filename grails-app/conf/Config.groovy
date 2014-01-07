@@ -1,4 +1,4 @@
-import de.ddb.next.constants.FacetEnum;
+import de.ddb.next.constants.FacetEnum
 
 /*
  * Copyright (C) 2013 FIZ Karlsruhe
@@ -169,7 +169,7 @@ ddb.favorites.reportMailTo=""  // "geschaeftsstelle@deutsche-digitale-bibliothek
 ddb.culturegraph.features.enabled=false
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
 ddb.apikey.terms.url="/content/terms/api"
-ddb.account.terms.url="/content/terms"
+ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 
 // The grails.serverURL is required for the PDF rendering plugin.
@@ -252,12 +252,16 @@ jawr {
         resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
 }
 
+development {
+    //To disable bundling for testing, comment in this line
+    //grails.resources.debug=true
+}
 
 compress {
     enabled = true
-
     debug = false
     statsEnabled = true
+
     compressionThreshold = 1024
     // filter's url-patterns
     //urlPatterns = ["/*"]

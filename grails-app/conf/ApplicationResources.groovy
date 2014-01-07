@@ -105,8 +105,14 @@ modules = {
         resource url:'/js/item.js'
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
+        resource url:'/js/compare.js'
 
+    }
 
+    map {
+        resource url:'/js/map/css/map.css', bundle: 'screen'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/map.js'
     }
 
     autocomplete {
@@ -114,6 +120,7 @@ modules = {
         resource url:'/js/vendor/autocomplete-1.10.2/js/jquery-ui-1.10.2.custom.min.js'
         resource url:'/js/myAutocomplete.js'
     }
+
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {

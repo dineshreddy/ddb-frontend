@@ -84,7 +84,8 @@ $(document).ready(
             complete : function(data) {
               var jsonResponse = $.parseJSON(data.responseText);
               var items = $.parseHTML(jsonResponse.html);
-
+              
+              //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
               $.each(items, function(index, value) {
                 if (value.tagName == 'DIV') {
                   $("#items").triggerHandler("insertItem", [ value, "end", true ]);
