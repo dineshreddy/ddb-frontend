@@ -130,11 +130,13 @@ modules = {
 
     //These are pages that include third party components
     institution {
+        dependsOn "ddbnext"
         resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
+        dependsOn "ddbnext"
         resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
     }
