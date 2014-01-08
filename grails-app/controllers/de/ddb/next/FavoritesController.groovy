@@ -963,15 +963,11 @@ class FavoritesController {
                 }
             }
             if(isFolderOfUser && !isDefaultFavoritesFolder){
-                bookmarksService.updateFolder(
-                        folder.getFolderId(),
-                        title,
-                        description,
-                        isPublic,
-                        publishingName,
-                        folder.getIsBlocked(),
-                        folder.getBlockingToken())
-
+                folder.title = title
+                folder.description = description
+                folder.isPublic = isPublic
+                folder.publishingName = publishingName
+                bookmarksService.updateFolder(folder)
                 result = response.SC_OK
                 flash.message = "ddbnext.folder_edit_succ"
             } else {
@@ -1040,14 +1036,8 @@ class FavoritesController {
                 isFolderOfUser = true
             }
             if(isFolderOfUser && !folder.isBlocked){
-                bookmarksService.updateFolder(
-                        folder.folderId,
-                        folder.title,
-                        folder.description,
-                        !folder.isPublic,
-                        folder.publishingName,
-                        folder.isBlocked,
-                        folder.blockingToken)
+                folder.isPublic = !folder.isPublic
+                bookmarksService.updateFolder(folder)
                 result = response.SC_OK
             } else {
                 result = response.SC_UNAUTHORIZED
