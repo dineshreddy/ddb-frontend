@@ -15,7 +15,13 @@
  */
 package de.ddb.next
 
+import de.ddb.next.constants.CultureGraphEnum
 
+/**
+ * Service class for accesing the CultureGraphService
+ * 
+ * @author boz
+ */
 class CultureGraphService {
 
     public final static String GND_URI_PREFIX = "http://d-nb.info/gnd/"
@@ -26,7 +32,7 @@ class CultureGraphService {
 
     def getCultureGraph(String gndId) {
         def query = [:]
-        query.thumbWidth=270
+        query[CultureGraphEnum.THUMB_WIDTH.getName()]=270
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId, false, query)
         if(!apiResponse.isOk()){
             log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
