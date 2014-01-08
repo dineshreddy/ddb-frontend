@@ -27,7 +27,7 @@ limitations under the License.
         </g:if>        
       </g:link>	  
 	  <div class="caption">
-	  	<ddb:getTruncatedItemTitle title="${item?.preview?.subtitle}" length="${ 40 }" />
+	  	<ddb:getTruncatedItemTitle title="${item?.preview?.title}" length="${ 40 }" />
       </div>
     </div>
 </g:each>
