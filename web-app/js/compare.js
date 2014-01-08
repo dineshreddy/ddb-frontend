@@ -51,6 +51,10 @@ $(document)
           }
 
           if (jsPageName == "compare") {
+            
+            var socialMediaManager = new SocialMediaManager();
+            socialMediaManager.integrateSocialMedia();
+            
             if (navigator.appName.indexOf("Internet Explorer") == -1) {
               if ($(window).width() > 530) {
                 mediaQuery = true;
