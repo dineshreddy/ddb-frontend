@@ -69,7 +69,7 @@ a[href^="http"]:not (.no-external-link-icon ):not ([href^="http://localhost"]
 }
 
 .item-detail .institution {
-	margin-top: 1em;
+  	margin-top: 1em;
 	padding-bottom: 10px;
 	border: 1px solid #e9e5e2;
 	border-width: 0 0 5px;
@@ -108,6 +108,135 @@ origin .show-origin span {
   background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
   margin-right: 10px;
 }
+
+.slide-viewer {
+  width:445px;
+  border: 3px solid #efebe8;
+}
+.slice-viewer-tabsection {
+  padding:5px;
+  background:#efebe8;
+}
+.slide-viewer ul {
+  list-style: none;
+  margin: 0;
+}
+.scroller ul {
+  padding:0;
+  white-space:nowrap;
+  letter-spacing:-4px;
+  left:15px !important;
+}
+.scroller li {
+  letter-spacing:normal;
+  display:inline-block;
+  width:140px;
+}
+.scroller li .group {
+  height:131px;
+  width:120px;
+  display:table-cell;
+  vertical-align:middle;
+}
+.scroller li .group .thumbnail {
+  display: block;
+  text-align:center;
+  width: 120px;
+  height: 90px;
+}
+.scroller li .group .thumbnail.audio {
+  background:#fff url("../images/icons/searchResultMediaAudio.png") no-repeat center center;
+  background-size:90px auto;
+}
+.scroller li .group .thumbnail.video {
+  background:#fff url("../images/icons/searchResultMediaVideo.png") no-repeat center center;
+  background-size:90px auto;
+}
+.scroller li .group .thumbnail.image {
+  background:#fff url("../images/icons/searchResultMediaImage.png") no-repeat center center;
+  background-size:90px auto;
+}
+.scroller li .group .thumbnail img {
+  margin:0;
+  max-width:120px;
+  max-height:90px;
+  display: inline-block;
+}
+.previews img {
+  max-width: 445px;
+  max-height: 323px;
+}
+.slide-viewer button {
+  position:absolute;
+  top:0;
+  width:24px;
+  height:131px;
+  text-indent:-999em;
+  display:block;
+  box-shadow:none;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+}
+.slide-viewer .btn-prev,.slide-viewer .btn-next {
+  background:white;
+  overflow:hidden;
+  outline:none;
+}
+.slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
+  cursor:default;
+}
+.slide-viewer .btn-prev span,.slide-viewer .btn-next span {
+  position:absolute;
+  left:3px;
+  height:24px;
+  width:20px;
+  background-image:url("../images/icons/objectViewerCarouselControls.png");
+}
+.slide-viewer .btn-prev span {
+  background-position:0 -91px;
+}
+.slide-viewer .btn-prev.disabled span {
+  background-position:0 -151px;
+}
+.slide-viewer .btn-prev:hover:not(.disabled) span {
+  background-position:0 -121px;
+}
+.slide-viewer .btn-next {
+  float:right;
+  right:0;
+}
+.slide-viewer .btn-next span {
+  background-position:0 -2px;
+}
+.slide-viewer .btn-next.disabled span {
+  background-position:0 -62px;
+}
+.slide-viewer .btn-next:hover:not(.disabled) span {
+  background-position:0 -32px;
+}
+.slide-viewer .tabs {
+  position:relative;
+  height:auto
+}
+.slide-viewer .fix {
+  height:175px;
+}
+.slide-viewer .tab {
+  cursor:pointer;
+  float:left;
+  color:#3e3a37;
+  font-size:1em;
+  margin-top:16px;
+  line-height: 1em;
+}
+.slide-viewer .show-divider{
+  border-right: #a5003b 2px solid;
+  padding-right: 5px;
+  margin-right: 5px;
+}
+.slide-viewer .tab.audios{
+  border-right: none;
+}
 </style>
 </head>
 <body>
@@ -123,64 +252,23 @@ origin .show-origin span {
         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail item-content">
           <tr>
             <g:if test="${binaryList}">
-              <td style="width: 570px;" class="item-description">
-                <h2>${itemTitle}</h2>
-                <table border="0" cellpadding="8" cellspacing="0" width="100%">
-                  <g:each in="${fields}">
-                    <tr>
-                      <td style="width:35%" class="valign-top"><strong> ${it.name}:
-                      </strong></td>
-                      <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>"><g:each
-                          var="value" in="${it.value }">
-                          <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}">
-                            <g:link controller="entity" action="index" params="${["id": value.@entityId]}"
-                              class="entity-link">
-                              ${value}
-                            </g:link>
-                          </g:if>
-                          <g:else>
-                            ${value}
-                          </g:else>
-                          <br />
-                        </g:each></td>
-                    </tr>
-                  </g:each>
-                  <!-- Item Rights -->
-                  <g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
-                    <tr>
-                        <td style="width:35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:</strong></td>
-                        <td style="width:65%" class="valign-top">${item.rights}</td>
-                    </tr>
-                  </g:if>
-                  <!-- Item License -->
-                  <g:if test="${license}" >
-                  <tr>
-                        <td style="width:35%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:</strong></td>
-                        <td style="width:65%" class="valign-top"><a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span>${license.text}</span></a></td>
-                  </tr>
-                </g:if>                  
-                </table>
+              <td style="width: 570px;" class="item-description valign-top"><g:render template="itemdetailsPdf" />
               </td>
-              <td style="width: 570px;"></td></g:if>
+              <td style="width: 570px;">
+                <g:render template="itemBinariesPdf" /> 
+                
+              </td>
+            </g:if>
             <g:else>
-              <td style="width: 100%" class="item-description"></td>
+              <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
             </g:else>
           </tr>
         </table>
-        
-          <!-- Original Object View -->
-          <div class="origin">
-          <g:if test="${!originUrl?.toString()?.isEmpty()}">
-            <a class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message code="ddbnext.stat_008" />">
-              <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
-            </a>
-          </g:if>
-          <g:else>
-            <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
-          </g:else>
-        </div>
       </td>
     </tr>
+    <tr>
+      <td>    <g:render template="linkurlPdf" /></td>
+    </tr>    
   </table>
 </body>
 </html>
