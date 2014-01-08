@@ -15,15 +15,16 @@ limitations under the License.
 --%>
 <div class="external-links">
   <h3><g:message code="ddbnext.External_Links" />:</h3>
-  <ul class="unstyled">
-  
-    <g:each var="link" in="${entity.sameAs}">
-      <li class="${ link.icon != null ? 'external-link-with-icon' : 'external-link'}">
-        <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
-          <i class="external-icon"><img src="${link.icon}" alt="" /></i>
-          <span>${link.name}</span>
-        </a>
-      </li>
+  <ul class="unstyled">  
+    <g:each var="link" in="${entity.sameAs}">      
+      <ddb:isValidUrl url="${link.'@id'}">
+	      <li class="external-link">
+	        <a href="${link.'@id'}" rel="external" class="${ link.icon != null ? 'no-external-link-icon' : ''}">
+	          <i class="external-icon"><img src="${link.icon}" alt="" /></i>
+	          <span>${link.name}</span>
+	        </a>
+	      </li>
+      </ddb:isValidUrl>
     </g:each>
   </ul>
 </div>

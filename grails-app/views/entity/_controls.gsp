@@ -13,14 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="row object-controls">
-  <!-- buttons -->
-  <div class="span6">
-
-    <a class="page-link page-link-popup-anchor"
-      href="${entityUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
-      <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
-    </a>
-
-  </div>
+<div class="row">
+	<div class="object-controls span12">
+		<!-- buttons -->
+		<div class="span6">
+			<a class="page-link page-link-popup-anchor" href="${entityUri}"
+				title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+				<span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+			</a>
+		</div>
+	</div>
 </div>

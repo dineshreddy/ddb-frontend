@@ -16,20 +16,16 @@ limitations under the License.
 <div class="dates fields">
 
   <div>
-  	<strong><g:message code="ddbnext.Entity_Birth" />:</strong> ${entity.person.dateOfBirth}
-    <g:if test="${entity.person.placeOfBirth}">
-      , 
+  	<g:message code="ddbnext.Entity_Birth" />: ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
        <a href="${entity.person.placeOfBirth.'@id'}" rel="external" class="no-external-link-icon">
-          <span>${entity.person.placeOfBirth.value}</span>         
-        </a>    
+          <span>${entity.person.placeOfBirth.value}</span>
+        </a>
     </g:if>
   </div>
   <div>
-  	<strong><g:message code="ddbnext.Entity_Death" />:</strong> ${entity.person.dateOfDeath}
-    <g:if test="${entity.person.placeOfDeath}"> 
-      , 
-      <a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
-          <span>${entity.person.placeOfDeath.value}</span>         
+  	<g:message code="ddbnext.Entity_Death" />: ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}">, 
+  		<a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
+          <span>${entity.person.placeOfDeath.value}</span>
         </a>
     </g:if>
   </div>
