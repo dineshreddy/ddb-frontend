@@ -876,24 +876,6 @@ class FavoritesController {
                 }
             }
 
-            //            if(foldersOwnedByUser){
-            //                //def favoriteIds = bookmarksService.findBookmarkedItems(user.getId(), itemIds)
-            //                folderIds.each { folderId ->
-            //                    favoriteIds.each { favoriteId ->
-            //                        Bookmark favoriteToCopy = bookmarksService.findBookmarkById(favoriteId)
-            //                        String itemId = favoriteToCopy.itemId
-            //                        // Check if the item already exists in the list
-            //                        List favoritesInTargetFolder = bookmarksService.findBookmarksByItemId(user.getId(), itemId, folderId)
-            //                        // if not -> add it
-            //                        if(favoritesInTargetFolder.size() == 0){
-            //                            bookmarksService.saveBookmark(user.getId(), [folderId], itemId, null, Type.CULTURAL_ITEM, favoriteToCopy.creationDate.getTime())
-            //                        }
-            //                    }
-            //                }
-            //            }else{
-            //                result = response.SC_UNAUTHORIZED
-            //            }
-
             if(foldersOwnedByUser){
                 folderIds.each { folderId ->
                     favoriteIds.each { favoriteId ->
@@ -1017,24 +999,6 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
 
         def User user = getUserFromSession()
-        //        if (user != null) {
-        //
-        //            // 1) Check if the current user is really the owner of this bookmark, else deny
-        //            Bookmark bookmark = bookmarksService.findBookmarkById(id)
-        //            boolean isBookmarkOfUser = false
-        //            if(bookmark.userId == user.getId()){
-        //                isBookmarkOfUser = true
-        //            }
-        //            if(isBookmarkOfUser){
-        //                bookmarksService.updateBookmark(id, cleanedText)
-        //                result = response.SC_OK
-        //            } else {
-        //                result = response.SC_UNAUTHORIZED
-        //            }
-        //        } else {
-        //            result = response.SC_UNAUTHORIZED
-        //        }
-
         if (user != null) {
 
             // 1) Check if the current user is really the owner of this bookmark, else deny
