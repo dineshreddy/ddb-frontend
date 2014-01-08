@@ -24,15 +24,13 @@ limitations under the License.
           </span>
         </span>
       </div>
-      <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-body">
-          <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-          <ddb:isPersonalFavoritesAvailable>
+      <ddb:isPersonalFavoritesAvailable>
+        <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-body">
+            <p><g:message code="ddbnext.Added_To_Favorites"/></p>
             <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
             <g:select name="favorite-folders" from="" multiple="true"/>
-          </ddb:isPersonalFavoritesAvailable>
-        </div>
-        <ddb:isPersonalFavoritesAvailable>
+          </div>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message code="ddbnext.Close"/>
@@ -41,8 +39,8 @@ limitations under the License.
               <g:message code="ddbnext.Save"/>
             </button>
           </div>
-        </ddb:isPersonalFavoritesAvailable>
-      </div>
+        </div>
+      </ddb:isPersonalFavoritesAvailable>
     </ddb:isLoggedIn>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">

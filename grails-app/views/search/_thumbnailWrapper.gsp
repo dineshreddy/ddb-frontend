@@ -26,14 +26,12 @@ limitations under the License.
       <ddb:isLoggedIn>
         <li>
           <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
-          <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-body">
-              <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-              <ddb:isPersonalFavoritesAvailable>
+          <ddb:isPersonalFavoritesAvailable>
+            <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-body">
+                <p><g:message code="ddbnext.Added_To_Favorites"/></p>
                 <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
                 <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
-              </ddb:isPersonalFavoritesAvailable>
-              <ddb:isPersonalFavoritesAvailable>
                 <div class="modal-footer">
                   <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
                     <g:message code="ddbnext.Close"/>
@@ -42,9 +40,9 @@ limitations under the License.
                     <g:message code="ddbnext.Save"/>
                   </button>
                 </div>
-              </ddb:isPersonalFavoritesAvailable>
+              </div>
             </div>
-          </div>
+          </ddb:isPersonalFavoritesAvailable>
         </li>
       </ddb:isLoggedIn>
       
