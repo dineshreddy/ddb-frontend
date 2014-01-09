@@ -25,7 +25,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
      */
     void setUp() {
         super.setUp()
-        println "####################################################################"
+        println "--------------------------------------------------------------------"
         println "Setup tests"
         userId = UUID.randomUUID() as String
         logStats()
@@ -49,7 +49,7 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
         println "User content deleted: : " + contentDeleted
 
         logStats()
-        println "####################################################################"
+        println "--------------------------------------------------------------------"
     }
 
 

@@ -17,7 +17,7 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
      */
     void setUp() {
         super.setUp()
-        println "####################################################################"
+        println "--------------------------------------------------------------------"
         println "Setup tests"
         userId = UUID.randomUUID() as String
         logStats()
@@ -37,7 +37,7 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
         savedSearchService.deleteSavedSearchesByUserId(userId)
 
         logStats()
-        println "####################################################################"
+        println "--------------------------------------------------------------------"
     }
 
 

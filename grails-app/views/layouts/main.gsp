@@ -21,7 +21,7 @@ limitations under the License.
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
     <g:if test="${!metaDescription}">
-      <meta name="description" content="Deutsche Digitale Bibliothek" />
+      <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
     </g:if>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
