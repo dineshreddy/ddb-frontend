@@ -77,9 +77,11 @@ $(document)
               var title_tooltip = $(a).find("span").text();
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
+              var item_title = $(".item-title.first span").text();
               var first = true;
               if (position == "second") {
                 first = false;
+                item_title = $(".item-title.second span").text();
               }
               // Title limited to 200 characters
               title_text = cutoffStringAtSpace(title, 200);
@@ -94,6 +96,9 @@ $(document)
               // The text and the tooltip of the rights should be limited to 270
               // characters
               rights = cutoffStringAtSpace(rights, 270);
+
+              // Item title limited to 350 characters
+              item_title = cutoffStringAtSpace(item_title, 350);
 
               hideErrors();
               if (type == "image") {
@@ -122,7 +127,6 @@ $(document)
                 jwPlayerSetup(previewHref, previewUri, first);
               }
               if (first) {
-                console.log ("###############nel primo"+title_text);
                 $(".first div.binary-title span").text(title_text);
                 $(".first div.binary-title").attr("title", title_tooltip);
 
@@ -131,6 +135,8 @@ $(document)
 
                 $(".first div.binary-rights span").text(rights);
                 $(".first div.binary-rights").attr("title", rights);
+
+                $(".item-title.first span").text(item_title);
               } else {
                 $(".second div.binary-title span").text(title_text);
                 $(".second div.binary-title").attr("title", title_tooltip);
@@ -140,6 +146,8 @@ $(document)
 
                 $(".second div.binary-rights span").text(rights);
                 $(".second div.binary-rights").attr("title", rights);
+
+                $(".item-title.second span").text(item_title);
               }
             };
             function cutoffStringAtSpace(text, limit) {

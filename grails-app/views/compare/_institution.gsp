@@ -17,9 +17,6 @@ limitations under the License.
   <div class="span6 institution">
     <div class="row">
       <div class="span6">
-        <img alt="${institution.name}" src="${institutionImage}"/>
-      </div>
-      <div class="span6">
         <div><g:message code="ddbnext.Institution" /></div>
         <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
           ${institution.name}
