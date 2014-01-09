@@ -439,6 +439,7 @@ class ItemService {
         def resultsItems
         def searchResultUri
 
+        //Item is called from the result list -> a hitNumber is available
         if (reqParameters["hitNumber"] && reqParameters[SearchParamEnum.QUERY.getName()] != null) {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
 
@@ -471,6 +472,13 @@ class ItemService {
                 offset = ((Integer)((reqParameters["hitNumber"]-1)/reqParameters[SearchParamEnum.ROWS.getName()]))*reqParameters[SearchParamEnum.ROWS.getName()]
             }
             searchGetParameters[SearchParamEnum.OFFSET.getName()] = offset
+            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
+            searchResultParameters["searchResultUri"] = searchResultUri
+            searchResultParameters["searchParametersMap"] = reqParameters
+        }
+        //In all other cases (item call from compare objects etc.) at least a query must be available
+        else if (reqParameters[SearchParamEnum.QUERY.getName()] != null) {
+            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
             searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
             searchResultParameters["searchResultUri"] = searchResultUri
             searchResultParameters["searchParametersMap"] = reqParameters

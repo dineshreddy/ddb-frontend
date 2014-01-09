@@ -1754,8 +1754,10 @@ function searchResultsInitializer() {
 
           // Retrieve the elements via JQuery
           var compareObjectId = '#compare-object' + itemNumber;
+          var compareLink = $(compareObjectId + ' .compare-link');
           var compareImage = $(compareObjectId + ' .compare-img');
           var compareText = $(compareObjectId + ' .compare-text');
+          var compareDefault = $(compareObjectId + ' .compare-default');
           var compareRemove = $(compareObjectId + ' .fancybox-toolbar-close');
 
           // Get the associated item id from the cookie
@@ -1764,33 +1766,40 @@ function searchResultsInitializer() {
 
           // Set default message if no cookie exists or itemId is null
           if (cookieVal === null || cookieId === null) {
-            compareText.removeClass("off");
+            compareDefault.removeClass("off");
+            compareText.addClass("off");
             compareImage.addClass("off");
             compareRemove.addClass("off");
-            $(this).addClass("compare-object-table");
-            compareText.html(messages.ddbnext['SearchResultsChooseObject'
-                + itemNumber]);
           } else {
             var cookieSrc = cookieVal['src' + itemNumber];
             var cookieText = cookieVal['text' + itemNumber];
-
+            
+            //Hide default message
+            compareDefault.addClass("off");
             compareRemove.removeClass("off");
 
+            // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
+            compareLink.off();
+            compareLink.on("click", function(event) {
+              //Update the url of the link
+              var urlQuery = window.location.search
+              var url = jsContextPath + '/item/' + cookieId + urlQuery;
+              compareLink.attr("href", url);
+            });
+            
             // show the item's image or text
             if (cookieSrc !== null && cookieSrc.length !== -1) {
-              compareText.addClass("off");
-              compareImage.removeClass("off");
-
               compareImage.attr("src", cookieSrc);
               compareImage.attr("alt", cookieText);
               compareImage.attr("title", cookieText);
-
-              $(this).removeClass("compare-object-table");
+              
+              compareText.addClass("off");
+              compareImage.removeClass("off");                                 
             } else {
+              compareText.html(cookieText);
+              
               compareText.removeClass("off");
               compareImage.addClass("off");
-              compareText.html(cookieText);
-              $(this).addClass("compare-object-table");
             }
           }
         });
@@ -1915,20 +1924,16 @@ function searchResultsInitializer() {
     var compareButton = $('#compare-button');
     compareButton.removeClass('button');
     compareButton.addClass('button-disabled')
-    compareButton.off();
-    compareButton.click(function(event) {
-      event.preventDefault();
-    });
 
     if (cookieVal !== null) {
       // Enable the compare button only if two items are selected for comparison
       if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
         compareButton.removeClass('button-disabled');
         compareButton.addClass('button');
+                       
+        // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
         compareButton.off();
-        compareButton.click(function(event) {
-          // On every click be sure to get the latest compare items and url
-          // queries
+        compareButton.on("click", function(event) {
           var urlQuery = window.location.search
           var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
               + cookieVal.id2 + urlQuery;
