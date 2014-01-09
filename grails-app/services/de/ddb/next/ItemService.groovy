@@ -341,14 +341,11 @@ class ItemService {
         def audios = 0
         def videos = 0
         binaries.each {
-            if(it.'orig'.'uri'.'audio' || it.'orig'.'uri'.'video'){
-                if(it.'orig'.'uri'.'audio'){
-                    audios++
-                }
-                if(it.'orig'.'uri'.'video'){
-                    videos++
-                }
-            } else if (it.'full'.'uri'){
+            if (it.'orig'.'uri'.'audio') {
+                audios++
+            } else if (it.'orig'.'uri'.'video') {
+                videos++
+            } else if (it.'thumbnail'.'uri') {
                 images++
             }
         }
