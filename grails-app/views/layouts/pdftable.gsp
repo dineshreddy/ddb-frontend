@@ -19,8 +19,7 @@ limitations under the License.
 <head>
 <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 <meta name="description" content="Deutsche Digitale Bibliothek" />
-<r:require module="ddbnext" />
-<r:layoutResources />
+
 <g:layoutHead />
 </head>
 <body>
@@ -28,7 +27,5 @@ limitations under the License.
   <div id="main-container" class="container">
     <g:layoutBody />
   </div>
-  <%--    <g:render template="/pdfFooter" />--%>
-  <r:layoutResources />
 </body>
 </html>

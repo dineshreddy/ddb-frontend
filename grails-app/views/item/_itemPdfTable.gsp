@@ -26,6 +26,39 @@ body {
 	font-size: 16px;
 	color: #3e3a37;
 }
+.page {
+        width: 21cm;
+        min-height: 29.7cm;
+        padding: 2cm;
+        margin: 1cm auto;
+        border: 1px #D3D3D3 solid;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+.subpage {
+        padding: 1cm;
+        border: 5px red solid;
+        height: 237mm;
+        outline: 2cm #FFEAEA solid;
+    }
+    
+    @page {
+        size: A4;
+        margin: 0;
+    }
+    @media print {
+        .page {
+            margin: 0;
+            border: initial;
+            border-radius: initial;
+            width: initial;
+            min-height: initial;
+            box-shadow: initial;
+            background: initial;
+            page-break-after: always;
+        }
+    }
 h1, h2, h3, h4 {
   font-family: KarbidWeb, Calibri, Arial, sans-serif;
   font-size: 1.75em;
@@ -42,7 +75,6 @@ h2, h2 a {
 table {
 	margin: 10px auto;
 }
-
 
 a {
 	color: #3e3a37;
@@ -240,9 +272,12 @@ origin .show-origin span {
 </style>
 </head>
 <body>
-  <table border="0" cellpadding="0" cellspacing="0" summary="Print View for items on DDB" width="1170">
+  <table border="0" cellpadding="0" cellspacing="0" summary="Print View for items on DDB" width="960px">
     <tr>
-      <td><r:img dir="images" file="logoHeader.png" alt="" /></td>
+      <td>
+      <rendering:inlinePng bytes="${logo}" class="some-class" />
+      
+      </td>
     </tr>
     <tr>
       <td><g:render template="pdfTableInstitution" /></td>
@@ -252,12 +287,9 @@ origin .show-origin span {
         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail item-content">
           <tr>
             <g:if test="${binaryList}">
-              <td style="width: 570px;" class="item-description valign-top"><g:render template="itemdetailsPdf" />
-              </td>
-              <td style="width: 570px;">
-                <g:render template="itemBinariesPdf" /> 
-                
-              </td>
+              <td style="width: 480px;" class="item-description valign-top"><g:render
+                  template="itemdetailsPdf" /></td>
+              <td style="width: 480px;"><g:render template="itemBinariesPdf" /></td>
             </g:if>
             <g:else>
               <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
@@ -267,8 +299,8 @@ origin .show-origin span {
       </td>
     </tr>
     <tr>
-      <td>    <g:render template="linkurlPdf" /></td>
-    </tr>    
+      <td><g:render template="linkurlPdf" /></td>
+    </tr>
   </table>
 </body>
 </html>

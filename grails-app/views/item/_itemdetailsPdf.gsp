@@ -25,11 +25,11 @@ limitations under the License.
           var="value" in="${it.value }">
           <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}">
             <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">
-              ${value}
+              ${value.encodeAsHTML()}
             </g:link>
           </g:if>
           <g:else>
-            ${value}
+            ${value.encodeAsHTML()}
           </g:else>
           <br />
         </g:each></td>

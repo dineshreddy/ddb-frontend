@@ -18,10 +18,10 @@ limitations under the License.
     <td>
       <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail">
         <tr>
-          <td width="870" class=" institution"><g:message code="ddbnext.Institution" /> <br /> <g:link
+          <td width="490" class=" institution"><g:message code="ddbnext.Institution" /> <br /> <g:link
               class="institution-name" controller="institution" action="showInstitutionsTreeByItemId"
               params="[id: institution.id]">
-              ${institution.name}
+              ${institution.name.encodeAsHTML()}
             </g:link> <br /> <a class="institution-link" href="${institution.url}"> ${institution.url}</a> <g:if
               test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
@@ -39,7 +39,7 @@ limitations under the License.
                 </g:if>
               </div>
             </g:if></td>
-          <td width="270" class="institution align-right"><img alt="${institution.name}"
+          <td width="190" class="institution align-right"><img alt="${institution.name}"
             src="${institutionImage}" /></td>
         </tr>
       </table>

@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import javax.swing.JProgressBar.ModelListener;
+
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
@@ -33,8 +35,14 @@ class ItemController {
             def model = itemService.getFullItemModel(id)
 
             if(params.pdf){
-              //renderPdf(template: "itemPdfTable", model: model, filename: "Item-Detail.pdf")
-              //renderPdf(template: "/itemPdf", model: report: "test"])
+              def baseFolder = System.properties['base.dir'] + '/web-app/'
+                
+              def logoHeaderFile = 'images/logoHeader.png'
+              def logoHeader = new File(baseFolder + logoHeaderFile)
+              model.logo=logoHeader.bytes
+              
+                
+              //renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
               //render(view: "_itemPdf", model: model)
               render(view: "_itemPdfTable", model: model)
             } else {
