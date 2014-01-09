@@ -122,7 +122,6 @@ $(document)
                 jwPlayerSetup(previewHref, previewUri, first);
               }
               if (first) {
-                console.log ("###############nel primo"+title_text);
                 $(".first div.binary-title span").text(title_text);
                 $(".first div.binary-title").attr("title", title_tooltip);
 
