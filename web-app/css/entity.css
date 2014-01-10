@@ -13,6 +13,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.entity-page .fields{
+  font-size: 1em;
+}
+
+.entity-page .all-objects-link {
+  text-decoration:underline;
+}
+
+.entity-page input[type="checkbox"] {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+.entity-page .objects-help {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+  width: 17px;
+  height: 17px;
+  background: url("../images/icons/tooltips.png") no-repeat 0 -60px;
+}
+
+.entity-page .objects-help:hover,.entity-page  .objects-help:active,
+.entity-page  .objects-help:focus {
+  background-position: 0 -90px;
+  cursor: help;
+}
+
+.entity-page .header-objects {
+  float: right;
+  text-align:right;
+  margin: 10px 0;
+  padding-top: 3px;
+  line-height: 16px;
+}
+
 .entity-page .icon-work {
   background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
 }
@@ -21,20 +58,12 @@
   background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
 }
 
-.entity-page .todo {
-  background-color: #FFDDDD;
-}
-
-.entity-page .todo-gnd {
-  background-color: #DDFFDD;
-}
-
 .entity-page .item-title {
   font-weight:bold;
 }
 
 .entity-page .rolefacet {
-  margin:10px 0px 0px 0px;
+  margin:10px 0px;
 }
 
 .entity-page .search-entity {
@@ -128,6 +157,11 @@
   }
   .entity-page .carousel a.next {
     right: -8px;
+  }
+  
+  .entity-page .header-objects {
+    float: left;
+    text-align:left;
   }
 }
 /* carousel controls responsiveness - end */

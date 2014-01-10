@@ -15,15 +15,13 @@ limitations under the License.
 --%>
 <div class="works rolefacet">
   <div class="row">
-    <div class="span6">
+    <div class="span5">
       <h3><g:message code="ddbnext.Entity_Involved_In"/></h3>
     </div>
-    <div class="span3">
-      <label>
+    <div class="span4 header-objects">
         <input type="checkbox" class="normdata_involved_checkbox" checked="checked">
-        <g:message code="ddbnext.Entity_Only_Normdata_Objects"/>
-      </label>
-      <span class="icon-question-sign"></span>
+        <span><g:message code="ddbnext.Entity_Only_Normdata_Objects"/></span>
+        <span class="objects-help hidden-phone hidden-tablet"></span>
     </div>
   </div>
   <div class="works_result">
