@@ -24,29 +24,29 @@ $(document).ready(
 
         var offset = 0;
 
-        $('#normdata_involved_checkbox').bind('click', function() {
+        $('#normdata-involved-checkbox').bind('click', function() {
           updateRoleDivs();
         });
 
-        $('#normdata_subject_checkbox').bind('click', function() {
+        $('#normdata-subject-checkbox').bind('click', function() {
           updateRoleDivs();          
         });        
         
         function updateRoleDivs() {
-          if ($('#normdata_involved_checkbox').is(":checked")) {
-            $('#searchInvolved').hide();
-            $('#searchInvolvedNormdata').show();
+          if ($('#normdata-involved-checkbox').is(":checked")) {
+            $('#search-involved').hide();
+            $('#search-involved-normdata').show();
           } else {
-            $('#searchInvolved').show();
-            $('#searchInvolvedNormdata').hide();
+            $('#search-involved').show();
+            $('#search-involved-normdata').hide();
           }
           
-          if ($('#normdata_subject_checkbox').is(":checked")) {
-            $('#searchSubject').hide();
-            $('#searchSubjectNormdata').show();
+          if ($('#normdata-subject-checkbox').is(":checked")) {
+            $('#search-subject').hide();
+            $('#search-subject-normdata').show();
           } else {
-            $('#searchSubject').show();
-            $('#searchSubjectNormdata').hide();
+            $('#search-subject').show();
+            $('#search-subject-normdata').hide();
           }
         }
         

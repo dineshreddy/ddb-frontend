@@ -19,15 +19,15 @@ limitations under the License.
       <h3><g:message code="ddbnext.Entity_Subject_Of"/></h3>
     </div>
     <div class="span4 header-objects">
-        <input type="checkbox" id="normdata_subject_checkbox" checked="checked">
+        <input type="checkbox" id="normdata-subject-checkbox" checked="checked">
         <span><g:message code="ddbnext.Entity_Only_Normdata_Objects"/></span>
         <span class="objects-help hidden-phone hidden-tablet"></span>
     </div>
   </div>
-  <div id="searchSubject">
+  <div id="search-subject">
   	<g:render template="roleSearchResults" model="[data:searchSubject]"/>
   </div>
-  <div id="searchSubjectNormdata">
+  <div id="search-subject-normdata">
   	<g:render template="roleSearchResults" model="[data:searchSubjectNormdata]"/>
   </div>  
 </div>
