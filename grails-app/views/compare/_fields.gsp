@@ -17,16 +17,18 @@ limitations under the License.
   <g:each in="${fields}">
     <div class="row">
       <div class="span2"><strong>${it.name}: </strong></div>
-      <div class="value span3">
-        <g:each var="value" in="${it.value }">
-          <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}"> 
-            <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
-          </g:if>
-          <g:else>
-            ${value}
-          </g:else>
-          <br />
-        </g:each>
+      <div class="value span4">
+        <div>
+          <g:each var="value" in="${it.value }">
+            <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}"> 
+              <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
+            </g:if>
+            <g:else>
+              ${value}
+            </g:else>
+            <br />
+          </g:each>
+        </div>
       </div>
     </div>
   </g:each>
