@@ -17,6 +17,8 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
+import de.ddb.next.constants.SearchParamEnum
+
 class CompareController {
     def searchService
     def configurationService
@@ -61,11 +63,13 @@ class CompareController {
         def resultsItems
         def searchResultUri
 
-        //generate link back to search-result. Calculate Offset.
-        def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
-        searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
-        searchResultParameters["searchResultUri"] = searchResultUri
-        searchResultParameters["searchParametersMap"] = reqParameters
+        if (reqParameters[SearchParamEnum.QUERY.getName()] != null) {
+            //generate link back to search-result. Calculate Offset.
+            def searchGetParameters = searchService.getSearchGetParameters(reqParameters)
+            searchResultUri = grailsLinkGenerator.link(url: [controller: 'search', action: 'results', params: searchGetParameters ])
+            searchResultParameters["searchResultUri"] = searchResultUri
+            searchResultParameters["searchParametersMap"] = reqParameters
+        }
 
         return searchResultParameters
     }

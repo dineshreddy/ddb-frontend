@@ -18,12 +18,12 @@ limitations under the License.
   <div class="span12 compare-links bb">
     <div class="link-block">
       <g:if test="${searchResultUri != null}">
-          <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.Compare_Exit" />">
-              <span><g:message code="ddbnext.Compare_Exit" /></span>
+          <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
+              <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" /></span>
           </a>
       </g:if> 
       <g:else>
-          <span class="back-to-list-greyed-out"><g:message code="ddbnext.Compare_Exit" /> </span>
+          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" /> </span>
       </g:else>
     </div>  
     <div class="link-block">
