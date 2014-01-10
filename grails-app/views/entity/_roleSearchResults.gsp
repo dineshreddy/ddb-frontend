@@ -16,20 +16,18 @@ limitations under the License.
 
 <ol class="unstyled">
   <!-- TODO: replace br tag with CSS -->
-  <g:each var="item" in="${entity.roleSearch.items}">
-	  <g:link controller="item" action="findById" params="${["id": item.id]}">
+  <g:each var="item" in="${entity.roleSearch.items}">	  
 	  <li class="theme">
 	     <i class="icon-theme"></i>
 	     <span class="item-title">${item.preview.title}</span><br>
 	     <span class="item-subtitle">${item.preview.subtitle}</span><br>
-	  </li>
-	  </g:link>  	
+	  </li>  	
   </g:each>
 </ol>
 
 <g:if test="${entity.roleSearch.resultCount > 0 }">
 	<g:link controller="search" action="results" params="${entity.roleSearch.searchUrlParameter }">
- 	<g:message code="ddbnext.Entity_All_Objects"/> (${entity.roleSearch.resultCount})
+ 	<span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${entity.roleSearch.resultCount})</span>
 	</g:link>
 </g:if>
 <g:if test="${entity.roleSearch.resultCount <= 0 }">

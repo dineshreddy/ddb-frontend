@@ -20,14 +20,7 @@ limitations under the License.
 
 	<span>
 		<g:each var="link" status="i" in="${entity.person.professionOrOccupation}">
-			<g:if test="${link.'@id'}">
-				<a href="${link.'@id'}" class="no-external-link-icon">
-				${link.value}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if>
-				</a>
-			</g:if>
-			<g:else>
-				<span>${link.value}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
-			</g:else>
+			<span>${link.value}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
 		</g:each>
 	</span>
 </div>
