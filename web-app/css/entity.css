@@ -47,6 +47,7 @@
   text-align:right;
   margin: 10px 0;
   padding-top: 3px;
+  line-height: 15px;
 }
 
 .entity-page .icon-work {
@@ -139,11 +140,6 @@
   .entity-page .carousel a.next {
     right: -10px;
   }
-  
-  .entity-page .header-objects {
-    float: left;
-    text-align:left;
-  }
 }
 
 @media (max-width: 979px) {
@@ -152,11 +148,6 @@
   }
   .entity-page .carousel a.next {
     right: -12px;
-  }
-  
-  .entity-page .header-objects {
-    float: left;
-    text-align:left;
   }
 }
 

@@ -15,16 +15,16 @@ limitations under the License.
 --%>
 <div class="themes rolefacet">
   <div class="row">
-    <div class="span6">
+    <div class="span5">
       <h3><g:message code="ddbnext.Entity_Subject_Of"/></h3>
     </div>
-    <div class="span3 header-objects">
+    <div class="span4 header-objects">
         <input type="checkbox" class="normdata_subject_checkbox" checked="checked">
         <span><g:message code="ddbnext.Entity_Only_Normdata_Objects"/></span>
         <span class="objects-help hidden-phone hidden-tablet"></span>
     </div>
   </div>
   <div class="themes_result">
-  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>  
+  <%-- This value will be filled by JQuery and _roleSearchResult.gsp --%>
   </div>
 </div>
