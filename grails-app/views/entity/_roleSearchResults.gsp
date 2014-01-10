@@ -16,8 +16,10 @@ limitations under the License.
 <ol class="unstyled">
   <g:each var="item" in="${data?.items}">	  
 	  <li class="theme">
-	     <i class="icon-theme"></i>
-	     <span class="item-title">${item.preview.title}</span><br>
+	     <g:link controller="item" action="findById" params="${["id": item.id]}">
+		     <i class="icon-theme"></i>
+		     <span class="item-title">${item.preview.title}</span><br>
+	     </g:link>
 	     <span class="item-subtitle">${item.preview.subtitle}</span><br>
 	  </li>  	
   </g:each>
