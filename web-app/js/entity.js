@@ -24,55 +24,32 @@ $(document).ready(
 
         var offset = 0;
 
-        $('.normdata_involved_checkbox').bind('click', function() {
-          var container = $(".works_result");
-          var query = $("#entity-title").html();
-          var entityid = $("#entity-id").attr("data-entityid");
-          var normdata = false;
-          var facetname = 'affiliate_fct_involved';
-
-          if ($(this).is(":checked")) {
-            normdata = true;
-          }
-
-          getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
+        $('#normdata-involved-checkbox').bind('click', function() {
+          updateRoleDivs();
         });
 
-        $('.normdata_subject_checkbox').bind('click', function() {
-          var query = $("#entity-title").html();
-          var entityid = $("#entity-id").attr("data-entityid");
-          var container = $(".themes_result");
-          var normdata = false;
-          var facetname = 'affiliate_fct_subject';
-
-          if ($(this).is(":checked")) {
-            normdata = true;
+        $('#normdata-subject-checkbox').bind('click', function() {
+          updateRoleDivs();          
+        });        
+        
+        function updateRoleDivs() {
+          if ($('#normdata-involved-checkbox').is(":checked")) {
+            $('#search-involved').hide();
+            $('#search-involved-normdata').show();
+          } else {
+            $('#search-involved').show();
+            $('#search-involved-normdata').hide();
           }
-
-          getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
-        });
-
-        function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid,
-            offset, rows) {
-          var request = $.ajax({
-            type : 'GET',
-            dataType : 'json',
-            async : true,
-            url : jsContextPath + '/entity/ajax/rolesearchresults?query=' + query + '&offset='
-                + offset + '&rows=' + rows + '&normdata=' + normdata + '&facetname=' + facetname
-                + '&entityid=' + entityid,
-            complete : function(data) {
-              var jsonResponse = $.parseJSON(data.responseText);
-
-              renderRoleBasedSearchResults(itemContainer, jsonResponse);
-            }
-          });
+          
+          if ($('#normdata-subject-checkbox').is(":checked")) {
+            $('#search-subject').hide();
+            $('#search-subject-normdata').show();
+          } else {
+            $('#search-subject').show();
+            $('#search-subject-normdata').hide();
+          }
         }
-
-        function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
-          itemContainer.empty();
-          itemContainer.html(jsonResponse.html);
-        }
+        
 
         function getNewSearchResults(query, offset, rows) {
           var request = $.ajax({
@@ -127,18 +104,8 @@ $(document).ready(
 
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount);
-
-          // Initialize Search results for facet: affiliate_fct_subject
-          var containerSubject = $(".themes_result");
-          var normdata = true;
-          var facetname = 'affiliate_fct_subject';
-          getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
-
-          // Initialize Search results for facet: affiliate_fct_involved
-          var containerInvolved = $(".works_result");
-          facetname = 'affiliate_fct_involved';
-          getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
-
+          
+          updateRoleDivs();
         }
 
         function initCarousel() {
