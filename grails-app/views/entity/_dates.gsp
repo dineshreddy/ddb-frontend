@@ -13,20 +13,33 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="dates fields">
 
-  <div>
-  	<g:message code="ddbnext.Entity_Birth" />: ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
-       <a href="${entity.person.placeOfBirth.'@id'}" rel="external" class="no-external-link-icon">
-          <span>${entity.person.placeOfBirth.value}</span>
-        </a>
+<g:set var="hasBirthContent" value="${entity.person.dateOfBirth != null || entity.person.placeOfBirth != null}"/>
+<g:set var="hasDeathContent" value="${entity.person.dateOfDeath != null || entity.person.placeOfDeath != null}"/>
+
+<g:if test="${hasBirthContent || hasDeathContent}">
+  <div class="dates fields">  
+    <g:if test="${hasBirthContent}">
+      <div>
+      	<g:message code="ddbnext.Entity_Birth" />: ${entity.person.dateOfBirth}
+        <g:if test="${entity.person.placeOfBirth}">,
+           <a href="${entity.person.placeOfBirth.'@id'}" rel="external" class="no-external-link-icon">
+              <span>${entity.person.placeOfBirth.value}</span>
+            </a>
+        </g:if>
+      </div>
+    </g:if>
+    <g:if test="${hasDeathContent}">
+      <div>
+      	<g:message code="ddbnext.Entity_Death" />: ${entity.person.dateOfDeath}
+        <g:if test="${entity.person.placeOfDeath}">, 
+      		<a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
+              <span>${entity.person.placeOfDeath.value}</span>
+            </a>
+        </g:if>
+      </div>
     </g:if>
   </div>
-  <div>
-  	<g:message code="ddbnext.Entity_Death" />: ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}">, 
-  		<a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
-          <span>${entity.person.placeOfDeath.value}</span>
-        </a>
-    </g:if>
-  </div>
-</div>
+</g:if>
+
+    
