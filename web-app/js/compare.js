@@ -17,39 +17,6 @@ $(document)
     .ready(
         function() {
 
-          function initializeJwPlayer(divId, videoFile, previewImage, width, height,
-              onReadyCallback, onErrorCallback) {
-            jwplayer(divId).setup({
-              'flashplayer' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf',
-              'html5player' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js',
-              'modes' : [ {
-                type : "html5",
-                src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js"
-              }, {
-                type : "flash",
-                src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf"
-              }, {
-                type : "download"
-              } ],
-              'fallback' : true,
-              'autostart' : false,
-              'file' : videoFile,
-              'skin' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/skins/five.xml',
-              'image' : previewImage,
-              'controls' : true,
-              'controlbar' : 'bottom',
-              'stretching' : 'uniform',
-              'width' : width,
-              'height' : height,
-              'primary' : 'html5',
-              'startparam' : 'starttime',
-              'events' : {
-                onError : onErrorCallback,
-                onReady : onReadyCallback
-              }
-            });
-          }
-
           if (jsPageName == "compare") {
             
             var socialMediaManager = new SocialMediaManager();
@@ -84,23 +51,23 @@ $(document)
                 item_title = $(".item-title.second span").text();
               }
               // Title limited to 200 characters
-              title_text = cutoffStringAtSpace(title, 200);
+              title_text = $.cutoffStringAtSpace(title, 200);
 
               // The tooltip of the title should be limited to 270 characters
-              title_tooltip = cutoffStringAtSpace(title, 270);
+              title_tooltip = $.cutoffStringAtSpace(title, 270);
 
               // The text and the tooltip of the author should be limited to 270
               // characters
-              author = cutoffStringAtSpace(author, 270);
+              author = $.cutoffStringAtSpace(author, 270);
 
               // The text and the tooltip of the rights should be limited to 270
               // characters
-              rights = cutoffStringAtSpace(rights, 270);
+              rights = $.cutoffStringAtSpace(rights, 270);
 
               // Item title limited to 350 characters
-              item_title = cutoffStringAtSpace(item_title, 350);
+              item_title = $.cutoffStringAtSpace(item_title, 350);
 
-              hideErrors();
+              $.hideErrors();
               if (type == "image") {
                 if (first) {
                   $(".first .previews").parent().addClass("off");
@@ -150,14 +117,6 @@ $(document)
                 $(".item-title.second span").text(item_title);
               }
             };
-            function cutoffStringAtSpace(text, limit) {
-              if (text != null && text.toString().length > limit) {
-                return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1)
-                    .join(" ")
-                    + "...";
-              }
-              return text;
-            }
             function jwPlayerSetup(content, poster, firstElement) {
               if (firstElement) {
                 if ($(".first #binary-viewer").length === 0) {
@@ -176,7 +135,7 @@ $(document)
                   h = 200;
                 }
   
-                initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function(event) {
+                $.initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function(event) {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
                     $(".first #binary-viewer").find("[id*='jwplayer']").each(function() {
                       $(this).attr("unselectable", "on");
@@ -212,7 +171,7 @@ $(document)
                   h = 200;
                 }
   
-                initializeJwPlayer("jwplayer-container-second", content, poster, w, h, function(event) {
+                $.initializeJwPlayer("jwplayer-container-second", content, poster, w, h, function(event) {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
                     $(".second #binary-viewer").find("[id*='jwplayer']").each(function() {
                       $(this).attr("unselectable", "on");
@@ -233,10 +192,6 @@ $(document)
                 });
               }
             };
-            function hideErrors() {
-              $("div.binary-viewer-error").addClass("off");
-              $("div.binary-viewer-flash-upgrade").addClass("off");
-            }
             $(".previews")
                 .click(
                     function(e) {

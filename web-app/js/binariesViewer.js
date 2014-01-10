@@ -26,7 +26,7 @@ $(document)
               var file = $(videoDiv).data("jwplayer-file");
               var image = $(videoDiv).data("jwplayer-image");
 
-              initializeJwPlayer(id, file, image, width, height, function(event) {
+              $.initializeJwPlayer(id, file, image, width, height, function(event) {
               }, function(event) {
                 var playerDiv = $("#mediaspace_wrapper");
                 if (playerDiv.length === 0) {
@@ -50,39 +50,6 @@ $(document)
                 }
               });
             }
-          }
-
-          function initializeJwPlayer(divId, videoFile, previewImage, width, height,
-              onReadyCallback, onErrorCallback) {
-            jwplayer(divId).setup({
-              'flashplayer' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf',
-              'html5player' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js',
-              'modes' : [ {
-                type : "html5",
-                src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js"
-              }, {
-                type : "flash",
-                src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf"
-              }, {
-                type : "download"
-              } ],
-              'fallback' : true,
-              'autostart' : false,
-              'file' : videoFile,
-              'skin' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/skins/five.xml',
-              'image' : previewImage,
-              'controls' : true,
-              'controlbar' : 'bottom',
-              'stretching' : 'uniform',
-              'width' : width,
-              'height' : height,
-              'primary' : 'html5',
-              'startparam' : 'starttime',
-              'events' : {
-                onError : onErrorCallback,
-                onReady : onReadyCallback
-              }
-            });
           }
 
           if (jsPageName == "item") {
@@ -162,20 +129,20 @@ $(document)
 
               // DDBNEXT-800 the title can use more than one line but should be
               // limited to 200 characters
-              title_text = cutoffStringAtSpace(title, 200);
+              title_text = $.cutoffStringAtSpace(title, 200);
 
               // The tooltip of the title should be limited to 270 characters
-              title_tooltip = cutoffStringAtSpace(title, 270);
+              title_tooltip = $.cutoffStringAtSpace(title, 270);
 
               // The text and the tooltip of the author should be limited to 270
               // characters
-              author = cutoffStringAtSpace(author, 270);
+              author = $.cutoffStringAtSpace(author, 270);
 
               // The text and the tooltip of the rights should be limited to 270
               // characters
-              rights = cutoffStringAtSpace(rights, 270);
+              rights = $.cutoffStringAtSpace(rights, 270);
 
-              hideErrors();
+              $.hideErrors();
               if (type == "image") {
                 if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
@@ -205,14 +172,6 @@ $(document)
               $("div.binary-rights").attr("title", rights);
             }
             ;
-            function cutoffStringAtSpace(text, limit) {
-              if (text != null && text.toString().length > limit) {
-                return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1)
-                    .join(" ")
-                    + "...";
-              }
-              return text;
-            }
             function jwPlayerSetup(content, poster) {
               if ($("#binary-viewer").length === 0) {
                 return;
@@ -230,7 +189,7 @@ $(document)
                 h = 200;
               }
 
-              initializeJwPlayer("jwplayer-container", content, poster, w, h, function(event) {
+              $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function(event) {
                 if ($.browser.msie && this.getRenderingMode() === "html5") {
                   $("#binary-viewer").find("[id*='jwplayer']").each(function() {
                     $(this).attr("unselectable", "on");
@@ -310,10 +269,6 @@ $(document)
                 }, 500);
               }
             });
-            function hideErrors() {
-              $("div.binary-viewer-error").addClass("off");
-              $("div.binary-viewer-flash-upgrade").addClass("off");
-            }
             $("p.all").click(
                 function() {
                   var tab = $("div.all");
@@ -410,7 +365,7 @@ $(document)
               var previewHref = $(this).attr("data-content");
               var type = $(this).attr("data-type");
               var title = $(this).find("span").text();
-              hideErrors();
+              $.hideErrors();
               if (type == "image") {
                 if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
