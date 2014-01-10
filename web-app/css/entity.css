@@ -175,5 +175,13 @@
 }
 
 .entity-page .thumbimage {
-  margin:  5px 0 5px 0;
+  margin:  15px 0 5px 0;
+}
+
+.entity-page .thumbinner {
+  padding-bottom: 10px;
+}
+
+.entity-page .wiki-link {
+  text-decoration: underline;
 }
