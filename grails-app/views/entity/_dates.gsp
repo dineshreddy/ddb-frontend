@@ -14,6 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+
 <g:set var="hasBirthContent" value="${entity.person.dateOfBirth != null || entity.person.placeOfBirth != null}"/>
 <g:set var="hasDeathContent" value="${entity.person.dateOfDeath != null || entity.person.placeOfDeath != null}"/>
 
@@ -23,9 +25,9 @@ limitations under the License.
       <div>
       	<g:message code="ddbnext.Entity_Birth" />: ${entity.person.dateOfBirth}
         <g:if test="${entity.person.placeOfBirth}">,
-           <a href="${entity.person.placeOfBirth.'@id'}" rel="external" class="no-external-link-icon">
-              <span>${entity.person.placeOfBirth.value}</span>
-            </a>
+          <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.value]}" class="search_link">
+            <span>${entity.person.placeOfBirth.value}</span>
+          </g:link>
         </g:if>
       </div>
     </g:if>
@@ -33,9 +35,9 @@ limitations under the License.
       <div>
       	<g:message code="ddbnext.Entity_Death" />: ${entity.person.dateOfDeath}
         <g:if test="${entity.person.placeOfDeath}">, 
-      		<a href="${entity.person.placeOfDeath.'@id'}" rel="external" class="no-external-link-icon">
-              <span>${entity.person.placeOfDeath.value}</span>
-            </a>
+          <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.value]}" class="search_link">
+            <span>${entity.person.placeOfDeath.value}</span>
+          </g:link>
         </g:if>
       </div>
     </g:if>
