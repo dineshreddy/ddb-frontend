@@ -24,10 +24,14 @@ import java.util.regex.Pattern
 import net.sf.json.JSONNull
 
 import org.apache.commons.logging.LogFactory
+import org.codehaus.groovy.grails.io.support.UrlResource
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
+
+import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.sun.org.apache.xalan.internal.xsltc.compiler.ForEach;
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
@@ -107,7 +111,30 @@ class ItemService {
             'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
     }
 
+    /**
+     * Used in the preparation of images for PDF
+     * @param model
+     * @return
+     */
+    def prepareImagesForPdf(model) {
+        def baseFolder = System.properties['base.dir'] + '/web-app/'
+        def logoHeaderFile = 'images/logoHeader.png'
+        def logoHeader = new File(baseFolder + logoHeaderFile)
+        model.logo=logoHeader.bytes
 
+        def logoResource=new UrlResource(model.institutionImage).getURL()
+        model.institutionImage = logoResource.bytes
+        
+        model.binaryList.each{
+            it.thumbnail.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
+            it.preview.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
+            it.full.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
+        }
+        
+        return model
+    }
+    
+    
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
         def request = utils.getCurrentRequest()

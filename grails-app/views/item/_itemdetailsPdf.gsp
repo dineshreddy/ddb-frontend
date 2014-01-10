@@ -25,11 +25,11 @@ limitations under the License.
           var="value" in="${it.value }">
           <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}">
             <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">
-              ${value.encodeAsHTML()}
+              ${value}
             </g:link>
           </g:if>
           <g:else>
-            ${value.encodeAsHTML()}
+            ${value}
           </g:else>
           <br />
         </g:each></td>
@@ -48,10 +48,9 @@ limitations under the License.
   <!-- Item License -->
   <g:if test="${license}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:
+      <td style="width: 30%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:
       </strong></td>
-      <td style="width: 65%" class="valign-top"><a href="${license.url}" target="_blank"
-        class="no-external-link-icon"><g:if test="${license.img}">
+      <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
             <g:img file="${license.img}" alt="${license.text}" class="license-icon" />
           </g:if><span> ${license.text}
         </span></a></td>

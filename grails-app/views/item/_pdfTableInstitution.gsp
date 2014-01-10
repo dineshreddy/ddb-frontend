@@ -18,16 +18,16 @@ limitations under the License.
     <td>
       <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail">
         <tr>
-          <td width="490" class=" institution"><g:message code="ddbnext.Institution" /> <br /> <g:link
+          <td class=" institution"><g:message code="ddbnext.Institution" /> <br /> <g:link
               class="institution-name" controller="institution" action="showInstitutionsTreeByItemId"
               params="[id: institution.id]">
-              ${institution.name.encodeAsHTML()}
+              ${institution.name}
             </g:link> <br /> <a class="institution-link" href="${institution.url}"> ${institution.url}</a> <g:if
               test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                 <g:if test="${!originUrl?.toString()?.isEmpty()}">
-                  <a class="show-origin" href="${originUrl.encodeAsHTML()}"
-                    title="<g:message code="ddbnext.stat_008" />"> <span class="has-origin"><g:message
+                  <a class="show-origin" href="${originUrl}" title="<g:message code="ddbnext.stat_008" />">
+                    <span class="has-origin"><g:message
                         code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                   </a>
                 </g:if>
@@ -39,8 +39,7 @@ limitations under the License.
                 </g:if>
               </div>
             </g:if></td>
-          <td width="190" class="institution align-right"><img alt="${institution.name}"
-            src="${institutionImage}" /></td>
+          <td class="institution"><rendering:inlinePng bytes="${institutionImage}" alt="Deutsche Digitale Bibliothek" /></td>
         </tr>
       </table>
     </td>

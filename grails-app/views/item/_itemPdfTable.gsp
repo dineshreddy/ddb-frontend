@@ -18,18 +18,18 @@ limitations under the License.
 <head>
 <title>
   ${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-<meta name="page" content="item" />
-<meta name="layout" content="pdfTable" />
-<style>
+<meta name="layout" content="pdftable" />
+<style type="text/css">
+@media print {
 body {
-	font-family: Calibri, Arial, sans-serif;
-	font-size: 16px;
-	color: #3e3a37;
+  font-family: "Arial Unicode MS", Arial, sans-serif;
+  font-size: 16px;
+  color: #3e3a37;
 }
 .page {
+margin: 1in;
         width: 21cm;
         min-height: 29.7cm;
-        padding: 2cm;
         margin: 1cm auto;
         border: 1px #D3D3D3 solid;
         border-radius: 5px;
@@ -41,33 +41,17 @@ body {
         border: 5px red solid;
         height: 237mm;
         outline: 2cm #FFEAEA solid;
-    }
-    
-    @page {
-        size: A4;
-        margin: 0;
-    }
-    @media print {
-        .page {
-            margin: 0;
-            border: initial;
-            border-radius: initial;
-            width: initial;
-            min-height: initial;
-            box-shadow: initial;
-            background: initial;
-            page-break-after: always;
-        }
-    }
+}
+
 h1, h2, h3, h4 {
-  font-family: KarbidWeb, Calibri, Arial, sans-serif;
+  font-family: Arial Unicode MS", Arial, sans-serif;
   font-size: 1.75em;
   font-weight: normal;
   color: rgb(62, 58, 55);
   line-height: 1.5em;
 }
 h2, h2 a {
-  font-family: KarbidWeb, Calibri, Arial, sans-serif;
+  font-family: Arial Unicode MS", Arial, sans-serif;
   font-weight: bold;
   font-size: 1.375em;
   color: #a5003b;
@@ -90,7 +74,9 @@ a[href^="http"]:not (.no-external-link-icon ):not ([href^="http://localhost"]
 	background: url(../images/icons/objectViewerActions.png) no-repeat -2px
 		-80px;
 }
-
+.instititution{
+  width:"60%"
+}
 .institution-name {
 	padding-left: 17px;
 	height: 25px;
@@ -269,27 +255,25 @@ origin .show-origin span {
 .slide-viewer .tab.audios{
   border-right: none;
 }
+}
 </style>
 </head>
 <body>
-  <table border="0" cellpadding="0" cellspacing="0" summary="Print View for items on DDB" width="960px">
+  <table border="0" cellpadding="0" cellspacing="0" summary="Print View for items on DDB" width="700px">
     <tr>
-      <td>
-      <rendering:inlinePng bytes="${logo}" class="some-class" />
-      
-      </td>
+      <td><rendering:inlinePng bytes="${logo}" alt="Deutsche Digitale Bibliothek" /></td>
     </tr>
     <tr>
       <td><g:render template="pdfTableInstitution" /></td>
     </tr>
     <tr>
-      <td>
+      <td >
         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail item-content">
           <tr>
             <g:if test="${binaryList}">
-              <td style="width: 480px;" class="item-description valign-top"><g:render
+              <td style="width: 50%;" class="item-description valign-top"><g:render
                   template="itemdetailsPdf" /></td>
-              <td style="width: 480px;"><g:render template="itemBinariesPdf" /></td>
+              <td style="width: 50%;" class="valign-top"><g:render template="itemBinariesPdf" /></td>
             </g:if>
             <g:else>
               <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>

@@ -54,13 +54,12 @@ grails.project.dependency.resolution = {
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
         runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
-        runtime 'com.lowagie:itext:2.1.5'
     }
 
     plugins {
         compile ':cache:1.0.0'
         compile ":cache-headers:1.1.5"
-        compile (":rendering:0.4.4"){ excludes "itext" }
+        compile(":rendering:0.4.4")
         build ":tomcat:$grailsVersion"
         runtime ":resources:1.2.1"
         runtime ":zipped-resources:1.0"

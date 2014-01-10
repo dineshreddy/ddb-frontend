@@ -22,7 +22,7 @@
           <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li><a class="previews" href="${content}"> <img src="${viewerContent}"
-                alt="${(it.preview.title).encodeAsHTML()}" />
+                alt="${(it.preview.title)}" />
             </a></li>
           </g:if>
         </g:each>
@@ -63,7 +63,7 @@
                 <g:set var="type" value="audio" />
               </g:elseif>
               <div class="thumbnail ${type}">
-                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
               </div>
             </div>
           </li>
@@ -94,7 +94,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail image">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
                     </div>
                   </div>
                 </li>
@@ -128,7 +128,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
                     </div>
                   </div>
                 </li>
@@ -142,7 +142,6 @@
   <tr>
     <td class="slice-viewer-tabsection">
       <p class="tab videos">
-      <p class="tab audios">
         <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}"
           default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" />
       </p>
@@ -163,7 +162,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title).encodeAsHTML()}" />
+                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
                     </div>
                   </div>
                 </li>

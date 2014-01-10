@@ -15,8 +15,9 @@
  */
 package de.ddb.next
 
+import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
 import javax.swing.JProgressBar.ModelListener;
-
+import org.codehaus.groovy.grails.io.support.UrlResource
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
@@ -35,16 +36,11 @@ class ItemController {
             def model = itemService.getFullItemModel(id)
 
             if(params.pdf){
-              def baseFolder = System.properties['base.dir'] + '/web-app/'
-                
-              def logoHeaderFile = 'images/logoHeader.png'
-              def logoHeader = new File(baseFolder + logoHeaderFile)
-              model.logo=logoHeader.bytes
+              // inline images via data uris
+              model = itemService.prepareImagesForPdf(model)
               
-                
-              //renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
-              //render(view: "_itemPdf", model: model)
-              render(view: "_itemPdfTable", model: model)
+              renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
+              //render(view: "_itemPdfTable", model: model) (Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
               }
