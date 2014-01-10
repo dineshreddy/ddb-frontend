@@ -32,12 +32,16 @@ limitations under the License.
         <g:render template="dates" />
         <hr>
         <g:render template="objects" />
-        <hr>        
-        <g:render template="affiliateInvolvedObjects" />
-        <hr>
-        <g:render template="affiliateSubjectObjects" />
-      </div>
-      
+        
+        <g:if test="${searchInvolved.resultCount > 0 || searchInvolvedNormdata.resultCount > 0}">
+	        <hr>
+	        <g:render template="affiliateInvolvedObjects" />
+        </g:if>        
+        <g:if test="${searchSubject.resultCount > 0 || searchSubjectNormdata.resultCount > 0}">
+	        <hr>
+	        <g:render template="affiliateSubjectObjects" />
+        </g:if>
+      </div>      
       <div class="span3">
         <g:render template="thumb" />
         <hr>

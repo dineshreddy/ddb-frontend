@@ -89,12 +89,32 @@ class EntityController {
         searchPreview["items"] = jsonSearchResult.results.docs
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
+        //------------------------- Involved Search -------------------------------
+        def searchInvolved = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_involved", entityId)
+
+        //------------------------- Involved Normdata Search -------------------------------
+        def searchInvolvedNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_involved", entityId)
+
+        //------------------------- Subject Search -------------------------------
+        def searchSubject = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_subject", entityId)
+
+        //------------------------- Subject Normdata Search -------------------------------
+        def searchSubjectNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_subject", entityId)
+
         //------------------------- Search preview media type count -------------------------------
         searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002")
         searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005")
         searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001")
 
-        def model = ["entity": jsonGraph, "entityUri": entityUri, "entityId": entityId, "searchPreview": searchPreview]
+        def model = ["entity": jsonGraph,
+            "entityUri": entityUri,
+            "entityId": entityId,
+            "searchPreview": searchPreview,
+            "searchInvolved": searchInvolved,
+            "searchInvolvedNormdata": searchInvolvedNormdata,
+            "searchSubject": searchSubject,
+            "searchSubjectNormdata": searchSubjectNormdata
+        ]
 
         render(view: 'entity', model: model)
     }
@@ -137,46 +157,4 @@ class EntityController {
 
         render (contentType:"text/json"){result}
     }
-
-
-    /**
-     * Controller method for rendering AJAX calls for an entity based facet search
-     * 
-     * @return the content of the backend search
-     */
-    public def getAjaxRoleSearchResultsAsJson() {
-        def query = params[SearchParamEnum.QUERY.getName()]
-        def offset = params.long(SearchParamEnum.OFFSET.getName())
-        def rows = params.long(SearchParamEnum.ROWS.getName())
-        def normdata = params.boolean(SearchParamEnum.NORMDATA.getName())
-        def rolefacet = params.facetname
-        def entityid = params.entityid
-
-        if(!rows) {
-            rows = 4
-        }
-        if(rows < 1){
-            rows = 1
-        }
-
-        if(!offset) {
-            offset = 0
-        }
-        if(offset < 0){
-            offset = 0
-        }
-
-        def entity = [:]
-
-        def roleSearch = entityService.doFacetSearch(query, offset, rows, normdata, rolefacet, entityid)
-        entity["roleSearch"] = roleSearch
-
-        //Replace all the newlines. The resulting html is better parsable by JQuery
-        def resultsHTML = g.render(template:"/entity/roleSearchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
-
-        def result = ["html": resultsHTML]
-
-        render (contentType:"text/json"){result}
-    }
-
 }

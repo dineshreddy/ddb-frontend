@@ -13,10 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
 <ol class="unstyled">
-  <!-- TODO: replace br tag with CSS -->
-  <g:each var="item" in="${entity.roleSearch.items}">	  
+  <g:each var="item" in="${data?.items}">	  
 	  <li class="theme">
 	     <i class="icon-theme"></i>
 	     <span class="item-title">${item.preview.title}</span><br>
@@ -25,11 +23,11 @@ limitations under the License.
   </g:each>
 </ol>
 
-<g:if test="${entity.roleSearch.resultCount > 0 }">
-	<g:link controller="search" action="results" params="${entity.roleSearch.searchUrlParameter }">
- 	<span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${entity.roleSearch.resultCount})</span>
+<g:if test="${data?.resultCount > 0 }">
+	<g:link controller="search" action="results" params="${data?.searchUrlParameter }">
+ 	<span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
 	</g:link>
 </g:if>
-<g:if test="${entity.roleSearch.resultCount <= 0 }">
+<g:if test="${data?.resultCount <= 0 }">
 	<g:message code="ddbnext.Entity_No_Search_Result"/>
 </g:if>
