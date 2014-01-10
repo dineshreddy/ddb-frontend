@@ -250,9 +250,6 @@
   .object-controls .inline .last-item {
     display: none;
   }
-  .socialmedia .social-open ul li {
-    display: block !important;
-  }
 }
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
