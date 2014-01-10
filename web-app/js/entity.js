@@ -34,21 +34,17 @@ $(document).ready(
         
         function updateRoleDivs() {
           if ($('#normdata_involved_checkbox').is(":checked")) {
-            console.log("show searchInvolvedNormdata")
             $('#searchInvolved').hide();
             $('#searchInvolvedNormdata').show();
           } else {
-            console.log("show searchInvolved")
             $('#searchInvolved').show();
             $('#searchInvolvedNormdata').hide();
           }
           
           if ($('#normdata_subject_checkbox').is(":checked")) {
-            console.log("show searchSubjectNormdata")
             $('#searchSubject').hide();
             $('#searchSubjectNormdata').show();
           } else {
-            console.log("show searchSubject")
             $('#searchSubject').show();
             $('#searchSubjectNormdata').hide();
           }
