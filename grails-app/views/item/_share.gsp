@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <div class="row item-detail">
 
-  <div class="span6 share">
+  <div class="span7 share">
 
     <ddb:getSocialmediaBody />
   

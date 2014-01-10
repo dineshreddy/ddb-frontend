@@ -83,8 +83,19 @@
 .socialmedia .social-open ul li {
   margin: 0px;
   height: 25px;
-  display: inline-block;
   vertical-align: top;
+}
+
+@media (min-width: 767px) {
+  .socialmedia .social-open ul li {
+   display: inline-block;
+  }
+}
+
+@media (max-width: 767px) {
+  .socialmedia .social-open ul li {
+    display: block !important;
+  }  
 }
 
 .socialmedia .social-open .social-facebook iframe {
