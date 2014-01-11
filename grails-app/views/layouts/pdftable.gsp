@@ -13,15 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="row item-detail">
-  <div class="span6 origin">
-    <g:if test="${!originUrl?.toString()?.isEmpty()}">
-      <a class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message code="ddbnext.stat_008" />">
-        <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
-      </a>
-    </g:if>
-    <g:else>
-      <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
-    </g:else>
-  </div>
-</div>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="${ddb.getCurrentLocale()}">
+<head>
+<title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
+<meta name="description" content="Deutsche Digitale Bibliothek" />
+<g:layoutHead />
+</head>
+<body>
+  <g:layoutBody />
+</body>
+</html>

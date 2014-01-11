@@ -33,7 +33,11 @@ class ItemController {
             def model = itemService.getFullItemModel(id)
 
             if(params.pdf){
-              render(view: "itemPdf", model: model)
+              // inline images via data uris
+              model = itemService.prepareImagesForPdf(model)
+              
+              renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
+              //render(view: "_itemPdfTable", model: model) (Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
               }
