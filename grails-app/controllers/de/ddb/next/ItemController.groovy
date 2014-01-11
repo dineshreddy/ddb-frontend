@@ -15,9 +15,6 @@
  */
 package de.ddb.next
 
-import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
-import javax.swing.JProgressBar.ModelListener;
-import org.codehaus.groovy.grails.io.support.UrlResource
 import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
