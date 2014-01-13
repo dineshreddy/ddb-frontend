@@ -151,9 +151,8 @@ class EntityService {
         return apiResponse.getResponse().numberOfResults
     }
 
-    def getResultLinkQueryForFacetType(def searchString, def facetType, def offset, def rows, def jsonGraph) {
+    def getResultLinkQuery(def offset, def rows, def jsonGraph) {
         def searchQuery = buildSearchQuery(jsonGraph, offset, rows)
-        searchQuery[(FacetEnum.TYPE.getName())].add(facetType)
         return searchQuery
     }
 

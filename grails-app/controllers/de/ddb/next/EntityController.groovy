@@ -103,7 +103,7 @@ class EntityController {
         searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005", offset, rows, jsonGraph)
         searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001", offset, rows, jsonGraph)
 
-        searchPreview["pictureLinkQuery"] = entityService.getResultLinkQueryForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
+        searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
 
         def model = ["entity": jsonGraph,
