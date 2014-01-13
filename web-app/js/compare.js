@@ -45,10 +45,15 @@ $(document)
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
               var item_title = $(".item-title.first span").text();
+              var offset = 0;
               var first = true;
               if (position == "second") {
                 first = false;
                 item_title = $(".item-title.second span").text();
+                offset = $(".first #previews-list li").size();
+                $(".second .previews").each(function() {
+                  $(this).attr("data-pos", parseInt($(this).attr("data-pos"))+offset);
+                });
               }
               // Title limited to 200 characters
               title_text = $.cutoffStringAtSpace(title, 200);
