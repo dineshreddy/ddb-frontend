@@ -182,8 +182,6 @@ class ErrorController {
     }
 
     def cultureGraphError() {
-        // Here we have the possibility to add further logging to identify if some 404 urls were called
-
         def exceptionMessage = ""
 
         // Does it come from a automatically handled backend request?
@@ -191,7 +189,7 @@ class ErrorController {
             exceptionMessage = request.exception.getMessage()
         }
 
-        response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 404
+        response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
