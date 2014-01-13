@@ -18,8 +18,8 @@ limitations under the License.
   <div class="span12 compare-links bb">
     <div class="link-block">
       <g:if test="${searchResultUri != null}">
-          <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
-              <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" /></span>
+          <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" />">
+              <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
           </a>
       </g:if> 
       <g:else>
