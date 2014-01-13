@@ -55,3 +55,7 @@
 .compare .item-title {
   padding-right: 30px;
 }
+
+.compare .fields .value div {
+  padding-right: 30px;
+}
