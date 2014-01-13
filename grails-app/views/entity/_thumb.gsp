@@ -20,10 +20,9 @@ limitations under the License.
 		<img alt="${entity.title}" src="${entity.person.depiction.thumbnail}"
 			class="thumbimage">
 		<div class="thumbcaption">
-			<i>
-				${entity.person.preferredName}
-			</i> <br>
-			${entity.person.depiction.decription}
+      ${entity.person.preferredName}
+			<br>
+      <g:message code="ddbnext.Entity_Source"/>: <a href="${entity.person.depiction.image}" class="wiki-link no-external-link-icon">Wikimedia</a>
 		</div>
 	</div>
 </div>
