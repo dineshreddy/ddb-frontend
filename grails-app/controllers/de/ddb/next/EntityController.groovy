@@ -74,20 +74,17 @@ class EntityController {
 
         def entityUri = request.forwardURI
         def title = jsonGraph.person.preferredName
-        def searchPreview = [:]
 
         //------------------------- Object Search -------------------------------
 
-        def searchQuery = [(SearchParamEnum.QUERY.getName()): title, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
-        ApiResponse apiResponseSearch = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
-        if(!apiResponseSearch.isOk()){
-            log.error "index(): Search response contained error"
-            apiResponseSearch.throwException(request)
+        def forename = jsonGraph.person.forename
+        if(jsonGraph.person.prefix != null && !jsonGraph.person.prefix.trim().isEmpty()){
+            forename += " "+jsonGraph.person.prefix
         }
-        def jsonSearchResult = apiResponseSearch.getResponse()
+        def surname = jsonGraph.person.surname
+        def queryName = forename+" "+surname
 
-        searchPreview["items"] = jsonSearchResult.results.docs
-        searchPreview["resultCount"] = jsonSearchResult.numberOfResults
+        def searchPreview = entityService.doItemSearch(queryName, offset, rows, jsonGraph)
 
         //------------------------- Involved Search -------------------------------
         def searchInvolved = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_involved", entityId)
@@ -102,9 +99,12 @@ class EntityController {
         def searchSubjectNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_subject", entityId)
 
         //------------------------- Search preview media type count -------------------------------
-        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002")
-        searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005")
-        searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001")
+        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
+        searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005", offset, rows, jsonGraph)
+        searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001", offset, rows, jsonGraph)
+
+        searchPreview["pictureLinkQuery"] = entityService.getResultLinkQueryForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
+
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
@@ -127,6 +127,7 @@ class EntityController {
     public def getAjaxSearchResultsAsJson() {
 
         def query = params[SearchParamEnum.QUERY.getName()]
+        def entityid = params[SearchParamEnum.ENTITY_ID.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
         def rows = params.long(SearchParamEnum.ROWS.getName())
 
@@ -144,9 +145,11 @@ class EntityController {
             offset = 0
         }
 
+        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+
         def entity = [:]
 
-        def searchPreview = entityService.doItemSearch(query, offset, rows)
+        def searchPreview = entityService.doItemSearch(query, offset, rows, jsonGraph)
 
         entity["searchPreview"] = searchPreview
 

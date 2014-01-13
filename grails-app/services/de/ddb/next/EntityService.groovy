@@ -17,6 +17,7 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
+
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
@@ -102,10 +103,15 @@ class EntityService {
      * 
      * @return the serach result
      */
-    def doItemSearch(def query, def offset, def rows) {
+    def doItemSearch(def query, def offset, def rows, def jsonGraph) {
+
+        def searchQuery = buildSearchQuery(jsonGraph, offset, rows)
+        searchQuery[(FacetEnum.TYPE.getName())].add("mediatype_001")
+        searchQuery[(FacetEnum.TYPE.getName())].add("mediatype_002")
+        searchQuery[(FacetEnum.TYPE.getName())].add("mediatype_005")
+
         def searchPreview = [:]
 
-        def searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName()]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
         if(!apiResponse.isOk()){
             def message = "doItemSearch(): Search response contained error"
@@ -130,8 +136,10 @@ class EntityService {
      * 
      * @return the number of results for a given query and facet type
      */
-    def getResultCountsForFacetType(def searchString, def facetType) {
-        def searchQuery = [(SearchParamEnum.QUERY.getName()): searchString, (SearchParamEnum.ROWS.getName()): 0, (SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): FacetEnum.TYPE.getName(), (FacetEnum.TYPE.getName()): facetType]
+    def getResultCountsForFacetType(def searchString, def facetType, def offset, def rows, def jsonGraph) {
+        def searchQuery = buildSearchQuery(jsonGraph, offset, rows)
+        searchQuery[(FacetEnum.TYPE.getName())].add(facetType)
+
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
 
         if(!apiResponse.isOk()){
@@ -141,6 +149,36 @@ class EntityService {
         }
 
         return apiResponse.getResponse().numberOfResults
+    }
+
+    def getResultLinkQueryForFacetType(def searchString, def facetType, def offset, def rows, def jsonGraph) {
+        def searchQuery = buildSearchQuery(jsonGraph, offset, rows)
+        searchQuery[(FacetEnum.TYPE.getName())].add(facetType)
+        return searchQuery
+    }
+
+
+    private def buildSearchQuery(def jsonGraph, def offset, def rows){
+        def forename = jsonGraph.person.forename
+        if(jsonGraph.person.prefix != null && !jsonGraph.person.prefix.trim().isEmpty()){
+            forename += " "+jsonGraph.person.prefix
+        }
+        def surname = jsonGraph.person.surname
+        def queryName = forename+" "+surname
+        def affiliateName = surname+ ", "+forename
+
+        def searchQuery = [:]
+        searchQuery[(SearchParamEnum.QUERY.getName())] = queryName
+        searchQuery[(SearchParamEnum.FACET.getName())] = []
+        searchQuery[(SearchParamEnum.FACET.getName())].add(FacetEnum.AFFILIATE.getName())
+        searchQuery[(SearchParamEnum.FACET.getName())].add(FacetEnum.TYPE.getName())
+        searchQuery[(FacetEnum.AFFILIATE.getName())] = affiliateName
+        searchQuery[(FacetEnum.TYPE.getName())] = []
+        searchQuery[(SearchParamEnum.ROWS.getName())] = rows
+        searchQuery[(SearchParamEnum.OFFSET.getName())] = offset
+        searchQuery[(SearchParamEnum.SORT.getName())] = SearchParamEnum.SORT_RELEVANCE.getName()
+
+        return searchQuery
     }
 
 }
