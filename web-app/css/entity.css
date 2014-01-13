@@ -211,3 +211,7 @@
 .entity-page .thumbimage {
   margin:  5px 0 5px 0;
 }
+
+.entity-page .search_link {
+  text-decoration: underline;
+}
