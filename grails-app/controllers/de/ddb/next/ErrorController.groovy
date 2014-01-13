@@ -181,6 +181,41 @@ class ErrorController {
         notFound(Type404.ENTITY_NOT_FOUND)
     }
 
+    def cultureGraphError() {
+        // Here we have the possibility to add further logging to identify if some 404 urls were called
+
+        def exceptionMessage = ""
+
+        // Does it come from a automatically handled backend request?
+        if(request?.exception){
+            exceptionMessage = request.exception.getMessage()
+        }
+
+        response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 404
+        response.setHeader("Error-Message", exceptionMessage)
+
+        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
+        // could be text/json if an API was called and the layout would be messed up
+        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
+        def encodingFromConfig = configurationService.getEncoding()
+
+        // Return the view dependent on the configured environment (PROD vs DEV)
+        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
+
+            // Return the 404 view
+            log.error "cultureGraphError(): Return view 'culturegraph_production'"
+            return render(view:'culturegraph_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [:])
+
+        } else {
+
+            // Not it production? show an ugly, developer-focused error message
+            log.error "cultureGraphError(): Return view 'culturegraph_development'"
+            return render(view:'culturegraph_development', model: ["error_message": exceptionMessage], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+
+        }
+
+    }
+
     /**
      * Handler method for error 401 situations
      * @return The auth view
