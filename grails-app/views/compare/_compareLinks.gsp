@@ -23,7 +23,7 @@ limitations under the License.
           </a>
       </g:if> 
       <g:else>
-          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" /> </span>
+          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
       </g:else>
     </div>  
     <div class="link-block">
