@@ -98,9 +98,9 @@ $(document).ready(
           var query = $("#entity-title").html();
           var entityid = $("#entity-id").attr("data-entityid");
 
-          var History = window.History;
-          var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
-          History.pushState("", document.title, decodeURI(urlParameters));
+          //var History = window.History;
+          //var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
+          //History.pushState("", document.title, decodeURI(urlParameters));
 
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount);
