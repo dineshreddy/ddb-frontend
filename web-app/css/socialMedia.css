@@ -47,6 +47,7 @@
   left: 0px;
   top: 0px;
   width: 100%;
+  min-width: 400px;
   z-index: 100;
 }
 
@@ -78,6 +79,7 @@
 
 .socialmedia .social-open {
   display: none;
+  min-width: 400px;
 }
 
 .socialmedia .social-open ul li {
