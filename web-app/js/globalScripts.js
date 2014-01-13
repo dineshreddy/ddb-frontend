@@ -14,6 +14,53 @@
  * limitations under the License.
  */
 
+// Trim of the given text to the passed chars limit
+$.cutoffStringAtSpace = function(text, limit) {
+  if (text != null && text.toString().length > limit) {
+    return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1).join(" ") + "...";
+  }
+  return text;
+}
+
+// Initialization of the JWPlayer
+$.initializeJwPlayer = function(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
+  jwplayer(divId).setup({
+    'flashplayer' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf',
+    'html5player' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js',
+    'modes' : [ {
+      type : "html5",
+      src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.html5.js"
+    }, {
+      type : "flash",
+      src : jsContextPath + "/js/vendor/jwplayer-6.2.3115/jwplayer.flash.swf"
+    }, {
+      type : "download"
+    } ],
+    'fallback' : true,
+    'autostart' : false,
+    'file' : videoFile,
+    'skin' : jsContextPath + '/js/vendor/jwplayer-6.2.3115/skins/five.xml',
+    'image' : previewImage,
+    'controls' : true,
+    'controlbar' : 'bottom',
+    'stretching' : 'uniform',
+    'width' : width,
+    'height' : height,
+    'primary' : 'html5',
+    'startparam' : 'starttime',
+    'events' : {
+      onError : onErrorCallback,
+      onReady : onReadyCallback
+    }
+  });
+}
+
+// Hiding of the errors in the binaries viewer 
+$.hideErrors = function() {
+  $("div.binary-viewer-error").addClass("off");
+  $("div.binary-viewer-flash-upgrade").addClass("off");
+}
+
 $(document)
     .ready(
         function() {
