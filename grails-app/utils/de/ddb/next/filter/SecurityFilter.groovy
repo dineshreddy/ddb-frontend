@@ -15,15 +15,15 @@
  */
 package de.ddb.next.filter
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.Filter
+import javax.servlet.FilterChain
+import javax.servlet.FilterConfig
+import javax.servlet.ServletException
+import javax.servlet.ServletRequest
+import javax.servlet.ServletResponse
+import javax.servlet.http.HttpServletResponse
 
-import de.ddb.next.exception.InvalidUrlException;
+import de.ddb.next.exception.InvalidUrlException
 
 
 /**
@@ -58,7 +58,7 @@ class SecurityFilter implements Filter {
                 return
             }
 
-            ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
+            //ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse) // temporarily deactivated sanitizer due to problems with cortex data. See DDBNEXT-988
             chain.doFilter(requestWrapper, response)
             return
         }catch(InvalidUrlException i){
