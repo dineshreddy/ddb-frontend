@@ -295,6 +295,10 @@ class UrlMappings {
             action="index"
         }
 
+        "/multipolygone" {
+            controller="map"
+            action="multipolygone"
+        }
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)

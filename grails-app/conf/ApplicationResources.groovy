@@ -115,6 +115,11 @@ modules = {
         resource url:'/js/map/map.js'
     }
 
+    multipolygone {
+        resource url:'/css/Multipolygone.css', bundle: 'screen'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+    }
+
     autocomplete {
         resource url:'/css/vendor/autocomplete-1.10.2/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
         resource url:'/js/vendor/autocomplete-1.10.2/js/jquery-ui-1.10.2.custom.min.js'
