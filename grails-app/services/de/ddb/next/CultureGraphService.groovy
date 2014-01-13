@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import de.ddb.next.constants.CultureGraphEnum
-import de.ddb.next.exception.CultureGraphException
 
 /**
  * Service class for accesing the CultureGraphService
@@ -37,7 +36,8 @@ class CultureGraphService {
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId, false, query)
         if(!apiResponse.isOk()){
             log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
-            throw new CultureGraphException(apiResponse.getException().getMessage())
+            //throw new CultureGraphException(apiResponse.getException().getMessage())
+            return null
         }
 
         return apiResponse.getResponse()

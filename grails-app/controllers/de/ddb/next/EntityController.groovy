@@ -16,7 +16,7 @@
 package de.ddb.next
 
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.exception.EntityNotFoundException
+import de.ddb.next.exception.CultureGraphException
 
 
 /**
@@ -69,7 +69,8 @@ class EntityController {
 
         //Forward to a 404 page if the entityId is not known by the culture graph service
         if (jsonGraph == null) {
-            throw new EntityNotFoundException()
+            //throw new EntityNotFoundException()
+            throw new CultureGraphException()
         }
 
         def entityUri = request.forwardURI
