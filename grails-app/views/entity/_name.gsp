@@ -17,10 +17,4 @@ limitations under the License.
 	<h2>
 		${entity.person.preferredName}
 	</h2>
-
-	<span>
-		<g:each var="link" status="i" in="${entity.person.professionOrOccupation}">
-			<span>${link.value}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
-		</g:each>
-	</span>
 </div>
