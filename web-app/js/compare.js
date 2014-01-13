@@ -78,6 +78,9 @@ $(document)
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
               var item_title = $(".item-title.first span").text();
+              
+              var counter = $("#previews-list").find("ul").children('li').eq(0).children('a').attr("data-pos");
+              
               var first = true;
               if (position == "second") {
                 first = false;
