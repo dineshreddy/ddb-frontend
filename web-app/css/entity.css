@@ -201,6 +201,12 @@
   margin-top: 15px;
 }
 
+.entity-page .external-dummy-icon {
+  background: url(../images/icons/entity.png) no-repeat 0 0px;  
+  width: 16px;
+  height: 16px;
+}
+
 .entity-page .external-link span {
   margin:  -20px 0 0 20px;
   display: block;

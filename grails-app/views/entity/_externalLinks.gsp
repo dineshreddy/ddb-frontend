@@ -19,9 +19,15 @@ limitations under the License.
     <g:each var="link" in="${entity.sameAs}">      
       <ddb:isValidUrl url="${link.'@id'}">
 	      <li class="external-link">
-	        <a href="${link.'@id'}" rel="external" class="${ link.icon != null ? 'no-external-link-icon' : ''}">
-	          <i class="external-icon"><img src="${link.icon}" alt="" /></i>
-	          <span>${link.name}</span>
+	        <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
+            <g:if test="${ link.icon != null}">
+              <i class="external-icon"><img src="${link.icon}" alt="" /></i>
+              <span>${link.name}</span>
+            </g:if>
+            <g:else>
+              <div class="external-dummy-icon"></div>
+              <span>${link.name}</span>
+            </g:else>
 	        </a>
 	      </li>
       </ddb:isValidUrl>
