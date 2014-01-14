@@ -111,19 +111,14 @@ a[href^="http"]:not (.no-external-link-icon ):not ([href^="http://localhost"]
 .origin {
 	margin-top: 20px;
 }
-.origin span {
-  background: url("../images/icons/objectViewerActions.png") no-repeat;
-  padding-left: 23px;
-  line-height: 20px;
-  background-position: -2px -120px;
-}
+
 origin .show-origin span {
   background: none;
   padding-left: 0;
 }
 .show-origin {
-  padding-left: 17px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
+  padding-left: 20px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -81px;
   margin-right: 10px;
 }
 

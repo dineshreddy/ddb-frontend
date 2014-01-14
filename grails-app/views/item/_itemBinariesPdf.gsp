@@ -21,8 +21,8 @@
           </g:else>
           <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
-            <li><a class="previews" href="${content}"> <img src="${viewerContent}"
-                alt="${(it.preview.title)}" />
+            <li><a class="previews" href="${content}">
+                <rendering:inlinePng bytes="${binariesListViewerContent}" />
             </a></li>
           </g:if>
         </g:each>
@@ -63,7 +63,7 @@
                 <g:set var="type" value="audio" />
               </g:elseif>
               <div class="thumbnail ${type}">
-                <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                <rendering:inlinePng bytes="${binariesListThumbnail}" />
               </div>
             </div>
           </li>
@@ -94,7 +94,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail image">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                      <rendering:inlinePng bytes="${binariesListThumbnail}" />
                     </div>
                   </div>
                 </li>
@@ -128,7 +128,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                      <rendering:inlinePng bytes="${binariesListThumbnail}" />
                     </div>
                   </div>
                 </li>
@@ -162,7 +162,7 @@
                 <li>
                   <div class="group">
                     <div class="thumbnail video">
-                      <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                      <rendering:inlinePng bytes="${binariesListThumbnail}" />
                     </div>
                   </div>
                 </li>

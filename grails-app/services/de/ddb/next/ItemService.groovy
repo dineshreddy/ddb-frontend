@@ -18,6 +18,7 @@ package de.ddb.next
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 
+import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -116,7 +117,7 @@ class ItemService {
      * @param model
      * @return
      */
-    def prepareImagesForPdf(model) {
+    def prepareImagesForPdf(Map model) {
         def baseFolder = System.properties['base.dir'] + '/web-app/'
         def logoHeaderFile = 'images/logoHeader.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
@@ -124,13 +125,30 @@ class ItemService {
 
         def logoResource=new UrlResource(model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
-        
+        //log.info "INSTITUTION IMAGE BYTES " + model.institutionImage
+        def content
+        def viewerContent
         model.binaryList.each{
-            it.thumbnail.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
-            it.preview.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
-            it.full.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
+            if (it.full.uri == '' && it.preview.uri == '') {
+                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
+            }else if (it.full.uri == '') {
+                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
+            }else {
+                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
+            }
+
+            if (it.preview.uri == '') {
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
+            }else {
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
+            }
+            
+            model.put("binariesListContent", content)
+            model.put("binariesListThumbnail", new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes)
+            model.put("binariesListViewerContent", viewerContent)
         }
-        
+
+
         return model
     }
     

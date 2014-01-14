@@ -33,17 +33,22 @@ class ItemController {
             def model = itemService.getFullItemModel(id)
 
             if(params.pdf){
-              // inline images via data uris
-              model = itemService.prepareImagesForPdf(model)
-              
-              renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
-              //render(view: "_itemPdfTable", model: model) (Do not remove for the moment)
+                // inline images via data uris
+                model = itemService.prepareImagesForPdf(model)
+
+                try {
+                    renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
+                } catch (grails.plugin.rendering.document.XmlParseException e) {
+                    log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
+                    forward controller: "error", action: "pdfNotFound"
+                }
+                //render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
-              }
+            }
 
         } catch(ItemNotFoundException infe) {
-            log.error "findById(): Request for nonexisting item with id: '" + params?.id + "'. Going 404..."
+            
             forward controller: "error", action: "itemNotFound"
         }
     }
