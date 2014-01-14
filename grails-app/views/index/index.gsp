@@ -72,7 +72,7 @@ limitations under the License.
           <g:each in="${articles}">
             <div class="span3">
               <a href="${request.contextPath}${it.uri}" title="${it.title}">
-                <img class="article" src="${staticUrl}${it.src}" alt="${it.title}"/>
+                <img class="article" src="${request.contextPath}${it.src}" alt="${it.title}"/>
               </a>
               <div class="caption">
                 <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
@@ -87,7 +87,7 @@ limitations under the License.
             <g:each in="${articles}">
               <div class="article">
                 <a href="${request.contextPath}${it.uri}" title="${it.title}" target="_self">
-                  <img src="${staticUrl}${it.src}" alt="${it.title}" />
+                  <img src="${request.contextPath}${it.src}" alt="${it.title}" />
                 </a>
                 <div class="caption">
                   <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
