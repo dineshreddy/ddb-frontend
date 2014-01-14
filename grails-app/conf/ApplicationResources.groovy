@@ -116,8 +116,10 @@ modules = {
     }
 
     multipolygone {
-        resource url:'/css/Multipolygone.css', bundle: 'screen'
+        resource url:'/js/map/css/map.css', bundle: 'screen'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/multipolygone.js'
+        dependsOn "ddbnext"
     }
 
     autocomplete {
