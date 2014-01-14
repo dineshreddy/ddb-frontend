@@ -51,13 +51,13 @@ $(document).ready(
         }
         
 
-        function getNewSearchResults(query, offset, rows) {
+        function getNewSearchResults(query, offset, rows, entityid) {
           var request = $.ajax({
             type : 'GET',
             dataType : 'json',
             async : true,
             url : jsContextPath + '/entity/ajax/searchresults?query=' + query + '&offset=' + offset
-                + '&rows=' + rows,
+                + '&rows=' + rows + '&entityid=' + entityid,
             complete : function(data) {
               var jsonResponse = $.parseJSON(data.responseText);
               var items = $.parseHTML(jsonResponse.html);
@@ -103,7 +103,7 @@ $(document).ready(
           //History.pushState("", document.title, decodeURI(urlParameters));
 
           // Initialize Search results
-          getNewSearchResults(query, 0, defaultRowCount);
+          getNewSearchResults(query, 0, defaultRowCount, entityid);
           
           updateRoleDivs();
         }
@@ -141,7 +141,7 @@ $(document).ready(
                   History.pushState("", document.title, decodeURI(urlParameters));
 
                   // Initialize Search results
-                  getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
+                  getNewSearchResults(query, currentLoadItems.length, defaultRowCount, entityid);
                 }
               });
 

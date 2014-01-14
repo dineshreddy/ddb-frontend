@@ -27,6 +27,7 @@ public enum SearchParamEnum {
     NORMDATA("normdata"),
     CALLBACK("callback"),
     MINDOCS("minDocs"),
+    ENTITY_ID("entityid"),
 
 
 
