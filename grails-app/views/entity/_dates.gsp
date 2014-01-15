@@ -35,8 +35,8 @@ limitations under the License.
       <div class="dates fields">  
         <g:if test="${hasBirthContent}">
           <div>
-          	<g:message code="ddbnext.Entity_Birth" />: ${entity.person.dateOfBirth}
-            <g:if test="${entity.person.placeOfBirth}">,
+            <g:message code="ddbnext.Entity_Birth" />: 
+            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.value]}" class="search_link">
                 <span>${entity.person.placeOfBirth.value}</span>
               </g:link>
@@ -45,8 +45,8 @@ limitations under the License.
         </g:if>
         <g:if test="${hasDeathContent}">
           <div>
-          	<g:message code="ddbnext.Entity_Death" />: ${entity.person.dateOfDeath}
-            <g:if test="${entity.person.placeOfDeath}">, 
+            <g:message code="ddbnext.Entity_Death" />: 
+            ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}">, 
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.value]}" class="search_link">
                 <span>${entity.person.placeOfDeath.value}</span>
               </g:link>
@@ -55,5 +55,5 @@ limitations under the License.
         </g:if>
       </div>
     </g:if>
-  </div>  
-</g:if>    
+  </div>
+</g:if>
