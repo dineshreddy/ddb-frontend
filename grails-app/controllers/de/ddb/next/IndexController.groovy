@@ -46,7 +46,7 @@ class IndexController {
 
         def articles = retrieveArguments(response)
 
-        render(view: "index", model: [articles: articles, staticUrl: configurationService.getContextUrl()])
+        render(view: "index", model: [articles: articles])
     }
 
     private def retrieveArguments(def content){
