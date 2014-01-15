@@ -112,20 +112,24 @@ limitations under the License.
       	</div>
       	<div class="compare-main">
 	        <div id="compare-object1" class="compare-object">
-	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
-	        	<a class="compare-link">		        	
-		        	<span class="compare-text"></span>
-		        	<img class="compare-img"></img>
-	        	</a>
-	        	<span data-index="1" class="fancybox-toolbar-close"></span>
+            <div class="compare-table">
+  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
+  	        	<a class="compare-link">		        	
+  		        	<span class="compare-text"></span>
+  		        	<img class="compare-img"></img>
+  	        	</a>
+  	        	<span data-index="1" class="fancybox-toolbar-close"></span>
+            </div>
 	        </div>
 	        <div id="compare-object2" class="compare-object">
-	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
-	        	<a class="compare-link">		        	
-		        	<span class="compare-text"></span>
-		        	<img class="compare-img"></img>
-	        	</a>
-	        	<span data-index="2" class="fancybox-toolbar-close"></span>
+            <div class="compare-table">
+  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
+  	        	<a class="compare-link">		        	
+  		        	<span class="compare-text"></span>
+  		        	<img class="compare-img"></img>
+  	        	</a>
+  	        	<span data-index="2" class="fancybox-toolbar-close"></span>
+            </div>
 	        </div>
         </div>
         <div class="compare-footer">
