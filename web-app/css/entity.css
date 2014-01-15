@@ -66,10 +66,13 @@
   margin:10px 0px;
 }
 
+.entity-page .search {
+  padding: 0 0 10px 0;
+}
+
 .entity-page .search-entity {
-  background: url(../images/icons/search.png) no-repeat 0 -145px;
-  min-height: 35px;
-  padding: 0 0 0 35px;
+  background: url(../images/icons/search.png) no-repeat 0 -297px;
+  padding: 0 0 0 20px;
 }
 
 .entity-page .objects, .entity-page .profession-dates {
@@ -196,6 +199,12 @@
 
 .entity-page .external-links ul {
   margin-top: 15px;
+}
+
+.entity-page .external-dummy-icon {
+  background: url(../images/icons/entity.png) no-repeat 0 0px;  
+  width: 16px;
+  height: 16px;
 }
 
 .entity-page .external-link span {
