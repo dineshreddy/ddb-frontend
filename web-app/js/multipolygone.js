@@ -21,7 +21,7 @@ jQuery(document).ready(function($) {
       toProjection: new OpenLayers.Projection("EPSG:900913"), // to Spherical Mercator Projection
       //apiInstitutionsUrl: "/apis/institutionsmap?clusterid=-1",
       apiClusteredInstitutionsUrl: "/apis/clusteredInstitutionsmap",
-      clusters: null,
+      polygon: null,
       waitingLayer: null,
       institutionList: null,
 
@@ -64,13 +64,12 @@ jQuery(document).ready(function($) {
 
           //Centers and zooms the map to the initial point
           var position = this._getLonLat(this.initLon, this.initLat);
-          this.osmMap.setCenter(position, this.initZoom); 
-
-//          //Add the institutions vector layer
-//          this._addInstitutionsLayer();
-
+          this.osmMap.setCenter(position, this.initZoom);
+          
           //Add the multipolygon vector layer
           this._addMultiPolygonLayer();
+//          //Add the institutions vector layer
+//          this._addInstitutionsLayer();
 
 //          //Add the popup functionality to the institutions layer
 //          this._addInstitutionsClickListener();
@@ -84,11 +83,11 @@ jQuery(document).ready(function($) {
           function onTilesLoaded() { //on load finished
 
             //Show the waiting layer 
-            self._showWaitingLayer();
+            //self._showWaitingLayer();
             //Draws the institutions on the vector layer
-            self._drawClustersOnMap();
+            //self._drawClustersOnMap();
             //Hide the waiting layer again
-            self._hideWaitingLayer();
+            //self._hideWaitingLayer();
             //Remove the tiles load listener again. We only want it on initialization.
             tiles.events.unregister("loadend", tiles, onTilesLoaded);
 //            self._loadClusteredInstitutionList(function() { //on clusters loaded
@@ -99,8 +98,8 @@ jQuery(document).ready(function($) {
 //              //Remove the tiles load listener again. We only want it on initialization.
 //              tiles.events.unregister("loadend", tiles, onTilesLoaded);
 //            });
-
           }
+
           if(jQuery.browser.msie && jQuery.browser.version < 9) {
             onTilesLoaded(); // just call immediatelly
           }else{
@@ -118,10 +117,27 @@ jQuery(document).ready(function($) {
         this.vectorLayer = new OpenLayers.Layer.Vector('My Vectors');
         this.osmMap.addLayer(this.vectorLayer);
 
+        //this._loadMultiPolygonWKT();
+        //var polygonFeature = wkt.read(this.polygon);
+
         var polygonFeature = wkt.read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 45 20, 30 5, 10 10, 10 30, 20 35), (30 20, 20 25, 20 15, 30 20)))");
         polygonFeature.geometry.transform(this.osmMap.displayProjection, this.osmMap.getProjectionObject());
         this.vectorLayer.addFeatures([polygonFeature]);
         this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
+      },
+
+      _loadMultiPolygonWKT : function() {
+        $.ajax({
+          type : 'GET',
+          dataType : 'xml',
+          async : true,
+          cache: true,
+          url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/Q57RUQMSOXXKNFKZLOFXIENEUKYHS45W/source?client=DDB-NEXT&oauth_consumer_key",
+          success : function(dataText){
+            var dataXML = XML.parse(dataText);
+            this.polygon = dataXML.geometry;
+          }
+        });
       },
 
       _applyConfiguration : function(config) {
@@ -146,27 +162,26 @@ jQuery(document).ready(function($) {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
 
-      _drawClustersOnMap : function() {
-        this.vectorLayer.removeAllFeatures();
-        if(this.clusters != null) {
-          var zoomLevel = this.osmMap.getZoom(); 
-          if(this.clusters.clusters[zoomLevel] != null) {
-            var clustersToDisplay = this.clusters.clusters[zoomLevel];
-            var institutionCollections = [];
-            for(var i=0;i<clustersToDisplay.length; i++){
-              var clusterItem = clustersToDisplay[i];
-              var lon = clusterItem.x;
-              var lat = clusterItem.y;
-              var radius = clusterItem.radius;
-              var point = new OpenLayers.Geometry.Point(lon, lat);
-              var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.institutions});
-              institutionCollections.push(institutionCollection);
-            }
-
-            this.vectorLayer.addFeatures(institutionCollections);
-          }
-        }
-      },
+//      _drawClustersOnMap : function() {
+//        this.vectorLayer.removeAllFeatures();
+//        if(this.clusters != null) {
+//          var zoomLevel = this.osmMap.getZoom(); 
+//          if(this.clusters.clusters[zoomLevel] != null) {
+//            var clustersToDisplay = this.clusters.clusters[zoomLevel];
+//            var institutionCollections = [];
+//            for(var i=0;i<clustersToDisplay.length; i++){
+//              var clusterItem = clustersToDisplay[i];
+//              var lon = clusterItem.x;
+//              var lat = clusterItem.y;
+//              var radius = clusterItem.radius;
+//              var point = new OpenLayers.Geometry.Point(lon, lat);
+//              var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.institutions});
+//              institutionCollections.push(institutionCollection);
+//            }
+//            this.vectorLayer.addFeatures(institutionCollections);
+//          }
+//        }
+//      },
 
       _createWaitingLayer : function(){
         var mapDiv = $("#"+this.rootDivId);
