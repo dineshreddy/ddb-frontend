@@ -122,7 +122,6 @@ class EntityService {
         def jsonSearchResult = apiResponse.getResponse()
 
         searchPreview["items"] = jsonSearchResult.results?.docs
-        searchPreview["resultCount"] = jsonSearchResult?.numberOfResults
 
         return searchPreview
     }

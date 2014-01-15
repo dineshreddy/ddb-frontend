@@ -33,9 +33,9 @@ limitations under the License.
     <g:set var="previousOffset" value="${0}" />
   </g:if>
 
-  <h3><g:message code="ddbnext.Entity_Objects" />(${searchPreview.resultCount}):</h3>
+  <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
 
-  <div class="carousel">	  
+  <div class="carousel">
     <div id="items">
     <%--      Items are retrived via Javascript	  	  --%>
     </div>
@@ -56,14 +56,14 @@ limitations under the License.
     </g:if>
     <g:if test="${showPictures}">
       <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_002", FacetEnum.AFFILIATE.getName()+"="+searchPreview.linkQuery[(FacetEnum.AFFILIATE.getName())]]]}">
-        <g:message code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})</g:link>  
+        <g:message code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})</g:link>
     </g:if>
     <g:if test="${(showPictures && showVideos) || (showPictures && showAudios)}">
       |
     </g:if>
     <g:if test="${showVideos}">
       <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_005", FacetEnum.AFFILIATE.getName()+"="+searchPreview.linkQuery[(FacetEnum.AFFILIATE.getName())]]]}">
-        <g:message code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})</g:link> 
+        <g:message code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})</g:link>
     </g:if>
     <g:if test="${(showVideos && showAudios)}">
       |
@@ -73,4 +73,4 @@ limitations under the License.
         <g:message code="ddbnext.Entity_All_Audios" /> (${searchPreview.audioCount})</g:link>
     </g:if>
   </div>
-</div>  
+</div>
