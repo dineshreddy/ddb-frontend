@@ -117,13 +117,16 @@
     max-width: 200px;    
 }
 
-
 .entity-page .carousel a.previous:hover {
   background-position: 0 -50px;
 }
 
 .entity-page .carousel a.next {
   background-position: 0 -150px;
+}
+
+.entity-page .media-bar a {
+  text-decoration: underline;
 }
 
 /* carousel controls responsiveness */
