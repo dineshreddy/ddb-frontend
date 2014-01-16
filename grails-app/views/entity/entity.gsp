@@ -30,9 +30,15 @@ limitations under the License.
       <div class="span9">
         <g:render template="name" />
         <g:render template="dates" />
-        <hr>
-        <g:render template="objects" />
-        
+
+        <g:if test="${searchPreview.items.size() > 0 ||
+                      searchPreview.pictureCount > 0 ||
+                      searchPreview.videoCount > 0 ||
+                      searchPreview.audioCount > 0}">
+          <hr>
+          <g:render template="objects" />
+        </g:if>
+
         <g:if test="${searchInvolved.resultCount > 0 || searchInvolvedNormdata.resultCount > 0}">
 	        <hr>
 	        <g:render template="affiliateInvolvedObjects" />
