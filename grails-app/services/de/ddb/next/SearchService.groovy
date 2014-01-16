@@ -955,34 +955,27 @@ class SearchService {
     def checkAndReplaceMediaTypeImages(def searchResult){
         searchResult.results.docs.each {
             def preview = it.preview
-            if(preview.thumbnail == null ||
-            preview.thumbnail instanceof net.sf.json.JSONNull ||
-            preview.thumbnail.toString().trim().isEmpty() ||
-            (preview.thumbnail.toString().startsWith("http://content") &&
-            preview.thumbnail.toString().contains("/placeholder/searchResult"))
-            ){
-                def mediaTypes = []
-                if(preview.media instanceof String){
-                    mediaTypes.add(preview.media)
-                }else{
-                    mediaTypes.addAll(preview.media)
-                }
-                def mediaType = mediaTypes[0]
-                if(mediaType != null){
-                    mediaType = mediaType.toString().toLowerCase().capitalize()
-                }
-                if(mediaType != "Audio" &&
-                mediaType != "Image" &&
-                mediaType != "Institution" &&
-                mediaType != "Sonstiges" &&
-                mediaType != "Text" &&
-                mediaType != "Unknown" &&
-                mediaType != "Video"){
-                    mediaType = "Unknown"
-                }
-                def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-                preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMedia"+mediaType+".png").toString()
+            def mediaTypes = []
+            if(preview.media instanceof String){
+                mediaTypes.add(preview.media)
+            }else{
+                mediaTypes.addAll(preview.media)
             }
+            def mediaType = mediaTypes[0]
+            if(mediaType != null){
+                mediaType = mediaType.toString().toLowerCase().capitalize()
+            }
+            if(mediaType != "Audio" &&
+            mediaType != "Image" &&
+            mediaType != "Institution" &&
+            mediaType != "Sonstiges" &&
+            mediaType != "Text" &&
+            mediaType != "Unknown" &&
+            mediaType != "Video"){
+                mediaType = "Unknown"
+            }
+            def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+            preview.thumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMedia"+mediaType+".png").toString()
         }
         return searchResult
     }
