@@ -1,5 +1,7 @@
 package de.ddb.next
 
+import java.text.Collator
+
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
@@ -383,5 +385,36 @@ class FavoritesviewController {
 		}
 	}
 
+	private boolean isUserLoggedIn() {
+		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+	}
+
+	private User getUserFromSession() {
+		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+	}
+
+	private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
+		allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
+			if (isMainBookmarkFolder(folderAccess(o1))) {
+				return -1
+			}
+			if (isMainBookmarkFolder(folderAccess(o2))) {
+				return 1
+			}
+			return Collator.getInstance(getLocale()).compare(folderAccess(o1).title, folderAccess(o2).title)
+		})
+
+		//Check for empty titles
+		for (def folderInfo : allFoldersInformations) {
+			if(folderAccess(folderInfo).title.trim().isEmpty()){
+				folderAccess(folderInfo).title = "-"
+			}
+		}
+		return allFoldersInformations
+	}
+
+	private Locale getLocale() {
+		return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+	}
 
 }

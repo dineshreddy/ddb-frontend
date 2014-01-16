@@ -3,17 +3,13 @@ package de.ddb.next
 
 import grails.converters.JSON
 
-import java.text.Collator
-
 import org.ccil.cowan.tagsoup.Parser
-import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
 import de.ddb.next.exception.FavoritelistNotFoundException
 
@@ -110,10 +106,6 @@ class FavoritesController {
 		}
 	}
 
-	private Locale getLocale() {
-		return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-	}
-
 	private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
 		if (isUserLoggedIn()) {
 			def List emails = []
@@ -151,28 +143,6 @@ class FavoritesController {
 		}else {
 			redirect(controller: "user", action: "index")
 		}
-	}
-
-
-
-	private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
-		allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
-			if (isMainBookmarkFolder(folderAccess(o1))) {
-				return -1
-			}
-			if (isMainBookmarkFolder(folderAccess(o2))) {
-				return 1
-			}
-			return Collator.getInstance(getLocale()).compare(folderAccess(o1).title, folderAccess(o2).title)
-		})
-
-		//Check for empty titles
-		for (def folderInfo : allFoldersInformations) {
-			if(folderAccess(folderInfo).title.trim().isEmpty()){
-				folderAccess(folderInfo).title = "-"
-			}
-		}
-		return allFoldersInformations
 	}
 
 	private def isMainBookmarkFolder(folder) {
@@ -676,15 +646,6 @@ class FavoritesController {
 		log.info "togglePublish returns " + result
 		render(status: result)
 
-	}
-
-
-	private boolean isUserLoggedIn() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-	}
-
-	private User getUserFromSession() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
 	}
 
 	private String sanitizeTextInput(String input){
