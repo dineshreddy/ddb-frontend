@@ -44,8 +44,8 @@ limitations under the License.
                 <g:message code="ddbnext.Go_Button"/>
               <![endif]-->
             </button>
-            <span class="contextual-help hidden-phone hidden-tablet" 
-                  title="${g.message(code: "ddbnext.Search_Hint", 
+            <span class="contextual-help hidden-phone hidden-tablet"
+                  title="${g.message(code: "ddbnext.Search_Hint",
                                      args: [('<a href="' + createLink(controller: "content",
                                                                       params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
                                             '</a>'],
@@ -57,7 +57,7 @@ limitations under the License.
                                             encodeAs: "none")}">
             </span>
             <div class="tooltip off"></div>
-            <div class="link-adv-search"> 
+            <div class="link-adv-search">
               <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
             </div>
           </g:form>

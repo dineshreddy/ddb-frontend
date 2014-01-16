@@ -29,9 +29,9 @@ $(document).ready(
         });
 
         $('#normdata-subject-checkbox').bind('click', function() {
-          updateRoleDivs();          
-        });        
-        
+          updateRoleDivs();
+        });
+
         function updateRoleDivs() {
           if ($('#normdata-involved-checkbox').is(":checked")) {
             $('#search-involved').hide();
@@ -40,7 +40,7 @@ $(document).ready(
             $('#search-involved').show();
             $('#search-involved-normdata').hide();
           }
-          
+
           if ($('#normdata-subject-checkbox').is(":checked")) {
             $('#search-subject').hide();
             $('#search-subject-normdata').show();
@@ -49,7 +49,6 @@ $(document).ready(
             $('#search-subject-normdata').hide();
           }
         }
-        
 
         function getNewSearchResults(query, offset, rows, entityid) {
           var request = $.ajax({
@@ -61,7 +60,7 @@ $(document).ready(
             complete : function(data) {
               var jsonResponse = $.parseJSON(data.responseText);
               var items = $.parseHTML(jsonResponse.html);
-              
+
               //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
               $.each(items, function(index, value) {
                 if (value.tagName == 'DIV') {
@@ -104,7 +103,6 @@ $(document).ready(
 
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount, entityid);
-          
           updateRoleDivs();
         }
 
@@ -122,10 +120,8 @@ $(document).ready(
                 carouselItems.trigger("next", 1);
 
                 var currentLoadItems = $(".preview-item");
-
                 var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
                 var numberOfVisibleItems = currentVisibleItems.length;
-
                 var currentPosition = carouselItems.triggerHandler("currentPosition");
                 var nextVisbleItem = currentPosition + numberOfVisibleItems;
 
