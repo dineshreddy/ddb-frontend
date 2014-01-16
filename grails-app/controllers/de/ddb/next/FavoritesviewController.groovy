@@ -50,19 +50,19 @@ class FavoritesviewController {
 		// A user want to report this list to DDB
 		if(params.report){
 			reportFavoritesList(user.id, folderId)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return
 		}
 
 		if(params.blockingToken) {
 			blockFavoritesList(user.id, folderId, params.blockingToken)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return
 		}
 
 		if(params.unblockingToken) {
 			unblockFavoritesList(user.id, folderId, params.unblockingToken)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return
 		}
 
@@ -87,7 +87,7 @@ class FavoritesviewController {
 
 		if (totalResults <1){
 
-			def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+			def fullPublicLink = g.createLink(controller: "favoritesview", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
 			render(view: "publicFavorites", model: [
 				selectedFolder: selectedFolder,
@@ -138,29 +138,29 @@ class FavoritesviewController {
 			}
 			def allResultsOrdered = allResultsWithAdditionalInfo //Used in the send-favorites listing
 
-			def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
-			def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
+			def urlsForOrder=[desc:"#",asc:g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])]
+			def urlsForOrderTitle=[desc:"#",asc:g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])]
 			if (order=="asc"){
 				if(by.toString()==ORDER_DATE){
 					allResultsWithAdditionalInfo.sort{ a, b ->
 						a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
 					}
-					urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-					urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrder["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrderTitle["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
 				}else{
 					allResultsWithAdditionalInfo=allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}.reverse()
-					urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-					urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrderTitle["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrder["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
 				}
 			}else{
 				//desc
 				if(by.toString()==ORDER_TITLE){
-					urlsForOrderTitle["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
-					urlsForOrder["asc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrderTitle["asc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"asc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrder["asc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
 					allResultsWithAdditionalInfo.sort{it.label.toLowerCase()}
 				}else{
 					//by date
-					urlsForOrder["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrder["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
 					urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
 				}
 			}
@@ -176,7 +176,7 @@ class FavoritesviewController {
 				sendBookmarkPerMail(params.email,allResultsOrdered)
 			}
 
-			def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+			def fullPublicLink = g.createLink(controller: "favoritesview", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
 			render(view: "publicFavorites", model: [
 				results: resultsItems,
@@ -263,7 +263,7 @@ class FavoritesviewController {
 			}
 			allFoldersInformation = sortFolders(allFoldersInformation) { o -> o.folder }
 
-			def fullPublicLink = g.createLink(controller: "favorites", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
+			def fullPublicLink = g.createLink(controller: "favoritesview", action: "publicFavorites", params: [userId: user.getId(), folderId: folderId])
 
 			if (totalResults <1){
 				render(view: "favorites", model: [
