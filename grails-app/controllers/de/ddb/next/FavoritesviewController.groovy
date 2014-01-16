@@ -161,7 +161,7 @@ class FavoritesviewController {
 				}else{
 					//by date
 					urlsForOrder["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_DATE,userId:user.id,folderId:selectedFolder.folderId])
-					urlsForOrderTitle["desc"]=g.createLink(controller:'favorites',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
+					urlsForOrderTitle["desc"]=g.createLink(controller:'favoritesview',action:'publicFavorites',params:[offset:offset,rows:rows,order:"desc",by:ORDER_TITLE,userId:user.id,folderId:selectedFolder.folderId])
 				}
 			}
 
