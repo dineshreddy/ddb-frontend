@@ -50,7 +50,7 @@ $(document)
               if (position == "second") {
                 first = false;
                 item_title = $(".item-title.second span").text();
-                offset = $(".first #previews-list li").size();
+                offset = $(".first .previews-list li").size();
                 $(".second .previews").each(function() {
                   $(this).attr("data-pos", parseInt($(this).attr("data-pos"))+offset);
                 });
@@ -81,7 +81,7 @@ $(document)
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
-                      $(this).parent().appendTo($(".first #previews-list"));
+                      $(this).parent().appendTo($(".first .previews-list"));
                     }
                   });
                 } else {
@@ -91,7 +91,7 @@ $(document)
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
-                      $(this).parent().appendTo($(".second #previews-list"));
+                      $(this).parent().appendTo($(".second .previews-list"));
                     }
                   });
                 }
@@ -124,11 +124,11 @@ $(document)
             };
             function jwPlayerSetup(content, poster, firstElement) {
               if (firstElement) {
-                if ($(".first #binary-viewer").length === 0) {
+                if ($(".first .binary-viewer").length === 0) {
                   return;
                 }
                 $(".first .previews").parent().addClass("off");
-                $(".first #binary-viewer").append('<div id="jwplayer-container-first"></div>');
+                $(".first .binary-viewer").append('<div id="jwplayer-container-first"></div>');
                 var w = 445;
                 var h = 320;
                 var mediaQueryMatches = 1;
@@ -142,7 +142,7 @@ $(document)
   
                 $.initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function(event) {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
-                    $(".first #binary-viewer").find("[id*='jwplayer']").each(function() {
+                    $(".first .binary-viewer").find("[id*='jwplayer']").each(function() {
                       $(this).attr("unselectable", "on");
                     });
                   }
@@ -160,11 +160,11 @@ $(document)
                   }
                 });
               } else {
-                if ($(".second #binary-viewer").length === 0) {
+                if ($(".second .binary-viewer").length === 0) {
                   return;
                 }
                 $(".second .previews").parent().addClass("off");
-                $(".second #binary-viewer").append('<div id="jwplayer-container-second"></div>');
+                $(".second .binary-viewer").append('<div id="jwplayer-container-second"></div>');
                 var w = 445;
                 var h = 320;
                 var mediaQueryMatches = 1;
@@ -178,7 +178,7 @@ $(document)
   
                 $.initializeJwPlayer("jwplayer-container-second", content, poster, w, h, function(event) {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
-                    $(".second #binary-viewer").find("[id*='jwplayer']").each(function() {
+                    $(".second .binary-viewer").find("[id*='jwplayer']").each(function() {
                       $(this).attr("unselectable", "on");
                     });
                   }
@@ -222,12 +222,12 @@ $(document)
                                 'afterLoad' : function() {
                                   var title = $(this.element).attr('data-caption');
                                   var position = $(this.element).attr('data-pos') + '/'
-                                      + $("#previews-list li").size();
+                                      + $(".previews-list li").size();
                                   $("span.fancybox-toolbar-title").text(title);
                                   $("div.fancybox-pagination span").text(position);
                                 }
                               });
-                      if ($("#previews-list li").size() === 1) {
+                      if ($(".previews-list li").size() === 1) {
                         $(".fancybox-pagination").addClass("off");
                       }
                       return false;
