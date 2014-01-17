@@ -48,19 +48,25 @@
 }
 
 @media (max-width: 979px) {
-.compare .slide-viewer {
+  .compare .slide-viewer {
     margin-left: 15px;
     width: 300px;
   }
 
-.compare #binary-viewer {
+  .compare #binary-viewer {
     width: 300px;
     height: 200px;
   }
 
-.compare .previews img {
+  .compare .previews img {
     max-width: 300px;
     max-height: 200px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .compare .fields .value div {
+    padding-right: 40px;
   }
 }
 
