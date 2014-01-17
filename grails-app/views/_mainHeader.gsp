@@ -79,10 +79,10 @@ limitations under the License.
           </li><!-- /end of help -->
             <ddb:isLoggedIn>
               <li class="">
-                <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
+                <g:link controller="favoritesview" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
                   <li class="">
-                    <g:link controller="favorites" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
+                    <g:link controller="favoritesview" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                   </li>
                   <li class="">
                     <g:link controller="user" action="savedsearches"><g:message code="ddbnext.Searches" /></g:link>
@@ -191,11 +191,11 @@ limitations under the License.
                 <ddb:isLoggedIn>
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
-                    <g:link controller="favorites" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
+                    <g:link controller="favoritesview" action="favorites"><g:message code="ddbnext.MyDDB" /></g:link>
                     <ul>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "favorites", action: "favorites"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="favorites" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
+                        <g:link controller="favoritesview" action="favorites"><g:message code="ddbnext.Favorites" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</ddb:isMappingActive>">
