@@ -26,6 +26,7 @@ limitations under the License.
     <div id="entity-title" class="off">${entity.person.preferredName}</div>
     <a href="#" id="entity-id" data-entityid="${entityId}"></a>
     <g:render template="controls" />
+    <hr>
     <div class="row">
       <div class="span9">
         <g:render template="name" />
