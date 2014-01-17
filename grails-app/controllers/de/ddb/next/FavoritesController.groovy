@@ -42,9 +42,9 @@ class FavoritesController {
 					model:[
 						userId: userId,
 						folderId: folderId,
-						publicLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-						blockingLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-						unblockingLink: g.createLink(controller:"favorites", action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+						publicLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+						blockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+						unblockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
 						selfBaseUrl: configurationService.getSelfBaseUrl()
 					])
 
@@ -702,19 +702,19 @@ class FavoritesController {
 	private boolean handleReportingOrBlocking(User user, String folderId, Map params) {
 		if(params.report){
 			reportFavoritesList(user.id, folderId)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return true
 		}
 
 		if(params.blockingToken) {
 			blockFavoritesList(user.id, folderId, params.blockingToken)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return true
 		}
 
 		if(params.unblockingToken) {
 			unblockFavoritesList(user.id, folderId, params.unblockingToken)
-			redirect(controller: "favorites", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
+			redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
 			return true
 		}
 		return false
