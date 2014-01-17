@@ -31,7 +31,7 @@ limitations under the License.
         <g:render template="name" />
         <g:render template="dates" />
 
-        <g:if test="${searchPreview.items.size() > 0}">
+        <g:if test="${searchPreview.items.size()}">
           <hr>
           <g:render template="objects" />
         </g:if>
