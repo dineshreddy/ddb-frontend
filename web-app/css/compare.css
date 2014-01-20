@@ -47,6 +47,18 @@
   float:none;
 }
 
+.compare .fields .value div {
+  padding-right: 30px;
+}
+
+.compare .institution-name {
+  padding-right: 20px;
+}
+
+.compare .item-title {
+  padding-right: 30px;
+}
+
 @media (max-width: 979px) {
   .compare .slide-viewer {
     margin-left: 15px;
@@ -68,16 +80,4 @@
   .compare .fields .value div {
     padding-right: 40px;
   }
-}
-
-.compare .institution-name {
-  padding-right: 20px;
-}
-
-.compare .item-title {
-  padding-right: 30px;
-}
-
-.compare .fields .value div {
-  padding-right: 30px;
 }
