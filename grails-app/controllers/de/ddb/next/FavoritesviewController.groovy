@@ -238,7 +238,7 @@ class FavoritesviewController {
 
 			// If the folder does not exist (maybe deleted) -> redirect to main favorites folder
 			if(selectedFolder == null){
-				redirect(controller: "user", action: "favorites", id: mainFavoriteFolder.folderId)
+				redirect(controller: "favoritesview", action: "favorites", id: mainFavoriteFolder.folderId)
 				return
 			}
 
