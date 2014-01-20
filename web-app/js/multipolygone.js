@@ -120,7 +120,7 @@ jQuery(document).ready(function($) {
         //this._loadMultiPolygonWKT();
         //var polygonFeature = wkt.read(this.polygon);
 
-        var polygonFeature = wkt.read("MULTIPOLYGON (((40 40, 20 45, 45 30, 40 40)), ((20 35, 45 20, 30 5, 10 10, 10 30, 20 35), (30 20, 20 25, 20 15, 30 20)))");
+        var polygonFeature = wkt.read("MULTIPOLYGON(((8.68321180343628 50.59392260878307,8.68344783782959 50.59345947217545,8.684005737304688 50.59292822163223,8.68467092514038 50.59318703674835,8.684391975402832 50.593350498193814,8.683834075927734 50.59420866147027,8.68321180343628 50.59392260878307)))");
         polygonFeature.geometry.transform(this.osmMap.displayProjection, this.osmMap.getProjectionObject());
         this.vectorLayer.addFeatures([polygonFeature]);
         this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
