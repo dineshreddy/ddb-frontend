@@ -385,14 +385,6 @@ class FavoritesviewController {
 		}
 	}
 
-	private boolean isUserLoggedIn() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-	}
-
-	private User getUserFromSession() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-	}
-
 	private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
 		allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
 			if (isMainBookmarkFolder(folderAccess(o1))) {
