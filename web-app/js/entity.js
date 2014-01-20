@@ -69,6 +69,13 @@ $(document).ready(
               });
 
               allRowCount = jsonResponse.resultCount;
+
+              if ($("#items > div").size() < 5) {
+                $("#previous").addClass("disabled");
+                $("#previous").off('click');
+                $("#next").addClass("disabled");
+                $("#next").off('click');
+              }
             }
           });
 
@@ -163,17 +170,6 @@ $(document).ready(
                 button : "#next"
               }
             });
-            console.log("length "+ carouselItems.length)
-            if (carouselItems.length < 5) {
-              console.log("length+++++++++++++++++++ "+ carouselItems.length);
-              $("#previous").addClass("disabled");
-              $("#previous").attr("disabled", true);
-              $("#next").addClass("disabled");
-              $("#next").attr("disabled", true);
-            } else {
-              $("#previous").attr("disabled", false);
-              $("#next").attr("disabled", false);
-            }
           }
         }
 

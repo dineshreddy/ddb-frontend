@@ -117,20 +117,16 @@
   max-width: 150px;
 }
 
-.entity-page .carousel a.previous:hover {
-  background-position: 0 -50px;
+.entity-page .media-bar a {
+  text-decoration: underline;
 }
 
-.entity-page .carousel a.next {
-  background-position: 0 -150px;
+.entity-page a.previous span, a.next span {
+  display: none;
 }
 
 .entity-page .carousel a.previous, .entity-page .carousel a.next {
   top: 70px;
-}
-
-.entity-page .media-bar a {
-  text-decoration: underline;
 }
 
 .entity-page .carousel a.previous:hover {
@@ -141,20 +137,16 @@
   background-position: 0 -200px;
 }
 
-.entity-page a.previous span,a.next span {
-  display: none;
-}
-
 .entity-page .previous.disabled, .entity-page .next.disabled {
   cursor: default;
 }
 
 .entity-page .previous.disabled, .entity-page .previous.disabled:hover {
-  background-position: 0 -100px;
+  background-position: 0 -100px !important;
 }
 
 .entity-page .next.disabled, .entity-page .next.disabled:hover {
-  background-position: 0 -250px;
+  background-position: 0 -250px !important;
 }
 
 .entity-page .carousel .clearfix {
