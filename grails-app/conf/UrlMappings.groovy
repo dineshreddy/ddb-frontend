@@ -69,7 +69,12 @@ class UrlMappings {
             controller="item"
             action="showXml"
         }
-
+        
+        "/item/sendpdf/$id" {
+            controller="item"
+            action="sendPdf"
+        }
+        
         "/apis/favorites" {
             controller="favorites"
             action="getFavorites"

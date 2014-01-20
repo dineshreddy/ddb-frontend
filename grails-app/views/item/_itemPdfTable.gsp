@@ -59,6 +59,10 @@ h2, h2 a {
 table {
 	margin: 10px auto;
 }
+th, td {
+    vertical-align: top; !important;
+    margin-top:0; 
+}
 
 a {
 	color: #3e3a37;

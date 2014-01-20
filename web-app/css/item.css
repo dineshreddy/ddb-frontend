@@ -32,6 +32,10 @@
   padding-left: 22px;
   background: url(../images/icons/objectViewerActions.png) no-repeat 0 0;
 }
+.sendmail-link {
+  padding-left: 22px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat 0 -200px;
+}
 
 .viewer.dfg {
   padding-left: 22px;
@@ -233,7 +237,7 @@
   font-size: 0.938em;
   margin-bottom: 20px;
 }
-.item-links .link-block, .item-links .favorite {
+.item-links .link-block, .item-links .favorite .sendmail-block{
   display: inline-block;
   margin-right: 10px;
 }
@@ -253,7 +257,7 @@
 }
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
-  .item-links .link-block,
+  .item-links .link-block .sendmail-block,
   .institution img {
     display: none;
   }
@@ -306,4 +310,33 @@
     width: 100%;
     max-width: 724px;
   }
+}
+.popup-sendpdf-dialog-wrapper {
+  width: 360px;
+  height: 150px;
+  background: #fff;
+  position: absolute;
+  box-shadow: 0 10px 48px rgba(50, 50, 50, 0.5);
+  border: 1px solid #ddd;
+  z-index: 100;
+}
+
+.popup-dialog-content input[type="email"] {
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  font-size: 1.063em;
+  font-style: italic;
+  box-shadow: none;
+}
+
+.popup-sendpdf-dialog-wrapper input[type="email"]:focus {
+  border-color: #EFEBE8;
+  box-shadow:none;
+  outline:none;
+}
+
+.popup-sendpdf-dialog-wrapper .btn-padding{
+  position: absolute;
+  top: 110px;
+  right: 16px;
 }

@@ -14,10 +14,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="row item-detail">
-
   <div class="span7 share">
-
-    <ddb:getSocialmediaBody />
   
+    <div class="sendmail-block">
+      <a class="sendmail-link sendmail-link-popup-anchor" href="${createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])}" title="<g:message code="ddbnext.item.sendPdf" />">
+      <span><g:message code="ddbnext.item.sendPdf" /></span>
+      </a>
+    </div>
+    
+    <ddb:getSocialmediaBody />
   </div>
 </div>

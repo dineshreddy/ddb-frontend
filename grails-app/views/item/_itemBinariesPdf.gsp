@@ -62,9 +62,9 @@
               <g:elseif test="${it.orig.uri.audio != ''}">
                 <g:set var="type" value="audio" />
               </g:elseif>
-              <div class="thumbnail ${type}">
+              <div class="thumbnail ${type}"><%--
                 <rendering:inlineJpeg bytes="${binariesListThumbnail}" />
-              </div>
+              --%></div>
             </div>
           </li>
         </g:each>
@@ -93,9 +93,9 @@
               <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
                 <li>
                   <div class="group">
-                    <div class="thumbnail image">
+                    <div class="thumbnail image"><%--
                       <rendering:inlineJpeg bytes="${binariesListThumbnail}" />
-                    </div>
+                    --%></div>
                   </div>
                 </li>
               </g:if>
@@ -127,9 +127,9 @@
               <g:if test="${it.orig.uri.video != '' }">
                 <li>
                   <div class="group">
-                    <div class="thumbnail video">
+                    <div class="thumbnail video"><%--
                       <rendering:inlineJpeg bytes="${binariesListThumbnail}" />
-                    </div>
+                    --%></div>
                   </div>
                 </li>
               </g:if>
@@ -161,9 +161,9 @@
               <g:if test="${it.orig.uri.audio != '' }">
                 <li>
                   <div class="group">
-                    <div class="thumbnail video">
+                    <div class="thumbnail video"><%--
                       <rendering:inlineJpeg bytes="${binariesListThumbnail}" />
-                    </div>
+                    --%></div>
                   </div>
                 </li>
               </g:if>

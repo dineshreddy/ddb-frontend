@@ -16,7 +16,7 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
-        dependsOn "images, cssscreen, cssprint, javascript, autocomplete"
+        dependsOn "images, cssscreen, cssprint, javascript, autocomplete, item"
     }
 
     images {  resource url:'/images/favicon.ico' }
@@ -107,6 +107,9 @@ modules = {
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
 
+    }
+    item{
+        resource url:'/js/persistentSendPdfMailModalDialog.js'
     }
 
     map {

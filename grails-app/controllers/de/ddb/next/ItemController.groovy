@@ -71,4 +71,12 @@ class ItemController {
         response.contentType = "text/xml"
         response.outputStream << itemService.fetchXMLMetadata(itemId)
     }
+    
+    def sendPdf() {
+        def itemId = params.id
+        //Handle PDF Generation Here
+        def message = ["message":"Ok"]
+        
+        render(contentType:"application/json", text: message)
+    }
 }
