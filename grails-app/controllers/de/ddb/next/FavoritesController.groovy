@@ -16,6 +16,8 @@ import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
 
+	private UserController userContr = new UserController()
+
 
 	private def reportFavoritesList(String userId, String folderId){
 		log.info "reportFavoritesList()"
@@ -107,7 +109,7 @@ class FavoritesController {
 	}
 
 	private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
-		if (isUserLoggedIn()) {
+		if (userContr.isUserLoggedIn()) {
 			def List emails = []
 			if (paramEmails.contains(',')){
 				emails=paramEmails.tokenize(',')
