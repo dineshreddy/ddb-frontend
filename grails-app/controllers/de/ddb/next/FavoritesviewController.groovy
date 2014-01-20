@@ -14,6 +14,8 @@ class FavoritesviewController {
 	private final static String ORDER_TITLE = "title"
 	private final static String ORDER_DATE = "date"
 
+	private UserController userContr = new UserController()
+
 	def bookmarksService
 	def favoritesService
 	def configurationService
@@ -207,7 +209,7 @@ class FavoritesviewController {
 
 	def favorites(){
 		log.info "favorites()"
-		if(isUserLoggedIn()){
+		if(userContr.isUserLoggedIn()){
 			def rows=20 //default
 			if (params.rows){
 				rows = params.rows.toInteger()
@@ -216,7 +218,7 @@ class FavoritesviewController {
 			if(params.offset){
 				offset = params.offset.toInteger()
 			}
-			def user = getUserFromSession()
+			def user = userContr.getUserFromSession()
 			def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
 			def folderId = mainFavoriteFolder.folderId
