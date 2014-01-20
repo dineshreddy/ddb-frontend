@@ -17,6 +17,7 @@ import de.ddb.next.exception.FavoritelistNotFoundException
 class FavoritesController {
 
 	private UserController userContr = new UserController()
+	private FavoritesviewController favViewContr = new FavoritesviewController()
 
 
 	private def reportFavoritesList(String userId, String folderId){
@@ -346,7 +347,7 @@ class FavoritesController {
 			def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 			def folders = bookmarksService.findAllFolders(user.getId())
 			folders.find {it.folderId == mainFolder.folderId}.isMainFolder = true
-			folders = sortFolders(folders)
+			folders = favViewContr.sortFolders(folders)
 			folders.each {it.blockingToken = ""} // Don't expose the blockingToken to Javascript
 			log.info "getFavoriteFolders returns " + folders
 			render(folders as JSON)
