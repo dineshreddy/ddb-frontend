@@ -17,6 +17,14 @@ limitations under the License.
 	<div class="object-controls span12">
 		<!-- buttons -->
 		<div class="span6">
+          <ddb:isLoggedIn>
+            <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
+              <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+                <g:message code="ddbnext.favorit" />
+              </span>
+            </span>
+          </ddb:isLoggedIn>
+
 			<a class="page-link page-link-popup-anchor" href="${entityUri}"
 				title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
 				<span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>

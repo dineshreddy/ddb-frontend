@@ -16,8 +16,8 @@ limitations under the License.
 <div class="row">
   <div class="span6 slide-viewer item-detail ${position}">
     <div class="binary-viewer-container">
-      <div id="binary-viewer">
-        <ul id="previews-list">
+      <div class="binary-viewer">
+        <ul class="previews-list">
           <g:set var="counter" value="${0}" />
           <g:each in="${binaryList}">
             <g:if test="${it.full.uri == '' && it.preview.uri == ''}">

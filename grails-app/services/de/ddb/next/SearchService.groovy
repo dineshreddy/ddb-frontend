@@ -959,7 +959,7 @@ class SearchService {
             preview.thumbnail instanceof net.sf.json.JSONNull ||
             preview.thumbnail.toString().trim().isEmpty() ||
             (preview.thumbnail.toString().startsWith("http://content") &&
-            preview.thumbnail.toString().contains("/placeholder/searchResult"))
+            preview.thumbnail.toString().contains("/placeholder/"))
             ){
                 def mediaTypes = []
                 if(preview.media instanceof String){
