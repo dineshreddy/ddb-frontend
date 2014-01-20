@@ -129,7 +129,11 @@
   text-decoration: underline;
 }
 
-/* carousel controls responsiveness */
+.entity-page .thumb hr {
+  display: none;
+}
+
+/* responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
     left: 0px;
@@ -169,8 +173,12 @@
     float: left;
     text-align:left;
   }
+  
+  .entity-page .thumb hr {
+    display: block;
+  }
 }
-/* carousel controls responsiveness - end */
+/* responsiveness - end */
 
 
 .entity-page .carousel a.next:hover {
