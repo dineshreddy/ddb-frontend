@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
 import org.openid4java.discovery.DiscoveryInformation
@@ -48,6 +49,7 @@ class UserController {
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
+    def LinkGenerator grailsLinkGenerator
     def aasService
     def sessionService
     def configurationService
@@ -65,7 +67,7 @@ class UserController {
             loginStatus = LoginStatus.NO_COOKIES
         }
 
-        render(view: "login", model: ['loginStatus': loginStatus])
+        render(view: "login", model: ['loginStatus': loginStatus, 'referrer': params.referrer])
     }
 
     def doLogin() {
@@ -104,7 +106,18 @@ class UserController {
                 messages.add("ddbnext.User.PasswordReset_Change")
                 redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
             } else {
-                redirect(controller: 'favorites', action: 'favorites')
+                if (params.referrer) {
+                    def referrerUrl = params.referrer
+
+                    //Remove the context path from the url, otherwise it will be appear twice in the redirect
+                    def contextLength = grailsLinkGenerator.contextPath.length()
+                    referrerUrl = referrerUrl.substring(contextLength)
+
+                    log.info "redirect to referrer: " + referrerUrl
+                    redirect(uri: referrerUrl)
+                } else {
+                    redirect(controller: 'favorites', action: 'favorites')
+                }
             }
         }else{
             render(view: "login", model: ['loginStatus': loginStatus])

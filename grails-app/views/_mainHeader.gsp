@@ -217,8 +217,8 @@ limitations under the License.
           <div class="span5 toolbar">
             <div class="status-bar">
               <ddb:isNotLoggedIn>
-                <div class="login-wrapper">
-                  <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
+                <div class="login-wrapper">                
+                  <g:link class="login-link" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
                 </div>
               </ddb:isNotLoggedIn>
               <ddb:isLoggedIn>
@@ -227,7 +227,7 @@ limitations under the License.
                   <g:link controller="user" action="profile" class="login-username"><ddb:getUserName /></g:link>
                   <div class="login-dropdown"></div>
                   <ul class="selector logout">
-                    <li><g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
+                    <li><g:link class="logout-link" controller="user" action="doLogout"><g:message code="ddbnext.Logout" /></g:link></li>
                   </ul>
                 </div>
               </ddb:isLoggedIn>

@@ -39,7 +39,7 @@ limitations under the License.
               
               <div class="span4 dialog">
                 <g:form controller="user" action="doLogin">
-                
+                  <g:hiddenField name="referrer" value="${referrer}" />
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
                     <div class="row login-error">
                       <div class="span4"> 
