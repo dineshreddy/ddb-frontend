@@ -122,10 +122,10 @@ class FavoritesService {
                     entity["id"] = it.itemId
                     entity["view"] = []
                     entity["label"] = label
-                    entity["category"] = "entity"
+                    entity["category"] = "Entity"
                     entity["preview"] = [:]
                     entity["preview"]["title"] = label
-                    entity["preview"]["media"] = ["unknown"]
+                    entity["preview"]["media"] = ["entity"]
                     entity["preview"]["thumbnail"] = entityThumbnail
                     allRes.add((net.sf.json.JSONObject) entity)
                 }
