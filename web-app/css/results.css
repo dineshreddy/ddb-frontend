@@ -992,7 +992,14 @@ input[type="checkbox"],input[type="radio"] {
     margin-left: 13px;
     width: 100px;
   }
+      
+  .search-results .results-list .summary .compare {
+    display: none;
+  }
   
+  .search-results .results-list .summary .compare.disabled {
+    display: none;
+  }
 }
 
 @media (min-width: 481px) {
