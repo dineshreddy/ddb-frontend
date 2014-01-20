@@ -148,8 +148,14 @@ $(document).ready(
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
+              width : 800,
+              height : 170,
+              align : false,
               auto : false,
               scroll : 1,
+              items : {
+                  minimum : 1
+              },
               prev : {
                 button : "#previous"
               },
@@ -157,6 +163,17 @@ $(document).ready(
                 button : "#next"
               }
             });
+            console.log("length "+ carouselItems.length)
+            if (carouselItems.length < 5) {
+              console.log("length+++++++++++++++++++ "+ carouselItems.length);
+              $("#previous").addClass("disabled");
+              $("#previous").attr("disabled", true);
+              $("#next").addClass("disabled");
+              $("#next").attr("disabled", true);
+            } else {
+              $("#previous").attr("disabled", false);
+              $("#next").attr("disabled", false);
+            }
           }
         }
 

@@ -133,63 +133,33 @@
   text-decoration: underline;
 }
 
-/* carousel controls responsiveness */
-@media (min-width: 1200px) {
-  .entity-page .carousel a.previous {
-    left: 0px;
-  }
-  .entity-page .carousel a.next {
-    right: 0px;
-  }
-  .entity-page .preview-item {
-    width: 160px;
-  }
+.entity-page .carousel a.previous:hover {
+  background-position: 0 -50px;
 }
-
-@media (min-width: 980px) and (max-width: 1199px) {
-  .entity-page .carousel a.previous {
-    left: -6px;
-  }
-  .entity-page .carousel a.next {
-    right: -10px;
-  }
-}
-
-@media (max-width: 979px) {
-  .entity-page .carousel a.previous {
-    left: -8px;
-  }
-  .entity-page .carousel a.next {
-    right: -12px;
-  }
-}
-
-@media (max-width: 767px) {
-  .entity-page .carousel a.previous {
-    left: -4px;
-  }
-  .entity-page .carousel a.next {
-    right: -8px;
-  }
-
-  .entity-page .header-objects {
-    float: left;
-    text-align:left;
-  }
-}
-/* carousel controls responsiveness - end */
 
 .entity-page .carousel a.next:hover {
   background-position: 0 -200px;
 }
 
+.entity-page a.previous span,a.next span {
+  display: none;
+}
+
+.entity-page .previous.disabled, .entity-page .next.disabled {
+  cursor: default;
+}
+
+.entity-page .previous.disabled, .entity-page .previous.disabled:hover {
+  background-position: 0 -100px;
+}
+
+.entity-page .next.disabled, .entity-page .next.disabled:hover {
+  background-position: 0 -250px;
+}
+
 .entity-page .carousel .clearfix {
   float: none;
   clear: both;
-}
-
-.entity-page a.previous span,a.next span {
-  display: none;
 }
 
 .entity-page .popup-dialog-wrapper {
@@ -252,3 +222,49 @@
 .entity-page #idFavorite {
   margin-right: 10px;
 }
+
+/* carousel controls responsiveness */
+@media (min-width: 1200px) {
+  .entity-page .carousel a.previous {
+    left: 0px;
+  }
+  .entity-page .carousel a.next {
+    right: 0px;
+  }
+  .entity-page .preview-item {
+    width: 160px;
+  }
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+  .entity-page .carousel a.previous {
+    left: -6px;
+  }
+  .entity-page .carousel a.next {
+    right: -10px;
+  }
+}
+
+@media (max-width: 979px) {
+  .entity-page .carousel a.previous {
+    left: -8px;
+  }
+  .entity-page .carousel a.next {
+    right: -12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .entity-page .carousel a.previous {
+    left: -4px;
+  }
+  .entity-page .carousel a.next {
+    right: -8px;
+  }
+
+  .entity-page .header-objects {
+    float: left;
+    text-align:left;
+  }
+}
+/* carousel controls responsiveness - end */
