@@ -93,6 +93,27 @@
   .compare .fields .value div {
     padding-right: 40px;
   }
+
+  .compare .slide-viewer {
+    margin-left: 15px;
+    width: 300px;
+  }
+
+  .compare .binary-viewer-container {
+    width: 290px;
+    margin-left: 8px;
+  }
+
+  .compare .binary-viewer {
+    margin-left: 8px;
+    width: 290px;
+    height: 200px;
+  }
+
+  .compare .previews img {
+    max-width: 300px;
+    max-height: 200px;
+  }
 }
 
 @media (max-width: 979px) {
