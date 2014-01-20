@@ -20,4 +20,8 @@ class MapController {
     def index() {
         render(view: "map", model: [])
     }
+
+    def multipolygone() {
+        render(view: "multipolygone", model: [])
+    }
 }
