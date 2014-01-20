@@ -133,12 +133,12 @@ limitations under the License.
 
                   <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
+                      <g:link controller="favoritesview" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         <g:message code="ddbnext.All_Favorites" />
                       </g:link>
                     </g:if>
                     <g:else>
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
+                      <g:link controller="favoritesview" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         ${it.folder.title.capitalize()}
                       </g:link>
                     </g:else>
