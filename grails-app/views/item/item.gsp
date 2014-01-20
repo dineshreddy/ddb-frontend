@@ -39,8 +39,8 @@ limitations under the License.
         <g:render template="rights" />
         <g:render template="license" />
         <g:render template="origin" />
-        <g:render template="pdfLink" />
-        <g:render template="share" />
+        <%--<g:render template="pdfLink" />
+        --%><g:render template="share" />
       </div>
       <g:if test="${binaryList}">
         <g:render template="binaries" />
