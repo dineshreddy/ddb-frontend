@@ -24,6 +24,10 @@ limitations under the License.
         <g:set var="controller" value="institution" />
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
+    <g:elseif test="${it.category == 'Entity'}">
+        <g:set var="controller" value="entity" />
+        <g:set var="action" value="index" />
+    </g:elseif>
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span5">

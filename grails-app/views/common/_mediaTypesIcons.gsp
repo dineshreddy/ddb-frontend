@@ -37,6 +37,9 @@ limitations under the License.
     <g:if test="${mediaType == 'institution'}">
       <g:set var="mediaTitle"><g:message code="ddbnext.Institution" /></g:set>
     </g:if>
+    <g:if test="${mediaType == 'entity'}">
+      <g:set var="mediaTitle"><g:message code="ddbnext.Entity_MediaTitle" /></g:set>
+    </g:if>
     <li class="${mediaType}" title="${mediaTitle}">${mediaTitle}</li>
   </g:each>
 </ul>
