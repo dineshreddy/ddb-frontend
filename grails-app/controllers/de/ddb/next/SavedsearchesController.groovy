@@ -20,15 +20,14 @@ import de.ddb.next.beans.User
 
 class SavedsearchesController {
 
-	private UserController userContr = new UserController()
-
 	def savedSearchesService
 	def sessionService
+	def favoritesService
 
 	def addSavedSearch() {
 		log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title
 		def result = response.SC_BAD_REQUEST
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.title, request?.JSON?.query)) {
 				result = response.SC_CREATED
@@ -44,7 +43,7 @@ class SavedsearchesController {
 	def deleteSavedSearches() {
 		log.info "deleteSavedSearches(): " + request.JSON
 		def result = response.SC_NOT_FOUND
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
 				result = response.SC_OK
@@ -62,7 +61,7 @@ class SavedsearchesController {
 
 	def getSavedSearches() {
 		log.info "getSavedSearches()"
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def result = savedSearchesService.getSavedSearches(user.getId())
 			log.info "getSavedSearches returns " + result
@@ -76,7 +75,7 @@ class SavedsearchesController {
 
 	def isSavedSearch() {
 		log.info "isSavedSearch()"
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query)
 			log.info "isSavedSearch returns " + result
@@ -95,7 +94,7 @@ class SavedsearchesController {
 
 	def updateSavedSearch() {
 		log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
 			log.info "updateSavedSearch returns " + result
