@@ -266,17 +266,18 @@ origin .show-origin span {
       <td><g:render template="pdfTableInstitution" /></td>
     </tr>
     <tr>
-      <td >
+      <td>
         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail item-content">
           <tr>
-            <g:if test="${binaryList}">
-              <td style="width: 50%;" class="item-description valign-top"><g:render
-                  template="itemdetailsPdf" /></td>
-              <td style="width: 50%;" class="valign-top"><g:render template="itemBinariesPdf" /></td>
-            </g:if>
-            <g:else>
-              <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
-            </g:else>
+            <td style="width: 100%;" class="valign-top"><h2>
+                ${itemTitle}
+              </h2>
+              <g:if test="${binaryList}">
+                <g:render template="itemBinariesPdf" />
+              </g:if></td>
+          </tr>
+          <tr>
+            <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
           </tr>
         </table>
       </td>

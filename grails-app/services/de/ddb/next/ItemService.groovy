@@ -128,31 +128,18 @@ class ItemService {
         //log.info "INSTITUTION IMAGE BYTES " + model.institutionImage
         def content
         def viewerContent
-        model.binaryList.each{
-            if (it.full.uri == '' && it.preview.uri == '') {
-                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
-            }else if (it.full.uri == '') {
-                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
-            }else {
-                content = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
-            }
-
-            if (it.preview.uri == '') {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
-            }else {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
-            }
-            
-            model.put("binariesListContent", content)
-            model.put("binariesListThumbnail", new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes)
-            model.put("binariesListViewerContent", viewerContent)
+        if (model.binaryList.first().preview.uri == '') {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+        }else {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
         }
 
+        model.put("binariesListViewerContent", viewerContent)
 
         return model
     }
-    
-    
+
+
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
         def request = utils.getCurrentRequest()
