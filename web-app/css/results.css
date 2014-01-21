@@ -993,6 +993,13 @@ input[type="checkbox"],input[type="radio"] {
     width: 100px;
   }
   
+  .search-results .results-list .entity .thumbnail img {
+    display: none;
+  }
+  
+  .search-results .results-list .summary-main {
+    min-height: 0;
+  }
 }
 
 @media (min-width: 481px) {
