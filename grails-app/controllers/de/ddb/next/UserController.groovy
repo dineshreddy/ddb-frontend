@@ -924,12 +924,4 @@ class UserController {
 		}
 	}
 
-	private boolean isUserLoggedIn() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-	}
-
-	private User getUserFromSession() {
-		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-	}
-
 }
