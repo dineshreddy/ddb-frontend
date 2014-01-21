@@ -17,7 +17,7 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
-
+import grails.util.Holders
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -117,8 +117,8 @@ class ItemService {
      * @return
      */
     def prepareImagesForPdf(model) {
-        def baseFolder = System.properties['base.dir'] + '/web-app/'
-        def logoHeaderFile = 'images/logoHeader.png'
+        baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
+        def logoHeaderFile = '/logoHeader.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
