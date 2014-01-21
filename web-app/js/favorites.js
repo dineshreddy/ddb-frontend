@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,59 +17,58 @@
 $(function() {
 
   if (jsPageName == "favorites") {
-    
+
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
-    
-    
+    $("#favoritesCopyDialog select").MultiSelect({css_class_selected: "multiselect-selected-folder"});
     $('.page-input').removeClass('off');   
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
-    $("a.noclickfocus").live('mouseup', function () { $(this).blur(); });
-    
+    $("a.noclickfocus").live('mouseup', function() {
+      $(this).blur();
+    });
 
-    $('.page-filter select').change(function(){
+    $('.page-filter select').change(function() {
       var url = updateURLParameter(window.location.href, 'rows', this.value);
       var order = getParam("order");
       url = updateURLParameter(url, 'order', order);
-      window.location.href=url;
+      window.location.href = url;
       return false;
     });
 
     $('#checkall').checkAll('#slaves input:checkbox', {
-      reportTo: function () {
+      reportTo : function() {
         var prefix = this.prop('checked') ? 'un' : '';
         this.next().text(prefix + 'check all');
       }
-    });	
+    });
 
     updateNavigationUrl();
 
-    $('.page-input').keyup(function(e){
-      if(e.keyCode == 13) {
-        if (/^[0-9]+$/.test(this.value)) {
-          if (parseInt(this.value) <= 0) {
-            this.value = 1;
-          }
-          else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-            this.value = $('.result-pages-count').text();
-          }
-        }
-        else {
-          this.value = 1;
-        }
-        $('.page-input').attr('value', this.value);
-        var paramsArray = new Array(new Array('offset', (this.value - 1) * getParam("rows", 20)),
-                                    new Array('rows', getParam("rows", 20)),
-                                    new Array('order', getParam("order")));
-        var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray);
-        window.location.href=newUrl;
+    $('.page-input').keyup(
+        function(e) {
+          if (e.keyCode === 13) {
+            if (/^[0-9]+$/.test(this.value)) {
+              if (parseInt(this.value) <= 0) {
+                this.value = 1;
+              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
+                this.value = $('.result-pages-count').text();
+              }
+            } else {
+              this.value = 1;
+            }
+            $('.page-input').attr('value', this.value);
+            var paramsArray = new Array(
+                new Array('offset', (this.value - 1) * getParam("rows", 20)), new Array('rows',
+                    getParam("rows", 20)), new Array('order', getParam("order")));
+            var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null,
+                paramsArray);
+            window.location.href = newUrl;
 
-      }
-    });
+          }
+        });
 
-    
     /** Delete favorites */
     $('#favorites-remove').submit(function() {
       var selected = new Array();
@@ -83,11 +82,11 @@ $(function() {
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
-        var folderId = $('#folder-list').attr('data-folder-selected')
+        var folderId = $('#folder-list').attr('data-folder-selected');
         var body = {
-            ids : selected,
-            folderId: folderId
-        }
+          ids : selected,
+          folderId : folderId
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -107,23 +106,21 @@ $(function() {
       return false;
     });
 
-    
     /** Send email */
     $(".sendbookmarks").click(function(event) {
       event.preventDefault();
       $('#favoritesModal').modal('show');
       return false;
     });
-    
-    
+
     /** Create folder */
     $('#folder-create').submit(function() {
       $('#folderCreateConfirmDialog').modal('show');
       $('#create-confirm').click(function() {
         var body = {
-          title : $('#folder-create-name').val() ,
+          title : $('#folder-create-name').val(),
           description : $('#folder-create-description').val()
-        }
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -139,20 +136,19 @@ $(function() {
       });
       return false;
     });
-    
-    
+
     /** Delete folder */
     $(".deletefolders").click(function(event) {
-      event.preventDefault()
+      event.preventDefault();
       $('#folderDeleteConfirmDialog').modal('show');
 
       var folderId = $(this).attr('data-folder-id');
-      
+
       $('#delete-confirm').click(function() {
         var body = {
           folderId : folderId,
           deleteItems : $('#folder-delete-check').is(':checked')
-        }
+        };
         jQuery.ajax({
           type : 'POST',
           contentType : "application/json; charset=utf-8",
@@ -167,9 +163,8 @@ $(function() {
         $('#folderDeleteConfirmDialog').modal('hide');
       });
       return false;
-      
-    });
 
+    });
 
     /** Copy favorites */
     $('#favorites-copy').submit(function() {
@@ -177,21 +172,21 @@ $(function() {
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
-      
-      if(selected.length > 0) {
+
+      if (selected.length > 0) {
         $('#favoritesCopyDialog').modal('show');
         $('#copy-confirm').click(function() {
           var selected = new Array();
           $('#slaves input:checked').each(function() {
             selected.push($(this).attr('data-bookmark-id'));
           });
-          
-          var selectedFolders = $('.favorites-copy-selection').val()
-          
+
+          var selectedFolders = $('.favorites-copy-selection').val();
+
           var body = {
-              ids : selected,
-              folders: selectedFolders
-          }
+            ids : selected,
+            folders : selectedFolders
+          };
           jQuery.ajax({
             type : 'POST',
             contentType : "application/json; charset=utf-8",
@@ -211,90 +206,88 @@ $(function() {
       }
       return false;
     });
-    
 
     /** Edit folder */
-    $('.editfolder').click(function(event) {
-      
-      var folderId = $(this).attr('data-folder-id');
-      
-      // First get current values of the folder
-      jQuery.ajax({
-        type : 'GET',
-        contentType : "application/json; charset=utf-8",
-        traditional : true,
-        url : jsContextPath + "/apis/favorites/folder/get/"+folderId,
-        dataType : "json",
-        success : function(data) {
+    $('.editfolder').click(
+        function(event) {
 
-          // Then set the values to the GUI
-          var oldFolderTitle = data.title;
-          var oldFolderDescription = data.description;
-          var isPublic = data.isPublic;
-          var publishingName = data.publishingName;
-          var isBlocked = data.isBlocked;
+          var folderId = $(this).attr('data-folder-id');
 
-          $('#folder-edit-id').val(folderId);
-          $('#folder-edit-name').val(oldFolderTitle);
-          $('#folder-edit-description').val(oldFolderDescription);
-          if(isPublic){
-            $('#folder-edit-privacy-public').attr('checked','checked');
-          }else{
-            $('#folder-edit-privacy-private').attr('checked','checked');
-          }
-          $('#folder-edit-publish-name option[value="'+publishingName+'"]').attr('selected','selected');
-          if(isBlocked){
-            $('#folder-edit-privacy-area').addClass('off');
-          }else{
-            $('#folder-edit-privacy-area').removeClass('off');
-          }
+          // First get current values of the folder
+          jQuery.ajax({
+            type : 'GET',
+            contentType : "application/json; charset=utf-8",
+            traditional : true,
+            url : jsContextPath + "/apis/favorites/folder/get/" + folderId,
+            dataType : "json",
+            success : function(data) {
 
-          
-          $('#folderEditConfirmDialog').modal('show');
-          
-          // Then collect the updated values
-          $('#edit-confirm').click(function() {
-            var isPublic = false;
-            if($('#folder-edit-privacy-public').is(':checked')) {
-              isPublic = true;
-            }
-            
-            var body = {
-              id : $('#folder-edit-id').val(),
-              title : $('#folder-edit-name').val(),
-              description : $('#folder-edit-description').val(),
-              isPublic: isPublic,
-              name: $('#folder-edit-publish-name').find(":selected").val()
-            }
-            jQuery.ajax({
-              type : 'POST',
-              contentType : "application/json; charset=utf-8",
-              traditional : true,
-              url : jsContextPath + "/apis/favorites/folder/edit",
-              data : JSON.stringify(body),
-              dataType : "json",
-              success : function(data) {
-                window.setTimeout('location.reload();', 500);
+              // Then set the values to the GUI
+              var oldFolderTitle = data.title;
+              var oldFolderDescription = data.description;
+              var isPublic = data.isPublic;
+              var publishingName = data.publishingName;
+              var isBlocked = data.isBlocked;
+
+              $('#folder-edit-id').val(folderId);
+              $('#folder-edit-name').val(oldFolderTitle);
+              $('#folder-edit-description').val(oldFolderDescription);
+              if (isPublic) {
+                $('#folder-edit-privacy-public').attr('checked', 'checked');
+              } else {
+                $('#folder-edit-privacy-private').attr('checked', 'checked');
               }
-            });
-            $('#folderEditConfirmDialog').modal('hide');
-          });
-          
-        }
-      });
-      
-      
-      return false;
-    });
+              $('#folder-edit-publish-name option[value="' + publishingName + '"]').attr(
+                  'selected', 'selected');
+              if (isBlocked) {
+                $('#folder-edit-privacy-area').addClass('off');
+              } else {
+                $('#folder-edit-privacy-area').removeClass('off');
+              }
 
-    
+              $('#folderEditConfirmDialog').modal('show');
+
+              // Then collect the updated values
+              $('#edit-confirm').click(function() {
+                var isPublic = false;
+                if ($('#folder-edit-privacy-public').is(':checked')) {
+                  isPublic = true;
+                }
+
+                var body = {
+                  id : $('#folder-edit-id').val(),
+                  title : $('#folder-edit-name').val(),
+                  description : $('#folder-edit-description').val(),
+                  isPublic : isPublic,
+                  name : $('#folder-edit-publish-name').find(":selected").val()
+                };
+                jQuery.ajax({
+                  type : 'POST',
+                  contentType : "application/json; charset=utf-8",
+                  traditional : true,
+                  url : jsContextPath + "/apis/favorites/folder/edit",
+                  data : JSON.stringify(body),
+                  dataType : "json",
+                  success : function(data) {
+                    window.setTimeout('location.reload();', 500);
+                  }
+                });
+                $('#folderEditConfirmDialog').modal('hide');
+              });
+
+            }
+          });
+
+          return false;
+        });
+
     /** Publish folder */
     $('.publishfolder').click(function(event) {
-      
+
       var folderId = $(this).attr('data-folder-id');
       var body = {
         id : folderId
-      }
+      };
 
       jQuery.ajax({
         type : 'POST',
@@ -312,34 +305,37 @@ $(function() {
 
     /** Open comment favorites */
     $('.comment-text-clickanchor').click(function(event) {
-      
+
       var bookmarksId = $(this).attr('data-bookmark-id');
-      var textField = $("#comment-text-"+bookmarksId);
-      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
-      var inputField = $("#comment-input-"+bookmarksId);
-      var buttonField = $("#comment-button-"+bookmarksId);
-      
+      var textField = $("#comment-text-" + bookmarksId);
+      var inputField = $("#comment-input-" + bookmarksId);
+      var buttonField = $("#comment-button-" + bookmarksId);
+
       $(textField).addClass("off");
       $(inputField).removeClass("off");
       $(buttonField).removeClass("off");
       $(inputField).focus();
-      
-      inputField.animate({height: "100px"}, 200, function() {
+
+      inputField.animate({
+        height : "100px"
+      }, 200, function() {
       });
-      
+
       return false;
     });
 
     /** Cancel comment favorites */
     $('.comment-cancel').click(function(event) {
-      
+
       var bookmarksId = $(this).attr('data-bookmark-id');
-      var textField = $("#comment-text-"+bookmarksId);
-      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
-      var inputField = $("#comment-input-"+bookmarksId);
-      var buttonField = $("#comment-button-"+bookmarksId);
-      
-      inputField.animate({height: "20px"}, 200, function() {
+      var textField = $("#comment-text-" + bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-" + bookmarksId);
+      var inputField = $("#comment-input-" + bookmarksId);
+      var buttonField = $("#comment-button-" + bookmarksId);
+
+      inputField.animate({
+        height : "20px"
+      }, 200, function() {
         $(textField).removeClass("off");
         $(inputField).addClass("off");
         $(buttonField).addClass("off");
@@ -347,9 +343,9 @@ $(function() {
 
       var originalComment = $(dynamicTextField).text().trim();
       var defaultMessage = messages.ddbnext.Favorites_Comment_Label().trim();
-      if(originalComment == defaultMessage) {
+      if (originalComment === defaultMessage) {
         $(inputField).val("");
-      }else{
+      } else {
         $(inputField).val(originalComment.trim());
       }
 
@@ -358,17 +354,17 @@ $(function() {
 
     /** Save comment favorites */
     $('.comment-save').click(function(event) {
-      
+
       var bookmarksId = $(this).attr('data-bookmark-id');
-      var textField = $("#comment-text-"+bookmarksId);
-      var dynamicTextField = $("#comment-text-dyn-"+bookmarksId);
-      var inputField = $("#comment-input-"+bookmarksId);
-      var buttonField = $("#comment-button-"+bookmarksId);
+      var textField = $("#comment-text-" + bookmarksId);
+      var dynamicTextField = $("#comment-text-dyn-" + bookmarksId);
+      var inputField = $("#comment-input-" + bookmarksId);
+      var buttonField = $("#comment-button-" + bookmarksId);
 
       var body = {
-        id: bookmarksId,
+        id : bookmarksId,
         text : $(inputField).val()
-      }
+      };
       jQuery.ajax({
         type : 'POST',
         contentType : "application/json; charset=utf-8",
@@ -377,91 +373,88 @@ $(function() {
         data : JSON.stringify(body),
         dataType : "json",
         success : function(data) {
-          
+
           var newInput = $(inputField).val();
-          if(newInput.trim()){
+          if (newInput.trim()) {
             $(dynamicTextField).text(newInput);
-          }else{
+          } else {
             $(dynamicTextField).text(messages.ddbnext.Favorites_Comment_Label);
           }
-          
-          inputField.animate({height: "20px"}, 200, function() {
+
+          inputField.animate({
+            height : "20px"
+          }, 200, function() {
             $(textField).removeClass("off");
             $(inputField).addClass("off");
             $(buttonField).addClass("off");
-            
-            window.setTimeout('location.reload();', 100);            
+
+            window.setTimeout('location.reload();', 100);
           });
-          
+
         }
       });
-      
+
       return false;
     });
-    
-
 
   }
-  
+
 });
 
 function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
-  var queryParameters = {}, queryString = (urlString==null)?currentUrl:urlString,
-      re = /([^&=]+)=([^&]*)/g, m;
+  var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
   while (m = re.exec(queryString)) {
-    var decodedKey = decodeURIComponent(m[1].replace(/\+/g,'%20'));
+    var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
     if (queryParameters[decodedKey] == null) {
       queryParameters[decodedKey] = new Array();
     }
-    queryParameters[decodeURIComponent(m[1].replace(/\+/g,'%20'))].push(decodeURIComponent(m[2].replace(/\+/g,'%20')));
+    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
+        .replace(/\+/g, '%20')));
   }
-  $.each(arrayParamVal, function(key, value){
+  $.each(arrayParamVal, function(key, value) {
     queryParameters[value[0]] = value[1];
   });
   var tmp = jQuery.param(queryParameters, true);
   if (path == null) {
-    return window.location.pathname+'?'+tmp;
-  }
-  else {
-    return path+'?'+tmp;
+    return window.location.pathname + '?' + tmp;
+  } else {
+    return path + '?' + tmp;
   }
 }
 
-function updateNavigationUrl(){
-  $.urlParam = function(name){
+function updateNavigationUrl() {
+  $.urlParam = function(name) {
     var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
     return results[1] || 0;
-  }
-  var offset = getParam( 'offset' ); 
-  if ((offset == null) || (offset<1)){
+  };
+  var offset = getParam('offset');
+  if ((offset == null) || (offset < 1)) {
     $(".page-nav .prev-page").addClass("off");
     $(".page-nav .first-page").addClass("off");
   }
 
-  try{
+  try {
     var offset_endPg = $(".last-page").find('a').attr("href").match(/offset=([0-9]+)/);
     var offset_nextPg = $(".next-page").find('a').attr("href").match(/offset=([0-9]+)/);
-    if(offset_endPg && offset_nextPg){
-      if (parseInt(offset_nextPg[1])>parseInt(offset_endPg[1])){
-        $(".page-nav .next-page").addClass("off");
-        $(".page-nav .last-page").addClass("off");
-      }
+    if (offset_endPg && offset_nextPg && parseInt(offset_nextPg[1]) > parseInt(offset_endPg[1])) {
+      $(".page-nav .next-page").addClass("off");
+      $(".page-nav .last-page").addClass("off");
     }
-  }catch(e){
+  } catch (e) {
     // TODO: the endPg / nextPg throws errors on empty favorites list
   }
 }
 
-function getParam( name )
-{
-  var regexS = "[\\?&]"+name+"=([^&#]*)";
-  var regex = new RegExp( regexS );
+function getParam(name) {
+  var regexS = "[\\?&]" + name + "=([^&#]*)";
+  var regex = new RegExp(regexS);
   var tmpURL = window.location.href;
-  var results = regex.exec( tmpURL );
-  if( results == null )
+  var results = regex.exec(tmpURL);
+  if (results == null) {
     return "";
-  else
+  } else {
     return results[1];
+  }
 }
 
 function getParamWithDefault(name, defaultValue) {
@@ -473,24 +466,22 @@ function getParamWithDefault(name, defaultValue) {
   return result;
 }
 
-function updateURLParameter(url, param, paramVal){
+function updateURLParameter(url, param, paramVal) {
   var newAdditionalURL = "";
   var tempArray = url.split("?");
   var baseURL = tempArray[0];
   var additionalURL = tempArray[1];
   var temp = "";
   if (additionalURL) {
-      tempArray = additionalURL.split("&");
-      for (i=0; i<tempArray.length; i++){
-          if(tempArray[i].split('=')[0] != param){
-              newAdditionalURL += temp + tempArray[i];
-              temp = "&";
-          }
+    tempArray = additionalURL.split("&");
+    for (i = 0; i < tempArray.length; i++) {
+      if (tempArray[i].split('=')[0] != param) {
+        newAdditionalURL += temp + tempArray[i];
+        temp = "&";
       }
+    }
   }
 
   var rows_txt = temp + "" + param + "=" + paramVal;
   return baseURL + "?" + newAdditionalURL + rows_txt;
 }
-
-

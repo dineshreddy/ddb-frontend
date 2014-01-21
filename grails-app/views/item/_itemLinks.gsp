@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@ limitations under the License.
 
 <div class="row">
   <div class="span12 item-links bb">
-    <g:isLoggedIn>
+    <ddb:isLoggedIn>
       <div class="favorite" >
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
@@ -24,15 +24,13 @@ limitations under the License.
           </span>
         </span>
       </div>
-      <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-body">
-          <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-          <g:hasPersonalFavorites>
+      <ddb:isPersonalFavoritesAvailable>
+        <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-body">
+            <p><g:message code="ddbnext.Added_To_Favorites"/></p>
             <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
             <g:select name="favorite-folders" from="" multiple="true"/>
-          </g:hasPersonalFavorites>
-        </div>
-        <g:hasPersonalFavorites>
+          </div>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message code="ddbnext.Close"/>
@@ -41,20 +39,20 @@ limitations under the License.
               <g:message code="ddbnext.Save"/>
             </button>
           </div>
-        </g:hasPersonalFavorites>
-      </div>
-    </g:isLoggedIn>
+        </div>
+      </ddb:isPersonalFavoritesAvailable>
+    </ddb:isLoggedIn>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
-    <g:isLoggedIn>
+    <ddb:isLoggedIn>
       <div class="link-block">
         <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
-              <g:message code="ddbnext.View" />
+          <span><g:message code="ddbnext.View" /></span>
         </g:link>
       </div>
-    </g:isLoggedIn>
+    </ddb:isLoggedIn>
   </div>
 </div>

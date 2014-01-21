@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -21,6 +21,6 @@ limitations under the License.
     ${item.label}
   </g:else>
   <g:if test="${item.hasChildren}">
-    <g:renderItemChilds item="${item.item}" mainItem="${item.mainItem}"/>
+    <ddb:renderHierarchyItemChilds item="${item.item}" mainItem="${item.mainItem}"/>
   </g:if>
 </li>

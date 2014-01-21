@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,25 +13,23 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
 <ol class="unstyled">
-  <!-- TODO: replace br tag with CSS -->
-  <g:each var="item" in="${entity.roleSearch.items}">
-	  <g:link controller="item" action="findById" params="${["id": item.id]}">
+  <g:each var="item" in="${data?.items}">	  
 	  <li class="theme">
-	     <i class="icon-theme"></i>
-	     <span class="item-title">${item.preview.title}</span><br>
+	     <g:link controller="item" action="findById" params="${["id": item.id]}">
+		     <i class="icon-theme"></i>
+		     <span class="item-title">${item.preview.title}</span><br>
+	     </g:link>
 	     <span class="item-subtitle">${item.preview.subtitle}</span><br>
-	  </li>
-	  </g:link>  	
+	  </li>  	
   </g:each>
 </ol>
 
-<g:if test="${entity.roleSearch.resultCount > 0 }">
-	<g:link controller="search" action="results" params="${entity.roleSearch.searchUrlParameter }">
- 	Alle Objekte (${entity.roleSearch.resultCount})
+<g:if test="${data?.resultCount > 0 }">
+	<g:link controller="search" action="results" params="${data?.searchUrlParameter }">
+ 	<span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
 	</g:link>
 </g:if>
-<g:if test="${entity.roleSearch.resultCount <= 0 }">
-	Kein Suchergebnisse
+<g:if test="${data?.resultCount <= 0 }">
+	<g:message code="ddbnext.Entity_No_Search_Result"/>
 </g:if>

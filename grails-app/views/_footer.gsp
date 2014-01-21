@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ limitations under the License.
           <li><g:link controller="content" params="[dir: 'sitemap']"><g:message code="ddbnext.Sitemap"/></g:link></li>
           <li><g:link controller="content" params="[dir: 'contact']"><g:message code="ddbnext.Contact"/></g:link></li>
         </ul>
-        <div class="build"><g:meta name="app.version"/> / <g:backendVersion/></div>
+        <div class="build"><ddb:getFrontendVersion /> / <ddb:getBackendVersion/></div>
       </div>
     </div>
   </div>

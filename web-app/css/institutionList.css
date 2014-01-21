@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,13 +91,13 @@
 }
 
 .icon-institution {
-  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
   position: absolute;
   z-index: -1;
 }
 
 .icon-child-institution {
-  background: url(../images/icons/list_arrows.png) no-repeat 0 -21px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 -21px;
   position: absolute;
   z-index: -1;
 }

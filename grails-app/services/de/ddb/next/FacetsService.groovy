@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,10 @@
  */
 package de.ddb.next
 
-import groovy.json.JsonSlurper
-import static groovyx.net.http.Method.GET
 import static groovyx.net.http.ContentType.JSON
-import net.sf.json.JSONArray
+import static groovyx.net.http.Method.GET
 
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
  * Get facetted searchfields and values for facet from Backend.

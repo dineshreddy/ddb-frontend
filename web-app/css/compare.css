@@ -1,0 +1,134 @@
+/*
+ * Copyright (C) 2014 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+ 
+.compare .compare-header {
+  border: 1px solid #e9e5e2;
+  border-width: 0 0 5px;
+  font-size: 0.938em;
+}
+
+.compare .compare-links {
+  font-size: 1em;
+  margin-bottom: 20px;
+  padding: 10px 0 10px 0;
+}
+
+.compare .compare-links .link-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.compare .compare-links .share-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.compare .compare-body {
+  max-height: 800px;
+  border-right: 6px double #e9e5e2;
+  overflow: scroll;
+  overflow-x: hidden;
+}
+
+.compare .slide-viewer {
+  float:none;
+}
+
+.compare .binary-viewer {
+  width: 445px;
+  height: 323px;
+}
+
+.compare .binary-viewer .previews {
+  outline: none;
+}
+
+.compare .binary-viewer img {
+  cursor: pointer;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+}
+
+.compare .fields .value div {
+    padding-right: 30px;
+}
+
+.compare .institution-name {
+  padding-right: 20px;
+}
+
+.compare .item-title {
+  padding-right: 30px;
+}
+
+.compare .item-title {
+  padding-right: 30px;
+}
+
+.compare .fields .value div {
+  padding-right: 30px;
+}
+
+@media (max-width: 529px) {
+  .compare .binary-viewer {
+    width: 300px;
+    height: 200px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 979px) {
+  .compare .fields .value div {
+    padding-right: 40px;
+  }
+
+  .compare .slide-viewer {
+    margin-left: 15px;
+    width: 300px;
+  }
+
+  .compare .binary-viewer-container {
+    width: 290px;
+    margin-left: 8px;
+  }
+
+  .compare .binary-viewer {
+    margin-left: 8px;
+    width: 290px;
+    height: 200px;
+  }
+
+  .compare .previews img {
+    max-width: 300px;
+    max-height: 200px;
+  }
+}
+
+@media (max-width: 979px) {
+  .compare .slide-viewer {
+    margin-left: 15px;
+    width: 300px;
+  }
+
+  .compare .binary-viewer {
+    width: 300px;
+    height: 200px;
+  }
+
+  .compare .previews img {
+    max-width: 300px;
+    max-height: 200px;
+  }
+}

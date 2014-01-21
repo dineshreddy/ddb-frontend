@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,187 +13,166 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
-  
-  if(jsPageName == "entity"){
-  
-    var defaultRowCount = 10;
-    
-    var allRowCount = 0;
+$(document).ready(
+    function() {
 
-    var offset = 0;
-    
-    $('.normdata_involved_checkbox').bind('click', function() {
-    	var container = $(".works_result");
-	    var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-        var normdata = false;
-        var facetname = 'affiliate_fct_involved';
-        
-    	if($(this).is(":checked")) {
-            normdata = true;
-        }
-    	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
-    });
+      if (jsPageName == "entity") {
 
-    
-    $('.normdata_subject_checkbox').bind('click', function() {
-	    var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-    	var container = $(".themes_result");
-        var normdata = false;
-        var facetname = 'affiliate_fct_subject';
-        
-    	if($(this).is(":checked")) {
-            normdata = true;
-        }
-    	
-    	getRoleBasedSearchResults(container, query, normdata, facetname, entityid, 0, 4);
-    });
-    
-    
-    function getRoleBasedSearchResults(itemContainer, query, normdata, facetname, entityid, offset, rows){
-        var request = $.ajax({
-          type: 'GET',
-          dataType: 'json',
-          async: true,
-          url: jsContextPath+'/entity/ajax/rolesearchresults?query='+query+'&offset='+offset+'&rows='+rows+'&normdata='+normdata+'&facetname='+facetname+'&entityid='+entityid,
-          complete: function(data){
-        	var jsonResponse = $.parseJSON(data.responseText);
-        	
-        	renderRoleBasedSearchResults(itemContainer, jsonResponse);           
+        var defaultRowCount = 10;
+
+        var allRowCount = 0;
+
+        var offset = 0;
+
+        $('#normdata-involved-checkbox').bind('click', function() {
+          updateRoleDivs();
+        });
+
+        $('#normdata-subject-checkbox').bind('click', function() {
+          updateRoleDivs();
+        });
+
+        function updateRoleDivs() {
+          if ($('#normdata-involved-checkbox').is(":checked")) {
+            $('#search-involved').hide();
+            $('#search-involved-normdata').show();
+          } else {
+            $('#search-involved').show();
+            $('#search-involved-normdata').hide();
           }
-        });
-    }
-    
-    function renderRoleBasedSearchResults(itemContainer, jsonResponse) {
-        itemContainer.empty();
-        itemContainer.html(jsonResponse.html);
-    }
-    
-    
-    function getNewSearchResults(query, offset, rows){
-    	var request = $.ajax({
-        type: 'GET',
-        dataType: 'json',
-        async: true,
-        url: jsContextPath+'/entity/ajax/searchresults?query='+query+'&offset='+offset+'&rows='+rows,
-        complete: function(data){          
-          var jsonResponse = $.parseJSON(data.responseText);
-          var items = $.parseHTML(jsonResponse.html);
-          
-          $.each(items, function(index, value) {        	          	  
-        	  if (value.tagName == 'DIV') {
-        		  $("#items").triggerHandler("insertItem", [value, "end", true]);
-        	  }
-          });
-          
-          allRowCount = jsonResponse.resultCount;
+
+          if ($('#normdata-subject-checkbox').is(":checked")) {
+            $('#search-subject').hide();
+            $('#search-subject-normdata').show();
+          } else {
+            $('#search-subject').show();
+            $('#search-subject-normdata').hide();
+          }
         }
-    	});
-      
-    }
-    
-    function getUrlParam(name){
-      name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-      var regexS = "[\\?&]" + name + "=([^&#]*)";
-      var regex = new RegExp(regexS);
-      var results = regex.exec(window.location.hash);
-      
-      if(results == null) {
-        results = regex.exec(window.location.search);
-      }
-      
-      if(results == null) {
-        return "";
-      }else{
-        return decodeURIComponent(results[1].replace(/\+/g, " "));
-      }
-    }
 
-    function initPage(){
-		initCarousel();
-    	
-    	var query = $("#entity-title").html();
-	    var entityid = $("#entity-id").attr("data-entityid");
-	    
-	    var History = window.History;
-	    var urlParameters = "?query="+query+"&offset="+offset+"&rows="+defaultRowCount;
-	    History.pushState("", document.title, decodeURI(urlParameters));  
-	    
-	    //Initialize Search results
-	    getNewSearchResults(query, 0, defaultRowCount);
-	    
-	    //Initialize Search results for facet: affiliate_fct_subject
-	    var containerSubject = $(".themes_result");
-	    var normdata = true;
-	    var facetname = 'affiliate_fct_subject';
-		getRoleBasedSearchResults(containerSubject, query, normdata, facetname, entityid, 0, 4);
-	
-	    //Initialize Search results for facet: affiliate_fct_involved
-	    var containerInvolved = $(".works_result");
-		facetname = 'affiliate_fct_involved';
-		getRoleBasedSearchResults(containerInvolved, query, normdata, facetname, entityid, 0, 4);
-		
+        function getNewSearchResults(query, offset, rows, entityid) {
+          var request = $.ajax({
+            type : 'GET',
+            dataType : 'json',
+            async : true,
+            url : jsContextPath + '/entity/ajax/searchresults?query=' + query + '&offset=' + offset
+                + '&rows=' + rows + '&entityid=' + entityid,
+            complete : function(data) {
+              var jsonResponse = $.parseJSON(data.responseText);
+              var items = $.parseHTML(jsonResponse.html);
 
-    }
-    
-    function initCarousel() {        
-    	var carouselItems = $("#items");
-    	
-    	$('div.carousel').show();
-        
-        if ($(".item .caption").length > 0) {
-            $(".item .caption").dotdotdot({});
-        }
-        
-        $("#next").click(function() {        	
-        	carouselItems.trigger("next", 1);
-        	
-        	var currentLoadItems = $(".preview-item");
-        	
-        	var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
-        	var numberOfVisibleItems = currentVisibleItems.length;
-
-        	var currentPosition = carouselItems.triggerHandler("currentPosition");
-        	var nextVisbleItem = currentPosition + numberOfVisibleItems;
-        	        	        	
-        	//console.log( "The carousel is at number " + currentPosition + " of " + currentLoadItems.length + "items");
-        	
-        	if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
-        	    var query = $("#entity-title").html();
-        	    var entityid = $("#entity-id").attr("data-entityid");
-        	    
-        	    var History = window.History;
-        	    var urlParameters = "?query="+query+"&offset=" + currentLoadItems.length +"&rows=" + defaultRowCount;
-        	    History.pushState("", document.title, decodeURI(urlParameters));  
-        	    
-        	    //Initialize Search results
-        	    getNewSearchResults(query, currentLoadItems.length, defaultRowCount);
-        	}        	
-        });
-        
-        $("#previous").click(function() {
-        	carouselItems.trigger("prev", 1);
-        });
-        
-        
-        if (carouselItems.length) {
-            carouselItems.carouFredSel({
-                infinite: false,
-                auto: false,
-                scroll: 1,
-                prev    : {
-                    button : "#previous"
-                },
-                next    : { 
-                    button  : "#next"
+              //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
+              $.each(items, function(index, value) {
+                if (value.tagName == 'DIV') {
+                  $("#items").triggerHandler("insertItem", [ value, "end", true ]);
                 }
-            });
+              });
+
+              allRowCount = jsonResponse.resultCount;
+
+              if ($("#items > div").size() < 5) {
+                $("#previous").addClass("disabled");
+                $("#previous").off('click');
+                $("#next").addClass("disabled");
+                $("#next").off('click');
+              }
+            }
+          });
+
         }
-    }
-    
-    initPage();    
-  }
-});
+
+        function getUrlParam(name) {
+          name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+          var regexS = "[\\?&]" + name + "=([^&#]*)";
+          var regex = new RegExp(regexS);
+          var results = regex.exec(window.location.hash);
+
+          if (results == null) {
+            results = regex.exec(window.location.search);
+          }
+
+          if (results == null) {
+            return "";
+          } else {
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+          }
+        }
+
+        function initPage() {
+          initCarousel();
+
+          var query = $("#entity-title").html();
+          var entityid = $("#entity-id").attr("data-entityid");
+
+          //var History = window.History;
+          //var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
+          //History.pushState("", document.title, decodeURI(urlParameters));
+
+          // Initialize Search results
+          getNewSearchResults(query, 0, defaultRowCount, entityid);
+          updateRoleDivs();
+        }
+
+        function initCarousel() {
+          var carouselItems = $("#items");
+
+          $('div.carousel').show();
+
+          if ($(".item .caption").length > 0) {
+            $(".item .caption").dotdotdot({});
+          }
+
+          $("#next").click(
+              function() {
+                carouselItems.trigger("next", 1);
+
+                var currentLoadItems = $(".preview-item");
+                var currentVisibleItems = carouselItems.triggerHandler("currentVisible");
+                var numberOfVisibleItems = currentVisibleItems.length;
+                var currentPosition = carouselItems.triggerHandler("currentPosition");
+                var nextVisbleItem = currentPosition + numberOfVisibleItems;
+
+                // console.log( "The carousel is at number " + currentPosition +
+                // " of " + currentLoadItems.length + "items");
+
+                if ((nextVisbleItem > (currentLoadItems.length - 1))
+                    && (currentLoadItems.length < allRowCount)) {
+                  var query = $("#entity-title").html();
+                  var History = window.History;
+                  var urlParameters = "?query=" + query + "&offset=" + currentLoadItems.length
+                      + "&rows=" + defaultRowCount;
+                  History.pushState("", document.title, decodeURI(urlParameters));
+
+                  // Initialize Search results
+                  getNewSearchResults(query, currentLoadItems.length, defaultRowCount, entityid);
+                }
+              });
+
+          $("#previous").click(function() {
+            carouselItems.trigger("prev", 1);
+          });
+
+          if (carouselItems.length) {
+            carouselItems.carouFredSel({
+              infinite : false,
+              width : 800,
+              height : 170,
+              align : false,
+              auto : false,
+              scroll : 1,
+              items : {
+                  minimum : 1
+              },
+              prev : {
+                button : "#previous"
+              },
+              next : {
+                button : "#next"
+              }
+            });
+          }
+        }
+
+        initPage();
+      }
+    });

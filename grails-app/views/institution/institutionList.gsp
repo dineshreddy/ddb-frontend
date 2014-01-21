@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ limitations under the License.
       <div class="off">
     </noscript>
     <div class="loader">
-      <img alt="" src="../images/icons/loader_small.gif">
+      <img alt="" src="../images/icons/loaderSmall.gif">
     </div>
     <noscript>
       </div>

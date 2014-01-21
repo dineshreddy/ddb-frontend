@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,10 @@
 
 package de.ddb.next.filter
 
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.UnsupportedEncodingException
 import java.security.Principal
-import java.util.Collection
-import java.util.Enumeration
-import java.util.Locale
-import java.util.Map
 
 import javax.servlet.AsyncContext
 import javax.servlet.DispatcherType
-import javax.servlet.Filter
-import javax.servlet.FilterChain
-import javax.servlet.FilterConfig
 import javax.servlet.RequestDispatcher
 import javax.servlet.ServletContext
 import javax.servlet.ServletException

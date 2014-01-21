@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,31 +22,32 @@ modules = {
     images {  resource url:'/images/favicon.ico' }
 
     cssscreen {
-        resource url:'/css/bootstrap.css', bundle: 'screen'
-        resource url:'/css/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap.css', bundle: 'screen'
+        resource url:'/css/vendor/bootstrap-2.2.2/lib/bootstrap-responsive.css', bundle: 'screen'
+        resource url:'/css/vendor/fancybox-2.1.4/lib/jquery.fancybox-2.1.4.css', bundle: 'screen'
         resource url:'/css/ddb.css', bundle: 'screen'
         resource url:'/css/item.css', bundle: 'screen'
         resource url:'/css/institutionList.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
-        resource url:'/css/institution-map.css', bundle: 'screen'
+        resource url:'/css/institutionMap.css', bundle: 'screen'
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/favorites.css', bundle: 'screen'
-        resource url:'/css/staticcontent.css', bundle: 'screen'
+        resource url:'/css/staticContent.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/institution.css', bundle: 'screen'
-        resource url:'/css/jquery.fancybox.css', bundle: 'screen'
         resource url:'/css/viewer.css', bundle: 'screen'
-        resource url:'/css/item-hierarchy.css', bundle: 'screen'
+        resource url:'/css/itemHierarchy.css', bundle: 'screen'
         resource url:'/css/modalDialog.css', bundle: 'screen'
-        resource url:'/css/advancedsearch.css', bundle: 'screen'
+        resource url:'/css/advancedSearch.css', bundle: 'screen'
         resource url:'/css/entity.css', bundle: 'screen'
         resource url:'/css/registration.css', bundle: 'screen'
-        resource url:'/css/user-profile.css', bundle: 'screen'
+        resource url:'/css/userProfile.css', bundle: 'screen'
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
-        resource url:'/css/saved-searches.css', bundle: 'screen'
-        resource url:'/css/socialmedia.css', bundle: 'screen'
-        resource url:'/css/apikey.css', bundle: 'screen'
+        resource url:'/css/savedSearches.css', bundle: 'screen'
+        resource url:'/css/socialMedia.css', bundle: 'screen'
+        resource url:'/css/apiKey.css', bundle: 'screen'
+        resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
     }
@@ -62,69 +63,88 @@ modules = {
     }
 
     javascript {
-        resource url:'/js/jquery-1.8.2.min.js'
-        resource url:'/js/jquery.dotdotdot-1.5.1.js'
-        resource url:'/js/jquery.carouFredSel-6.2.0-packed.js'
-        resource url:'/js/vendor/bootstrap.js'
-        resource url:'/js/vendor/bootstrap-collapse.js'
-        resource url:'/js/vendor/bootstrap-button.js'
-        resource url:'/js/vendor/bootstrap-modal.js'
-        resource url:'/js/vendor/bootstrap-multiselect.js'
-        resource url:'/js/vendor/jquery.validate.min.js'
-        // resource url:'/js/vendor/respond.src.js'
-        resource url:'/js/jquery.fancybox.pack.js'
-        resource url:'/js/jquery.checkall.js'
-        resource url:'/js/jquery.cookies.2.2.0.min.js'
-        resource url:'/js/SocialMediaManager.js'
-        resource url:'/js/StringBuilder.js'
-        resource url:'/js/underscore-min.js'
-        resource url:'/jwplayer/jwplayer.js'
-        resource url:'/js/jwplayer-key.js'
-        resource url:'/js/large-cookie.js'
+        resource url:'/js/vendor/jquery-1.8.2/jquery-1.8.2.min.js'
+        resource url:'/js/vendor/jquery.dotdotdot-1.5.1/jquery.dotdotdot-1.5.1.js'
+        resource url:'/js/vendor/jquery.carouFredSel-6.2.0/jquery.carouFredSel-6.2.0-packed.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-collapse.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-button.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-modal.js'
+        resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-multiselect.js'
+        resource url:'/js/vendor/jquery.validate-1.11.1/jquery.validate.min.js'
+        resource url:'/js/vendor/jquery.fancybox-2.1.4/jquery.fancybox.pack.js'
+        resource url:'/js/vendor/jquery.checkall-1.4/jquery.checkall.js'
+        resource url:'/js/vendor/jquery.cookies-2.2.0/jquery.cookies.2.2.0.min.js'
+        resource url:'/js/vendor/jquery.multiselect-1.1/jquery.multiselect-1.1.min.js'
+        // resource url:'/js/vendor/respond-1.1.0/respond.src.js'
+        resource url:'/js/socialMediaManager.js'
+        resource url:'/js/stringBuilder.js'
+        resource url:'/js/vendor/underscore-1.3.1/underscore-min.js'
+        resource url:'/js/vendor/jwplayer-6.2.3115/jwplayer.js'
+        resource url:'/js/jwplayerKey.js'
+        resource url:'/js/largeCookie.js'
         resource url:'/js/header.js'
         resource url:'/js/tooltip.js'
-        resource url:'/js/json2.js'
-        resource url:'/js/global-variables.js'
-        resource url:'/js/global-scripts.js'
-        resource url:'/js/institution-list.js'
-        resource url:'/js/start-page.js'
-        resource url:'/js/item-hierarchy.js'
-        resource url:'/js/persistent-links-modal-dialog.js'
-        resource url:'/js/binaries-viewer.js'
-        resource url:'/js/advanced-search-page.js'
-        resource url:'/js/search-results.js'
+        resource url:'/js/vendor/json2-2010.11.17/json2.js'
+        resource url:'/js/globalVariables.js'
+        resource url:'/js/globalScripts.js'
+        resource url:'/js/institutionList.js'
+        resource url:'/js/startPage.js'
+        resource url:'/js/itemHierarchy.js'
+        resource url:'/js/persistentLinksModalDialog.js'
+        resource url:'/js/binariesViewer.js'
+        resource url:'/js/advancedSearchPage.js'
+        resource url:'/js/searchResults.js'
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
         resource url:'/js/changeFavorite.js'
         resource url:'/js/profile.js'
-        resource url:'/js/passwordchange.js'
-        resource url:'/js/vendor/history.js/scripts/bundled/html4+html5/jquery.history.js'
+        resource url:'/js/passwordChange.js'
+        resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
-        resource url:'/js/saved-searches.js'
+        resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
+        resource url:'/js/compare.js'
+
+    }
+
+    map {
+        resource url:'/js/map/css/map.css', bundle: 'screen'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/map.js'
+    }
+
+    multipolygone {
+        resource url:'/js/map/css/map.css', bundle: 'screen'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/multipolygone.js'
+        dependsOn "ddbnext"
     }
 
     autocomplete {
-        resource url:'/css/autocomplete/css/blitzer/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
-        resource url:'/js/autocomplete/js/jquery-ui-1.10.2.custom.min.js'
-        resource url:'/js/myautocomplete.js'
+        resource url:'/css/vendor/autocomplete-1.10.2/jquery-ui-1.10.2.custom.min.css', bundle: 'screen'
+        resource url:'/js/vendor/autocomplete-1.10.2/js/jquery-ui-1.10.2.custom.min.js'
+        resource url:'/js/myAutocomplete.js'
     }
+
     // These are page specific bundles which should be merged back into ddbnext in the second step
 
     startpage {
-        resource url:'/css/start-page.css', bundle: 'startpage'
-        resource url:'/css/start-page.css', attrs:[media:'print'], bundle: 'startpageprint'
+        resource url:'/css/startPage.css', bundle: 'startpage'
+        resource url:'/css/startPage.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
     //These are pages that include third party components
     institution {
-        resource url:'/js/InstitutionsMapAdapter.js'
+        dependsOn "ddbnext"
+        resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
-        resource url:'/js/InstitutionsMapAdapter.js'
+        dependsOn "ddbnext"
+        resource url:'/js/institutionsMapAdapter.js'
         resource url:'/third-party/map/geotemco_InstitutionsMap.js'
     }
 

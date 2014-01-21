@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,6 +24,10 @@ limitations under the License.
         <g:set var="controller" value="institution" />
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
+    <g:elseif test="${it.category == 'Entity'}">
+        <g:set var="controller" value="entity" />
+        <g:set var="action" value="index" />
+    </g:elseif>
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span5">
@@ -33,13 +37,13 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
-                <a title="${truncateHovercardTitle(title: it.label, length: 350)}">
-                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                <a title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
+                  <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </a>
               </g:if>
               <g:else>
-                <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${truncateHovercardTitle(title: it.label, length: 350)}">
-                  <g:truncateItemTitle title="${ it.preview.title }" length="${ 100 }"></g:truncateItemTitle>
+                <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]" title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
+                  <ddb:getTruncatedItemTitle title="${ it.preview.title }" length="${ 100 }" />
                 </g:link>
               </g:else>
             </h2>
@@ -51,18 +55,18 @@ limitations under the License.
             </div>
           </div>
           <div class="extra">
-            <g:mediaTypesListRender mediaTypesArray="${it.preview.media}"></g:mediaTypesListRender>
+            <ddb:renderMediaTypesList mediaTypesArray="${it.preview.media}"></ddb:renderMediaTypesList>
           </div>
         </div>
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
             <a>
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </a>
           </g:if>
           <g:else>
             <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:link>
           </g:else>
         </div>

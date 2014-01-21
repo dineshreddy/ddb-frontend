@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
 import org.openid4java.discovery.DiscoveryInformation
@@ -33,6 +34,11 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.LoginStatus
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
+import de.ddb.next.constants.SupportedOpenIdProviders
+import de.ddb.next.constants.UserStatus
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
 import de.ddb.next.exception.ConflictException
@@ -43,6 +49,7 @@ class UserController {
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
     private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
+    def LinkGenerator grailsLinkGenerator
     def aasService
     def sessionService
     def configurationService
@@ -50,6 +57,7 @@ class UserController {
     def searchService
     def newsletterService
     def savedSearchesService
+    def savedSearchService
     def bookmarksService
 
     def index() {
@@ -59,7 +67,7 @@ class UserController {
             loginStatus = LoginStatus.NO_COOKIES
         }
 
-        render(view: "login", model: ['loginStatus': loginStatus])
+        render(view: "login", model: ['loginStatus': loginStatus, 'referrer': params.referrer])
     }
 
     def doLogin() {
@@ -98,7 +106,18 @@ class UserController {
                 messages.add("ddbnext.User.PasswordReset_Change")
                 redirect(controller: "user", action: "passwordChangePage", params:[messages: messages])
             } else {
-                redirect(controller: 'favorites', action: 'favorites')
+                if (params.referrer) {
+                    def referrerUrl = params.referrer
+
+                    //Remove the context path from the url, otherwise it will be appear twice in the redirect
+                    def contextLength = grailsLinkGenerator.contextPath.length()
+                    referrerUrl = referrerUrl.substring(contextLength)
+
+                    log.info "redirect to referrer: " + referrerUrl
+                    redirect(uri: referrerUrl)
+                } else {
+                    redirect(controller: 'favorites', action: 'favorites')
+                }
             }
         }else{
             render(view: "login", model: ['loginStatus': loginStatus])
@@ -124,19 +143,19 @@ class UserController {
         if (isUserLoggedIn()) {
             def user = getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
-            def offset = params.offset ? params.offset.toInteger() : 0
-            def rows = params.rows ? params.rows.toInteger() : 20
+            def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
+            def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
             def urlsForOrder
 
             if (!params.criteria) {
                 params.criteria = "creationDate"
             }
-            if (!params.order) {
-                params.order = "desc"
+            if (!params[SearchParamEnum.ORDER.getName()]) {
+                params[SearchParamEnum.ORDER.getName()] = "desc"
             }
             if (params.criteria == "creationDate") {
-                if (params.order == "asc") {
+                if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                     savedSearches.sort {a, b -> a.creationDate <=> b.creationDate}
                 }
                 else {
@@ -144,7 +163,7 @@ class UserController {
                 }
             }
             else {
-                if (params.order == "asc") {
+                if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                     savedSearches.sort {a, b -> a.label.toLowerCase() <=> b.label.toLowerCase()}
                 }
                 else {
@@ -154,24 +173,24 @@ class UserController {
             if (totalPages * rows < savedSearches.size()) {
                 totalPages++
             }
-            if (params.order == "asc") {
+            if (params[SearchParamEnum.ORDER.getName()] == "asc") {
                 urlsForOrder = [
                     desc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "desc"]),
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "desc"]),
                     asc: "#"
                 ]
             } else {
                 urlsForOrder = [
                     desc: "#",
                     asc: g.createLink(controller: "user", action: "savedsearches",
-                    params: [offset: 0, rows: rows, order: "asc"])
+                    params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "asc"])
                 ]
             }
             render(view: "savedsearches", model: [
                 dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
-                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params.order, totalPages),
+                paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params[SearchParamEnum.ORDER.getName()], totalPages),
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 rows: rows,
                 totalPages: totalPages,
@@ -568,6 +587,15 @@ class UserController {
             }
             try {
                 aasService.deletePerson(user.id)
+
+                //remove all saved searches
+                log.info "delete SavedSearches"
+                savedSearchService.deleteSavedSearchesByUserId(user.id)
+
+                //remove all bookmark related content
+                log.info "delete bookmark content"
+                bookmarksService.deleteAllUserContent(user.id)
+
             } catch (AuthorizationException e) {
                 forward controller: "error", action: "auth"
             }
@@ -839,9 +867,11 @@ class UserController {
             aasService.updatePerson(user.getId(), aasUser)
             user.setApiKey(null)
 
-            flash.message = "ddbnext.Api_Deleted"
+            List<String> messages = []
+            List<String> errors = []
+            messages.add("ddbnext.Api_Deleted")
 
-            redirect(controller: 'user', action: 'showApiKey')
+            redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
             redirect(controller:"user", action:"index")
         }
@@ -902,7 +932,16 @@ class UserController {
 
         if(mainFavoriteFolder == null){
             def publishingName = user.getUsername()
-            def folderId = bookmarksService.newFolder(user.getId(), FolderConstants.MAIN_BOOKMARKS_FOLDER.getValue(), false, publishingName)
+            Folder newFolder = new Folder(
+                    null,
+                    user.getId(),
+                    FolderConstants.MAIN_BOOKMARKS_FOLDER.getValue(),
+                    "",
+                    false,
+                    publishingName,
+                    false,
+                    "")
+            String folderId = bookmarksService.createFolder(newFolder)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }

@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,6 +36,9 @@ limitations under the License.
     </g:if>
     <g:if test="${mediaType == 'institution'}">
       <g:set var="mediaTitle"><g:message code="ddbnext.Institution" /></g:set>
+    </g:if>
+    <g:if test="${mediaType == 'entity'}">
+      <g:set var="mediaTitle"><g:message code="ddbnext.Entity_MediaTitle" /></g:set>
     </g:if>
     <li class="${mediaType}" title="${mediaTitle}">${mediaTitle}</li>
   </g:each>

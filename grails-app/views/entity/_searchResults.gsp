@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,23 +14,20 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:each var="item" in="${entity.searchPreview.items}">   
-    <div class="preview-item">    
-      <g:link controller="item" action="findById" params="${["id": item.id]}">
-        
-        <g:if test="${item.preview.thumbnail != null}">        
-	        <g:if test="${ (item.preview.thumbnail.toString().contains('binary'))}">       
-	        	<img src="${request.getContextPath() + item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
-	        </g:if>
-	        <g:else>       
-	        	<img src="${item.preview.thumbnail}" title="<g:removeTags>${item.preview.title}</g:removeTags>" alt="<g:removeTags>${item.preview.title}</g:removeTags>" /> 
-	        </g:else>
+<g:each var="item" in="${entity?.searchPreview?.items}">
+    <div class="preview-item">
+      <g:link controller="item" action="findById" params="${["id": item?.id]}">
+        <g:if test="${ (item?.preview?.thumbnail.toString().contains('binary'))}">
+          <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
         </g:if>
-        
+        <g:else>
+          <img src="${request.getContextPath() + '/images/placeholder/searchResultMediaText.png'} " title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
+        </g:else>
       </g:link>
-	  
-	  <div class="caption">
-	  	<g:truncateItemTitle title="${item.preview.subtitle}" length="${ 40 }"></g:truncateItemTitle>        
+      <div class="caption">
+        <g:link controller="item" action="findById" params="${["id": item?.id]}">
+          <ddb:getTruncatedItemTitle title="${item?.preview?.title}" length="${ 40 }" />
+        </g:link>
       </div>
     </div>
 </g:each>

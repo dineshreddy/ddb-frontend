@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,16 +21,16 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 
+import de.ddb.next.constants.SupportedLocales
+
 class ApisController {
 
     def apisService
     def configurationService
+    def institutionService
 
     def search() {
         def resultList = [:]
-        def facets = []
-        def highlightedTerms = []
-        def correctedQuery = ""
         def docs = []
         def query = apisService.getQueryParameters(params)
 
@@ -109,6 +109,44 @@ class ApisController {
         def jsonResp = apiResponse.getResponse()
         render (contentType:"text/json"){jsonResp}
     }
+
+    def clusteredInstitutionsmap(){
+
+        int cacheValidInDays = 1
+
+        // parse selected sector information from request
+        def selectedSectors = params.selectedSectors
+        def sectors = selectedSectors.tokenize(',[]')
+        for(int i=0; i<sectors.size(); i++){
+            sectors[i] = sectors[i].replaceAll("\"", "")
+        }
+
+        // get all available institutions from cortex
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def institutions = apiResponse.getResponse()
+
+        // get the clustered institutions
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays)
+
+        // set cache headers for caching the ajax request
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
+        Calendar expiresDate = Calendar.getInstance()
+        response.addHeader("Last-Modified", dateFormatter.format(expiresDate.getTime()))
+        expiresDate.add(Calendar.DAY_OF_MONTH, cacheValidInDays)
+        response.addHeader("Expires", dateFormatter.format(expiresDate.getTime()))
+        response.addHeader("Cache-Control", "max-age="+(cacheValidInDays*24*60*60))
+        response.addHeader("Pragma", "cache")
+
+
+        // render the data as json
+        render (contentType:"text/json"){clusteredInstitutions}
+    }
+
+
 
     /**
      * This function should be obsolete once the

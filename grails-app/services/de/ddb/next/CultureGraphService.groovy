@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,13 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.util.WebUtils
+import de.ddb.next.constants.CultureGraphEnum
 
+/**
+ * Service class for accesing the CultureGraphService
+ * 
+ * @author boz
+ */
 class CultureGraphService {
 
     public final static String GND_URI_PREFIX = "http://d-nb.info/gnd/"
@@ -26,9 +31,12 @@ class CultureGraphService {
     def transactional=false
 
     def getCultureGraph(String gndId) {
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId)
+        def query = [:]
+        query[CultureGraphEnum.THUMB_WIDTH.getName()]=270
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId, false, query)
         if(!apiResponse.isOk()){
             log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
+            //throw new CultureGraphException(apiResponse.getException().getMessage())
             return null
         }
 

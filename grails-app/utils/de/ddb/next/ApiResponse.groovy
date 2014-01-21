@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,10 +15,6 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpServletRequest
-
-import de.ddb.next.exception.BackendErrorException
-import de.ddb.next.exception.ItemNotFoundException
 
 /**
  * Wrapper for all responses of the backend servers.

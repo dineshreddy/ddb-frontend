@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -16,5 +16,5 @@ limitations under the License.
 
 <meta property="og:url" content="${likeUrl}"/>
 <meta property="og:title" content="${likeTitle}" />
-<meta property="og:image" content="${baseUrl + resource(dir: "images", file: "logo_social.png")}" />
+<meta property="og:image" content="${baseUrl + resource(dir: "images", file: "logoSocial.png")}" />
 <meta property="og:description" content="" />

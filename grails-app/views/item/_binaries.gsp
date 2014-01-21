@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -105,7 +105,7 @@ limitations under the License.
               </g:if>
               <g:elseif test="${it.orig.uri.video != ''}">
                 <g:if test="${it.preview.uri == ''}">
-                  href="../images/bg/video_poster.png"
+                  href="../images/bg/videoPoster.png"
                 </g:if>
                 <g:else>
                   href="${it.preview.uri}"
@@ -114,12 +114,11 @@ limitations under the License.
                 data-type="video"
                 data-author="${it.orig.author}"
                 data-rights="${it.orig.rights}"
-                title="${(it.orig.title).encodeAsHTML()}"
                 <g:set var="type" value="video"/>
               </g:elseif>
               <g:elseif test="${it.orig.uri.audio != ''}">
                 <g:if test="${it.preview.uri == ''}">
-                  href="../images/bg/audio_poster.png"
+                  href="../images/bg/audioPoster.png"
                 </g:if>
                 <g:else>
                   href="${it.preview.uri}"
@@ -258,7 +257,7 @@ limitations under the License.
             <li>
               <a class="group"
                  <g:if test="${it.preview.uri == ''}">
-                   href="../images/bg/video_poster.png"
+                   href="../images/bg/videoPoster.png"
                  </g:if>
                  <g:else>
                    href="${it.preview.uri}"
@@ -312,7 +311,7 @@ limitations under the License.
             <li>
               <a class="group"
                  <g:if test="${it.preview.uri == ''}">
-                   href="../images/bg/audio_poster.png"
+                   href="../images/bg/audioPoster.png"
                  </g:if>
                  <g:else>
                    href="${it.preview.uri}"

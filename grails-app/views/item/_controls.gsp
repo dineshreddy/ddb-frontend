@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@ limitations under the License.
     <!-- search results navigation -->
     <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">
       <div class="span6 item-nav fr">
-        <g:itemDetailInfoNavRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}"></g:itemDetailInfoNavRender>
+        <ddb:renderItemDetailInfoNav navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}" />
       </div>
       <div class="span6 item-nav-mob fr bb">
-        <g:itemDetailInfoNavMobRender navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results, searchResultUri: searchResultUri]}"></g:itemDetailInfoNavMobRender>
-      </div>
+        <ddb:renderItemDetailInfoNavMob navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results, searchResultUri: searchResultUri]}" />
+      </div> 
     </g:if>
     <g:else>
       <div class="span5 item-nav fr">

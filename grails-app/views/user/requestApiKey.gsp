@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@ limitations under the License.
 <html>
   <head>
   
-    <g:redirectIfNotLoggedIn />
+    <ddb:doRedirectIfNotLoggedIn />
     
     <title><g:message code="ddbnext.Api" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
     
@@ -33,7 +33,7 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message code="ddbnext.Api_Access_Of"/> <g:getUserLabel /></h1>
+                <h1><g:message code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
               </div>
             </div>
             <div>

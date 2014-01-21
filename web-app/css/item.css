@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,24 @@
   color: #878380;
   padding-left: 16px;
   margin-right: 10px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0 -40px
+  background: url(../images/icons/listBackArrows.png) no-repeat 0 -40px
 }
 .item-detail .rights {
   margin: 0 0 27px 0;
 }
 .back-to-list {
   padding-left: 16px;
-  background: url(../images/icons/list_backarrows.png) no-repeat 0 0;
+  background: url(../images/icons/listBackArrows.png) no-repeat 0 0;
   margin-right: 10px
 }
 .page-link {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 0;
+  background: url(../images/icons/objectViewerActions.png) no-repeat 0 0;
 }
 
 .viewer.dfg {
   padding-left: 22px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat 0 -40px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat 0 -40px;
 }
 
 .item-detail .institution {
@@ -57,7 +57,7 @@
   padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/list_arrows.png) no-repeat 0 1px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 1px;
   font-weight: bold;
   font-size: 1.133em;
 }
@@ -76,7 +76,7 @@
   margin-top: 20px;
 }
 .origin span {
-  background: url("../images/icons/objectviewer_actions.png") no-repeat;
+  background: url("../images/icons/objectViewerActions.png") no-repeat;
   padding-left: 23px;
   line-height: 20px;
   background-position: -2px -120px;
@@ -87,7 +87,7 @@
 }
 .show-origin {
   padding-left: 17px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -80px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
   margin-right: 10px;
 }
 .has-origin {
@@ -104,7 +104,7 @@
 }
 .favorite-actions {
   padding-left: 20px;
-  background: url(../images/icons/item_actions_sprite.png) no-repeat ;
+  background: url(../images/icons/itemActionsSprite.png) no-repeat ;
   background-position: -5px 0;
 }
 
@@ -123,6 +123,10 @@
 
 .favorite-actions.favorite-selected:hover {
   background-position: -6px -37px;
+}
+
+.favorite-actions span {
+  background: white;
 }
 
 .modal-body {
@@ -198,7 +202,7 @@
   width: 40px;
   height: 25px;
   margin-left: 14px;
-  background:url("../images/icons/objectviewer_carousel_controls.png") no-repeat;
+  background:url("../images/icons/objectViewerCarouselControls.png") no-repeat;
 }
 .item-nav-mob .prev-item a div {
   background-position: 3px -121px;
@@ -222,7 +226,7 @@
 
 .fields .entity-link {
   padding-left: 20px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -140px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -140px;
 }
 .item-links {
   line-height: 30px;
@@ -235,16 +239,16 @@
 }
 .xml-link {
   padding-left: 27px;
-  background: url(../images/icons/item_actions_sprite.png) no-repeat;
+  background: url(../images/icons/itemActionsSprite.png) no-repeat;
   background-position: -3px -247px;
+}
+.xml-link span {
+  background: white;
 }
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
     display: none;
-  }
-  .socialmedia .social-open ul li {
-    display: block !important;
   }
 }
 @media (max-width: 767px) {

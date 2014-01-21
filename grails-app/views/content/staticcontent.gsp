@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,6 +23,9 @@ limitations under the License.
   </g:if>
   <g:if test="${keywords}">
     <meta name="keywords" content="${keywords}" />
+  </g:if>
+  <g:if test="${metaDescription}">
+    <meta name="description" content="${metaDescription}" />
   </g:if>
   <g:if test="${robots}">
     <meta name="robots" content="${robots}" />

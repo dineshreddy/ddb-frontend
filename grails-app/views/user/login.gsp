@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@ page import="de.ddb.next.LoginStatus" %>
-<%@ page import="de.ddb.next.SupportedOpenIdProviders" %>
 
+<%@page import="de.ddb.next.constants.SupportedOpenIdProviders"%>
+<%@page import="de.ddb.next.constants.LoginStatus"%>
 <html>
   <head>
     <title><g:message code="ddbnext.Login" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -35,11 +35,11 @@ limitations under the License.
         <div class="row">
           <div class="span12">
           
-            <g:isNotLoggedIn>
+            <ddb:isNotLoggedIn>
               
               <div class="span4 dialog">
                 <g:form controller="user" action="doLogin">
-                
+                  <g:hiddenField name="referrer" value="${referrer}" />
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
                     <div class="row login-error">
                       <div class="span4"> 
@@ -126,9 +126,9 @@ limitations under the License.
                 </div>
               </div>
               
-            </g:isNotLoggedIn>
+            </ddb:isNotLoggedIn>
         
-            <g:isLoggedIn>
+            <ddb:isLoggedIn>
               <div class="span4 feedback">
                 <g:if test="${loginStatus == LoginStatus.SUCCESS}">
                   <g:message code="ddbnext.Login_Success" />
@@ -138,7 +138,7 @@ limitations under the License.
                 </g:else>
               </div>
             
-            </g:isLoggedIn>
+            </ddb:isLoggedIn>
                 
           </div>
         </div>           

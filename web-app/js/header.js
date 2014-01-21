@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@ $(document).ready(function() {
       $(".navigation li").removeClass("active");
       if (!$(this).hasClass('active-default')) {
         $(".active-default ul").css('display', 'none');
-      }
-      else {
+      } else {
         $(".active-default ul").css('display', 'block');
       }
       $(this).addClass("active");
@@ -29,15 +28,19 @@ $(document).ready(function() {
     $(".navigation li").removeClass("active");
     $(".active-default ul").css('display', 'block');
   });
-  
   //Accessibility: keyboard for language selection
   $('.language-wrapper >a').focus(function() {
     $('.selector').fadeIn();
   });
   $('.language-wrapper .selector a').blur(function() {
     var languageSelector = $('.selector');
-    languageSelector.fadeOut('fast', function(){
+    languageSelector.fadeOut('fast', function() {
       languageSelector.removeAttr('style');
     });
-  })
+  });
+  $('.login-link').on( "click", function() {    
+    var referrerUrl = window.location.pathname + window.location.search + window.location.hash;
+    $(this).attr("href", jsContextPath+"/login?referrer="+encodeURIComponent(referrerUrl));
+  });
+  
 });

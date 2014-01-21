@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,20 +13,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.entity-page .fields{
+  font-size: 1em;
+}
+
+.entity-page .all-objects-link {
+  text-decoration:underline;
+}
+
+.entity-page input[type="checkbox"] {
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+.entity-page .objects-help {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 2px;
+  width: 17px;
+  height: 17px;
+  background: url("../images/icons/tooltips.png") no-repeat 0 -60px;
+}
+
+.entity-page .objects-help:hover,.entity-page  .objects-help:active,
+.entity-page  .objects-help:focus {
+  background-position: 0 -90px;
+  cursor: help;
+}
+
+.entity-page .header-objects {
+  float: right;
+  text-align:right;
+  margin: 10px 0;
+  padding-top: 3px;
+  line-height: 16px;
+}
+
 .entity-page .icon-work {
-  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
 }
 
 .entity-page .icon-theme {
-  background: url(../images/icons/list_arrows.png) no-repeat 0 -1px;
-}
-
-.entity-page .todo {
-  background-color: #FFDDDD;
-}
-
-.entity-page .todo-gnd {
-  background-color: #DDFFDD;
+  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
 }
 
 .entity-page .item-title {
@@ -34,16 +63,19 @@
 }
 
 .entity-page .rolefacet {
-  margin:10px 0px 0px 0px;
+  margin:10px 0px;
+}
+
+.entity-page .search {
+  padding: 0 0 10px 0;
 }
 
 .entity-page .search-entity {
-  background: url(../images/icons/search.png) no-repeat 0 -145px;
-  min-height: 35px;
-  padding: 0 0 0 35px;
+  background: url(../images/icons/search.png) no-repeat 0 -297px;
+  padding: 0 0 0 20px;
 }
 
-.entity-page .objects {
+.entity-page .objects, .entity-page .profession-dates {
   padding-bottom: 20px;  
 }
 
@@ -69,29 +101,122 @@
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
-  display: block;  
+  display: block;
 }
 
 .entity-page .caption {
-  	left:0px;
-  	bottom:0px;	
-    font-size: 0.875em;
-    font-weight: bold;
-    height: 36px;    
-    line-height: 18px;
-    opacity: 0.8;
-    text-overflow: ellipsis;
-    text-align: center;
-    max-width: 200px;    
+  left:0px;
+  bottom:0px;
+  font-size: 0.875em;
+  font-weight: bold;
+  height: 36px;
+  line-height: 18px;
+  opacity: 0.8;
+  text-overflow: ellipsis;
+  text-align: center;
+  max-width: 150px;
 }
 
+.entity-page .media-bar a {
+  text-decoration: underline;
+}
+
+.entity-page a.previous span, a.next span {
+  display: none;
+}
+
+.entity-page .carousel a.previous, .entity-page .carousel a.next {
+  top: 70px;
+}
 
 .entity-page .carousel a.previous:hover {
   background-position: 0 -50px;
 }
 
-.entity-page .carousel a.next {
-  background-position: 0 -150px;
+.entity-page .carousel a.next:hover {
+  background-position: 0 -200px;
+}
+
+.entity-page .previous.disabled, .entity-page .next.disabled {
+  cursor: default;
+}
+
+.entity-page .previous.disabled, .entity-page .previous.disabled:hover {
+  background-position: 0 -100px !important;
+}
+
+.entity-page .next.disabled, .entity-page .next.disabled:hover {
+  background-position: 0 -250px !important;
+}
+
+.entity-page .carousel .clearfix {
+  float: none;
+  clear: both;
+}
+
+.entity-page .popup-dialog-wrapper {
+  margin-left: 0 !important;
+}
+
+.entity-page .external-icon img {
+  margin: 0;
+  padding: 0;
+  width: 16px;
+}
+
+.entity-page .external-link-with-icon, .entity-page .external-link {
+  margin-top: 3px;
+}
+
+.entity-page .external-links ul {
+  margin-top: 15px;
+}
+
+.entity-page .external-dummy-icon {
+  background: url(../images/icons/entity.png) no-repeat 0 0px;  
+  width: 16px;
+  height: 16px;
+}
+
+.entity-page .external-link span {
+  margin:  -20px 0 0 20px;
+  display: block;
+  background: none;
+}
+
+.entity-page hr {
+    border-top: 2px solid #EFEBE8;
+}
+
+.entity-page .thumbimage {
+  margin:  15px 0 5px 0;
+}
+
+.entity-page .search_link {
+  text-decoration: underline;
+}
+
+.entity-page .thumbinner {
+  padding-bottom: 10px;
+}
+
+.entity-page .wiki-link {
+  text-decoration: underline;
+}
+
+.entity-page .object-controls {
+  background-color: white;
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 5px 0 0 0;
+}
+
+.entity-page #idFavorite {
+  margin-right: 10px;
+}
+
+.entity-page .thumb hr {
+  display: none;
 }
 
 /* carousel controls responsiveness */
@@ -101,6 +226,9 @@
   }
   .entity-page .carousel a.next {
     right: 0px;
+  }
+  .entity-page .preview-item {
+    width: 160px;
   }
 }
 
@@ -129,34 +257,14 @@
   .entity-page .carousel a.next {
     right: -8px;
   }
+
+  .entity-page .header-objects {
+    float: left;
+    text-align:left;
+  }
+
+  .entity-page .thumb hr {
+    display: block;
+  }
 }
 /* carousel controls responsiveness - end */
-
-
-.entity-page .carousel a.next:hover {
-  background-position: 0 -200px;
-}
-
-.entity-page .carousel .clearfix {
-  float: none;
-  clear: both;
-}
-
-.entity-page a.previous span,a.next span {
-  display: none;
-}
-
-.entity-page .popup-dialog-wrapper {
-  margin-left: 0 !important;
-}
-
-.entity-page .external-icon img {
-  margin: 0;
-  padding: 0;
-  width: 16px;
-}
-
-.entity-page .external-link span {
-  margin: -18px 0 0 20px;
-  display: block;
-}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.next.cluster.Binning
+import de.ddb.next.cluster.ClusterCache
+import de.ddb.next.cluster.DataObject
+import de.ddb.next.cluster.InstitutionMapModel
+
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
@@ -32,6 +37,8 @@ class InstitutionService {
     def grailsLinkGenerator
 
     def configurationService
+
+    def servletContext
 
     def findAll() {
         def totalInstitution = 0
@@ -71,6 +78,144 @@ class InstitutionService {
         }
 
         return allInstitutions
+    }
+
+    def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays){
+        log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
+
+        // Get the ClusterCache Object from the application context
+        if(servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME) == null){
+            servletContext.setAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME, new ClusterCache())
+        }
+        ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
+
+        // If the cache does not yet contain cluster data for the selected sectors
+        if(cache.getCluster(selectedSectorList) == null){
+            log.info "getClusteredInstitutions(): no cache available for selected sectors. Calculating...."
+
+            // Start of the actual javascript logic from IAIS
+            InstitutionMapModel institutionMapModel = new InstitutionMapModel()
+            institutionMapModel.prepareInstitutionsData(institutions)
+
+            // Transform sector data to the required format
+            def sectors = ["selected":[], "deselected":[]]
+            def allSectors = [
+                "sec_01",
+                "sec_02",
+                "sec_03",
+                "sec_04",
+                "sec_05",
+                "sec_06",
+                "sec_07"
+            ]
+            selectedSectorList.each {
+                def entry = ["sector": it, "name": it]
+                sectors["selected"].push(entry)
+            }
+            def unselectedSectorList = allSectors.minus(selectedSectorList)
+            unselectedSectorList.each {
+                def entry = ["sector": it, "name": it]
+                sectors["deselected"].push(entry)
+            }
+
+            // Filter the institutions with the the selected sectors
+            def dataSets = institutionMapModel.selectSectors(sectors)
+
+            // Feed the cluster algorithm with the filtered institutions
+            def mapObjects = []
+            for (def i = 0; i < dataSets.size(); i++) {
+                mapObjects.push(dataSets[i].objects)
+            }
+
+            // Perform the actual clustering
+            Binning binning = new Binning()
+            binning.setObjects(mapObjects)
+            def circleSets = binning.getSet().circleSets
+
+
+            // Transform the resulting data structure to a lot more bandwith friendly data structure (4MB -> 1MB)
+            def clusterContainer = [:]
+
+            // Collect all institutions available for the given selection
+            clusterContainer["institutions"] = [:]
+            for (def i = 0; i<dataSets[0].objects.size(); i++) {
+                DataObject dataObject = dataSets[0].objects[i]
+                def institutionId = dataObject.index
+                clusterContainer["institutions"][institutionId] = [:]
+                clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
+                clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
+                clusterContainer["institutions"][institutionId]["children"] = []
+                clusterContainer["institutions"][institutionId]["parents"] = []
+            }
+
+            // Go over all the Cortex institutions and transfer children/parents information
+            def childrenIds = []
+            for(int i=0;i<institutions.institutions.size();i++){
+                def institution = institutions.institutions[i]
+                def institutionId = institution.id
+                if(institution.children != null){
+
+                    // Transfer child informations, if the institution is in the current selection
+                    if(clusterContainer["institutions"][institutionId] != null){
+                        for(int j=0;j<institution.children.size();j++){
+                            def childId = institution.children[j].id
+                            if(clusterContainer["institutions"][childId] != null){ // only add child if child is also in sector selection
+                                clusterContainer["institutions"][institutionId].children.push(childId)
+                                childrenIds.push(childId)
+                            }
+                        }
+                    }
+
+                    // Transfer parent information, if a child is in the current selection
+                    for(int j=0;j<institution.children.size();j++){
+                        def childId = institution.children[j].id
+                        if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
+                            clusterContainer["institutions"][childId]["parents"].push(institutionId)
+
+                            // add the parent informations to the list of used institutions
+                            if(clusterContainer["institutions"][institutionId] == null){
+                                clusterContainer["institutions"][institutionId] = [:]
+                                clusterContainer["institutions"][institutionId]["name"] = institution.name
+                                clusterContainer["institutions"][institutionId]["sector"] = institution.sector
+                                clusterContainer["institutions"][institutionId]["children"] = [childId]
+                                clusterContainer["institutions"][institutionId]["parents"] = []
+                            }else{
+                                boolean alreadyContainsChild = clusterContainer["institutions"][institutionId]["children"].contains(childId)
+                                if(!alreadyContainsChild){
+                                    clusterContainer["institutions"][institutionId]["children"].push(childId)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Collect the cluster informations with institutionId references to the institution details above
+            clusterContainer["clusters"] = []
+            for(int zoom=0;zoom<circleSets.size(); zoom++){
+                clusterContainer.clusters.push([])
+                for(int j=0;j<circleSets[zoom][0].size();j++){
+                    def circleObject = circleSets[zoom][0][j]
+                    def cluster = [:]
+                    cluster["x"] = circleObject.originX
+                    cluster["y"] = circleObject.originY
+                    cluster["radius"] = circleObject.radius
+                    cluster["institutions"] = []
+                    for(int k=0; k<circleObject.elements.size(); k++){
+                        def institutionId = circleObject.elements[k].index
+                        cluster["institutions"].push(institutionId)
+                    }
+                    clusterContainer["clusters"][zoom].push(cluster)
+                }
+            }
+
+            cache.addCluster(selectedSectorList, clusterContainer, cacheValidInDays*24*60*60*1000)
+        }else{
+            log.info "getClusteredInstitutions(): cache found. Answering with cached result."
+        }
+
+        def result = ["data": cache.getCluster(selectedSectorList)]
+        return result
     }
 
     private getTotal(rootList) {
@@ -150,4 +295,5 @@ class InstitutionService {
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
+
 }

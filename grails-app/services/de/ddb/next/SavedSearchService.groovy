@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,8 @@
  */
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.json.JSONObject
-
 import grails.converters.JSON
 import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
 import net.sf.json.JSONNull
 
 /**
@@ -55,6 +50,17 @@ class SavedSearchService {
             return savedSearchId
         }
     }
+
+    def deleteSavedSearchesByUserId(userId) {
+        def userSearches = []
+
+        findSavedSearchByUserId(userId).each{ it ->
+            userSearches.add(it['id'])
+        }
+
+        deleteSavedSearch(userSearches)
+    }
+
 
     def findSavedSearchByUserId(userId) {
         log.info "findSavedSearchByUserId(): find saved searches for the user (${userId})"
@@ -155,4 +161,18 @@ class SavedSearchService {
             return savedSearchId
         }
     }
+
+    int getSavedSearchesCount() {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
+
 }

@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,6 +15,6 @@ limitations under the License.
 --%>
 <ul>
   <g:each in="${item.childs}" var="it">
-    <g:renderItem item="${it}" mainItem="${item.mainItem}"/>
+    <ddb:renderHierarchyItem item="${it}" mainItem="${item.mainItem}"/>
   </g:each>
 </ul>

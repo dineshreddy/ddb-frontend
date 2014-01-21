@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
 <html>
@@ -39,8 +40,7 @@ limitations under the License.
                  <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-                    <g:link class="count" controller="search" action="results" params="[query: '', offset: '0',
-                               rows: '20', 'facetValues[]': facetvalue]" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
+                    <g:link class="count" controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): '', (SearchParamEnum.OFFSET.getName()): '0', (SearchParamEnum.ROWS.getName()): '20', (SearchParamEnum.FACETVALUES.getName()): facetvalue]}" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
                             <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
@@ -59,45 +59,11 @@ limitations under the License.
            <div class="span3">
              <img class="logo" alt="${selectedOrgXML.name}" src="${organisationLogo}">
            </div>
-           
-           <div class="span9">
-           </div>
-           <div class="span3">
-             <g:isLoggedIn>
-
-              <div class="favorite" >
-                <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
-                  <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
-                    <g:message code="ddbnext.favorit" />
-                  </span>
-                </span>
-              </div>
-
-              <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-body">
-                  <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                  <g:hasPersonalFavorites>
-                    <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
-                    <g:select name="favorite-folders" from="" multiple="true"/>
-                  </g:hasPersonalFavorites>
-                </div>
-                <g:hasPersonalFavorites>
-                  <div class="modal-footer">
-                    <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                      <g:message code="ddbnext.Close"/>
-                    </button>
-                    <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-                      <g:message code="ddbnext.Save"/>
-                    </button>
-                  </div>
-                </g:hasPersonalFavorites>
-              </div>
-               
-             </g:isLoggedIn>                
-           </div>
          </div>
        </div>
      </div>
+
+     <g:render template="institutionLinks" />
 
      <div class="row">
        <div class="span12 locations">

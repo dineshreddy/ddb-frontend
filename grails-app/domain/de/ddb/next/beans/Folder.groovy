@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,13 +15,10 @@
  */
 package de.ddb.next.beans
 
-import org.codehaus.groovy.runtime.NullObject
-
-import de.ddb.next.constants.FolderConstants
-
-import net.sf.json.JSONNull
-import grails.converters.JSON
 import groovy.transform.ToString
+
+import de.ddb.next.JsonUtil
+import de.ddb.next.constants.FolderConstants
 
 @ToString(includeNames=true)
 class Folder {
@@ -36,25 +33,29 @@ class Folder {
     String blockingToken
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
 
-    public Folder(String folderId, String userId, String title, def description, boolean isPublic, String publishingName, def isBlocked, def blockingToken) {
+    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken) {
         this.folderId = folderId
         this.userId = userId
         this.title = title
-        if(isAnyNull(description)){
+        if(JsonUtil.isAnyNull(description)){
             this.description = ""
         }else{
             this.description = description.toString()
         }
-        this.isPublic = isPublic
+        if(JsonUtil.isAnyNull(isPublic)){
+            this.isPublic = false
+        }else{
+            this.isPublic = isPublic
+        }
         if(publishingName){
             this.publishingName = publishingName
         }
-        if(isAnyNull(isBlocked)){
+        if(JsonUtil.isAnyNull(isBlocked)){
             this.isBlocked = false
         }else{
             this.isBlocked = isBlocked
         }
-        if(isAnyNull(blockingToken)){
+        if(JsonUtil.isAnyNull(blockingToken)){
             this.blockingToken = ""
         }else{
             this.blockingToken = blockingToken.toString()
@@ -81,13 +82,5 @@ class Folder {
             return true
         }
         return false
-    }
-
-    private boolean isAnyNull(def variable){
-        if(variable == null || variable instanceof JSONNull || variable instanceof NullObject){
-            return true
-        }else{
-            false
-        }
     }
 }

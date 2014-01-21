@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,23 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function(){
-  
-  if(jsPageName == "apikey"){
+$(document).ready(function() {
 
-    
+  if (jsPageName == "apikey") {
+
     $("#apikey-delete").click(function(event) {
       event.preventDefault();
-      
+
       $("#msDeleteApiKey").modal("show");
 
       $("#delete-apikey-confirm").click(function() {
         $("#msDeleteApiKey").modal("hide");
-        $("#apikey-form").submit();        
+        $("#apikey-form").submit();
       });
-      
+
       return false;
     });
   }
-  
+
 });

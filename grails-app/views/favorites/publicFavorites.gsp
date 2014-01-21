@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
@@ -28,7 +29,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <g:socialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -102,6 +103,11 @@ limitations under the License.
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">
+            <%--         
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+              <g:message code="ddbnext.Report_Public_List" />
+            </a>
+            --%>
             <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
               <g:message code="ddbnext.Report_Public_List" />
             </g:link>
@@ -126,20 +132,20 @@ limitations under the License.
             <div class="favorites-results-controls">
               <div class="row delete-container">
                 <div class="results-pagination">
-                  <g:paginationControlsRender navData="${navigationData}"></g:paginationControlsRender>
+                  <ddb:renderPaginationControls navData="${navigationData}" />
                 </div>
               </div>
               <div class="results-sorter">
                 <span>
-                <g:if test="${params.order== 'desc'}" >
+                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
                       <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
-                       <g:if test="${params.by == "title"}">
+                       <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                        </g:if>
                        <g:else>
-                        <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                        <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
                       </span>
                     </a>
@@ -148,11 +154,11 @@ limitations under the License.
                     <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
                       <g:message code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
-                       <g:if test="${params.by == "title"}">
+                       <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
                        </g:if>
                        <g:else>
-                        <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                        <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
                       </span>
                       
@@ -160,15 +166,15 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span class="favorite-dateheader"> 
-                  <g:if test="${params.order== 'desc'}" >
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="${urlsForOrder["asc"].encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On" />
                       <span>
-                       <g:if test="${params.by == "date"}">
+                       <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                        </g:if>
                        <g:else>
-                        <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                        <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
                       </span>                    
                     </a>
@@ -177,11 +183,11 @@ limitations under the License.
                     <a href="${urlsForOrder["desc"].encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On" />
                       <span>
-                        <g:if test="${params.by == "date"}">
+                        <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
                           <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>                     
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                          <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
                     </a>
@@ -190,7 +196,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <g:publicFavoritesResultsRender results="${results}"></g:publicFavoritesResultsRender>
+              <ddb:renderPublicFavoritesResults results="${results}" />
             </div>
           </g:if>
           <g:else>

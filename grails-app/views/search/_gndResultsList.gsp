@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -29,11 +29,11 @@ limitations under the License.
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:gndItem.id]}" >
-                <strong><g:truncateItemTitle title="${ gndItem.person.name }" length="${ 100 }"></g:truncateItemTitle></strong>
+                <strong><ddb:getTruncatedItemTitle title="${ gndItem.data.person.preferredName }" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
-                ${ gndItem.person.description }
+                ${ gndItem.data.person.description }
             </div>
           </div>
           <div class="extra">
@@ -47,18 +47,18 @@ limitations under the License.
               <%-- 
               <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
               --%>
-              <g:img dir="images/placeholder" file="search_result_entity.png" alt="${ gndItem.person.name }"/>
+              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ gndItem.data.person.preferredName }"/>
             </g:link>
           </div>
           <%-- 
-          <g:isLoggedIn>
+          <ddb:isLoggedIn>
             <div id="favorite-${gndItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
                 <p><g:message code="ddbnext.Added_To_Favorites"/></p>
               </div>
             </div>
-          </g:isLoggedIn>
+          </ddb:isLoggedIn>
           --%>
         </div>
 

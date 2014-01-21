@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -48,9 +48,9 @@ limitations under the License.
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
               action="${ action }" params="[id: it.id]"
-              title="${truncateHovercardTitle(title: it.label, length: 350)}">
-              <g:truncateItemTitle title="${ it.preview.title }"
-                length="${ 100 }"></g:truncateItemTitle>
+              title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
+              <ddb:getTruncatedItemTitle title="${ it.preview.title }"
+                length="${ 100 }" />
             </g:link>
           </h2>
           <g:if test="${!(it.preview.subtitle instanceof net.sf.json.JSONNull)}">
@@ -75,11 +75,11 @@ limitations under the License.
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${contextUrl}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
               <!-- institution logos still point to the content server -->
-              <img src="${it.preview.thumbnail}" alt="<g:removeTags>${it.preview.title}</g:removeTags>"></img>
+              <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
             </g:if>
             <g:else>
               <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${contextUrl}${confBinary}</g:if><g:else>${baseUrl}</g:else>${it.preview.thumbnail}"
-                   alt="<g:removeTags>${it.preview.title}</g:removeTags>" />
+                   alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:else>
           </g:link>
         </td>

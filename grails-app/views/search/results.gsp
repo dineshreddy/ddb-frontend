@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,7 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="facetsList" value="${['time_fct', 'place_fct', 'affiliate_fct', 'keywords_fct', 'language_fct', 'type_fct', 'sector_fct', 'provider_fct']}"></g:set>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.next.constants.FacetEnum"%>
+<g:set var="facetsList" value="${[FacetEnum.TIME.getName(), FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <html>
 <head>
 <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -51,7 +53,7 @@ limitations under the License.
                 <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                 <g:if test="${it.facetValues.size() > 0}">
                   <ul class="unstyled">
-                    <g:facetListRender facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetsUrl="${facets.roleFacetsUrl}"></g:facetListRender>
+                    <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}" roleFacetsUrl="${facets.roleFacetsUrl}"></ddb:renderFacetList>
                   </ul>
                 </g:if>
               </div>
@@ -71,7 +73,7 @@ limitations under the License.
         <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message code="ddbnext.Clear_filters"/></a>
       </div>
 
-      <g:isLoggedIn>
+      <ddb:isLoggedIn>
         <div id="addToSavedSearches">
           <div class="add-to-saved-searches"></div>
           <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
@@ -101,13 +103,45 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </g:isLoggedIn>
+      </ddb:isLoggedIn>
+      
+      <div class="compare-objects off">      	
+      	<div class="compare-header">
+      		<hr/>
+      		<b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
+      	</div>
+      	<div class="compare-main">
+	        <div id="compare-object1" class="compare-object">
+            <div class="compare-table">
+  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
+  	        	<a class="compare-link">		        	
+  		        	<span class="compare-text"></span>
+  		        	<img class="compare-img"></img>
+  	        	</a>
+  	        	<span data-index="1" class="fancybox-toolbar-close"></span>
+            </div>
+	        </div>
+	        <div id="compare-object2" class="compare-object">
+            <div class="compare-table">
+  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
+  	        	<a class="compare-link">		        	
+  		        	<span class="compare-text"></span>
+  		        	<img class="compare-img"></img>
+  	        	</a>
+  	        	<span data-index="2" class="fancybox-toolbar-close"></span>
+            </div>
+	        </div>
+        </div>
+        <div class="compare-footer">
+        	<a class="button" id="compare-button"><g:message code="ddbnext.SearchResultsStartComparison"/></a>
+      	</div>
+      </div>
     </div>
     
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
       <g:if test="${correctedQuery!='null'}">
         <g:if test="${correctedQuery}">
-          <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
         </g:if>
       </g:if>
       <g:render template="noResults" />
@@ -115,9 +149,9 @@ limitations under the License.
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
     
-      <g:resultsPaginatorOptionsRender paginatorData="${resultsPaginatorOptions}"></g:resultsPaginatorOptionsRender>
+      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
       
-      <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"></g:pageInfoNavRender>
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
       
       <div class="row">
         <div class="span9">
@@ -135,14 +169,14 @@ limitations under the License.
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-list" type="button" class="<g:if test='${viewType != 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+                <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
               </div>
               <!--[if lt IE 9]>
               </div>
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-grid" type="button" class="<g:if test='${viewType == 'grid'}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+                <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
               </div>
               <!--[if lt IE 9]>
               </div>
@@ -153,7 +187,7 @@ limitations under the License.
       </div>
       <g:if test="${correctedQuery!='null'}">
 	      <g:if test="${correctedQuery}">
-	        <g:searchSuggestion correctedQuery="${correctedQuery}"></g:searchSuggestion>
+	        <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
 	      </g:if>
       </g:if>
       
@@ -162,14 +196,14 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:itemResultsRender results="${results.results["docs"]}" gndResults="${gndResults}"></g:itemResultsRender>
+                <ddb:renderSearchResultsList results="${results.results["docs"]}" gndResults="${gndResults}" />
               </g:if>
             </div>
           </div>
         </div>
       </div>
       <div id="print-nav">
-        <g:pageInfoNavRender navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}"></g:pageInfoNavRender>
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
       </div>
     </div>
   </div>

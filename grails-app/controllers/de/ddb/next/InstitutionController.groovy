@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,12 @@
  * limitations under the License.
  */
 package de.ddb.next
-import javax.servlet.http.HttpSession
-
 import grails.converters.JSON
-
-import org.apache.commons.logging.LogFactory
-
+import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
-
-import groovy.json.JsonSlurper
-import groovyx.net.http.ContentType
-import groovyx.net.http.Method
+import de.ddb.next.constants.Type
 
 class InstitutionController {
-
-    private static final log = LogFactory.getLog(this)
 
     def institutionService
     def configurationService
@@ -39,7 +30,6 @@ class InstitutionController {
         def allInstitution = institutionService.findAll()
         def institutionByFirstLetter = allInstitution.data
 
-        // TODO: make this more idiomatic Groovy
         def all = []
         institutionByFirstLetter?.each { all.addAll(it.value) }
 
@@ -52,7 +42,6 @@ class InstitutionController {
             }
         }
 
-        // TODO: move to service
         def index = []
         institutionByFirstLetter.each { index.add(it) }
 
@@ -111,11 +100,25 @@ class InstitutionController {
 
             def organisationLogo
             if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/search_result_media_institution.png").toString()
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
             }else{
                 organisationLogo = selectedOrgXML.logo
             }
-            render(view: "institution", model: [itemId: itemId, selectedItemId: id, selectedOrgXML: selectedOrgXML, organisationLogo: organisationLogo, subOrg: jsonOrgSubHierarchy, parentOrg: jsonOrgParentHierarchy, countObjcs: countObjectsForProv, vApiInst: vApiInstitution, url: pageUrl, isFavorite: isFavorite])
+            render(
+                    view: "institution",
+                    model: [
+                        itemId: itemId,
+                        itemUri: request.forwardURI,
+                        selectedItemId: id,
+                        selectedOrgXML: selectedOrgXML,
+                        organisationLogo: organisationLogo,
+                        subOrg: jsonOrgSubHierarchy,
+                        parentOrg: jsonOrgParentHierarchy,
+                        countObjcs: countObjectsForProv,
+                        vApiInst: vApiInstitution,
+                        url: pageUrl,
+                        isFavorite: isFavorite]
+                    )
         } else {
             forward controller: 'error', action: "defaultNotFound"
         }
@@ -158,7 +161,17 @@ class InstitutionController {
         log.info "non-JavaScript: addFavorite " + itemId
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if (user != null) {
-            if (bookmarksService.addBookmark(user.getId(), itemId)) {
+            Bookmark newBookmark = new Bookmark(
+                    null,
+                    user.getId(),
+                    itemId,
+                    new Date().getTime(),
+                    Type.INSTITUTION,
+                    null,
+                    "",
+                    new Date().getTime())
+            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
+            if (newBookmarkId) {
                 log.info "non-JavaScript: addFavorite " + itemId + " - success!"
                 vResult = true
             }

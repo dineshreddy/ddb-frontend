@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:set var="itemTitle" value="${g.truncateItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 
 <html>
   <head>
@@ -23,11 +23,13 @@ limitations under the License.
     <meta name="page" content="item" />
     <meta name="layout" content="main" />
     
-    <g:socialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
+    <ddb:getSocialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
     
   </head>
   <body>
-    <g:render template="controls" />
+    <ddb:doHideIfEmbedded>
+      <g:render template="controls" />
+    </ddb:doHideIfEmbedded>
     <g:render template="institution" />
     <g:render template="itemLinks" />
     <div class="row item-detail item-content">
@@ -37,7 +39,8 @@ limitations under the License.
         <g:render template="rights" />
         <g:render template="license" />
         <g:render template="origin" />
-        <g:render template="share" />
+        <%--<g:render template="pdfLink" />
+        --%><g:render template="share" />
       </div>
       <g:if test="${binaryList}">
         <g:render template="binaries" />

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@
 package de.ddb.next
 
 import groovy.json.*
-import groovyx.net.http.HTTPBuilder
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.BadRequestException
 
 class SearchController {
@@ -40,7 +42,7 @@ class SearchController {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
-            
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
@@ -50,17 +52,17 @@ class SearchController {
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
-                firstLastQuery["sort"] = resultsItems["randomSeed"]
-                if (!params.sort) {
-                    params.sort = urlQuery["randomSeed"]
+                firstLastQuery[SearchParamEnum.SORT.getName()] = resultsItems["randomSeed"]
+                if (!params[SearchParamEnum.SORT.getName()]) {
+                    params[SearchParamEnum.SORT.getName()] = urlQuery["randomSeed"]
                 }
             }
 
             if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
                 //firstHit
-                firstLastQuery["rows"] = 1
-                firstLastQuery["offset"] = 0
+                firstLastQuery[SearchParamEnum.ROWS.getName()] = 1
+                firstLastQuery[SearchParamEnum.OFFSET.getName()] = 0
                 apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, firstLastQuery)
                 if(!apiResponse.isOk()){
                     log.error "Json: Json file was not found"
@@ -68,13 +70,13 @@ class SearchController {
                 }
                 def firstHit = apiResponse.getResponse()
                 if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
-                    params["firstHit"] = firstHit["results"]["docs"][0].id
+                    params[SearchParamEnum.FIRSTHIT.getName()] = firstHit["results"]["docs"][0].id
                 }
 
                 //lastHit
                 //Workaround, find id of last hit when calling last hit.
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
-                params["lastHit"] = "lasthit"
+                params[SearchParamEnum.LASTHIT.getName()] = SearchParamEnum.LASTHIT.getName()
 
             }
 
@@ -85,15 +87,15 @@ class SearchController {
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
 
             //Calculating results details info (number of results in page, total results number)
-            def resultsOverallIndex = (urlQuery["offset"].toInteger()+1)+' - ' +
-                    ((urlQuery["offset"].toInteger()+
-                    urlQuery["rows"].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery["offset"].toInteger()+urlQuery["rows"].toInteger())
+            def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
+                    ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
+                    urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((int)Math.floor(urlQuery["offset"].toInteger()/urlQuery["rows"].toInteger())+1).toString()
-            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery["rows"].toInteger()).toInteger())
+            def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
             def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
 
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
@@ -101,15 +103,15 @@ class SearchController {
 
             def queryString = request.getQueryString()
 
-            if(!queryString?.contains("sort=random") && urlQuery["randomSeed"])
-                queryString = queryString+"&sort="+urlQuery["randomSeed"]
+            if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             def gndItems = getGndItems(resultsItems, page)
 
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery["viewType"],confBinary: request.getContextPath(),
-                    offset: params["offset"]]).replaceAll("\r\n", '')
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                    offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
@@ -117,35 +119,43 @@ class SearchController {
                     totalPages: totalPagesFormatted,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
-                    offset: params["offset"]
+                    offset: params[SearchParamEnum.OFFSET.getName()]
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }else{
                 //We want to build the subfacets urls only if a main facet has been selected
+                def mainFacets = []
+                FacetEnum.values().each {
+                    if (it.isSearchFacet()) {
+                        mainFacets.add(it)
+                    }
+                }
+
                 def keepFiltersChecked = ""
-                if (searchParametersMap["keepFilters"] && searchParametersMap["keepFilters"] == "true") {
+                if (searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
                 }
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery)
-                if(urlQuery["facet"]){
+                if(urlQuery[SearchParamEnum.FACET.getName()]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
 
                 def roleFacetsUrl = [:]
                 def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
-                if(urlQuery["facet"]){
+                if(urlQuery[SearchParamEnum.FACET.getName()]){
                     roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
                 }
 
                 render(view: "results", model: [
-                    title: urlQuery["query"],
+                    facetsList:mainFacets,
+                    title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     gndResults: gndItems,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
-                    viewType:  urlQuery["viewType"],
+                    viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
                     facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
@@ -153,7 +163,7 @@ class SearchController {
                     totalPages: totalPages,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: params["offset"],
+                    offset: params[SearchParamEnum.OFFSET.getName()],
                     keepFiltersChecked: keepFiltersChecked
                 ])
             }
@@ -175,7 +185,7 @@ class SearchController {
 
                 def gndLinkItems = []
                 resultItems.facets.each { facet ->
-                    if(facet.field == "affiliate_fct_involved_normdata" || facet.field == "affiliate_fct_subject") {
+                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName() || facet.field == FacetEnum.AFFILIATE_SUBJECT.getName()) {
                         facet.facetValues.each { entry ->
                             if(cultureGraphService.isValidGndUri(entry.value)){
                                 gndLinkItems.addAll(entry)
@@ -193,11 +203,15 @@ class SearchController {
                 int gndItemsRetrieved = 0
                 int i = 0
                 while (gndItemsRetrieved < displayCount) {
+                    def gndItem = [:]
                     def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
-
                     def gndData = cultureGraphService.getCultureGraph(gndId)
+
                     if(gndData != null) {
-                        gndItems.add(gndData)
+                        gndItem['id'] = gndId
+                        gndItem['data'] = gndData
+                        gndItems.add(gndItem)
+
                         gndItemsRetrieved ++
                     }
 
@@ -226,31 +240,13 @@ class SearchController {
         if(jsonSubresp.facet){
             //iterate over all facets
             jsonSubresp.facet.each(){ facet ->
+                //iterate over all values of the FacetEnum and add matching names to the information
+                for (FacetEnum facetItem : FacetEnum.values()) {
+                    if (facet['@name'] == facetItem.getName()) {
+                        addFacetItems(properties, facet, facetItem)
+                    }
+                }
 
-                if(facet['@name'] == 'time_fct') {
-                    addFacetItems(properties, facet,'time_fct','ddbnext.time_fct_')
-                }
-                else if(facet['@name'] == 'place_fct') {
-                    addFacetItems(properties, facet,'place_fct',null)
-                }
-                else if(facet['@name'] == 'affiliate_fct') {
-                    addFacetItems(properties, facet,'affiliate_fct',null)
-                }
-                else if(facet['@name'] == 'keywords_fct') {
-                    addFacetItems(properties, facet,'keywords_fct',null)
-                }
-                else if(facet['@name'] == 'type_fct') {
-                    addFacetItems(properties, facet,'type_fct','ddbnext.type_fct_')
-                }
-                else if(facet['@name'] == 'sector_fct') {
-                    addFacetItems(properties, facet,'sector_fct','ddbnext.sector_fct_')
-                }
-                else if(facet['@name'] == 'provider_fct') {
-                    addFacetItems(properties, facet,'provider_fct', null)
-                }
-                else if(facet['@name'] == 'language_fct') {
-                    addFacetItems(properties, facet,'language_fct', 'ddbnext.language_fct_')
-                }
             }
         }
         render (contentType:"text/json"){properties}
@@ -262,25 +258,24 @@ class SearchController {
      *
      * @param properties a map that holds all facet items (for rendering)
      * @param facetMap the facet map containing a key and a value element for one facet type. The value can be a single String or a List of Strings
-     * @param facetName the name of the facet-type to process
-     * @param i18nCode the i18ncode is concatenated with the value if internationalization is used for the facet-type; can be <code>null</code>
+     * @param facet the facet to add
      *
      */
-    private addFacetItems(Map properties, Map facetMap, String facetName, String i18nCode) {
-        properties[facetName]=[]
+    private addFacetItems(Map properties, Map facetMap, FacetEnum facet) {
+        properties[facet.getName()]=[]
 
         if(facetMap['value'] instanceof String) {
-            if (i18nCode != null) {
-                properties[facetName].add(message(code:i18nCode+facetMap['value']))
+            if (facet.getI18nPrefix() != null) {
+                properties[facet.getName()].add(message(code:facet.getI18nPrefix()+facetMap['value']))
             } else {
-                properties[facetName].add(facetMap['value'])
+                properties[facet.getName()].add(facetMap['value'])
             }
         } else if(facetMap['value'] instanceof List) {
             facetMap['value'].each() { value ->
-                if (i18nCode != null) {
-                    properties[facetName].add(message(code:i18nCode+value))
+                if (facet.getI18nPrefix() != null) {
+                    properties[facet.getName()].add(message(code:facet.getI18nPrefix()+value))
                 } else {
-                    properties[facetName].add(value)
+                    properties[facet.getName()].add(value)
                 }
             }
         }

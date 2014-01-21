@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 package de.ddb.next
+
+import de.ddb.next.constants.SearchParamEnum
 
 
 
@@ -78,7 +80,7 @@ class AdvancedsearchController {
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
         String query = converter.convertFormParameters()
-        redirect(uri: "/searchresults?query=" + query + "&offset=" + offset + "&rows=" + rows)
+        redirect(uri: "/searchresults?"+SearchParamEnum.QUERY.getName()+"=" + query + "&"+SearchParamEnum.OFFSET.getName()+"=" + offset + "&"+SearchParamEnum.ROWS.getName()+"=" + rows)
     }
 
     /**

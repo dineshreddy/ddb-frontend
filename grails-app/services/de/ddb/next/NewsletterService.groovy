@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,6 @@ import groovy.json.*
 
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
-
 
 import de.ddb.next.beans.User
 
@@ -66,7 +65,6 @@ class NewsletterService {
 
     def isSubscriber(User user) {
         def apiResponse = ApiConsumer.getJson(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
-        def statusCode = apiResponse.status != ApiResponse.HttpStatus.HTTP_404
 
         // when 200 return true
         // when 404 return false

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
+
+import de.ddb.next.constants.SupportedLocales;
 
 class IndexController {
 
@@ -44,7 +46,7 @@ class IndexController {
 
         def articles = retrieveArguments(response)
 
-        render(view: "index", model: [articles: articles, staticUrl: configurationService.getContextUrl()])
+        render(view: "index", model: [articles: articles])
     }
 
     private def retrieveArguments(def content){

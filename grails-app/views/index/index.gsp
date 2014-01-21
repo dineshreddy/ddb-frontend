@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ limitations under the License.
     <div class="span12 search-widget">
       <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
       <div class="row">
-        <img src="${resource(dir: 'images', file: 'logo_big.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description").encodeAsHTML()}" title="<g:message code="ddbnext.Logo_Title"/>" />
+        <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description").encodeAsHTML()}" title="<g:message code="ddbnext.Logo_Title"/>" />
       </div>
       <div class="row">
         <div class="span12">
@@ -44,8 +44,8 @@ limitations under the License.
                 <g:message code="ddbnext.Go_Button"/>
               <![endif]-->
             </button>
-            <span class="contextual-help hidden-phone hidden-tablet" 
-                  title="${g.message(code: "ddbnext.Search_Hint", 
+            <span class="contextual-help hidden-phone hidden-tablet"
+                  title="${g.message(code: "ddbnext.Search_Hint",
                                      args: [('<a href="' + createLink(controller: "content",
                                                                       params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
                                             '</a>'],
@@ -57,7 +57,7 @@ limitations under the License.
                                             encodeAs: "none")}">
             </span>
             <div class="tooltip off"></div>
-            <div class="link-adv-search"> 
+            <div class="link-adv-search">
               <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
             </div>
           </g:form>
@@ -72,7 +72,7 @@ limitations under the License.
           <g:each in="${articles}">
             <div class="span3">
               <a href="${request.contextPath}${it.uri}" title="${it.title}">
-                <img class="article" src="${staticUrl}${it.src}" alt="${it.title}"/>
+                <img class="article" src="${request.contextPath}${it.src}" alt="${it.title}"/>
               </a>
               <div class="caption">
                 <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
@@ -87,7 +87,7 @@ limitations under the License.
             <g:each in="${articles}">
               <div class="article">
                 <a href="${request.contextPath}${it.uri}" title="${it.title}" target="_self">
-                  <img src="${staticUrl}${it.src}" alt="${it.title}" />
+                  <img src="${request.contextPath}${it.src}" alt="${it.title}" />
                 </a>
                 <div class="caption">
                   <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>

@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -27,10 +27,10 @@ limitations under the License.
 <body>
     <g:form method="post" id="password-reset-form" name="password-reset-form" class="form-horizontal" url="[controller:'user', action:'passwordReset']" >
         <g:if test="${errors != null && errors.size()>0}">
-          <g:renderErrors errors="${errors}"></g:renderErrors>
+          <ddb:renderErrors errors="${errors}" />
         </g:if>
         <g:if test="${messages != null && messages.size()>0}">
-          <g:renderMessages messages="${messages}"></g:renderMessages>
+          <ddb:renderMessages messages="${messages}" />
         </g:if>
         <div class="well">
             <div class="profile-nav">

@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@ limitations under the License.
 --%>
 <div class="row item-detail">
 
-  <div class="span6 share">
+  <div class="span7 share">
 
-    <g:socialmediaBody />
+    <ddb:getSocialmediaBody />
   
   </div>
 </div>

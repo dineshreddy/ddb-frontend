@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,9 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
+
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Set of services used in the ApisController for views/search
@@ -42,55 +45,37 @@ class ApisService {
      */
     def getQueryParameters(Map queryParameters){
 
-        def query = [ query: queryParameters.query ]
+        def query = [ (SearchParamEnum.QUERY.getName()): queryParameters.query ]
 
-        if(queryParameters.offset)
-            query["offset"]= queryParameters.offset
+        if(queryParameters[SearchParamEnum.OFFSET.getName()])
+            query[SearchParamEnum.OFFSET.getName()]= queryParameters[SearchParamEnum.OFFSET.getName()]
 
-        if(queryParameters.rows)
-            query["rows"] = queryParameters.rows
+        if(queryParameters[SearchParamEnum.ROWS.getName()])
+            query[SearchParamEnum.ROWS.getName()] = queryParameters[SearchParamEnum.ROWS.getName()]
 
-		if(queryParameters.callback)
-			query["callback"] = queryParameters.callback
+        if(queryParameters[SearchParamEnum.CALLBACK.getName()])
+            query[SearchParamEnum.CALLBACK.getName()] = queryParameters[SearchParamEnum.CALLBACK.getName()]
 
-        if(queryParameters.facet){
-            if(queryParameters.facet.getClass().isArray()){
-                query["facet"] = []
-                queryParameters.facet.each {
-                    query["facet"].add(it)
+        if(queryParameters[SearchParamEnum.FACET.getName()]){
+            if(queryParameters[SearchParamEnum.FACET.getName()].getClass().isArray()){
+                query[SearchParamEnum.FACET.getName()] = []
+                queryParameters[SearchParamEnum.FACET.getName()].each {
+                    query[SearchParamEnum.FACET.getName()].add(it)
                 }
-            }else query["facet"]=queryParameters.facet
+            }else query[SearchParamEnum.FACET.getName()]=queryParameters[SearchParamEnum.FACET.getName()]
         }
-        
-        if(queryParameters.minDocs)
-            query["minDocs"] = queryParameters.minDocs
 
-        if(queryParameters.sort)
-            query["sort"] = queryParameters.sort
-            
-        evaluateFacetParameter(query, queryParameters.time_fct, "time_fct")
-        
-        evaluateFacetParameter(query, queryParameters.place_fct, "place_fct")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct, "affiliate_fct")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved, "affiliate_fct_involved")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject, "affiliate_fct_subject")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_subject_normdata, "affiliate_fct_subject_normdata")
-        
-        evaluateFacetParameter(query, queryParameters.affiliate_fct_involved_normdata, "affiliate_fct_involved_normdata")
-        
-        evaluateFacetParameter(query, queryParameters.keywords_fct, "keywords_fct")
+        if(queryParameters[SearchParamEnum.MINDOCS.getName()])
+            query[SearchParamEnum.MINDOCS.getName()] = queryParameters[SearchParamEnum.MINDOCS.getName()]
 
-        evaluateFacetParameter(query, queryParameters.language_fct, "language_fct")
-               
-        evaluateFacetParameter(query, queryParameters.type_fct, "type_fct")
-        
-        evaluateFacetParameter(query, queryParameters.sector_fct, "sector_fct")
-        
-        evaluateFacetParameter(query, queryParameters.provider_fct, "provider_fct")
+        if(queryParameters[SearchParamEnum.SORT.getName()])
+            query[SearchParamEnum.SORT.getName()] = queryParameters[SearchParamEnum.SORT.getName()]
+
+        //Evaluates the facetValues from the API request
+        FacetEnum.values().each() {
+            evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
+        }
+
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
@@ -102,7 +87,7 @@ class ApisService {
 
         return query
     }
-    
+
     /**
      * 
      * @param query
@@ -117,10 +102,10 @@ class ApisService {
                 queryParameter.each {
                     query[facetName].add(it)
                 }
-            }else { 
+            }else {
                 query[facetName]=queryParameter
             }
         }
     }
-    
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -165,6 +165,11 @@ class UrlMappings {
             action=[POST: "isSavedSearch"]
         }
 
+        "/apis/clusteredInstitutionsmap" {
+            controller="apis"
+            action=[GET:"clusteredInstitutionsmap"]
+        }
+
         "/about-us/institutions" {
             controller="institution"
             action="show"
@@ -194,7 +199,7 @@ class UrlMappings {
             controller="entity"
             action="getAjaxRoleSearchResultsAsJson"
         }
-        
+
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -280,6 +285,20 @@ class UrlMappings {
             action="doOpenIdLogin"
         }
 
+        "/compare/$firstId/with/$secondId" {
+            controller="compare"
+            action="index"
+        }
+
+        "/maptest" {
+            controller="map"
+            action="index"
+        }
+
+        "/multipolygone" {
+            controller="map"
+            action="multipolygone"
+        }
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
@@ -289,6 +308,7 @@ class UrlMappings {
         "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
+        "500"(controller: "error", action: "cultureGraphError", exception: de.ddb.next.exception.CultureGraphException)
         "500"(controller: "error", action: "uncaughtException")
         "404"(controller: "error", action: "defaultNotFound")
 

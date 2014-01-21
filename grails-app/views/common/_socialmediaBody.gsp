@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<div class="socialmedia" data-lang-iso2="<g:currentLocale />" data-lang-full="<g:currentLocaleFull />">
+<div class="socialmedia" data-lang-iso2="<ddb:getCurrentLocale />" data-lang-full="<ddb:getCurrentLocaleFull />">
   <div class="social-locked">
     <div class="social-overlay-container">
       <div class="social-overlay">

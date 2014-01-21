@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ limitations under the License.
           <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
           <span class="page-nonjs">${navData.page}</span> 
           <g:message code="ddbnext.Of" /> 
-          <span class="total-pages"><g:localizeNumber>${navData.totalPages}</g:localizeNumber></span>
+          <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
       </span>
     </li>
     <li class="next-page bl ${displayRightPagination}">

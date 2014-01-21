@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"/>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: paginationUrls["firstPg"],
@@ -101,13 +102,13 @@ limitations under the License.
                   </g:form>
                 </div>
                 <div class="results-pagination">
-                  <g:paginationControlsRender navData="${navigationData}"/>
+                  <ddb:renderPaginationControls navData="${navigationData}"/>
                 </div>
               </div>
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span>
                 <span>
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}">
                       <g:message code="ddbnext.Saved_Search"/>
                       <span>
@@ -116,7 +117,7 @@ limitations under the License.
                                  alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                          <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList"
                                  alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
@@ -131,7 +132,7 @@ limitations under the License.
                                  alt="${message(code: 'ddbnext.Order_Descending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                          <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList"
                                  alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
@@ -139,7 +140,7 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span class="favorite-dateheader"> 
-                  <g:if test="${params.order == "desc"}">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
                     <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}">
                       <g:message code="ddbnext.Added_On"/>
                       <span>
@@ -148,7 +149,7 @@ limitations under the License.
                                  alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                          <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList"
                                  alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>
@@ -163,7 +164,7 @@ limitations under the License.
                                  alt="${message(code: 'ddbnext.Order_Descending')}"/>
                         </g:if>
                         <g:else>
-                          <g:img dir="images/icons" file="arrowsupdown.png" class="orderList"
+                          <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList"
                                  alt="${message(code: 'ddbnext.No_Order')}"/>
                         </g:else>
                       </span>

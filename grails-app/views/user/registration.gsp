@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ limitations under the License.
 </head>
 <body>
     <g:if test="${errors != null && errors.size()>0}">
-      <g:renderErrors errors="${errors}"></g:renderErrors>
+      <ddb:renderErrors errors="${errors}" />
     </g:if>
     <div class="well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
@@ -99,11 +99,6 @@ limitations under the License.
           </div>
           <label class="checkbox-label control-label">
             <g:message code="ddbnext.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
-            <%-- This does not work. The <a> Tags are displayed in the website instead of getting interpreted by the browser.
-            <g:message code="ddbnext.I_Have_Read" 
-                       args="${['<a href="' + createLink(controller:"content", params:[dir:'terms']) + '">','</a>','<a href="' + createLink(controller:"content", params:[dir:'privacy/personal_data']) + '">','</a>']}" 
-                       default="ddbnext.I_Have_Read" />*
-            --%>
           </label>
         </div>
 

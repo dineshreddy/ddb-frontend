@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,14 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="name">
-  <h2>${entity.title}</h2>
-  
-  <%-- 
-  <span>Schriftsteller, Politiker, Jurist, Naturwissenschaftler, Maler, Zeichner</span>
-  --%>
-  
-  <span class="todo-gnd">${entity.professions}</span><br>
-  <span>${entity.description}</span>
-  
+<div class="name fields">
+	<h2>
+		${entity.person.preferredName}
+	</h2>
 </div>

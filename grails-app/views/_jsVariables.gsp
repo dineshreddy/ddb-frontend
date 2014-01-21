@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,5 +18,5 @@ limitations under the License.
     data-js-language="<g:message code="ddbnext.language"/>"
     data-js-longitude="${selectedOrgXML?.locations?.location?.geocode?.longitude}" 
     data-js-latitude="${selectedOrgXML?.locations?.location?.geocode?.latitude}"
-    data-js-loggedin="<g:isLoggedIn>true</g:isLoggedIn><g:isNotLoggedIn>false</g:isNotLoggedIn>">
+    data-js-loggedin="<ddb:isLoggedIn>true</ddb:isLoggedIn><ddb:isNotLoggedIn>false</ddb:isNotLoggedIn>">
 </div>

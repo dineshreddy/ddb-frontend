@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <g:set var="facetValues" value="" />
 <g:each var="mapEntry" in="${search.queryMap}">
-  <g:if test="${mapEntry.key == "facetValues[]"}">
+  <g:if test="${mapEntry.key == SearchParamEnum.FACETVALUES.getName()}">
     <g:each var="searchQueryTerm" in="${mapEntry.value}">
       <g:set var="facetName" value="${searchQueryTerm.name}" />
       <g:set var="facetValue" value="" />

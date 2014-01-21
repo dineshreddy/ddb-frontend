@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
+import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.ItemNotFoundException
 
 class ContentController {
@@ -74,7 +75,7 @@ class ContentController {
                 }
             }
 
-            def map= retrieveArguments(response)
+            def map = retrieveArguments(response)
             render(view: "staticcontent", model: map)
         } catch(ItemNotFoundException infe){
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
@@ -94,21 +95,21 @@ class ContentController {
         return cleanHtml(params.id, 'none')
     }
 
-    private def getShortLocale() {
-        def locale = RCU.getLocale(request)
-        if(locale.toString().substring(0, 2)=="de") {
-            return "de"
-        }
-        return "en"
-    }
-
     private def retrieveArguments(def content){
         def title = fetchTitle(content)
         def author = fetchAuthor(content)
         def keywords = fetchKeywords(content)
         def robot = fetchRobots(content)
+        def metaDescription = fetchMetaDescription(content)
         def body = fetchBody(content)
-        return [title:title, author:author, keywords:keywords,robot:robot,content:body]
+        return [
+            title:title,
+            author:author,
+            keywords:keywords,
+            robot:robot,
+            metaDescription:metaDescription,
+            content:body
+        ]
     }
 
     private def fetchBody(content) {
@@ -130,6 +131,12 @@ class ContentController {
 
     private def fetchKeywords(content) {
         def keywordMatch = content =~ /(?s)<meta (.*?)name="keywords" (.*?)content="(.*?)"(.*?)\/>/
+        if (keywordMatch)
+            return keywordMatch[0][3]
+    }
+
+    private def fetchMetaDescription(content) {
+        def keywordMatch = content =~ /(?s)<meta (.*?)name="description" (.*?)content="(.*?)"(.*?)\/>/
         if (keywordMatch)
             return keywordMatch[0][3]
     }

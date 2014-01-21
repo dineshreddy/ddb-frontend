@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ limitations under the License.
     <div class="comment-text <g:if test="${!publicView}">comment-text-clickanchor</g:if>" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
       <span class="comment-meta">
         <g:if test="${!item.bookmark.description.isEmpty()}">
-          <g:message code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, ${item.bookmark.updateDateFormatted}:
+          <g:if test="${publicView}"><g:message code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, </g:if>${item.bookmark.updateDateFormatted}:
         </g:if>
       </span>
       <span id="comment-text-dyn-${item.bookmark.bookmarkId}">

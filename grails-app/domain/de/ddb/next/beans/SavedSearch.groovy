@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,10 +17,13 @@ package de.ddb.next.beans
 
 import groovy.transform.ToString
 
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
+
 @ToString(includeNames=true)
 
 class SavedSearch {
-    static SEARCH_PARAMETERS = [query: "", "facetValues[]": ""]
+    static SEARCH_PARAMETERS = [(SearchParamEnum.QUERY.getName()): "", (SearchParamEnum.FACETVALUES.getName()): ""]
 
     String id
     String label
@@ -45,7 +48,7 @@ class SavedSearch {
         def result
 
         queryMap.each {
-            if (it.key == "query") {
+            if (it.key == SearchParamEnum.QUERY.getName()) {
                 result = it.value[0].name
             }
         }
@@ -57,18 +60,16 @@ class SavedSearch {
      */
     private def Map<String, SearchQueryTerm> toMap(String queryString) {
         def result = [:]
+        List<SearchQueryTerm> searchQueryTermList = []
+
+        FacetEnum.values().each {
+            if (it.isSearchFacet()) {
+                searchQueryTermList.add(new SearchQueryTerm(it.getName()))
+            }
+        }
 
         // add empty list elements to get the correct order of the facet values
-        result.put("facetValues[]", [
-            new SearchQueryTerm("time_fct"),
-            new SearchQueryTerm("place_fct"),
-            new SearchQueryTerm("affiliate_fct"),
-            new SearchQueryTerm("keywords_fct"),
-            new SearchQueryTerm("language_fct"),
-            new SearchQueryTerm("type_fct"),
-            new SearchQueryTerm("sector_fct"),
-            new SearchQueryTerm("provider_fct")
-        ])
+        result.put(SearchParamEnum.FACETVALUES.getName(), searchQueryTermList)
 
         queryString.split('&').each {
             def parameter = it.split('=')

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -149,7 +149,7 @@ hr {
 .favorites-results-container .email-block {
   display: inline-block;
   margin-right: 10px;
-  background: url(../images/icons/objectviewer_actions.png) no-repeat -2px -180px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -180px;
   padding-left: 20px;
 }
 
@@ -373,7 +373,7 @@ hr {
   margin: 0 4px 0 0;
   text-indent: -999em;
   margin-top: 12px;
-  background: url("../images/icons/result_types.png") no-repeat center top;
+  background: url("../images/icons/resultTypes.png") no-repeat center top;
 }
 
 .favorites-results .results-list .summary .extra .types .image {
@@ -394,6 +394,12 @@ hr {
 
 .favorites-results .results-list .summary .extra .types .institution {
   background-position: 0 -190px;
+}
+
+.favorites-results .results-list .summary .extra .types li.entity {
+  background: url("../images/placeholder/searchResultEntity.png") no-repeat center top;
+  background-size: 23px 19px;
+  padding-left: 0;
 }
 
 .favorites-results .results-list .summary .extra .types .unknown {
@@ -418,7 +424,7 @@ hr {
 }
 
 .favorites-results-container .favorites-report {
-  background: url("../images/icons/objectviewer_actions.png") no-repeat -0px -222px;
+  background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
   padding-left: 25px;
 }
 
@@ -436,7 +442,7 @@ hr {
   height: 19px;
   position: absolute;
   right: 0;
-  background: url("../images/icons/search_actions.png") no-repeat 0 0;
+  background: url("../images/icons/searchActions.png") no-repeat 0 0;
   margin-top: -15px;
   cursor: pointer;
 }

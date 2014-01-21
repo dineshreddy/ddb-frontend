@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!DOCTYPE html>
-<html lang="${g.currentLocale()}">
+<html lang="${ddb.getCurrentLocale()}">
   <head>
     <meta charset="utf-8" />
-    
+
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
 
-    <meta name="description" content="Deutsche Digitale Bibliothek" />
+    <g:if test="${!metaDescription}">
+      <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
+    </g:if>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
@@ -45,7 +47,9 @@ limitations under the License.
         </div>
       </div>
     </noscript>
-    <g:render template="/mainHeader" />
+    <ddb:doHideIfEmbedded>
+      <g:render template="/mainHeader" />
+    </ddb:doHideIfEmbedded>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>
@@ -62,6 +66,6 @@ limitations under the License.
     </script>
     --%>
     
-    <g:piwik />
+    <ddb:getPiwikTracking />
   </body>
 </html>

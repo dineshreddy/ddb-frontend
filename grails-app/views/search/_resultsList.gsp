@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -13,11 +13,12 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <g:if test="${gndResults}">
   <g:render template="gndResultsList" model="${[gndResults: gndResults]}" />
 </g:if>
 
-<ul class="results-list unstyled  <g:if test="${viewType == 'grid'}">grid</g:if>">
+<ul class="results-list unstyled  <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">grid</g:if>">
   <g:set var="pageHitCounter" value="${0}"/>
   <g:each in="${results}">
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
@@ -29,8 +30,8 @@ limitations under the License.
         <g:set var="action" value="showInstitutionsTreeByItemId" />
     </g:if>
     <li class="item bt">
-      <div class="summary <g:if test="${viewType != 'grid'}">row</g:if>">
-        <g:if test="${viewType == 'grid'}">
+      <div class="summary <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">row</g:if>">
+        <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, hitNumber: hitNumber, action: action, controller: controller]}" />
           <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller]}" />
         </g:if>

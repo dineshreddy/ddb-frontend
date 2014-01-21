@@ -1,5 +1,5 @@
 <%--
-Copyright (C) 2013 FIZ Karlsruhe
+Copyright (C) 2014 FIZ Karlsruhe
  
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -15,29 +15,35 @@ limitations under the License.
 --%>
 <html>
 <head>
-  <title>${entity.title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <title>${entity.person.preferredName} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
   <meta name="page" content="entity" />
   <meta name="layout" content="main" />
-  
+
 </head> 
 <body>
-  <div class="entity-page">
-    <div id="entity-title" class="off">${entity.title}</div>
-    <a href="#" id="entity-id" data-entityid="${entity.id}"></a>
+  <div class="entity-page main">
+    <div id="entity-title" class="off">${entity.person.preferredName}</div>
+    <a href="#" id="entity-id" data-entityid="${entityId}"></a>
     <g:render template="controls" />
+    <hr>
     <div class="row">
       <div class="span9">
         <g:render template="name" />
         <g:render template="dates" />
-        <hr>
-        <g:render template="objects" />
-        <hr>        
-        <g:render template="works" />
-        <hr>
-        <g:render template="themes" />
+        <g:if test="${searchPreview.items.size()}">
+          <hr>
+          <g:render template="objects" />
+        </g:if>
+        <g:if test="${searchInvolved.resultCount > 0 || searchInvolvedNormdata.resultCount > 0}">
+          <hr>
+            <g:render template="affiliateInvolvedObjects" />
+        </g:if>        
+        <g:if test="${searchSubject.resultCount > 0 || searchSubjectNormdata.resultCount > 0}">
+          <hr>
+            <g:render template="affiliateSubjectObjects" />
+        </g:if>
       </div>
-      
       <div class="span3">
         <g:render template="thumb" />
         <g:render template="search" />

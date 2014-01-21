@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,25 @@
  */
  
 .openid-facebook {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px 0;
+  background: transparent url("../images/icons/openId.png") no-repeat -80px 0;
   width: 150px;
   height: 50px;
 }
 
 .openid-twitter {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px -50px;
+  background: transparent url("../images/icons/openId.png") no-repeat -80px -50px;
   width: 150px;
   height: 50px;
 } 
 
 .openid-google {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px -200px;
+  background: transparent url("../images/icons/openId.png") no-repeat -80px -200px;
   width: 150px;
   height: 50px;
 }
 
 .openid-yahoo {
-  background: transparent url("../images/icons/openid.png") no-repeat -80px -250px;
+  background: transparent url("../images/icons/openId.png") no-repeat -80px -250px;
   width: 150px;
   height: 50px;
 }
@@ -90,5 +90,5 @@
   padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/list_arrows.png) no-repeat 0 1px;
+  background: url(../images/icons/listArrows.png) no-repeat 0 1px;
 }

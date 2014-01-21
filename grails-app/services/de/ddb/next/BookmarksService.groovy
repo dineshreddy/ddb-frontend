@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013 FIZ Karlsruhe
+ * Copyright (C) 2014 FIZ Karlsruhe
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,20 +18,12 @@ package de.ddb.next
 
 import grails.converters.JSON
 import groovy.json.*
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
-import groovyx.net.http.Method
-
-import javax.servlet.http.HttpServletResponse
-
 import net.sf.json.JSONNull
-
-import org.codehaus.groovy.grails.web.json.JSONObject
-import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
+import de.ddb.next.constants.Type
 
 
 /**
@@ -42,8 +34,8 @@ import de.ddb.next.constants.FolderConstants
  */
 class BookmarksService {
 
-    public static final def IS_PUBLIC = false
-    public static final def DEFAULT_SIZE = 9999
+    public static final boolean IS_PUBLIC = false
+    public static final int DEFAULT_SIZE = 9999
 
     def configurationService
     def transactional = false
@@ -51,22 +43,20 @@ class BookmarksService {
     /**
      * Create a new bookmark folder.
      *
-     * @param userId    the ID whose the folder belongs to.
-     * @param title     the title of the folder.
-     * @param isPublic  boolean flag to mark if a folder should be public visible.
+     * @param newFolder Folder object to persist
      * @return          the newly created folder ID.
      */
-    String newFolder(userId, title, isPublic, publishingName, description = null) {
-        log.info "newFolder(): creating a new folder with the title: ${title}"
+    String createFolder(Folder newFolder) {
+        log.info "createFolder(): creating a new folder: ${newFolder}"
 
         String newFolderId = null
 
         def postBody = [
-            user: userId,
-            title : title,
-            description: description,
-            isPublic : isPublic,
-            publishingName : publishingName,
+            user: newFolder.userId,
+            title : newFolder.title,
+            description: newFolder.description,
+            isPublic : newFolder.isPublic,
+            publishingName : newFolder.publishingName,
             isBlocked : false,
             blockingToken : ""
         ]
@@ -84,12 +74,34 @@ class BookmarksService {
     }
 
 
+    int getFolderCount() {
+        log.info "getFolderCount()"
+        return getDocumentCountByType("folder")
+    }
 
-    List findAllPublicFolders(userId) {
+    int getBookmarkCount() {
+        log.info "getBookmarkCount()"
+        return getDocumentCountByType("bookmark")
+    }
+
+    private int getDocumentCountByType(String type) {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/" + type + "/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
+
+    List<Folder> findAllPublicFolders(String userId) {
         log.info "findAllPublicFolders()"
 
-        def folders = findAllFolders(userId)
-        def publicFolders = []
+        List<Folder> folders = findAllFolders(userId)
+        List<Folder> publicFolders = []
         folders?.each {
             if(it.isPublic){
                 publicFolders.add(it)
@@ -98,10 +110,10 @@ class BookmarksService {
         return publicFolders
     }
 
-    List findAllFolders(userId) {
+    List<Folder> findAllFolders(String userId) {
         log.info "findAllFolders()"
 
-        def folderList = []
+        List<Folder> folderList = []
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, ["q":userId])
 
@@ -134,29 +146,19 @@ class BookmarksService {
         return folderList
     }
 
-    /* TODO: refactor this one
-     * URL encode the space character programmatically, _not_ hard code.
-     */
     /**
      * List all bookmarks in a folder that belongs to the user.
      *
-     * A Bookmark {@link Bookmark} contains following properties:
-     * - String bookmarkId,
-     * - String userId,
-     * - String itemId,
-     * - Date creationDate
-     *
      * @param userId    the ID whose the folders and bookmarks belongs to.
      * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
-     * @param size      how many bookmarks the service should return, it is _optional_ by default size=9999
      * @return          a list of bookmarks.
      */
-    List findBookmarksByFolderId(userId, folderId, size = DEFAULT_SIZE) {
+    List<Bookmark> findBookmarksByFolderId(String userId, String folderId) {
         log.info "findBookmarksByFolderId(): find bookmarks for the user (${userId}) in the folder ${folderId}"
 
-        def all = []
+        List<Bookmark> all = []
 
-        def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
+        def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
@@ -170,7 +172,7 @@ class BookmarksService {
                         it._source.item,
                         it._source.createdAt,
                         it._source.type as Type,
-                        it._source.folder,
+                        it._source.folder as List,
                         it._source.description,
                         it._source.updatedAt
                         )
@@ -185,17 +187,17 @@ class BookmarksService {
         return all
     }
 
-    List findBookmarksByPublicFolderId(folderId, size = DEFAULT_SIZE) {
+    List<Bookmark> findBookmarksByPublicFolderId(String folderId) {
         log.info "findBookmarksByPublicFolderId(): find bookmarks in the folder ${folderId}"
 
-        def all = []
+        List<Bookmark> all = []
 
         Folder folder = findPublicFolderById(folderId)
         if(folder == null || !folder.isPublic){
             return []
         }
 
-        def query = ["q":"folder:\"${folderId}\"".encodeAsURL(), "size":"${size}"]
+        def query = ["q":"folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
@@ -208,7 +210,7 @@ class BookmarksService {
                         it._source.item,
                         it._source.createdAt,
                         it._source.type as Type,
-                        it._source.folder,
+                        it._source.folder as List,
                         it._source.description,
                         it._source.updatedAt
                         )
@@ -227,23 +229,34 @@ class BookmarksService {
     /**
      * Bookmark a cultural item in a folder for a certain user.
      *
-     * @param userId    the ID whose the folder belongs to.
-     * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
-     * @param itemID    the ID of the DDB cultural item.
+     * @param bookmark  The Bookmark object to persist
      * @return          the created bookmark ID.
      */
-    String saveBookmark(userId, folderId, itemId, description = null, type = Type.CULTURAL_ITEM, long createdAt = new Date().getTime()) {
-        log.info "saveBookmark()"
+    String createBookmark(Bookmark bookmark) {
+        log.info "createBookmark()"
+
+        // If no folder is given -> put it in the default favorites folder
+        if(bookmark.folders == null || bookmark.folders.size()==0){
+            Folder mainBookmarksFolder = findFoldersByTitle(bookmark.userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)[0]
+            bookmark.folders = [mainBookmarksFolder.folderId]
+        }
+
+        // If the given folder already contains an item with the same itemId -> skip
+        List<Bookmark> bookmarkedItemsInFolder = findBookmarkedItemsInFolder(bookmark.userId, [bookmark.itemId], bookmark.folders[0])
+        if(bookmarkedItemsInFolder.size() > 0 ){
+            log.warn('The itemId is already in the folder')
+            return null
+        }
 
         String newBookmarkId = null
 
         def postBody = [
-            user: userId,
-            folder: folderId,
-            item: itemId,
-            createdAt: createdAt,
-            type: type.toString(),
-            description: description,
+            user: bookmark.userId.toString(),
+            folder: bookmark.folders,
+            item: bookmark.itemId.toString(),
+            createdAt: bookmark.creationDate.getTime(),
+            type: bookmark.type.toString(),
+            description: bookmark.description.toString(),
             updatedAt: new Date().getTime()
         ]
 
@@ -252,12 +265,12 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             newBookmarkId = response._id
-            log.info "Bookmark ${newBookmarkId} is created."
             refresh()
         }
 
         return newBookmarkId
     }
+
 
     private void refresh() {
         log.info "refresh(): refreshing index ddb..."
@@ -266,8 +279,7 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            log.info "Response: ${response}"
-            log.info "finished refreshing index ddb."
+            log.info "Response: ${response}, finished refreshing index ddb."
         }
     }
 
@@ -278,10 +290,10 @@ class BookmarksService {
      * @param itemIdList a list of cultural item IDs.
      * @return           the list of bookmarked items.
      */
-    List findBookmarkedItems(userId, itemIdList) {
-        log.info "findBookmarkedItems(): itemIdList ${itemIdList}"
+    List<Bookmark> findBookmarksForItemIds(String userId, List<String> itemIdList) {
+        log.info "findBookmarksForItemIds(): itemIdList ${itemIdList}"
 
-        def bookmarks = []
+        List<Bookmark> bookmarks = []
 
         def postBody = [filter: [terms: [item: itemIdList]]]
 
@@ -298,7 +310,7 @@ class BookmarksService {
                         it._source.item,
                         it._source.createdAt,
                         it._source.type as Type,
-                        it._source.folder,
+                        it._source.folder as List,
                         it._source.description,
                         it._source.updatedAt
                         )
@@ -306,7 +318,7 @@ class BookmarksService {
                 if(bookmark.isValid()){
                     bookmarks.add(bookmark)
                 }else{
-                    log.error "findBookmarkedItems(): found corrupt bookmark: "+bookmark
+                    log.error "findBookmarksForItemIds(): found corrupt bookmark: "+bookmark
                 }
             }
         }
@@ -314,20 +326,23 @@ class BookmarksService {
         return bookmarks
     }
 
+
+
     /**
-     * Delete all bookmarks of cultural items in the {bookmarkIdList} belong to the user.
+     * Delete all entries of a given indexType for a userId.
      *
-     * @param userId         the ID who bookmarked the cultural items.
-     * @param bookmarkIdList a list of bookmark IDs. NOTE: These are _not_ a list of cultural item IDs.
+     * @param userId    the ID who belong these items.
+     * @param idList    a list of ids
+     * @param indexType the index type of the items to delete
      */
-    boolean deleteBookmarksByBookmarkIds(userId, bookmarkIdList) {
-        log.info "deleteBookmarksByBookmarkIds()"
+    private boolean deleteDocumentsByTypeAndIds(String userId, List<String> idList, String indexType) {
+        log.info "deleteIndexTypeByIds()"
 
         def postBody = ''
-        bookmarkIdList.each { id ->
-            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "bookmark", "_id" : "' + id + '" } }\n'
+        idList.each { id ->
+            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -337,28 +352,11 @@ class BookmarksService {
         }
     }
 
-    /**
-     *
-     */
-    String addBookmark(userId, itemId, description = null, type = Type.CULTURAL_ITEM, folderIdList = []) {
-        log.info "addBookmark()"
-        def foundItemList =  findBookmarkedItemsInFolder(userId, [itemId])
-        if(foundItemList.size()>0) {
-            log.warn('The item ID (itemId) is already in the Bookmarks')
-            return null
-        }
-        log.info "type: ${type}"
-        if(folderIdList.size() == 0){
-            def mainBookmarksFolder = findFoldersByTitle(userId, FolderConstants.MAIN_BOOKMARKS_FOLDER.value)[0]
-            folderIdList.add(mainBookmarksFolder.folderId)
-        }
-        return saveBookmark(userId, folderIdList, itemId, description, type)
-    }
 
-    List findFoldersByTitle(userId, title) {
+    List<Folder> findFoldersByTitle(String userId, String title) {
         log.info "findFoldersByTitle(): finding a folder with the title ${title} for the user: ${userId}"
 
-        def all = []
+        List<Folder> all = []
 
         def postBody = [filter: [term: [title: title]]]
 
@@ -390,14 +388,12 @@ class BookmarksService {
                     log.error "findFoldersByTitle(): found corrupt folder: "+folder
                 }
             }
-
-            log.info "found #folder: ${all.size()} with the title ${title}"
         }
 
         return all
     }
 
-    Folder findMainBookmarksFolder(userId) {
+    Folder findMainBookmarksFolder(String userId) {
         log.info "findMainBookmarksFolder()"
         Folder folder = null
         List allFolders = findAllFolders(userId)
@@ -409,16 +405,15 @@ class BookmarksService {
         return folder
     }
 
-    List findBookmarksByUserId(userId, size = DEFAULT_SIZE) {
+    List<Bookmark> findBookmarksByUserId(String userId, int size = DEFAULT_SIZE) {
         log.info "findBookmarksByUserId()"
 
-        def all = []
+        List<Bookmark> all = []
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:\"${userId}\"", "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            log.info "response as application/json: ${response}"
             def resultList = response.hits.hits
 
             resultList.each { it ->
@@ -428,7 +423,7 @@ class BookmarksService {
                         it._source.item,
                         it._source.createdAt,
                         it._source.type as Type,
-                        it._source.folder,
+                        it._source.folder as List,
                         it._source.description,
                         it._source.updatedAt
                         )
@@ -444,7 +439,7 @@ class BookmarksService {
         return all
     }
 
-    boolean deleteBookmarksByItemIds(userId, itemIds) {
+    boolean deleteBookmarksByItemIds(String userId, List<String> itemIds) {
         log.info "deleteBookmarksByItemIds()"
         def bookmarkIds = []
         def allBookmarks = findBookmarksByUserId(userId, DEFAULT_SIZE)
@@ -453,22 +448,57 @@ class BookmarksService {
                 bookmarkIds.add(it.bookmarkId)
             }
         }
-        log.info "deleteBookmarksByItemIds for the items ${itemIds}"
-        log.info "deleteBookmarksByItemIds the bookmarkIds ${bookmarkIds}"
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
     }
 
-    boolean deleteAllUserBookmarks(userId) {
+    /**
+     * Removed the bookmarks and folder for a given userId
+     * 
+     * @param userId the id of the user
+     */
+    void deleteAllUserContent(String userId) {
+        deleteAllUserBookmarks(userId)
+        deleteAllUserFolders(userId)
+    }
+
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if the user bookmarks has been deleted
+     */
+    boolean deleteAllUserBookmarks(String userId) {
         log.info "deleteAllUserBookmarks()"
         def bookmarkIds = []
         def allBookmarksOfUser = findBookmarksByUserId(userId, DEFAULT_SIZE)
         allBookmarksOfUser.each { it ->
             bookmarkIds.add(it.bookmarkId)
         }
-        return deleteBookmarksByBookmarkIds(userId, bookmarkIds)
+        return deleteDocumentsByTypeAndIds(userId, bookmarkIds, "bookmark")
     }
 
-    List findBookmarkedItemsInFolder(userId, itemIdList, folderId = null) {
+    /**
+     * Deletes all {@link Folder} belonging to a user
+     * 
+     * @param userId the id of the user
+     * 
+     * @return <code>true</code> if at least one folder has been deleted for the given userId
+     */
+    boolean deleteAllUserFolders(String userId) {
+        log.info "deleteAllUserFolders()"
+        List<Folder> allUserFolders = findAllFolders(userId)
+
+        List<String> folderIds = []
+
+        allUserFolders.each { it ->
+            folderIds.add(it.folderId)
+        }
+
+        return deleteDocumentsByTypeAndIds(userId, folderIds, "folder")
+
+    }
+
+    List<Bookmark> findBookmarkedItemsInFolder(String userId, List<String> itemIdList, String folderId) {
         log.info "findBookmarkedItemsInFolder(): itemIdList ${itemIdList}"
 
         def all = []
@@ -489,14 +519,13 @@ class BookmarksService {
             log.info "response as application/json: ${response}"
             def resultList = response.hits.hits
             resultList.each { it ->
-                //items.add(it._id)
                 def bookmark = new Bookmark(
                         it._id,
                         it._source.user,
                         it._source.item,
                         it._source.createdAt,
                         it._source.type as Type,
-                        it._source.folder,
+                        it._source.folder as List,
                         it._source.description,
                         it._source.updatedAt
                         )
@@ -511,88 +540,17 @@ class BookmarksService {
         return all
     }
 
-    List findBookmarksByItemId(userId, itemId, folderId = null) {
-        log.info "findBookmarksByItemId(): itemId: ${itemId}"
-
-        def all = []
-
-        def queryParameter = [:]
-        if(folderId) {
-            queryParameter = ["q":"user:\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
-        } else {
-            queryParameter = ["q":"user:\"${userId}\"".encodeAsURL(),"size":"${DEFAULT_SIZE}"]
-        }
-
-        def postBody = [filter: [terms: [item: [itemId]]]]
-
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, queryParameter, [:], true)
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            log.info "response as application/json: ${response}"
-            def resultList = response.hits.hits
-
-            resultList.each { it ->
-                def bookmark = new Bookmark(
-                        it._id,
-                        it._source.user,
-                        it._source.item,
-                        it._source.createdAt,
-                        it._source.type as Type,
-                        it._source.folder,
-                        it._source.description,
-                        it._source.updatedAt
-                        )
-
-                if(bookmark.isValid()){
-                    all.add(bookmark)
-                }else{
-                    log.error "findBookmarksByItemId(): found corrupt bookmark: "+bookmark
-                }
-
-            }
-        }
-
-        return all
-    }
-
     boolean isBookmarkOfUser(String itemId, String userId) {
         log.info "isBookmarkOfUser()"
         boolean result = false
-        def bookmarks = findBookmarkedItemsInFolder(userId, [itemId])
+        def bookmarks = findBookmarkedItemsInFolder(userId, [itemId], null)
         if (bookmarks != null && (bookmarks.size() > 0)) {
             result = true
         }
-        log.info "isBookmarkOfUser ${itemId} returns: " + result
         return result
     }
 
-    //    /*
-    //     * Given a list of bookmark ID, update its folder values to [folderId]
-    //     *
-    //     * bookmarkIds, list of bookmarks to update
-    //     * folderIds, list of folderId as input
-    //     */
-    //    void copyBookmarksToFolders(List<String> bookmarkIds, List<String> folderIds) {
-    //        log.info "copyBookmarksToFolders()"
-    //
-    //        def postBody = ''
-    //        bookmarkIds.each { it ->
-    //            postBody = postBody + '{ "update" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"} }\n'+
-    //                    '{ "script" : "ctx._source.folder += otherFolder", "params" : { "otherFolder" : ' + surroundWithQuotes(folderIds)+ '} }\n'
-    //        }
-    //        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
-    //
-    //        if(apiResponse.isOk()){
-    //            refresh()
-    //        }
-    //    }
-
-    private void surroundWithQuotes(stringInList) {
-        stringInList.collect { it ->  '"' + it + '"'}
-    }
-
-    Bookmark findBookmarkById(bookmarkId) {
+    Bookmark findBookmarkById(String bookmarkId) {
         log.info "findBookmarkById()"
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${bookmarkId}", false, [:])
@@ -605,7 +563,7 @@ class BookmarksService {
                     it._source.item,
                     it._source.createdAt,
                     it._source.type as Type,
-                    it._source.folder,
+                    it._source.folder as List,
                     it._source.description,
                     it._source.updatedAt
                     )
@@ -620,7 +578,7 @@ class BookmarksService {
     }
 
 
-    Folder findFolderById(folderId) {
+    Folder findFolderById(String folderId) {
         log.info "findFolderById()"
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false, [:])
@@ -646,7 +604,7 @@ class BookmarksService {
         return null
     }
 
-    Folder findPublicFolderById(folderId) {
+    Folder findPublicFolderById(String folderId) {
         log.info "findPublicFolderById()"
 
         Folder folder = findFolderById(folderId)
@@ -657,32 +615,27 @@ class BookmarksService {
         }
     }
 
-    void updateFolder(folderId, newTitle, newDescription = null, isPublic = false, publishingName, isBlocked = false, blockingToken = "") {
+    void updateFolder(Folder folder) {
         log.info "updateFolder()"
 
-        // Save fallback to username if wrong parameters are given
-        //        if(!FolderConstants.isValidPublishingName(publishingName)){
-        //            publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
-        //        }
-
         def postBody = ""
-        if(newDescription) {
+        if(folder.description) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: newTitle, description: newDescription, isPublic: isPublic, publishingName: publishingName, isBlocked: isBlocked, blockingToken: blockingToken ]]
+            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken ]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: newTitle, isPublic: isPublic, publishingName: publishingName, isBlocked: isBlocked, blockingToken: blockingToken]]
+            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken]]
         }
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}/_update", false, postBody as JSON)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             refresh()
         }
     }
 
-    void updateBookmark(bookmarkId, newDescription) {
-        log.info "updateBookmark()"
+    void updateBookmarkDescription(String bookmarkId, String newDescription) {
+        log.info "updateBookmarkDescription()"
 
         def postBody = [doc: [description: newDescription, updatedAt: System.currentTimeMillis()]]
 
@@ -693,7 +646,7 @@ class BookmarksService {
         }
     }
 
-    void removeBookmarksFromFolder(bookmarkIds, folderId) {
+    void removeBookmarksFromFolder(List<String> bookmarkIds, String folderId) {
         log.info "removeBookmarksFromFolder(): bookmarkIds="+bookmarkIds
 
         def postBody = ''
@@ -709,7 +662,7 @@ class BookmarksService {
         }
     }
 
-    void deleteFolder(folderId) {
+    void deleteFolder(String folderId) {
         log.info "deleteFolder()"
 
         ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false)
@@ -720,5 +673,6 @@ class BookmarksService {
             refresh()
         }
     }
+
 
 }
