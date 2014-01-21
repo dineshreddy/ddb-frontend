@@ -15,9 +15,12 @@
  */
 package de.ddb.next
 
+import de.ddb.next.exception.ItemNotFoundException
+
 class MapController {
 
     def index() {
+        throw new ItemNotFoundException() // Deactivated maptest for 4.3.RC1, see DDBNEXT-1110
         render(view: "map", model: [])
     }
 
