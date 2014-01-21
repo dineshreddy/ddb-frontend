@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:if test="${entity.person.depiction.thumbnail != null}">
+<g:if test="${entity.person.depiction.thumbnail != null}">  
   <div class="thumb">
+  <hr>
   	<div class="thumbinner">
   		<!-- TODO: refactor to use figure element -->
   		<!-- TODO: remove width and height, use CSS -->
