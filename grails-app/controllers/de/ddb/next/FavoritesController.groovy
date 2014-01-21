@@ -16,9 +16,7 @@ import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
 
-	private UserController userContr = new UserController()
-	private FavoritesviewController favViewContr = new FavoritesviewController()
-
+	def favoritesService
 
 	private def reportFavoritesList(String userId, String folderId){
 		log.info "reportFavoritesList()"
@@ -110,7 +108,7 @@ class FavoritesController {
 	}
 
 	private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
-		if (userContr.isUserLoggedIn()) {
+		if (favoritesService.isUserLoggedIn()) {
 			def List emails = []
 			if (paramEmails.contains(',')){
 				emails=paramEmails.tokenize(',')
@@ -121,16 +119,16 @@ class FavoritesController {
 				sendMail {
 					to emails.toArray()
 					from configurationService.getFavoritesSendMailFrom()
-					replyTo userContr.getUserFromSession().getEmail()
+					replyTo favoritesServiceontr.getUserFromSession().getEmail()
 					subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
 						selectedFolder.title,
-						userContr.getUserFromSession().getFirstnameAndLastnameOrNickname()
+						favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname()
 					]))
 					body( view:"_favoritesEmailBody",
 					model:[
 						results: allResultsOrdered,
 						dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-						userName:userContr.getUserFromSession().getFirstnameAndLastnameOrNickname(),
+						userName:favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
 						baseUrl: configurationService.getSelfBaseUrl(),
 						contextUrl: configurationService.getContextUrl(),
 						folderDescription:selectedFolder.description,
@@ -157,7 +155,7 @@ class FavoritesController {
 		long timestampStart = System.currentTimeMillis() // This is because of the slow request: See DDBNEXT-932
 		def itemId = params.id
 		def result = response.SC_BAD_REQUEST
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			Bookmark newBookmark = new Bookmark(
 					null,
@@ -184,7 +182,7 @@ class FavoritesController {
 	def addFavoriteToFolder() {
 		log.info "addFavoriteToFolder " + params.folderId + "," + params.itemId
 		def result = response.SC_BAD_REQUEST
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			Bookmark newBookmark = new Bookmark(
 					null,
@@ -210,7 +208,7 @@ class FavoritesController {
 		log.info "deleteFavorite " + params.id
 		def itemId = params.id
 		def result = response.SC_NOT_FOUND
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			if (bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])) {
 				result = response.SC_NO_CONTENT
@@ -233,7 +231,7 @@ class FavoritesController {
 		}
 
 		def result = response.SC_NOT_FOUND
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 
 			// Check if the items all belong to the current user
@@ -278,7 +276,7 @@ class FavoritesController {
 	def filterFavorites() {
 		log.info "filterFavorites " + request.JSON
 		def itemIdList = request.JSON
-		User user = userContr.getUserFromSession()
+		User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 			def bookmarks = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIdList, mainFavoritesFolder.folderId)
@@ -294,7 +292,7 @@ class FavoritesController {
 	def getFavorite() {
 		log.info "getFavorite " + params.id
 		def result = response.SC_NOT_FOUND
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def bookmark = bookmarksService.findBookmarkedItemsInFolder(user.getId(), [params.id], null)
 			log.info "getFavorite returns " + bookmark
@@ -308,7 +306,7 @@ class FavoritesController {
 
 	def getFavorites() {
 		log.info "getFavorites"
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def result = bookmarksService.findBookmarksByUserId(user.getId())
 			log.info "getFavorites returns " + result
@@ -322,7 +320,7 @@ class FavoritesController {
 	def getFavoriteFolder() {
 		log.info "getFavoriteFolder " + params.id
 		def result = response.SC_NOT_FOUND
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			Folder folder = bookmarksService.findFolderById(params.id)
 			log.info "getFavoriteFolder returns " + folder
@@ -342,7 +340,7 @@ class FavoritesController {
 	 */
 	def getFavoriteFolders() {
 		log.info "getFavoriteFolders"
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 			def folders = bookmarksService.findAllFolders(user.getId())
@@ -367,7 +365,7 @@ class FavoritesController {
 		description = sanitizeTextInput(description)
 
 		def result = response.SC_BAD_REQUEST
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def publishingName = user.getUsername()
 
@@ -398,7 +396,7 @@ class FavoritesController {
 		def folderId = request.JSON.folderId
 		def result = response.SC_BAD_REQUEST
 
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 			def foldersOfUser = bookmarksService.findAllFolders(user.getId())
 
@@ -463,7 +461,7 @@ class FavoritesController {
 
 		def result = response.SC_BAD_REQUEST
 
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 
 			// Check if the folders to copy to are actually folders owned by this user (security)
@@ -530,7 +528,7 @@ class FavoritesController {
 
 		def result = response.SC_BAD_REQUEST
 
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 
 			def publishingName = ""
@@ -594,7 +592,7 @@ class FavoritesController {
 
 		def result = response.SC_BAD_REQUEST
 
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 
 			// 1) Check if the current user is really the owner of this bookmark, else deny
@@ -626,7 +624,7 @@ class FavoritesController {
 
 		def result = response.SC_BAD_REQUEST
 
-		def User user = userContr.getUserFromSession()
+		def User user = favoritesService.getUserFromSession()
 		if (user != null) {
 
 			// 1) Check if the current user is really the owner of this folder, else deny
