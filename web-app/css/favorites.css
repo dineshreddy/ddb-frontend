@@ -396,6 +396,12 @@ hr {
   background-position: 0 -190px;
 }
 
+.favorites-results .results-list .summary .extra .types li.entity {
+  background: url("../images/placeholder/searchResultEntity.png") no-repeat center top;
+  background-size: 23px 19px;
+  padding-left: 0;
+}
+
 .favorites-results .results-list .summary .extra .types .unknown {
   background-position: 0 0;
 }

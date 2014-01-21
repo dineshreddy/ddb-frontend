@@ -580,7 +580,7 @@ class ItemService {
         return out
     }
 
-    private boolean isFavorite(itemId) {
+    def boolean isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if(user != null) {
             return bookmarksService.isBookmarkOfUser(itemId, user.getId())

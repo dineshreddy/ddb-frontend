@@ -24,6 +24,7 @@ import org.springframework.web.context.request.RequestContextHolder
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.Type
 
 class FavoritesService {
 
@@ -111,28 +112,39 @@ class FavoritesService {
 			def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
 			def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMediaUnknown.png").toString()
 			def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
-
+            def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultEntity.png").toString()
 			def foundItemIds = allRes.collect{ it.id }
 			items.each{
 				// item not found
-				if(!(it.itemId in foundItemIds)){
-
-					def emptyDummyItem = [:]
-					emptyDummyItem["id"] = it.itemId
-					emptyDummyItem["view"] = []
-					emptyDummyItem["label"] = label
-					emptyDummyItem["latitude"] = ""
-					emptyDummyItem["longitude"] = ""
-					emptyDummyItem["category"] = "orphaned"
-					emptyDummyItem["preview"] = [:]
-					emptyDummyItem["preview"]["title"] = label
-					emptyDummyItem["preview"]["subtitle"] = ""
-					emptyDummyItem["preview"]["media"] = ["unknown"]
-					emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
-
-					net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
-					allRes.add(jsonDummyItem)
-				}
+                if(it.type == Type.ENTITY){
+                    def entity = [:]
+                    label = "Entity " + it.itemId
+                    entity["id"] = it.itemId
+                    entity["view"] = []
+                    entity["label"] = label
+                    entity["category"] = "Entity"
+                    entity["preview"] = [:]
+                    entity["preview"]["title"] = label
+                    entity["preview"]["media"] = ["entity"]
+                    entity["preview"]["thumbnail"] = entityThumbnail
+                    allRes.add((net.sf.json.JSONObject) entity)
+                }
+                else if(!(it.itemId in foundItemIds)){
+                    def emptyDummyItem = [:]
+                    emptyDummyItem["id"] = it.itemId
+                    emptyDummyItem["view"] = []
+                    emptyDummyItem["label"] = label
+                    emptyDummyItem["latitude"] = ""
+                    emptyDummyItem["longitude"] = ""
+                    emptyDummyItem["category"] = "orphaned"
+                    emptyDummyItem["preview"] = [:]
+                    emptyDummyItem["preview"]["title"] = label
+                    emptyDummyItem["preview"]["subtitle"] = ""
+                    emptyDummyItem["preview"]["media"] = ["unknown"]
+                    emptyDummyItem["preview"]["thumbnail"] = dummyThumbnail
+                    net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
+                    allRes.add(jsonDummyItem)
+                }
 			}
 		}
 

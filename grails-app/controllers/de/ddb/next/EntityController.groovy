@@ -18,7 +18,6 @@ package de.ddb.next
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
 
-
 /**
  * Controller class for all entity related views
  *  
@@ -29,6 +28,7 @@ class EntityController {
     def cultureGraphService
     def configurationService
     def entityService
+    def itemService
 
     int PREVIEW_COUNT = 4
 
@@ -106,10 +106,10 @@ class EntityController {
 
         searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
-
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
+            "isFavorite": itemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchInvolvedNormdata": searchInvolvedNormdata,

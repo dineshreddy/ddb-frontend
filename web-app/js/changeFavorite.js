@@ -31,7 +31,7 @@ function changeFavoriteState() {
       type : vActn,
       dataType : 'json',
       async : true,
-      url : url + "&reqActn=add",
+      url : url + "&reqActn=add&reqObjectType=" + jElemFavorite.attr("data-objecttype"),
       complete : function(data) {
         if (vActn == "POST") {
           addToFavorites(data);
