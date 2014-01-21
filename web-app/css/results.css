@@ -992,6 +992,10 @@ input[type="checkbox"],input[type="radio"] {
     margin-left: 13px;
     width: 100px;
   }
+      
+  .search-results .results-list .summary .compare {
+    display: none;
+  }
   
   .search-results .results-list .entity .thumbnail img {
     display: none;
@@ -999,6 +1003,10 @@ input[type="checkbox"],input[type="radio"] {
   
   .search-results .results-list .summary-main {
     min-height: 0;
+  }
+  
+  .search-results .results-list .summary .compare.disabled {
+    display: none;
   }
 }
 
