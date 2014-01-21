@@ -78,7 +78,7 @@ class UserController {
 		if(!isCookiesActivated()){
 			loginStatus = LoginStatus.NO_COOKIES
 
-		} else if(!favoritesService.favoritesService.isUserLoggedIn()){
+		} else if(!favoritesService.isUserLoggedIn()){
 			def email = params.email
 			def password = params.password
 
@@ -128,7 +128,7 @@ class UserController {
 
 	def getSavedSearches() {
 		log.info "getSavedSearches()"
-		if (favoritesService.favoritesService.isUserLoggedIn()) {
+		if (favoritesService.isUserLoggedIn()) {
 			def user = favoritesService.getUserFromSession()
 			def savedSearches = savedSearchesService.getSavedSearches(user.getId())
 			def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
@@ -192,8 +192,8 @@ class UserController {
 
 	def sendSavedSearches() {
 		log.info "sendSavedSearches()"
-		if (favoritesService.favoritesService.isUserLoggedIn()) {
-			def user = favoritesService.favoritesService.getUserFromSession()
+		if (favoritesService.isUserLoggedIn()) {
+			def user = favoritesService.getUserFromSession()
 			def List emails = []
 
 			if (params.email.contains(',')) {
@@ -323,7 +323,7 @@ class UserController {
 
 	def profile() {
 		log.info "profile()"
-		if(favoritesService.favoritesService.isUserLoggedIn()){
+		if(favoritesService.isUserLoggedIn()){
 			User user = favoritesService.getUserFromSession().clone()
 			if (params.username) {
 				user.setUsername(params.username)
