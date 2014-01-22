@@ -1,7 +1,8 @@
 package ddb.next.controllers
 
-import grails.test.mixin.TestFor
+import grails.test.mixin.*
 import de.ddb.next.FavoritesController
+import de.ddb.next.FavoritesviewController
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
 
@@ -11,45 +12,47 @@ import de.ddb.next.constants.FolderConstants
 @TestFor(FavoritesController)
 class FavoritesControllerTests {
 
-    void testSortFolders_WithEmptyList() {
-        List sortedFolders = controller.sortFolders([])
-        assert sortedFolders.size() == 0
-    }
+	private FavoritesviewController favViewContr = new FavoritesviewController()
 
-    void testSortFolders_WithOneFolder() {
-        def folder1 = createFolder("first folder")
+	void testSortFolders_WithEmptyList() {
+		List sortedFolders = favViewContr.sortFolders([])
+		assert sortedFolders.size() == 0
+	}
 
-        assert controller.sortFolders([folder1]) == [folder1]
-    }
+	void testSortFolders_WithOneFolder() {
+		def folder1 = createFolder("first folder")
 
-    void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
-        def folder1 = createFolder(" \t\r\n")
+		assert favViewContr.sortFolders([folder1]) == [folder1]
+	}
 
-        assert controller.sortFolders([folder1])[0].title == "-"
-    }
+	void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
+		def folder1 = createFolder(" \t\r\n")
 
-    void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
-        def folder1 = createFolder("first folder")
-        def folder2 = createFolder("second folder")
+		assert favViewContr.sortFolders([folder1])[0].title == "-"
+	}
 
-        assert controller.sortFolders([folder2, folder1]) == [folder1, folder2]
-    }
+	void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
+		def folder1 = createFolder("first folder")
+		def folder2 = createFolder("second folder")
 
-    void testSortFolders_IncludingMainFolder_PullsMainFolderToTheBeginning() {
-        def folder1 = createFolder(FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
-        def folder2 = createFolder("aaaaa first normal folder")
+		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+	}
 
-        assert controller.sortFolders([folder2, folder1]) == [folder1, folder2]
-    }
+	void testSortFolders_IncludingMainFolder_PullsMainFolderToTheBeginning() {
+		def folder1 = createFolder(FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
+		def folder2 = createFolder("aaaaa first normal folder")
 
-    void testSortFolders_IncludingUmlautFolder() {
-        def folder1 = createFolder("Ägypten")
-        def folder2 = createFolder("zzzz last folder")
+		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+	}
 
-        assert controller.sortFolders([folder2, folder1]) == [folder1, folder2]
-    }
+	void testSortFolders_IncludingUmlautFolder() {
+		def folder1 = createFolder("Ägypten")
+		def folder2 = createFolder("zzzz last folder")
 
-    private def createFolder(String title) {
-        return new Folder("folder id", "user", title, null, false, null, false, null)
-    }
+		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+	}
+
+	private def createFolder(String title) {
+		return new Folder("folder id", "user", title, null, false, null, false, null)
+	}
 }

@@ -15,302 +15,302 @@
  */
 class UrlMappings {
 
-    static mappings = {
-        //@formatter:off
-        "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
-        //@formatter:on
+	static mappings = {
+		//@formatter:off
+		"/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
+		//@formatter:on
 
-        "/searchresults/$q?" {
-            controller="search"
-            action="results"
-        }
+		"/searchresults/$q?" {
+			controller="search"
+			action="results"
+		}
 
-        "/facets/$q?" {
-            controller="facets"
-            action="facetsList"
-        }
+		"/facets/$q?" {
+			controller="facets"
+			action="facetsList"
+		}
 
-        "/rolefacets" {
-            controller="facets"
-            action="roleFacets"
-        }
+		"/rolefacets" {
+			controller="facets"
+			action="roleFacets"
+		}
 
-        "/informationitem/$id"{
-            controller="search"
-            action="informationItem"
-        }
+		"/informationitem/$id"{
+			controller="search"
+			action="informationItem"
+		}
 
-        "/content/$dir/$id?" {
-            controller="content"
-            action="staticcontent"
-        }
+		"/content/$dir/$id?" {
+			controller="content"
+			action="staticcontent"
+		}
 
-        "/advancedsearch" {
-            controller="advancedsearch"
-            action="fillValues"
-        }
+		"/advancedsearch" {
+			controller="advancedsearch"
+			action="fillValues"
+		}
 
-        "/advancedsearch/search" {
-            controller="advancedsearch"
-            action="executeSearch"
-        }
+		"/advancedsearch/search" {
+			controller="advancedsearch"
+			action="executeSearch"
+		}
 
-        "/" {
-            controller="index"
-            action="index"
-        }
+		"/" {
+			controller="index"
+			action="index"
+		}
 
-        "/item/$id" {
-            controller="item"
-            action="findById"
-        }
+		"/item/$id" {
+			controller="item"
+			action="findById"
+		}
 
-        "/item/xml/$id" {
-            controller="item"
-            action="showXml"
-        }
+		"/item/xml/$id" {
+			controller="item"
+			action="showXml"
+		}
 
-        "/apis/favorites" {
-            controller="favorites"
-            action="getFavorites"
-        }
+		"/apis/favorites" {
+			controller="favorites"
+			action="getFavorites"
+		}
 
-        name delFavorites: "/apis/favorites/_delete" {
-            controller="favorites"
-            action=[POST: "deleteFavoritesFromFolder"]
-        }
+		name delFavorites: "/apis/favorites/_delete" {
+			controller="favorites"
+			action=[POST: "deleteFavoritesFromFolder"]
+		}
 
-        "/apis/favorites/folders" {
-            controller="favorites"
-            action="getFavoriteFolders"
-        }
+		"/apis/favorites/folders" {
+			controller="favorites"
+			action="getFavoriteFolders"
+		}
 
-        "/apis/favorites/folders/$folderId/$itemId" {
-            controller="favorites"
-            action=[POST: "addFavoriteToFolder"]
-        }
+		"/apis/favorites/folders/$folderId/$itemId" {
+			controller="favorites"
+			action=[POST: "addFavoriteToFolder"]
+		}
 
-        "/apis/favorites/folder/create" {
-            controller="favorites"
-            action="createFavoritesFolder"
-        }
+		"/apis/favorites/folder/create" {
+			controller="favorites"
+			action="createFavoritesFolder"
+		}
 
-        "/apis/favorites/folder/delete" {
-            controller="favorites"
-            action="deleteFavoritesFolder"
-        }
+		"/apis/favorites/folder/delete" {
+			controller="favorites"
+			action="deleteFavoritesFolder"
+		}
 
-        "/apis/favorites/folder/edit" {
-            controller="favorites"
-            action="editFavoritesFolder"
-        }
+		"/apis/favorites/folder/edit" {
+			controller="favorites"
+			action="editFavoritesFolder"
+		}
 
-        "/apis/favorites/folder/get/$id" {
-            controller="favorites"
-            action="getFavoriteFolder"
-        }
+		"/apis/favorites/folder/get/$id" {
+			controller="favorites"
+			action="getFavoriteFolder"
+		}
 
-        "/apis/favorites/_get" {
-            controller="favorites"
-            action=[POST: "filterFavorites"]
-        }
+		"/apis/favorites/_get" {
+			controller="favorites"
+			action=[POST: "filterFavorites"]
+		}
 
-        "/apis/favorites/copy" {
-            controller="favorites"
-            action="copyFavorites"
-        }
+		"/apis/favorites/copy" {
+			controller="favorites"
+			action="copyFavorites"
+		}
 
-        "/apis/favorites/comment" {
-            controller="favorites"
-            action=[POST: "setComment"]
-        }
+		"/apis/favorites/comment" {
+			controller="favorites"
+			action=[POST: "setComment"]
+		}
 
-        "/apis/favorites/togglePublish" {
-            controller="favorites"
-            action=[POST: "togglePublish"]
-        }
+		"/apis/favorites/togglePublish" {
+			controller="favorites"
+			action=[POST: "togglePublish"]
+		}
 
-        "/apis/favorites/$id" {
-            controller="favorites"
-            action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
-        }
+		"/apis/favorites/$id" {
+			controller="favorites"
+			action=[GET: "getFavorite", POST: "addFavorite", DELETE: "deleteFavorite"]
+		}
 
-        "/user/favorites/$id?" {
-            controller="favorites"
-            action="favorites"
-        }
+		"/user/favorites/$id?" {
+			controller="favoritesview"
+			action="favorites"
+		}
 
-        "/user/$userId/favorites/$folderId" {
-            controller="favorites"
-            action="publicFavorites"
-        }
+		"/user/$userId/favorites/$folderId" {
+			controller="favoritesview"
+			action="publicFavorites"
+		}
 
-        "/apis/savedsearches" {
-            controller="savedsearches"
-            action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
-        }
+		"/apis/savedsearches" {
+			controller="savedsearches"
+			action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
+		}
 
-        "/apis/savedsearches/$id" {
-            controller="savedsearches"
-            action=[PUT: "updateSavedSearch"]
-        }
+		"/apis/savedsearches/$id" {
+			controller="savedsearches"
+			action=[PUT: "updateSavedSearch"]
+		}
 
-        name delSavedSearches: "/apis/savedsearches/_delete" {
-            controller="savedsearches"
-            action=[POST: "deleteSavedSearches"]
-        }
+		name delSavedSearches: "/apis/savedsearches/_delete" {
+			controller="savedsearches"
+			action=[POST: "deleteSavedSearches"]
+		}
 
-        "/apis/savedsearches/_get" {
-            controller="savedsearches"
-            action=[POST: "isSavedSearch"]
-        }
+		"/apis/savedsearches/_get" {
+			controller="savedsearches"
+			action=[POST: "isSavedSearch"]
+		}
 
-        "/apis/clusteredInstitutionsmap" {
-            controller="apis"
-            action=[GET:"clusteredInstitutionsmap"]
-        }
+		"/apis/clusteredInstitutionsmap" {
+			controller="apis"
+			action=[GET:"clusteredInstitutionsmap"]
+		}
 
-        "/about-us/institutions" {
-            controller="institution"
-            action="show"
-        }
+		"/about-us/institutions" {
+			controller="institution"
+			action="show"
+		}
 
-        "/about-us/institutions/item/$id" {
-            controller="institution"
-            action="showInstitutionsTreeByItemId"
-        }
+		"/about-us/institutions/item/$id" {
+			controller="institution"
+			action="showInstitutionsTreeByItemId"
+		}
 
-        "/apis/institutions" {
-            controller="institution"
-            action="getJson"
-        }
+		"/apis/institutions" {
+			controller="institution"
+			action="getJson"
+		}
 
-        "/entity/$id" {
-            controller="entity"
-            action="index"
-        }
+		"/entity/$id" {
+			controller="entity"
+			action="index"
+		}
 
-        "/entity/ajax/searchresults" {
-            controller="entity"
-            action="getAjaxSearchResultsAsJson"
-        }
+		"/entity/ajax/searchresults" {
+			controller="entity"
+			action="getAjaxSearchResultsAsJson"
+		}
 
-        "/entity/ajax/rolesearchresults" {
-            controller="entity"
-            action="getAjaxRoleSearchResultsAsJson"
-        }
+		"/entity/ajax/rolesearchresults" {
+			controller="entity"
+			action="getAjaxRoleSearchResultsAsJson"
+		}
 
-        "/binary/$filename**" {
-            controller="apis"
-            action="binary"
-        }
+		"/binary/$filename**" {
+			controller="apis"
+			action="binary"
+		}
 
-        "/static/$filename**" {
-            controller="apis"
-            action="staticFiles"
-        }
+		"/static/$filename**" {
+			controller="apis"
+			action="staticFiles"
+		}
 
 
-        "/user/registration" {
-            controller="user"
-            action="registration"
-        }
+		"/user/registration" {
+			controller="user"
+			action="registration"
+		}
 
-        "/user/resetPassword" {
-            controller="user"
-            action="passwordResetPage"
-        }
+		"/user/resetPassword" {
+			controller="user"
+			action="passwordResetPage"
+		}
 
-        "/user/profile" {
-            controller="user"
-            action="profile"
-        }
+		"/user/profile" {
+			controller="user"
+			action="profile"
+		}
 
-        "/user/savedsearches" {
-            controller="user"
-            action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
-        }
+		"/user/savedsearches" {
+			controller="user"
+			action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
+		}
 
-        "/user/confirm/$id/$token" {
-            controller="user"
-            action="confirm"
-        }
+		"/user/confirm/$id/$token" {
+			controller="user"
+			action="confirm"
+		}
 
-        "/user/changePassword" {
-            controller="user"
-            action="passwordChangePage"
-        }
-        "/user/delete" {
-            controller="user"
-            action="delete"
-        }
+		"/user/changePassword" {
+			controller="user"
+			action="passwordChangePage"
+		}
+		"/user/delete" {
+			controller="user"
+			action="delete"
+		}
 
-        "/user/apikey" {
-            controller="user"
-            action="showApiKey"
-        }
+		"/user/apikey" {
+			controller="user"
+			action="showApiKey"
+		}
 
-        "/user/apikey/request" {
-            controller="user"
-            action="requestApiKey"
-        }
+		"/user/apikey/request" {
+			controller="user"
+			action="requestApiKey"
+		}
 
-        "/user/apikey/delete" {
-            controller="user"
-            action="deleteApiKey"
-        }
+		"/user/apikey/delete" {
+			controller="user"
+			action="deleteApiKey"
+		}
 
-        "/login" {
-            controller="user"
-            action="index"
-        }
+		"/login" {
+			controller="user"
+			action="index"
+		}
 
-        "/login/doLogin" {
-            controller="user"
-            action="doLogin"
-        }
+		"/login/doLogin" {
+			controller="user"
+			action="doLogin"
+		}
 
-        "/login/doLogout" {
-            controller="user"
-            action="doLogout"
-        }
+		"/login/doLogout" {
+			controller="user"
+			action="doLogout"
+		}
 
-        "/login/openId" {
-            controller="user"
-            action="requestOpenIdLogin"
-        }
+		"/login/openId" {
+			controller="user"
+			action="requestOpenIdLogin"
+		}
 
-        "/login/doOpenIdLogin" {
-            controller="user"
-            action="doOpenIdLogin"
-        }
+		"/login/doOpenIdLogin" {
+			controller="user"
+			action="doOpenIdLogin"
+		}
 
-        "/compare/$firstId/with/$secondId" {
-            controller="compare"
-            action="index"
-        }
+		"/compare/$firstId/with/$secondId" {
+			controller="compare"
+			action="index"
+		}
 
-        "/maptest" {
-            controller="map"
-            action="index"
-        }
+		"/maptest" {
+			controller="map"
+			action="index"
+		}
 
         "/multipolygone" {
             controller="map"
             action="multipolygone"
         }
 
-        "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
-        "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
-        "500"(controller: "error", action: "itemNotFound", exception: de.ddb.next.exception.ItemNotFoundException)
-        "500"(controller: "error", action: "entityNotFound", exception: de.ddb.next.exception.EntityNotFoundException)
-        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
-        "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
-        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
-        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
-        "500"(controller: "error", action: "cultureGraphError", exception: de.ddb.next.exception.CultureGraphException)
-        "500"(controller: "error", action: "uncaughtException")
-        "404"(controller: "error", action: "defaultNotFound")
+		"500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
+		"500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
+		"500"(controller: "error", action: "itemNotFound", exception: de.ddb.next.exception.ItemNotFoundException)
+		"500"(controller: "error", action: "entityNotFound", exception: de.ddb.next.exception.EntityNotFoundException)
+		"500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
+		"500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
+		"500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
+		"500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
+		"500"(controller: "error", action: "cultureGraphError", exception: de.ddb.next.exception.CultureGraphException)
+		"500"(controller: "error", action: "uncaughtException")
+		"404"(controller: "error", action: "defaultNotFound")
 
-    }
+	}
 }

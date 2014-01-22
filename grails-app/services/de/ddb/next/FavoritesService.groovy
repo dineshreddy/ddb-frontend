@@ -54,7 +54,7 @@ class FavoritesService {
 	}
 	def private createFavoritesLinkNavigation(offset,rows,order,by,folderId){
 		def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-		return g.createLink(controller:'favorites', action: 'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset,(SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by,id:folderId])
+		return g.createLink(controller:'favoritesview', action: 'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset,(SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by,id:folderId])
 	}
 
 	def createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
@@ -75,7 +75,7 @@ class FavoritesService {
 	}
 	def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId, String by){
 		def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-		return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, (SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by])
+		return g.createLink(controller:'favoritesview', action: 'publicFavorites', params:[userId: userId, folderId: folderId, (SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by])
 	}
 
 	/**
@@ -215,6 +215,14 @@ class FavoritesService {
 		SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
 		newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
 		return newFormat.format(oldDate)
+	}
+
+	private boolean isUserLoggedIn() {
+		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+	}
+
+	private User getUserFromSession() {
+		return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
 	}
 
 	List addCurrentUserToFavResults(allRes, User user) {

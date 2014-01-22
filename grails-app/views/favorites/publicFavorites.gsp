@@ -93,7 +93,7 @@ limitations under the License.
                 <g:each var="publicFolder" in="${publicFolders}">
                   <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
                     <li>
-                      <g:link class="folder-siblings" controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
+                      <g:link class="folder-siblings" controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
                         ${publicFolder.title}
                       </g:link>
                     </li>
@@ -104,11 +104,11 @@ limitations under the License.
           </g:if>
           <div class="folder-information bt bb bl br">
             <%--         
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favorites", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message code="ddbnext.Report_Public_List" />
             </a>
             --%>
-            <g:link controller="favorites" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
+            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
               <g:message code="ddbnext.Report_Public_List" />
             </g:link>
           </div>
