@@ -266,5 +266,13 @@
   .entity-page .thumb hr {
     display: block;
   }
+
+  .entity-page .object-controls {
+    border-width: 0;
+  }
+
+  .entity-page .page-link-popup-anchor {
+    display: none;
+  }
 }
 /* carousel controls responsiveness - end */
