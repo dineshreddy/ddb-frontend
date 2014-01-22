@@ -6,6 +6,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.FavoritelistNotFoundException
 
@@ -384,6 +385,10 @@ class FavoritesviewController {
 			redirect(controller:"user", action:"index")
 		}
 	}
+
+    private def isMainBookmarkFolder(folder) {
+        return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
+    }
 
 	private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
 		allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->

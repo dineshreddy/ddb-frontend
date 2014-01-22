@@ -124,13 +124,6 @@ class FavoritesController {
 		}
 	}
 
-	private def isMainBookmarkFolder(folder) {
-		return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
-	}
-
-
-
-
 	def deleteFavorite() {
 		log.info "deleteFavorite " + params.id
 		def itemId = params.id
