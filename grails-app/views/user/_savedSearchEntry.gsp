@@ -13,6 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
+<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+
 <g:set var="facetValues" value="" />
 <g:each var="mapEntry" in="${search.queryMap}">
   <g:if test="${mapEntry.key == SearchParamEnum.FACETVALUES.getName()}">
