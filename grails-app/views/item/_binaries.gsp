@@ -135,7 +135,16 @@ limitations under the License.
               </div>
               <span class="label off">
                 <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
-                  ${it.full.title}
+                  <%-- Implement a fallback for showing the image title --%>
+                  <g:if test="${it?.full?.title != ''}">
+                  	${it?.full?.title}
+                  </g:if>
+                  <g:elseif test="${it?.preview?.title != ''}">
+                  	${it?.preview?.title}
+                  </g:elseif>
+                  <g:elseif test="${it?.thumbnail?.title != ''}">
+                  	${it?.thumbnail?.title}
+                  </g:elseif>
                 </g:if>
                 <g:else>
                   ${it.orig.title}
