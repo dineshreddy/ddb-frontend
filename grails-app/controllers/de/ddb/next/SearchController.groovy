@@ -205,7 +205,13 @@ class SearchController {
                 while (gndItemsRetrieved < displayCount) {
                     def gndItem = [:]
                     def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
-                    def gndData = cultureGraphService.getCultureGraph(gndId)
+
+                    ApiResponse apiResponse = cultureGraphService.getCultureGraph(gndId)
+                    def gndData = null
+                    if(apiResponse.isOk()){
+                        gndData = apiResponse.getResponse()
+                    }
+
 
                     if(gndData != null) {
                         gndItem['id'] = gndId

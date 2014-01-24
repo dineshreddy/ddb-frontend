@@ -24,11 +24,24 @@ package de.ddb.next.exception
  */
 class CultureGraphException extends Exception {
 
-    CultureGraphException() {
-        super()
+    public enum CultureGraphExceptionType {
+        RESPONSE_404,
+        RESPONSE_500
     }
 
-    CultureGraphException(String description) {
+    private CultureGraphExceptionType exceptionType = CultureGraphExceptionType.RESPONSE_500
+
+    CultureGraphException(CultureGraphExceptionType exceptionType) {
+        super()
+        this.exceptionType = exceptionType
+    }
+
+    CultureGraphException(CultureGraphExceptionType exceptionType, String description) {
         super(description)
+        this.exceptionType = exceptionType
+    }
+
+    public CultureGraphExceptionType getExceptionType() {
+        return exceptionType
     }
 }

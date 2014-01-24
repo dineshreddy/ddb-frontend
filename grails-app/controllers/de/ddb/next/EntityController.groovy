@@ -15,8 +15,10 @@
  */
 package de.ddb.next
 
+import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
+import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
@@ -65,12 +67,26 @@ class EntityController {
         }
 
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityId)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
+        if(!apiResponse.isOk()){
+            if(apiResponse.getStatus() == HttpStatus.HTTP_404){
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_404)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }else{
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }
+        }
 
-        //Forward to a 404 page if the entityId is not known by the culture graph service
+        def jsonGraph = apiResponse.getResponse()
+
         if (jsonGraph == null) {
-            //throw new EntityNotFoundException()
-            throw new CultureGraphException()
+            // Should never be null. If null, something unexpected happened
+            CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
+            request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+            throw errorPageException
         }
 
         def entityUri = request.forwardURI
@@ -146,7 +162,12 @@ class EntityController {
             offset = 0
         }
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityid)
+        def jsonGraph = null
+        if(apiResponse.isOk()){
+            jsonGraph = apiResponse.getResponse()
+        }
+
 
         def entity = [:]
 
