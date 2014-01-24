@@ -594,8 +594,12 @@ function searchResultsInitializer() {
     errorIcon.addClass('icon-exclamation-sign');
     errorContainer.html(errorHtml);
     errorContainer.prepend(errorIcon);
-
     $('.search-results-list').prepend(errorContainer);
+    var offset = errorContainer.offset();
+    $('html, body').animate({
+      scrollTop: offset.top,
+      scrollLeft: offset.left
+    });
   }
 
   function fetchResultsList(url, errorCallback) {
