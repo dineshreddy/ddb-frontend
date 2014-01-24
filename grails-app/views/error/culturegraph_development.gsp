@@ -1,8 +1,8 @@
-<%@page import="de.ddb.next.exception.CultureGraphException"%>
+<%@page import="de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType"%>
 <html>
   <head>
     <title>
-      <g:if test="${exceptionType == CultureGraphException.CULTUREGRAPH_404 }">
+      <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
         <g:message code="error.culturegraph.404.title"/>
       </g:if>
       <g:else>
@@ -18,7 +18,7 @@
   <body>
     <div class="errorpage">
       <h1>
-        <g:if test="${exceptionType == CultureGraphException.CULTUREGRAPH_404 }">
+        <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
           <g:message code="error.culturegraph.404.title"/>
         </g:if>
         <g:else>
@@ -26,7 +26,7 @@
         </g:else>
       </h1>
       <p>
-        <g:if test="${exceptionType == CultureGraphException.CULTUREGRAPH_404 }">
+        <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
           <g:message code="error.culturegraph.404.body"/>
         </g:if>
         <g:else>

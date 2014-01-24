@@ -18,6 +18,7 @@ package de.ddb.next
 import grails.util.Environment
 
 import de.ddb.next.exception.CultureGraphException
+import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Central controller for handling error situations (404, 500, etc).
@@ -185,15 +186,15 @@ class ErrorController {
 
     def cultureGraphError() {
         def exceptionMessage = ""
-        def exceptionType = CultureGraphException.CULTUREGRAPH_500
+        def exceptionType = CultureGraphExceptionType.RESPONSE_500
 
         // Does it come from a automatically handled backend request?
         if(request?.exception){
             exceptionMessage = request.exception.getCause().getMessage()
-            exceptionType = request.exception.getCause().getErrorType()
+            exceptionType = request.exception.getCause().getExceptionType()
         }
 
-        if(exceptionType == CultureGraphException.CULTUREGRAPH_404){
+        if(exceptionType == CultureGraphExceptionType.RESPONSE_404){
             response.status = response.SC_NOT_FOUND // Return response code 404
         }else{
             response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500

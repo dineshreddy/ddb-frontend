@@ -18,6 +18,7 @@ package de.ddb.next
 import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
+import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
@@ -69,11 +70,11 @@ class EntityController {
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
         if(!apiResponse.isOk()){
             if(apiResponse.getStatus() == HttpStatus.HTTP_404){
-                CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_404)
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_404)
                 request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
                 throw errorPageException
             }else{
-                CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_500)
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
                 request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
                 throw errorPageException
             }
@@ -83,7 +84,7 @@ class EntityController {
 
         if (jsonGraph == null) {
             // Should never be null. If null, something unexpected happened
-            CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_500)
+            CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
             request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
             throw errorPageException
         }
