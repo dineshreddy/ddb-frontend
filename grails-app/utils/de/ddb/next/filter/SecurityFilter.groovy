@@ -58,7 +58,7 @@ class SecurityFilter implements Filter {
                 return
             }
 
-            //ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse) // temporarily deactivated sanitizer due to problems with cortex data. See DDBNEXT-988
+            ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
             chain.doFilter(requestWrapper, response)
             return
         }catch(InvalidUrlException i){
