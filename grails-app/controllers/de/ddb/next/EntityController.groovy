@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
 
@@ -65,7 +66,20 @@ class EntityController {
         }
 
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityId)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
+        if(!apiResponse.isOk()){
+            if(apiResponse.getStatus() == HttpStatus.HTTP_404){
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_404)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }else{
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_500)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }
+        }
+
+        def jsonGraph = apiResponse.getResponse()
 
         //Forward to a 404 page if the entityId is not known by the culture graph service
         if (jsonGraph == null) {
@@ -146,7 +160,12 @@ class EntityController {
             offset = 0
         }
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityid)
+        def jsonGraph = null
+        if(apiResponse.isOk()){
+            jsonGraph = apiResponse.getResponse()
+        }
+
 
         def entity = [:]
 
