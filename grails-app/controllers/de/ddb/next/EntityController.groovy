@@ -81,10 +81,11 @@ class EntityController {
 
         def jsonGraph = apiResponse.getResponse()
 
-        //Forward to a 404 page if the entityId is not known by the culture graph service
         if (jsonGraph == null) {
-            //throw new EntityNotFoundException()
-            throw new CultureGraphException()
+            // Should never be null. If null, something unexpected happened
+            CultureGraphException errorPageException = new CultureGraphException(CultureGraphException.CULTUREGRAPH_500)
+            request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+            throw errorPageException
         }
 
         def entityUri = request.forwardURI
