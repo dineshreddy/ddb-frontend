@@ -433,7 +433,7 @@ function searchResultsInitializer() {
             'fast',
             function() {
               $('.results-list .summary').addClass('row');
-              $('.summary-main-wrapper').addClass('span6');
+              $('.summary-main-wrapper').not('.summary-main-wrapper-gnd').addClass('span6');
               $('.thumbnail-wrapper').addClass('span3');
               $('.results-list .item-options').not('.entity-list .item-options').addClass('bl');
               $('.results-list .item-options .information').not(
