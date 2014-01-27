@@ -563,17 +563,6 @@ input[type="checkbox"],input[type="radio"] {
     background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -30px;
 }
 
-@media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
-  .search-results .results-list .summary .add-to-favorites {
-    width: 40px;
-    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px -60px;
-  }
-  .search-results .results-list .summary .added-to-favorites {
-    width: 40px;
-    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px 0px;
-  }
-}
-
 .search-noresults-content .noresults {
   margin-top: 5px;
   margin-bottom: 5px;
