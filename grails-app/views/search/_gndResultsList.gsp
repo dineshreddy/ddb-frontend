@@ -22,7 +22,7 @@ limitations under the License.
       <div class="summary row">
       
       
-        <div class="summary-main-wrapper span7">
+        <div class="summary-main-wrapper summary-main-wrapper-gnd span7">
           <div class="summary-main summary-entity">
             <div class="entity-type">
                 <g:message code="ddbnext.Entity_Page_Person"/>
