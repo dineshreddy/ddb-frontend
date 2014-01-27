@@ -38,7 +38,7 @@ $(document).ready(function() {
       languageSelector.removeAttr('style');
     });
   });
-  $('.login-link').on( "click", function() {    
+  $('.login-link-referrer').on( "click", function() {    
     var referrerUrl = window.location.pathname + window.location.search + window.location.hash;
     $(this).attr("href", jsContextPath+"/login?referrer="+encodeURIComponent(referrerUrl));
   });
