@@ -479,7 +479,7 @@ class FavoritesController {
 					user.getId(),
 					itemId,
 					new Date().getTime(),
-					Type.CULTURAL_ITEM,
+					(params.reqObjectType?.equalsIgnoreCase("entity") ? Type.ENTITY : Type.CULTURAL_ITEM),
 					null,
 					"",
 					new Date().getTime())
