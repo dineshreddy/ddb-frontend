@@ -342,6 +342,9 @@ footer, .footer,
   padding: 10px 0 10px 0;
   margin-top: 100px;
 }
+.institution-item-page .institution a {
+  margin-left: -20px;
+}
 /* Institution details - end */
 
 
