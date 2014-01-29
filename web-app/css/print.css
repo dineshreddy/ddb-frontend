@@ -37,12 +37,15 @@ footer, .footer,
 #articles-prev, #articles-next, .link-adv-search, .contextual-help,
 #divOSM .sliderStyle-vertical, #divOSM .mapHome,
 #mapContainerDiv .sliderStyle-vertical, #mapContainerDiv .mapHome,
-.favorites-results-container .bookmarks-container, .favorites-results-content .results-pagination, 
+.favorites-results-container .bookmarks-container, .favorites-results-content .results-pagination,
+.favorites-results-container .email-block, .favorites-results-container .comment-container, .favorites-results-container #favorites-copy,
+.favorites-results-container #favorites-remove, #favoritesCopyDialog, #folderCreateConfirmDialog,
+#folderDeleteConfirmDialog, #folderEditConfirmDialog,
 .favorites-results-content .remove-item-check, .favorites-results-content .select-all, .favorites-results-head > .span8,
 .favorites-results-head hr, #favorite-confirmation, .item-detail .favorite, #favoritesModal, #msDeleteFavorites,
- #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
- #editSavedSearchModal,
- .item-links, .share {
+#favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
+#editSavedSearchModal,
+.item-links, .share {
   display: none;
 }
 
