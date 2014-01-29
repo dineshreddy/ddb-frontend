@@ -111,7 +111,7 @@ limitations under the License.
           </li>
           <li class="">
             <ddb:isNotLoggedIn>
-              <g:link class="login-link" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
               <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
             </ddb:isNotLoggedIn>
             <ddb:isLoggedIn>
@@ -219,7 +219,7 @@ limitations under the License.
             <div class="status-bar">
               <ddb:isNotLoggedIn>
                 <div class="login-wrapper">                
-                  <g:link class="login-link" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
+                  <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
                 </div>
               </ddb:isNotLoggedIn>
               <ddb:isLoggedIn>

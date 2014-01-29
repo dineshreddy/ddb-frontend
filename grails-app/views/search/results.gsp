@@ -116,7 +116,7 @@ limitations under the License.
   	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
   	        	<a class="compare-link">		        	
   		        	<span class="compare-text"></span>
-  		        	<img class="compare-img"></img>
+  		        	<img class="compare-img" src="#" alt="" />
   	        	</a>
   	        	<span data-index="1" class="fancybox-toolbar-close"></span>
             </div>
@@ -126,7 +126,7 @@ limitations under the License.
   	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
   	        	<a class="compare-link">		        	
   		        	<span class="compare-text"></span>
-  		        	<img class="compare-img"></img>
+  		        	<img class="compare-img" src="#" alt="" />
   	        	</a>
   	        	<span data-index="2" class="fancybox-toolbar-close"></span>
             </div>
