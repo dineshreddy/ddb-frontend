@@ -1455,7 +1455,7 @@ function searchResultsInitializer() {
                         return false;
                       });
 
-                      facetValueContainer.attr('data-fctvalue', facetValue);
+                      facetValueContainer.attr('data-fctvalue', _.escape(facetValue));
                       spanCount.html('(' + this.count + ')');
 
                       if (index < 5) {
