@@ -260,6 +260,18 @@ footer, .footer,
 .item-detail .item-hierarchy .branch-type, .item-hierarchy .leaf-indicator {
   display: none;
 }
+
+.item-detail .institution-link{
+	margin-left: -20px;
+}
+
+.item-links{
+	display: none;	
+}
+
+.item-detail .share{
+	display: none;
+}
 /* Item detail-view - end */
 
 
@@ -383,15 +395,3 @@ footer, .footer,
   }
 /* Favorites list page - end */
 
-
-.institution-link{
-	margin-left: -20px;
-}
-
-.item-links{
-	display: none;	
-}
-
-.share{
-	display: none;
-}
