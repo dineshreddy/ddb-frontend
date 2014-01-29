@@ -330,6 +330,7 @@ footer, .footer,
 .institution-item-page .institution h2 {
   margin-top: 0;
   margin-bottom: 0;
+  line-height: 22px;
 }
 .institution-item-page .space {
   margin-right: 6px;
