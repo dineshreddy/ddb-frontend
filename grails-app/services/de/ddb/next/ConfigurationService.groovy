@@ -126,6 +126,10 @@ class ConfigurationService {
         return getConfigValue("ddb.apikey.terms.url")
     }
 
+    public String getRegistrationInfoUrl(){
+        return getConfigValue("ddb.registration.info.url")
+    }
+
     public String getAccountTermsUrl(){
         return getConfigValue("ddb.account.terms.url")
     }
@@ -253,6 +257,7 @@ class ConfigurationService {
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
+        log.info "ddb.registration.info.url = " + getRegistrationInfoUrl()
         log.info "ddb.account.terms.url = " + getAccountTermsUrl()
         log.info "ddb.account.privacy.url = " + getAccountPrivacyUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()

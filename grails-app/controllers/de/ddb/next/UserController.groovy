@@ -247,10 +247,12 @@ class UserController {
     def registration() {
         log.info "registration()"
 
+        String registrationInfoUrl = configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl()
         String accountTermsUrl = configurationService.getContextUrl() + configurationService.getAccountTermsUrl()
         String accountPrivacyUrl = configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
 
         render(view: "registration", model: [
+            registrationInfoUrl: registrationInfoUrl,
             accountTermsUrl: accountTermsUrl,
             accountPrivacyUrl: accountPrivacyUrl
         ])
