@@ -337,6 +337,15 @@ footer, .footer,
   padding: 10px 0 10px 0;
   margin-top: 100px;
 }
+
+.institution-item-page .institution a{
+	margin-left: -20px;
+}
+
+.institution-item-page .item-links{
+	display: none;	
+}
+
 /* Institution details - end */
 
 
