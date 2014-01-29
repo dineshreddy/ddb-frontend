@@ -49,6 +49,7 @@ class SecurityFilter implements Filter {
             String contextPath = requestWrapper.getContextPath()
             String requestedUri = requestWrapper.getRequestURI()
             if(requestedUri.startsWith(contextPath + "/appStatic") ||
+            requestedUri.startsWith(contextPath + "/apis/") ||
             requestedUri.endsWith(".png") ||
             requestedUri.endsWith(".jpg") ||
             requestedUri.endsWith(".jpeg") ||
