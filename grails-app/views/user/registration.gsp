@@ -29,7 +29,7 @@ limitations under the License.
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
         <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
-        <div class="reg-subtitle bt-white"><h3><g:message code="ddbnext.Mandatory" /></h3></div>
+        <div id="enduser" class="reg-subtitle bt-white"><span><g:message code="ddbnext.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
 
         <div class="control-group">
           <label class="control-label"><g:message code="ddbnext.Username" />*</label>

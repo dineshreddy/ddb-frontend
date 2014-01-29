@@ -169,6 +169,7 @@ ddb.favorites.reportMailTo=""  // "geschaeftsstelle@deutsche-digitale-bibliothek
 ddb.culturegraph.features.enabled=false
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
 ddb.apikey.terms.url="/content/terms/api"
+ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 
