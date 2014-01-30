@@ -183,6 +183,8 @@ footer, .footer,
 }
 .item-detail .institution {
   border-width: 0 0 2px 0 !important;
+  height: 120px;
+  margin-top: 0;
 }
 .item-detail .institution .span10 {
   display: inline-block;
@@ -193,12 +195,16 @@ footer, .footer,
   width: 130px;
 }
 .item-detail .institution .span9 {
-  display: inline-block;
+  position: absolute;
   width: 450px;
+  margin-top: 10px;
+  
 }
 .item-detail .institution .span3 {
-  display: inline-block;
+  position: absolute;
   width: 160px;
+  margin-left: 515px !important;
+  margin-top: 10px;
 }
 .item-detail .institution .row {
   position: relative;
