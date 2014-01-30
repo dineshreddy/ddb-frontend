@@ -112,7 +112,6 @@ limitations under the License.
           <li class="">
             <ddb:isNotLoggedIn>
               <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message code="ddbnext.Login" /></g:link>
-              <g:link controller="user"><g:message code="ddbnext.Login" /></g:link>
             </ddb:isNotLoggedIn>
             <ddb:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message code="ddbnext.Logout" /> (<ddb:getUserName />)</g:link>
