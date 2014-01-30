@@ -63,7 +63,7 @@ $.extend(PopupManagerSendPdf.prototype, {
     popupDialogSubmitButton.addClass('btn-padding');
     popupDialogTitle.addClass('popup-dialog-title bb');
     popupDialogContent.addClass('popup-dialog-content');
-    popupDialogSubmitButton.html('Send');
+    popupDialogSubmitButton.html($("#i18ntranslateSend").data("val"));
 
     if (title) {
       popupDialogTitle.html(title);
@@ -89,25 +89,30 @@ $.extend(PopupManagerSendPdf.prototype, {
 
     popupDialogCloseButton.click(function() {
       popupDialogWrapper.fadeOut('fast', function() {
+          content.show();
+          popupDialogSubmitButton.show();
+          $("#pdfMessage").hide();
       });
     });
-//    popupDialogSubmitButtonclick(function() {
-//    	var popupAnchor = $('.page-link-popup-anchor');
-//    	var url = window.location.protocol + "//" + window.location.host + popupAnchor.attr('href');
-//    	var email = $("#send-pdf").val()
-//    	$.ajax({
-//            url: url,
-//            type: 'GET',
-//            data: $(this).serialize(),
-//            dataType: 'text',
-//            success: function(data){
-//            	alert "Success";
-//            },
-//            error: function(data){
-//                alert('error');
-//            }
-//        });
-//    });
+
+    popupDialogSubmitButton.click(function() {
+        var emailaddress = $("#send-pdf").val();
+        if( !isValidEmailAddress( emailaddress ) ) {
+            alert($("#i18ntranslateValidEmail").data("val"));
+            }else{
+             var url = window.location.protocol + "//" + window.location.host+$('.sendmail-link-popup-anchor').attr('href')
+               $.ajax({
+                url: url,
+                data: "email="+emailaddress,
+                dataType: 'text',
+                type: "GET"
+               }).done(function(data)  {
+                 content.hide();
+                 popupDialogSubmitButton.hide();
+                 popupDialogContent.append( "<p id='pdfMessage'>"+data+"</p>" );
+                });
+        }
+    });
 
     $(anchorTag).click(function(event) {
       if (event.which === 1) {
@@ -117,15 +122,9 @@ $.extend(PopupManagerSendPdf.prototype, {
         });
       }
     });
-
-    $(document).mouseup(function(event) {
-      if (popupDialogWrapper.has(event.target).length === 0) {
-        popupDialogWrapper.fadeOut('fast', function() {
-        });
-      } else {
-        popupDialogWrapper.find('input')[0].select();
-      }
-    });
-
   }
 });
+function isValidEmailAddress(emailAddress) {
+    var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+    return pattern.test(emailAddress);
+};

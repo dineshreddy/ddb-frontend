@@ -15,13 +15,15 @@ limitations under the License.
 --%>
 <div class="row item-detail">
   <div class="span7 share">
-  
-    <div class="sendmail-block">
+  <%--   Sending PDF per Mail Start    --%>
+  <div class="sendmail-block">
+  <div id="i18ntranslateSend" data-val="<g:message code="ddbnext.Send_Button" />"></div>
+  <div id="i18ntranslateValidEmail" data-val="<g:message code="ddbnext.Enter_A_Valid_Email" />"></div>
       <a class="sendmail-link sendmail-link-popup-anchor" href="${createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])}" title="<g:message code="ddbnext.item.sendPdf" />">
       <span><g:message code="ddbnext.item.sendPdf" /></span>
       </a>
     </div>
-    
+<%--   Sending PDF per Mail End    --%>    
     <ddb:getSocialmediaBody />
   </div>
 </div>

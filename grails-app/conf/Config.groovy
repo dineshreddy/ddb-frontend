@@ -302,7 +302,7 @@ compress {
 
 grails {
     mail {
-        host = "localhost"
+        host = "exchange.fiz-karlsruhe.de"
         port = 25
     }
 }

@@ -21,6 +21,8 @@ class ItemController {
     static defaultAction = "findById"
 
     def itemService
+    def fileService
+    def configurationService
 
     /**
      * Handle the default show Item logic
@@ -36,13 +38,13 @@ class ItemController {
                 // inline images via data uris
                 model = itemService.prepareImagesForPdf(model)
 
-//                try {
-//                    renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
-//                } catch (grails.plugin.rendering.document.XmlParseException e) {
-//                    log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
-//                    forward controller: "error", action: "pdfNotFound"
-//                }
-                render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
+                try {
+                    renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
+                } catch (grails.plugin.rendering.document.XmlParseException e) {
+                    log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
+                    forward controller: "error", action: "pdfNotFound"
+                }
+                //render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
             }
@@ -73,10 +75,36 @@ class ItemController {
     }
     
     def sendPdf() {
+        //TODO Validate email and param.id
         def itemId = params.id
         //Handle PDF Generation Here
-        def message = ["message":"Ok"]
+        def url = "http://localhost:8080/ddb-next/item/HN2S24ZBPSN7L3Q672F7V4BU7W3DSL2A" //does not work
+        def url2= "http://localhost:8080/ddb-next/item/B56VNMYDDPKMGWQPWBDVXM3PCA3ALEOC" //works
         
+        url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])
+
+        def message = g.message(code:'ddbnext.item.sendPdfMailSuccess')
+        try {
+            def fileBytes = fileService.downloadFile(url+"?pdf=1")
+            try {
+                sendMail {
+                    multipart true
+                    to params.email
+                    subject g.message(code: 'ddbnext.item.sendPdfSubjectOnEmail')
+                    body g.message(code: 'ddbnext.item.sendPdfBodyOnEmail')
+                    attach("est.pdf", "application/pdf", fileBytes)
+                }
+            } catch (Exception e) {
+                log.error "Failed Sending PDF per Email "+ e.getLocalizedMessage()
+                message = g.message(code: 'ddbnext.item.sendPdfFailsToSendMailPDF')
+            }
+        } catch (FileNotFoundException e) {
+            log.error "Failed Sending PDF per Email! Reason!? Cannot retrieve PDF file "+ e.getLocalizedMessage()
+            message = g.message(code: 'ddbnext.item.sendPdfFailsToSendMailPDF')
+        }
+        
+       
+
         render(contentType:"application/json", text: message)
     }
 }
