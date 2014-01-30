@@ -546,6 +546,9 @@ hr {
   .page-nav .bl {
     border-left: 0;
    }
+   .favorites-results-container .share-block {
+     display: inline;
+   }
    .favorites-results-controls .results-pagination {
      margin-bottom: 10px;
    }
