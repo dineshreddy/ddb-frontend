@@ -349,6 +349,9 @@ footer, .footer,
 .institution-item-page .institution a {
   margin-left: -20px;
 }
+.institution-item-page .institution .count {
+  margin-left: 0;
+}
 /* Institution details - end */
 
 
