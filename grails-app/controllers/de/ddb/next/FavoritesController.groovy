@@ -17,7 +17,7 @@ package de.ddb.next
 
 import grails.converters.JSON
 
-import java.net.URI.Parser
+import org.ccil.cowan.tagsoup.Parser
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
