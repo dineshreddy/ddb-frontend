@@ -25,7 +25,7 @@ class MapController {
     }
 
     def multipolygone() {
-        throw new ItemNotFoundException() // Deactivated multipolygone for 4.3.RC1, like for the maptest
+        //throw new ItemNotFoundException() // Deactivated multipolygone for 4.3.RC1, like for the maptest
         render(view: "multipolygone", model: [])
     }
 }
