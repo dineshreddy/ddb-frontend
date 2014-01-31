@@ -91,6 +91,13 @@ limitations under the License.
               </ul>
             </div>
           </g:elseif>
+          <g:if test="${flash.error}">
+            <div class="errors-container">
+              <ul class="unstyled">
+                <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+              </ul>
+            </div>
+          </g:if>
           <g:if test="${results.size() > 0}">
             <div class="favorites-results-controls">
               <div class="row delete-container">
