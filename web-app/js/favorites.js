@@ -513,3 +513,8 @@ function showError(errorHtml) {
 
     $('.favorites-results-content').prepend(errorContainer);
 }
+
+function clean() {
+  document.getElementById("folder-create-name").value="";
+  document.getElementById("folder-create-description").value="";
+}
