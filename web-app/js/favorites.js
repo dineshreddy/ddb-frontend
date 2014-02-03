@@ -254,24 +254,30 @@ $(function() {
                   isPublic = true;
                 }
 
+                var title = $('#folder-edit-name').val()
                 var body = {
                   id : $('#folder-edit-id').val(),
-                  title : $('#folder-edit-name').val(),
+                  title : title,
                   description : $('#folder-edit-description').val(),
                   isPublic : isPublic,
                   name : $('#folder-edit-publish-name').find(":selected").val()
                 };
-                jQuery.ajax({
-                  type : 'POST',
-                  contentType : "application/json; charset=utf-8",
-                  traditional : true,
-                  url : jsContextPath + "/apis/favorites/folder/edit",
-                  data : JSON.stringify(body),
-                  dataType : "json",
-                  success : function(data) {
-                    window.setTimeout('location.reload();', 500);
-                  }
-                });
+                if (title.length > 0) {
+                    hideError();
+	                jQuery.ajax({
+	                  type : 'POST',
+	                  contentType : "application/json; charset=utf-8",
+	                  traditional : true,
+	                  url : jsContextPath + "/apis/favorites/folder/edit",
+	                  data : JSON.stringify(body),
+	                  dataType : "json",
+	                  success : function(data) {
+	                    window.setTimeout('location.reload();', 500);
+	                  }
+	                });
+                } else {
+                	showError(messages.ddbnext.Savedsearch_Without_Title);
+                }
                 $('#folderEditConfirmDialog').modal('hide');
               });
 
@@ -484,4 +490,20 @@ function updateURLParameter(url, param, paramVal) {
 
   var rows_txt = temp + "" + param + "=" + paramVal;
   return baseURL + "?" + newAdditionalURL + rows_txt;
+}
+
+function hideError() {
+    $('.errors-container').remove();
+}
+
+function showError(errorHtml) {
+    var errorContainer = ($('.favorites-results-content').find('.errors-container').length > 0) ? $(
+        '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
+    var errorIcon = $(document.createElement('i'));
+    errorContainer.addClass('errors-container');
+    errorIcon.addClass('icon-exclamation-sign');
+    errorContainer.html(errorHtml);
+    errorContainer.prepend(errorIcon);
+
+    $('.favorites-results-content').prepend(errorContainer);
 }
