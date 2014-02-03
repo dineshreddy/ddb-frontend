@@ -112,22 +112,44 @@ $(function() {
       $("#editSavedSearchConfirm").click(function(e) {
         $("#editSavedSearchModal").modal("hide");
         var title = $("#editSavedSearchTitle").val();
-        $.ajax({
-          type : "PUT",
-          contentType : "application/json",
-          dataType : "json",
-          url : jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
-          data : JSON.stringify({
-            title : title
-          })
-        }).done(function() {
-          var editAnchor = $("#" + $("#editSavedSearchId").val());
-          editAnchor.attr("data-label", title);
-          var anchor = editAnchor.prev("a");
-          anchor.text(title);
-          anchor.attr("title", title);
-        });
+        if (title.length > 0) {
+        	  hideError();
+	        $.ajax({
+	          type : "PUT",
+	          contentType : "application/json",
+	          dataType : "json",
+	          url : jsContextPath + "/apis/savedsearches/" + $("#editSavedSearchId").val(),
+	          data : JSON.stringify({
+	            title : title
+	          })
+	        }).done(function() {
+	          var editAnchor = $("#" + $("#editSavedSearchId").val());
+	          editAnchor.attr("data-label", title);
+	          var anchor = editAnchor.prev("a");
+	          anchor.text(title);
+	          anchor.attr("title", title);
+	        });
+        } else {
+              showError(messages.ddbnext.Savedsearch_Title_Required);
+        }
       });
     });
   }
 });
+
+
+function hideError() {
+    $('.errors-container').remove();
+  }
+favorites-results-content
+function showError(errorHtml) {
+    var errorContainer = ($('.favorites-results-content').find('.errors-container').length > 0) ? $(
+        '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
+    var errorIcon = $(document.createElement('i'));
+    errorContainer.addClass('errors-container');
+    errorIcon.addClass('icon-exclamation-sign');
+    errorContainer.html(errorHtml);
+    errorContainer.prepend(errorIcon);
+
+    $('.favorites-results-content').prepend(errorContainer);
+  }

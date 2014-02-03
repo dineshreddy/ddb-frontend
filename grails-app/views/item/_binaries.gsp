@@ -135,7 +135,11 @@ limitations under the License.
               </div>
               <span class="label off">
                 <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+<<<<<<< HEAD
 				  <%-- Implement a fallback for showing the image title --%>
+=======
+                  <%-- Implement a fallback for showing the image title --%>
+>>>>>>> refs/heads/DDBNEXT-1179-IMR
                   <g:if test="${it?.full?.title != ''}">
                   	${it?.full?.title}
                   </g:if>
