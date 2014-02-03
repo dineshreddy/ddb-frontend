@@ -76,8 +76,7 @@ class SearchController {
                 //lastHit
                 //Workaround, find id of last hit when calling last hit.
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
-                params[SearchParamEnum.LASTHIT.getName()] = SearchParamEnum.LASTHIT.getName()
-
+                params[SearchParamEnum.LASTHIT.getName()] = 'lasthit'
             }
 
             //Replacing the mediatype images when not coming from backend server

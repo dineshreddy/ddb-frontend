@@ -19,7 +19,6 @@ import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import grails.util.Holders
 
-import java.awt.GraphicsConfiguration.DefaultBufferCapabilities;
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -31,9 +30,6 @@ import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
-
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.org.apache.xalan.internal.xsltc.compiler.ForEach;
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
@@ -126,17 +122,17 @@ class ItemService {
 
         def logoResource=new UrlResource(model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
-        
+
         model.binaryList.each{
             it.thumbnail.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
             it.preview.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
             it.full.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
         }
-        
+
         return model
     }
-    
-    
+
+
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
         def request = utils.getCurrentRequest()
@@ -146,7 +142,14 @@ class ItemService {
         //Check if Item-Detail was called from search-result and fill parameters
         def searchResultParameters = handleSearchResultParameters(params, request)
 
-        def item = findItemById(id)
+        def item = null
+
+        //If the id is lastHit get the item id from the searchResultParameters
+        if (id == 'lasthit') {
+            item = findItemById(searchResultParameters["lastItemId"])
+        } else {
+            item = findItemById(id)
+        }
 
         if("404".equals(item)){
             throw new ItemNotFoundException()
@@ -486,8 +489,8 @@ class ItemService {
             resultsItems = apiResponse.getResponse()
 
             //Workaround for last-hit (Performance-issue)
-            if (reqParameters.id && reqParameters.id.equals(SearchParamEnum.LASTHIT.getName())) {
-                reqParameters.id = resultsItems.results["docs"][1].id
+            if (reqParameters.id && reqParameters.id.equals("lasthit")) {
+                searchResultParameters["lastItemId"] = resultsItems.results["docs"][1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
 
