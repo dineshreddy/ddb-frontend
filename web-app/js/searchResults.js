@@ -1511,9 +1511,6 @@ function searchResultsInitializer() {
                 newUl = true;
                 roleFacetValueUl = $(document.createElement('ul'));
                 roleFacetValueUl.addClass('unstyled');
-
-                // FIXME Due to DDBNEXT-973 we do not show the role facet list
-                roleFacetValueUl.addClass('off');
               }
 
               // Create the role based facets and add them to the container

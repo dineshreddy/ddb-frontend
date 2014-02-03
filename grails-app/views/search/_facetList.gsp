@@ -38,8 +38,7 @@ limitations under the License.
     </a>
 	
 	<g:if test="${facetType == FacetEnum.AFFILIATE.getName() && roleFacetsUrl != null && roleFacetsUrl.size() > 0}">			
-		<!-- FIXME Due to DDBNEXT-973 we do not show the role facet list -->
-		<ul class="role-facets-list off">
+		<ul class="role-facets-list">
 		<g:each in="${(roleFacetsUrl)}" var="roleFacet">
 			<g:if test="${facetType == roleFacet.parent && roleFacet.fctValue == facetValues[i]['fctValue']}">
 				<li class="role-facet">
