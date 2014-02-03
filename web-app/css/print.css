@@ -371,7 +371,7 @@ footer, .footer,
   .favorites-results .item {
     display: block;
     margin-left: -40px;
-    min-height: 150px;
+    min-height: 180px;
     width: 650px !important;
     page-break-inside: avoid;
   }
@@ -386,18 +386,20 @@ footer, .footer,
   }
   .favorites-results .summary-main-wrapper {
     width: 340px;
-    position: absolute;
+    position: relative;
   }
   .favorites-results .thumbnail {
     width: 160px;
-    position: absolute;
-    margin-left: 340px !important;
+    top: -15px;
+    position: absolute !important;
+    margin-left: 350px !important;
+    margin-top: 0;
   }
   .favorites-results .created-at {
-    width: 160px;
-    position: absolute;
-    margin-left: 505px !important;
-    margin-top: 10px;
+    width: 120px;
+    top: -5px;
+    position: absolute !important;
+    margin-left: 510px !important;
   }
   .favorites-results .results-list .summary-main-wrapper .title a {
     font-weight: normal;
