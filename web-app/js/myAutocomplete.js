@@ -41,7 +41,7 @@ $(function() {
         }
       });
     },
-    minLength : 2,
+    minLength : 1,
     open : function() {
       $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
       $(this).autocomplete("widget").css('width', (parseInt($(this).outerWidth()) - 6) + 'px');
