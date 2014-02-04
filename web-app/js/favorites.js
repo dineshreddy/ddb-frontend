@@ -517,6 +517,8 @@ function showError(errorHtml) {
 }
 
 function clean() {
-  document.getElementById("folder-create-name").value="";
-  document.getElementById("folder-create-description").value="";
+  //document.getElementById("folder-create-name").value="";
+  //document.getElementById("folder-create-description").value="";
+  $('#folder-create-name').val("");
+  $('#folder-create-description').val("");
 }
