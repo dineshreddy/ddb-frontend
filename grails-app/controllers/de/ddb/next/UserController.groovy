@@ -244,18 +244,16 @@ class UserController {
 
     /* end saved searches methods */
 
+    private def getRegistrationUrls() {
+        return [
+            registrationInfoUrl: configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
+            accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
+        ]
+    }
     def registration() {
         log.info "registration()"
-
-        String registrationInfoUrl = configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl()
-        String accountTermsUrl = configurationService.getContextUrl() + configurationService.getAccountTermsUrl()
-        String accountPrivacyUrl = configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
-
-        render(view: "registration", model: [
-            registrationInfoUrl: registrationInfoUrl,
-            accountTermsUrl: accountTermsUrl,
-            accountPrivacyUrl: accountPrivacyUrl
-        ])
+        render(view: "registration", model: getRegistrationUrls())
     }
 
     def signup() {
@@ -281,10 +279,10 @@ class UserController {
                 } else {
                     errors.add("ddbnext.Conflict_User_Common")
                 }
-                render(view: "registration" , model: [errors: errors, messages: messages, params: params])
+                render(view: "registration" , model: [errors: errors, messages: messages, params: params] << getRegistrationUrls())
             }
         } else {
-            render(view: "registration" , model: [errors: errors, messages: messages, params: params])
+            render(view: "registration" , model: [errors: errors, messages: messages, params: params] << getRegistrationUrls())
         }
     }
 
