@@ -116,33 +116,35 @@ $(function() {
     /** Create folder */
     $('#folder-create').submit(function() {
       $('#folderCreateConfirmDialog').modal('show');
-      $('#create-confirm').click(function() {
-          var title = $('#folder-create-name').val();
-          if (title.length > 0) {
-            hideError();
-            var body = {
-            title : title,
-            description : $('#folder-create-description').val()
-            };
-            jQuery.ajax({
-              type : 'POST',
-              contentType : "application/json; charset=utf-8",
-              traditional : true,
-              url : jsContextPath + "/apis/favorites/folder/create",
-              data : JSON.stringify(body),
-              dataType : "json",
-              success : function(data) {
-                window.setTimeout('location.reload();', 500);
-              }
-            });
-      	 } else {
-        	showError(messages.ddbnext.favorites_list_Title_Required);
-        }
-        $('#folderCreateConfirmDialog').modal('hide');
-      });
       return false;
     });
 
+    $('#create-confirm').click(function() {
+        var title = $('#folder-create-name').val();
+        if (title.length > 0) {
+          hideError();
+          var body = {
+          title : title,
+          description : $('#folder-create-description').val()
+          };
+          jQuery.ajax({
+            type : 'POST',
+            contentType : "application/json; charset=utf-8",
+            traditional : true,
+            url : jsContextPath + "/apis/favorites/folder/create",
+            data : JSON.stringify(body),
+            dataType : "json",
+            success : function(data) {
+              window.setTimeout('location.reload();', 500);
+            }
+          });
+    	 } else {
+      	showError(messages.ddbnext.favorites_list_Title_Required);
+      }
+      $('#folderCreateConfirmDialog').modal('hide');
+      return false;
+    });
+    
     /** Delete folder */
     $(".deletefolders").click(function(event) {
       event.preventDefault();
