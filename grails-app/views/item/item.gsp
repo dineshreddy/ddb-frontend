@@ -13,40 +13,52 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
 <g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
-
 <html>
-  <head>
-    <title>${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-    
-    <meta name="page" content="item" />
-    <meta name="layout" content="main" />
-    
-    <ddb:getSocialmediaMeta likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
-    
-  </head>
-  <body>
-    <ddb:doHideIfEmbedded>
-      <g:render template="controls" />
-    </ddb:doHideIfEmbedded>
-    <g:render template="institution" />
-    <g:render template="itemLinks" />
-    <div class="row item-detail item-content">
-      <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
-        <h2>${itemTitle}</h2>
-        <g:render template="fields" />
-        <g:render template="rights" />
-        <g:render template="license" />
-        <g:render template="origin" />
-        <g:render template="pdfLink" />
-        <g:render template="share" />
+<head>
+<title>
+  ${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<meta name="page" content="item" />
+<meta name="layout" content="main" />
+<ddb:getSocialmediaMeta
+  likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}"
+  likeUrl="${baseUrl + request.forwardURI}" />
+</head>
+<body>
+  <ddb:doHideIfEmbedded>
+    <g:render template="controls" />
+  </ddb:doHideIfEmbedded>
+  <g:render template="institution" />
+  <g:render template="itemLinks" />
+  <div class="row item-detail item-content">
+    <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
+      <h2>
+        ${itemTitle}
+      </h2>
+      <g:render template="fields" />
+      <g:render template="rights" />
+      <g:render template="license" />
+      <g:render template="origin" /><%--
+      
+      <g:render template="pdfLink" />
+         Sending PDF per Mail Start    
+      <div class="sendmail-block">
+        <div id="i18ntranslateSend" data-val="<g:message code="ddbnext.Send_Button" />"></div>
+        <div id="i18ntranslateValidEmail" data-val="<g:message code="ddbnext.Enter_A_Valid_Email" />"></div>
+        <a class="sendmail-link sendmail-link-popup-anchor"
+          href="${createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])}"
+          title="<g:message code="ddbnext.item.sendPdf" />"> <span style="margin-left: 10px"></span>
+        </a>
       </div>
-      <g:if test="${binaryList}">
-        <g:render template="binaries" />
-      </g:if>
+         Sending PDF per Mail End    
+      
+      --%><g:render template="share" />
     </div>
-    <g:render template="hierarchy" />
-    <g:render template="linkurl" />
-  </body>
+    <g:if test="${binaryList}">
+      <g:render template="binaries" />
+    </g:if>
+  </div>
+  <g:render template="hierarchy" />
+  <g:render template="linkurl" />
+</body>
 </html>

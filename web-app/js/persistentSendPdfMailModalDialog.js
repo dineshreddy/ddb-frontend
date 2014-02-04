@@ -26,7 +26,7 @@ $(document).ready(
       var titleString = $(document.createElement('span'));
       var popupSpan = popupAnchor.children("span");
       if (popupSpan != null && popupSpan.length > 0) {
-        titleString.html(popupSpan[0].innerHTML);
+        titleString.html(popupAnchor.attr("title"));
       }
       titleString.appendTo(title);
       var popupManager = new PopupManagerSendPdf();
