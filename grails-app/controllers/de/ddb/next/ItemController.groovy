@@ -21,7 +21,6 @@ class ItemController {
     static defaultAction = "findById"
 
     def itemService
-    def fileService
     def configurationService
 
     /**
