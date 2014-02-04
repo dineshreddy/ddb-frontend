@@ -75,24 +75,18 @@ class ItemController {
     }
     
     def sendPdf() {
-        //TODO Validate email and param.id
         def itemId = params.id
-        //Handle PDF Generation Here
-        def url = "http://localhost:8080/ddb-next/item/HN2S24ZBPSN7L3Q672F7V4BU7W3DSL2A" //does not work
-        def url2= "http://localhost:8080/ddb-next/item/B56VNMYDDPKMGWQPWBDVXM3PCA3ALEOC" //works
-        
-        url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])
-
+        def url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
         def message = g.message(code:'ddbnext.item.sendPdfMailSuccess')
         try {
-            def fileBytes = fileService.downloadFile(url+"?pdf=1")
+            def fileBytes = fileService.downloadFile(url)
             try {
                 sendMail {
                     multipart true
                     to params.email
                     subject g.message(code: 'ddbnext.item.sendPdfSubjectOnEmail')
                     body g.message(code: 'ddbnext.item.sendPdfBodyOnEmail')
-                    attach("est.pdf", "application/pdf", fileBytes)
+                    attach(params.id+".pdf", "application/pdf", fileBytes)
                 }
             } catch (Exception e) {
                 log.error "Failed Sending PDF per Email "+ e.getLocalizedMessage()
@@ -103,7 +97,6 @@ class ItemController {
             message = g.message(code: 'ddbnext.item.sendPdfFailsToSendMailPDF')
         }
         
-       
 
         render(contentType:"application/json", text: message)
     }
