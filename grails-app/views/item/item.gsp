@@ -39,7 +39,7 @@ limitations under the License.
       <g:render template="rights" />
       <g:render template="license" />
       <g:render template="origin" />
-<%--
+<%----%>
       <g:render template="pdfLink" />
          Sending PDF per Mail Start    
       <div class="sendmail-block">
@@ -51,7 +51,7 @@ limitations under the License.
         </a>
       </div>
          Sending PDF per Mail End    
-      --%>
+      <%----%>
       <g:render template="share" />
     </div>
     <g:if test="${binaryList}">

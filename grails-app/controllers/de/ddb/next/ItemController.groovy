@@ -19,7 +19,7 @@ import de.ddb.next.exception.ItemNotFoundException
 
 class ItemController {
     static defaultAction = "findById"
-
+    def fileService
     def itemService
     def configurationService
 
