@@ -28,7 +28,7 @@ class ErrorController {
     def configurationService
 
     enum Type404 {
-        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND, ENTITY_NOT_FOUND
+        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND, ENTITY_NOT_FOUND, PDF_NOT_FOUND
     }
 
     def uncaughtException() {
@@ -182,6 +182,10 @@ class ErrorController {
 
     def entityNotFound() {
         notFound(Type404.ENTITY_NOT_FOUND)
+    }
+    
+    def pdfNotFound() {
+        notFound(Type404.PDF_NOT_FOUND)
     }
 
     def cultureGraphError() {
