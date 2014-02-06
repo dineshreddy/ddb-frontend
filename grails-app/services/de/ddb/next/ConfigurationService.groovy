@@ -211,8 +211,15 @@ class ConfigurationService {
     }
 
     public boolean isCulturegraphFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
-        return Boolean.parseBoolean(value.toString())
+        //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
+        //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
+        //      we will return always true in this method of the develop branch.
+        //      Later versions of develop might reactivate the code.
+
+        //        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
+        //        return Boolean.parseBoolean(value.toString())
+
+        return true
     }
 
     public def logConfigurationSettings() {
