@@ -137,11 +137,10 @@ $(function() {
   }
 });
 
-
 function hideError() {
     $('.errors-container').remove();
-  }
-favorites-results-content
+}
+
 function showError(errorHtml) {
     var errorContainer = ($('.favorites-results-content').find('.errors-container').length > 0) ? $(
         '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
@@ -152,4 +151,4 @@ function showError(errorHtml) {
     errorContainer.prepend(errorIcon);
 
     $('.favorites-results-content').prepend(errorContainer);
-  }
+}
