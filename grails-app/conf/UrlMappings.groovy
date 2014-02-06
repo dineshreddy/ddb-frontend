@@ -74,7 +74,12 @@ class UrlMappings {
 			controller="favorites"
 			action="getFavorites"
 		}
-
+        
+        "/item/sendpdf/$id" {
+            controller="item"
+            action="sendPdf"
+        }
+        
 		name delFavorites: "/apis/favorites/_delete" {
 			controller="favorites"
 			action=[POST: "deleteFavoritesFromFolder"]

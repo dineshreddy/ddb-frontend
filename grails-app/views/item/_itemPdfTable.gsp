@@ -59,6 +59,10 @@ h2, h2 a {
 table {
 	margin: 10px auto;
 }
+th, td {
+    vertical-align: top; !important;
+    margin-top:0; 
+}
 
 a {
 	color: #3e3a37;
@@ -111,19 +115,14 @@ a[href^="http"]:not (.no-external-link-icon ):not ([href^="http://localhost"]
 .origin {
 	margin-top: 20px;
 }
-.origin span {
-  background: url("../images/icons/objectViewerActions.png") no-repeat;
-  padding-left: 23px;
-  line-height: 20px;
-  background-position: -2px -120px;
-}
+
 origin .show-origin span {
   background: none;
   padding-left: 0;
 }
 .show-origin {
-  padding-left: 17px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
+  padding-left: 20px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -81px;
   margin-right: 10px;
 }
 
@@ -267,17 +266,18 @@ origin .show-origin span {
       <td><g:render template="pdfTableInstitution" /></td>
     </tr>
     <tr>
-      <td >
+      <td>
         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail item-content">
           <tr>
-            <g:if test="${binaryList}">
-              <td style="width: 50%;" class="item-description valign-top"><g:render
-                  template="itemdetailsPdf" /></td>
-              <td style="width: 50%;" class="valign-top"><g:render template="itemBinariesPdf" /></td>
-            </g:if>
-            <g:else>
-              <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
-            </g:else>
+            <td style="width: 100%;" class="valign-top"><h2>
+                ${itemTitle}
+              </h2>
+              <g:if test="${binaryList}">
+                <g:render template="itemBinariesPdf" />
+              </g:if></td>
+          </tr>
+          <tr>
+            <td style="width: 100%" class="item-description"><g:render template="itemdetailsPdf" /></td>
           </tr>
         </table>
       </td>

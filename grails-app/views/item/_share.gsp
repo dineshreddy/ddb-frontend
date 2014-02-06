@@ -14,10 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="row item-detail">
-
   <div class="span7 share">
-
     <ddb:getSocialmediaBody />
-  
   </div>
 </div>

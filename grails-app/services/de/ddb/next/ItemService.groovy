@@ -122,12 +122,15 @@ class ItemService {
 
         def logoResource=new UrlResource(model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
-
-        model.binaryList.each{
-            it.thumbnail.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
-            it.preview.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
-            it.full.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
+        def viewerContent
+        if (model.binaryList.first().preview.uri == '') {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+        }else {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
         }
+
+
+        model.put("binariesListViewerContent", viewerContent)
 
         return model
     }
