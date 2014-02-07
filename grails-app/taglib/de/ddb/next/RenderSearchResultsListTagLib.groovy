@@ -26,6 +26,6 @@ class RenderSearchResultsListTagLib {
      * @attr results REQUIRED organizations list
      */
     def renderSearchResultsList = { attrs, body ->
-        out << render(template:"/search/resultsList", model:[results: attrs.results, gndResults: attrs.gndResults, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
+        out << render(template:"/search/resultsList", model:[results: attrs.results, entities: attrs.entities, urlParams: attrs.urlParams, confBinary: request.getContextPath()])
     }
 }

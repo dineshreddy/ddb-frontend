@@ -20,7 +20,6 @@ import grails.converters.JSON
 import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
-
 import de.ddb.next.constants.SupportedLocales
 
 class ApisController {
@@ -72,6 +71,7 @@ class ApisController {
         resultList["correctedQuery"] = jsonResp.correctedQuery
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
+        resultList["entities"] = jsonResp?.entities
         resultList["results"] = [ name:jsonResp.results.name,
             docs:docs,
             numberOfDocs:jsonResp.results.numberOfDocs]
