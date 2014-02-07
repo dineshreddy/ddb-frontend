@@ -49,6 +49,7 @@ class SearchController {
                 apiResponse.throwException(request)
             }
             def resultsItems = apiResponse.getResponse()
+            def entities = resultsItems.entities
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
@@ -106,11 +107,9 @@ class SearchController {
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
                 queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
-            def gndItems = getGndItems(resultsItems, page)
-
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], entities: entities, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
                     offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
@@ -151,7 +150,7 @@ class SearchController {
                     facetsList:mainFacets,
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
-                    gndResults: gndItems,
+                    entities: entities,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
@@ -177,65 +176,6 @@ class SearchController {
         }
     }
 
-    private def getGndItems(resultItems, page) {
-        def gndItems = null
-        if(configurationService.isCulturegraphFeaturesEnabled()){
-
-            if(page == "1"){
-
-                def gndLinkItems = []
-                resultItems.facets.each { facet ->
-                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName() || facet.field == FacetEnum.AFFILIATE_SUBJECT.getName()) {
-                        facet.facetValues.each { entry ->
-                            if(cultureGraphService.isValidGndUri(entry.value)){
-                                gndLinkItems.addAll(entry)
-                            }
-                        }
-                    }
-                }
-
-                int initialGndItemsToDisplay = 2
-                int maxGndIdsAvailable = gndLinkItems.size()
-                int displayCount = Math.min(maxGndIdsAvailable, initialGndItemsToDisplay)
-
-                gndItems = []
-
-                int gndItemsRetrieved = 0
-                int i = 0
-                while (gndItemsRetrieved < displayCount) {
-                    def gndItem = [:]
-                    def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
-
-                    ApiResponse apiResponse = cultureGraphService.getCultureGraph(gndId)
-                    def gndData = null
-                    if(apiResponse.isOk()){
-                        gndData = apiResponse.getResponse()
-                    }
-
-
-                    if(gndData != null) {
-                        gndItem['id'] = gndId
-                        gndItem['data'] = gndData
-                        gndItems.add(gndItem)
-
-                        gndItemsRetrieved ++
-                    }
-
-                    i ++
-
-                    if(i == maxGndIdsAvailable){
-                        break
-                    }
-
-                }
-            }
-
-
-        }
-
-        return gndItems
-
-    }
 
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()

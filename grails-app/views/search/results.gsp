@@ -196,7 +196,7 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <ddb:renderSearchResultsList results="${results.results["docs"]}" gndResults="${gndResults}" />
+                <ddb:renderSearchResultsList results="${results.results["docs"]}" entities="${entities}" />
               </g:if>
             </div>
           </div>

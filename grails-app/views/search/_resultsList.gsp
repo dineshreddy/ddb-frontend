@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
-<g:if test="${gndResults}">
-  <g:render template="gndResultsList" model="${[gndResults: gndResults]}" />
+<g:if test="${entities}">
+  <g:render template="entityResultsList" model="${[entities: entities]}" />
 </g:if>
 
 <ul class="results-list unstyled  <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">grid</g:if>">

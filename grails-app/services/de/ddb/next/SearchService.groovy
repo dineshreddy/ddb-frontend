@@ -549,10 +549,6 @@ class SearchService {
             urlQuery[SearchParamEnum.FACET.getName()] = []
         }
 
-        // This is needed for the entity search results that are displayed on top of the regular search results.
-        urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName())
-        urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_SUBJECT.getName())
-
         return urlQuery
     }
 

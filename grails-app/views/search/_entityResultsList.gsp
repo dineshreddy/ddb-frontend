@@ -15,9 +15,11 @@ limitations under the License.
 --%>
 <ul class="results-list unstyled entity-list">
 
-  <g:set var="pageGndHitCounter" value="${0}"/>
-  <g:each in="${gndResults}" var="gndItem">
-    <g:set var="pageGndHitCounter" value="${pageGndHitCounter + 1}" />
+  <g:set var="pageHitCounter" value="${0}"/>  
+  
+  <g:each in="${entities}" var="entityItem">
+  	<g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
+    <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="entity bt ">
       <div class="summary row">
       
@@ -28,12 +30,14 @@ limitations under the License.
                 <g:message code="ddbnext.Entity_Page_Person"/>
             </div>
             <h2 class="title">
-              <g:link class="persist" controller="entity" action="index" params="${params + [id:gndItem.id]}" >
-                <strong><ddb:getTruncatedItemTitle title="${ gndItem.data.person.preferredName }" length="${ 100 }" /></strong>
+              <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
+                <strong><ddb:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
-                ${ gndItem.data.person.description }
+            	<g:each in="${ entityItem.professionOrOccupation }" var="profession">
+                	${profession}
+                </g:each>
             </div>
           </div>
           <div class="extra">
@@ -43,16 +47,16 @@ limitations under the License.
         
         <div class="thumbnail-wrapper span2">
           <div class="thumbnail">
-            <g:link class="persist" controller="entity" action="index" params="${params + [id: gndItem.id]}" class="no-external-link-icon">
+            <g:link class="persist" controller="entity" action="index" params="${params + [id: entityItem.id]}" class="no-external-link-icon">
               <%-- 
-              <img src="${gndItem.thumbnail.link}" alt="${ gndItem.person.name }" />
+              <img src="${entityItem.thumbnail.link}" alt="${ entityItem.person.name }" />
               --%>
-              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ gndItem.data.person.preferredName }"/>
+              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ entityItem.preferredName }"/>
             </g:link>
           </div>
           <%-- 
           <ddb:isLoggedIn>
-            <div id="favorite-${gndItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+            <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
                 <p><g:message code="ddbnext.Added_To_Favorites"/></p>
