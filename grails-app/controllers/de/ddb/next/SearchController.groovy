@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import groovy.json.*
+import net.sf.json.JSONNull
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -49,7 +50,7 @@ class SearchController {
                 apiResponse.throwException(request)
             }
             def resultsItems = apiResponse.getResponse()
-            def entities = resultsItems.entities
+            def entities = (resultsItems.entities instanceof JSONNull) ?"":resultsItems.entities
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
