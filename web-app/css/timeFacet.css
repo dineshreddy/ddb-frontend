@@ -17,27 +17,35 @@
   padding-left: 10px;
   padding-bottom: 10px;
   background-color: #fff;
-  border: solid 1px #cfcecc;
+  border: 1px #cfcecc;
   height: auto;
+  font-size: 0.938em;
 }
 
 .time-facet hr {
   margin-right: 10px;
 }
 
+.time-facet label {
+  font-size: 0.938em;
+}
+
+.time-facet #timespan-form >a.h3 {
+  font-weight: bold;
+  background: none;
+  cursor: default;
+}
+
 .time-facet .day {
   width: 40px;
-  font-size: 0.938em;
 }
 
 .time-facet .month {
-  width: 120px;
-  font-size: 0.938em;
+/*   height: 20px; */
 }
 
 .time-facet .year {
-  width: 60px;
-  font-size: 0.938em;
+  width: 45px;
 }
 
 .time-facet button {
@@ -45,7 +53,7 @@
   background-color: initial !important;
   background: initial !important;
   color: initial !important;
-  font-size: 90% !important;
+  font-size: 80% !important;
   border-bottom: #d3d3d3 1px solid !important;
   border-left: #d3d3d3 1px solid !important;
   border-top: #d3d3d3 1px solid !important;

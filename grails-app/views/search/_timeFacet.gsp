@@ -16,15 +16,20 @@ limitations under the License.
  
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
-<div class="facets-item time-facet bt bb bl br">
+<div class="time-facet bt bb bl br">
+	<a class="h3" href="${""}"><g:message code="ddbnext.facet_time" /></a>
+	
 	<div id="timespan-form">
-		<a class="h3" href="${""}"><g:message code="ddbnext.facet_time" /></a>
+		<ul class="selected-items unstyled">
+		</ul>
 		<hr>
 		<div>Von</div>
 		<div>
-			<input id="fromDay" class="day" type="number" min="0" max="12"
-				STEP="1" VALUE="1" SIZE="2" /> 
+<%--			<input id="fromDay" class="day" type="number" min="0" max="12" STEP="1" VALUE="1" SIZE="2" /> --%>
+			<input id="fromDay" class="day" type="text" value="Day" />				
 			<select id="fromMonth" class="month">
+				<option>Month</option>
+				<option>------------</option>
 				<option value="01">January</option>
 				<option value="02">February</option>
 				<option value="03">March</option>
@@ -38,13 +43,15 @@ limitations under the License.
 				<option value="11">November</option>
 				<option value="12">December</option>
 			</select>
-			<input type="text" pattern="[0-9]*" id="fromYear" class="year" value="1900"/> 
+			<input type="text" pattern="[0-9]*" id="fromYear" class="year" value="Year"/> 
 		</div>
 		<div>Bis</div>
 		<div>
-			<input id="tillDay" class="day" type="number" min="0" max="12"
-				STEP="1" VALUE="1" SIZE="2" /> 
+<%--			<input id="tillDay" class="day" type="number" min="0" max="12" STEP="1" VALUE="1" SIZE="2" /> --%>
+			<input id="tillDay" class="day" type="text" value="Tag" />
 			<select id="tillMonth" class="month">
+				<option>Monat</option>
+				<option>------------</option>
 				<option value="01">Januar</option>
 				<option value="02">Februar</option>
 				<option value="03">März</option>
@@ -58,18 +65,16 @@ limitations under the License.
 				<option value="11">November</option>
 				<option value="12">Dezember</option>
 			</select> 
-			<input type="text" pattern="[0-9]*" id="tillYear" class="year" value="2014"/>
+			<input type="text" id="tillYear" class="year" value="Jahr"/>
 		</div>
 		<div>Eingrenzung</div>
 		<div>
-			<input type="radio" name="limitation" id="limitationFuzzy"
-				value="fuzzy" checked="checked" /> <label for="limitationFuzzy">Unscharf</label>
-			<input type="radio" name="limitation" id="limitationExact"
-				value="exact" /> <label for="limitationExact">Genau</label>
+			<input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" checked="checked" /> <label for="limitationFuzzy">Unscharf</label>
+			<input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact">Genau</label>
 		</div>
 		<div>
-			<button>Anwenden</button>
-			<button>Zurücksetzen</button>
+			<button id="add-timespan">Anwenden</button>
+			<button id="reset-timefacet">Zurücksetzen</button>
 		</div>
 	</div>
 </div>
