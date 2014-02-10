@@ -50,6 +50,7 @@ modules = {
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
+        resource url:'/css/timeFacet.css'
     }
 
     cssprint {
@@ -106,11 +107,9 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
-
+        resource url:'/js/timeFacet.js'
     }
-    item{
-        resource url:'/js/persistentSendPdfMailModalDialog.js'
-    }
+    item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     map {
         resource url:'/js/map/css/map.css', bundle: 'screen'

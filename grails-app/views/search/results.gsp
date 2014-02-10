@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="de.ddb.next.constants.FacetEnum"%>
-<g:set var="facetsList" value="${[FacetEnum.TIME.getName(), FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+<g:set var="facetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <html>
 <head>
 <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -46,6 +46,10 @@ limitations under the License.
         <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
+		<%-- TimeFacet is handle by its own template --%>
+        <g:render template="timeFacet" />
+		
+		<%-- All other facets are handled in the same way --%>          
         <g:each in="${facetsList}" var="mit">
           <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
