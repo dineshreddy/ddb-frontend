@@ -52,18 +52,35 @@ $.extend(TimeSpan.prototype, {
     console.log("tillMonth: " + currObjInstance.tillMonth);
     console.log("tillYear: " + currObjInstance.tillYear);
   },
+  
+  /**
+   * A from date needs at least a value for the year.
+   * @returns <code>false<code> if no fromYear is set  
+   */
   hasFromDate: function(){
     console.log("TimeSpan.hasFromDate()");
     var currObjInstance = this;
     
     return currObjInstance.fromYear !== null;
   },
+  
+  /**
+   * A till date needs at least a value for the year.
+   * @returns <code>false<code> if no tillYear is set  
+   */
   hasTillDate: function(){
     console.log("TimeSpan.hasTillDate()");
     var currObjInstance = this;
     
     return currObjInstance.tillYear !== null;
   },
+  
+  /**
+   * Return a String representation of the from date.
+   * The method autocomplete missing fromDay and fromMonth values.
+   * 
+   * @returns <code>false<code> if no tillYear is set  
+   */
   getFromDate: function(){
     console.log("TimeSpan.getFromDate()");
     var currObjInstance = this;
@@ -84,6 +101,13 @@ $.extend(TimeSpan.prototype, {
     
     return new String(currObjInstance.fromDay + " " + currObjInstance.fromMonth + " " + currObjInstance.fromYear);
   },
+  
+  /**
+   * Return a String representation of the till date.
+   * The method autocomplete missing tillDay and tillMonth values.
+   * 
+   * @returns <code>false<code> if no tillYear is set  
+   */
   getTillDate: function(){
     console.log("TimeSpan.getTillDate()");
     var currObjInstance = this;
@@ -156,6 +180,12 @@ $.extend(TimeFacet.prototype, {
       currObjInstance.addTimeSpan();
     });
     
+    // Click handler for reseting the time facet
+    $("#reset-timefacet").click(function(event) {
+      event.preventDefault();
+      currObjInstance.reset();
+    });
+    
   },
 
   /**
@@ -173,9 +203,12 @@ $.extend(TimeFacet.prototype, {
       timespanFormDiv.fadeIn('slow');
       timeFacetDiv.addClass('active');
     } else {
-      currObjInstance.opened = false;
-      timespanFormDiv.fadeOut('slow');
-      timeFacetDiv.removeClass('active');
+      //Prevent from closing if a timespan has been selected
+      if (currObjInstance.selectedTimeSpan === null) {
+        currObjInstance.opened = false;
+        timespanFormDiv.fadeOut('slow');
+        timeFacetDiv.removeClass('active');
+      }
     }
   },
   
@@ -187,7 +220,7 @@ $.extend(TimeFacet.prototype, {
     
     var currObjInstance = this;
 
-    //Retrive the values from the timespan form
+    //Retrieve the values from the timespan form
     var fromDayValue = $("#fromDay").val() !== "Day" ? $("#fromDay").val() : null;
     var fromMonthValue = $("#fromMonth").val() !== "Month" ? $("#fromMonth").val() : null;
     var fromYearValue = $("#fromYear").val() !== "Year" ? $("#fromYear").val() : null;
@@ -207,7 +240,29 @@ $.extend(TimeFacet.prototype, {
   },
   
   /**
-   * Renders the selected TimeSpans above the form div
+   * Checks the values of the form and adds a new timespan.
+   */
+  reset : function() {
+    console.log("reset");
+    
+    var currObjInstance = this;
+
+    currObjInstance.selectedTimeSpan = null;
+    console.log(currObjInstance.selectedTimeSpan);
+    
+    $("#fromDay").val("Day");
+    $("#fromMonth").val("Month");
+    $("#fromYear").val("Year");
+
+    $("#tillDay").val("Tag");
+    $("#tillMonth").val("Monat");
+    $("#tillYear").val("Jahr");
+    
+    currObjInstance.renderTimeSpan();
+  },  
+  
+  /**
+   * Renders the selected TimeSpan
    */
   renderTimeSpan : function() {
     console.log("renderTimeSpans");
