@@ -38,7 +38,7 @@
 
 .compare .compare-body {
   max-height: 800px;
-  border-right: 6px double #e9e5e2;
+  border-right: 6px #e9e5e2;
   overflow: scroll;
   overflow-x: hidden;
 }
