@@ -62,12 +62,7 @@ class UserController {
 
     def index() {
         log.info "index()"
-        def loginStatus = LoginStatus.LOGGED_OUT
-        if(!isCookiesActivated()){
-            loginStatus = LoginStatus.NO_COOKIES
-        }
-
-        render(view: "login", model: ['loginStatus': loginStatus, 'referrer': params.referrer])
+        render(view: "login", model: ['loginStatus': LoginStatus.LOGGED_OUT, 'referrer': params.referrer])
     }
 
     def doLogin() {
@@ -242,17 +237,16 @@ class UserController {
     }
 
     /* end saved searches methods */
+    private def getRegistrationUrls() {
+        return [
+            accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
+        ]
+    }
 
     def registration() {
         log.info "registration()"
-
-        String accountTermsUrl = configurationService.getContextUrl() + configurationService.getAccountTermsUrl()
-        String accountPrivacyUrl = configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
-
-        render(view: "registration", model: [
-            accountTermsUrl: accountTermsUrl,
-            accountPrivacyUrl: accountPrivacyUrl
-        ])
+        render(view: "registration", model: getRegistrationUrls())
     }
 
     def signup() {
@@ -278,10 +272,10 @@ class UserController {
                 } else {
                     errors.add("ddbnext.Conflict_User_Common")
                 }
-                render(view: "registration" , model: [errors: errors, messages: messages, params: params])
+                render(view: "registration" , model: [errors: errors, messages: messages, params: params] << getRegistrationUrls())
             }
         } else {
-            render(view: "registration" , model: [errors: errors, messages: messages, params: params])
+            render(view: "registration" , model: [errors: errors, messages: messages, params: params] << getRegistrationUrls())
         }
     }
 
@@ -676,9 +670,7 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(!isCookiesActivated()){
-            loginStatus = LoginStatus.NO_COOKIES
-        }else if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
