@@ -141,7 +141,7 @@ $(function() {
 function hideError() {
     $('.errors-container').remove();
   }
-favorites-results-content
+
 function showError(errorHtml) {
     var errorContainer = ($('.favorites-results-content').find('.errors-container').length > 0) ? $(
         '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
