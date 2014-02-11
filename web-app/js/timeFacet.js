@@ -148,9 +148,10 @@ $.extend(TimeFacet.prototype, {
   /**
    * TimeFacet attributes
    */
-  facetsManager: null,
+  facetsManager: null, //Defined in searchResults.js
   fetchResultsList: null, //Defined in searchResults.js
   opened: false,
+  added: false,
   selectedTimeSpan: null,
   localisation : "unscharf",
   facetsContainer: null,
@@ -205,7 +206,7 @@ $.extend(TimeFacet.prototype, {
       timeFacetDiv.addClass('active');
     } else {
       //Prevent from closing if a timespan has been selected
-      if (currObjInstance.selectedTimeSpan === null) {
+      if (!currObjInstance.added) {
         currObjInstance.opened = false;
         timespanFormDiv.fadeOut('slow');
         timeFacetDiv.removeClass('active');
@@ -233,7 +234,8 @@ $.extend(TimeFacet.prototype, {
     var newTimeSpan = new TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
     
     currObjInstance.selectedTimeSpan = newTimeSpan;
-    console.log(currObjInstance.selectedTimeSpan);
+    currObjInstance.added = true;
+    //console.log(currObjInstance.selectedTimeSpan);
     
     currObjInstance.renderTimeSpan();
     currObjInstance.updateWindowUrl();
@@ -256,7 +258,8 @@ $.extend(TimeFacet.prototype, {
     $("#tillMonth").val("Monat");
     $("#tillYear").val("Jahr");
     
-    currObjInstance.addTimeSpan();        
+    currObjInstance.addTimeSpan();
+    currObjInstance.added = false;
   },  
   
   /**
