@@ -84,7 +84,7 @@ $.extend(TimeSpan.prototype, {
     var currObjInstance = this;
     
     //Id no year is set -> return null
-    if (!currObjInstance.hasFromDate) {
+    if (!currObjInstance.hasFromDate()) {
       return null;
     }
     //if no day is set fromDay to 1
@@ -111,7 +111,7 @@ $.extend(TimeSpan.prototype, {
     var currObjInstance = this;
     
     //Id no year is set -> return null
-    if (!currObjInstance.hasTillDate) {
+    if (!currObjInstance.hasTillDate()) {
       return null;
     }
     
