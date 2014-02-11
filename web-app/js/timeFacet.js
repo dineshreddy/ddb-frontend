@@ -15,9 +15,7 @@
  */
 
 $(function() {
-  // TimeFacet is only available in results page
-  if (jsPageName == "results") {
-    var timeFacet = new TimeFacet($(".facets-list"));
+  if (jsPageName == "results") {   
   }
 });
 
@@ -36,21 +34,21 @@ function TimeSpan(fromDay,fromMonth, fromYear, tillDay, tillMonth, tillYear) {
   this.tillMonth = tillMonth;
   this.tillYear = tillYear;
   
-  console.log("Created a new instance of TimeSpan");
+//  console.log("Created a new instance of TimeSpan");
 }
 
 
 $.extend(TimeSpan.prototype, {
   print : function(facetsContainer) {
-    console.log("TimeSpan.print()");
+//    console.log("TimeSpan.print()");
     var currObjInstance = this;
     
-    console.log("fromDay: " + currObjInstance.fromDay);
-    console.log("fromMonth: " + currObjInstance.fromMonth);
-    console.log("fromYear: " + currObjInstance.fromYear);
-    console.log("tillDay: " + currObjInstance.tillDay);
-    console.log("tillMonth: " + currObjInstance.tillMonth);
-    console.log("tillYear: " + currObjInstance.tillYear);
+//    console.log("fromDay: " + currObjInstance.fromDay);
+//    console.log("fromMonth: " + currObjInstance.fromMonth);
+//    console.log("fromYear: " + currObjInstance.fromYear);
+//    console.log("tillDay: " + currObjInstance.tillDay);
+//    console.log("tillMonth: " + currObjInstance.tillMonth);
+//    console.log("tillYear: " + currObjInstance.tillYear);
   },
   
   /**
@@ -58,7 +56,7 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no fromYear is set  
    */
   hasFromDate: function(){
-    console.log("TimeSpan.hasFromDate()");
+//    console.log("TimeSpan.hasFromDate()");
     var currObjInstance = this;
     
     return currObjInstance.fromYear !== null;
@@ -69,7 +67,7 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no tillYear is set  
    */
   hasTillDate: function(){
-    console.log("TimeSpan.hasTillDate()");
+//    console.log("TimeSpan.hasTillDate()");
     var currObjInstance = this;
     
     return currObjInstance.tillYear !== null;
@@ -82,7 +80,7 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no tillYear is set  
    */
   getFromDate: function(){
-    console.log("TimeSpan.getFromDate()");
+//    console.log("TimeSpan.getFromDate()");
     var currObjInstance = this;
     
     //Id no year is set -> return null
@@ -109,7 +107,7 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no tillYear is set  
    */
   getTillDate: function(){
-    console.log("TimeSpan.getTillDate()");
+//    console.log("TimeSpan.getTillDate()");
     var currObjInstance = this;
     
     //Id no year is set -> return null
@@ -119,8 +117,7 @@ $.extend(TimeSpan.prototype, {
     
     //if no day is set tillDay to ???
     if (currObjInstance.tillDay === null) {
-      //TODO get right day from calendar
-      currObjInstance.tillDay = 28;
+      currObjInstance.tillDay = 28;//TODO get right day from calendar
     }
     
     //id no month is set -> return december
@@ -139,9 +136,9 @@ $.extend(TimeSpan.prototype, {
 /**
  * TimeFacet Constructor Function
  */
-function TimeFacet(facetsContainer) {
-  this.init(facetsContainer);
-  console.log("Created a new instance of TimeFacet");
+function TimeFacet(facetsManager, fetchResultsList) {
+  this.init(facetsManager, fetchResultsList);
+//  console.log("Created a new instance of TimeFacet");
 }
 
 /**
@@ -151,6 +148,8 @@ $.extend(TimeFacet.prototype, {
   /**
    * TimeFacet attributes
    */
+  facetsManager: null,
+  fetchResultsList: null, //Defined in searchResults.js
   opened: false,
   selectedTimeSpan: null,
   localisation : "unscharf",
@@ -159,11 +158,13 @@ $.extend(TimeFacet.prototype, {
   /**
    * Initialize the TimeFacet object
    */
-  init : function(facetsContainer) {
-    console.log("init() with facetsContainer " + this.facetsContainer);
+  init : function(facetsManager, fetchResultsList) {
+//    console.log("init() with facetsManager " + facetsManager);
     
     var currObjInstance = this;
-    this.facetsContainer = facetsContainer;        
+    this.facetsManager = facetsManager;
+    this.fetchResultsList = fetchResultsList;    
+    this.facetsContainer = $(".facets-list");        
     
     //On initialisation hide the timespan form
     $("#timespan-form").hide();
@@ -192,7 +193,7 @@ $.extend(TimeFacet.prototype, {
    * This method is responsible for opening and closing the TimeFacet
    */
   open : function() {
-    console.log("open");
+//    console.log("open");
     
     var currObjInstance = this;
     var timespanFormDiv = $("#timespan-form"); 
@@ -216,7 +217,7 @@ $.extend(TimeFacet.prototype, {
    * Checks the values of the form and adds a new timespan.
    */
   addTimeSpan : function() {
-    console.log("addTimeSpan");
+//    console.log("addTimeSpan");
     
     var currObjInstance = this;
 
@@ -229,26 +230,23 @@ $.extend(TimeFacet.prototype, {
     var tillMonthValue = $("#tillMonth").val() !== "Monat" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "Jahr" ? $("#tillYear").val() : null;
     
-    
     var newTimeSpan = new TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
-    newTimeSpan.print();
     
     currObjInstance.selectedTimeSpan = newTimeSpan;
     console.log(currObjInstance.selectedTimeSpan);
     
     currObjInstance.renderTimeSpan();
+    currObjInstance.updateWindowUrl();
   },
   
   /**
-   * Checks the values of the form and adds a new timespan.
+   * Resets the input elements of the form. 
+   * The window URL is reseted by calling addTimeSpan() which does this implicitly  
    */
   reset : function() {
-    console.log("reset");
+//    console.log("reset");
     
     var currObjInstance = this;
-
-    currObjInstance.selectedTimeSpan = null;
-    console.log(currObjInstance.selectedTimeSpan);
     
     $("#fromDay").val("Day");
     $("#fromMonth").val("Month");
@@ -258,22 +256,20 @@ $.extend(TimeFacet.prototype, {
     $("#tillMonth").val("Monat");
     $("#tillYear").val("Jahr");
     
-    currObjInstance.renderTimeSpan();
+    currObjInstance.addTimeSpan();        
   },  
   
   /**
    * Renders the selected TimeSpan
    */
   renderTimeSpan : function() {
-    console.log("renderTimeSpans");
+//    console.log("renderTimeSpans");
     
     var currObjInstance = this;    
     var timeSpanList = $(".time-facet ul");
     
     //Remove all existing entries from the list
     timeSpanList.empty();
-
-    console.log(timeSpanList);
     
     if (currObjInstance.selectedTimeSpan.hasFromDate()) {
       console.log("hasFromDate: " + currObjInstance.selectedTimeSpan.hasFromDate());
@@ -298,4 +294,50 @@ $.extend(TimeFacet.prototype, {
     }
 
   },
+  
+  /**
+   * Updates the browser URL and performs a new search with the given time facet values.
+   */
+  updateWindowUrl: function() {
+//    console.log("TimeFacet:updateWindowUrl()");
+    
+    var currObjInstance = this;
+    var paramsArray = null;
+    var selectedFacetValues = [];
+    
+    // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
+    var facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues%5B%5D');
+    if (facetValuesFromUrl == null) {
+      facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues[]');
+    }
+
+    if (facetValuesFromUrl) {
+//      console.log("facetValuesFromUrl: " + facetValuesFromUrl)
+      $.each(facetValuesFromUrl, function(key, value) {        
+        //Only add facetValues that do not start with "begin_time" or "end_time"
+        if ((facetValuesFromUrl[key].indexOf("begin_time") === -1) && (facetValuesFromUrl[key].indexOf("end_time") === -1)) {
+          selectedFacetValues.push(decodeURIComponent(value.replace(/\+/g, '%20')));
+        }
+      });
+    }
+    
+    if (currObjInstance.selectedTimeSpan.hasFromDate()) {
+      selectedFacetValues.push('begin_time=687388');//FIXME
+    }
+    
+    if (currObjInstance.selectedTimeSpan.hasTillDate()) {
+      selectedFacetValues.push('end_time=733604');//FIXME
+    }
+    
+    //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
+    paramsArray = new Array(new Array('facetValues[]', selectedFacetValues));
+//    console.log("paramsArray: " + paramsArray);
+    
+    //Perform the search with offset 0
+    paramsArray.push(new Array('offset', 0));
+    
+    var newUrl = addParamToCurrentUrl(paramsArray);
+//    console.log("new url: " + newUrl);
+    currObjInstance.fetchResultsList(newUrl, function() {});
+  }
 });// End extend TimeFacet prototype
