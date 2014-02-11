@@ -34,7 +34,9 @@ public enum FacetEnum {
     AFFILIATE_INVOLVED("affiliate_fct_involved", null, false),
     AFFILIATE_SUBJECT("affiliate_fct_subject", null, false),
     AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata", null, false),
-    AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata", null, false)
+    AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata", null, false),
+    BEGIN_TIME("begin_time", null, false),
+    END_TIME("end_time", null, false),
 
     /** The facet name as used by the cortex */
     private String name

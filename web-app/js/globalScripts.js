@@ -61,6 +61,88 @@ $.hideErrors = function() {
   $("div.binary-viewer-flash-upgrade").addClass("off");
 }
 
+addParamToCurrentUrl = function(arrayParamVal, urlString) {
+  return addParamToUrl(arrayParamVal, null, urlString);
+}
+// This function will give you back the current url (if no urlParameters is
+// setted) plus the new parameters added
+// IMPORTANT: remember to pass your arrayParamVal already URL decoded
+addParamToUrl = function(arrayParamVal, path, urlString) {
+  var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
+  var queryParameters = {};
+  var queryString = (urlString == null) ? currentUrl : urlString;
+  var re = /([^&=]+)=([^&]*)/g;
+  var m;
+
+//  console.log("addParamToUrl");
+//  console.log("arrayParamVal: " + arrayParamVal);
+//  console.log("currentUrl: " + currentUrl);
+//  console.log("urlString: " + urlString);
+//  console.log("queryString: " + queryString);
+
+  while (m = re.exec(queryString)) {
+    var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
+    if (queryParameters[decodedKey] == null) {
+      queryParameters[decodedKey] = new Array();
+    }
+    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
+    //console.log("queryParameters: " + Object.keys(queryParameters));
+  }
+  $.each(arrayParamVal, function(key, value) {
+    queryParameters[value[0]] = value[1];
+    //console.log("queryParameters: " + Object.keys(queryParameters));
+  });
+  var tmp = jQuery.param(queryParameters, true);
+  updateLanguageSwitch(tmp);
+  if (path == null) {
+    return window.location.pathname + '?' + tmp;
+  } else {
+    return path + '?' + tmp;
+  }
+}
+
+removeParamFromUrl = function(arrayParamVal, path, urlString) {
+  var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
+  var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
+  while (m = re.exec(queryString)) {
+    var keyParam = decodeURIComponent(m[1].replace(/\+/g, '%20'));
+    if (queryParameters[keyParam] == null) {
+      queryParameters[keyParam] = new Array();
+    }
+    queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
+  }
+  $.each(arrayParamVal, function(key, value) {
+    if (queryParameters[value[0]]
+        && (paramIndex = $.inArray(value[1], queryParameters[value[0]])) > -1) {
+      queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue) {
+        return cValue !== value[1];
+      });
+    }
+  });
+  var tmp = jQuery.param(queryParameters, true);
+  updateLanguageSwitch(tmp);
+  if (path == null) {
+    return window.location.pathname + '?' + tmp;
+  } else {
+    return path + '?' + tmp;
+  }
+}
+
+updateLanguageSwitch = function(params) {
+  params = params.replace(/\&?lang=[^\&]*/g, '');
+  if (params.length > 0) {
+    params += '&';
+  }
+  if (params.indexOf('&') === 0) {
+    params = params.substring(1);
+  }
+  var pattern = /(.*?\?).*?(lang=\w*)/;
+  $('.language-wrapper .selector').find('a[href]').each(function() {
+    var matches = pattern.exec($(this).attr('href'));
+    $(this).attr('href', matches[1] + params + matches[2]);
+  });
+}
+
 $(document)
     .ready(
         function() {

@@ -232,77 +232,6 @@ function searchResultsInitializer() {
                 'sort=' + this.value));
         return false;
       });
-
-  function addParamToCurrentUrl(arrayParamVal, urlString) {
-    return addParamToUrl(arrayParamVal, null, urlString);
-  }
-  // This function will give you back the current url (if no urlParameters is
-  // setted) plus the new parameters added
-  // IMPORTANT: remember to pass your arrayParamVal already URL decoded
-  function addParamToUrl(arrayParamVal, path, urlString) {
-    var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
-    var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
-    while (m = re.exec(queryString)) {
-      var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
-      if (queryParameters[decodedKey] == null) {
-        queryParameters[decodedKey] = new Array();
-      }
-      queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
-          .replace(/\+/g, '%20')));
-    }
-    $.each(arrayParamVal, function(key, value) {
-      queryParameters[value[0]] = value[1];
-    });
-    var tmp = jQuery.param(queryParameters, true);
-    updateLanguageSwitch(tmp);
-    if (path == null) {
-      return window.location.pathname + '?' + tmp;
-    } else {
-      return path + '?' + tmp;
-    }
-  }
-
-  function removeParamFromUrl(arrayParamVal, path, urlString) {
-    var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
-    var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
-    while (m = re.exec(queryString)) {
-      var keyParam = decodeURIComponent(m[1].replace(/\+/g, '%20'));
-      if (queryParameters[keyParam] == null) {
-        queryParameters[keyParam] = new Array();
-      }
-      queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
-    }
-    $.each(arrayParamVal, function(key, value) {
-      if (queryParameters[value[0]]
-          && (paramIndex = $.inArray(value[1], queryParameters[value[0]])) > -1) {
-        queryParameters[value[0]] = jQuery.grep(queryParameters[value[0]], function(cValue) {
-          return cValue !== value[1];
-        });
-      }
-    });
-    var tmp = jQuery.param(queryParameters, true);
-    updateLanguageSwitch(tmp);
-    if (path == null) {
-      return window.location.pathname + '?' + tmp;
-    } else {
-      return path + '?' + tmp;
-    }
-  }
-
-  function updateLanguageSwitch(params) {
-    params = params.replace(/\&?lang=[^\&]*/g, '');
-    if (params.length > 0) {
-      params += '&';
-    }
-    if (params.indexOf('&') === 0) {
-      params = params.substring(1);
-    }
-    var pattern = /(.*?\?).*?(lang=\w*)/;
-    $('.language-wrapper .selector').find('a[href]').each(function() {
-      var matches = pattern.exec($(this).attr('href'));
-      $(this).attr('href', matches[1] + params + matches[2]);
-    });
-  }
   
   function setSearchCookieParameter(arrayParamVal) {
     var searchParameters = readCookie("searchParameters" + jsContextPath);
@@ -731,7 +660,7 @@ function searchResultsInitializer() {
       .extend(
           FacetsManager.prototype,
           {
-
+            timeFacet: null,
             connectedflyoutWidget : null,
             facetsEndPoint : jsContextPath + '/facets',
             rolefacetsEndPoint : jsContextPath + '/rolefacets',
@@ -775,6 +704,7 @@ function searchResultsInitializer() {
             },
 
             init : function() {
+              timeFacet = new TimeFacet(this, fetchResultsList);
             },
 
             fetchRoleFacets : function(flyoutWidget) {
@@ -966,8 +896,8 @@ function searchResultsInitializer() {
               }
               this.connectedflyoutWidget.close();
 
-              // Update Url (We want to add the facet value selected, but at the
-              // same time we want to keep all the old selected values)
+              // Update Url (We want to add the facet value selected, but at the same time we want to keep all the old selected values)
+              //The facet values are stored in a two dimensional Array: ["facetValues[]",['type_fct=Dmediatype_003','language_fct=lat', 'time_end_fct=2014',]]
               var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
               if (paramsFacetValues == null) {
                 paramsFacetValues = this.getUrlVar('facetValues[]');
