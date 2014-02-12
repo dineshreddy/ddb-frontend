@@ -4,7 +4,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
-import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.FavoritelistNotFoundException
 
@@ -280,7 +279,7 @@ class FavoritesviewController {
                 ])
                 return
             }else{
-                def locale = getLocale()
+                def locale = favoritesService.getLocale()
                 def allRes = favoritesService.retriveItemMD(items,locale)
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
@@ -382,14 +381,6 @@ class FavoritesviewController {
         } else{
             redirect(controller:"user", action:"index")
         }
-    }
-
-    private def isMainBookmarkFolder(folder) {
-        return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
-    }
-
-    private Locale getLocale() {
-        return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
     }
 
 }

@@ -19,12 +19,16 @@ import java.text.Collator
 import java.text.SimpleDateFormat
 
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
 
 class FavoritesService {
@@ -37,7 +41,7 @@ class FavoritesService {
     def configurationService
     def messageSource
 
-    private def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
+    def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
         allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
             if (isMainBookmarkFolder(folderAccess(o1))) {
                 return -1
@@ -55,6 +59,15 @@ class FavoritesService {
             }
         }
         return allFoldersInformations
+    }
+
+    def Locale getLocale() {
+        def webUtils = WebUtils.retrieveGrailsWebRequest()
+        return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(webUtils.getCurrentRequest()))
+    }
+
+    private def isMainBookmarkFolder(folder) {
+        return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
     }
 
     def createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
