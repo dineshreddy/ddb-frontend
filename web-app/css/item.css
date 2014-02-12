@@ -104,7 +104,8 @@
 }
 
 .favorite {
-  text-align: right;
+  display: inline-block;
+  margin-right: 10px;;
 }
 .favorite-actions {
   padding-left: 20px;
