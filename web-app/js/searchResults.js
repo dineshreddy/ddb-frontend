@@ -768,6 +768,7 @@ function searchResultsInitializer() {
                 isThumbnailFIltered = '&isThumbnailFiltered=true';
               }
               if (query) {
+            	  query = encodeURIComponent(query);
                 queryParam = '&query=' + query;
               }
               this.connectedflyoutWidget.renderFacetLoader();
