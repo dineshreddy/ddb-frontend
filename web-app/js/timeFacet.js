@@ -14,12 +14,6 @@
  * limitations under the License.
  */
 
-$(function() {
-  if (jsPageName == "results") {   
-  }
-});
-
-
 //#############################################################################################
 //TimeSpan Object
 //#############################################################################################
@@ -136,8 +130,8 @@ $.extend(TimeSpan.prototype, {
 /**
  * TimeFacet Constructor Function
  */
-function TimeFacet(facetsManager, fetchResultsList) {
-  this.init(facetsManager, fetchResultsList);
+function TimeFacet(facetsManager) {
+  this.init(facetsManager);
 //  console.log("Created a new instance of TimeFacet");
 }
 
@@ -149,7 +143,6 @@ $.extend(TimeFacet.prototype, {
    * TimeFacet attributes
    */
   facetsManager: null, //Defined in searchResults.js
-  fetchResultsList: null, //Defined in searchResults.js
   opened: false,
   added: false,
   selectedTimeSpan: null,
@@ -164,7 +157,6 @@ $.extend(TimeFacet.prototype, {
     
     var currObjInstance = this;
     this.facetsManager = facetsManager;
-    this.fetchResultsList = fetchResultsList;    
     this.facetsContainer = $(".facets-list");        
     
     //On initialisation hide the timespan form

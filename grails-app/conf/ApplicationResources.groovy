@@ -108,6 +108,8 @@ modules = {
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
         resource url:'/js/timeFacet.js'
+        resource url:'/js/facetsManager.js'
+        resource url:'/js/flyoutFacetsWidget.js'
     }
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
