@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+/* Search namespace  */
+de.ddb.next.search = de.ddb.next.search || {};
+
+
 //#############################################################################################
 //TimeSpan Object
 //#############################################################################################
@@ -152,7 +156,7 @@ $.extend(TimeFacet.prototype, {
   /**
    * Initialize the TimeFacet object
    */
-  init : function(facetsManager, fetchResultsList) {
+  init : function(facetsManager) {
 //    console.log("init() with facetsManager " + facetsManager);
     
     var currObjInstance = this;
@@ -333,6 +337,6 @@ $.extend(TimeFacet.prototype, {
     
     var newUrl = addParamToCurrentUrl(paramsArray);
 //    console.log("new url: " + newUrl);
-    currObjInstance.fetchResultsList(newUrl, function() {});
+    de.ddb.next.search.fetchResultsList(newUrl, function() {});
   }
 });// End extend TimeFacet prototype

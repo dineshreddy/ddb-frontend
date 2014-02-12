@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
+
+/* Search namespace  */
+de.ddb.next.search = de.ddb.next.search || {};
+
 /**
  * Is called after the DOM has been initialized, the new handler passed in will
  * be executed immediately
@@ -51,17 +55,17 @@ $(function() {
       globalUrl = location.search.substring(1);
     }
 
-    searchResultsInitializer();
+    de.ddb.next.search.searchResultsInitializer();
 
     function stateManager(url) {
       $('#main-container').load(url + ' .search-results-container', function() {
-        searchResultsInitializer();
+        de.ddb.next.search.searchResultsInitializer();
       });
     }
   }
 });
 
-function historyManager(path) {
+de.ddb.next.search.historyManager = function(path) {
   if (historySupport) {
     window.history.pushState({
       path : path
@@ -73,7 +77,7 @@ function historyManager(path) {
   }
 }
 
-function getLocalizedFacetValue(facetField, facetValue) {
+de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
   if (facetField == 'affiliate_fct' || facetField == 'keywords_fct' || facetField == 'place_fct'
       || facetField == 'provider_fct') {
     return facetValue.toString();
@@ -93,7 +97,7 @@ function getLocalizedFacetValue(facetField, facetValue) {
   return '';
 }
 
-function getLocalizedFacetField(facetField) {
+de.ddb.next.search.getLocalizedFacetField = function(facetField) {
   return messages.ddbnext['facet_' + facetField];
 }
 
@@ -182,7 +186,7 @@ $.extend(HovercardInfoItem.prototype, {
               facetValues.push(value[i]);
             }
 
-            fieldName.text(getLocalizedFacetField(key));
+            fieldName.text(de.ddb.next.search.getLocalizedFacetField(key));
             fieldContent.text(facetValues.join());
 
             li.append(fieldName);
@@ -195,7 +199,7 @@ $.extend(HovercardInfoItem.prototype, {
   }
 });
 
-function fetchResultsList(url, errorCallback) {
+de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
   divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
   var divSearchResultsOverlayWaiting = $(document.createElement('div'));
@@ -213,7 +217,7 @@ function fetchResultsList(url, errorCallback) {
     async : true,
     url : url + '&reqType=ajax',
     success : function(data) {
-      historyManager(url);
+      de.ddb.next.search.historyManager(url);
       if (!historySupport) {
         return;
       }
@@ -292,7 +296,7 @@ function fetchResultsList(url, errorCallback) {
       divSearchResultsOverlayWaiting.remove();
       divSearchResultsOverlayModal.remove();
 
-      showError(messages.ddbnext.An_Error_Occured);
+      de.ddb.next.search.showError(messages.ddbnext.An_Error_Occured);
 
       if (errorCallback) {
         errorCallback();
@@ -301,8 +305,8 @@ function fetchResultsList(url, errorCallback) {
   });
 }
 
-function setSearchCookieParameter(arrayParamVal) {
-  var searchParameters = readCookie("searchParameters" + jsContextPath);
+de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
+  var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
     searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -324,8 +328,8 @@ function setSearchCookieParameter(arrayParamVal) {
   }
 }
 
-function removeSearchCookieParameter(paramName) {
-  var searchParameters = readCookie("searchParameters" + jsContextPath);
+de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
+  var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
     searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -336,7 +340,7 @@ function removeSearchCookieParameter(paramName) {
   }
 }
 
-function readCookie(name) {
+de.ddb.next.search.readCookie = function(name) {
   var nameEQ = name + "=";
   var ca = document.cookie.split(';');
   for ( var i = 0; i < ca.length; i++) {
@@ -351,11 +355,11 @@ function readCookie(name) {
   return null;
 }
 
-function hideError() {
+de.ddb.next.search.hideError = function() {
   $('.errors-container').remove();
 }
 
-function showError(errorHtml) {
+de.ddb.next.search.showError = function(errorHtml) {
   var errorContainer = ($('.search-results-list').find('.errors-container').length > 0) ? $(
       '.search-results-list').find('.errors-container') : $(document.createElement('div'));
   var errorIcon = $(document.createElement('i'));
@@ -371,8 +375,8 @@ function showError(errorHtml) {
   });
 }
 
-function initializeFacets() {
-  var fctWidget = new FlyoutFacetsWidget();
+de.ddb.next.search.initializeFacets = function() {
+  var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget();
   $('.facets-item a').each(function() {
     $(this).click(function(event) {
       event.preventDefault();
@@ -383,7 +387,7 @@ function initializeFacets() {
 }
 
 
-function searchResultsInitializer() {
+de.ddb.next.search.searchResultsInitializer = function() {
   $(this).on("searchChange", function() {
     setHovercardEvents();
     initComparison();
@@ -404,7 +408,7 @@ function searchResultsInitializer() {
   $('.page-filter select').change(
       function() {
         var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray));
+        de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
         $('.clear-filters').attr('href',
             $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
         return false;
@@ -413,7 +417,7 @@ function searchResultsInitializer() {
   $('.sort-results-switch select').change(
       function() {
         var paramsArray = new Array(new Array('sort', this.value), new Array('offset', 0));
-        fetchResultsList(addParamToCurrentUrl(paramsArray));
+        de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
         $('.clear-filters').attr(
             'href',
             $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
@@ -423,7 +427,7 @@ function searchResultsInitializer() {
   
 
   $('.page-nav-result').click(function() {
-    fetchResultsList(this.href);
+    de.ddb.next.search.fetchResultsList(this.href);
     $('html, body').animate({
       scrollTop : 0
     }, 1000);
@@ -431,7 +435,7 @@ function searchResultsInitializer() {
   });
   $('#form-search-header button').click(
       function() {
-        var searchParameters = readCookie("searchParameters" + jsContextPath);
+        var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
         if (searchParameters != null && searchParameters.length > 0) {
           searchParameters = searchParameters.substring(1, searchParameters.length - 1);
           searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -525,8 +529,8 @@ function searchResultsInitializer() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
-        historyManager(newUrl);
-        setSearchCookieParameter(paramsArray);
+        de.ddb.next.search.historyManager(newUrl);
+        de.ddb.next.search.setSearchCookieParameter(paramsArray);
       });
   $('.page-input').keyup(function(e) {
     if (e.keyCode === 13) {
@@ -550,7 +554,7 @@ function searchResultsInitializer() {
       var offset = (valueInteger - 1) * filterInteger;
       var paramsArray = new Array(new Array('offset', offset));
       var newUrl = addParamToCurrentUrl(paramsArray);
-      fetchResultsList(newUrl);
+      de.ddb.next.search.fetchResultsList(newUrl);
     }
   });
   $('#thumbnail-filter').click(function() {
@@ -562,7 +566,7 @@ function searchResultsInitializer() {
     }
     paramsArray.push(new Array('offset', 0));
     var newUrl = addParamToCurrentUrl(paramsArray);
-    fetchResultsList(newUrl);
+    de.ddb.next.search.fetchResultsList(newUrl);
   });
   $('#view-grid').click(
       function() {
@@ -632,8 +636,8 @@ function searchResultsInitializer() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
-        historyManager(newUrl);
-        setSearchCookieParameter(paramsArray);
+        de.ddb.next.search.historyManager(newUrl);
+        de.ddb.next.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
   $('#keep-filters').click(function() {
@@ -644,13 +648,13 @@ function searchResultsInitializer() {
       var paramsArray = new Array(new Array('keepFilters', 'false'));
     }
     addParamToCurrentUrl(paramsArray);
-    setSearchCookieParameter(paramsArray);
+    de.ddb.next.search.setSearchCookieParameter(paramsArray);
   });
   $('.clear-filters').click(function() {
-    removeSearchCookieParameter('facetValues[]');
+    de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
   });
 
-  initializeFacets();
+  de.ddb.next.search.initializeFacets();
 
   function setHovercardEvents() {
     //  $('.thumbnail a').mouseenter(function(){
@@ -795,14 +799,14 @@ function searchResultsInitializer() {
   function setCompareCookieParameter(itemId, imgSrc, text) {
     var cookieVal = getComparisonCookieVal();
 
-    hideError();
+    de.ddb.next.search.hideError();
 
     // if the cookie exists, check if the first or second compare slot is free
     if (cookieVal !== null) {
       if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
-        showError(messages.ddbnext.SearchResultsCompareItemOnly2);
+        de.ddb.next.search.showError(messages.ddbnext.SearchResultsCompareItemOnly2);
       } else if ((cookieVal.id1 === itemId) || (cookieVal.id2 === itemId)) {
-        showError(messages.ddbnext.SearchResultsCompareItemAlreadySet);
+        de.ddb.next.search.showError(messages.ddbnext.SearchResultsCompareItemAlreadySet);
       } else if (cookieVal.id1 === null) {
         cookieVal.id1 = itemId;
         cookieVal.src1 = imgSrc;
@@ -838,7 +842,7 @@ function searchResultsInitializer() {
    */
   function removeCompareCookieParameter(index) {
     var cookieVal = getComparisonCookieVal();
-    hideError();
+    de.ddb.next.search.hideError();
 
     if ((1 != index) && (2 != index)) {
       return;
@@ -962,7 +966,7 @@ function searchResultsInitializer() {
       $("#addToSavedSearchesModal").modal("hide");
       var title = $("#addToSavedSearchesTitle").val();
       if (title.length > 0) {
-        hideError();
+        de.ddb.next.search.hideError();
         $.ajax({
           type : "PUT",
           contentType : "application/json",
@@ -976,7 +980,7 @@ function searchResultsInitializer() {
           disableSavedSearch($(".add-to-saved-searches"));
         });
       } else {
-        showError(messages.ddbnext.Savedsearch_Without_Title);
+        de.ddb.next.search.showError(messages.ddbnext.Savedsearch_Without_Title);
       }
     });
   }

@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2014 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/* Search namespace  */
+de.ddb.next.search = de.ddb.next.search || {};
+
 /**
  * Facets Manager
  * 
@@ -12,11 +31,11 @@
  * Do not make synchronous AJAX calls in this class. Otherwise the GUI might
  * freeze!
  */
-FacetsManager = function() {
+de.ddb.next.search.FacetsManager = function() {
   this.init();
 };
 
-$.extend(FacetsManager.prototype, {
+$.extend(de.ddb.next.search.FacetsManager.prototype, {
   timeFacet: null,
   connectedflyoutWidget : null,
   currentOffset : 0,
@@ -59,7 +78,7 @@ $.extend(FacetsManager.prototype, {
   },
 
   init : function() {
-    timeFacet = new TimeFacet(this, fetchResultsList);
+    timeFacet = new TimeFacet(this);
   },
 
   fetchRoleFacets : function(flyoutWidget) {
@@ -272,7 +291,7 @@ $.extend(FacetsManager.prototype, {
 
     // perform search
     paramsArray.push(new Array('offset', 0));
-    fetchResultsList(addParamToCurrentUrl(paramsArray), function() {
+    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray), function() {
       currObjInstance.unselectFacetValue(facetValueContainer, true);
     });
 
@@ -315,10 +334,10 @@ $.extend(FacetsManager.prototype, {
     var newUrl = removeParamFromUrl(facetsToRemove);
 
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
-      removeSearchCookieParameter('facetValues[]');
+      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
-      fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
+      de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
           .substr(newUrl.indexOf("?") + 1)));
     }
     element.remove();
@@ -350,7 +369,7 @@ $.extend(FacetsManager.prototype, {
     }
 
     paramsArray.push(new Array('offset', 0));
-    fetchResultsList(addParamToCurrentUrl(paramsArray));
+    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
   },
 
   unselectRoleFacetValue : function(facetField, facetValue) {
@@ -358,10 +377,10 @@ $.extend(FacetsManager.prototype, {
     var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]', facetField + '='
         + facetValue)));
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
-      removeSearchCookieParameter('facetValues[]');
+      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
+    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
         .substr(newUrl.indexOf("?") + 1)));
   },
 
@@ -433,9 +452,7 @@ $.extend(FacetsManager.prototype, {
       });
 
       // handle selected facets
-      $
-          .each(
-              selectedFacets,
+      $.each(selectedFacets,
               function(fctField, fctValues) {
                 if (!currObjInstance.isRoleFacet(fctField)) {
                   currObjInstance.connectedflyoutWidget.mainElement = $('.facets-list')
@@ -450,7 +467,7 @@ $.extend(FacetsManager.prototype, {
                   $.each(fctValues, function(fctValue) {
                     var facetValue = this;
                     var selectedFacetValue = currObjInstance.connectedflyoutWidget
-                        .renderSelectedFacetValue(this, getLocalizedFacetValue(fctField,
+                        .renderSelectedFacetValue(this, de.ddb.next.search.getLocalizedFacetValue(fctField,
                             this));
                     var roleFacets = currObjInstance
                         .getRoleFacets(currObjInstance.currentFacetField);
