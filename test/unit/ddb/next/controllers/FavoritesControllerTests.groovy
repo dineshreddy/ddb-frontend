@@ -1,8 +1,8 @@
 package ddb.next.controllers
 
-import grails.test.mixin.*
+import grails.test.mixin.TestFor
 import de.ddb.next.FavoritesController
-import de.ddb.next.FavoritesviewController
+import de.ddb.next.FavoritesService
 import de.ddb.next.beans.Folder
 import de.ddb.next.constants.FolderConstants
 
@@ -12,44 +12,44 @@ import de.ddb.next.constants.FolderConstants
 @TestFor(FavoritesController)
 class FavoritesControllerTests {
 
-	private FavoritesviewController favViewContr = new FavoritesviewController()
-
+    private FavoritesService favoritesService = new FavoritesService()
+    
 	void testSortFolders_WithEmptyList() {
-		List sortedFolders = favViewContr.sortFolders([])
+		List sortedFolders = favoritesService.sortFolders([])
 		assert sortedFolders.size() == 0
 	}
 
 	void testSortFolders_WithOneFolder() {
 		def folder1 = createFolder("first folder")
 
-		assert favViewContr.sortFolders([folder1]) == [folder1]
+		assert favoritesService.sortFolders([folder1]) == [folder1]
 	}
 
 	void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
 		def folder1 = createFolder(" \t\r\n")
 
-		assert favViewContr.sortFolders([folder1])[0].title == "-"
+		assert favoritesService.sortFolders([folder1])[0].title == "-"
 	}
 
 	void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
 		def folder1 = createFolder("first folder")
 		def folder2 = createFolder("second folder")
 
-		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
 	}
 
 	void testSortFolders_IncludingMainFolder_PullsMainFolderToTheBeginning() {
 		def folder1 = createFolder(FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
 		def folder2 = createFolder("aaaaa first normal folder")
 
-		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
 	}
 
 	void testSortFolders_IncludingUmlautFolder() {
 		def folder1 = createFolder("Ägypten")
 		def folder2 = createFolder("zzzz last folder")
 
-		assert favViewContr.sortFolders([folder2, folder1]) == [folder1, folder2]
+		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
 	}
 
 	private def createFolder(String title) {
