@@ -110,6 +110,7 @@ modules = {
         resource url:'/js/search/timeFacet.js'
         resource url:'/js/search/facetsManager.js'
         resource url:'/js/search/flyoutFacetsWidget.js'
+        resource url:'/js/search/compareManager.js'
     }
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
