@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 
-$(function() {
-  if (jsPageName == "results") {   
-  }
-});
+/* Search namespace  */
+de.ddb.next.search = de.ddb.next.search || {};
 
 
 //#############################################################################################
@@ -136,8 +134,8 @@ $.extend(TimeSpan.prototype, {
 /**
  * TimeFacet Constructor Function
  */
-function TimeFacet(facetsManager, fetchResultsList) {
-  this.init(facetsManager, fetchResultsList);
+function TimeFacet(facetsManager) {
+  this.init(facetsManager);
 //  console.log("Created a new instance of TimeFacet");
 }
 
@@ -149,7 +147,6 @@ $.extend(TimeFacet.prototype, {
    * TimeFacet attributes
    */
   facetsManager: null, //Defined in searchResults.js
-  fetchResultsList: null, //Defined in searchResults.js
   opened: false,
   added: false,
   selectedTimeSpan: null,
@@ -159,12 +156,11 @@ $.extend(TimeFacet.prototype, {
   /**
    * Initialize the TimeFacet object
    */
-  init : function(facetsManager, fetchResultsList) {
+  init : function(facetsManager) {
 //    console.log("init() with facetsManager " + facetsManager);
     
     var currObjInstance = this;
     this.facetsManager = facetsManager;
-    this.fetchResultsList = fetchResultsList;    
     this.facetsContainer = $(".facets-list");        
     
     //On initialisation hide the timespan form
@@ -341,6 +337,6 @@ $.extend(TimeFacet.prototype, {
     
     var newUrl = addParamToCurrentUrl(paramsArray);
 //    console.log("new url: " + newUrl);
-    currObjInstance.fetchResultsList(newUrl, function() {});
+    de.ddb.next.search.fetchResultsList(newUrl, function() {});
   }
 });// End extend TimeFacet prototype
