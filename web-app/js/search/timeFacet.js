@@ -38,15 +38,14 @@ function TimeSpan(fromDay,fromMonth, fromYear, tillDay, tillMonth, tillYear) {
 
 $.extend(TimeSpan.prototype, {
   print : function(facetsContainer) {
-//    console.log("TimeSpan.print()");
     var currObjInstance = this;
     
-//    console.log("fromDay: " + currObjInstance.fromDay);
-//    console.log("fromMonth: " + currObjInstance.fromMonth);
-//    console.log("fromYear: " + currObjInstance.fromYear);
-//    console.log("tillDay: " + currObjInstance.tillDay);
-//    console.log("tillMonth: " + currObjInstance.tillMonth);
-//    console.log("tillYear: " + currObjInstance.tillYear);
+    console.log("fromDay: " + currObjInstance.fromDay);
+    console.log("fromMonth: " + currObjInstance.fromMonth);
+    console.log("fromYear: " + currObjInstance.fromYear);
+    console.log("tillDay: " + currObjInstance.tillDay);
+    console.log("tillMonth: " + currObjInstance.tillMonth);
+    console.log("tillYear: " + currObjInstance.tillYear);
   },
   
   /**
@@ -54,9 +53,7 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no fromYear is set  
    */
   hasFromDate: function(){
-//    console.log("TimeSpan.hasFromDate()");
     var currObjInstance = this;
-    
     return currObjInstance.fromYear !== null;
   },
   
@@ -65,52 +62,40 @@ $.extend(TimeSpan.prototype, {
    * @returns <code>false<code> if no tillYear is set  
    */
   hasTillDate: function(){
-//    console.log("TimeSpan.hasTillDate()");
     var currObjInstance = this;
-    
     return currObjInstance.tillYear !== null;
   },
   
   /**
-   * Return a String representation of the from date.
-   * The method autocomplete missing fromDay and fromMonth values.
-   * 
-   * @returns <code>false<code> if no tillYear is set  
+   * At least the year must be existing. The method completes missing fromDay and fromMonth values.
    */
-  getFromDate: function(){
-//    console.log("TimeSpan.getFromDate()");
+  completeFromDate: function(){
     var currObjInstance = this;
     
-    //Id no year is set -> return null
+    //If no year is set -> return
     if (!currObjInstance.hasFromDate()) {
-      return null;
+      return;
     }
     //if no day is set fromDay to 1
     if (currObjInstance.fromDay === null) {
       currObjInstance.fromDay = 1;
     }
     
-    //id no month is set -> return january
+    //id no month is set fromMonth to 1
     if (currObjInstance.fromMonth === null) {
-      currObjInstance.fromMonth = "january";
+      currObjInstance.fromMonth = 1;
     }
-    
-    return new String(currObjInstance.fromDay + " " + currObjInstance.fromMonth + " " + currObjInstance.fromYear);
   },
   
   /**
-   * Return a String representation of the till date.
-   * The method autocomplete missing tillDay and tillMonth values.
-   * 
-   * @returns <code>false<code> if no tillYear is set  
+   * At least the year must be existing. The method complete missing tillDay and tillMonth values.
    */
-  getTillDate: function(){
-//    console.log("TimeSpan.getTillDate()");
+  completeTillDate: function(){
     var currObjInstance = this;
     
-    //Id no year is set -> return null
+    //If no year is set -> return
     if (!currObjInstance.hasTillDate()) {
-      return null;
+      return;
     }
     
     //if no day is set tillDay to ???
@@ -118,13 +103,47 @@ $.extend(TimeSpan.prototype, {
       currObjInstance.tillDay = 28;//TODO get right day from calendar
     }
     
-    //id no month is set -> return december
+    //id no month is set tillMonth to 12
     if (currObjInstance.tillMonth === null) {
-      currObjInstance.tillMonth = "december";
+      currObjInstance.tillMonth = 12;
     }
     
-    return new String(currObjInstance.tillDay + " " + currObjInstance.tillMonth + " " + currObjInstance.tillYear);
-  } 
+    return true;
+  },
+
+  /**
+   * Formats the till date in this form: yyyy-MM-dd
+   */
+  formatFromDate: function(){
+    var currObjInstance = this;
+    
+    //If no year is set -> return
+    if (!currObjInstance.hasFromDate()) {
+      return;
+    }
+    
+    currObjInstance.completeFromDate();
+    
+    return currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
+  
+  },
+  
+  /**
+   * Formats the till date in this form: yyyy-MM-dd
+   */
+  formatTillDate: function(){
+    var currObjInstance = this;
+    
+    //If no year is set -> return
+    if (!currObjInstance.hasTillDate()) {
+      return;
+    }
+    
+    currObjInstance.completeTillDate();
+    
+    return currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
+  
+  }
   
 });
 
@@ -136,7 +155,6 @@ $.extend(TimeSpan.prototype, {
  */
 function TimeFacet(facetsManager) {
   this.init(facetsManager);
-//  console.log("Created a new instance of TimeFacet");
 }
 
 /**
@@ -146,7 +164,7 @@ $.extend(TimeFacet.prototype, {
   /**
    * TimeFacet attributes
    */
-  facetsManager: null, //Defined in searchResults.js
+  facetsManager: null,
   opened: false,
   added: false,
   selectedTimeSpan: null,
@@ -157,13 +175,11 @@ $.extend(TimeFacet.prototype, {
    * Initialize the TimeFacet object
    */
   init : function(facetsManager) {
-//    console.log("init() with facetsManager " + facetsManager);
-    
     var currObjInstance = this;
     this.facetsManager = facetsManager;
     this.facetsContainer = $(".facets-list");        
     
-    //On initialisation hide the timespan form
+    //During initialisation hide the timespan form
     $("#timespan-form").hide();
 
     // Click handler for Opening|Closing the time facet 
@@ -175,7 +191,7 @@ $.extend(TimeFacet.prototype, {
     // Click handler for adding a new TimeSpan
     $("#add-timespan").click(function(event) {
       event.preventDefault();
-      currObjInstance.addTimeSpan();
+      currObjInstance.assignTimeSpan();
     });
     
     // Click handler for reseting the time facet
@@ -198,13 +214,13 @@ $.extend(TimeFacet.prototype, {
     
     if (!currObjInstance.opened) {
       currObjInstance.opened = true;
-      timespanFormDiv.fadeIn('slow');
+      timespanFormDiv.fadeIn('fast');
       timeFacetDiv.addClass('active');
     } else {
       //Prevent from closing if a timespan has been selected
       if (!currObjInstance.added) {
         currObjInstance.opened = false;
-        timespanFormDiv.fadeOut('slow');
+        timespanFormDiv.fadeOut('fast');
         timeFacetDiv.removeClass('active');
       }
     }
@@ -213,93 +229,71 @@ $.extend(TimeFacet.prototype, {
   /**
    * Checks the values of the form and adds a new timespan.
    */
-  addTimeSpan : function() {
-//    console.log("addTimeSpan");
-    
+  assignTimeSpan : function() {
     var currObjInstance = this;
 
+    console.log("fromDay" + $("#fromDay").val());
+    console.log("fromMonth" + $("#fromMonth").val());
+    console.log("fromYear" + $("#fromYear").val());
+    
     //Retrieve the values from the timespan form
-    var fromDayValue = $("#fromDay").val() !== "Day" ? $("#fromDay").val() : null;
-    var fromMonthValue = $("#fromMonth").val() !== "Month" ? $("#fromMonth").val() : null;
-    var fromYearValue = $("#fromYear").val() !== "Year" ? $("#fromYear").val() : null;
+    var fromDayValue = $("#fromDay").val() !== "" ? $("#fromDay").val() : null;
+    var fromMonthValue = $("#fromMonth").val() !== "" ? $("#fromMonth").val() : null;
+    var fromYearValue = $("#fromYear").val() !== "" ? $("#fromYear").val() : null;
 
-    var tillDayValue = $("#tillDay").val() !== "Tag" ? $("#tillDay").val() : null;
-    var tillMonthValue = $("#tillMonth").val() !== "Monat" ? $("#tillMonth").val() : null;
-    var tillYearValue = $("#tillYear").val() !== "Jahr" ? $("#tillYear").val() : null;
+    var tillDayValue = $("#tillDay").val() !== "" ? $("#tillDay").val() : null;
+    var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
+    var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
     
     var newTimeSpan = new TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
     
     currObjInstance.selectedTimeSpan = newTimeSpan;
     currObjInstance.added = true;
-    //console.log(currObjInstance.selectedTimeSpan);
     
-    currObjInstance.renderTimeSpan();
+    currObjInstance.selectedTimeSpan.print();
+    currObjInstance.selectedTimeSpan.completeFromDate();
+    currObjInstance.selectedTimeSpan.completeTillDate();
+    
+    currObjInstance.updateTimeSpanForm();
     currObjInstance.updateWindowUrl();
   },
   
   /**
    * Resets the input elements of the form. 
-   * The window URL is reseted by calling addTimeSpan() which does this implicitly  
+   * The window URL is reseted by calling assignTimeSpan() which does this implicitly  
    */
   reset : function() {
-//    console.log("reset");
-    
     var currObjInstance = this;
     
-    $("#fromDay").val("Day");
-    $("#fromMonth").val("Month");
-    $("#fromYear").val("Year");
+    $("#fromDay").val("");
+    $("#fromMonth").val("");
+    $("#fromYear").val("");
 
-    $("#tillDay").val("Tag");
-    $("#tillMonth").val("Monat");
-    $("#tillYear").val("Jahr");
+    $("#tillDay").val("");
+    $("#tillMonth").val("");
+    $("#tillYear").val("");
     
-    currObjInstance.addTimeSpan();
+    currObjInstance.assignTimeSpan();
     currObjInstance.added = false;
   },  
   
   /**
-   * Renders the selected TimeSpan
+   * Updates the browser URL and performs a new search with the given time facet values.
    */
-  renderTimeSpan : function() {
-//    console.log("renderTimeSpans");
+  updateTimeSpanForm: function() {
+    var currObjInstance = this;
     
-    var currObjInstance = this;    
-    var timeSpanList = $(".time-facet ul");
-    
-    //Remove all existing entries from the list
-    timeSpanList.empty();
-    
-    if (currObjInstance.selectedTimeSpan.hasFromDate()) {
-      console.log("hasFromDate: " + currObjInstance.selectedTimeSpan.hasFromDate());
-      
-      var facetValueContainer = $(document.createElement('li'));
-      var facetValueSpan = $(document.createElement('span'));      
-      facetValueSpan.html("ab " + currObjInstance.selectedTimeSpan.getFromDate());
-      
-      facetValueSpan.appendTo(facetValueContainer);
-      facetValueContainer.appendTo(timeSpanList);
-    }
-    
-    if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      console.log("hasTillDate: " + currObjInstance.selectedTimeSpan.hasTillDate());
-      
-      var facetValueContainer = $(document.createElement('li'));
-      var facetValueSpan = $(document.createElement('span'));      
-      facetValueSpan.html("bis " + currObjInstance.selectedTimeSpan.getTillDate());
-      
-      facetValueSpan.appendTo(facetValueContainer);
-      facetValueContainer.appendTo(timeSpanList);
-    }
+    $("#fromDay").val(currObjInstance.selectedTimeSpan.fromDay);
+    $("#fromMonth").val(currObjInstance.selectedTimeSpan.fromMonth);
 
+    $("#tillDay").val(currObjInstance.selectedTimeSpan.tillDay);
+    $("#tillMonth").val(currObjInstance.selectedTimeSpan.tillMonth);
   },
   
   /**
    * Updates the browser URL and performs a new search with the given time facet values.
    */
   updateWindowUrl: function() {
-//    console.log("TimeFacet:updateWindowUrl()");
-    
     var currObjInstance = this;
     var paramsArray = null;
     var selectedFacetValues = [];
@@ -321,11 +315,11 @@ $.extend(TimeFacet.prototype, {
     }
     
     if (currObjInstance.selectedTimeSpan.hasFromDate()) {
-      selectedFacetValues.push('begin_time=687388');//FIXME
+      selectedFacetValues.push('begin_time=' + currObjInstance.selectedTimeSpan.formatFromDate());
     }
     
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      selectedFacetValues.push('end_time=733604');//FIXME
+      selectedFacetValues.push('end_time=' + currObjInstance.selectedTimeSpan.formatTillDate());
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]

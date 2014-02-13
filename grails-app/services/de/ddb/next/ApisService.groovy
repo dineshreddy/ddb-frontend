@@ -17,7 +17,6 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
-
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
@@ -76,6 +75,7 @@ class ApisService {
             evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
         }
 
+        calculateTimeFacetValues(query)
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
@@ -86,6 +86,17 @@ class ApisService {
         }
 
         return query
+    }
+
+
+    private def calculateTimeFacetValues(query) {
+        if (query[FacetEnum.BEGIN_TIME.getName()]) {
+            query[FacetEnum.BEGIN_TIME.getName()] = TimeFacetHelper.calculateDaysForTimeFacet(query[FacetEnum.BEGIN_TIME.getName()]);
+        }
+
+        if (query[FacetEnum.END_TIME.getName()]) {
+            query[FacetEnum.END_TIME.getName()] = TimeFacetHelper.calculateDaysForTimeFacet(query[FacetEnum.END_TIME.getName()]);
+        }
     }
 
     /**
@@ -107,5 +118,6 @@ class ApisService {
             }
         }
     }
+
 
 }
