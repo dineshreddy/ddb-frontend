@@ -45,11 +45,16 @@ limitations under the License.
           </ddb:isPersonalFavoritesAvailable>
         </li>
       </ddb:isLoggedIn>
-      
-      <li>
-        <div class="compare bb off" data-iid="${item.id}" title="<g:message code="ddbnext.SearchResultsCompareObject"/>"></div>
-      </li>
-      
+      <g:each var="mediaType" in="${item.preview.media}">
+        <g:if test="${mediaType == 'institution'}">
+          <g:set var="mediaType" value="institution"></g:set>
+        </g:if>
+      </g:each>
+      <g:if test="${mediaType != 'institution'}">
+        <li>
+          <div class="compare bb off" data-iid="${item.id}" title="<g:message code="ddbnext.SearchResultsCompareObject"/>"></div>
+        </li>
+      </g:if>
       <li>
         <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
           <div class="hovercard-info-item" data-iid="${item.id}">
