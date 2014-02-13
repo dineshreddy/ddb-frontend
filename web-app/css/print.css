@@ -372,7 +372,7 @@ footer, .footer,
     display: block;
     margin-left: -40px;
     min-height: 180px;
-    width: 650px !important;
+    width: 640px !important;
     page-break-inside: avoid;
   }
   .favorites-results-controls .results-sorter .span6 {
