@@ -101,103 +101,6 @@ de.ddb.next.search.getLocalizedFacetField = function(facetField) {
   return messages.ddbnext['facet_' + facetField];
 }
 
-// Hovercard Information Item Manager
-HovercardInfoItem = function(element) {
-  this.init(element);
-};
-
-$.extend(HovercardInfoItem.prototype, {
-
-  infoButton : null,
-  hovercard : null,
-  iid : null,
-
-  opened : false,
-  lock : false,
-
-  hoverTime : 0,
-  hoverTimeout : 300,
-
-  init : function(element) {
-    var currObjInstance = this;
-    this.infoButton = element;
-    this.hovercard = this.infoButton.find('.hovercard-info-item');
-    this.iid = this.hovercard.attr('data-iid');
-
-    this.infoButton.mouseenter(function() {
-      var d = new Date();
-      currObjInstance.hoverTime = d.getTime();
-      currObjInstance.open();
-    });
-    this.hovercard.mouseenter(function() {
-      currObjInstance.lock = true;
-    });
-    this.hovercard.mouseleave(function() {
-      currObjInstance.close();
-    });
-    this.infoButton.mouseleave(function() {
-      setTimeout(
-          function() {
-            var currentD = new Date();
-            if (!currObjInstance.lock
-                && currObjInstance.hoverTime + currObjInstance.hoverTimeout - 100 < currentD
-                    .getTime()) {
-              currObjInstance.close();
-            }
-          }, currObjInstance.hoverTimeout);
-    });
-  },
-  open : function() {
-    if (!this.opened) {
-      this.opened = true;
-      this.hovercard.fadeIn('fast');
-      if (this.hovercard.find('.small-loader').length !== 0) {
-        this.fetchInformationItem();
-      }
-    }
-  },
-  close : function() {
-    this.hovercard.fadeOut('fast');
-    this.opened = false;
-    this.lock = false;
-  },
-  fetchInformationItem : function() {
-    var currObjInstance = this;
-    var request = $.ajax({
-      type : 'GET',
-      dataType : 'json',
-      async : true,
-      url : jsContextPath + '/informationitem/' + this.iid,
-      complete : function(data) {
-        var content = currObjInstance.hovercard.find('ul.unstyled');
-        content.empty();
-        var JSONresponse = jQuery.parseJSON(data.responseText);
-        $.each(JSONresponse, function(key, value) {
-          if (key !== 'last_update' && value != "") {
-            var li = $(document.createElement('li'));
-            var fieldName = $(document.createElement('span'));
-            var fieldContent = $(document.createElement('span'));
-
-            fieldName.addClass('fieldName');
-            fieldContent.addClass('fieldContent');
-
-            facetValues = new Array();
-            for (i = 0; i < value.length; i++) {
-              facetValues.push(value[i]);
-            }
-
-            fieldName.text(de.ddb.next.search.getLocalizedFacetField(key));
-            fieldContent.text(facetValues.join());
-
-            li.append(fieldName);
-            li.append(fieldContent);
-            content.append(li);
-          }
-        });
-      }
-    });
-  }
-});
 
 de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
@@ -400,8 +303,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-input').removeClass('off');
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
-  // $('.hovercard-info-item').removeClass('off');
-  // $('.hovercard-info-item').fadeOut('fast');
 
   $(this).trigger("searchChange");
 
@@ -657,14 +558,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
   de.ddb.next.search.initializeFacets();
 
   function setHovercardEvents() {
-    //  $('.thumbnail a').mouseenter(function(){
-    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').addClass('on');
-    //  });
-    //  $('.thumbnail a').mouseleave(function(){
-    //      $(this).parents('.thumbnail-wrapper').find('.hovercard-info-item').removeClass('on');
-    //  });
     $('.information').each(function() {
-      new HovercardInfoItem($(this));
+      var infoItem = new de.ddb.next.search.HovercardInfoItem($(this));
     });
   }
 
