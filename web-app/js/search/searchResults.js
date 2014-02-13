@@ -191,7 +191,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             divSearchResultsOverlayWaiting.remove();
             divSearchResultsOverlayModal.remove();
 
-            $(this).trigger('searchChange');
+            $(window).trigger('searchChange');
           });
     },
     error : function() {
@@ -290,8 +290,9 @@ de.ddb.next.search.initializeFacets = function() {
 }
 
 
-de.ddb.next.search.searchResultsInitializer = function() {
-  $(this).on("searchChange", function() {
+de.ddb.next.search.searchResultsInitializer = function() {  
+  
+  $(window).on("searchChange", function() {
     setHovercardEvents();
     var compareManger = new de.ddb.next.search.CompareManager();
     compareManger.initComparison();    
@@ -305,8 +306,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
 
-  $(this).trigger("searchChange");
-
+  $(window).trigger("searchChange");  
+  
   $('.page-filter select').change(
       function() {
         var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
