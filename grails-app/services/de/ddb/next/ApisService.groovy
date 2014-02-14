@@ -75,7 +75,7 @@ class ApisService {
             evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
         }
 
-        calculateTimeFacetValues(query)
+        //calculateTimeFacetValues(query)
 
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
