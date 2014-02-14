@@ -24,19 +24,17 @@ de.ddb.next.search = de.ddb.next.search || {};
 /**
  * TimeSpan Constructor Function
  */
-function TimeSpan(fromDay,fromMonth, fromYear, tillDay, tillMonth, tillYear) {
+de.ddb.next.search.TimeSpan = function(fromDay,fromMonth, fromYear, tillDay, tillMonth, tillYear) {
   this.fromDay = fromDay;
   this.fromMonth = fromMonth;
   this.fromYear = fromYear;
   this.tillDay = tillDay;
   this.tillMonth = tillMonth;
   this.tillYear = tillYear;
-  
-//  console.log("Created a new instance of TimeSpan");
 }
 
 
-$.extend(TimeSpan.prototype, {
+$.extend(de.ddb.next.search.TimeSpan.prototype, {
   print : function(facetsContainer) {
     var currObjInstance = this;
     
@@ -143,9 +141,87 @@ $.extend(TimeSpan.prototype, {
     
     return currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
   
+  },
+  
+  /**
+   * Returns a Date object for the from Date
+   */
+  getFromDateObject: function(){
+    var currObjInstance = this;
+    
+    //If no year is set -> return
+    if (!currObjInstance.hasFromDate()) {
+      return null;
+    }
+    
+    currObjInstance.completeFromDate();
+    
+    //Months starts from 0!
+    return new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay));  
+  },
+  
+  /**
+   * Returns a Date object for the from Date 
+   */
+  getTillDateObject: function(){
+    var currObjInstance = this;
+    
+    //If no year is set -> return
+    if (!currObjInstance.hasTillDate()) {
+      return null;
+    }
+    
+    currObjInstance.completeTillDate();
+
+    //Months starts from 0!
+    return new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
   }
   
 });
+
+//#############################################################################################
+//TimeFacetHelper Object
+//#############################################################################################
+/**
+ * TimeFacet Constructor Function
+ */
+de.ddb.next.search.TimeFacetHelper = function() {
+}
+
+/**
+ * TimeFacetHelper prototype extension with JQuery
+ * All calculations are based on this formula
+ * (<Value> - 719164(Time from 0 to 01.01.1970 in Days)) * 86400000(Milliseconds of a day) = Time in Milliseconds since 01.01.1970 
+ */
+$.extend(de.ddb.next.search.TimeFacetHelper.prototype, {
+  MILLISECONDS_DAY: 86400000,
+  DAYS_FROM_YEAR_0_TO_1970: 719164,
+  
+  /**
+   * Converts a Date object to a day representation for the time facet
+   */
+  convertDateObjectToFacetDays: function(date) {
+    var currObjInstance = this;    
+    var timeSince1970 = date.getTime()
+
+    var days = (timeSince1970 / currObjInstance.MILLISECONDS_DAY) + currObjInstance.DAYS_FROM_YEAR_0_TO_1970;
+       
+    return days;
+  },
+
+  /**
+   * Converts a day representation for the time facet to a Date object
+   */
+  convertFacetDaysToDate: function(days) {
+    var time = (days - currObjInstance.DAYS_FROM_YEAR_0_TO_1970) * currObjInstance.MILLISECONDS_DAY;
+    var date = Date.UTC(time);
+    
+    console.log("convertFacetDaysToDate time : " + date);
+    
+    return date;
+  }
+});
+
 
 //#############################################################################################
 //TimeFacet Object
@@ -153,31 +229,32 @@ $.extend(TimeSpan.prototype, {
 /**
  * TimeFacet Constructor Function
  */
-function TimeFacet(facetsManager) {
+de.ddb.next.search.TimeFacet = function(facetsManager) {
   this.init(facetsManager);
 }
 
 /**
  * TimeFacet prototype extension with JQuery
  */
-$.extend(TimeFacet.prototype, {
-  /**
-   * TimeFacet attributes
-   */
+$.extend(de.ddb.next.search.TimeFacet.prototype, {
+  /* TimeFacet attributes  */
   facetsManager: null,
   opened: false,
   added: false,
   selectedTimeSpan: null,
   localisation : "unscharf",
   facetsContainer: null,
+  timeFacetHelper: null,
 
   /**
    * Initialize the TimeFacet object
    */
   init : function(facetsManager) {
     var currObjInstance = this;
-    this.facetsManager = facetsManager;
-    this.facetsContainer = $(".facets-list");        
+    currObjInstance.facetsManager = facetsManager;
+    currObjInstance.timeFacetHelper = new de.ddb.next.search.TimeFacetHelper();
+    
+    currObjInstance.facetsContainer = $(".facets-list");        
     
     //During initialisation hide the timespan form
     $("#timespan-form").hide();
@@ -206,8 +283,6 @@ $.extend(TimeFacet.prototype, {
    * This method is responsible for opening and closing the TimeFacet
    */
   open : function() {
-//    console.log("open");
-    
     var currObjInstance = this;
     var timespanFormDiv = $("#timespan-form"); 
     var timeFacetDiv = $(".time-facet");
@@ -245,12 +320,11 @@ $.extend(TimeFacet.prototype, {
     var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
     
-    var newTimeSpan = new TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
+    var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
     
     currObjInstance.selectedTimeSpan = newTimeSpan;
     currObjInstance.added = true;
     
-    currObjInstance.selectedTimeSpan.print();
     currObjInstance.selectedTimeSpan.completeFromDate();
     currObjInstance.selectedTimeSpan.completeTillDate();
     
@@ -315,11 +389,19 @@ $.extend(TimeFacet.prototype, {
     }
     
     if (currObjInstance.selectedTimeSpan.hasFromDate()) {
-      selectedFacetValues.push('begin_time=' + currObjInstance.selectedTimeSpan.formatFromDate());
+      var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
+      console.log(fromDate);
+      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
+      
+      selectedFacetValues.push('begin_time=' + days);
     }
     
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      selectedFacetValues.push('end_time=' + currObjInstance.selectedTimeSpan.formatTillDate());
+      var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
+      console.log(tillDate);
+      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
+      
+      selectedFacetValues.push('end_time=' + days);
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]

@@ -78,7 +78,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   init : function() {
-    timeFacet = new TimeFacet(this);
+    timeFacet = new de.ddb.next.search.TimeFacet(this);
   },
 
   fetchRoleFacets : function(flyoutWidget) {
