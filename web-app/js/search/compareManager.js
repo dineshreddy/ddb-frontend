@@ -91,7 +91,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     
     var cookieVal = currObjInstance.getComparisonCookieVal();
   
-    // Rendering the value for bothe compare-objects
+    // Rendering the value for both compare-objects
     $('.compare-object').each(
         function(index) {
           // closure index starts with 0!
@@ -104,6 +104,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
           var compareText = $(compareObjectId + ' .compare-text');
           var compareDefault = $(compareObjectId + ' .compare-default');
           var compareRemove = $(compareObjectId + ' .fancybox-toolbar-close');
+          var compareBgImage = $(compareObjectId + ' .compare-default-pic');
   
           // Get the associated item id from the cookie
           var cookieId = (cookieVal !== null) ? cookieVal['id' + itemNumber]
@@ -112,6 +113,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
           // Set default message if no cookie exists or itemId is null
           if (cookieVal === null || cookieId === null) {
             compareDefault.removeClass("off");
+            compareBgImage.removeClass("off");
             compareText.addClass("off");
             compareImage.addClass("off");
             compareRemove.addClass("off");
@@ -121,6 +123,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
             
             //Hide default message
             compareDefault.addClass("off");
+            compareBgImage.addClass("off");
             compareRemove.removeClass("off");
   
             // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
