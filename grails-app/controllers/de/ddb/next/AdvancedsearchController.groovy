@@ -126,7 +126,6 @@ class AdvancedsearchController {
             "search_all",
             "title",
             "description",
-            "time",
             "place",
             "affiliate",
             "keywords",

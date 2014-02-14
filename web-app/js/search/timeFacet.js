@@ -35,7 +35,7 @@ de.ddb.next.search.TimeSpan = function(fromDay,fromMonth, fromYear, tillDay, til
 
 
 $.extend(de.ddb.next.search.TimeSpan.prototype, {
-  print : function(facetsContainer) {
+  print : function() {
     var currObjInstance = this;
     
     console.log("fromDay: " + currObjInstance.fromDay);
@@ -265,50 +265,86 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   added: false,
   selectedTimeSpan: null,
   localisation : "unscharf",
-  facetsContainer: null,
   timeFacetHelper: null,
 
   /**
    * Initialize the TimeFacet object
    */
   init : function(facetsManager) {
+//    console.log("init");
     var currObjInstance = this;
+    
     currObjInstance.facetsManager = facetsManager;
     currObjInstance.timeFacetHelper = new de.ddb.next.search.TimeFacetHelper();
     currObjInstance.selectedTimeSpan = new de.ddb.next.search.TimeSpan();
     
-    currObjInstance.facetsContainer = $(".facets-list");        
-    
-    //During initialisation hide the timespan form
+    //During initialisation hide the timespan form and disable the form elements
     $("#timespan-form").hide();
-
+    currObjInstance.disableFromDayAndMonth(true);
+    currObjInstance.disableTillDayAndMonth(true);
+    
     // Click handler for Opening|Closing the time facet 
     $(".time-facet a.h3").click(function(event) {
+//      console.log("click toggle");
       event.preventDefault();
       currObjInstance.toggleForm();
     });
     
     // Click handler for adding a new TimeSpan
     $("#add-timespan").click(function(event) {
+//      console.log("click add");
       event.preventDefault();
-      currObjInstance.assignTimeSpan();
+      currObjInstance.assignTimeSpan(true);
     });
     
     // Click handler for reseting the time facet
     $("#reset-timefacet").click(function(event) {
+//      console.log("click reset");
       event.preventDefault();
       currObjInstance.reset();
     });
     
+    $("#fromYear").change(function(){ 
+      if ($("#fromYear").val()) {
+        currObjInstance.disableFromDayAndMonth(false);
+      } else {
+        currObjInstance.disableFromDayAndMonth(true);
+      }
+    });
+
+    $("#tillYear").change(function(){ 
+      if ($("#tillYear").val()) {
+        currObjInstance.disableTillDayAndMonth(false);
+      } else {
+        currObjInstance.disableTillDayAndMonth(true);
+      }
+    });
   },
 
+  /**
+   * Dis-/Enables the day and month input field for the from date
+   */
+  disableFromDayAndMonth: function(disable) {
+    $("#fromDay").prop('disabled', disable);
+    $("#fromMonth").prop('disabled', disable);    
+  },
+  
+  /**
+   * Dis-/Enables the day and month input field for the till date
+   */
+  disableTillDayAndMonth: function(disable) {
+    $("#tillDay").prop('disabled', disable);
+    $("#tillMonth").prop('disabled', disable);    
+  },
+  
   /**
    * This method initialize the TimeFacet widget based on the window url.
    * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
    */
-  initOnLoad: function(facetsManager) {
+  initOnLoad: function() {
+//    console.log("initOnLoad");
+
     var currObjInstance = this;
-    
     var hasSelectedDate = false;
     
     // Search for time facetValues[] in the window url
@@ -390,11 +426,15 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     timeFacetDiv.removeClass('active');
   },
   
+  
+  
   /**
    * Checks the values of the form and adds a new timespan.
    */
-  assignTimeSpan : function() {
+  assignTimeSpan : function(checkYears) {
     var currObjInstance = this;
+    
+    de.ddb.next.search.hideError();
     
     //Retrieve the values from the timespan form
     var fromDayValue = $("#fromDay").val() !== "" ? $("#fromDay").val() : null;
@@ -405,8 +445,14 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
     
-    var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
+    if (checkYears) {
+      if (fromYearValue === null && tillYearValue === null) {
+        de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
+        return;
+      }
+    }
     
+    var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);    
     currObjInstance.selectedTimeSpan = newTimeSpan;
     currObjInstance.added = true;
     
@@ -422,22 +468,29 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    * The window URL is reseted by calling assignTimeSpan() which does this implicitly  
    */
   reset : function() {
+//    console.log("reset");
     var currObjInstance = this;
     
-    $("#fromDay").val("");
-    $("#fromMonth").val("");
-    $("#fromYear").val("");
-
-    $("#tillDay").val("");
-    $("#tillMonth").val("");
-    $("#tillYear").val("");
+    //Hide error if available
+    de.ddb.next.search.hideError();
     
-    currObjInstance.assignTimeSpan();
+    //Set an empty TimeSpan
+    var newTimeSpan = new de.ddb.next.search.TimeSpan();
+    currObjInstance.selectedTimeSpan = newTimeSpan;
+    
+    //reset the GUI
+    currObjInstance.disableFromDayAndMonth(true);
+    currObjInstance.disableTillDayAndMonth(true);
+    currObjInstance.updateTimeSpanForm();    
+    
+    //asign the timeSpan to reset also the window url etc!
+    currObjInstance.assignTimeSpan(false);
+    
     currObjInstance.added = false;
   },  
   
   /**
-   * Updates the browser URL and performs a new search with the given time facet values.
+   * Updates the form fields
    */
   updateTimeSpanForm: function() {
     var currObjInstance = this;
@@ -455,6 +508,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    * Updates the browser URL and performs a new search with the given time facet values.
    */
   updateWindowUrl: function() {
+//    console.log("updateWindowUrl: ")
     var currObjInstance = this;
     var paramsArray = null;
     var selectedFacetValues = [];
@@ -477,7 +531,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     
     if (currObjInstance.selectedTimeSpan.hasFromDate()) {
       var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
-      console.log(fromDate);
+//      console.log(fromDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
       
       selectedFacetValues.push('begin_time=' + days);
@@ -485,7 +539,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
       var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
-      console.log(tillDate);
+//      console.log(tillDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
       
       selectedFacetValues.push('end_time=' + days);
