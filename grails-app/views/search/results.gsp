@@ -121,6 +121,7 @@ limitations under the License.
         <div class="compare-main">
           <div id="compare-object1" class="compare-object">
             <div class="compare-table">
+              <span class="compare-default-pic"></span>
               <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
               <a class="compare-link">
                 <span class="compare-text"></span>
@@ -131,6 +132,7 @@ limitations under the License.
           </div>
           <div id="compare-object2" class="compare-object">
             <div class="compare-table">
+              <span class="compare-default-pic"></span>
               <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
               <a class="compare-link">
                 <span class="compare-text"></span>
