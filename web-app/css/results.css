@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.facets-head {
+.facets-head, .compare-header {
   position: relative;
 }
 
@@ -24,10 +24,14 @@
   font-size: 1em;
 }
 
-.facets-head .contextual-help {
+.facets-head .contextual-help, .compare-header .contextual-help {
   position: absolute;
   right: 0;
   top: 14px;
+}
+
+.compare-header .contextual-help{
+  top: 10px;
 }
 
 .facets-list {
@@ -729,6 +733,12 @@ input[type="checkbox"],input[type="radio"] {
   left: 50%;
   width: 100%;
 }
+
+.compare-header .tooltip {
+  left: 46%;
+  margin: 10px;
+}
+
 .facets-container .tooltip .arrow {
   left: 50%;
   margin-left: -17px;
@@ -876,7 +886,7 @@ input[type="checkbox"],input[type="radio"] {
   margin=0px;
 }
 .role-facets-list .label {
-	margin-left: 45px;
+    margin-left: 45px;
 }
 .add-more-filters{
   margin: 0 10px;
@@ -1103,6 +1113,15 @@ color: #a5003b;
   background-color: #EFEBE8;
 }
 
+.compare-object .compare-default-pic {
+  background-image: url("../images/bg/compare_icon.png");
+  height: 36px;
+  width: 45px;
+  position: absolute;
+  margin-left: 25px;
+  margin-top: 47px;
+}
+
 .compare-objects .compare-main {  
   margin-bottom: 15px;
 }
@@ -1126,7 +1145,12 @@ color: #a5003b;
   max-width: 130px;
   margin: 0px;
   text-overflow: ellipsis;
-  overflow: hidden;  
+  overflow: hidden;
+}
+
+.compare-objects .compare-default {
+  vertical-align: -94px;
+  display: inline;
 }
 
 .compare-objects .compare-img {
@@ -1134,8 +1158,8 @@ color: #a5003b;
   max-height: 85px;
   max-width: 130px;
   margin-left: auto;
-  margin-right: auto;  
-  background-color: #EFEBE8;  
+  margin-right: auto;
+  background-color: #EFEBE8;
 }
 
 .compare-objects .compare-object {
