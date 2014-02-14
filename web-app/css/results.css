@@ -507,32 +507,44 @@ input[type="checkbox"],input[type="radio"] {
   position:relative;
 }
 
-.search-results .results-list .summary .information {
+.search-results .results-list .summary .information, .search-results .results-list .summary .compare,
+.search-results .results-list .summary .compare.disabled, .search-results .results-list .summary .add-to-favorites,
+.search-results .results-list .summary .added-to-favorites {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -180px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat;
+}
+
+.search-results .results-list .summary .information, .search-results .results-list .summary .compare,
+.search-results .results-list .summary .add-to-favorites {
   cursor: pointer;
+}
+
+.search-results .results-list .summary .information {
+  background-position: 0 -180px;
   position: relative;
+}
+
+.search-results .results-list .summary .compare {
+  background-position: 0 -122px;
+}
+
+.search-results .results-list .summary .compare.disabled {
+  background-position: -30px -122px;
+  cursor: default;
+}
+
+.search-results .results-list .summary .add-to-favorites {
+  background-position: 0 -60px;
+}
+
+.search-results .results-list .summary .added-to-favorites {
+  background-position: 0 0;
 }
 
 .search-results .results-list .summary .information:hover {
   background-position: 0 -210px;
 }
-
-.search-results .results-list .summary .compare {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -122px;
-  cursor: pointer;
-}
-
-.search-results .results-list .summary .compare.disabled {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat -30px -122px;
-  cursor: default;
-}
-
 
 .search-results .results-list .summary .compare:hover :not(.disabled) {
   background-position: 0 -152px;
@@ -542,25 +554,12 @@ input[type="checkbox"],input[type="radio"] {
   margin-right: 30px;
 }
 
-.search-results .results-list .summary .add-to-favorites {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -60px;
-  cursor: pointer;
-}
-
 .search-results .results-list .summary .add-to-favorites:hover {
   background-position: 0 -90px;
 }
 
 .search-results .results-list .entity .add-to-favorites, .search-results .results-list .entity .added-to-favorites {
   margin: -30px 10px 0 0 !important;
-}
-
-.search-results .results-list .summary .added-to-favorites {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 0;
 }
 
 .search-results .results-list .summary .added-to-favorites:hover {
