@@ -78,7 +78,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   init : function() {
-    timeFacet = new TimeFacet(this);
+    var currObjInstance = this;
+    currObjInstance.timeFacet = new de.ddb.next.search.TimeFacet(currObjInstance);
   },
 
   fetchRoleFacets : function(flyoutWidget) {
@@ -418,7 +419,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   initializeOnLoad : function(connectedflyoutWidget) {
-
     // this methods initialize all selected facets and role facets
     var currObjInstance = this;
 
@@ -431,7 +431,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   initializeSelectedFacetOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
-
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
 
@@ -494,9 +493,11 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                   });
                 }
               });
-
       $('.clear-filters').removeClass('off');
     }
+    
+    //init TimeFacet
+    currObjInstance.timeFacet.initOnLoad();
   },
 
   isRoleFacet : function(fctField) {
