@@ -46,10 +46,10 @@ limitations under the License.
         <div class="tooltip off hasArrow"></div>
       </div>
       <div class="facets-list bt bb">
-		<%-- TimeFacet is handle by its own template --%>
+        <%-- TimeFacet is handle by its own template --%>
         <g:render template="timeFacet" />
-		
-		<%-- All other facets are handled in the same way --%>          
+        
+        <%-- All other facets are handled in the same way --%>          
         <g:each in="${facetsList}" var="mit">
           <g:each in="${(facets.selectedFacets)}">
             <g:if test="${mit == it.field}">
@@ -109,36 +109,40 @@ limitations under the License.
         </div>
       </ddb:isLoggedIn>
       
-      <div class="compare-objects off">      	
-      	<div class="compare-header">
-      		<hr/>
-      		<b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
-      	</div>
-      	<div class="compare-main">
-	        <div id="compare-object1" class="compare-object">
+      <div class="compare-objects off">
+        <div class="compare-header">
+          <hr/>
+          <b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
+          <span class="contextual-help hidden-phone hidden-tablet" 
+            title="${g.message(code: "ddbnext.Compare_Tooltip")}" data-content="${g.message(code: "ddbnext.Compare_Tooltip")}">
+          </span> 
+          <div class="tooltip off hasArrow"></div>
+        </div>
+        <div class="compare-main">
+          <div id="compare-object1" class="compare-object">
             <div class="compare-table">
-  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
-  	        	<a class="compare-link">		        	
-  		        	<span class="compare-text"></span>
-  		        	<img class="compare-img" src="#" alt="" />
-  	        	</a>
-  	        	<span data-index="1" class="fancybox-toolbar-close"></span>
+              <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
+              <a class="compare-link">
+                <span class="compare-text"></span>
+                <img class="compare-img" src="#" alt="" />
+              </a>
+              <span data-index="1" class="fancybox-toolbar-close"></span>
             </div>
-	        </div>
-	        <div id="compare-object2" class="compare-object">
+          </div>
+          <div id="compare-object2" class="compare-object">
             <div class="compare-table">
-  	        	<span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
-  	        	<a class="compare-link">		        	
-  		        	<span class="compare-text"></span>
-  		        	<img class="compare-img" src="#" alt="" />
-  	        	</a>
-  	        	<span data-index="2" class="fancybox-toolbar-close"></span>
+              <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
+              <a class="compare-link">
+                <span class="compare-text"></span>
+                <img class="compare-img" src="#" alt="" />
+              </a>
+              <span data-index="2" class="fancybox-toolbar-close"></span>
             </div>
-	        </div>
+          </div>
         </div>
         <div class="compare-footer">
-        	<a class="button" id="compare-button"><g:message code="ddbnext.SearchResultsStartComparison"/></a>
-      	</div>
+            <a class="button" id="compare-button"><g:message code="ddbnext.SearchResultsStartComparison"/></a>
+        </div>
       </div>
     </div>
     
@@ -190,9 +194,9 @@ limitations under the License.
         </div>
       </div>
       <g:if test="${correctedQuery!='null'}">
-	      <g:if test="${correctedQuery}">
-	        <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
-	      </g:if>
+          <g:if test="${correctedQuery}">
+            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+          </g:if>
       </g:if>
       
       <div class="row">
