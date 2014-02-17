@@ -740,9 +740,8 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .fields .tooltip {
-  width: 20%;
-  left: 21%;
-  margin-left: 45px;
+  width: 30%;
+  margin-left: 107px;
   margin-top: 33px;
 }
 
