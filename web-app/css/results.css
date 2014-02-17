@@ -24,14 +24,22 @@
   font-size: 1em;
 }
 
-.facets-head .contextual-help, .compare-header .contextual-help {
+.facets-head .contextual-help, .compare-header .contextual-help, .fields .contextual-help {
   position: absolute;
+}
+
+.facets-head .contextual-help, .compare-header .contextual-help {
   right: 0;
   top: 14px;
 }
 
 .compare-header .contextual-help{
   top: 10px;
+}
+
+.fields .contextual-help {
+  margin-left: 117px;
+  margin-top: 3px;
 }
 
 .facets-list {
@@ -727,8 +735,17 @@ input[type="checkbox"],input[type="radio"] {
   line-height: 25px;
 }
 
-.facets-container .tooltip {
+.facets-container .tooltip, .compare-header .tooltip, .fields .tooltip {
   font-size: 0.813em;
+}
+
+.fields .tooltip {
+  width: 30%;
+  margin-left: 107px;
+  margin-top: 33px;
+}
+
+.facets-container .tooltip {
   left: 50%;
   width: 100%;
 }
