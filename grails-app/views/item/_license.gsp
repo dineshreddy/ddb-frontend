@@ -19,11 +19,11 @@ limitations under the License.
     <div class="row">
       <div class="span2"><strong><g:message code="ddbnext.License_Field" />: </strong></div>
       <span class="contextual-help hidden-phone hidden-tablet"
-            title="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
+            title="${g.message(code: "ddbnext.Licence_TooltipContent", 
                                args: [('<a href="' + createLink(controller: "content",
                              params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),'</a>'],
                            encodeAs: "none")}"
-            data-content="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
+            data-content="${g.message(code: "ddbnext.Licence_TooltipContent", 
                                       args: [('<a href="' + createLink(controller: "content",
                                     params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),'</a>'],
                                   encodeAs: "none")}">
