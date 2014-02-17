@@ -294,8 +294,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
   
   $(window).on("searchChange", function() {
     setHovercardEvents();
-    var compareManger = new de.ddb.next.search.CompareManager();
-    compareManger.initComparison();    
+    var compareManager = new de.ddb.next.search.CompareManager();
+    compareManager.initComparison();    
     checkFavorites();
     checkSavedSearch();
   });
