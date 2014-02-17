@@ -116,12 +116,12 @@ limitations under the License.
                 </div>
                 <div class="row spacer-vertical">
                   <div class="span4">                  
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE]}"><div class="openid-google"></div></g:link>
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE, "referrer": referrer]}"><div class="openid-google"></div></g:link>
                   </div>
                 </div>
                 <div class="row">
                   <div class="span4">                  
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO]}"><div class="openid-yahoo"></div></g:link>
+                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}"><div class="openid-yahoo"></div></g:link>
                   </div>
                 </div>
               </div>
