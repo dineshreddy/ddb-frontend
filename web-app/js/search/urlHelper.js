@@ -31,9 +31,9 @@ de.ddb.next.search.getFacetValuesFromUrl = function() {
 
 /**
  * Adds a new facetValue to the facetValues[] params of the window url.
- * An offset param is added to this list too. So a new search request can be performed on the updated acetValues[] params
+ * An offset param is added to this list too. So a new search request can be performed based on the updated facetValues[] params
  * 
- * Returns an aaray with request params.
+ * Returns an array with request params for a new facet based search
  */
 de.ddb.next.search.addFacetValueToParams = function(facetField, facetValue) {
   var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
@@ -57,7 +57,7 @@ de.ddb.next.search.addFacetValueToParams = function(facetField, facetValue) {
 };
 
 /**
- * Returns an array with url params that macht the given name
+ * Returns an array with url params that match the given name
  */
 de.ddb.next.search.getUrlVar = function(name) {
   return de.ddb.next.search.getUrlVars()[name];
