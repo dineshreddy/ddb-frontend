@@ -348,10 +348,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var hasSelectedDate = false;
     
     // Search for time facetValues[] in the window url
-    var facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues%5B%5D');
-    if (facetValuesFromUrl == null) {
-      facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues[]');
-    }
+    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
       $.each(facetValuesFromUrl, function(key, value) {        
@@ -514,10 +511,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var selectedFacetValues = [];
     
     // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
-    var facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues%5B%5D');
-    if (facetValuesFromUrl == null) {
-      facetValuesFromUrl = currObjInstance.facetsManager.getUrlVar('facetValues[]');
-    }
+    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
 //      console.log("facetValuesFromUrl: " + facetValuesFromUrl)
@@ -552,7 +546,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     //Perform the search with offset 0
     paramsArray.push(new Array('offset', 0));
     
-    var newUrl = addParamToCurrentUrl(paramsArray);
+    var newUrl = $.addParamToCurrentUrl(paramsArray);
 //    console.log("new url: " + newUrl);
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
   }

@@ -61,39 +61,47 @@ $.hideErrors = function() {
   $("div.binary-viewer-flash-upgrade").addClass("off");
 }
 
-addParamToCurrentUrl = function(arrayParamVal, urlString) {
-  return addParamToUrl(arrayParamVal, null, urlString);
+/** 
+ * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
+ * IMPORTANT: remember to pass your arrayParamVal already URL decoded
+ */
+$.addParamToCurrentUrl = function(arrayParamVal, urlString) {
+  return $.addParamToCurrentUrlWithHistorySupport(arrayParamVal, urlString);
 }
-// This function will give you back the current url (if no urlParameters is
-// setted) plus the new parameters added
-// IMPORTANT: remember to pass your arrayParamVal already URL decoded
-addParamToUrl = function(arrayParamVal, path, urlString) {
+
+/** 
+ * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
+ * IMPORTANT: remember to pass your arrayParamVal already URL decoded
+ */
+$.addParamToCurrentUrlWithHistorySupport = function(arrayParamVal, urlString) {
   var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
-  var queryParameters = {};
-  var queryString = (urlString == null) ? currentUrl : urlString;
-  var re = /([^&=]+)=([^&]*)/g;
-  var m;
+  
+  return $.addParamToUrl(currentUrl,arrayParamVal, null, urlString, true);
+}
 
-//  console.log("addParamToUrl");
-//  console.log("arrayParamVal: " + arrayParamVal);
-//  console.log("currentUrl: " + currentUrl);
-//  console.log("urlString: " + urlString);
-//  console.log("queryString: " + queryString);
-
+/**
+ * Adds the given params to the given url
+ */
+$.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLanguage) {
+  var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
   while (m = re.exec(queryString)) {
     var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
     if (queryParameters[decodedKey] == null) {
       queryParameters[decodedKey] = new Array();
     }
-    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
-    //console.log("queryParameters: " + Object.keys(queryParameters));
+    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
+        .replace(/\+/g, '%20')));
   }
   $.each(arrayParamVal, function(key, value) {
     queryParameters[value[0]] = value[1];
-    //console.log("queryParameters: " + Object.keys(queryParameters));
   });
   var tmp = jQuery.param(queryParameters, true);
-  updateLanguageSwitch(tmp);
+
+  //Update the language switch 
+  if (updateLanguage) {
+    updateLanguageSwitch(tmp);
+  }
+  
   if (path == null) {
     return window.location.pathname + '?' + tmp;
   } else {

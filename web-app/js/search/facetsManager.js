@@ -128,7 +128,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }
-    var oldParams = this.getUrlVars();
+    var oldParams = de.ddb.next.search.getUrlVars();
     var currObjInstance = this;
     var fctValues = '';
     var isThumbnailFIltered = '';
@@ -271,28 +271,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       });
     }
     this.connectedflyoutWidget.close();
-
-    // Update Url (We want to add the facet value selected, but at the same time we want to keep all the old selected values)
-    //The facet values are stored in a two dimensional Array: ["facetValues[]",['type_fct=Dmediatype_003','language_fct=lat', 'time_end_fct=2014',]]
-    var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-    if (paramsFacetValues == null) {
-      paramsFacetValues = this.getUrlVar('facetValues[]');
-    }
-
-    if (paramsFacetValues) {
-      $.each(paramsFacetValues, function(key, value) {
-        paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
-      });
-      paramsFacetValues.push(this.currentFacetField + '=' + facetValue);
-      var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
-    } else {
-      var paramsArray = new Array(new Array('facetValues[]', this.currentFacetField + '='
-          + facetValue));
-    }
-
-    // perform search
-    paramsArray.push(new Array('offset', 0));
-    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray), function() {
+    
+    //Update the search params
+    var paramsArray = de.ddb.next.search.addFacetValueToParams(this.currentFacetField, facetValue);
+    
+    //Perform a search with the new facet value
+    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray), function() {
       currObjInstance.unselectFacetValue(facetValueContainer, true);
     });
 
@@ -338,7 +322,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
-      de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
+      de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
           .substr(newUrl.indexOf("?") + 1)));
     }
     element.remove();
@@ -350,27 +334,9 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   selectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    // We want to add the facet value selected, but at the same time
-    // we want
-    // to keep all the old selected values
-    var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-    if (paramsFacetValues == null) {
-      paramsFacetValues = this.getUrlVar('facetValues[]');
-    }
-
-    if (paramsFacetValues) {
-      $.each(paramsFacetValues, function(key, value) {
-        paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
-      });
-      paramsFacetValues.push(facetField + '=' + facetValue);
-      var paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
-    } else {
-      var paramsArray = new Array(new Array('facetValues[]', facetField + '='
-          + facetValue));
-    }
-
-    paramsArray.push(new Array('offset', 0));
-    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
+    
+    var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
+    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
 
   unselectRoleFacetValue : function(facetField, facetValue) {
@@ -381,7 +347,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
+    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
         .substr(newUrl.indexOf("?") + 1)));
   },
 
@@ -422,7 +388,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     // this methods initialize all selected facets and role facets
     var currObjInstance = this;
 
-    // fetch all role facets asynchronusly. The success method will
+    // fetch all role facets asynchronously. The success method will
     // select all facet values
     currObjInstance.fetchRoleFacets(connectedflyoutWidget);
 
@@ -432,11 +398,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   initializeSelectedFacetOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
     this.connectedflyoutWidget = connectedflyoutWidget;
-    var paramsFacetValues = this.getUrlVar('facetValues%5B%5D');
-
-    if (paramsFacetValues == null) {
-      paramsFacetValues = this.getUrlVar('facetValues[]');
-    }
+    var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (paramsFacetValues) {
       var selectedFacets = {};
@@ -525,21 +487,4 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     return roleFacets;
   },
-
-  getUrlVars : function() {
-    var vars = {}, hash;
-    var hashes = (historySupport) ? window.location.href.slice(
-        window.location.href.indexOf('?') + 1).split('&') : globalUrl.split('&');
-    for ( var i = 0; i < hashes.length; i++) {
-      hash = hashes[i].split('=');
-      if (!Object.prototype.hasOwnProperty.call(vars, hash[0])) {
-        vars[hash[0]] = new Array();
-      }
-      vars[hash[0]].push(hash[1]);
-    }
-    return vars;
-  },
-  getUrlVar : function(name) {
-    return this.getUrlVars()[name];
-  }
 });

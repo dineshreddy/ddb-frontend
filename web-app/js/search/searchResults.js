@@ -311,7 +311,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-filter select').change(
       function() {
         var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
-        de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
+        de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
         $('.clear-filters').attr('href',
             $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
         return false;
@@ -320,7 +320,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.sort-results-switch select').change(
       function() {
         var paramsArray = new Array(new Array('sort', this.value), new Array('offset', 0));
-        de.ddb.next.search.fetchResultsList(addParamToCurrentUrl(paramsArray));
+        de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
         $('.clear-filters').attr(
             'href',
             $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
@@ -423,9 +423,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
               $('.search-results').fadeIn('fast');
             });
         var paramsArray = new Array(new Array('viewType', 'list'));
-        var newUrl = addParamToCurrentUrl(paramsArray);
+        var newUrl = $.addParamToCurrentUrl(paramsArray);
         $('.page-nav a, .page-nav-mob a').each(function() {
-          this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+          this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
         });
         $('.results-list a').each(function() {
           this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
@@ -456,7 +456,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
       var filterInteger = parseInt($('.page-filter').find("select").val());
       var offset = (valueInteger - 1) * filterInteger;
       var paramsArray = new Array(new Array('offset', offset));
-      var newUrl = addParamToCurrentUrl(paramsArray);
+      var newUrl = $.addParamToCurrentUrl(paramsArray);
       de.ddb.next.search.fetchResultsList(newUrl);
     }
   });
@@ -468,7 +468,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
       var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
     }
     paramsArray.push(new Array('offset', 0));
-    var newUrl = addParamToCurrentUrl(paramsArray);
+    var newUrl = $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.fetchResultsList(newUrl);
   });
   $('#view-grid').click(
@@ -530,9 +530,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
               $('.search-results').fadeIn('fast');
             });
         var paramsArray = new Array(new Array('viewType', 'grid'));
-        var newUrl = addParamToCurrentUrl(paramsArray);
+        var newUrl = $.addParamToCurrentUrl(paramsArray);
         $('.page-nav a, .page-nav-mob a').each(function() {
-          this.href = addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
+          this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
         });
         $('.results-list a').each(function() {
           this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
@@ -550,7 +550,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
     } else {
       var paramsArray = new Array(new Array('keepFilters', 'false'));
     }
-    addParamToCurrentUrl(paramsArray);
+    $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.setSearchCookieParameter(paramsArray);
   });
   $('.clear-filters').click(function() {
