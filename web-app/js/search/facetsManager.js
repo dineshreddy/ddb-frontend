@@ -316,7 +316,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
           + facetValue));
     });
 
-    var newUrl = removeParamFromUrl(facetsToRemove);
+    var newUrl = $.removeParamFromUrl(facetsToRemove);
 
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
@@ -341,7 +341,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   unselectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    var newUrl = removeParamFromUrl(new Array(new Array('facetValues[]', facetField + '='
+    var newUrl = $.removeParamFromUrl(new Array(new Array('facetValues[]', facetField + '='
         + facetValue)));
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');

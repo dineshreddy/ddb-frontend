@@ -71,6 +71,8 @@ $.addParamToCurrentUrl = function(arrayParamVal, urlString) {
 
 /** 
  * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
+ * The methods checks for the global attribute historySupport.
+ * 
  * IMPORTANT: remember to pass your arrayParamVal already URL decoded
  */
 $.addParamToCurrentUrlWithHistorySupport = function(arrayParamVal, urlString) {
@@ -99,7 +101,7 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
 
   //Update the language switch 
   if (updateLanguage) {
-    updateLanguageSwitch(tmp);
+    $.updateLanguageSwitch(tmp);
   }
   
   if (path == null) {
@@ -109,7 +111,10 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
   }
 }
 
-removeParamFromUrl = function(arrayParamVal, path, urlString) {
+/**
+ * Removes an array of params from the given url
+ */
+$.removeParamFromUrl = function(arrayParamVal, path, urlString) {
   var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
   var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
   while (m = re.exec(queryString)) {
@@ -128,7 +133,7 @@ removeParamFromUrl = function(arrayParamVal, path, urlString) {
     }
   });
   var tmp = jQuery.param(queryParameters, true);
-  updateLanguageSwitch(tmp);
+  $.updateLanguageSwitch(tmp);
   if (path == null) {
     return window.location.pathname + '?' + tmp;
   } else {
@@ -136,7 +141,10 @@ removeParamFromUrl = function(arrayParamVal, path, urlString) {
   }
 }
 
-updateLanguageSwitch = function(params) {
+/**
+ * Update the language switch link for the given params 
+ */
+$.updateLanguageSwitch = function(params) {
   params = params.replace(/\&?lang=[^\&]*/g, '');
   if (params.length > 0) {
     params += '&';
