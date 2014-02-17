@@ -21,12 +21,10 @@ limitations under the License.
       <span class="contextual-help hidden-phone hidden-tablet"
             title="${g.message(code: "ddbnext.Licence_TooltipContent", 
                                args: [('<a href="' + createLink(controller: "content",
-                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'],
-                           encodeAs: "none")}"
-            data-content="${g.message(code: "ddbnext.Licence_TooltipContent", 
-                                      args: [('<a href="' + createLink(controller: "content",
-                                    action: "lizenzen") + '">').encodeAsHTML(),'</a>'],
-                                  encodeAs: "none")}">
+                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'], encodeAs: "none")}"
+     data-content="${g.message(code: "ddbnext.Licence_TooltipContent", 
+                               args: [('<a href="' + createLink(controller: "content",
+                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'], encodeAs: "none")}">
       </span> 
       <div class="tooltip off hasArrow"></div>
       <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
