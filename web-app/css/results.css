@@ -735,8 +735,18 @@ input[type="checkbox"],input[type="radio"] {
   line-height: 25px;
 }
 
-.facets-container .tooltip {
+.facets-container .tooltip, .compare-header .tooltip, .fields .tooltip {
   font-size: 0.813em;
+}
+
+.fields .tooltip {
+  width: 20%;
+  left: 21%;
+  margin-left: 45px;
+  margin-top: 33px;
+}
+
+.facets-container .tooltip {
   left: 50%;
   width: 100%;
 }
