@@ -107,6 +107,7 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
+        resource url:'/js/search/urlHelper.js'
         resource url:'/js/search/timeFacet.js'
         resource url:'/js/search/facetsManager.js'
         resource url:'/js/search/flyoutFacetsWidget.js'

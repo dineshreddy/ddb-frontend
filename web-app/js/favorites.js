@@ -62,8 +62,7 @@ $(function() {
             var paramsArray = new Array(
                 new Array('offset', (this.value - 1) * getParam("rows", 20)), new Array('rows',
                     getParam("rows", 20)), new Array('order', getParam("order")));
-            var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null,
-                paramsArray);
+            var newUrl = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
             window.location.href = newUrl;
 
           }
@@ -415,26 +414,6 @@ $(function() {
 
 });
 
-function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
-  var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
-  while (m = re.exec(queryString)) {
-    var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
-    if (queryParameters[decodedKey] == null) {
-      queryParameters[decodedKey] = new Array();
-    }
-    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
-        .replace(/\+/g, '%20')));
-  }
-  $.each(arrayParamVal, function(key, value) {
-    queryParameters[value[0]] = value[1];
-  });
-  var tmp = jQuery.param(queryParameters, true);
-  if (path == null) {
-    return window.location.pathname + '?' + tmp;
-  } else {
-    return path + '?' + tmp;
-  }
-}
 
 function updateNavigationUrl() {
   $.urlParam = function(name) {

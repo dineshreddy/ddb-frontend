@@ -311,11 +311,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
             // If renderRoleFacetValue is invoked by
             // initializeSelectedFacetOnLoad
             // we have to find out if the checkbox must be checked
-            var paramsFacetValues = currObjInstance.fctManager
-                .getUrlVar('facetValues%5B%5D');
-            if (paramsFacetValues == null) {
-              paramsFacetValues = currObjInstance.fctManager.getUrlVar('facetValues[]');
-            }
+            var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
 
             if (paramsFacetValues) {
               var search = facetField + '=' + facetValue;

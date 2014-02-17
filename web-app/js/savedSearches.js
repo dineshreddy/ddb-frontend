@@ -66,8 +66,7 @@ $(function() {
                 * getParamWithDefault("rows", 20)), new Array('rows', getParamWithDefault("rows",
                 20)), new Array('order', getParam("order")));
 
-            window.location.href = addParamToUrl(jsContextPath + "/user/savedsearches/",
-                paramsArray, null, paramsArray);
+            window.location.href = $.addParamToUrl(jsContextPath + "/user/savedsearches/", paramsArray, null, paramsArray, false);
           }
         });
 
