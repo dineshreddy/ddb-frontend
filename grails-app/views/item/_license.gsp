@@ -21,11 +21,11 @@ limitations under the License.
       <span class="contextual-help hidden-phone hidden-tablet"
             title="${g.message(code: "ddbnext.Licence_TooltipContent", 
                                args: [('<a href="' + createLink(controller: "content",
-                             params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),'</a>'],
+                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'],
                            encodeAs: "none")}"
             data-content="${g.message(code: "ddbnext.Licence_TooltipContent", 
                                       args: [('<a href="' + createLink(controller: "content",
-                                    params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),'</a>'],
+                                    action: "lizenzen") + '">').encodeAsHTML(),'</a>'],
                                   encodeAs: "none")}">
       </span> 
       <div class="tooltip off hasArrow"></div>
