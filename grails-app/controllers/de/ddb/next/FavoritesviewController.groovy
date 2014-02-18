@@ -379,7 +379,7 @@ class FavoritesviewController {
                 ])
             }
         } else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 

@@ -194,7 +194,7 @@ class UserController {
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
         } else {
-            redirect(controller: "user", action: "index")
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -233,7 +233,7 @@ class UserController {
             }
             redirect(controller: "user", action: "getSavedSearches")
         } else {
-            redirect(controller: "user", action: "index")
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -371,7 +371,7 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -467,7 +467,7 @@ class UserController {
             redirect(controller:"user", action:"profile", params:params)
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
         }
     }
 
@@ -518,7 +518,7 @@ class UserController {
             render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -564,7 +564,7 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -833,7 +833,7 @@ class UserController {
                 ])
             }
         }else {
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
 
     }
@@ -862,7 +862,7 @@ class UserController {
             }
             redirect(controller: 'user', action: 'showApiKey')
         }else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -882,7 +882,7 @@ class UserController {
 
             redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
