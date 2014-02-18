@@ -672,21 +672,21 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
             fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
             fetch.setCount("openid.ext1.value.Email", 1)
-        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
+        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
             discoveryUrl = "https://me.yahoo.com"
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
-        }else{
+        }else {
             loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
         }
 
-        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST){
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST) {
             render(view: "login", model: ['loginStatus': loginStatus])
             return
         }
@@ -699,7 +699,10 @@ class UserController {
         sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
         sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
 
-        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
+        // Delete problem with url page with # and manager.authenticate
+        def referrerUrl = params.referrer.replaceAll("#.*", "")
+
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -718,7 +721,7 @@ class UserController {
 
         //ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
         ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
-        if(manager){
+        if(manager) {
             //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
@@ -739,17 +742,17 @@ class UserController {
                 def email = null
                 def identifier = null
 
-                if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+                if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
                     firstName = params["openid.ext1.value.FirstName"]
                     lastName = params["openid.ext1.value.LastName"]
                     username = firstName + " " + lastName
                     email = params["openid.ext1.value.Email"]
                     identifier = verified.getIdentifier()
-                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
+                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
                     username = params["openid.ax.value.fullname"]
                     email = params["openid.ax.value.email"]
                     identifier = verified.getIdentifier()
-                }else{
+                }else {
                     render(view: "login", model: [
                         'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
                     )
@@ -788,9 +791,21 @@ class UserController {
             }
         }
 
-        if(loginStatus == LoginStatus.SUCCESS){
-            redirect(controller: 'favoritesview', action: 'favorites')
-        }else{
+        if(loginStatus == LoginStatus.SUCCESS) {
+            if (params.referrer) {
+                def referrerUrl = params.referrer
+
+                //Remove the context path from the url, otherwise it will be appear twice in the redirect
+                def contextLength = grailsLinkGenerator.contextPath.length()
+                referrerUrl = referrerUrl.substring(contextLength)
+
+                log.info "redirect to referrer: " + referrerUrl
+                redirect(uri: referrerUrl)
+            }
+            else {
+                redirect(controller: 'favoritesview', action: 'favorites')
+            }
+        }else {
             render(view: "login", model: ['loginStatus': loginStatus])
         }
 
@@ -805,19 +820,19 @@ class UserController {
 
             String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
-            if(apiKey){
+            if(apiKey) {
                 render(view: "apiKey", model: [
                     user: user,
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
-            }else{
+            }else {
                 render(view: "requestApiKey", model: [
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }
-        }else{
+        }else {
             redirect(controller:"user", action:"index")
         }
 
