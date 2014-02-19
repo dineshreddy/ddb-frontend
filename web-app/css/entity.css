@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+.link-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+ 
 .entity-page .fields{
   font-size: 1em;
 }

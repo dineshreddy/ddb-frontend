@@ -12,3 +12,5 @@ Guardfile
 .idea
 ddb-next.iml
 bin
+*.tmp
+
