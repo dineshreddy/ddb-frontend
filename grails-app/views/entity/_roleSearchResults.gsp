@@ -15,21 +15,16 @@ limitations under the License.
 --%>
 <ol class="unstyled">
   <g:each var="item" in="${data?.items}">	  
-	  <li class="theme">
-	     <g:link controller="item" action="findById" params="${["id": item.id]}">
-		     <i class="icon-theme"></i>
-		     <span class="item-title">${item.preview.title}</span><br>
-	     </g:link>
-	     <span class="item-subtitle">${item.preview.subtitle}</span><br>
-	  </li>  	
+    <li class="theme">
+       <g:link controller="item" action="findById" params="${["id": item.id]}">
+         <i class="icon-theme"></i>
+         <span class="item-title">${item.preview.title}</span><br>
+       </g:link>
+       <span class="item-subtitle">${item.preview.subtitle}</span><br>
+    </li>  	
   </g:each>
 </ol>
 
-<g:if test="${data?.resultCount > 0 }">
-	<g:link controller="search" action="results" params="${data?.searchUrlParameter }">
- 	<span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
-	</g:link>
-</g:if>
-<g:if test="${data?.resultCount <= 0 }">
-	<g:message code="ddbnext.Entity_No_Search_Result"/>
-</g:if>
+<g:link controller="search" action="results" params="${data?.searchUrlParameter }">
+  <span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
+</g:link>
