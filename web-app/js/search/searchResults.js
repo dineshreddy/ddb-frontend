@@ -702,12 +702,14 @@ de.ddb.next.search.searchResultsInitializer = function() {
         data : JSON.stringify({
           query : window.location.search.substring(1)
         })
-      }).done(function() {
-        disableSavedSearch($(".add-to-saved-searches"));
-      }).fail(function() {
-        enableSavedSearch($(".added-to-saved-searches"));
+      }).statusCode( {
+        200: function() { //SC_OK
+          disableSavedSearch($(".add-to-saved-searches"));
+        },
+        204: function() { //SC_NO_CONTENT
+          enableSavedSearch($(".added-to-saved-searches"));
+        }
       });
-
     }
   }
 

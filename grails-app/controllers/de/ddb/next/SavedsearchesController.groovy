@@ -83,7 +83,7 @@ class SavedsearchesController {
 				render(status: response.SC_OK)
 			}
 			else {
-				render(status: response.SC_NOT_FOUND)
+				render(status: response.SC_NO_CONTENT)
 			}
 		}
 		else {
