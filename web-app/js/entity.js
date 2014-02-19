@@ -24,6 +24,7 @@ $(document).ready(
 
         var offset = 0;
 
+/* TODO: Delete. To old functionality checkbox "Nur Objekte mit Normdaten"
         $('#normdata-involved-checkbox').bind('click', function() {
           updateRoleDivs();
         });
@@ -49,6 +50,7 @@ $(document).ready(
             $('#search-subject-normdata').hide();
           }
         }
+*/
 
         function getNewSearchResults(query, offset, rows, entityid) {
           var request = $.ajax({
