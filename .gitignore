@@ -12,4 +12,8 @@ Guardfile
 .idea
 ddb-next.iml
 bin
+<<<<<<< HEAD
 *.tmp
+=======
+*.tmp
+>>>>>>> branch 'develop' of local repository

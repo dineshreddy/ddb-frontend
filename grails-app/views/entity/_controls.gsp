@@ -24,11 +24,11 @@ limitations under the License.
               </span>
             </span>
           </ddb:isLoggedIn>
-
-			<a class="page-link page-link-popup-anchor" href="${entityUri}"
-				title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
-				<span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
-			</a>
+          <div class="link-block">
+            <a class="page-link page-link-popup-anchor" href="${entityUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+              <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+            </a>
+          </div>
 		</div>
 	</div>
 
