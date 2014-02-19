@@ -20,11 +20,11 @@ de.ddb.next.search = de.ddb.next.search || {};
 /**
  * Flyout Widget
  * 
- * The main intend of this class is to render all content in the context of
- * facets Its doing this by DOM manipulation triggered by the FacetManager
- * instance. The Flyout Widget contains - facetLeftContainer: showing the
- * facet fields and the selected facets - facetRightContainer: showing the
- * unselected facets
+ * The main intend of this object is to render all content in the context of
+ * facets. It's doing this by DOM manipulation triggered by the FacetManager
+ * instance. The Flyout Widget contains 
+ * - facetLeftContainer: showing the facet fields and the selected facets 
+ * - facetRightContainer: showing the unselected facets
  * 
  * Do not use AJAX calls in this class!
  */

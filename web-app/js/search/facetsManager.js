@@ -20,16 +20,15 @@ de.ddb.next.search = de.ddb.next.search || {};
 /**
  * Facets Manager
  * 
- * The main intend of this class is to - retrieving facet data via ajax -
- * handlig all events coming from the DOM tree (add/remove facets, show next
+ * The main intend of this object is to - retrieving facet data via ajax -
+ * handling all events coming from the DOM tree (add/remove facets, show next
  * page etc.) - updating the facets values in the browser url. This is
- * important for navigating with back/next butoon of the browser - triggering
+ * important for navigating with back/next button of the browser - triggering
  * the flyoutWidget to render the facets
  * 
  * Do all rendering in the flyoutWidget!
  * 
- * Do not make synchronous AJAX calls in this class. Otherwise the GUI might
- * freeze!
+ * Do not make synchronous AJAX calls in this class. Otherwise the GUI might freeze!
  */
 de.ddb.next.search.FacetsManager = function() {
   this.init();
@@ -41,9 +40,10 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   currentOffset : 0,
   currentRows : -1, // all facets
   currentFacetField : null,
-  currentFacetValuesSelected : new Array(),
-  currentFacetValuesNotSelected : new Array(),
-  roleFacets : new Array,
+  currentFacetValuesSelected : [],
+  currentFacetValuesNotSelected : [],
+  roleFacets : ["_1_affiliate_fct_subject", "_1_affiliate_fct_involved" ],
+  allFacets : null,
   currentPage : 1,
   searchFacetValuesTimeout : 0,
   errorCaught : false,
@@ -82,33 +82,30 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     currObjInstance.timeFacet = new de.ddb.next.search.TimeFacet(currObjInstance);
   },
 
-  fetchRoleFacets : function(flyoutWidget) {
+  fetchFacetsDefinition : function(flyoutWidget) {
     var currObjInstance = this;
-    var url = jsContextPath + '/rolefacets';
+    
+    console.log("fetchFacetsDefinition");
+    var url = jsContextPath + '/search/facets/';
     var request = $.ajax({
       type : 'GET',
       dataType : 'json',
       async : true,
       url : url,
       complete : function(data) {
-        var parsedResponse = jQuery.parseJSON(request.responseText);
-
-        if (parsedResponse.length > 0) {
-          currObjInstance.roleFacets = new Array();
-          $.each((parsedResponse), function() {
-            currObjInstance.roleFacets.push(this);
-          });
-        }
-        // invoke the callback method to continue initializing the
-        // facets
+        currObjInstance.allFacets = jQuery.parseJSON(request.responseText);        
+        console.log("facetsDefinition: " + currObjInstance.allFacets);
+        
+        // invoke the callback method to continue initializing the facets
         currObjInstance.initializeSelectedFacetOnLoad(flyoutWidget);
       }
     });
-  },
+  },  
 
   fetchRoleFacetValues : function(facetValueContainer, facetValue, roleFacet) {
     var currObjInstance = this;
-    var url = jsContextPath + '/facets' + '?name=' + roleFacet + '&query=' + facetValue;
+    var url = jsContextPath + '/facets' + '?name=' + roleFacet + '&query=' + facetValue;    
+    console.log("fetchRoleFacetValues url: " + url);
     var request = $.ajax({
       type : 'GET',
       dataType : 'json',
@@ -151,7 +148,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       type : 'GET',
       dataType : 'json',
       async : true,
-      url : jsContextPath + '/facets' + '?name=' + this.currentFacetField + '&searchQuery='
+      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + '&searchQuery='
           + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
           + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
       complete : function(data) {
@@ -235,7 +232,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   selectFacetValue : function(facetValue, localizedValue) {
     var currObjInstance = this;
-
+    
+    console.log("selectFacetValue");
     // update selection lists
     this.currentFacetValuesSelected.push(facetValue);
     this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected,
@@ -244,15 +242,15 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         });
 
     // render the selected facet
-    var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(
-        facetValue, localizedValue);
+    var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
 
     // search for role based facets for the current field
-    var roleFacets = currObjInstance.getRoleFacets(this.currentFacetField);
-
-    if (roleFacets.length > 0) {
+    var currentFieldRoleFacets = currObjInstance.getRoleFacets(currObjInstance.currentFacetField);
+    console.log("selectFacetValue currentFieldRoleFacets: " + currentFieldRoleFacets);
+    
+    if (currentFieldRoleFacets.length > 0) {
       $.each(currObjInstance.roleFacets, function() {
-        currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, this.name);
+        currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, currObjInstance.currentFacetField + "_role");
       });
     }
 
@@ -265,7 +263,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     // add event listener for add more facet filters
     if (this.currentFacetValuesSelected.length === 1) {
-      this.connectedflyoutWidget.renderAddMoreFiltersButton(this.currentFacetField);
+      this.connectedflyoutWidget.renderAddMoreFiltersButton(currObjInstance.currentFacetField);
       this.connectedflyoutWidget.addMoreFilters.click(function(event) {
         currObjInstance.connectedflyoutWidget.build($(this));
       });
@@ -390,7 +388,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     // fetch all role facets asynchronously. The success method will
     // select all facet values
-    currObjInstance.fetchRoleFacets(connectedflyoutWidget);
+    currObjInstance.fetchFacetsDefinition(connectedflyoutWidget);
 
     $('.clear-filters').removeClass('off');
   },
@@ -476,12 +474,14 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   getRoleFacets : function(fctField) {
+    console.log("getRoleFacets for field: " + fctField)
     var currObjInstance = this;
-    var roleFacets = new Array();
+    var roleFacets = [];
 
-    $.each(currObjInstance.roleFacets, function() {
-      if (fctField == this.parent) {
-        roleFacets.push(this);
+    $.each(currObjInstance.allFacets, function() {
+      if (fctField == this.name) {        
+        //TODO get only roleFacets that are in the roleFacets list
+        roleFacets = Object.keys(this.roles);
       }
     });
 

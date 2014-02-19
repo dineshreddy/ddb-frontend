@@ -349,13 +349,14 @@ class SearchService {
      */
     def buildRoleFacets(LinkedHashMap urlQuery){
         def res = []
-        def roleFacets = getRoleFacets()
-
+        def roleFacets = [] // FIXME cortex has changed!  getRoleFacets()
         roleFacets.each { roleFacet ->
             if (urlQuery[roleFacet.parent] != null) {
 
                 urlQuery[roleFacet.parent].each { facetValue ->
-                    def searchUrl = '/search/facets/' + roleFacet.name
+
+                    //FIXME /cortex/api/search is only for testing. Replace it wit /search
+                    def searchUrl = '/cortex/api/search/facets/' + roleFacet.name
 
                     def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
                     if(!apiResponse.isOk()){
@@ -981,35 +982,6 @@ class SearchService {
             }
         }
         return searchResult
-    }
-
-    /**
-     * Returns all role facets from the backend.
-     * The method requests all available facets and then filter for the role attribute.
-     * 
-     * A role facet looks like this:
-     * [name:affiliate_fct_involved, parent:affiliate_fct, paths:[], role:involved, searchType:TEXT, sortType:null, displayType:TECHNICAL, position:-1]
-     * 
-     * @return a list of all role facets in the json format
-     */
-    def getRoleFacets() {
-        def res = []
-
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/')
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-
-        def resultsItems = apiResponse.getResponse()
-        resultsItems.each {
-            if (it.role != 'null') {
-                //FIXME set sortType '' to avoid "net.sf.json.JSONException: Object is null" exception
-                it.sortType = ''
-                res.add(it)
-            }
-        }
-        return res
     }
 
 }

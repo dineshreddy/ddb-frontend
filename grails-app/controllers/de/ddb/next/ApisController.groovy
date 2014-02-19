@@ -33,7 +33,8 @@ class ApisController {
         def docs = []
         def query = apisService.getQueryParameters(params)
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
+        //FIXME /cortex/api/search is only for testing. Replace it wit /search
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -158,7 +159,9 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
+
+        //FIXME /cortex/api/search is only for testing. Replace it wit /search
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/suggest', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
