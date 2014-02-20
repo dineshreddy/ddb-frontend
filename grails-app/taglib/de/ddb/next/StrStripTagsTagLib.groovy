@@ -7,7 +7,7 @@ import org.jsoup.Jsoup
  * @author arb
  * Clean all the nondesired tags from a string! 
  * Inspired by strip_tags function of PHP.
- * usage: <ddb:stripTags text="${text}" allowedTags="p,a,body,title,img>
+ * usage: <ddb:stripTags text="${text}" allowedTags="p,a,body,title,img" />
  *
  */
 class StrStripTagsTagLib {
