@@ -25,7 +25,6 @@ import org.codehaus.groovy.grails.web.util.WebUtils
  * Get facetted searchfields and values for facet from Backend.
  * 
  * @author mih
- *
  */
 public class FacetsService {
     //Backend URL
@@ -48,7 +47,9 @@ public class FacetsService {
         def res = []
         int i = 0
         //FIXME /cortex/api/search is only for testing. Replace it wit /search
-        def apiResponse = ApiConsumer.getJson(url ,'/cortex/api/search/facets/' + facetName)
+        //def apiResponse = ApiConsumer.getJson(url ,'/cortex/api/search/facets/' + facetName)
+        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/' + facetName)
+
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -79,7 +80,8 @@ public class FacetsService {
         def res = [];
 
         //FIXME /cortex/api/search is only for testing. Replace it wit /search
-        def apiResponse = ApiConsumer.getJson(url ,'/cortex/api/search/facets/', false, [type:'EXTENDED'])
+        //def apiResponse = ApiConsumer.getJson(url ,'/cortex/api/search/facets/', false, [type:'EXTENDED'])
+        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/', false, [type:'EXTENDED'])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -124,7 +126,8 @@ public class FacetsService {
     public getAllFacets() {
         def res = []
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/cortex/api/search/facets/')
+        //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/cortex/api/search/facets/')
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/search/facets/')
         if(!apiResponse.isOk()){
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }

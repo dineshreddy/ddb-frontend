@@ -70,7 +70,9 @@ class FacetsController {
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
             //FIXME /cortex/api/search is only for testing. Replace it wit /search
-            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
+            //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
+            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
                 apiResponse.throwException(request)

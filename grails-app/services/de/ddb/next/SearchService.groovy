@@ -356,7 +356,8 @@ class SearchService {
                 urlQuery[roleFacet.parent].each { facetValue ->
 
                     //FIXME /cortex/api/search is only for testing. Replace it wit /search
-                    def searchUrl = '/cortex/api/search/facets/' + roleFacet.name
+                    //def searchUrl = '/cortex/api/search/facets/' + roleFacet.name
+                    def searchUrl = '/search/facets/' + roleFacet.name
 
                     def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
                     if(!apiResponse.isOk()){
