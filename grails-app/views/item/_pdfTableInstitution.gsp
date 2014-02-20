@@ -26,7 +26,7 @@ limitations under the License.
               test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                 <g:if test="${!originUrl?.toString()?.isEmpty()}">
-                  <a class="show-origin" href="${originUrl}" title="<g:message code="ddbnext.stat_008" />">
+                  <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
                     <span ><g:message
                         code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                   </a>
