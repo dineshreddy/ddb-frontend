@@ -42,7 +42,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   currentFacetField : null,
   currentFacetValuesSelected : [],
   currentFacetValuesNotSelected : [],
-  roleFacets : ["_1_affiliate_fct_subject", "_1_affiliate_fct_involved" ],
+  supportedRoles : ["_1_affiliate_fct_subject", "_1_affiliate_fct_involved" ],
   allFacets : null,
   currentPage : 1,
   searchFacetValuesTimeout : 0,
@@ -94,7 +94,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       url : url,
       complete : function(data) {
         currObjInstance.allFacets = jQuery.parseJSON(request.responseText);        
-        console.log("facetsDefinition: " + currObjInstance.allFacets);
+//        console.log("facetsDefinition: " + currObjInstance.allFacets);
         
         // invoke the callback method to continue initializing the facets
         currObjInstance.initializeSelectedFacetOnLoad(flyoutWidget);
@@ -102,9 +102,33 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
   },  
 
-  fetchRoleFacetValues : function(facetValueContainer, facetValue, roleFacet) {
+  /**
+   * @param facetValueContainer: The DOM element
+   * @param facetValue: The selected (main) facet value
+   * @param facetField: The selected facet field. E.g: "affiliate_fct"
+   * @param role: A specific role. E.g: "_1_affiliate_fct_involved" 
+   */
+  fetchRoleFacetValues : function(facetValueContainer, facetValue, facetField) {
     var currObjInstance = this;
-    var url = jsContextPath + '/facets' + '?name=' + roleFacet + '&query=' + facetValue;    
+    
+    var oldParams = de.ddb.next.search.getUrlVars();
+    var fctValues = '';
+    var isThumbnailFIltered = '';
+    var queryParam = '&query=' + facetValue;
+    if (oldParams['facetValues%5B%5D']) {
+      $.each(oldParams['facetValues%5B%5D'], function(key, value) {
+        fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues : fctValues + '&facetValues%5B%5D=' + value;
+      });
+    }
+    if (oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered'] == 'true') {
+      isThumbnailFIltered = '&isThumbnailFiltered=true';
+    }    
+        
+    var url = jsContextPath + '/facets' + '?name=' + facetField + '_role' + '&searchQuery='
+    + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
+    + '&offset=' + this.currentOffset + '&rows=' + this.currentRows
+    
+    
     console.log("fetchRoleFacetValues url: " + url);
     var request = $.ajax({
       type : 'GET',
@@ -114,8 +138,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(request.responseText);
         if (parsedResponse.values.length > 0) {
-          currObjInstance.connectedflyoutWidget.renderRoleFacetValue(facetValueContainer,
-              facetValue, roleFacet, parsedResponse);
+          currObjInstance.connectedflyoutWidget.renderRoleFacetValues(facetValueContainer, facetValue, facetField + '_role', parsedResponse);
         }
       }
     });
@@ -249,9 +272,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     console.log("selectFacetValue currentFieldRoleFacets: " + currentFieldRoleFacets);
     
     if (currentFieldRoleFacets.length > 0) {
-      $.each(currObjInstance.roleFacets, function() {
-        currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, currObjInstance.currentFacetField + "_role");
-      });
+        currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, currObjInstance.currentFacetField);
     }
 
     // add event listener for removing facet
@@ -332,15 +353,14 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   selectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    
+    console.log("selectRoleFacetValue: " + facetField + " " + facetValue)
     var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
     de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
 
   unselectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    var newUrl = $.removeParamFromUrl(new Array(new Array('facetValues[]', facetField + '='
-        + facetValue)));
+    var newUrl = $.removeParamFromUrl(new Array(new Array('facetValues[]', facetField + '=' + facetValue)));
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
@@ -383,6 +403,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   initializeOnLoad : function(connectedflyoutWidget) {
+    console.log("facetsManager initOnLoad()")
+    
     // this methods initialize all selected facets and role facets
     var currObjInstance = this;
 
@@ -394,6 +416,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   initializeSelectedFacetOnLoad : function(connectedflyoutWidget) {
+    console.log("initializeSelectedFacetOnLoad");
     var currObjInstance = this;
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
@@ -428,14 +451,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     var selectedFacetValue = currObjInstance.connectedflyoutWidget
                         .renderSelectedFacetValue(this, de.ddb.next.search.getLocalizedFacetValue(fctField,
                             this));
-                    var roleFacets = currObjInstance
-                        .getRoleFacets(currObjInstance.currentFacetField);
+                    var roleFacets = currObjInstance.getRoleFacets(currObjInstance.currentFacetField);
 
-                    if (roleFacets.length > 0) {
-                      $.each(currObjInstance.roleFacets, function() {
-                        currObjInstance.fetchRoleFacetValues(selectedFacetValue,
-                            facetValue, this.name);
-                      });
+                    console.log("fctField " + fctField + " has roles " + roleFacets);
+                    
+                    if (roleFacets.length > 0) {                        
+                        currObjInstance.fetchRoleFacetValues(selectedFacetValue, facetValue, fctField);                      
                     }
 
                     selectedFacetValue.find('.facet-remove').click(function(event) {
@@ -464,7 +485,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var currObjInstance = this;
     var isRoleFacet = false;
 
-    $.each(currObjInstance.roleFacets, function() {
+    $.each(currObjInstance.supportedRoles, function() {
       if (fctField == this.name) {
         isRoleFacet = true;
       }
@@ -487,4 +508,61 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     return roleFacets;
   },
+  
+  /**
+   * Returns the role part of an roleFacetValue. But only if its an entry of the array supportedRoles! 
+   * If no entry matches, return <code>null</code>
+   * 
+   * @param: A roleFacetValue looks like this: "Cotta_1_affiliate_fct_involved"
+   */
+  getRoleFromFacetValue : function(roleFacetValue) {
+    var currObjInstance = this;
+    
+//    console.log("getRoleFacetFromFacetValue " + roleFacetValue);
+    
+    var matchinggRoles = null; 
+    matchinggRoles = jQuery.grep(currObjInstance.supportedRoles, function(it) {
+      return roleFacetValue.indexOf(it) !== -1;
+    });
+    
+    var retVal = (matchinggRoles instanceof Array) ?  matchinggRoles[0] : null;
+//    console.log("retVal " + retVal);
+    
+    return retVal;
+  },
+  
+  /**
+   * Returns the parent part of a roleFacetValue
+   * 
+   * Extracts the role from the facetValue.
+   * First check if the value contains a supported value store in the instance variable supportedRoles
+   * If yes, split the facetValue in two parts: 
+   *  (1) parent facet: "Cotta" 
+   *  (2) role: "_1_affiliate_fct_involved".
+   *  
+   *  If no supportedRole matches, return <code>null</code>
+   *  
+   * @param: A roleFacetValue looks like this: "Cotta_1_affiliate_fct_involved"
+   */
+  getParentFacetFromFacetValue : function(roleFacetValue) {
+    var currObjInstance = this;
+    
+//    console.log("getParentFacetFromFacetValue " + roleFacetValue);
+    var matchinggRoles = null; 
+    matchinggRoles = jQuery.grep(currObjInstance.supportedRoles, function(it) {
+      return roleFacetValue.indexOf(it) !== -1;
+    });
+    
+    var rolefacet = (matchinggRoles instanceof Array) ?  matchinggRoles[0] : null;
+//    console.log("rolefacet:  " + rolefacet);
+    
+    var retVal = null;    
+    if (rolefacet) {
+      retVal = roleFacetValue.replace(rolefacet, '');
+    }    
+//    console.log("parent:  " + retVal);
+    
+    return retVal;
+  }
+  
 });

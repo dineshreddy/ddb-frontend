@@ -247,7 +247,7 @@ class SearchService {
      */
     def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
         def res = []
-        def allBackendRolefacets = getRoleFacets()
+        def allBackendRolefacets = []; //FIXME getRoleFacets() does not exists any more!
 
         rolefacets.each { rf->
             if(rf.numberOfFacets>0){
