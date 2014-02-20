@@ -273,10 +273,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     return facetValueContainer;
   },
 
-  renderRoleFacetValues : function(facetValueContainer, facetValue, facetField, roleFacetValues) {
+  renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
-    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleFacetValues);
+    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
     
     // Find the span element of the facetvalue
     var facetValueSpan = facetValueContainer.find('.facet-value');
@@ -290,55 +290,58 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     }
 
     // Create the role based facets and add them to the container
-    $.each(roleFacetValues.values,
+    $.each(roleValues.values,
         function(index, value) {
           console.log("each value: " + value.value)
 
-          var roleFacetValueLi = $(document.createElement('li'));
-          var roleFacetValueSpan = $(document.createElement('span'));
-          var roleFacetValueCheckbox = $(document.createElement('input'));
-          var roleFieldMessage = messages.ddbnext['facet' + currObjInstance.fctManager.getRoleFromFacetValue(value.value)];
-
-          roleFacetValueLi.addClass('role-facet');
-
-          roleFacetValueSpan.attr('title', "RoleValue");
-          roleFacetValueSpan.attr('facetField', facetField);
-          roleFacetValueSpan.attr('roleValue', value.value);
-          roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
-          roleFacetValueSpan.addClass('role-facet-value');
-
-          roleFacetValueCheckbox.attr('type', "checkbox");
-          roleFacetValueCheckbox.addClass('role-facet-checkbox');
-
-          // If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad
-          // we have to find out if the checkbox must be checked
-          var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
-
-          if (paramsFacetValues) {
-            var search = facetField + '=' + value.value;
-            $.each(paramsFacetValues, function(key, value) {
-              paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
-            });
-
-            if (jQuery.inArray(search, paramsFacetValues) != -1) {
-              roleFacetValueCheckbox.prop('checked', true);
-            }
-          }
-
-          // add action handler
-          roleFacetValueCheckbox
-              .click(function(event) {
-                if (this.checked) {
-                  currObjInstance.fctManager.selectRoleFacetValue(facetField, value.value);
-                } else {
-                  currObjInstance.fctManager.unselectRoleFacetValue(facetField, value.value);
-                }
+          //The parent part of the role must match exactly the facet value! 
+          if (facetValue === currObjInstance.fctManager.getLiteralFromRole(value.value)) {
+            var roleFacetValueLi = $(document.createElement('li'));
+            var roleFacetValueSpan = $(document.createElement('span'));
+            var roleFacetValueCheckbox = $(document.createElement('input'));
+            var roleFieldMessage = messages.ddbnext['facet' + currObjInstance.fctManager.getRoleWithoutLiteral(value.value)];
+  
+            roleFacetValueLi.addClass('role-facet');
+  
+            roleFacetValueSpan.attr('title', "RoleValue");
+            roleFacetValueSpan.attr('facetField', facetField);
+            roleFacetValueSpan.attr('roleValue', value.value);
+            //roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
+            roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
+            roleFacetValueSpan.addClass('role-facet-value');
+  
+            roleFacetValueCheckbox.attr('type', "checkbox");
+            roleFacetValueCheckbox.addClass('role-facet-checkbox');
+  
+            // If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad
+            // we have to find out if the checkbox must be checked
+            var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
+  
+            if (paramsFacetValues) {
+              var search = facetField + '=' + value.value;
+              $.each(paramsFacetValues, function(key, value) {
+                paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
               });
-
-          roleFacetValueSpan.appendTo(roleFacetValueLi);
-          roleFacetValueCheckbox.appendTo(roleFacetValueLi);
-          roleFacetValueLi.appendTo(roleFacetValueUl);
-          
+  
+              if (jQuery.inArray(search, paramsFacetValues) != -1) {
+                roleFacetValueCheckbox.prop('checked', true);
+              }
+            }
+  
+            // add action handler
+            roleFacetValueCheckbox
+                .click(function(event) {
+                  if (this.checked) {
+                    currObjInstance.fctManager.selectRoleFacetValue(facetField, value.value);
+                  } else {
+                    currObjInstance.fctManager.unselectRoleFacetValue(facetField, value.value);
+                  }
+                });
+  
+            roleFacetValueSpan.appendTo(roleFacetValueLi);
+            roleFacetValueCheckbox.appendTo(roleFacetValueLi);
+            roleFacetValueLi.appendTo(roleFacetValueUl);
+          }
         });
 
     if (newUl) {

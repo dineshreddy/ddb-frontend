@@ -138,7 +138,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(request.responseText);
         if (parsedResponse.values.length > 0) {
-          currObjInstance.connectedflyoutWidget.renderRoleFacetValues(facetValueContainer, facetValue, facetField + '_role', parsedResponse);
+          currObjInstance.connectedflyoutWidget.renderRoleValues(facetValueContainer, facetValue, facetField + '_role', parsedResponse);
         }
       }
     });
@@ -268,7 +268,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
 
     // search for role based facets for the current field
-    var currentFieldRoleFacets = currObjInstance.getRoleFacets(currObjInstance.currentFacetField);
+    var currentFieldRoleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
     console.log("selectFacetValue currentFieldRoleFacets: " + currentFieldRoleFacets);
     
     if (currentFieldRoleFacets.length > 0) {
@@ -450,7 +450,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     var selectedFacetValue = currObjInstance.connectedflyoutWidget
                         .renderSelectedFacetValue(this, de.ddb.next.search.getLocalizedFacetValue(fctField,
                             this));
-                    var roleFacets = currObjInstance.getRoleFacets(currObjInstance.currentFacetField);
+                    var roleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
 
                     console.log("fctField " + fctField + " has roles " + roleFacets);
                     
@@ -493,8 +493,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     return isRoleFacet;
   },
 
-  getRoleFacets : function(fctField) {
-    console.log("getRoleFacets for field: " + fctField)
+  getRolesForFacet : function(fctField) {
+    console.log("getRolesForFacet for field: " + fctField)
     var currObjInstance = this;
     var roleFacets = [];
 
@@ -509,59 +509,63 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
   
   /**
-   * Returns the role part of an roleFacetValue. But only if its an entry of the array supportedRoles! 
-   * If no entry matches, return <code>null</code>
+   * Returns a role without its literal part. 
    * 
-   * @param: A roleFacetValue looks like this: "Cotta_1_affiliate_fct_involved"
+   * A concrete role looks like this 
+   * "Cotta_1_affiliate_fct_involved"
+   * 
+   * and has the following structure:
+   * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
+   * 
+   * If the devider pattern does not match, return <code>null</code>
    */
-  getRoleFromFacetValue : function(roleFacetValue) {
+  getRoleWithoutLiteral : function(role) {
+    console.log("getRoleWithoutLiteral " + role);
+    
     var currObjInstance = this;
+    var roleWithoutLiteral = null;
     
-//    console.log("getRoleFacetFromFacetValue " + roleFacetValue);
+    //This patter searches for _1_ which is the devider between literal and role
+    var literalDeviderPattern = /_[0-9]+_/;
     
-    var matchinggRoles = null; 
-    matchinggRoles = jQuery.grep(currObjInstance.supportedRoles, function(it) {
-      return roleFacetValue.indexOf(it) !== -1;
-    });
+    //Check if the role value matches the pattern
+    var devider = literalDeviderPattern.exec(role);
+    if (devider) {
+      var indexOfDevider = role.indexOf(devider); 
+      roleWithoutLiteral = role.substring(indexOfDevider);
+    }
     
-    var retVal = (matchinggRoles instanceof Array) ?  matchinggRoles[0] : null;
-//    console.log("retVal " + retVal);
-    
-    return retVal;
+    return roleWithoutLiteral;
   },
   
   /**
-   * Returns the parent part of a roleFacetValue
+   * Returns the literal part of a role 
    * 
-   * Extracts the role from the facetValue.
-   * First check if the value contains a supported value store in the instance variable supportedRoles
-   * If yes, split the facetValue in two parts: 
-   *  (1) parent facet: "Cotta" 
-   *  (2) role: "_1_affiliate_fct_involved".
-   *  
-   *  If no supportedRole matches, return <code>null</code>
-   *  
-   * @param: A roleFacetValue looks like this: "Cotta_1_affiliate_fct_involved"
+   * A concrete role looks like this 
+   * "Cotta_1_affiliate_fct_involved"
+   * 
+   * and has the following structure:
+   * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
+   * 
+   * If the devider pattern does not match, return <code>null</code>
    */
-  getParentFacetFromFacetValue : function(roleFacetValue) {
+  getLiteralFromRole : function(role) {
     var currObjInstance = this;
     
-//    console.log("getParentFacetFromFacetValue " + roleFacetValue);
-    var matchinggRoles = null; 
-    matchinggRoles = jQuery.grep(currObjInstance.supportedRoles, function(it) {
-      return roleFacetValue.indexOf(it) !== -1;
-    });
+    var literal = null;
     
-    var rolefacet = (matchinggRoles instanceof Array) ?  matchinggRoles[0] : null;
-//    console.log("rolefacet:  " + rolefacet);
+    //This patter searches for _1_ which is the devider between literal and role
+    var literalDeviderPattern = /_[0-9]+_/;
     
-    var retVal = null;    
-    if (rolefacet) {
-      retVal = roleFacetValue.replace(rolefacet, '');
-    }    
-//    console.log("parent:  " + retVal);
+    //Check if the role value matches the pattern
+    var devider = literalDeviderPattern.exec(role);
+    if (devider) {
+      var split = role.split(devider); 
+      console.log("split " + split);
+      literal = split[0];
+    }
     
-    return retVal;
+    return literal;
   }
   
 });
