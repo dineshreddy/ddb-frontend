@@ -528,7 +528,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 //      console.log(fromDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
       
-      selectedFacetValues.push('begin_time=' + days);
+      selectedFacetValues.push('begin_time=[' + days + ' TO *]');
     }
     
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
@@ -536,7 +536,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 //      console.log(tillDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
       
-      selectedFacetValues.push('end_time=' + days);
+      selectedFacetValues.push('end_time=[* TO ' + days + ']');
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
