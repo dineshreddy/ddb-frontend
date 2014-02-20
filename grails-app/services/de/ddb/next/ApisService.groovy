@@ -114,7 +114,12 @@ class ApisService {
                     query[facetName].add(it)
                 }
             }else {
-                query[facetName]=queryParameter
+                if(facetName == "begin_time")
+                    query[facetName]="[" + queryParameter + " TO *]"
+                else if(facetName == "end_time")
+                    query[facetName]="[* TO " + queryParameter + "]"
+                else
+                    query[facetName]=queryParameter
             }
         }
     }

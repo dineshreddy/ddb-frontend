@@ -351,7 +351,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
-      $.each(facetValuesFromUrl, function(key, value) {        
+      $.each(facetValuesFromUrl, function(key, value) {
         
         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
           var beginDays = facetValuesFromUrl[key].substr(13)
@@ -363,7 +363,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
         
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
           var endDays = facetValuesFromUrl[key].substr(11)
-          var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+          var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
           currObjInstance.selectedTimeSpan.setTillDate(endDate);
           
           hasSelectedDate = true;
@@ -527,16 +527,16 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
 //      console.log(fromDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
-      
-      selectedFacetValues.push('begin_time=[' + days + ' TO *]');
+
+      selectedFacetValues.push('begin_time=' + days);
     }
     
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
       var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
 //      console.log(tillDate);
       var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
-      
-      selectedFacetValues.push('end_time=[* TO ' + days + ']');
+
+      selectedFacetValues.push('end_time=' + days);
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
