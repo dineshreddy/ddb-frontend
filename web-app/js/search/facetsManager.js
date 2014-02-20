@@ -85,7 +85,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   fetchFacetsDefinition : function(flyoutWidget) {
     var currObjInstance = this;
     
-    console.log("fetchFacetsDefinition");
+//    console.log("fetchFacetsDefinition");
     var url = jsContextPath + '/search/facets/';
     var request = $.ajax({
       type : 'GET',
@@ -129,7 +129,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows
     
     
-    console.log("fetchRoleFacetValues url: " + url);
+//    console.log("fetchRoleFacetValues url: " + url);
     var request = $.ajax({
       type : 'GET',
       dataType : 'json',
@@ -256,7 +256,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   selectFacetValue : function(facetValue, localizedValue) {
     var currObjInstance = this;
     
-    console.log("selectFacetValue");
+//    console.log("selectFacetValue");
     // update selection lists
     this.currentFacetValuesSelected.push(facetValue);
     this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected,
@@ -269,7 +269,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     // search for role based facets for the current field
     var currentFieldRoleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
-    console.log("selectFacetValue currentFieldRoleFacets: " + currentFieldRoleFacets);
+//    console.log("selectFacetValue currentFieldRoleFacets: " + currentFieldRoleFacets);
     
     if (currentFieldRoleFacets.length > 0) {
         currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, currObjInstance.currentFacetField);
@@ -352,7 +352,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   selectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    console.log("selectRoleFacetValue: " + facetField + " " + facetValue)
+//    console.log("selectRoleFacetValue: " + facetField + " " + facetValue);
     var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
     de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
@@ -402,7 +402,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   initializeOnLoad : function(connectedflyoutWidget) {
-    console.log("facetsManager initOnLoad()")
+//    console.log("facetsManager initOnLoad()");
     
     // this methods initialize all selected facets and role facets
     var currObjInstance = this;
@@ -415,7 +415,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   initializeSelectedFacetOnLoad : function(connectedflyoutWidget) {
-    console.log("initializeSelectedFacetOnLoad");
+//    console.log("initializeSelectedFacetOnLoad");
     var currObjInstance = this;
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
@@ -452,7 +452,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                             this));
                     var roleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
 
-                    console.log("fctField " + fctField + " has roles " + roleFacets);
+//                    console.log("fctField " + fctField + " has roles " + roleFacets);
                     
                     if (roleFacets.length > 0) {                        
                         currObjInstance.fetchRoleFacetValues(selectedFacetValue, facetValue, fctField);                      
@@ -494,7 +494,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   getRolesForFacet : function(fctField) {
-    console.log("getRolesForFacet for field: " + fctField)
+//    console.log("getRolesForFacet for field: " + fctField)
     var currObjInstance = this;
     var roleFacets = [];
 
@@ -507,65 +507,5 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     return roleFacets;
   },
-  
-  /**
-   * Returns a role without its literal part. 
-   * 
-   * A concrete role looks like this 
-   * "Cotta_1_affiliate_fct_involved"
-   * 
-   * and has the following structure:
-   * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
-   * 
-   * If the devider pattern does not match, return <code>null</code>
-   */
-  getRoleWithoutLiteral : function(role) {
-    console.log("getRoleWithoutLiteral " + role);
-    
-    var currObjInstance = this;
-    var roleWithoutLiteral = null;
-    
-    //This patter searches for _1_ which is the devider between literal and role
-    var literalDeviderPattern = /_[0-9]+_/;
-    
-    //Check if the role value matches the pattern
-    var devider = literalDeviderPattern.exec(role);
-    if (devider) {
-      var indexOfDevider = role.indexOf(devider); 
-      roleWithoutLiteral = role.substring(indexOfDevider);
-    }
-    
-    return roleWithoutLiteral;
-  },
-  
-  /**
-   * Returns the literal part of a role 
-   * 
-   * A concrete role looks like this 
-   * "Cotta_1_affiliate_fct_involved"
-   * 
-   * and has the following structure:
-   * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
-   * 
-   * If the devider pattern does not match, return <code>null</code>
-   */
-  getLiteralFromRole : function(role) {
-    var currObjInstance = this;
-    
-    var literal = null;
-    
-    //This patter searches for _1_ which is the devider between literal and role
-    var literalDeviderPattern = /_[0-9]+_/;
-    
-    //Check if the role value matches the pattern
-    var devider = literalDeviderPattern.exec(role);
-    if (devider) {
-      var split = role.split(devider); 
-      console.log("split " + split);
-      literal = split[0];
-    }
-    
-    return literal;
-  }
   
 });

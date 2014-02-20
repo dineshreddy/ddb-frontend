@@ -276,7 +276,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
-    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
+//    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
     
     // Find the span element of the facetvalue
     var facetValueSpan = facetValueContainer.find('.facet-value');
@@ -292,14 +292,16 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     // Create the role based facets and add them to the container
     $.each(roleValues.values,
         function(index, value) {
-          console.log("each value: " + value.value)
+//          console.log("each value: " + value.value);
+//          console.log("facetValue: " + facetValue);
+//          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
 
-          //The parent part of the role must match exactly the facet value! 
-          if (facetValue === currObjInstance.fctManager.getLiteralFromRole(value.value)) {
+      //The parent part of the role must match exactly the facet value! 
+          if (facetValue.toString() === de.ddb.next.search.getLiteralFromRole(value.value).toString()) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));
-            var roleFieldMessage = messages.ddbnext['facet' + currObjInstance.fctManager.getRoleWithoutLiteral(value.value)];
+            var roleFieldMessage = messages.ddbnext['facet_' + de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber(value.value)];
   
             roleFacetValueLi.addClass('role-facet');
   
@@ -316,7 +318,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
             // If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad
             // we have to find out if the checkbox must be checked
             var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
-  
             if (paramsFacetValues) {
               var search = facetField + '=' + value.value;
               $.each(paramsFacetValues, function(key, value) {
