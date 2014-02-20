@@ -304,7 +304,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   unselectFacetValue : function(element, unselectWithoutFetch) {
     var facetFieldFilter = element.parents('.facets-item');
-    var facetValue = element.attr('data-fctvalue');
+    var facetValue = element.attr('data-fctvalue');    
 
     if (this.connectedflyoutWidget.opened) {
       this.connectedflyoutWidget.close();
@@ -331,8 +331,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     var roleFacets = facetFieldFilter.find('span.role-facet-value');
     $.each((roleFacets), function() {
-      facetsToRemove.push(new Array('facetValues[]', $(this).attr("facetfield") + '='
-          + facetValue));
+      facetsToRemove.push(new Array('facetValues[]', $(this).attr("facetfield") + '=' + $(this).attr("roleValue")));
     });
 
     var newUrl = $.removeParamFromUrl(facetsToRemove);

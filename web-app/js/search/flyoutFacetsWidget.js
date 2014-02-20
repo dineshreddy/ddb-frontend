@@ -303,6 +303,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
           roleFacetValueSpan.attr('title', "RoleValue");
           roleFacetValueSpan.attr('facetField', facetField);
+          roleFacetValueSpan.attr('roleValue', value.value);
           roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')');
           roleFacetValueSpan.addClass('role-facet-value');
 
