@@ -95,17 +95,23 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     if (!currObjInstance.hasTillDate()) {
       return;
     }
-    
-    //if no day is set tillDay to ???
-    if (currObjInstance.tillDay === null) {
-      currObjInstance.tillDay = 28;//TODO get right day from calendar
-    }
-    
+
     //id no month is set tillMonth to 12
     if (currObjInstance.tillMonth === null) {
       currObjInstance.tillMonth = 12;
     }
-    
+
+    //if no day is set tillDay to ???
+    if (currObjInstance.tillDay === null) {
+      var days_in_month = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+
+      if(currObjInstance.tillYear %4 == 0 && currObjInstance.tillYear != 1900)
+      {
+         days_in_month[1]=29;
+      }
+      currObjInstance.tillDay = days_in_month[currObjInstance.tillMonth-1];
+    }
+
     return true;
   },
 
