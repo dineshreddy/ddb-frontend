@@ -24,6 +24,12 @@ $(document).ready(
 
         var offset = 0;
 
+        var windowWidth = 0;
+
+        var carouselWidth = 800;
+
+        var carouselHeight = 170;
+
 /* TODO: Delete. To old functionality checkbox "Nur Objekte mit Normdaten"
         $('#normdata-involved-checkbox').bind('click', function() {
           updateRoleDivs();
@@ -72,15 +78,26 @@ $(document).ready(
 
               allRowCount = jsonResponse.resultCount;
 
-              if ($("#items > div").size() < 5) {
-                $("#previous").addClass("disabled");
-                $("#previous").off('click');
-                $("#next").addClass("disabled");
-                $("#next").off('click');
+              windowWidth = $(window).width();
+
+              if (($(window).width()>1184 && $("#items > div").size() < 6) ||
+                  (((windowWidth > 964 && windowWidth < 1185) || (windowWidth > 660 && windowWidth < 753)) && $("#items > div").size() < 4) ||
+                  (((windowWidth > 752 && windowWidth < 965) || (windowWidth > 450 && windowWidth < 661)) && $("#items > div").size() < 3) ||
+                  (windowWidth < 451 && $("#items > div").size() < 2)
+                 ) {
+                disableCarouselArrows();
               }
+
             }
           });
 
+        }
+
+        function disableCarouselArrows() {
+          $("#previous").addClass("disabled");
+          $("#previous").off('click');
+          $("#next").addClass("disabled");
+          $("#next").off('click');
         }
 
         function getUrlParam(name) {
@@ -154,11 +171,21 @@ $(document).ready(
             carouselItems.trigger("prev", 1);
           });
 
+          windowWidth = $(window).width();
+
+          if ((windowWidth > 964 && windowWidth < 1185) || (windowWidth > 660 && windowWidth < 753)) {
+            carouselWidth = 600;
+          } else if ((windowWidth > 752 && windowWidth < 965) || (windowWidth > 450 && windowWidth < 661)){
+            carouselWidth = 400;
+          } else if (windowWidth < 451){
+            carouselWidth = 200;
+          }
+
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
-              width : 800,
-              height : 170,
+              width : carouselWidth,
+              height : carouselHeight,
               align : false,
               auto : false,
               scroll : 1,
@@ -176,5 +203,6 @@ $(document).ready(
         }
 
         initPage();
+
       }
     });
