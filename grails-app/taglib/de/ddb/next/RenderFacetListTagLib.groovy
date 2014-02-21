@@ -26,6 +26,6 @@ class RenderFacetListTagLib {
      */
 
     def renderFacetList = { attrs, body ->
-        out << render(template:"/search/facetList", model:[facetValues: attrs.facetValues, facetType: attrs.facetType, roleFacetsUrl: attrs.roleFacetsUrl])
+        out << render(template:"/search/facetList", model:[facetValues: attrs.facetValues, facetType: attrs.facetType])
     }
 }
