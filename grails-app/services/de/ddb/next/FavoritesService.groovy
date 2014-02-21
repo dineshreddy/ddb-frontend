@@ -40,6 +40,7 @@ class FavoritesService {
     def searchService
     def configurationService
     def messageSource
+    def entityService
 
     def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
         allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
@@ -153,7 +154,7 @@ class FavoritesService {
                 // item not found
                 if(it.type == Type.ENTITY){
                     def entity = [:]
-                    label = "Entity " + it.itemId
+                    label = entityService.getEntityDetails(it.itemId)?.preferredName
                     entity["id"] = it.itemId
                     entity["view"] = []
                     entity["label"] = label
