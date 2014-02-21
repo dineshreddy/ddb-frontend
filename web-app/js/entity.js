@@ -30,6 +30,16 @@ $(document).ready(
 
         var carouselHeight = 170;
 
+        var windowLarge = 1185;
+
+        var windowMediumMax = 965;
+
+        var windowMediumMin = 753;
+
+        var windowSmallMax = 661;
+
+        var windowSmallMin = 451;
+
 /* TODO: Delete. To old functionality checkbox "Nur Objekte mit Normdaten"
         $('#normdata-involved-checkbox').bind('click', function() {
           updateRoleDivs();
@@ -80,10 +90,10 @@ $(document).ready(
 
               windowWidth = $(window).width();
 
-              if (($(window).width()>1184 && $("#items > div").size() < 6) ||
-                  (((windowWidth > 964 && windowWidth < 1185) || (windowWidth > 660 && windowWidth < 753)) && $("#items > div").size() < 4) ||
-                  (((windowWidth > 752 && windowWidth < 965) || (windowWidth > 450 && windowWidth < 661)) && $("#items > div").size() < 3) ||
-                  (windowWidth < 451 && $("#items > div").size() < 2)
+              if (($(window).width() >= windowLarge && $("#items > div").size() < 6) ||
+                  (((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) && $("#items > div").size() < 4) ||
+                  (((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)) && $("#items > div").size() < 3) ||
+                  (windowWidth < windowSmallMin && $("#items > div").size() < 2)
                  ) {
                 disableCarouselArrows();
               }
@@ -173,11 +183,11 @@ $(document).ready(
 
           windowWidth = $(window).width();
 
-          if ((windowWidth > 964 && windowWidth < 1185) || (windowWidth > 660 && windowWidth < 753)) {
+          if ((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) {
             carouselWidth = 600;
-          } else if ((windowWidth > 752 && windowWidth < 965) || (windowWidth > 450 && windowWidth < 661)){
+          } else if ((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)){
             carouselWidth = 400;
-          } else if (windowWidth < 451){
+          } else if (windowWidth < windowSmallMin){
             carouselWidth = 200;
           }
 
