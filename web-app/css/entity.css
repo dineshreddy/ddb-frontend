@@ -228,10 +228,10 @@
 /* carousel controls responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
-    left: 0px;
+    left: 0;
   }
   .entity-page .carousel a.next {
-    right: 0px;
+    right: -8px;
   }
   .entity-page .preview-item {
     width: 160px;

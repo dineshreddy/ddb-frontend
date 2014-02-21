@@ -24,6 +24,22 @@ $(document).ready(
 
         var offset = 0;
 
+        var windowWidth = 0;
+
+        var carouselWidth = 800;
+
+        var carouselHeight = 170;
+
+        var windowLarge = 1185;
+
+        var windowMediumMax = 965;
+
+        var windowMediumMin = 753;
+
+        var windowSmallMax = 661;
+
+        var windowSmallMin = 451;
+
 /* TODO: Delete. To old functionality checkbox "Nur Objekte mit Normdaten"
         $('#normdata-involved-checkbox').bind('click', function() {
           updateRoleDivs();
@@ -72,15 +88,26 @@ $(document).ready(
 
               allRowCount = jsonResponse.resultCount;
 
-              if ($("#items > div").size() < 5) {
-                $("#previous").addClass("disabled");
-                $("#previous").off('click');
-                $("#next").addClass("disabled");
-                $("#next").off('click');
+              windowWidth = $(window).width();
+
+              if (($(window).width() >= windowLarge && $("#items > div").size() < 6) ||
+                  (((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) && $("#items > div").size() < 4) ||
+                  (((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)) && $("#items > div").size() < 3) ||
+                  (windowWidth < windowSmallMin && $("#items > div").size() < 2)
+                 ) {
+                disableCarouselArrows();
               }
+
             }
           });
 
+        }
+
+        function disableCarouselArrows() {
+          $("#previous").addClass("disabled");
+          $("#previous").off('click');
+          $("#next").addClass("disabled");
+          $("#next").off('click');
         }
 
         function getUrlParam(name) {
@@ -154,11 +181,21 @@ $(document).ready(
             carouselItems.trigger("prev", 1);
           });
 
+          windowWidth = $(window).width();
+
+          if ((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) {
+            carouselWidth = 600;
+          } else if ((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)){
+            carouselWidth = 400;
+          } else if (windowWidth < windowSmallMin){
+            carouselWidth = 200;
+          }
+
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
-              width : 800,
-              height : 170,
+              width : carouselWidth,
+              height : carouselHeight,
               align : false,
               auto : false,
               scroll : 1,
@@ -176,5 +213,6 @@ $(document).ready(
         }
 
         initPage();
+
       }
     });
