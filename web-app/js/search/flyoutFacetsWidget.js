@@ -22,9 +22,12 @@ de.ddb.next.search = de.ddb.next.search || {};
  * 
  * The main intend of this object is to render all content in the context of
  * facets. It's doing this by DOM manipulation triggered by the FacetManager
- * instance. The Flyout Widget contains 
- * - facetLeftContainer: showing the facet fields and the selected facets 
- * - facetRightContainer: showing the unselected facets
+ * instance. 
+ * The Flyout Widget contains:
+ * <ul> 
+ * <li>facetLeftContainer: showing the AddMoreFilterButton and the selected facet values</li>
+ * <li>facetRightContainer: showing the available facet values</li>
+ * </ul>
  * 
  * Do not use AJAX calls in this class!
  */
@@ -32,6 +35,9 @@ de.ddb.next.search.FlyoutFacetsWidget = function() {
   this.init();
 };
 
+/**
+ * Extend the prototyp of the FlyoutFacetsWidget with jQuery
+ */
 $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   mainElement : null,
   parentMainElement : null,
@@ -50,7 +56,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   inputSearch : null,
 
   // i18n variables
-
   field_MostRelevant : messages.ddbnext.Most_relevant,
   field_NoAvailableValues : messages.ddbnext.No_Available_Values,
   field_AddMoreFiltersButtonTooltip : messages.ddbnext.Add_More_Filters_ButtonTooltip,
@@ -60,13 +65,26 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   field_RemoveSelectedItem : messages.ddbnext.Remove_selected_item,
   field_RemoveButton : messages.ddbnext.Remove_Button,
 
+  /**
+   * Initialize the new instance.
+   */
   init : function() {
-    console.log("FlyoutFacetsWidget init()");
     this.cleanNonJsStructures();
     this.fctManager.initializeOnLoad(this);
   },
 
+  /**
+   * Is called when the user clicks on the AddMoreFiltersButton or a facet header.
+   * 
+   * Open/Closes the widget which depends on the state and the already selected facet values.
+   * Identify the main facet elements for which the flyout widget should be created  
+   * and triggers the asynchron loading of the associated facet values from the backend.
+   * 
+   * A call of buildStructure() creates the html structure of the facetLeftContainer and the facetRightContainer.
+   */
   build : function(element) {
+    console.log("build() " + element);
+    
     if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length === 0)
         || element.attr('class') == 'add-more-filters') {
       if ((element.attr('data-fctname') !== this.fctManager.currentFacetField || (element
@@ -95,6 +113,11 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     }
   },
 
+  /**
+   * Creates the mainlayout of the flyout window (facetRightContainer) with the paging elements.
+   * 
+   * A call of buildLeftContainer() will create the html of the left container.
+   */
   buildStructure : function() {
 
     if (this.parentMainElement.find('.flyout-left-container').length > 0) {
@@ -154,6 +177,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.parentMainElement.find('.input-search-fct-container').fadeIn('fast');
   },
 
+  /**
+   * Creates the html structure of the leftContainer which shows the selected facets
+   * and an inputSearch fiels for filtering the facet values in the right container.
+   */
   buildLeftContainer : function() {
     this.facetLeftContainer = $(document.createElement('div'));
     this.selectedItems = $(document.createElement('ul'));
@@ -173,6 +200,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.fctManager.initializeFacetValuesDynamicSearch(this.inputSearch);
   },
 
+  /**
+   * Creates the layout for the right container of the flyout widget.
+   * It defines two columns for presenting the facet values. 
+   */
   initializeFacetValues : function(field, facetValues) {
     var leftCol = $(document.createElement('ul'));
     var rightCol = $(document.createElement('ul'));
@@ -189,6 +220,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.fctManager.initPagination();
   },
 
+  /**
+   * Creates the html for the facet values in the right flyout container.
+   * The values are presented in two columns with a maximum of 5 elements.
+   */
   renderFacetValues : function(field, facetValues) {
     var currObjInstance = this;
 
@@ -251,6 +286,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     flyoutRightHeadTitle.prependTo(this.facetRightContainer.find('.flyout-right-head'));
   },
 
+  /**
+   * Returns a html container for a selected facet value.
+   */
   renderSelectedFacetValue : function(facetValue, localizedValue) {
     var facetValueContainer = $(document.createElement('li'));
     var facetValueSpan = $(document.createElement('span'));
@@ -273,6 +311,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     return facetValueContainer;
   },
 
+  /**
+   * Creates the html structure of a selected role value and appends it to the given facetValueContainer.
+   */
   renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
@@ -350,6 +391,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     }
   },
 
+  /**
+   * Creates the html for the AddMoreFiltersButton and append it to the given facet.
+   */
   renderAddMoreFiltersButton : function(facetField) {
     this.addMoreFilters = $(document.createElement('div'));
     var text = $(document.createElement('span'));
@@ -372,11 +416,17 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     });
   },
 
+  /**
+   * Removes the AddMoreFiltersButton from the given facet
+   */
   removeAddMoreFiltersButton : function(FacetFieldFilter, addMoreFiltersElement) {
     addMoreFiltersElement.remove();
     this.resetFacetFieldFilter(FacetFieldFilter);
   },
 
+  /**
+   * Renders the number of the actual facet value page
+   */
   setFacetValuesPage : function(pageNumber) {
     var spanPGNumber = this.paginationLiSeite.find('span');
     if (spanPGNumber.length === 0) {
@@ -386,6 +436,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     $(spanPGNumber[0]).html(pageNumber);
   },
 
+  /**
+   * Render a progress image when facet values are loaded from the backend
+   */
   renderFacetLoader : function() {
     this.rightBody.empty();
     var imgLoader = $(document.createElement('div'));
@@ -393,6 +446,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.rightBody.prepend(imgLoader);
   },
 
+  /**
+   * Closes the facet values container when the user clicks outside of it.
+   */
   manageOutsideClicks : function(thisInstance) {
     $(document).mouseup(function(e) {
       var container = $(".facets-list");
@@ -402,11 +458,17 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     });
   },
 
+  /**
+   * Clean Non Js Structures
+   */
   cleanNonJsStructures : function() {
     $('.facets-item >ul').remove();
     $('.clear-filters').addClass('off');
   },
 
+  /**
+   * Close the facet container and reset all states.
+   */
   close : function() {
     var currObjInstance = this;
     var oldParentMainElement = this.parentMainElement;
@@ -427,6 +489,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.opened = false;
   },
 
+  /**
+   * Resets the input in the facets filter text input 
+   */
   resetFacetFieldFilter : function(element) {
     element.fadeOut('fast', function() {
       element.removeClass('active');
