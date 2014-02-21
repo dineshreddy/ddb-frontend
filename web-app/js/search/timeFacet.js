@@ -447,7 +447,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var tillDayValue = $("#tillDay").val() !== "" ? $("#tillDay").val() : null;
     var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
-    
+
     if (checkYears) {
       if (fromYearValue === null && tillYearValue === null) {
         de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
@@ -528,21 +528,38 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
         }
       });
     }
-    
-    if (currObjInstance.selectedTimeSpan.hasFromDate()) {
-      var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
-//      console.log(fromDate);
-      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
 
-      selectedFacetValues.push('begin_time=' + days);
+    //Genau
+    if($("#limitationExact").is(":checked")) {
+      if(currObjInstance.selectedTimeSpan.hasFromDate() && currObjInstance.selectedTimeSpan.hasTillDate()) {
+
+        var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
+        var daysFrom = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
+        var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
+        var daysTill = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
+
+        selectedFacetValues.push('begin_time=[' + daysFrom + ' TO ' + daysTill + ']');
+        selectedFacetValues.push('end_time=[' + daysFrom + ' TO ' + daysTill + ']');
+      }
+      else {
+        de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' und 'Bis' eine Jahreszahl ein für genau Optionen.");
+        return;
+      }
     }
-    
-    if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
-//      console.log(tillDate);
-      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
+    else{//Unscharf
+      if (currObjInstance.selectedTimeSpan.hasFromDate()) {
+        var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
+        var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
 
-      selectedFacetValues.push('end_time=' + days);
+        selectedFacetValues.push('begin_time=[* TO ' + days + ']');
+      }
+
+      if (currObjInstance.selectedTimeSpan.hasTillDate()) {
+        var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
+        var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
+
+        selectedFacetValues.push('end_time=[' + days + ' TO *]');
+      }
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]

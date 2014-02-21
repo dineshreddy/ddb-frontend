@@ -113,14 +113,8 @@ class ApisService {
                 queryParameter.each {
                     query[facetName].add(it)
                 }
-            }else {
-                if(facetName == "begin_time")
-                    query[facetName]="[" + queryParameter + " TO *]"
-                else if(facetName == "end_time")
-                    query[facetName]="[* TO " + queryParameter + "]"
-                else
-                    query[facetName]=queryParameter
-            }
+            }else
+                query[facetName]=queryParameter
         }
     }
 
