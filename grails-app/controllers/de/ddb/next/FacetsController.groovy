@@ -33,6 +33,7 @@ class FacetsController {
 
     static defaultAction = "facets"
 
+    def facetsService
     def searchService
     def configurationService
 
@@ -66,7 +67,10 @@ class FacetsController {
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
+            //FIXME /cortex/api/search is only for testing. Replace it wit /search
+            //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
@@ -83,14 +87,14 @@ class FacetsController {
     }
 
     /**
-     * Returns all role facets from the backend
+     * Returns a list of all defined facets on the backend.
+     * The returned json is an array of facet objects.
      * 
-     * @return a list of all role facets in the json format
+     * @return a list of all facets in the json format
      */
-    def roleFacets() {
-        def roleFacets = searchService.getRoleFacets()
-
-        render (contentType:"text/json"){roleFacets}
+    def allFacetsList() {
+        def allFacets = facetsService.getAllFacets()
+        render (contentType:"text/json"){allFacets}
     }
 
 }
