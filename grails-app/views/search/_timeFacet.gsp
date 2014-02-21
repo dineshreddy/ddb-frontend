@@ -128,14 +128,14 @@ limitations under the License.
 			</select> 
 			<input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
-		<div>Eingrenzung</div>
+		<div><g:message code="ddbnext.facet_time_restrict_to"/></div>
 		<div>
-			<input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" checked="checked" /> <label for="limitationFuzzy">Unscharf</label>
-			<input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact">Genau</label>
+			<input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" checked="checked" /> <label for="limitationFuzzy"><g:message code="ddbnext.facet_time_fuzzy"/></label>
+			<input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact"><g:message code="ddbnext.facet_time_exactly"/></label>
 		</div>
 		<div>
-			<button id="add-timespan">Anwenden</button>
-			<button id="reset-timefacet">Zurücksetzen</button>
+			<button id="add-timespan"><g:message code="ddbnext.facet_time_apply"/></button>
+			<button id="reset-timefacet"><g:message code="ddbnext.facet_time_reset"/></button>
 		</div>
 	</div>
 </div>
