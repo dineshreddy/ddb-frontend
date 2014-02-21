@@ -17,11 +17,13 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
-import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.CultureGraphService
+import javax.persistence.EntityNotFoundException
+
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
  * Service class for all entity related methods
@@ -143,6 +145,9 @@ class EntityService {
 
             if (response.numberOfResults == 1) {
                 return response.results[0]
+            }
+            else if (response.numberOfResults == 0) {
+                throw new EntityNotFoundException()
             }
             else {
                 throw new RuntimeException("number of results should be 1 but is " + response.numberOfResults)
