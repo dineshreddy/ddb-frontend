@@ -20,7 +20,10 @@ import groovy.json.*
 
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.CultureGraphService
+import javax.persistence.EntityNotFoundException
 
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 /**
  * Service class for all entity related methods
@@ -126,6 +129,37 @@ class EntityService {
         return searchPreview
     }
 
+    /**
+     * Get the detailed information for the given entity id from the entity service
+     *
+     * @param entityId the entity id
+     *
+     * @return detailed information about this entity
+     */
+    def Map getEntityDetails(String entityId) {
+        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entity", false,
+            [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
+
+        if (apiResponse.isOk()) {
+            def response = apiResponse.getResponse()
+
+            if (response.numberOfResults == 1) {
+                return response.results[0]
+            }
+            else if (response.numberOfResults == 0) {
+                throw new EntityNotFoundException()
+            }
+            else {
+                throw new RuntimeException("number of results should be 1 but is " + response.numberOfResults)
+            }
+        }
+        else {
+            def message = "getEntityDetails(): Entitiy response contained error"
+
+            log.error message
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+    }
 
     /**
      * Gets the number of results for a given query and facet type

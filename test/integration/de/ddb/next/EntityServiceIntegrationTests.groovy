@@ -24,4 +24,8 @@ class EntityServiceIntegrationTests extends GroovyTestCase {
         //TODO to execute the tests a running server under this url ddb.apis.url is needed
         //def model = entityService.doFacetSearch(entityTitle, 0, 4, false, facetName, entityId)
     }
+
+    @Test void getEntityDetails() {
+        assertNotNull entityService.getEntityDetails("118540238")
+    }
 }
