@@ -21,10 +21,10 @@ limitations under the License.
 	
 	<div id="timespan-form">
 		<hr>
-		<div>Von</div>
+		<div><g:message code="ddbnext.facet_time_from" /></div>
 		<div>
 			<select id="fromDay" class="day">
-				<option value="" disabled selected>Day</option>
+				<option value="" disabled selected><g:message code="ddbnext.facet_time_day"/></option>
 				<option value="01">1.</option>
 				<option value="02">2.</option>
 				<option value="03">3.</option>
@@ -59,7 +59,7 @@ limitations under the License.
 			</select>
 			
 			<select id="fromMonth" class="month">
-				<option value="" disabled selected>Month</option>
+				<option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
 				<option value="01">January</option>
 				<option value="02">February</option>
 				<option value="03">March</option>
@@ -73,12 +73,12 @@ limitations under the License.
 				<option value="11">November</option>
 				<option value="12">December</option>
 			</select>
-			<input type="text" pattern="-?\[0-9]*" id="fromYear" class="year" placeholder="Year"/>
+			<input type="text" pattern="-?\[0-9]*" id="fromYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
-		<div>Bis</div>
+		<div><g:message code="ddbnext.facet_time_to"/></div>
 		<div>
 			<select id="tillDay" class="day">
-				<option value="" disabled selected>Tag</option>
+				<option value="" disabled selected><g:message code="ddbnext.facet_time_day"/></option>
 				<option value="01">1.</option>
 				<option value="02">2.</option>
 				<option value="03">3.</option>
@@ -112,7 +112,7 @@ limitations under the License.
 				<option value="31">31.</option>								
 			</select>
 			<select id="tillMonth" class="month">
-				<option value="" disabled selected>Monat</option>
+				<option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
 				<option value="01">Januar</option>
 				<option value="02">Februar</option>
 				<option value="03">März</option>
@@ -126,7 +126,7 @@ limitations under the License.
 				<option value="11">November</option>
 				<option value="12">Dezember</option>
 			</select> 
-			<input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="Jahr"/>
+			<input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
 		<div>Eingrenzung</div>
 		<div>
