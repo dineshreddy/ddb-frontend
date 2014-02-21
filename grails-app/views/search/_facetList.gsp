@@ -35,21 +35,6 @@ limitations under the License.
       <g:if test="${facetType == FacetEnum.SECTOR.getName() }">
         <span class="label"><g:message code="${FacetEnum.SECTOR.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-    </a>
-	
-	<g:if test="${facetType == FacetEnum.AFFILIATE.getName() && roleFacetsUrl != null && roleFacetsUrl.size() > 0}">			
-		<ul class="role-facets-list">
-		<g:each in="${(roleFacetsUrl)}" var="roleFacet">
-			<g:if test="${facetType == roleFacet.parent && roleFacet.fctValue == facetValues[i]['fctValue']}">
-				<li class="role-facet">
-					<a href="${roleFacet['url']}" class="${roleFacet['selected']}">
-						<span class="count"><ddb:getLocalizedNumber>${roleFacet.cnt}</ddb:getLocalizedNumber></span>
-						<span class="label"><g:message code="${'ddbnext.facet_'+ roleFacet.field}" /></span>						
-					</a>
-				</li>
-			</g:if>
-		</g:each>
-		</ul>
-	</g:if>
+    </a>	
   </li>
 </g:each>

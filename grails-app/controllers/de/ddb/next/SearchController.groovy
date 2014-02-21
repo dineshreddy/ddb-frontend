@@ -141,12 +141,6 @@ class SearchController {
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
 
-                def roleFacetsUrl = [:]
-                def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
-                if(urlQuery[SearchParamEnum.FACET.getName()]){
-                    roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
-                }
-
                 render(view: "results", model: [
                     facetsList:mainFacets,
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
@@ -156,7 +150,7 @@ class SearchController {
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
-                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
+                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,

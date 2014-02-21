@@ -32,13 +32,12 @@ import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
+
 /**
  * Set of services used in the SearchController for views/search
  * 
  * @author ema
- *
  */
-
 class SearchService {
 
     //Autowire the grails application bean
@@ -193,7 +192,7 @@ class SearchService {
                     if(x.field == it && x.numberOfFacets>0){
                         res[x.field] = []
                         x.facetValues.each{ y->
-                            //only proceed if the facetValue is of type main facet. Role facets will be ignored
+                            //only proceed if the facetValue is of type main facet.
                             if (mainFacetsUrl[x.field] != null) {
 
                                 //Create a map which contains the facet name, count and url for the view
@@ -230,76 +229,6 @@ class SearchService {
         }
         return res
     }
-
-
-    /**
-     * Creates the urls for the rolefacets of the non js version of the facet search
-     * 
-     * TODO The creation of subfacets urls has errors reported in DDBNEXT-974 and DDBNEXT-984
-     * Since the role facets are not part of the 4.2 release these errors has only been solved for the subfacets.
-     * 
-     * @param rolefacets a list with all role facets
-     * @param mainFacetsUrl a list with all mainFacetsUrl
-     * @param subFacetsUrl a list with all subFacetsUrl
-     * @param urlQuery the urlQuery
-     * 
-     * @return a list with all roleFacetsUrls
-     */
-    def buildRoleFacetsUrl(List rolefacets, LinkedHashMap mainFacetsUrl, LinkedHashMap subFacetsUrl, LinkedHashMap urlQuery){
-        def res = []
-        def allBackendRolefacets = []; //FIXME getRoleFacets() does not exists any more!
-
-        rolefacets.each { rf->
-            if(rf.numberOfFacets>0){
-                rf.facetValues.each{ fv->
-
-                    def roleFacetDefinition = allBackendRolefacets.find {
-                        it.name = rf.field
-                    }
-
-                    def tmpFacetValuesMap = ["parent": roleFacetDefinition.parent, "field":rf.field, "fctValue": fv.value,"url":"",cnt: fv["count"],selected:""]
-                    def mainUrl = mainFacetsUrl.find{
-                        rf.field.contains(it.key)
-                    }
-
-                    def tmpUrl = mainUrl.value
-
-                    //remove the facetvalue from the URL (the role facet is selected)
-                    if(tmpUrl.contains(rf.field+"="+fv["value"])){
-                        tmpUrl = tmpUrl.replaceAll("&facetValues%5B%5D="+rf.field+"="+fv["value"],"")
-                        tmpFacetValuesMap["url"] = tmpUrl
-                        tmpFacetValuesMap["selected"] = "selected"
-
-                        //remove also the role facets from the corresponding subFacetUrl
-
-                        subFacetsUrl.each {  key, value  ->
-                            if (rf.field.contains(key)) {
-                                value.each { subUrl ->
-                                    if (subUrl.fctValue.equals(fv['value'])) {
-                                        def query = "&facetValues%5B%5D="+rf.field+"="+fv["value"]
-
-                                        //replace the url in the subUrl Map
-                                        def cleanedSubUrl = subUrl.url.replaceAll(query,"")
-                                        subUrl.url = cleanedSubUrl
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    //add the value to the link (the role facet is deselected)
-                    else{
-                        tmpUrl += "&facetValues%5B%5D="+rf.field+"%3D"+fv["value"]
-                        tmpFacetValuesMap["url"] = tmpUrl
-                    }
-
-                    res.add(tmpFacetValuesMap)
-                }
-            }
-        }
-
-        return res
-    }
-
 
     /**
      * 
@@ -338,41 +267,6 @@ class SearchService {
         emptyFacets.each{
             res.add([field: it, numberOfFacets: 0, facetValues: []])
         }
-        return res
-    }
-
-    /**
-     * Build the list of role facets to be rendered in the non javascript version of search results
-     *
-     * @param urlQuery the urlQuery
-     * @return list of all facets filtered
-     */
-    def buildRoleFacets(LinkedHashMap urlQuery){
-        def res = []
-        def roleFacets = [] // FIXME cortex has changed!  getRoleFacets()
-        roleFacets.each { roleFacet ->
-            if (urlQuery[roleFacet.parent] != null) {
-
-                urlQuery[roleFacet.parent].each { facetValue ->
-
-                    //FIXME /cortex/api/search is only for testing. Replace it wit /search
-                    //def searchUrl = '/cortex/api/search/facets/' + roleFacet.name
-                    def searchUrl = '/search/facets/' + roleFacet.name
-
-                    def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,searchUrl , false, [query:facetValue])
-                    if(!apiResponse.isOk()){
-                        log.error "Json: Json file was not found"
-                        apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-                    }
-                    def jsonResp = apiResponse.getResponse()
-
-                    if (jsonResp.numberOfFacets > 0) {
-                        res.add(jsonResp)
-                    }
-                }
-            }
-        }
-
         return res
     }
 
