@@ -17,13 +17,11 @@
 /* Search namespace  */
 de.ddb.next.search = de.ddb.next.search || {};
 
-//This patter searches for _1_ which is the devider between literal and role
-de.ddb.next.search.literalDeviderPattern = /_[0-9]+_/;
+//This patter searches for _1_ which is the divider between literal and role
+de.ddb.next.search.literalDividerPattern = /_[0-9]+_/;
 
 /**
  * Returns a role without its literal part. 
- * 
- * Returns the literal part of a role 
  * 
  * If a concrete role looks like this 
  * "Cotta_1_affiliate_fct_involved"
@@ -34,7 +32,7 @@ de.ddb.next.search.literalDeviderPattern = /_[0-9]+_/;
  * Roles have the following structure:
  * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
  * 
- * If the devider pattern does not match, return <code>null</code>
+ * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteral = function(role) {
 //  console.log("getRoleWithoutLiteral " + role);
@@ -43,10 +41,10 @@ de.ddb.next.search.getRoleWithoutLiteral = function(role) {
   var roleWithoutLiteral = null;
   
   //Check if the role value matches the pattern
-  var devider = de.ddb.next.search.literalDeviderPattern.exec(role);
-  if (devider) {
-    var indexOfDevider = role.indexOf(devider); 
-    roleWithoutLiteral = role.substring(indexOfDevider);
+  var divider = de.ddb.next.search.literalDividerPattern.exec(role);
+  if (divider) {
+    var indexOfDivider = role.indexOf(divider); 
+    roleWithoutLiteral = role.substring(indexOfDivider);
   }
   
   return roleWithoutLiteral;
@@ -64,7 +62,7 @@ de.ddb.next.search.getRoleWithoutLiteral = function(role) {
  * Roles have the following structure:
  * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
  * 
- * If the devider pattern does not match, return <code>null</code>
+ * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getLiteralFromRole = function(role) {
   var currObjInstance = this;
@@ -72,9 +70,9 @@ de.ddb.next.search.getLiteralFromRole = function(role) {
   var literal = null;
   
   //Check if the role value matches the pattern
-  var devider = de.ddb.next.search.literalDeviderPattern.exec(role);
-  if (devider) {
-    var split = role.split(devider); 
+  var divider = de.ddb.next.search.literalDividerPattern.exec(role);
+  if (divider) {
+    var split = role.split(divider); 
 //    console.log("split " + split);
     literal = split[0];
   }
@@ -94,20 +92,20 @@ de.ddb.next.search.getLiteralFromRole = function(role) {
  * Roles have the following structure:
  * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
  * 
- * If the devider pattern does not match, return <code>null</code>
+ * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber = function(role) {
   var currObjInstance = this;
   
-  var splitedRole = null;
+  var splittedRole = null;
   
   //Check if the role value matches the pattern
-  var devider = de.ddb.next.search.literalDeviderPattern.exec(role);
-  if (devider) {
-    var split = role.split(devider); 
+  var divider = de.ddb.next.search.literalDividerPattern.exec(role);
+  if (divider) {
+    var split = role.split(divider); 
     console.log("split " + split);
-    splitedRole = split[1];
+    splittedRole = split[1];
   }
-  console.log("splitedRole: " + splitedRole)
-  return splitedRole;
+  console.log("splitedRole: " + splittedRole)
+  return splittedRole;
 };
