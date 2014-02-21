@@ -188,9 +188,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   setFromDate: function(date){
     var currObjInstance = this;
-    
-    currObjInstance.fromDay = date.getUTCDay();
-    currObjInstance.fromMonth = date.getUTCMonth() +1;
+
+    currObjInstance.fromDay =  ("0" + date.getUTCDate()).slice(-2);
+    currObjInstance.fromMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
     currObjInstance.fromYear = date.getFullYear();
   },
   
@@ -199,9 +199,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   setTillDate: function(date){
     var currObjInstance = this;
-    
-    currObjInstance.tillDay = date.getUTCDay();
-    currObjInstance.tillMonth = date.getUTCMonth() +1;
+
+    currObjInstance.tillDay = ("0" + date.getUTCDate()).slice(-2);
+    currObjInstance.tillMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
     currObjInstance.tillYear = date.getFullYear();
   }
   
@@ -360,18 +360,18 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       $.each(facetValuesFromUrl, function(key, value) {
         
         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(13)
+          var beginDays = facetValuesFromUrl[key].substr(13);
           var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
           currObjInstance.selectedTimeSpan.setFromDate(beginDate);
           
           hasSelectedDate = true;
         }
-        
+
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var endDays = facetValuesFromUrl[key].substr(11)
+          var endDays = facetValuesFromUrl[key].substr(11);
           var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
           currObjInstance.selectedTimeSpan.setTillDate(endDate);
-          
+
           hasSelectedDate = true;
         }        
       });     
