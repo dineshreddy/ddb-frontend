@@ -32,6 +32,7 @@ public enum FacetEnum {
     SECTOR("sector_fct", "ddbnext.sector_fct_", true),
     PROVIDER("provider_fct", null, true),
     AFFILIATE_ROLE("affiliate_fct_role", null, false),
+    AFFILIATE_ROLE_NORMDATA("affiliate_fct_role_normdata", null, false),
     AFFILIATE_INVOLVED("affiliate_fct_involved", null, false),
     AFFILIATE_SUBJECT("affiliate_fct_subject", null, false),
     AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata", null, false),
