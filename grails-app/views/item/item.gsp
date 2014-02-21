@@ -40,7 +40,6 @@ limitations under the License.
       <g:render template="license" />
       <g:render template="origin" />
 <%--
-      <g:render template="pdfLink" />
          Sending PDF per Mail Start    
       <div class="sendmail-block">
         <div id="i18ntranslateSend" data-val="<g:message code="ddbnext.Send_Button" />"></div>

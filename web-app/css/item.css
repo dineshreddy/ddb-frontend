@@ -259,6 +259,14 @@
 .xml-link span {
   background: white;
 }
+.pdf-link {
+  padding-left: 27px;
+  background: url(../images/icons/itemActionsSprite.png) no-repeat;
+  background-position: -3px -247px;
+}
+.pdf-link span {
+  background: white;
+}
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
