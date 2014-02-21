@@ -360,16 +360,18 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       $.each(facetValuesFromUrl, function(key, value) {
         
         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(13);
+          var beginDays = facetValuesFromUrl[key].substr(16,6);
           var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+
           currObjInstance.selectedTimeSpan.setFromDate(beginDate);
           
           hasSelectedDate = true;
         }
 
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var endDays = facetValuesFromUrl[key].substr(11);
+          var endDays = facetValuesFromUrl[key].substr(24,6);
           var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+
           currObjInstance.selectedTimeSpan.setTillDate(endDate);
 
           hasSelectedDate = true;
