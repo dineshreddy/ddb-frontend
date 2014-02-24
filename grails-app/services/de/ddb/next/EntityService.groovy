@@ -218,11 +218,11 @@ class EntityService {
         if (imageUrl) {
             URL url = new URL(imageUrl)
 
-            ApiResponse apiResponse = ApiConsumer.getAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
+            ApiResponse apiResponse = ApiConsumer.headAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
             if(apiResponse.isOk()){
                 imageExists = true;
             } else {
-                log.warn "Entity image is not available under " + imageUrl
+                log.warn "Entity image response is " + apiResponse.status +  " . The image is not available under " + imageUrl
             }
         }
 

@@ -167,6 +167,17 @@ class ApiConsumer {
     }
 
     /**
+     * Requests a ANY ressource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def headAny(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.HEAD, ContentType.ANY, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
+    }
+
+    /**
      * Central method to call the backend, all other methods just delegate.
      * @param baseUrl The base REST-server url (e.g. "http://backend.escidoc.org")
      * @param path The path to the requested resource (e.g. "/item/ASDGAHASDFASDFDFDGDSVFFDGSDG/view")
