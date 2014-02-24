@@ -358,25 +358,45 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     if (facetValuesFromUrl) {
       $.each(facetValuesFromUrl, function(key, value) {
-        
-        if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(16,6);
-          var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
-          currObjInstance.selectedTimeSpan.setFromDate(beginDate);
-          
+        if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
+          var beginDays = facetValuesFromUrl[key].substr(16);
+
+          //Unscharf/Fuzzy
+          if(beginDays.substr(0,1) == '*'){
+            beginDays = beginDays.substr(5,6);
+            var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+
+            currObjInstance.selectedTimeSpan.setTillDate(endDate);
+          }else {//Genau/Exactly
+            beginDays = beginDays.substr(0,6);
+            var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+
+            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+          }
+
           hasSelectedDate = true;
         }
 
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var endDays = facetValuesFromUrl[key].substr(24,6);
-          var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+          var n = facetValuesFromUrl[key].search("TO") + 3;
+          var endDays = facetValuesFromUrl[key].substr(n,6);
 
-          currObjInstance.selectedTimeSpan.setTillDate(endDate);
+          //Unscharf/Fuzzy
+          if(endDays.substr(0,1) == '*'){
+            endDays = facetValuesFromUrl[key].substr(14,6)
+            var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+
+            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+          }else {//Genau/Exactly
+            var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+
+            currObjInstance.selectedTimeSpan.setTillDate(endDate);
+          }
 
           hasSelectedDate = true;
-        }        
-      });     
+        }
+      });
     }
 
     //Initialize the form
