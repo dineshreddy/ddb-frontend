@@ -356,6 +356,8 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     // Search for time facetValues[] in the window url
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
+    $("#limitationFuzzy").prop("checked", true);
+
     if (facetValuesFromUrl) {
       $.each(facetValuesFromUrl, function(key, value) {
 
@@ -373,6 +375,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
             var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+            $("#limitationExact").prop("checked", true);
           }
 
           hasSelectedDate = true;
@@ -389,9 +392,11 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
           }else {//Genau/Exactly
+            
             var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
 
             currObjInstance.selectedTimeSpan.setTillDate(endDate);
+            $("#limitationExact").prop("checked", true);
           }
 
           hasSelectedDate = true;
