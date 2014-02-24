@@ -122,9 +122,15 @@ class EntityController {
 
         searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
+        //------------------------- Check for entity picture -------------------------------
+        def imageUrl = jsonGraph?.person?.depiction?.thumbnail
+        def entityImageExists = entityService.entityImageExists(imageUrl)
+
+
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
+            "entityImageExists": entityImageExists,
             "isFavorite": itemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,

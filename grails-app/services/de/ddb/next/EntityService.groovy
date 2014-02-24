@@ -15,15 +15,14 @@
  */
 package de.ddb.next
 
-import static groovyx.net.http.ContentType.*
 import groovy.json.*
 
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.CultureGraphService
 import javax.persistence.EntityNotFoundException
 
 import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Service class for all entity related methods
@@ -138,7 +137,7 @@ class EntityService {
      */
     def Map getEntityDetails(String entityId) {
         def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entity", false,
-            [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
+                [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
 
         if (apiResponse.isOk()) {
             def response = apiResponse.getResponse()
@@ -211,6 +210,23 @@ class EntityService {
         searchQuery[(SearchParamEnum.SORT.getName())] = SearchParamEnum.SORT_RELEVANCE.getName()
 
         return searchQuery
+    }
+
+    def entityImageExists(imageUrl) {
+        def imageExists = false;
+
+        if (imageUrl) {
+            URL url = new URL(imageUrl)
+
+            ApiResponse apiResponse = ApiConsumer.getAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
+            if(apiResponse.isOk()){
+                imageExists = true;
+            } else {
+                log.warn "Entity image is not available under " + imageUrl
+            }
+        }
+
+        return imageExists
     }
 
 }
