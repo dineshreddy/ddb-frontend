@@ -366,12 +366,12 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
           //Unscharf/Fuzzy
           if(beginDays.substr(0,1) == '*'){
-            beginDays = beginDays.substr(5,6);
+            beginDays = beginDays.substr(5,beginDays.indexOf('%')-5);
             var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
             currObjInstance.selectedTimeSpan.setTillDate(endDate);
           }else {//Genau/Exactly
-            beginDays = beginDays.substr(0,6);
+            beginDays = beginDays.substr(0,beginDays.indexOf('+'));
             var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
@@ -383,16 +383,16 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
           var n = facetValuesFromUrl[key].search("TO") + 3;
-          var endDays = facetValuesFromUrl[key].substr(n,6);
+          var endDays = facetValuesFromUrl[key].substr(n);
 
           //Unscharf/Fuzzy
           if(endDays.substr(0,1) == '*'){
-            endDays = facetValuesFromUrl[key].substr(14,6)
+            endDays = facetValuesFromUrl[key].substr(14,n-18);
             var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
           }else {//Genau/Exactly
-            
+            endDays = endDays.substr(0,endDays.indexOf('%'));
             var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
 
             currObjInstance.selectedTimeSpan.setTillDate(endDate);
