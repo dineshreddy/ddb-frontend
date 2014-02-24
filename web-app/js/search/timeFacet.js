@@ -154,7 +154,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   getFromDateObject: function(){
     var currObjInstance = this;
-    
+
     //If no year is set -> return
     if (!currObjInstance.hasFromDate()) {
       return null;
@@ -163,7 +163,10 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     currObjInstance.completeFromDate();
     
     //Months starts from 0!
-    return new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay));  
+    var date = new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay))
+    if(currObjInstance.fromYear < 100 && currObjInstance.fromYear >= 0)
+      date.setUTCFullYear(("0000" + date.getYear()).slice(-4))
+    return date;  
   },
   
   /**
@@ -180,7 +183,10 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     currObjInstance.completeTillDate();
 
     //Months starts from 0!
-    return new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
+    date = new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
+    if(currObjInstance.tillYear < 100 && currObjInstance.tillYear >= 0)
+      date.setUTCFullYear(("0000" + date.getYear()).slice(-4))
+    return date;
   },
   
   /**
@@ -231,9 +237,8 @@ $.extend(de.ddb.next.search.TimeFacetHelper.prototype, {
   convertDateObjectToFacetDays: function(date) {
     var currObjInstance = this;
     var timeSince1970 = date.getTime()
-
     var days = (timeSince1970 / currObjInstance.MILLISECONDS_DAY) + currObjInstance.DAYS_FROM_YEAR_0_TO_1970;
-       
+
     return days;
   },
 
