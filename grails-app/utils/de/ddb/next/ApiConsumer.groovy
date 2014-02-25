@@ -57,7 +57,7 @@ class ApiConsumer {
     private static Pattern nonProxyHostsPattern
 
     /**
-     * Requests a TEXT ressource from the backend by calling GET
+     * Requests a TEXT resource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
@@ -75,7 +75,7 @@ class ApiConsumer {
     }
 
     /**
-     * Requests a JSON ressource from the backend by calling GET
+     * Requests a JSON resource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
@@ -122,7 +122,7 @@ class ApiConsumer {
     }
 
     /**
-     * Requests a XML ressource from the backend by calling GET
+     * Requests a XML resource from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
@@ -133,7 +133,7 @@ class ApiConsumer {
     }
 
     /**
-     * Requests a BINARY ressource as a block WITHOUT STREAMING from the backend by calling GET
+     * Requests a BINARY resource as a block WITHOUT STREAMING from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param optionalHeaders Optional request headers to add to the request
@@ -144,7 +144,7 @@ class ApiConsumer {
     }
 
     /**
-     * Requests a BINARY ressource as a block WITH STREAMING from the backend by calling GET
+     * Requests a BINARY resource as a block WITH STREAMING from the backend by calling GET
      * @param baseUrl The base REST-server url
      * @param path The path to the requested resource
      * @param streamingOutputStream The gsp OutputStream needed for streaming binary resources
@@ -153,6 +153,28 @@ class ApiConsumer {
      */
     static def getBinaryStreaming(String baseUrl, String path, boolean httpAuth = false, OutputStream streamingOutputStream, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
         return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.BINARY, null, httpAuth, optionalHeaders, false, streamingOutputStream, alreadyEncodedQuery)
+    }
+
+    /**
+     * Requests an ANY resource from the backend by calling GET
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def getAny(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.GET, ContentType.ANY, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
+    }
+
+    /**
+     * Requests an ANY resource from the backend by calling HEAD
+     * @param baseUrl The base REST-server url
+     * @param path The path to the requested resource
+     * @param optionalHeaders Optional request headers to add to the request
+     * @return An ApiResponse object containing the server response
+     */
+    static def headAny(String baseUrl, String path, boolean httpAuth = false, optionalQueryParams = [:], optionalHeaders = [:], alreadyEncodedQuery = false) {
+        return requestServer(baseUrl, path, [ client: DDBNEXT_CLIENT_NAME ].plus(optionalQueryParams), Method.HEAD, ContentType.ANY, null, httpAuth, optionalHeaders, false, null, alreadyEncodedQuery)
     }
 
     /**
