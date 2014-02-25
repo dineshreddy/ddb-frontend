@@ -63,8 +63,8 @@ $(function() {
           $('.page-input').attr('value', this.value);
 			
           var paramsArray = new Array(new Array('offset', (this.value - 1)
-			  * getParam("rows", 20)), new Array('rows',
-                  getParam("rows", 20)), new Array('order', getParam("order")));
+			  * getParamWithDefault("rows", 20)), new Array('rows', getParamWithDefault("rows",
+			  20)), new Array('order', getParam("order")));
           
 			window.location.href = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
         }
