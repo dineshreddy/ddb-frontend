@@ -95,17 +95,23 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     if (!currObjInstance.hasTillDate()) {
       return;
     }
-    
-    //if no day is set tillDay to ???
-    if (currObjInstance.tillDay === null) {
-      currObjInstance.tillDay = 28;//TODO get right day from calendar
-    }
-    
+
     //id no month is set tillMonth to 12
     if (currObjInstance.tillMonth === null) {
       currObjInstance.tillMonth = 12;
     }
-    
+
+    //if no day is set tillDay to ???
+    if (currObjInstance.tillDay === null) {
+      var days_in_month = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+
+      if(currObjInstance.tillYear %4 == 0 && currObjInstance.tillYear != 1900)
+      {
+         days_in_month[1]=29;
+      }
+      currObjInstance.tillDay = days_in_month[currObjInstance.tillMonth-1];
+    }
+
     return true;
   },
 
@@ -148,7 +154,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   getFromDateObject: function(){
     var currObjInstance = this;
-    
+
     //If no year is set -> return
     if (!currObjInstance.hasFromDate()) {
       return null;
@@ -157,7 +163,10 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     currObjInstance.completeFromDate();
     
     //Months starts from 0!
-    return new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay));  
+    var date = new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay))
+    if(currObjInstance.fromYear < 100 && currObjInstance.fromYear >= 0)
+      date.setUTCFullYear(("0000" + date.getYear()).slice(-4))
+    return date;  
   },
   
   /**
@@ -174,7 +183,10 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     currObjInstance.completeTillDate();
 
     //Months starts from 0!
-    return new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
+    date = new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
+    if(currObjInstance.tillYear < 100 && currObjInstance.tillYear >= 0)
+      date.setUTCFullYear(("0000" + date.getYear()).slice(-4))
+    return date;
   },
   
   /**
@@ -182,9 +194,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   setFromDate: function(date){
     var currObjInstance = this;
-    
-    currObjInstance.fromDay = date.getUTCDay();
-    currObjInstance.fromMonth = date.getUTCMonth() +1;
+
+    currObjInstance.fromDay =  ("0" + date.getUTCDate()).slice(-2);
+    currObjInstance.fromMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
     currObjInstance.fromYear = date.getFullYear();
   },
   
@@ -193,9 +205,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   setTillDate: function(date){
     var currObjInstance = this;
-    
-    currObjInstance.tillDay = date.getUTCDay();
-    currObjInstance.tillMonth = date.getUTCMonth() +1;
+
+    currObjInstance.tillDay = ("0" + date.getUTCDate()).slice(-2);
+    currObjInstance.tillMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
     currObjInstance.tillYear = date.getFullYear();
   }
   
@@ -225,9 +237,8 @@ $.extend(de.ddb.next.search.TimeFacetHelper.prototype, {
   convertDateObjectToFacetDays: function(date) {
     var currObjInstance = this;
     var timeSince1970 = date.getTime()
-
     var days = (timeSince1970 / currObjInstance.MILLISECONDS_DAY) + currObjInstance.DAYS_FROM_YEAR_0_TO_1970;
-       
+
     return days;
   },
 
@@ -350,25 +361,52 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     // Search for time facetValues[] in the window url
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
+    $("#limitationFuzzy").prop("checked", true);
+
     if (facetValuesFromUrl) {
-      $.each(facetValuesFromUrl, function(key, value) {        
-        
+      $.each(facetValuesFromUrl, function(key, value) {
+
         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(13)
-          var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-          currObjInstance.selectedTimeSpan.setFromDate(beginDate);
-          
+          var beginDays = facetValuesFromUrl[key].substr(16);
+
+          //Unscharf/Fuzzy
+          if(beginDays.substr(0,1) == '*'){
+            beginDays = beginDays.substr(5,beginDays.indexOf('%')-5);
+            var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+
+            currObjInstance.selectedTimeSpan.setTillDate(endDate);
+          }else {//Genau/Exactly
+            beginDays = beginDays.substr(0,beginDays.indexOf('+'));
+            var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
+
+            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+            $("#limitationExact").prop("checked", true);
+          }
+
           hasSelectedDate = true;
         }
-        
+
         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var endDays = facetValuesFromUrl[key].substr(11)
-          var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-          currObjInstance.selectedTimeSpan.setTillDate(endDate);
-          
+          var n = facetValuesFromUrl[key].search("TO") + 3;
+          var endDays = facetValuesFromUrl[key].substr(n);
+
+          //Unscharf/Fuzzy
+          if(endDays.substr(0,1) == '*'){
+            endDays = facetValuesFromUrl[key].substr(14,n-18);
+            var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+
+            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+          }else {//Genau/Exactly
+            endDays = endDays.substr(0,endDays.indexOf('%'));
+            var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
+
+            currObjInstance.selectedTimeSpan.setTillDate(endDate);
+            $("#limitationExact").prop("checked", true);
+          }
+
           hasSelectedDate = true;
-        }        
-      });     
+        }
+      });
     }
 
     //Initialize the form
@@ -441,7 +479,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var tillDayValue = $("#tillDay").val() !== "" ? $("#tillDay").val() : null;
     var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
-    
+
     if (checkYears) {
       if (fromYearValue === null && tillYearValue === null) {
         de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
@@ -522,21 +560,34 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
         }
       });
     }
+
     
-    if (currObjInstance.selectedTimeSpan.hasFromDate()) {
+    var daysFrom = '*';
+    var daysTill = '*';
+
+    if(currObjInstance.selectedTimeSpan.hasFromDate()) {
       var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
-//      console.log(fromDate);
-      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
-      
-      selectedFacetValues.push('begin_time=' + days);
+      daysFrom = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
+    }
+
+    if(currObjInstance.selectedTimeSpan.hasTillDate()) {
+      var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
+      daysTill = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
     }
     
-    if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
-//      console.log(tillDate);
-      var days = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
-      
-      selectedFacetValues.push('end_time=' + days);
+    //Genau
+    if($("#limitationExact").is(":checked")) {
+      if(daysFrom != '*')
+        selectedFacetValues.push('begin_time=[' + daysFrom + ' TO ' + daysTill + ']');
+      if(daysTill != '*')
+        selectedFacetValues.push('end_time=[' + daysFrom + ' TO ' + daysTill + ']');
+
+    }
+    else{//Unscharf
+      if(daysTill != '*')
+        selectedFacetValues.push('begin_time=[* TO '+ daysTill + ']');
+      if(daysFrom != '*')
+        selectedFacetValues.push('end_time=[' + daysFrom + ' TO *]');
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
