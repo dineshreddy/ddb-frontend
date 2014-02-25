@@ -209,6 +209,24 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     currObjInstance.tillDay = ("0" + date.getUTCDate()).slice(-2);
     currObjInstance.tillMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
     currObjInstance.tillYear = date.getFullYear();
+  },
+  
+  /**
+   * Clear parameter from From Date, because it doesn't find in the URL
+   */
+  clearFromDate: function(){
+    this.fromDay = null;
+    this.fromMonth = null;
+    this.fromYear = null;
+  },
+  
+  /**
+   * Clear parameter from Till Date, because it doesn't find in the URL
+   */
+  clearTillDate: function(){
+    this.tillDay = null;
+    this.tillMonth = null;
+    this.tillYear = null;
   }
   
 });
@@ -357,6 +375,8 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     var currObjInstance = this;
     var hasSelectedDate = false;
+    var updatedFrom = false;
+    var updatedTill = false;
     
     // Search for time facetValues[] in the window url
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
@@ -375,11 +395,13 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
             var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
             currObjInstance.selectedTimeSpan.setTillDate(endDate);
+            updatedTill = true;
           }else {//Genau/Exactly
             beginDays = beginDays.substr(0,beginDays.indexOf('+'));
             var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+            updatedFrom = true;
             $("#limitationExact").prop("checked", true);
           }
 
@@ -396,17 +418,25 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
             var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
 
             currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+            updatedFrom = true;
           }else {//Genau/Exactly
             endDays = endDays.substr(0,endDays.indexOf('%'));
             var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
 
             currObjInstance.selectedTimeSpan.setTillDate(endDate);
+            updatedTill = true;
             $("#limitationExact").prop("checked", true);
           }
 
           hasSelectedDate = true;
         }
       });
+
+      if(!updatedFrom)
+        currObjInstance.selectedTimeSpan.clearFromDate();
+
+      if(!updatedTill)
+        currObjInstance.selectedTimeSpan.clearTillDate();
     }
 
     //Initialize the form
