@@ -139,7 +139,6 @@ $(document).ready(
 
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount, entityid);
-          updateRoleDivs();
         }
 
         function initCarousel() {

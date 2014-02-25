@@ -35,11 +35,11 @@ limitations under the License.
           <hr>
           <g:render template="objects" />
         </g:if>
-        <g:if test="${searchInvolved.resultCount > 0 || searchInvolvedNormdata.resultCount > 0}">
+        <g:if test="${searchInvolved.resultCount > 0}">
           <hr>
             <g:render template="affiliateInvolvedObjects" />
         </g:if>        
-        <g:if test="${searchSubject.resultCount > 0 || searchSubjectNormdata.resultCount > 0}">
+        <g:if test="${searchSubject.resultCount > 0 }">
           <hr>
             <g:render template="affiliateSubjectObjects" />
         </g:if>

@@ -20,6 +20,6 @@ limitations under the License.
     </div>
   </div>
   <div id="search-subject-normdata">
-    <g:render template="roleSearchResults" model="[data:searchSubjectNormdata]"/>
+    <g:render template="roleSearchResults" model="[data:searchSubject]"/>
   </div>
 </div>

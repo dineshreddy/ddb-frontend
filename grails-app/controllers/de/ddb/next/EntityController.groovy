@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 
-import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
 import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
@@ -104,16 +103,16 @@ class EntityController {
         def searchPreview = entityService.doItemSearch(queryName, offset, rows, jsonGraph)
 
         //------------------------- Involved Search -------------------------------
-        def searchInvolved = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_involved", entityId)
+        def searchInvolved = entityService.doFacetSearch(0, 4, "affiliate_fct_involved", forename, surname)
 
         //------------------------- Involved Normdata Search -------------------------------
-        def searchInvolvedNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_involved", entityId)
+        //        def searchInvolvedNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_involved", entityId)
 
         //------------------------- Subject Search -------------------------------
-        def searchSubject = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_subject", entityId)
+        def searchSubject = entityService.doFacetSearch(0, 4, "affiliate_fct_subject", forename, surname)
 
         //------------------------- Subject Normdata Search -------------------------------
-        def searchSubjectNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_subject", entityId)
+        //        def searchSubjectNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_subject", entityId)
 
         //------------------------- Search preview media type count -------------------------------
         searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
@@ -134,9 +133,9 @@ class EntityController {
             "isFavorite": itemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
-            "searchInvolvedNormdata": searchInvolvedNormdata,
+            //            "searchInvolvedNormdata": searchInvolvedNormdata,
             "searchSubject": searchSubject,
-            "searchSubjectNormdata": searchSubjectNormdata
+            //            "searchSubjectNormdata": searchSubjectNormdata
         ]
 
         render(view: 'entity', model: model)
