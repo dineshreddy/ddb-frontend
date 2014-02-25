@@ -46,27 +46,28 @@ $(function() {
 
     updateNavigationUrl();
 
-    $('.page-input').keyup(
-        function(e) {
-          if (e.keyCode === 13) {
-            if (/^[0-9]+$/.test(this.value)) {
-              if (parseInt(this.value) <= 0) {
-                this.value = 1;
-              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-                this.value = $('.result-pages-count').text();
-              }
-            } else {
+    $('.page-input').keyup(function(e) {
+        if (e.keyCode === 13) {
+          if (/^[0-9]+$/.test(this.value)) {
+            var resultPagesCountText = $('.total-pages').text();
+            var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
+            
+            if (parseInt(this.value) <= 0) {
               this.value = 1;
+            } else if (parseInt(this.value) > resultPagesCountInt) {
+              this.value = $('.total-pages').text();
             }
-            $('.page-input').attr('value', this.value);
-            var paramsArray = new Array(
-                new Array('offset', (this.value - 1) * getParam("rows", 20)), new Array('rows',
-                    getParam("rows", 20)), new Array('order', getParam("order")));
-            var newUrl = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
-            window.location.href = newUrl;
-
+          } else {
+            this.value = 1;
           }
-        });
+          $('.page-input').attr('value', this.value);
+
+          var paramsArray = new Array(new Array('offset', (this.value - 1) *
+          getParamWithDefault("rows", 20)), new Array('rows', getParamWithDefault("rows", 20)), new Array('order', getParam("order")));
+          
+          window.location.href = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
+        }
+      });
 
     /** Delete favorites */
     $('#favorites-remove').submit(function() {
