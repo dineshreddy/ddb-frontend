@@ -52,8 +52,8 @@ $(function() {
             if (/^[0-9]+$/.test(this.value)) {
               if (parseInt(this.value) <= 0) {
                 this.value = 1;
-              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-                this.value = $('.result-pages-count').text();
+              } else if (parseInt(this.value) > parseInt($('.total-pages').text())) {
+                this.value = $('.total-pages').text();
               }
             } else {
               this.value = 1;
