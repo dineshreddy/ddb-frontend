@@ -60,12 +60,12 @@ limitations under the License.
         </div>
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
-            <a>
+            <a <g:if test="${it.preview.media == "entity"}">class="entity-link"</g:if>>
               <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </a>
           </g:if>
           <g:else>
-            <g:link class="persist" controller="${ controller }" action="${ action }" params="[id: it.id]">
+            <g:link class="persist<g:if test="${it.preview.media == "entity"}"> entity-link</g:if>" controller="${ controller }" action="${ action }" params="[id: it.id]">
               <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:link>
           </g:else>
