@@ -17,12 +17,11 @@ package de.ddb.next
 
 import groovy.json.*
 
-import javax.persistence.EntityNotFoundException
-
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.exception.EntityNotFoundException
 
 /**
  * Service class for all entity related methods
@@ -37,19 +36,72 @@ class EntityService {
 
     def transactional=false
 
-    /**
-     * Returns the result of a special entity facet search.
-     * 
-     * @param query the name of the entity to search for
-     * @param offset the search offset
-     * @param rows the number of documents that should be returned
-     * @param normdata indicates whether normdata object should be searched or not
-     * @param facetName the name of the facet to search for
-     * @param entityid the id of the entity
-     * 
-     * @return the search result
-     */
-    def doFacetSearch(def query, def offset, def rows, def normdata, def facetName, def entityid) {
+    //    /**
+    //     * Returns the result of a special entity facet search.
+    //     *
+    //     * @param query the name of the entity to search for
+    //     * @param offset the search offset
+    //     * @param rows the number of documents that should be returned
+    //     * @param normdata indicates whether normdata object should be searched or not
+    //     * @param facetName the name of the facet to search for
+    //     * @param entityid the id of the entity
+    //     *
+    //     * @return the search result
+    //     */
+    //    def doFacetSearch(def query, def offset, def rows, def normdata, def facetName, def entityid) {
+    //        println "doFacetSearch " + facetName + " normdata " + normdata
+    //
+    //        def facetSearch = [:]
+    //
+    //        def searchQuery = []
+    //
+    //        def searchUrlParameter = []
+    //
+    //        def gndUrl = CultureGraphService.GND_URI_PREFIX
+    //
+    //        query = ""; //For DDBNEXT-1240 set an empty query
+    //
+    //        if (normdata) {
+    //            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.FACET.getName()): [], (facetName+'_normdata') : (gndUrl + entityid)]
+    //            searchQuery[SearchParamEnum.FACET.getName()].add(facetName + "_normdata")
+    //
+    //            //These parameters are for the frontend to create a search link
+    //            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
+    //                    (facetName+'_normdata')+ "="+(gndUrl + entityid)
+    //                ]]
+    //        } else {
+    //            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): [], (FacetEnum.AFFILIATE.getName()) : query]
+    //            searchQuery[facetName] = query
+    //            searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE.getName())
+    //            searchQuery[SearchParamEnum.FACET.getName()].add(facetName)
+    //
+    //            //These parameters are for the frontend to create a search link
+    //            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query,
+    //                (SearchParamEnum.FACETVALUES.getName()): [
+    //                    FacetEnum.AFFILIATE.getName() + "="+query,
+    //                    FacetEnum.AFFILIATE_INVOLVED.getName()+"="+query
+    //                ]]
+    //        }
+    //
+    //        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
+    //
+    //        if(!apiResponse.isOk()){
+    //            def message = "doFacetSearch(): Search response contained error"
+    //            log.error message
+    //            throw new RuntimeException(message)
+    //        }
+    //
+    //        def jsonSearchResult = apiResponse.getResponse()
+    //
+    //        facetSearch["items"] = jsonSearchResult?.results?.docs
+    //        facetSearch["resultCount"] = jsonSearchResult?.numberOfResults
+    //        facetSearch["searchUrlParameter"] = searchUrlParameter
+    //
+    //        return facetSearch
+    //    }
+
+
+    def doFacetSearch(def offset, def rows, def facetName, def entityForename, def entitySurname) {
         def facetSearch = [:]
 
         def searchQuery = []
@@ -58,26 +110,32 @@ class EntityService {
 
         def gndUrl = CultureGraphService.GND_URI_PREFIX
 
-        if (normdata) {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.FACET.getName()): [], (facetName+'_normdata') : (gndUrl + entityid)]
-            searchQuery[SearchParamEnum.FACET.getName()].add(facetName + "_normdata")
+        def query = ""
 
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    (facetName+'_normdata')+ "="+(gndUrl + entityid)
-                ]]
-        } else {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): [], (FacetEnum.AFFILIATE.getName()) : query]
-            searchQuery[facetName] = query
-            searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE.getName())
-            searchQuery[SearchParamEnum.FACET.getName()].add(facetName)
+        def facetValue = entitySurname + ", " + entityForename  //%2C is a ","
+        def roleValue = facetValue + "_1_" + facetName
 
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    FacetEnum.AFFILIATE.getName() + "="+query,
-                    FacetEnum.AFFILIATE_INVOLVED.getName()+"="+query
-                ]]
-        }
+        searchQuery = [
+            (SearchParamEnum.ROWS.getName()): rows,
+            (SearchParamEnum.OFFSET.getName()): offset,
+            (SearchParamEnum.QUERY.getName()): query,
+            (SearchParamEnum.FACET.getName()): []]
+        searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE.getName())
+        searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_ROLE.getName())
+        searchQuery[(FacetEnum.AFFILIATE_ROLE.getName())] = roleValue
+        searchQuery[(FacetEnum.AFFILIATE.getName())] = facetValue
+
+        log.info "searchQuery" + searchQuery
+
+        //These parameters are for the frontend to create a search link which is not limited to 4 documents...
+        searchUrlParameter = [
+            (SearchParamEnum.QUERY.getName()):query,
+            (SearchParamEnum.FACETVALUES.getName()): [
+                FacetEnum.AFFILIATE.getName() + "=" + facetValue,
+                FacetEnum.AFFILIATE_ROLE.getName() + "=" + roleValue]
+        ]
+
+        log.info  "searchUrlParameter" + searchUrlParameter
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
 
@@ -95,6 +153,7 @@ class EntityService {
 
         return facetSearch
     }
+
 
     /**
      * Performs a search request on the backend. 
