@@ -15,19 +15,17 @@ limitations under the License.
 --%>
 <ul class="results-list unstyled entity-list">
 
-  <g:set var="pageHitCounter" value="${0}"/>  
-  
+  <g:set var="pageHitCounter" value="${0}"/>
+
   <g:each in="${entities}" var="entityItem">
-  	<g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
+    <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="entity bt ">
       <div class="summary row">
-      
-      
         <div class="summary-main-wrapper summary-main-wrapper-gnd span7">
           <div class="summary-main summary-entity">
             <div class="entity-type">
-                <g:message code="ddbnext.Entity_Page_Person"/>
+              <g:message code="ddbnext.Entity_Page_Person"/>
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
@@ -35,16 +33,15 @@ limitations under the License.
               </g:link>
             </h2>
             <div class="subtitle">
-            	<g:each in="${ entityItem.professionOrOccupation }" var="profession">
-                	${profession}
-                </g:each>
+              <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
+              <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
+                ${profession}<g:if test="${i != last}">, </g:if>
+              </g:each>
             </div>
           </div>
           <div class="extra">
           </div>
         </div>
-        
-        
         <div class="thumbnail-wrapper span2">
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id: entityItem.id]}" class="no-external-link-icon">
@@ -65,10 +62,7 @@ limitations under the License.
           </ddb:isLoggedIn>
           --%>
         </div>
-
-
       </div>
     </li>
   </g:each>
-  
 </ul>
