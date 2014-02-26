@@ -386,20 +386,19 @@ hr {
 
 .favorites-results .results-list .summary .extra .types li.entity {
   background: url("../images/placeholder/searchResultEntity.png") no-repeat center top;
-  background-size: 23px 19px;
-  padding-left: 0;
+  background-size: 25px;
+  padding: 0;
+  border: 1px solid #878380;
 }
 
 .favorites-results .results-list .summary .extra .types .unknown {
   background-position: 0 0;
 }
 
-
 .favorites-results .results-list .summary-main {
   min-height: 74px;
   margin-left: 36px;
 }
-
 
 .favorites-results .remove-item-check {
   position: absolute;
@@ -415,7 +414,6 @@ hr {
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
   padding-left: 25px;
 }
-
 
 .favorites-results .results-list .extra {
   margin-left: 36px;
@@ -437,6 +435,12 @@ hr {
 
 .favorites-results .results-list .summary .information:hover {
   background-position: 0 -20px;
+}
+
+.favorites-results .thumbnail .entity-link {
+  width: 138px;
+  height: 103px;
+  border: 1px solid #878380;
 }
 
 .bookmarks-lists .active {
@@ -575,7 +579,7 @@ hr {
 }
 
 .orderList{
-	margin:10px 0 10px 3px;
+  margin:10px 0 10px 3px;
 }
 
 #favoritesCreateConfirmDialog.modal{
@@ -662,7 +666,6 @@ hr {
   padding: 0;
   margin: 0;
 }
-
 
 .icon-not-publish {
   background: url("../images/icons/favorites.png") no-repeat 0 0;
