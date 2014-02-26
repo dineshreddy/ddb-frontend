@@ -128,7 +128,13 @@ limitations under the License.
 			</select> 
 			<input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
-		<div><g:message code="ddbnext.facet_time_restrict_to"/></div>
+		<div class="time-restriction">
+		  <span><g:message code="ddbnext.facet_time_restrict_to"/></span>
+		  <span class="contextual-help hidden-phone hidden-tablet" 
+                title="${g.message(code: "ddbnext.Time_Restriction_Tooltip")}" data-content="${g.message(code: "ddbnext.Time_Restriction_Tooltip")}">
+          </span> 
+          <div class="tooltip off hasArrow"></div>
+		</div>
 		<div>
 			<input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" /> <label for="limitationFuzzy"><g:message code="ddbnext.facet_time_fuzzy"/></label>
 			<input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact"><g:message code="ddbnext.facet_time_exactly"/></label>
