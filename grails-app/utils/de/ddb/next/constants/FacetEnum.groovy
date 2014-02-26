@@ -23,22 +23,18 @@ package de.ddb.next.constants
  */
 public enum FacetEnum {
     //Main facets
-    TIME("time_fct", "ddbnext.time_fct_", true),
-    PLACE("place_fct", null, true),
-    AFFILIATE("affiliate_fct", null, true),
-    KEYWORDS("keywords_fct", null, true),
-    LANGUAGE("language_fct", "ddbnext.language_fct_", true),
-    TYPE("type_fct", "ddbnext.type_fct_", true),
-    SECTOR("sector_fct", "ddbnext.sector_fct_", true),
-    PROVIDER("provider_fct", null, true),
-    AFFILIATE_ROLE("affiliate_fct_role", null, false),
-    AFFILIATE_ROLE_NORMDATA("affiliate_fct_role_normdata", null, false),
-    AFFILIATE_INVOLVED("affiliate_fct_involved", null, false),
-    AFFILIATE_SUBJECT("affiliate_fct_subject", null, false),
-    AFFILIATE_INVOLVED_NORMDATA("affiliate_fct_involved_normdata", null, false),
-    AFFILIATE_SUBJECT_NORMDATA("affiliate_fct_subject_normdata", null, false),
-    BEGIN_TIME("begin_time", null, false),
-    END_TIME("end_time", null, false),
+    TIME("time_fct", "ddbnext.time_fct_", true, false),
+    PLACE("place_fct", null, true, false),
+    AFFILIATE("affiliate_fct", null, true, false),
+    KEYWORDS("keywords_fct", null, true, false),
+    LANGUAGE("language_fct", "ddbnext.language_fct_", true, false),
+    TYPE("type_fct", "ddbnext.type_fct_", true, false),
+    SECTOR("sector_fct", "ddbnext.sector_fct_", true, false),
+    PROVIDER("provider_fct", null, true, false),
+    AFFILIATE_ROLE("affiliate_fct_role", null, false, true),
+    AFFILIATE_ROLE_NORMDATA("affiliate_fct_role_normdata", null, false, false),
+    BEGIN_TIME("begin_time", null, false, false),
+    END_TIME("end_time", null, false, false),
 
     /** The facet name as used by the cortex */
     private String name
@@ -49,16 +45,20 @@ public enum FacetEnum {
     /** Indicates if this facet is used in the item search */
     private boolean isSearchFacet
 
+    /** Indicates that this facet contains facet values and role values (like the affilate_facet_role)*/
+    private boolean isMixedFacet
+
     /**
      * Constructor
      * 
      * @param name name of the facet
      * @param isSearchFacet <code>true</code> if this facet is used in the item search
      */
-    private FacetEnum(String name, String i18nPrefix, boolean isSearchFacet) {
+    private FacetEnum(String name, String i18nPrefix, boolean isSearchFacet, boolean isMixedFacet) {
         this.name = name
         this.i18nPrefix = i18nPrefix
         this.isSearchFacet = isSearchFacet
+        this.isMixedFacet = isMixedFacet
     }
 
     /**
@@ -77,6 +77,15 @@ public enum FacetEnum {
      */
     public boolean isSearchFacet() {
         return isSearchFacet
+    }
+
+    /**
+     * Indicates if this facet contains facet and role values.
+     *
+     * @return <code>true</code> if this enum is used as mixed facet
+     */
+    public boolean isMixedFacet() {
+        return isMixedFacet
     }
 
     /**
