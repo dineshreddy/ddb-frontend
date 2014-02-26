@@ -136,12 +136,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       isThumbnailFIltered = '&isThumbnailFiltered=true';
     }    
         
-    var url = jsContextPath + '/facets' + '?name=' + facetField + '_role' + '&searchQuery='
+    var url = jsContextPath + '/facets' + '?name=' + facetField + '_role' + '&facetValues%5B%5D=' + facetField + "%3D" + facetValue + '&searchQuery='
     + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows
     
     
-//    console.log("fetchRoleFacetValues url: " + url);
+    //console.log("fetchRoleFacetValues url: " + url);
     var request = $.ajax({
       type : 'GET',
       dataType : 'json',
@@ -149,6 +149,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       url : url,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(request.responseText);
+        
         if (parsedResponse.values.length > 0) {
           currObjInstance.connectedflyoutWidget.renderRoleValues(facetValueContainer, facetValue, facetField + '_role', parsedResponse);
         }

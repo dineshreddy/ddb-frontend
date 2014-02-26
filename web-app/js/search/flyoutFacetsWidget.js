@@ -338,7 +338,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 //          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
 
       //The parent part of the role must match exactly the facet value! 
-          if (facetValue.toString() === de.ddb.next.search.getLiteralFromRole(value.value).toString()) {
+          if (facetValue === de.ddb.next.search.getLiteralFromRole(value.value)) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));
