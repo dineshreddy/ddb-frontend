@@ -622,7 +622,6 @@ class SearchService {
     }
 
     /**
-     *
      * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
      *
      * @param facets list of facets fetched from the backend
@@ -661,6 +660,30 @@ class SearchService {
         }
         return res
     }
+
+    /**
+     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
+     *
+     * @param facets list of facets fetched from the backend
+     * @param fctName name of the facet field required
+     * @param numberOfElements number of elements to return
+     * 
+     * @return List of Map
+     */
+    def getRoleFacetValues(List facets, String fctName, int numberOfElements, Locale locale){
+        def res = [type: fctName, values: []]
+        facets.each{
+            int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
+            for(int i=0;i<max;i++){
+                if(it.field==fctName){
+                    res.values.add([value: it.facetValues[i].value, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                }
+            }
+        }
+
+        return res
+    }
+
 
     /**
      * 

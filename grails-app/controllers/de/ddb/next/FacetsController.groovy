@@ -46,12 +46,11 @@ class FacetsController {
         def facetValues
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
-        // Key based facet value -> Search filtering must be done in the frontend
+        // Key based facets uses the "Search" endpoint (/apis/search)
         if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
             }
 
@@ -61,8 +60,24 @@ class FacetsController {
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
 
-        }else{
+        }
 
+        //Role facets uses the "Search" endpoint (/apis/search)
+        else if(facetName.endsWith("role")){
+            def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
+            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+            if(!apiResponse.isOk()){
+                apiResponse.throwException(request)
+            }
+
+            def resultsItems = apiResponse.getResponse().facets
+
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            facetValues = searchService.getRoleFacetValues(resultsItems, facetName, maxResults, locale)
+        }
+
+        //All other facets uses the new "Autocomplete facets" endpoint of the backend
+        else{
             def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
@@ -72,7 +87,6 @@ class FacetsController {
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
 
             if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
             }
 
