@@ -60,18 +60,18 @@ limitations under the License.
 			
 			<select id="fromMonth" class="month">
 				<option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
-				<option value="01">January</option>
-				<option value="02">February</option>
-				<option value="03">March</option>
-				<option value="04">April</option>
-				<option value="05">May</option>
-				<option value="06">June</option>
-				<option value="07">July</option>
-				<option value="08">August</option>
-				<option value="09">September</option>
-				<option value="10">October</option>
-				<option value="11">November</option>
-				<option value="12">December</option>
+				<option value="01"><g:message code="ddbnext.facet_time_jan"/></option>
+				<option value="02"><g:message code="ddbnext.facet_time_feb"/></option>
+				<option value="03"><g:message code="ddbnext.facet_time_mar"/></option>
+				<option value="04"><g:message code="ddbnext.facet_time_apr"/></option>
+				<option value="05"><g:message code="ddbnext.facet_time_may"/></option>
+				<option value="06"><g:message code="ddbnext.facet_time_jun"/></option>
+				<option value="07"><g:message code="ddbnext.facet_time_jul"/></option>
+				<option value="08"><g:message code="ddbnext.facet_time_aug"/></option>
+				<option value="09"><g:message code="ddbnext.facet_time_sep"/></option>
+				<option value="10"><g:message code="ddbnext.facet_time_oct"/></option>
+				<option value="11"><g:message code="ddbnext.facet_time_nov"/></option>
+				<option value="12"><g:message code="ddbnext.facet_time_dec"/></option>
 			</select>
 			<input type="text" pattern="-?\[0-9]*" id="fromYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
@@ -113,18 +113,18 @@ limitations under the License.
 			</select>
 			<select id="tillMonth" class="month">
 				<option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
-				<option value="01">Januar</option>
-				<option value="02">Februar</option>
-				<option value="03">März</option>
-				<option value="04">April</option>
-				<option value="05">Mai</option>
-				<option value="06">Juni</option>
-				<option value="07">Juli</option>
-				<option value="08">August</option>
-				<option value="09">September</option>
-				<option value="10">Oktober</option>
-				<option value="11">November</option>
-				<option value="12">Dezember</option>
+                <option value="01"><g:message code="ddbnext.facet_time_jan"/></option>
+                <option value="02"><g:message code="ddbnext.facet_time_feb"/></option>
+                <option value="03"><g:message code="ddbnext.facet_time_mar"/></option>
+                <option value="04"><g:message code="ddbnext.facet_time_apr"/></option>
+                <option value="05"><g:message code="ddbnext.facet_time_may"/></option>
+                <option value="06"><g:message code="ddbnext.facet_time_jun"/></option>
+                <option value="07"><g:message code="ddbnext.facet_time_jul"/></option>
+                <option value="08"><g:message code="ddbnext.facet_time_aug"/></option>
+                <option value="09"><g:message code="ddbnext.facet_time_sep"/></option>
+                <option value="10"><g:message code="ddbnext.facet_time_oct"/></option>
+                <option value="11"><g:message code="ddbnext.facet_time_nov"/></option>
+                <option value="12"><g:message code="ddbnext.facet_time_dec"/></option>
 			</select> 
 			<input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
 		</div>
