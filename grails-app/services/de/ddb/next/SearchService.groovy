@@ -32,7 +32,6 @@ import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
-
 /**
  * Set of services used in the SearchController for views/search
  * 
@@ -55,7 +54,9 @@ class SearchService {
     private static facetsList = [
         FacetEnum.TIME.getName(),
         FacetEnum.PLACE.getName(),
+        //TODO Remove FacetEnum.AFFILIATE for DDBNEXT-1249
         FacetEnum.AFFILIATE.getName(),
+        FacetEnum.AFFILIATE_ROLE.getName(),
         FacetEnum.KEYWORDS.getName(),
         FacetEnum.LANGUAGE.getName(),
         FacetEnum.TYPE.getName(),
@@ -589,32 +590,41 @@ class SearchService {
      * @param facets list of facets fetched from the backend
      * @param fctName name of the facet field required
      * @param numberOfElements number of elements to return
+     * @param matcher facetValues must match this string
+     * @param locale for formating numbers
+     * @param filterRoles indicates if the role values should be filtered from the list
+     * 
      * @return List of Map
      */
-    def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale){
+    def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale, boolean filterRoles){
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
+            def facetValue = facets.facetValues[i].value
+
+            if (filterRoles && facetValue =~ /_\d+_/) {
+                continue
+            }
 
             //Check if facet value has to be filtered
             boolean filterFacet = false
             for(int k=0; k<allFacetFilters.size(); k++){
-                if(fctName == allFacetFilters[k].facetName && facets.facetValues[i].value.toString() == allFacetFilters[k].filter){
+                if(fctName == allFacetFilters[k].facetName && facetValue.toString() == allFacetFilters[k].filter){
                     filterFacet = true
                     break
                 }
             }
 
             if(!filterFacet){
-                if(matcher && facets.facetValues[i].value.toString().toLowerCase().contains(matcher.toLowerCase())){
-                    def facetValue = facets.facetValues[i].value
+                if(matcher && facetValue.toString().toLowerCase().contains(matcher.toLowerCase())){
+
                     def firstIndexMatcher = facetValue.toLowerCase().indexOf(matcher.toLowerCase())
                     facetValue = facetValue.substring(0, firstIndexMatcher)+"<strong>"+facetValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+facetValue.substring(firstIndexMatcher+matcher.size(),facetValue.size())
-                    res.values.add([value: facets.facetValues[i].value, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                    res.values.add([value: facetValue, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
                 } else {
-                    res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                    res.values.add([value: facetValue, localizedValue: this.getI18nFacetValue(fctName, facetValue.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
                 }
             }
         }
@@ -637,50 +647,29 @@ class SearchService {
             if(it.field==fctName){
                 int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
+
+                    def facetValue = it.facetValues[i].value.toString()
                     //Check if facet value has to be filtered
                     boolean filterFacet = false
                     for(int k=0; k<allFacetFilters.size(); k++){
-                        if(fctName == allFacetFilters[k].facetName && it.facetValues[i].value.toString() == allFacetFilters[k].filter){
+                        if(fctName == allFacetFilters[k].facetName && facetValue == allFacetFilters[k].filter){
                             filterFacet = true
                             break
                         }
                     }
 
                     if(!filterFacet){
-                        if(matcher && this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
-                            def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
+                        if(matcher && this.getI18nFacetValue(fctName, facetValue).toLowerCase().contains(matcher.toLowerCase())){
+                            def localizedValue = this.getI18nFacetValue(fctName, facetValue)
                             def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
                             localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                            res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                            res.values.add([value: facetValue, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                         }else if(!matcher)
-                            res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                            res.values.add([value: facetValue, localizedValue: this.getI18nFacetValue(fctName, facetValue), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                     }
-                }
+                } // End for
             }
         }
-        return res
-    }
-
-    /**
-     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
-     *
-     * @param facets list of facets fetched from the backend
-     * @param fctName name of the facet field required
-     * @param numberOfElements number of elements to return
-     * 
-     * @return List of Map
-     */
-    def getRoleFacetValues(List facets, String fctName, int numberOfElements, Locale locale){
-        def res = [type: fctName, values: []]
-        facets.each{
-            int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
-            for(int i=0;i<max;i++){
-                if(it.field==fctName){
-                    res.values.add([value: it.facetValues[i].value, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
-                }
-            }
-        }
-
         return res
     }
 
@@ -699,7 +688,7 @@ class SearchService {
 
         def res = ""
 
-        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
+        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
             res = facetValue
         }
         else if(facetName == FacetEnum.TYPE.getName()){
