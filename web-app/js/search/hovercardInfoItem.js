@@ -91,7 +91,7 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
         content.empty();
         var JSONresponse = jQuery.parseJSON(data.responseText);
         $.each(JSONresponse, function(key, value) {
-          if (key !== 'last_update' && value != "" && key.indexOf("normdata") === -1) {
+          if (key !== 'last_update' && value != "" && (key.indexOf("normdata") && key.indexOf("fct_role")) === -1) {
             var li = $(document.createElement('li'));
             var fieldName = $(document.createElement('span'));
             var fieldContent = $(document.createElement('span'));
