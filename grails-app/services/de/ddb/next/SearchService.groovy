@@ -676,27 +676,25 @@ class SearchService {
             if(it.field==fctName){
                 int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
                 for(int i=0;i<max;i++){
-
-                    def facetValue = it.facetValues[i].value.toString()
                     //Check if facet value has to be filtered
                     boolean filterFacet = false
                     for(int k=0; k<allFacetFilters.size(); k++){
-                        if(fctName == allFacetFilters[k].facetName && facetValue == allFacetFilters[k].filter){
+                        if(fctName == allFacetFilters[k].facetName && it.facetValues[i].value.toString() == allFacetFilters[k].filter){
                             filterFacet = true
                             break
                         }
                     }
 
                     if(!filterFacet){
-                        if(matcher && this.getI18nFacetValue(fctName, facetValue).toLowerCase().contains(matcher.toLowerCase())){
-                            def localizedValue = this.getI18nFacetValue(fctName, facetValue)
+                        if(matcher && this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()).toLowerCase().contains(matcher.toLowerCase())){
+                            def localizedValue = this.getI18nFacetValue(fctName, it.facetValues[i].value.toString())
                             def firstIndexMatcher = localizedValue.toLowerCase().indexOf(matcher.toLowerCase())
                             localizedValue = localizedValue.substring(0, firstIndexMatcher)+"<strong>"+localizedValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+localizedValue.substring(firstIndexMatcher+matcher.size(),localizedValue.size())
-                            res.values.add([value: facetValue, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                            res.values.add([value: it.facetValues[i].value, localizedValue: localizedValue, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                         }else if(!matcher)
-                            res.values.add([value: facetValue, localizedValue: this.getI18nFacetValue(fctName, facetValue), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
+                            res.values.add([value: it.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, it.facetValues[i].value.toString()), count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
                     }
-                } // End for
+                }
             }
         }
         return res
