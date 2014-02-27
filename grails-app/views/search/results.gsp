@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="de.ddb.next.constants.FacetEnum"%>
-<g:set var="facetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+<g:set var="facetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <html>
 <head>
 <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
