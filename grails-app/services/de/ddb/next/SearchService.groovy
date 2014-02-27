@@ -602,29 +602,29 @@ class SearchService {
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
-            def facetValue = facets.facetValues[i].value
 
-            if (filterRoles && facetValue =~ /_\d+_/) {
+
+            if (filterRoles && facets.facetValues[i].value.toString() =~ /_\d+_/) {
                 continue
             }
 
             //Check if facet value has to be filtered
             boolean filterFacet = false
             for(int k=0; k<allFacetFilters.size(); k++){
-                if(fctName == allFacetFilters[k].facetName && facetValue.toString() == allFacetFilters[k].filter){
+                if(fctName == allFacetFilters[k].facetName && facets.facetValues[i].value.toString() == allFacetFilters[k].filter){
                     filterFacet = true
                     break
                 }
             }
 
             if(!filterFacet){
-                if(matcher && facetValue.toString().toLowerCase().contains(matcher.toLowerCase())){
-
+                if(matcher && facets.facetValues[i].value.toString().toLowerCase().contains(matcher.toLowerCase())){
+                    def facetValue = facets.facetValues[i].value
                     def firstIndexMatcher = facetValue.toLowerCase().indexOf(matcher.toLowerCase())
                     facetValue = facetValue.substring(0, firstIndexMatcher)+"<strong>"+facetValue.substring(firstIndexMatcher,firstIndexMatcher+matcher.size())+"</strong>"+facetValue.substring(firstIndexMatcher+matcher.size(),facetValue.size())
-                    res.values.add([value: facetValue, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
                 } else {
-                    res.values.add([value: facetValue, localizedValue: this.getI18nFacetValue(fctName, facetValue.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+                    res.values.add([value: facets.facetValues[i].value, localizedValue: this.getI18nFacetValue(fctName, facets.facetValues[i].value.toString()), count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
                 }
             }
         }
