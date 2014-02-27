@@ -32,6 +32,8 @@ import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import org.springframework.context.i18n.LocaleContextHolder
+
 import de.ddb.next.beans.User
 import de.ddb.next.exception.AuthorizationException
 import de.ddb.next.exception.BackendErrorException
@@ -245,6 +247,7 @@ class ApiConsumer {
                 if(fixWrongContentTypeHeader){
                     http.parser.'application/json' = http.parser.'text/html'
                 }
+                headers.'Accept-Language' = LocaleContextHolder.getLocale()
 
                 response.success = { resp, output ->
                     switch(content) {
