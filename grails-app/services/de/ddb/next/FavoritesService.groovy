@@ -156,9 +156,11 @@ class FavoritesService {
                 if(it.type == Type.ENTITY){
                     def entity = [:]
                     label = entityService.getEntityDetails(it.itemId)?.preferredName
-                    def professions = entityService.getEntityDetails(it.itemId).professionOrOccupation
-                    for ( i in professions ) {
-                      subtitle += i + ", "
+                    def professions = entityService.getEntityDetails(it.itemId)?.professionOrOccupation
+                    professions.each {
+                      subtitle += it
+                      if(it != professions.last())
+                        subtitle +=", "
                     }
                     entity["id"] = it.itemId
                     entity["view"] = []
