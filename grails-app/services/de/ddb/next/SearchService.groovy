@@ -55,7 +55,7 @@ class SearchService {
         FacetEnum.TIME.getName(),
         FacetEnum.PLACE.getName(),
         //TODO Remove FacetEnum.AFFILIATE for DDBNEXT-1249
-        FacetEnum.AFFILIATE.getName(),
+        //FacetEnum.AFFILIATE.getName(),
         FacetEnum.AFFILIATE_ROLE.getName(),
         FacetEnum.KEYWORDS.getName(),
         FacetEnum.LANGUAGE.getName(),
