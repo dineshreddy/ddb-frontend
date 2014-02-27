@@ -112,6 +112,7 @@ ddb {
                 [facetName:FacetEnum.KEYWORDS.getName(), filter:'null'],
                 [facetName:FacetEnum.PROVIDER.getName(), filter:'null'],
                 [facetName:FacetEnum.AFFILIATE.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_ROLE.getName(), filter:'null'],
                 [facetName:FacetEnum.TYPE.getName(), filter:'null'],
                 [facetName:FacetEnum.SECTOR.getName(), filter:'null'],
                 [facetName:FacetEnum.PLACE.getName(), filter:'null'],

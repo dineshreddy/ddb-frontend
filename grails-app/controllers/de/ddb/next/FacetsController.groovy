@@ -59,21 +59,6 @@ class FacetsController {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
-
-        }
-
-        //Role facets uses the "Search" endpoint (/apis/search)
-        else if(facetName.endsWith("role")){
-            def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-            if(!apiResponse.isOk()){
-                apiResponse.throwException(request)
-            }
-
-            def resultsItems = apiResponse.getResponse().facets
-
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-            facetValues = searchService.getRoleFacetValues(resultsItems, facetName, maxResults, locale)
         }
 
         //All other facets uses the new "Autocomplete facets" endpoint of the backend
@@ -82,7 +67,7 @@ class FacetsController {
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
-            //FIXME /cortex/api/search is only for testing. Replace it wit /search
+            //FIXME /cortex/api/search is only for testing. Replace it with /search
             //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
 
@@ -94,10 +79,46 @@ class FacetsController {
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale)
+            //Filter the role values for mixed facets like affiliate_facet_role!
+            if (facetName.endsWith("role")) {
+                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
+            } else {
+                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+            }
         }
 
         render (contentType:"text/json"){facetValues}
+    }
+
+    /**
+     * Returns the roles for a specific facet value
+     * 
+     * @return the roles for a specific facet value
+     */
+    def getRolesForFacetValue() {
+        def facetName = params.name
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
+
+        def roleValues = null
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
+
+        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+        urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
+        urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+
+        if(!apiResponse.isOk()){
+            apiResponse.throwException(request)
+        }
+
+        def resultsItems = apiResponse.getResponse()
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        roleValues = searchService.getRolesForFacetValue(resultsItems, facetName, maxResults, locale)
+
+        render (contentType:"text/json"){roleValues}
     }
 
     /**

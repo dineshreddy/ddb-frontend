@@ -83,8 +83,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
    * A call of buildStructure() creates the html structure of the facetLeftContainer and the facetRightContainer.
    */
   build : function(element) {
-    console.log("build() " + element);
-    
     if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length === 0)
         || element.attr('class') == 'add-more-filters') {
       if ((element.attr('data-fctname') !== this.fctManager.currentFacetField || (element
@@ -226,7 +224,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
    */
   renderFacetValues : function(field, facetValues) {
     var currObjInstance = this;
-
+//    console.log("renderFacetValues")
     var leftCol = this.rightBody.find('.left-col');
     var rightCol = this.rightBody.find('.right-col');
     var flyoutRightHeadTitle;
@@ -338,7 +336,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 //          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
 
       //The parent part of the role must match exactly the facet value! 
-          if (facetValue === de.ddb.next.search.getLiteralFromRole(value.value)) {
+          if (facetValue.toString() === de.ddb.next.search.getLiteralFromRole(value.value)) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));
