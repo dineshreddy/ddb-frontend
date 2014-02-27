@@ -91,6 +91,37 @@ class FacetsController {
     }
 
     /**
+     * Returns the roles for a specific facet value
+     * 
+     * @return the roles for a specific facet value
+     */
+    def getRolesForFacetValue() {
+        def facetName = params.name
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
+
+        def roleValues = null
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
+
+        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+        urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
+        urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+
+        if(!apiResponse.isOk()){
+            apiResponse.throwException(request)
+        }
+
+        def resultsItems = apiResponse.getResponse()
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        roleValues = searchService.getRolesForFacetValue(resultsItems, facetName, maxResults, locale)
+
+        render (contentType:"text/json"){roleValues}
+    }
+
+    /**
      * Returns a list of all defined facets on the backend.
      * The returned json is an array of facet objects.
      * 

@@ -631,6 +631,35 @@ class SearchService {
         return res
     }
 
+
+    /**
+     *
+     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
+     *
+     * @param facets list of facets fetched from the backend
+     * @param fctName name of the facet field required
+     * @param numberOfElements number of elements to return
+     * @param matcher facetValues must match this string
+     * @param locale for formating numbers
+     *
+     * @return List of Map
+     */
+    def getRolesForFacetValue(net.sf.json.JSONObject facets, String fctName, int numberOfElements, Locale locale){
+        def res = [type: fctName, values: []]
+        def allFacetFilters = configurationService.getFacetsFilter()
+
+        int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
+        for(int i=0;i<max;i++){
+            def facetValue = facets.facetValues[i].value
+            //Select only values that contains _1_, which indicates that they are a role
+            if (facetValue =~ /_\d+_/) {
+                res.values.add([value: facetValue, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+            }
+        }
+        return res
+    }
+
+
     /**
      * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
      *
