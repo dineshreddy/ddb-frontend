@@ -32,7 +32,6 @@ import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
-
 /**
  * Set of services used in the SearchController for views/search
  * 
@@ -55,7 +54,9 @@ class SearchService {
     private static facetsList = [
         FacetEnum.TIME.getName(),
         FacetEnum.PLACE.getName(),
-        FacetEnum.AFFILIATE.getName(),
+        //TODO Remove FacetEnum.AFFILIATE for DDBNEXT-1249
+        //FacetEnum.AFFILIATE.getName(),
+        FacetEnum.AFFILIATE_ROLE.getName(),
         FacetEnum.KEYWORDS.getName(),
         FacetEnum.LANGUAGE.getName(),
         FacetEnum.TYPE.getName(),
@@ -589,14 +590,23 @@ class SearchService {
      * @param facets list of facets fetched from the backend
      * @param fctName name of the facet field required
      * @param numberOfElements number of elements to return
+     * @param matcher facetValues must match this string
+     * @param locale for formating numbers
+     * @param filterRoles indicates if the role values should be filtered from the list
+     * 
      * @return List of Map
      */
-    def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale){
+    def getSelectedFacetValues(net.sf.json.JSONObject facets, String fctName, int numberOfElements, String matcher, Locale locale, boolean filterRoles){
         def res = [type: fctName, values: []]
         def allFacetFilters = configurationService.getFacetsFilter()
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
+
+
+            if (filterRoles && facets.facetValues[i].value.toString() =~ /_\d+_/) {
+                continue
+            }
 
             //Check if facet value has to be filtered
             boolean filterFacet = false
@@ -620,6 +630,35 @@ class SearchService {
         }
         return res
     }
+
+
+    /**
+     *
+     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
+     *
+     * @param facets list of facets fetched from the backend
+     * @param fctName name of the facet field required
+     * @param numberOfElements number of elements to return
+     * @param matcher facetValues must match this string
+     * @param locale for formating numbers
+     *
+     * @return List of Map
+     */
+    def getRolesForFacetValue(net.sf.json.JSONObject facets, String fctName, int numberOfElements, Locale locale){
+        def res = [type: fctName, values: []]
+        def allFacetFilters = configurationService.getFacetsFilter()
+
+        int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
+        for(int i=0;i<max;i++){
+            def facetValue = facets.facetValues[i].value
+            //Select only values that contains _1_, which indicates that they are a role
+            if (facetValue =~ /_\d+_/) {
+                res.values.add([value: facetValue, localizedValue: facetValue, count: String.format(locale, "%,d", facets.facetValues[i].count.toInteger())])
+            }
+        }
+        return res
+    }
+
 
     /**
      * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
@@ -661,29 +700,6 @@ class SearchService {
         return res
     }
 
-    /**
-     * Used in FacetsController gives you back an array containing the following Map: {facet value, localized facet value, count results}
-     *
-     * @param facets list of facets fetched from the backend
-     * @param fctName name of the facet field required
-     * @param numberOfElements number of elements to return
-     * 
-     * @return List of Map
-     */
-    def getRoleFacetValues(List facets, String fctName, int numberOfElements, Locale locale){
-        def res = [type: fctName, values: []]
-        facets.each{
-            int max = (numberOfElements != -1 && it.facetValues.size()>numberOfElements)?numberOfElements:it.facetValues.size()
-            for(int i=0;i<max;i++){
-                if(it.field==fctName){
-                    res.values.add([value: it.facetValues[i].value, count: String.format(locale, "%,d", it.facetValues[i].count.toInteger())])
-                }
-            }
-        }
-
-        return res
-    }
-
 
     /**
      * 
@@ -699,7 +715,7 @@ class SearchService {
 
         def res = ""
 
-        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
+        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
             res = facetValue
         }
         else if(facetName == FacetEnum.TYPE.getName()){

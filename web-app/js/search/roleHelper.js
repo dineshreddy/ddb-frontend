@@ -109,3 +109,14 @@ de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber = function(role) {
   console.log("splitedRole: " + splittedRole)
   return splittedRole;
 };
+
+/**
+ * 
+ */
+de.ddb.next.search.isRole  = function(value) {
+  var currObjInstance = this;  
+  //Check if the role value matches the pattern
+  var isRole = de.ddb.next.search.literalDividerPattern.test(value);
+//  console.log("value " + value + " is role: " + isRole);
+  return isRole;
+};
