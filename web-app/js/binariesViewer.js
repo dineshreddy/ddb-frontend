@@ -121,9 +121,9 @@ $(document)
               var previewUri = $(a).attr("href");
               var previewHref = $(a).attr("data-content");
               var type = $(a).attr("data-type");
-              var title = $(a).find("span").text();
-              var title_text = $(a).find("span").text();
-              var title_tooltip = $(a).find("span").text();
+              var title = $(a).attr("title");
+              var title_text = $(a).attr("title");
+              var title_tooltip = $(a).attr("title");
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
 
@@ -364,7 +364,9 @@ $(document)
               var previewUri = $(this).attr("href");
               var previewHref = $(this).attr("data-content");
               var type = $(this).attr("data-type");
-              var title = $(this).find("span").text();
+              var title = $(this).attr("title");
+              var author = $(this).attr("data-author");
+              var rights = $(this).attr("data-rights");
               $.hideErrors();
               if (type == "image") {
                 if ($("#jwplayer-container")) {
@@ -386,6 +388,11 @@ $(document)
                 jwPlayerSetup(previewHref, previewUri);
               }
               $("div.binary-title span").text(title);
+              $("div.binary-title").attr("title", title);
+              $("div.binary-author span").text(author);
+              $("div.binary-author").attr("title", author);
+              $("div.binary-rights span").text(rights);
+              $("div.binary-rights").attr("title", rights);
               return false;
             });
           }
