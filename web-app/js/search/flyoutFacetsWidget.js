@@ -315,7 +315,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
-    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
+    //console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
     
     // Find the span element of the facetvalue
     var facetValueSpan = facetValueContainer.find('.facet-value');
@@ -331,9 +331,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     // Create the role based facets and add them to the container
     $.each(roleValues.values,
         function(index, value) {
-          console.log("each value: " + value.value);
-          console.log("facetValue: " + decodeURIComponent(facetValue));
-          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
+//          console.log("each value: " + value.value);
+//          console.log("facetValue: " + decodeURIComponent(facetValue));
+//          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
           
 
       //The parent part of the role must match exactly the facet value! 
