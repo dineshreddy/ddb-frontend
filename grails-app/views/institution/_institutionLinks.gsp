@@ -22,7 +22,7 @@ limitations under the License.
           class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>"
           <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if>
           <g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
-          <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+          <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite">
             <g:message code="ddbnext.favorit" />
         </span>
         </span>
