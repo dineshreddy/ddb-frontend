@@ -263,7 +263,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
               return false;
             });
 
-            facetValueContainer.attr('data-fctvalue', _.escape(facetValue));
+            facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
             spanCount.html('(' + this.count + ')');
 
             if (index < 5) {
@@ -294,7 +294,8 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
     facetValueContainer.attr('data-fctvalue', facetValue);
     facetValueSpan.attr('title', localizedValue);
-    facetValueSpan.html(localizedValue);
+
+    facetValueSpan.html(_.escape(decodeURIComponent(localizedValue)));
     facetValueSpan.addClass('facet-value');
 
     facetValueRemove.attr('href', '#');
@@ -305,7 +306,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
     facetValueRemove.appendTo(facetValueContainer);
     facetValueContainer.appendTo(this.selectedItems);
-
     return facetValueContainer;
   },
 
@@ -315,7 +315,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
-//    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
+    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
     
     // Find the span element of the facetvalue
     var facetValueSpan = facetValueContainer.find('.facet-value');
@@ -331,12 +331,13 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     // Create the role based facets and add them to the container
     $.each(roleValues.values,
         function(index, value) {
-//          console.log("each value: " + value.value);
-//          console.log("facetValue: " + facetValue);
-//          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
+          console.log("each value: " + value.value);
+          console.log("facetValue: " + decodeURIComponent(facetValue));
+          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
+          
 
       //The parent part of the role must match exactly the facet value! 
-          if (facetValue.toString() === de.ddb.next.search.getLiteralFromRole(value.value)) {
+          if (decodeURIComponent(facetValue.toString()) === de.ddb.next.search.getLiteralFromRole(value.value)) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));

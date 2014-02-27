@@ -125,7 +125,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var fctValues = '';
     var isThumbnailFIltered = '';
     var queryParam = '&query=' + facetValue;
-    
+
     //Looking for existing facetvalues[] in the window url parameters
     if (oldParams['facetValues%5B%5D']) {
       $.each(oldParams['facetValues%5B%5D'], function(key, value) {
