@@ -40,34 +40,6 @@ $(document).ready(
 
         var windowSmallMin = 451;
 
-/* TODO: Delete. To old functionality checkbox "Nur Objekte mit Normdaten"
-        $('#normdata-involved-checkbox').bind('click', function() {
-          updateRoleDivs();
-        });
-
-        $('#normdata-subject-checkbox').bind('click', function() {
-          updateRoleDivs();
-        });
-
-        function updateRoleDivs() {
-          if ($('#normdata-involved-checkbox').is(":checked")) {
-            $('#search-involved').hide();
-            $('#search-involved-normdata').show();
-          } else {
-            $('#search-involved').show();
-            $('#search-involved-normdata').hide();
-          }
-
-          if ($('#normdata-subject-checkbox').is(":checked")) {
-            $('#search-subject').hide();
-            $('#search-subject-normdata').show();
-          } else {
-            $('#search-subject').show();
-            $('#search-subject-normdata').hide();
-          }
-        }
-*/
-
         function getNewSearchResults(query, offset, rows, entityid) {
           var request = $.ajax({
             type : 'GET',

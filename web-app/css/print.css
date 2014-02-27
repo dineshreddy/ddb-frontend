@@ -465,4 +465,8 @@ footer, .footer,
   -webkit-print-color-adjust: exact;
   line-height: 28px;
 }
+
+.favorites-results .comment-container {
+  margin-top: 35px;
+}
 /* Favorites list page - end */

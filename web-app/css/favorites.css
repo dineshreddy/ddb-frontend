@@ -438,8 +438,8 @@ hr {
 }
 
 .favorites-results .thumbnail .entity-link {
-  width: 138px;
-  height: 103px;
+  width: 138px !important;
+  height: 103px !important;
   border: 1px solid #878380;
 }
 

@@ -150,17 +150,25 @@ class FavoritesService {
             def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
             def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultEntity.png").toString()
             def foundItemIds = allRes.collect{ it.id }
+            def subtitle = ""
             items.each{
                 // item not found
                 if(it.type == Type.ENTITY){
                     def entity = [:]
                     label = entityService.getEntityDetails(it.itemId)?.preferredName
+                    def professions = entityService.getEntityDetails(it.itemId)?.professionOrOccupation
+                    professions.each {
+                      subtitle += it
+                      if(it != professions.last())
+                        subtitle +=", "
+                    }
                     entity["id"] = it.itemId
                     entity["view"] = []
                     entity["label"] = label
                     entity["category"] = "Entity"
                     entity["preview"] = [:]
                     entity["preview"]["title"] = label
+                    entity["preview"]["subtitle"] = subtitle
                     entity["preview"]["media"] = ["entity"]
                     entity["preview"]["thumbnail"] = entityThumbnail
                     allRes.add((net.sf.json.JSONObject) entity)
