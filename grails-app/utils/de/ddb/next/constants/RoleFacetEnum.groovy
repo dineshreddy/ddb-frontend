@@ -49,6 +49,7 @@ public enum RoleFacetEnum {
      */
     private RoleFacetEnum(String name, int level) {
         this.name = name
+        this.level = level
     }
 
     /**
