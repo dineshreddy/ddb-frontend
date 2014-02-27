@@ -51,7 +51,6 @@ limitations under the License.
               <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
                 ${it.preview.subtitle}
               </g:if>
-              
             </div>
           </div>
           <div class="extra">
