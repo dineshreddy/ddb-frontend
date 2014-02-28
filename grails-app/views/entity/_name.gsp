@@ -15,11 +15,7 @@ limitations under the License.
 --%>
 <div class="name fields">
   <h2>
-  <g:if test="${entity.person.preferredName.length() > 200}">
-    ${entity.person.preferredName.substring(0,200)}...
-  </g:if>
-  <g:else>
-      ${entity.person.preferredName}
-  </g:else>
+
+  <ddb:getTruncatedItemTitle title="${ entity.person.preferredName}" length="${ 200 }" />
   </h2>
 </div>
