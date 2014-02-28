@@ -332,22 +332,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       event.preventDefault();
       currObjInstance.reset();
     });
-    
-    $("#fromYear").change(function(){ 
-      if ($("#fromYear").val()) {
-        currObjInstance.disableFromDayAndMonth(false);
-      } else {
-        currObjInstance.disableFromDayAndMonth(true);
-      }
-    });
-
-    $("#tillYear").change(function(){ 
-      if ($("#tillYear").val()) {
-        currObjInstance.disableTillDayAndMonth(false);
-      } else {
-        currObjInstance.disableTillDayAndMonth(true);
-      }
-    });
   },
 
   /**
@@ -559,7 +543,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    */
   updateTimeSpanForm: function() {
     var currObjInstance = this;
-    
+
     $("#fromDay").val(currObjInstance.selectedTimeSpan.fromDay);
     $("#fromMonth").val(currObjInstance.selectedTimeSpan.fromMonth);
     $("#fromYear").val(currObjInstance.selectedTimeSpan.fromYear);
@@ -567,6 +551,18 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     $("#tillDay").val(currObjInstance.selectedTimeSpan.tillDay);
     $("#tillMonth").val(currObjInstance.selectedTimeSpan.tillMonth);
     $("#tillYear").val(currObjInstance.selectedTimeSpan.tillYear);
+
+    if ($("#fromYear").val()) {
+      currObjInstance.disableFromDayAndMonth(false);
+    } else {
+      currObjInstance.disableFromDayAndMonth(true);
+    }
+
+    if ($("#tillYear").val()) {
+      currObjInstance.disableTillDayAndMonth(false);
+    } else {
+      currObjInstance.disableTillDayAndMonth(true);
+    }
   },
   
   /**
