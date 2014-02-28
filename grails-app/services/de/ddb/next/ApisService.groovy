@@ -1,3 +1,5 @@
+
+
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
  *
@@ -75,8 +77,6 @@ class ApisService {
             evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
         }
 
-        //calculateTimeFacetValues(query)
-
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
         }
@@ -86,17 +86,6 @@ class ApisService {
         }
 
         return query
-    }
-
-
-    private def calculateTimeFacetValues(query) {
-        if (query[FacetEnum.BEGIN_TIME.getName()]) {
-            query[FacetEnum.BEGIN_TIME.getName()] = TimeFacetHelper.calculateDaysForTimeFacet(query[FacetEnum.BEGIN_TIME.getName()]);
-        }
-
-        if (query[FacetEnum.END_TIME.getName()]) {
-            query[FacetEnum.END_TIME.getName()] = TimeFacetHelper.calculateDaysForTimeFacet(query[FacetEnum.END_TIME.getName()]);
-        }
     }
 
     /**
@@ -111,12 +100,31 @@ class ApisService {
             if(queryParameter.getClass().isArray()){
                 query[facetName] = []
                 queryParameter.each {
-                    query[facetName].add(it)
+                    query[facetName].add(quoteRootFacet(it, facetName))
                 }
             }else
-                query[facetName]=queryParameter
+                query[facetName]= quoteRootFacet(queryParameter, facetName)
         }
     }
 
+    /**
+     * The root facet is contained completely in the sub facets, so that a search for "Schiller" will also match "Schiller_1_...". 
+     * To get the correct results you have to use quotation marks around the facet value (see DDBNEXT-1260)
+     * 
+     * @param queryParameter The facetValue to escape 
+     * @return the quoted root facet
+     */
+    private def quoteRootFacet(String queryParameter, String facetName) {
+        String retVal = queryParameter
+
+        if (facetName.endsWith("_role")) {
+            //Quote only values that contains NOT _1_, which indicates that they are a root facet
+            if (!(queryParameter =~ /_\d+_/)) {
+                retVal = '"' + queryParameter + '"'
+            }
+        }
+
+        return retVal
+    }
 
 }

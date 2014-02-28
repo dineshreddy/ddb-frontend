@@ -44,26 +44,19 @@ class EntityService {
 
         def gndUrl = CultureGraphService.GND_URI_PREFIX
 
-        def query = ""
-
-
         def normdataFacetValue = gndUrl + entityId + roleFacetEnum.getHierarchicalName()
+
+        def normdataQuery = FacetEnum.AFFILIATE_ROLE_NORMDATA.getName() + ":(\"" + normdataFacetValue + "\")"
 
         searchQuery = [
             (SearchParamEnum.ROWS.getName()): rows,
             (SearchParamEnum.OFFSET.getName()): offset,
-            (SearchParamEnum.QUERY.getName()): query,
-            (SearchParamEnum.FACET.getName()): []]
-        searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE_ROLE_NORMDATA.getName())
-        searchQuery[(FacetEnum.AFFILIATE_ROLE_NORMDATA.getName())] = normdataFacetValue
+            (SearchParamEnum.QUERY.getName()): normdataQuery]
 
 
         //These parameters are for the frontend to create a search link which is not limited to 4 documents...
         searchUrlParameter = [
-            (SearchParamEnum.QUERY.getName()):query,
-            (SearchParamEnum.FACETVALUES.getName()): [
-                FacetEnum.AFFILIATE_ROLE_NORMDATA.getName() + "=" + normdataFacetValue
-            ]
+            (SearchParamEnum.QUERY.getName()): normdataQuery
         ]
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
