@@ -366,11 +366,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         'data-fctname')
         + '=' + facetValue));
 
-    var roleFacets = facetFieldFilter.find('span.role-facet-value');
+    var roleFacets = element.find('span.role-facet-value');
     $.each((roleFacets), function() {
       facetsToRemove.push(new Array('facetValues[]', $(this).attr("facetfield") + '=' + $(this).attr("roleValue")));
     });
 
+    
     var newUrl = $.removeParamFromUrl(facetsToRemove);
 
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
