@@ -33,6 +33,7 @@ class ApisController {
         def docs = []
         def query = apisService.getQueryParameters(params)
 
+        //Use query filter if roles were selected
         def filteredQuery = apisService.filterForRoleFacets(query)
 
         //FIXME /cortex/api/search is only for testing. Replace it wit /search
