@@ -14,7 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="name fields">
-	<h2>
-		${entity.person.preferredName}
-	</h2>
+  <h2>
+  <g:if test="${entity.person.preferredName.length() > 200}">
+    ${entity.person.preferredName.substring(0,200)}...
+  </g:if>
+  <g:else>
+      ${entity.person.preferredName}
+  </g:else>
+  </h2>
 </div>
