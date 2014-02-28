@@ -33,9 +33,11 @@ class ApisController {
         def docs = []
         def query = apisService.getQueryParameters(params)
 
+        def filteredQuery = apisService.filterForRoleFacets(query)
+
         //FIXME /cortex/api/search is only for testing. Replace it wit /search
         //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search', false, query)
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, filteredQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)

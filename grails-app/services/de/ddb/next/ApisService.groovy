@@ -100,31 +100,47 @@ class ApisService {
             if(queryParameter.getClass().isArray()){
                 query[facetName] = []
                 queryParameter.each {
-                    query[facetName].add(quoteRootFacet(it, facetName))
+                    query[facetName].add(it)
                 }
             }else
-                query[facetName]= quoteRootFacet(queryParameter, facetName)
+                query[facetName]= queryParameter
         }
     }
 
     /**
-     * The root facet is contained completely in the sub facets, so that a search for "Schiller" will also match "Schiller_1_...". 
-     * To get the correct results you have to use quotation marks around the facet value (see DDBNEXT-1260)
+     * If a role is an element of an query parameter, than the according root facet value must be removed!
      * 
-     * @param queryParameter The facetValue to escape 
-     * @return the quoted root facet
+     * Example for the query parameter affiliate_fct_role:
+     * affiliate_fct_role:[Schiller, Friedrich (1759-1805), Schiller, Friedrich (1759-1805)_1_affiliate_fct_subject]]
+     * 
+     * The parameter contains the role "Schiller, Friedrich (1759-1805)_1_affiliate_fct_subject"
+     * and the root facet "Schiller, Friedrich (1759-1805)"
+     * 
+     * So the root facet must be removed to perform a valid role search!
+     * 
+     * @param query the query parameter map
+     * 
+     * @return the filtered query parameter map
      */
-    private def quoteRootFacet(String queryParameter, String facetName) {
-        String retVal = queryParameter
+    def filterForRoleFacets(Map query) {
+        query.each { key, value ->
+            //Search for root facets that must be removed
+            Set rootFacetsToRemove = []
+            if (key.endsWith('_role')) {
+                value.each {
+                    if (it =~ /_\d+_/) {
+                        //Get the literal part of the role, which must be removed from the query parameter
+                        rootFacetsToRemove.add(it.split(/_\d+_/)[0])
+                    }
+                }
+            }
 
-        if (facetName.endsWith("_role")) {
-            //Quote only values that contains NOT _1_, which indicates that they are a root facet
-            if (!(queryParameter =~ /_\d+_/)) {
-                retVal = '"' + queryParameter + '"'
+            //Remove the root facets from the parameter
+            if (rootFacetsToRemove.size()) {
+                value.removeAll(rootFacetsToRemove)
             }
         }
 
-        return retVal
+        return query
     }
-
 }
