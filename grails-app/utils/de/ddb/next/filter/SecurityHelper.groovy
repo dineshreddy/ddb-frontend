@@ -102,7 +102,6 @@ class SecurityHelper {
 
             String key = keys[i]
             String[] valueArray = parameterMap.get(key)
-
             for (int j=0; j<valueArray.length; j++) {
                 String parsedText = slurper.parseText(valueArray[j]).text()
                 if(valueArray[j] != parsedText){
