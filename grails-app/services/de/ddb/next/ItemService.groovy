@@ -626,15 +626,19 @@ class ItemService {
 
     def createEntityLinks(fields){
         fields.each {
-            def valueTags = it.value
-            valueTags.each { valueTag ->
+            // https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1166
+            // Do not create entity link for this field.
+            if (it.'@id' != "flex_arch_033") {
+                def valueTags = it.value
+                    valueTags.each { valueTag ->
 
-                def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
+                    def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
 
-                if(resource != null && !resource.isEmpty()){
-                    if(cultureGraphService.isValidGndUri(resource)){
-                        def entityId = cultureGraphService.getGndIdFromGndUri(resource)
-                        valueTag.@entityId = entityId
+                    if(resource != null && !resource.isEmpty()){
+                        if(cultureGraphService.isValidGndUri(resource)){
+                            def entityId = cultureGraphService.getGndIdFromGndUri(resource)
+                            valueTag.@entityId = entityId
+                        }
                     }
                 }
             }
