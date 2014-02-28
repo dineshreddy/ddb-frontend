@@ -30,52 +30,8 @@ class GetMonthsLocalizedTagLib {
 
     static namespace = "ddb"
 
-    def getJan = { attrs, body ->
+    def getLocalizedMonth = { attrs, body ->
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[0]
-    }
-    def getFeb = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[1]
-    }
-    def getMar = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[2]
-    }
-    def getApr = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[3]
-    }
-    def getMay = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[4]
-    }
-    def getJun = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[5]
-    }
-    def getJul = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[6]
-    }
-    def getAug = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[7]
-    }
-    def getSep = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[8]
-    }
-    def getOct = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[9]
-    }
-    def getNov = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[10]
-    }
-    def getDec = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        out << new DateFormatSymbols(locale).getMonths()[11]
+        out << new DateFormatSymbols(locale).getMonths()[(attrs.index)]
     }
 }

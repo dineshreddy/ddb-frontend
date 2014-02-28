@@ -60,18 +60,11 @@ limitations under the License.
         
         <select id="fromMonth" class="month">
           <option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
-          <option value="01"><ddb:getJan/></option>
-          <option value="02"><ddb:getFeb/></option>
-          <option value="03"><ddb:getMar/></option>
-          <option value="04"><ddb:getApr/></option>
-          <option value="05"><ddb:getMay/></option>
-          <option value="06"><ddb:getJun/></option>
-          <option value="07"><ddb:getJul/></option>
-          <option value="08"><ddb:getAug/></option>
-          <option value="09"><ddb:getSep/></option>
-          <option value="10"><ddb:getOct/></option>
-          <option value="11"><ddb:getNov/></option>
-          <option value="12"><ddb:getDec/></option>
+          <g:set var="i" value="${0}"/>
+          <g:while test="${i < 12}">
+            <option value="${i + 1}"><ddb:getLocalizedMonth index="${i}"/></option>
+            <g:set var="i" value="${i + 1}" />
+          </g:while>
         </select>
         <input type="text" pattern="-?\[0-9]*" id="fromYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
       </div>
@@ -113,18 +106,11 @@ limitations under the License.
         </select>
         <select id="tillMonth" class="month">
           <option value="" disabled selected><g:message code="ddbnext.facet_time_month"/></option>
-          <option value="01"><ddb:getJan/></option>
-          <option value="02"><ddb:getFeb/></option>
-          <option value="03"><ddb:getMar/></option>
-          <option value="04"><ddb:getApr/></option>
-          <option value="05"><ddb:getMay/></option>
-          <option value="06"><ddb:getJun/></option>
-          <option value="07"><ddb:getJul/></option>
-          <option value="08"><ddb:getAug/></option>
-          <option value="09"><ddb:getSep/></option>
-          <option value="10"><ddb:getOct/></option>
-          <option value="11"><ddb:getNov/></option>
-          <option value="12"><ddb:getDec/></option>
+          <g:set var="i" value="${0}"/>
+          <g:while test="${i < 12}">
+            <option value="${i+1}"><ddb:getLocalizedMonth index="${i}"/></option>
+            <g:set var="i" value="${i+1}" />
+          </g:while>
         </select> 
         <input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
       </div>
