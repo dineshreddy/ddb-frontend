@@ -335,6 +335,24 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       event.preventDefault();
       currObjInstance.reset();
     });
+    
+    $("#fromYear").change(function(){ 
+      if ($("#fromYear").val()) {
+        currObjInstance.disableFromDayAndMonth(false);
+        $("#add-timespan").removeClass('without-date');
+      } else {
+        currObjInstance.disableFromDayAndMonth(true);
+      }
+    });
+
+    $("#tillYear").change(function(){ 
+      if ($("#tillYear").val()) {
+        currObjInstance.disableTillDayAndMonth(false);
+        $("#add-timespan").removeClass('without-date');
+      } else {
+        currObjInstance.disableTillDayAndMonth(true);
+      }
+    });
   },
 
   /**
@@ -430,6 +448,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     if (hasSelectedDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
+      $("#add-timespan").removeClass('without-date');
     } else {
       //Close the form if no values has been found.
       currObjInstance.closeForm();
@@ -534,6 +553,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.disableFromDayAndMonth(true);
     currObjInstance.disableTillDayAndMonth(true);
     currObjInstance.updateTimeSpanForm();    
+    
+    //reset buton Apply
+    $("#add-timespan").addClass('without-date');
     
     //asign the timeSpan to reset also the window url etc!
     currObjInstance.assignTimeSpan(false);
