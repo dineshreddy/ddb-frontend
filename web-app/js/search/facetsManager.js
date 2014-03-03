@@ -573,6 +573,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
 
     return roleFacets;
-  },
+  }
   
 });

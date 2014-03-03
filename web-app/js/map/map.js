@@ -144,7 +144,7 @@ $(document).ready(function() {
           fillColor: "#EF7E89",
           fillOpacity: 0.5,
           pointRadius: "${radius}",
-          pointerEvents: "visiblePainted",
+          pointerEvents: "visiblePainted"
         });
         
         this.vectorLayer = new OpenLayers.Layer.Vector("Institutions", {
