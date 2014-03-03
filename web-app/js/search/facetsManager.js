@@ -85,6 +85,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   init : function() {
     var currObjInstance = this;
     currObjInstance.timeFacet = new de.ddb.next.search.TimeFacet(currObjInstance);
+    
+    $(".js.facets-list").removeClass("off");
   },
 
   /**
