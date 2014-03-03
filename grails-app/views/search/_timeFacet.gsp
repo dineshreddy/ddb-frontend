@@ -16,7 +16,9 @@ limitations under the License.
  
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
-<div class="time-facet bt bb bl br">
+
+<!-- The time facet should only be available via Javascript. So per default set the class off. -->
+<div class="time-facet bt bb bl br off">
 <a class="h3" href="${""}"><g:message code="ddbnext.facet_time" /></a>
   
   <div id="timespan-form">
