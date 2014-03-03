@@ -19,8 +19,7 @@ limitations under the License.
     <hr>
     <div class="thumbinner">
       <!-- TODO: refactor to use figure element -->
-      <!-- TODO: remove width and height, use CSS -->
-      <img alt="${entity.title}" src="${entity.person.depiction.thumbnail}" class="thumbimage">
+      <img alt="${entity.title}" src="${entityImageUrl}" class="thumbimage">
       <div class="thumbcaption">
         ${entity.person.preferredName}
         <br>
