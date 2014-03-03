@@ -26,12 +26,8 @@ limitations under the License.
     
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
-    
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
-    
   </head>
   <body>
-  
     <div class="favorites-results-container">
       <div class="row favorites-results-head">
         <div class="span8">
@@ -93,11 +89,6 @@ limitations under the License.
               <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
                 <span><g:message code="ddbnext.favorites_list_publiclink" /></span>
               </a>
-            </div>
-          </g:if>
-          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-            <div class="share-block">
-              <ddb:getSocialmediaBody />
             </div>
           </g:if>
           <div class="results-paginator-options">
