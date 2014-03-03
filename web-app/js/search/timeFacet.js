@@ -307,6 +307,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.timeFacetHelper = new de.ddb.next.search.TimeFacetHelper();
     currObjInstance.selectedTimeSpan = new de.ddb.next.search.TimeSpan();
     
+    //Remove the off class for Non Javascript
+    $(".time-facet").removeClass("off");
+
     //During initialisation hide the timespan form and disable the form elements
     $("#timespan-form").hide();
     currObjInstance.disableFromDayAndMonth(true);
