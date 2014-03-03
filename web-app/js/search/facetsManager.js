@@ -507,7 +507,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     
                     var localizedValue = de.ddb.next.search.getLocalizedFacetValue(fctField, this);
                     if ( typeof(localizedValue) === 'function') {
-                      localizedValue = localizedValue()
+                      localizedValue = localizedValue();
                     }
                     
                     var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, localizedValue);
