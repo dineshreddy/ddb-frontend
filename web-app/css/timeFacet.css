@@ -65,3 +65,13 @@
 .time-facet input[type="radio"] {
   margin: 0;
 }
+
+#timespan-form .contextual-help {
+  margin-right: 150px;
+  margin-top: -7px;
+}
+
+.time-restriction .tooltip {
+  left: -12%;
+  margin: 10px;
+}

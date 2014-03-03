@@ -34,11 +34,6 @@
   top: 14px;
 }
 
-#timespan-form .contextual-help {
-  margin-right: 150px;
-  margin-top: -7px;
-}
-
 .compare-header .contextual-help{
   top: 10px;
 }
@@ -758,11 +753,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .compare-header .tooltip {
   left: 46%;
-  margin: 10px;
-}
-
-.time-restriction .tooltip {
-  left: -12%;
   margin: 10px;
 }
 
