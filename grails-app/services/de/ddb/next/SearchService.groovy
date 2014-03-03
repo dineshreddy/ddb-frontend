@@ -50,13 +50,10 @@ class SearchService {
     //Name of search-cookie
     private searchCookieName = "searchParameters"
 
-    //FIXME get this list from the FacetEnum
+    //The list of the NON JS supported facets
     private static facetsList = [
-        FacetEnum.TIME.getName(),
         FacetEnum.PLACE.getName(),
-        //TODO Remove FacetEnum.AFFILIATE for DDBNEXT-1249
-        //FacetEnum.AFFILIATE.getName(),
-        FacetEnum.AFFILIATE_ROLE.getName(),
+        FacetEnum.AFFILIATE.getName(),
         FacetEnum.KEYWORDS.getName(),
         FacetEnum.LANGUAGE.getName(),
         FacetEnum.TYPE.getName(),

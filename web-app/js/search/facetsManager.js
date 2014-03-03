@@ -85,6 +85,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   init : function() {
     var currObjInstance = this;
     currObjInstance.timeFacet = new de.ddb.next.search.TimeFacet(currObjInstance);
+    
+    $(".js.facets-list").removeClass("off");
   },
 
   /**
@@ -93,7 +95,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   fetchFacetsDefinition : function(flyoutWidget) {
     var currObjInstance = this;
     
-//    console.log("fetchFacetsDefinition");
     var url = jsContextPath + '/search/facets/';
     var request = $.ajax({
       type : 'GET',
@@ -102,7 +103,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       url : url,
       complete : function(data) {
         currObjInstance.allFacets = jQuery.parseJSON(request.responseText);        
-//        console.log("facetsDefinition: " + currObjInstance.allFacets);
         
         // invoke the callback method to continue initializing the facets
         currObjInstance.initializeSelectedFacetOnLoad(flyoutWidget);
@@ -140,8 +140,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows
     
-    
-//    console.log("fetchRoleFacetValues url: " + url);
     var request = $.ajax({
       type : 'GET',
       dataType : 'json',
@@ -292,7 +290,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   selectFacetValue : function(facetValue, localizedValue) {
     var currObjInstance = this;
     
-//    console.log("selectFacetValue");
     // update selection lists
     this.currentFacetValuesSelected.push(facetValue);
     this.currentFacetValuesNotSelected = jQuery.grep(this.currentFacetValuesNotSelected,
@@ -366,11 +363,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         'data-fctname')
         + '=' + facetValue));
 
-    var roleFacets = facetFieldFilter.find('span.role-facet-value');
+    var roleFacets = element.find('span.role-facet-value');
     $.each((roleFacets), function() {
       facetsToRemove.push(new Array('facetValues[]', $(this).attr("facetfield") + '=' + $(this).attr("roleValue")));
     });
 
+    
     var newUrl = $.removeParamFromUrl(facetsToRemove);
 
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
@@ -393,7 +391,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   selectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-//    console.log("selectRoleFacetValue: " + facetField + " " + facetValue);
     var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
     de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
@@ -456,8 +453,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * A callback is triggering the further initialization which is done in initializeSelectedFacetOnLoad()
    */
   initializeOnLoad : function(connectedflyoutWidget) {
-//    console.log("facetsManager initOnLoad()");
-    
     // this methods initialize all selected facets and role facets
     var currObjInstance = this;
 
@@ -474,13 +469,10 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * This method must be called by fetchFacetsDefinition()!
    */
   initializeSelectedFacetOnLoad : function(connectedflyoutWidget) {
-//    console.log("initializeSelectedFacetOnLoad");
     var currObjInstance = this;
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
 
-//    console.log("paramsFacetValues " + paramsFacetValues);
-    
     if (paramsFacetValues) {
       var selectedFacets = {};
       $.each(paramsFacetValues, function(key, value) {
@@ -493,8 +485,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         selectedFacets[fctField].push(fctValue);
       });
 
-//      console.log("selectedFacets " + selectedFacets);
-      
       // handle selected facets
       $.each(selectedFacets,
               function(fctField, fctValues) {
@@ -517,9 +507,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                       return;
                     }
                     
-                    var selectedFacetValue = currObjInstance.connectedflyoutWidget
-                        .renderSelectedFacetValue(this, de.ddb.next.search.getLocalizedFacetValue(fctField,
-                            this));
+                    var localizedValue = de.ddb.next.search.getLocalizedFacetValue(fctField, this);
+                    if ( typeof(localizedValue) === 'function') {
+                      localizedValue = localizedValue();
+                    }
+                    
+                    var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, localizedValue);
                     var roleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
                     
                     
@@ -569,7 +562,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Searches the roles for a facet in the facetDefinition
    */
   getRolesForFacet : function(fctField) {
-//    console.log("getRolesForFacet for field: " + fctField)
     var currObjInstance = this;
     var roleFacets = [];
 

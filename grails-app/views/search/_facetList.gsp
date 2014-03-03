@@ -20,7 +20,7 @@ limitations under the License.
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
       <span class="count"><ddb:getLocalizedNumber>${facetValues[i]['cnt']}</ddb:getLocalizedNumber></span>
-      <g:if test="${facetType == FacetEnum.AFFILIATE.getName() || facetType == FacetEnum.KEYWORDS.getName() || facetType == FacetEnum.PLACE.getName() || facetType == FacetEnum.PROVIDER.getName()}">
+      <g:if test="${facetType == FacetEnum.AFFILIATE.getName() || facetType == FacetEnum.KEYWORDS.getName() || facetType == FacetEnum.PLACE.getName() || facetType == FacetEnum.PROVIDER.getName()}">        
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == FacetEnum.TYPE.getName() }">

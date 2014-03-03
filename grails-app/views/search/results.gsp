@@ -15,7 +15,10 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.next.constants.SearchParamEnum"%>
 <%@page import="de.ddb.next.constants.FacetEnum"%>
-<g:set var="facetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+
+<g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+<g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+
 <html>
 <head>
 <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -44,28 +47,41 @@ limitations under the License.
                                      encodeAs: "none")}">
         </span> 
         <div class="tooltip off hasArrow"></div>
-      </div>
-      <div class="facets-list bt bb">
-        <%-- TimeFacet is handle by its own template --%>
-        <g:render template="timeFacet" />
-        
-        <%-- All other facets are handled in the same way --%>          
-        <g:each in="${facetsList}" var="mit">
-          <g:each in="${(facets.selectedFacets)}">
-            <g:if test="${mit == it.field}">
-              <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-                <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
-                <g:if test="${it.facetValues.size() > 0}">
-                  <ul class="unstyled">
-                    <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></ddb:renderFacetList>
-                  </ul>
-                </g:if>
-              </div>
-            </g:if>
-          </g:each>
-        </g:each>
-      </div>
-
+      </div>     
+      
+	  <%-- Shows the facets supported in the NON JS version--%>
+      <noscript>
+	      <div class="facets-list bt bb">
+	        <g:each in="${nonJsFacetsList}" var="mit">
+	          <g:each in="${(facets.selectedFacets)}">
+	            <g:if test="${mit == it.field}">
+	              <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
+	                <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
+	                <g:if test="${it.facetValues.size() > 0}">
+	                  <ul class="unstyled">
+	                    <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></ddb:renderFacetList>
+	                  </ul>
+	                </g:if>
+	              </div>
+	            </g:if>
+	          </g:each>
+	        </g:each>
+	      </div>
+	</noscript>
+	
+  	<%-- Shows the facets supported in the JS version. --%>
+    <div class="js facets-list bt bb off">
+      <%-- TimeFacet is handle by its own template --%>
+      <g:render template="timeFacet" />
+      
+      <%-- All other facets are handled in the same way --%>          
+      <g:each in="${jsFacetsList}">
+	      <div class="facets-item bt bb bl br">
+	        <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
+	      </div>
+      </g:each>
+    </div>	  	
+	
       <div class="keep-filters off">
         <label class="checkbox"> 
           <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
