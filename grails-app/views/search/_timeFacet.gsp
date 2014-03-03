@@ -74,7 +74,7 @@ limitations under the License.
         <input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact"><g:message code="ddbnext.facet_time_exactly"/></label>
       </div>
       <div>
-        <button id="add-timespan"><g:message code="ddbnext.facet_time_apply"/></button>
+        <button class="without-date" id="add-timespan"><g:message code="ddbnext.facet_time_apply"/></button>
         <button id="reset-timefacet"><g:message code="ddbnext.facet_time_reset"/></button>
       </div>
     </div>
