@@ -195,8 +195,8 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   setFromDate: function(date){
     var currObjInstance = this;
 
-    currObjInstance.fromDay =  ("0" + date.getUTCDate()).slice(-2);
-    currObjInstance.fromMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
+    currObjInstance.fromDay =  date.getUTCDate();
+    currObjInstance.fromMonth = date.getUTCMonth() + 1;
     currObjInstance.fromYear = date.getFullYear();
   },
   
@@ -206,8 +206,8 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   setTillDate: function(date){
     var currObjInstance = this;
 
-    currObjInstance.tillDay = ("0" + date.getUTCDate()).slice(-2);
-    currObjInstance.tillMonth = ("0" + (date.getUTCMonth() + 1)).slice(-2);
+    currObjInstance.tillDay = date.getUTCDate();
+    currObjInstance.tillMonth = date.getUTCMonth() + 1;
     currObjInstance.tillYear = date.getFullYear();
   },
   
