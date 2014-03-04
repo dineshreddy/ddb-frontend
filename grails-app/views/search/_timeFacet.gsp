@@ -73,6 +73,7 @@ limitations under the License.
       </div>
       <div>
         <input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" /> <label for="limitationFuzzy"><g:message code="ddbnext.facet_time_fuzzy"/></label>
+        <span class="limitation"></span>
         <input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact"><g:message code="ddbnext.facet_time_exactly"/></label>
       </div>
       <div>
