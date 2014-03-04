@@ -256,7 +256,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
             var localizedValue = this.localizedValue;
 
             facetValueContainer.click(function() {
-              currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'),
+              currObjInstance.fctManager.selectFacetValue(decodeURIComponent($(this).attr('data-fctvalue')),
                   localizedValue.replace('<strong>', '').replace('</strong>', ''));
               $(this).remove();
               return false;
@@ -291,7 +291,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     var facetValueSpan = $(document.createElement('span'));
     var facetValueRemove = $(document.createElement('a'));
 
-    facetValueContainer.attr('data-fctvalue', facetValue);
+    facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
     facetValueSpan.attr('title', localizedValue);
 
     facetValueSpan.html(_.escape(decodeURIComponent(localizedValue)));

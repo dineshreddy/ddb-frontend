@@ -103,6 +103,7 @@ class SecurityHelper {
             String key = keys[i]
             String[] valueArray = parameterMap.get(key)
             for (int j=0; j<valueArray.length; j++) {
+                println key
                 String parsedText = slurper.parseText(valueArray[j]).text()
                 if(valueArray[j] != parsedText){
                     log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"

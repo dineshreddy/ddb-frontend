@@ -35,8 +35,6 @@ de.ddb.next.search.literalDividerPattern = /_[0-9]+_/;
  * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteral = function(role) {
-//  console.log("getRoleWithoutLiteral " + role);
-  
   var currObjInstance = this;
   var roleWithoutLiteral = null;
   
@@ -73,10 +71,8 @@ de.ddb.next.search.getLiteralFromRole = function(role) {
   var divider = de.ddb.next.search.literalDividerPattern.exec(role);
   if (divider) {
     var split = role.split(divider); 
-//    console.log("split " + split);
     literal = split[0];
   }
-//  console.log("literal: " + literal)
   return literal;
 };
 
@@ -103,10 +99,8 @@ de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber = function(role) {
   var divider = de.ddb.next.search.literalDividerPattern.exec(role);
   if (divider) {
     var split = role.split(divider); 
-    console.log("split " + split);
     splittedRole = split[1];
   }
-  console.log("splitedRole: " + splittedRole)
   return splittedRole;
 };
 
@@ -117,6 +111,5 @@ de.ddb.next.search.isRole  = function(value) {
   var currObjInstance = this;  
   //Check if the role value matches the pattern
   var isRole = de.ddb.next.search.literalDividerPattern.test(value);
-//  console.log("value " + value + " is role: " + isRole);
   return isRole;
 };
