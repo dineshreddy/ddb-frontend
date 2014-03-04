@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
