@@ -50,8 +50,9 @@
 
 .time-facet button {
   font-size: 80% !important;
-  padding: 6px 10px;
+  width: 106px;
   line-height: 0;
+  margin-right: 3px;
 }
 .time-facet button.without-date,
 .time-facet button#reset-timefacet {
@@ -64,6 +65,7 @@
 
 .time-facet input[type="radio"] {
   margin: 0;
+  margin-right: 4px;
 }
 
 #timespan-form .contextual-help {
@@ -74,4 +76,8 @@
 .time-restriction .tooltip {
   left: -12%;
   margin: 10px;
+}
+
+.limitation{
+  margin-left:18px;
 }
