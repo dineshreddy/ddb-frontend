@@ -461,6 +461,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     currObjInstance.fetchFacetsDefinition(connectedflyoutWidget);
 
     $('.clear-filters').removeClass('off');
+    $(".js.facets-list").removeClass("off");
   },
 
   /**
