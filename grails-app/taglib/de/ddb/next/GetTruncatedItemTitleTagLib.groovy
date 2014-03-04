@@ -23,14 +23,18 @@ class GetTruncatedItemTitleTagLib {
     def searchService
 
     def getTruncatedItemTitle = { attrs, body ->
+        out << searchService.trimTitle(attrs.title.toString(), attrs.length)
+    }
+
+    def getTruncatedAndStripedItemTitle = { attrs, body ->
         /**
-         * arb: This TagLib is "coupled" with the ItemTitles. 
+         * arb: This TagLib is "coupled" with the ItemTitles.
          * They need to be highlighted therefore we leave the strong parameter on
-         * Other tags are removed (e.x: title) 
+         * Other tags are removed (e.x: title)
          */
         def allowedTags="strong"
         if(attrs.allowedTags) {
-            allowedTags =attrs.allowedTags 
+            allowedTags =attrs.allowedTags
         }
         out << ddb.stripTags(text:searchService.trimTitle(attrs.title.toString(), attrs.length).toString(),allowedTags:allowedTags)
     }
