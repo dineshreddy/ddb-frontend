@@ -31,13 +31,13 @@ de.ddb.next.search.TimeSpan = function(fromDay,fromMonth, fromYear, tillDay, til
   this.tillDay = tillDay;
   this.tillMonth = tillMonth;
   this.tillYear = tillYear;
-}
+};
 
 
 $.extend(de.ddb.next.search.TimeSpan.prototype, {
   print : function() {
     var currObjInstance = this;
-    
+
     console.log("fromDay: " + currObjInstance.fromDay);
     console.log("fromMonth: " + currObjInstance.fromMonth);
     console.log("fromYear: " + currObjInstance.fromYear);
@@ -45,31 +45,31 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     console.log("tillMonth: " + currObjInstance.tillMonth);
     console.log("tillYear: " + currObjInstance.tillYear);
   },
-  
+
   /**
    * A from date needs at least a value for the year.
-   * @returns <code>false<code> if no fromYear is set  
+   * @returns <code>false<code> if no fromYear is set
    */
   hasFromDate: function(){
     var currObjInstance = this;
     return currObjInstance.fromYear !== null;
   },
-  
+
   /**
    * A till date needs at least a value for the year.
-   * @returns <code>false<code> if no tillYear is set  
+   * @returns <code>false<code> if no tillYear is set
    */
   hasTillDate: function(){
     var currObjInstance = this;
     return currObjInstance.tillYear !== null;
   },
-  
+
   /**
    * At least the year must be existing. The method completes missing fromDay and fromMonth values.
    */
   completeFromDate: function(){
     var currObjInstance = this;
-    
+
     //If no year is set -> return
     if (!currObjInstance.hasFromDate()) {
       return;
@@ -78,19 +78,19 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
     if (currObjInstance.fromDay === null) {
       currObjInstance.fromDay = 1;
     }
-    
+
     //id no month is set fromMonth to 1
     if (currObjInstance.fromMonth === null) {
       currObjInstance.fromMonth = 1;
     }
   },
-  
+
   /**
    * At least the year must be existing. The method complete missing tillDay and tillMonth values.
    */
   completeTillDate: function(){
     var currObjInstance = this;
-    
+
     //If no year is set -> return
     if (!currObjInstance.hasTillDate()) {
       return;
