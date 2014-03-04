@@ -309,6 +309,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     
     //Remove the off class for Non Javascript
     $(".time-facet").removeClass("off");
+    
 
     //During initialisation hide the timespan form and disable the form elements
     $("#timespan-form").hide();
@@ -387,6 +388,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     $("#limitationFuzzy").prop("checked", true);
+    $(".time-facet").removeClass("off");
 
     if (facetValuesFromUrl) {
       $.each(facetValuesFromUrl, function(key, value) {
