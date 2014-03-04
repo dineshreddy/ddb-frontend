@@ -103,11 +103,12 @@ class SecurityHelper {
             String key = keys[i]
             String[] valueArray = parameterMap.get(key)
             for (int j=0; j<valueArray.length; j++) {
-                String parsedText = slurper.parseText(valueArray[j]).text()
-                if(valueArray[j] != parsedText){
-                    log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"
-                }
-                valueArray[j] = parsedText
+                //FIXME Due to special character problems in DDBNEXT1238 and DDBNEXT-1263, the XmlSlurper approach has been commented out for release 4.3
+                //                String parsedText = slurper.parseText(valueArray[j]).text()
+                //                if(valueArray[j] != parsedText){
+                //                    log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"
+                //                }
+                //                valueArray[j] = parsedText
             }
 
             parameterMap.put(key, valueArray)

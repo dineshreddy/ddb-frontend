@@ -239,7 +239,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
       if (selectedList.length > 0) {
         selectedList.each(function() {
-          var tmpFacetValue = $(this).attr('data-fctvalue');
+          var tmpFacetValue = decodeURIComponent($(this).attr('data-fctvalue'));
           currObjInstance.currentFacetValuesSelected.push(tmpFacetValue);
           currObjInstance.currentFacetValuesNotSelected = jQuery.grep(
               currObjInstance.currentFacetValuesNotSelected, function(element) {
@@ -338,13 +338,13 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   unselectFacetValue : function(element, unselectWithoutFetch) {
     var facetFieldFilter = element.parents('.facets-item');
-    var facetValue = element.attr('data-fctvalue');    
+    var facetValue = decodeURIComponent(element.attr('data-fctvalue'));    
 
     if (this.connectedflyoutWidget.opened) {
       this.connectedflyoutWidget.close();
       this.currentFacetValuesSelected = jQuery.grep(this.currentFacetValuesSelected,
           function(el) {
-            return el !== element.attr('data-fctvalue');
+            return el !== decodeURIComponent(element.attr('data-fctvalue'));
           });
     }
     // if in the list there is only one element means that is the case
