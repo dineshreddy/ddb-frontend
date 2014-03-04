@@ -160,6 +160,7 @@ hr {
 
 .favorites-results-container .share-block {
   display: inline-block;
+  line-height: 42px;
   margin-right: 10px;
   min-width: 400px;
   min-height: 25px;
@@ -565,7 +566,8 @@ hr {
 }
 .delete-container {
   overflow:hidden;
-  display:block;
+  display: inline-block;
+  float: right;
   margin-bottom: -10px;
   min-width: 260px;
 }

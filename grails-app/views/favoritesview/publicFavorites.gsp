@@ -130,7 +130,12 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <div class="row delete-container">
+              <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
+                <div class="share-block">
+                  <ddb:getSocialmediaBody />
+                </div>
+              </g:if>
+              <div class="delete-container">
                 <div class="results-pagination">
                   <ddb:renderPaginationControls navData="${navigationData}" />
                 </div>
