@@ -243,7 +243,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
         leftCol.empty();
         rightCol.empty();
 
-        $.each(facetValues, function(index) {
+        $.each(facetValues, function(index) {          
           if (jQuery.inArray(this.value,
               currObjInstance.fctManager.currentFacetValuesSelected) == -1) {
             var facetValueContainer = $(document.createElement('li'));
@@ -271,7 +271,11 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
               facetValueContainer.appendTo(rightCol);
             }
             facetValueAnchor.appendTo(facetValueContainer);
-            facetValueAnchor.html(localizedValue);
+            
+            //If facet values contains '<' or '>' characters we have to escape them! But we have to keep the strong tags that comes from the server!
+            var escapedLocalizedValue = _.escape(localizedValue);
+            var escapedAndStrong = escapedLocalizedValue.replace('&lt;strong&gt;', '<strong>').replace('&lt;&#x2F;strong&gt;', '</strong>');
+            facetValueAnchor.html(escapedAndStrong);
             spanCount.prependTo(facetValueAnchor);
           }
         });
