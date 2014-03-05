@@ -37,8 +37,8 @@ limitations under the License.
           <div>
             <g:message code="ddbnext.Entity_Birth" />: 
             ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.value]}" class="search_link">
-                <span>${entity.person.placeOfBirth.value}</span>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.'@value']}" class="search_link">
+                <span>${entity.person.placeOfBirth.'@value'}</span>
               </g:link>
             </g:if>
           </div>
@@ -47,8 +47,8 @@ limitations under the License.
           <div>
             <g:message code="ddbnext.Entity_Death" />: 
             ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}">, 
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.value]}" class="search_link">
-                <span>${entity.person.placeOfDeath.value}</span>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.'@value']}" class="search_link">
+                <span>${entity.person.placeOfDeath.'@value'}</span>
               </g:link>
             </g:if>
           </div>
