@@ -33,7 +33,7 @@ limitations under the License.
   <div class="row item-detail item-content">
     <div class="<g:if test="${binaryList}">span6</g:if><g:else>span12</g:else> item-description">
       <h2>
-        ${itemTitle}
+        ${itemTitle.encodeAsHTML()}
       </h2>
       <g:render template="fields" />
       <g:render template="rights" />
