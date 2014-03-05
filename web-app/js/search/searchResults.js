@@ -309,8 +309,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
       function() {
         var paramsArray = [['rows', this.value], ['offset', 0]];
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        $('.clear-filters').attr('href',
-            $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
+        if($('.clear-filters').attr('href')) {
+          $('.clear-filters').attr('href',
+              $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
+          }
         return false;
       });
 
@@ -318,10 +320,12 @@ de.ddb.next.search.searchResultsInitializer = function() {
       function() {
         var paramsArray = [['sort', this.value], ['offset', 0]];
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        $('.clear-filters').attr(
-            'href',
-            $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
-                'sort=' + this.value));
+        if($('.clear-filters').attr('href')) {
+          $('.clear-filters').attr(
+              'href',
+              $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
+                  'sort=' + this.value));
+        }
         return false;
       });
 
