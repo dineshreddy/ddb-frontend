@@ -49,13 +49,35 @@
 }
 
 .time-facet button {
-  font-size: 0.938em;
+  font-size: 80% !important;
+  width: 106px;
+  line-height: 0;
+  margin-right: 3px;
+}
+.time-facet button.without-date,
+.time-facet button#reset-timefacet {
   background-color: initial !important;
   background: initial !important;
-  color: initial !important;
-  font-size: 80% !important;
-  border-bottom: #d3d3d3 1px solid !important;
-  border-left: #d3d3d3 1px solid !important;
-  border-top: #d3d3d3 1px solid !important;
-  border-right: #d3d3d3 1px solid !important;
+  border: #d3d3d3 1px solid !important;
+  text-shadow: none;
+  color: #d3d3d3;
+}
+
+.time-facet input[type="radio"] {
+  margin: 0;
+  margin-right: 4px;
+}
+
+#timespan-form .contextual-help {
+  margin-right: 150px;
+  margin-top: -7px;
+}
+
+.time-restriction .tooltip {
+  left: -12%;
+  margin: 10px;
+}
+
+.limitation {
+  margin-left: 16px;
 }

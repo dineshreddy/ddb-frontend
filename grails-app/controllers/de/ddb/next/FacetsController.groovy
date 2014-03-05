@@ -33,6 +33,7 @@ class FacetsController {
 
     static defaultAction = "facets"
 
+    def apisService
     def facetsService
     def searchService
     def configurationService
@@ -49,7 +50,11 @@ class FacetsController {
         // Key based facets uses the "Search" endpoint (/apis/search)
         if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+
+            //Use query filter if roles were selected
+            def filteredQuery = apisService.filterForRoleFacets(urlQuery)
+
+            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, filteredQuery)
             if(!apiResponse.isOk()){
                 apiResponse.throwException(request)
             }
@@ -64,12 +69,14 @@ class FacetsController {
         //All other facets uses the new "Autocomplete facets" endpoint of the backend
         else{
             def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
-            //FIXME /cortex/api/search is only for testing. Replace it with /search
-            //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
-            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+            //Use query filter if roles were selected
+            def filteredQuery = apisService.filterForRoleFacets(urlQuery)
+
+            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
 
             if(!apiResponse.isOk()){
                 apiResponse.throwException(request)

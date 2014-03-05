@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.facets-head, .compare-header {
+.facets-head, .compare-header, .time-restriction {
   position: relative;
 }
 
@@ -24,11 +24,12 @@
   font-size: 1em;
 }
 
-.facets-head .contextual-help, .compare-header .contextual-help, .fields .contextual-help {
+.facets-head .contextual-help, .compare-header .contextual-help, .fields .contextual-help,
+.time-restriction .contextual-help {
   position: absolute;
 }
 
-.facets-head .contextual-help, .compare-header .contextual-help {
+.facets-head .contextual-help, .compare-header .contextual-help, .time-restriction .contextual-help {
   right: 0;
   top: 14px;
 }
@@ -735,7 +736,7 @@ input[type="checkbox"],input[type="radio"] {
   line-height: 25px;
 }
 
-.facets-container .tooltip, .compare-header .tooltip, .fields .tooltip {
+.facets-container .tooltip, .compare-header .tooltip, .fields .tooltip, .time-restriction .tooltip {
   font-size: 0.813em;
 }
 

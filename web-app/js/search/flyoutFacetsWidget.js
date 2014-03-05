@@ -224,7 +224,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
    */
   renderFacetValues : function(field, facetValues) {
     var currObjInstance = this;
-//    console.log("renderFacetValues")
     var leftCol = this.rightBody.find('.left-col');
     var rightCol = this.rightBody.find('.right-col');
     var flyoutRightHeadTitle;
@@ -257,13 +256,13 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
             var localizedValue = this.localizedValue;
 
             facetValueContainer.click(function() {
-              currObjInstance.fctManager.selectFacetValue($(this).attr('data-fctvalue'),
+              currObjInstance.fctManager.selectFacetValue(decodeURIComponent($(this).attr('data-fctvalue')),
                   localizedValue.replace('<strong>', '').replace('</strong>', ''));
               $(this).remove();
               return false;
             });
 
-            facetValueContainer.attr('data-fctvalue', _.escape(facetValue));
+            facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
             spanCount.html('(' + this.count + ')');
 
             if (index < 5) {
@@ -292,9 +291,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     var facetValueSpan = $(document.createElement('span'));
     var facetValueRemove = $(document.createElement('a'));
 
-    facetValueContainer.attr('data-fctvalue', facetValue);
+    facetValueContainer.attr('data-fctvalue', encodeURIComponent(facetValue));
     facetValueSpan.attr('title', localizedValue);
-    facetValueSpan.html(localizedValue);
+
+    facetValueSpan.html(_.escape(decodeURIComponent(localizedValue)));
     facetValueSpan.addClass('facet-value');
 
     facetValueRemove.attr('href', '#');
@@ -305,7 +305,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
     facetValueRemove.appendTo(facetValueContainer);
     facetValueContainer.appendTo(this.selectedItems);
-
     return facetValueContainer;
   },
 
@@ -315,8 +314,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   renderRoleValues : function(facetValueContainer, facetValue, facetField, roleValues) {
     var currObjInstance = this;
 
-//    console.log("renderRoleFacetValue() " + facetValue + " | " + facetField + " | " + roleValues);
-    
     // Find the span element of the facetvalue
     var facetValueSpan = facetValueContainer.find('.facet-value');
 
@@ -331,12 +328,9 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     // Create the role based facets and add them to the container
     $.each(roleValues.values,
         function(index, value) {
-//          console.log("each value: " + value.value);
-//          console.log("facetValue: " + facetValue);
-//          console.log("literal: " + de.ddb.next.search.getLiteralFromRole(value.value));
 
       //The parent part of the role must match exactly the facet value! 
-          if (facetValue.toString() === de.ddb.next.search.getLiteralFromRole(value.value)) {
+          if (decodeURIComponent(facetValue.toString()) === de.ddb.next.search.getLiteralFromRole(value.value)) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));

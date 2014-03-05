@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
@@ -117,18 +118,29 @@ class EntityController {
         searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
         //------------------------- Check for entity picture -------------------------------
-        def imageUrl = jsonGraph?.person?.depiction?.thumbnail
-        def entityImageExists = entityService.entityImageExists(imageUrl)
+        def entityImageUrl = null
+        def thumbnailUrl = jsonGraph?.person?.depiction?.thumbnail
+        def imageUrl = jsonGraph?.person?.depiction?.image
+        def entityImageExists = false
 
+        //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
+        if (entityService.entityImageExists(thumbnailUrl)){
+            entityImageUrl = thumbnailUrl
+            entityImageExists = true
+        } else if (entityService.entityImageExists(imageUrl)) {
+            entityImageUrl = imageUrl
+            entityImageExists = true
+        }
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
-            "entityImageExists": entityImageExists,
             "isFavorite": itemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
+            "entityImageExists": entityImageExists,
+            "entityImageUrl": entityImageUrl
         ]
 
         render(view: 'entity', model: model)
