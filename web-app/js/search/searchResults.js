@@ -43,7 +43,7 @@ $(function() {
     if (window.history && history.pushState) {
       historyedited = false;
       historySupport = true;
-      $(window).bind('popstate', function(e) {
+      $(window).bind('popstate', function() {
         if (historyedited) {
           stateManager(location.pathname + location.search);
         }
@@ -589,7 +589,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
     $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
     $("#addToSavedSearchesModal").modal("show");
     $("#addToSavedSearchesConfirm").unbind("click");
-    $("#addToSavedSearchesConfirm").click(function(e) {
+    $("#addToSavedSearchesConfirm").click(function() {
       $("#addToSavedSearchesModal").modal("hide");
       var title = $("#addToSavedSearchesTitle").val();
       if (title.length > 0) {
