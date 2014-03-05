@@ -128,7 +128,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
             // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
             compareLink.off();
-            compareLink.on("click", function() {
+            compareLink.on("click", function(event) {
               //Update the url of the link
               var urlQuery = window.location.search;
               var url = jsContextPath + '/item/' + cookieId + urlQuery;
@@ -252,12 +252,12 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
     // Disable the item compare buttons for all selected items
     var selectedItems = $('.compare').filter(
-        function() {
+        function(index) {
           if (cookieVal) {
             return ($(this).attr('data-iid') === cookieVal.id1 || $(this).attr('data-iid') === cookieVal.id2);
           }
         });
-    selectedItems.each(function() {
+    selectedItems.each(function(index) {
       $(this).off();
       $(this).addClass("disabled");
     });
@@ -279,19 +279,21 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     compareButton.removeClass('button');
     compareButton.addClass('button-disabled');
 
-    // Enable the compare button only if two items are selected for comparison
-    if ((cookieVal !== null) && (cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
-      compareButton.removeClass('button-disabled');
-      compareButton.addClass('button');
-
-      // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
-      compareButton.off();
-      compareButton.on("click", function() {
-        var urlQuery = window.location.search;
-        var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
-            + cookieVal.id2 + urlQuery;
-        compareButton.attr("href", url);
-      });
+    if (cookieVal !== null) {
+      // Enable the compare button only if two items are selected for comparison
+      if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
+        compareButton.removeClass('button-disabled');
+        compareButton.addClass('button');
+                       
+        // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
+        compareButton.off();
+        compareButton.on("click", function(event) {
+          var urlQuery = window.location.search
+          var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
+              + cookieVal.id2 + urlQuery;
+          compareButton.attr("href", url);
+        });
+      }
     }
   },
 
