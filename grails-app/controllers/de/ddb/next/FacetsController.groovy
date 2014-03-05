@@ -76,8 +76,6 @@ class FacetsController {
             //Use query filter if roles were selected
             def filteredQuery = apisService.filterForRoleFacets(urlQuery)
 
-            //FIXME /cortex/api/search is only for testing. Replace it with /search
-            //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/cortex/api/search/facets/'+facetName, false, urlQuery)
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
 
             if(!apiResponse.isOk()){
