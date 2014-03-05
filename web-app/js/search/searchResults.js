@@ -23,7 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
-  if (jsPageName == "results") {
+  if (jsPageName === "results") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function() {
@@ -43,7 +43,7 @@ $(function() {
     if (window.history && history.pushState) {
       historyedited = false;
       historySupport = true;
-      $(window).bind('popstate', function(e) {
+      $(window).bind('popstate', function() {
         if (historyedited) {
           stateManager(location.pathname + location.search);
         }
@@ -57,7 +57,7 @@ $(function() {
 
     de.ddb.next.search.searchResultsInitializer();
 
-    function stateManager(url) {
+    var stateManager = function(url) {
       $('#main-container').load(url + ' .search-results-container', function() {
         de.ddb.next.search.searchResultsInitializer();
       });
@@ -75,31 +75,30 @@ de.ddb.next.search.historyManager = function(path) {
     globalUrl = (path.indexOf('?') > -1) ? path.split('?')[1] : path;
     window.location = path;
   }
-}
+};
 
 de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
-  if (facetField == 'affiliate_fct_role' || facetField == 'keywords_fct' || facetField == 'place_fct' || facetField == 'provider_fct') {
+  if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct') {
     return facetValue.toString();
   }
-  if (facetField == 'type_fct') {
+  if (facetField === 'type_fct') {
     return messages.ddbnext['type_fct_' + facetValue];
   }
-  if (facetField == 'time_fct') {
+  if (facetField === 'time_fct') {
     return messages.ddbnext['time_fct_' + facetValue];
   }
-  if (facetField == 'language_fct') {
+  if (facetField === 'language_fct') {
     return messages.ddbnext['language_fct_' + facetValue];
   }
-  if (facetField == 'sector_fct') {
+  if (facetField === 'sector_fct') {
     return messages.ddbnext['sector_fct_' + facetValue];
   }
   return '';
-}
+};
 
 de.ddb.next.search.getLocalizedFacetField = function(facetField) {
   return messages.ddbnext['facet_' + facetField];
-}
-
+};
 
 de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
@@ -113,7 +112,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   $('.search-results').append(divSearchResultsOverlayModal);
   $('.search-results').append(divSearchResultsOverlayWaiting);
 
-  var request = $.ajax({
+  $.ajax({
     type : 'GET',
     dataType : 'json',
     async : true,
@@ -142,7 +141,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.total-pages').html(JSONresponse.totalPages);
             $('.result-pages-count').html(JSONresponse.totalPages);
             $('.results-total').html(JSONresponse.numberOfResults);
-            if (JSONresponse.numberOfResults == '1') {
+            if (JSONresponse.numberOfResults === '1') {
               $('.results-label').html(messages.ddbnext.Result_lowercase);
             } else {
               $('.results-label').html(messages.ddbnext.Results_lowercase);
@@ -205,7 +204,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
       }
     }
   });
-}
+};
 
 de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
@@ -228,7 +227,7 @@ de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
     document.cookie = "searchParameters" + jsContextPath + "=\""
         + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
   }
-}
+};
 
 de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
@@ -240,14 +239,14 @@ de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
     document.cookie = "searchParameters" + jsContextPath + "=\""
         + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
   }
-}
+};
 
 de.ddb.next.search.readCookie = function(name) {
   var nameEQ = name + "=";
   var ca = document.cookie.split(';');
   for ( var i = 0; i < ca.length; i++) {
     var c = ca[i];
-    while (c.charAt(0) == ' ') {
+    while (c.charAt(0) === ' ') {
       c = c.substring(1, c.length);
     }
     if (c.indexOf(nameEQ) === 0) {
@@ -255,11 +254,11 @@ de.ddb.next.search.readCookie = function(name) {
     }
   }
   return null;
-}
+};
 
 de.ddb.next.search.hideError = function() {
   $('.errors-container').remove();
-}
+};
 
 de.ddb.next.search.showError = function(errorHtml) {
   var errorContainer = ($('.search-results-list').find('.errors-container').length > 0) ? $(
@@ -275,7 +274,7 @@ de.ddb.next.search.showError = function(errorHtml) {
     scrollTop: offset.top,
     scrollLeft: offset.left
   });
-}
+};
 
 de.ddb.next.search.initializeFacets = function() {
   var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget();
@@ -286,15 +285,14 @@ de.ddb.next.search.initializeFacets = function() {
     });
   });
   fctWidget.manageOutsideClicks(fctWidget);
-}
+};
 
+de.ddb.next.search.searchResultsInitializer = function() {
 
-de.ddb.next.search.searchResultsInitializer = function() {  
-  
   $(window).on("searchChange", function() {
     setHovercardEvents();
     var compareManager = new de.ddb.next.search.CompareManager();
-    compareManager.initComparison();    
+    compareManager.initComparison();
     checkFavorites();
     checkSavedSearch();
   });
@@ -305,28 +303,31 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
 
-  $(window).trigger("searchChange");  
+  $(window).trigger("searchChange");
   
   $('.page-filter select').change(
       function() {
-        var paramsArray = new Array(new Array('rows', this.value), new Array('offset', 0));
+        var paramsArray = [['rows', this.value], ['offset', 0]];
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        $('.clear-filters').attr('href',
-            $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
+        if($('.clear-filters').attr('href')) {
+          $('.clear-filters').attr('href',
+              $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
+          }
         return false;
       });
 
   $('.sort-results-switch select').change(
       function() {
-        var paramsArray = new Array(new Array('sort', this.value), new Array('offset', 0));
+        var paramsArray = [['sort', this.value], ['offset', 0]];
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        $('.clear-filters').attr(
-            'href',
-            $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
-                'sort=' + this.value));
+        if($('.clear-filters').attr('href')) {
+          $('.clear-filters').attr(
+              'href',
+              $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
+                  'sort=' + this.value));
+        }
         return false;
       });
-  
 
   $('.page-nav-result').click(function() {
     de.ddb.next.search.fetchResultsList(this.href);
@@ -421,7 +422,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
               });
               $('.search-results').fadeIn('fast');
             });
-        var paramsArray = new Array(new Array('viewType', 'list'));
+        var paramsArray = [['viewType', 'list']];
         var newUrl = $.addParamToCurrentUrl(paramsArray);
         $('.page-nav a, .page-nav-mob a').each(function() {
           this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
@@ -454,7 +455,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
       var valueInteger = parseInt(this.value.replace(/[^0-9]/g, ''));
       var filterInteger = parseInt($('.page-filter').find("select").val());
       var offset = (valueInteger - 1) * filterInteger;
-      var paramsArray = new Array(new Array('offset', offset));
+      var paramsArray = [['offset', offset]];
       var newUrl = $.addParamToCurrentUrl(paramsArray);
       de.ddb.next.search.fetchResultsList(newUrl);
     }
@@ -462,11 +463,11 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
     if (valueCheck.is(':checked')) {
-      var paramsArray = new Array(new Array('isThumbnailFiltered', 'true'));
+      var paramsArray = [['isThumbnailFiltered', 'true']];
     } else {
-      var paramsArray = new Array(new Array('isThumbnailFiltered', 'false'));
+      var paramsArray = [['isThumbnailFiltered', 'false']];
     }
-    paramsArray.push(new Array('offset', 0));
+    paramsArray.push(['offset', 0]);
     var newUrl = $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.fetchResultsList(newUrl);
   });
@@ -500,7 +501,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
               }
               value.innerHTML = newTitle;
             });
-        var newTitle = $('.summary-main .title a').title;
         $('#view-list').removeClass('selected');
         $('#view-list').removeAttr('disabled');
         $('#view-grid').addClass('selected');
@@ -528,7 +528,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
               });
               $('.search-results').fadeIn('fast');
             });
-        var paramsArray = new Array(new Array('viewType', 'grid'));
+        var paramsArray = [['viewType', 'grid']];
         var newUrl = $.addParamToCurrentUrl(paramsArray);
         $('.page-nav a, .page-nav-mob a').each(function() {
           this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
@@ -544,10 +544,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
       });
   $('#keep-filters').click(function() {
     var valueCheck = $(this);
+    var paramsArray = [['keepFilters', 'false']];
+
     if (valueCheck.is(':checked')) {
-      var paramsArray = new Array(new Array('keepFilters', 'true'));
-    } else {
-      var paramsArray = new Array(new Array('keepFilters', 'false'));
+      paramsArray = [['keepFilters', 'true']];
     }
     $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.setSearchCookieParameter(paramsArray);
@@ -564,8 +564,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
     });
   }
 
-  
-  
   function addToSavedSearches() {
     $.urlParam = function(name) {
       var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(window.location.href);
@@ -591,7 +589,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
     $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
     $("#addToSavedSearchesModal").modal("show");
     $("#addToSavedSearchesConfirm").unbind("click");
-    $("#addToSavedSearchesConfirm").click(function(e) {
+    $("#addToSavedSearchesConfirm").click(function() {
       $("#addToSavedSearchesModal").modal("hide");
       var title = $("#addToSavedSearchesTitle").val();
       if (title.length > 0) {
@@ -623,7 +621,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
     var itemIds = [];
 
     // Only perform this check if a user is logged in
-    if (jsLoggedIn == "true") {
+    if (jsLoggedIn === "true") {
 
       // collect all item ids on the page
       $(".search-results .summary-main .persist").each(function() {
@@ -647,7 +645,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
                   function() {
                     disableFavorite(div);
                     // add a result hit to the list of favorites
-                    $.post(jsContextPath + "/apis/favorites/" + itemId, function(data) {
+                    $.post(jsContextPath + "/apis/favorites/" + itemId, function() {
                       $("#favorite-confirmation").modal("show");
                       $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
                         if (folders.length > 1) {
@@ -691,7 +689,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
    */
   function checkSavedSearch() {
     // Only perform this check if a user is logged in
-    if (jsLoggedIn == "true") {
+    if (jsLoggedIn === "true") {
 
       $.ajax({
         type : "POST",
