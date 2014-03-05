@@ -128,7 +128,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
             // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
             compareLink.off();
-            compareLink.on("click", function(event) {
+            compareLink.on("click", function() {
               //Update the url of the link
               var urlQuery = window.location.search;
               var url = jsContextPath + '/item/' + cookieId + urlQuery;
@@ -215,7 +215,8 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     var cookieVal = currObjInstance.getComparisonCookieVal();
     de.ddb.next.search.hideError();
 
-    if ((1 !== index) && (2 !== index)) {
+    //It's not possible to change to !==
+    if ((1 != index) && (2 != index)) {
       return;
     }
 
@@ -252,12 +253,12 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
     // Disable the item compare buttons for all selected items
     var selectedItems = $('.compare').filter(
-        function(index) {
+        function() {
           if (cookieVal) {
             return ($(this).attr('data-iid') === cookieVal.id1 || $(this).attr('data-iid') === cookieVal.id2);
           }
         });
-    selectedItems.each(function(index) {
+    selectedItems.each(function() {
       $(this).off();
       $(this).addClass("disabled");
     });
