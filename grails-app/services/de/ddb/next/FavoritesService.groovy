@@ -148,7 +148,7 @@ class FavoritesService {
             def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
             def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMediaUnknown.png").toString()
             def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
-            def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultEntity.png").toString()
+            def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultPerson.png").toString()
             def foundItemIds = allRes.collect{ it.id }
             def subtitle = ""
             items.each{
