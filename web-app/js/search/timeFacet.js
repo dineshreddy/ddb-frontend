@@ -164,8 +164,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
 
     //Months starts from 0!
     var date = new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay));
-    if((currObjInstance.fromYear < 100) && (currObjInstance.fromYear >= 0))
+    if(currObjInstance.fromYear < 100 && currObjInstance.fromYear >= 0) {
       date.setUTCFullYear(("0000" + date.getYear()).slice(-4));
+    }
     return date;
   },
 
@@ -184,8 +185,9 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
 
     //Months starts from 0!
     date = new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
-    if((currObjInstance.tillYear < 100) && (currObjInstance.tillYear >= 0))
+    if(currObjInstance.tillYear < 100 && currObjInstance.tillYear >= 0) {
       date.setUTCFullYear(("0000" + date.getYear()).slice(-4));
+    }
     return date;
   },
 
@@ -300,7 +302,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    * Initialize the TimeFacet object
    */
   init : function(facetsManager) {
-//    console.log("init");
     var currObjInstance = this;
 
     currObjInstance.facetsManager = facetsManager;
@@ -317,21 +318,18 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     // Click handler for Opening|Closing the time facet
     $(".time-facet a.h3").click(function(event) {
-//      console.log("click toggle");
       event.preventDefault();
       currObjInstance.toggleForm();
     });
 
     // Click handler for adding a new TimeSpan
     $("#add-timespan").click(function(event) {
-//      console.log("click add");
       event.preventDefault();
       currObjInstance.assignTimeSpan(true);
     });
 
     // Click handler for reseting the time facet
     $("#reset-timefacet").click(function(event) {
-//      console.log("click reset");
       event.preventDefault();
       currObjInstance.reset();
     });
@@ -376,7 +374,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
    */
   initOnLoad: function() {
-//    console.log("initOnLoad");
 
     var currObjInstance = this;
     var hasSelectedDate = false;
@@ -438,11 +435,13 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
         }
       });
 
-      if(!updatedFrom)
+      if(!updatedFrom) {
         currObjInstance.selectedTimeSpan.clearFromDate();
+      }
 
-      if(!updatedTill)
+      if(!updatedTill) {
         currObjInstance.selectedTimeSpan.clearTillDate();
+      }
     }
 
     //Initialize the form
@@ -455,13 +454,13 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       currObjInstance.closeForm();
     }
   },
-  
+
   /**
    * This method is toggles between the open and closed state of the timefacet form
    */
   toggleForm : function() {
     var currObjInstance = this;
-    
+
     if (!currObjInstance.opened) {
       currObjInstance.openForm();
     } else {
@@ -471,20 +470,20 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       }
     }
   },
-  
+
   /**
    * This method opens the timefacet form
    */
   openForm : function() {
     var currObjInstance = this;
-    var timespanFormDiv = $("#timespan-form"); 
+    var timespanFormDiv = $("#timespan-form");
     var timeFacetDiv = $(".time-facet");
-    
+
     currObjInstance.opened = true;
     timespanFormDiv.fadeIn('fast');
     timeFacetDiv.addClass('active');
   },
-  
+
   /**
    * This method closes the timefacet form
    */
@@ -492,22 +491,20 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var currObjInstance = this;
     var timespanFormDiv = $("#timespan-form"); 
     var timeFacetDiv = $(".time-facet");
-    
+
     currObjInstance.opened = false;
     timespanFormDiv.fadeOut('fast');
     timeFacetDiv.removeClass('active');
   },
-  
-  
-  
+
   /**
    * Checks the values of the form and adds a new timespan.
    */
   assignTimeSpan : function(checkYears) {
     var currObjInstance = this;
-    
+
     de.ddb.next.search.hideError();
-    
+
     //Retrieve the values from the timespan form
     var fromDayValue = $("#fromDay").val() !== "" ? $("#fromDay").val() : null;
     var fromMonthValue = $("#fromMonth").val() !== "" ? $("#fromMonth").val() : null;
@@ -517,53 +514,50 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
     var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
 
-    if (checkYears) {
-      if (fromYearValue === null && tillYearValue === null) {
-        de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
-        return;
-      }
+    if (checkYears && fromYearValue === null && tillYearValue === null) {
+      de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
+      return;
     }
     
-    var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);    
+    var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
     currObjInstance.selectedTimeSpan = newTimeSpan;
     currObjInstance.added = true;
-    
+
     currObjInstance.selectedTimeSpan.completeFromDate();
     currObjInstance.selectedTimeSpan.completeTillDate();
-    
+
     currObjInstance.updateTimeSpanForm();
     currObjInstance.updateWindowUrl();
   },
-  
+
   /**
-   * Resets the input elements of the form. 
-   * The window URL is reseted by calling assignTimeSpan() which does this implicitly  
+   * Resets the input elements of the form.
+   * The window URL is reseted by calling assignTimeSpan() which does this implicitly
    */
   reset : function() {
-//    console.log("reset");
     var currObjInstance = this;
-    
+
     //Hide error if available
     de.ddb.next.search.hideError();
-    
+
     //Set an empty TimeSpan
     var newTimeSpan = new de.ddb.next.search.TimeSpan();
     currObjInstance.selectedTimeSpan = newTimeSpan;
-    
+
     //reset the GUI
     currObjInstance.disableFromDayAndMonth(true);
     currObjInstance.disableTillDayAndMonth(true);
-    currObjInstance.updateTimeSpanForm();    
-    
+    currObjInstance.updateTimeSpanForm();
+
     //reset buton Apply
     $("#add-timespan").addClass('without-date');
-    
+
     //asign the timeSpan to reset also the window url etc!
     currObjInstance.assignTimeSpan(false);
-    
+
     currObjInstance.added = false;
-  },  
-  
+  },
+
   /**
    * Updates the form fields
    */
@@ -590,22 +584,21 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       currObjInstance.disableTillDayAndMonth(true);
     }
   },
-  
+
   /**
    * Updates the browser URL and performs a new search with the given time facet values.
    */
   updateWindowUrl: function() {
-//    console.log("updateWindowUrl: ")
     var currObjInstance = this;
     var paramsArray = null;
     var selectedFacetValues = [];
-    
+
     // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
 //      console.log("facetValuesFromUrl: " + facetValuesFromUrl)
-      $.each(facetValuesFromUrl, function(key, value) {        
+      $.each(facetValuesFromUrl, function(key, value) {
         //Only add facetValues that do not start with "begin_time" or "end_time"
         if ((facetValuesFromUrl[key].indexOf("begin_time") === -1) && (facetValuesFromUrl[key].indexOf("end_time") === -1)) {
           selectedFacetValues.push(decodeURIComponent(value.replace(/\+/g, '%20')));
@@ -613,7 +606,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       });
     }
 
-    
     var daysFrom = '*';
     var daysTill = '*';
 
@@ -626,31 +618,34 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
       daysTill = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
     }
-    
+
     //Genau
     if($("#limitationExact").is(":checked")) {
-      if(daysFrom != '*')
+      if(daysFrom !== '*') {
         selectedFacetValues.push('begin_time=[' + daysFrom + ' TO ' + daysTill + ']');
-      if(daysTill != '*')
+      }
+      if(daysTill !== '*') {
         selectedFacetValues.push('end_time=[' + daysFrom + ' TO ' + daysTill + ']');
+      }
 
     }
     else{//Unscharf
-      if(daysTill != '*')
+      if(daysTill !== '*') {
         selectedFacetValues.push('begin_time=[* TO '+ daysTill + ']');
-      if(daysFrom != '*')
+      }
+      if(daysFrom != '*') {
         selectedFacetValues.push('end_time=[' + daysFrom + ' TO *]');
+      }
     }
     
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
-    paramsArray = new Array(new Array('facetValues[]', selectedFacetValues));
-//    console.log("paramsArray: " + paramsArray);
-    
+    paramsArray = [['facetValues[]', selectedFacetValues]];
+
     //Perform the search with offset 0
-    paramsArray.push(new Array('offset', 0));
-    
+    paramsArray.push(['offset', 0]);
+
     var newUrl = $.addParamToCurrentUrl(paramsArray);
-//    console.log("new url: " + newUrl);
+
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
   }
 });// End extend TimeFacet prototype
