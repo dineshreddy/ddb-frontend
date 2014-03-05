@@ -386,10 +386,7 @@ hr {
 }
 
 .favorites-results .results-list .summary .extra .types li.entity {
-  background: url("../images/placeholder/searchResultEntity.png") no-repeat center top;
-  background-size: 25px;
-  padding: 0;
-  border: 1px solid #878380;
+  background-position: 0 -152px;
 }
 
 .favorites-results .results-list .summary .extra .types .unknown {
