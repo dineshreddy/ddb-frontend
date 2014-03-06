@@ -150,13 +150,14 @@ class FavoritesService {
             def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
             def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultPerson.png").toString()
             def foundItemIds = allRes.collect{ it.id }
-            def subtitle = ""
             items.each{
                 // item not found
                 if(it.type == Type.ENTITY){
                     def entity = [:]
-                    label = entityService.getEntityDetails(it.itemId)?.preferredName
-                    def professions = entityService.getEntityDetails(it.itemId)?.professionOrOccupation
+                    def entityDetails = entityService.getEntityDetails(it.itemId)
+                    label = entityDetails?.preferredName
+                    def professions = entityDetails?.professionOrOccupation
+                    def subtitle = ""
                     professions.each {
                       subtitle += it
                       if(it != professions.last())
@@ -191,7 +192,6 @@ class FavoritesService {
                 }
             }
         }
-
         return allRes
     }
 
