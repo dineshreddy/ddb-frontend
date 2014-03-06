@@ -15,7 +15,7 @@
  */
 $(document).ready(function() {
 
-  if (jsPageName == "apikey") {
+  if (jsPageName === "apikey") {
 
     $("#apikey-delete").click(function(event) {
       event.preventDefault();

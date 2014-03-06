@@ -40,6 +40,12 @@ $(function() {
       $("#form-search-header .query").val(queryString);
     }
 
+    var stateManager = function(url) {
+      $('#main-container').load(url + ' .search-results-container', function() {
+        de.ddb.next.search.searchResultsInitializer();
+      });
+    };
+
     if (window.history && history.pushState) {
       historyedited = false;
       historySupport = true;
@@ -57,11 +63,6 @@ $(function() {
 
     de.ddb.next.search.searchResultsInitializer();
 
-    var stateManager = function(url) {
-      $('#main-container').load(url + ' .search-results-container', function() {
-        de.ddb.next.search.searchResultsInitializer();
-      });
-    }
   }
 });
 
@@ -304,7 +305,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-nonjs').addClass("off");
 
   $(window).trigger("searchChange");
-  
+
   $('.page-filter select').change(
       function() {
         var paramsArray = [['rows', this.value], ['offset', 0]];
@@ -462,10 +463,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
   });
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
+    var paramsArray = [['isThumbnailFiltered', 'false']];
+
     if (valueCheck.is(':checked')) {
-      var paramsArray = [['isThumbnailFiltered', 'true']];
-    } else {
-      var paramsArray = [['isThumbnailFiltered', 'false']];
+      paramsArray = [['isThumbnailFiltered', 'true']];
     }
     paramsArray.push(['offset', 0]);
     var newUrl = $.addParamToCurrentUrl(paramsArray);

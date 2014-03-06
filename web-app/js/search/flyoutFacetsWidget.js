@@ -83,10 +83,10 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
    * A call of buildStructure() creates the html structure of the facetLeftContainer and the facetRightContainer.
    */
   build : function(element) {
-    if ((element.attr('class') == 'h3' && element.parent().find('.selected-items li').length === 0)
-        || element.attr('class') == 'add-more-filters') {
+    if ((element.attr('class') === 'h3' && element.parent().find('.selected-items li').length === 0)
+        || element.attr('class') === 'add-more-filters') {
       if ((element.attr('data-fctname') !== this.fctManager.currentFacetField || (element
-          .attr('data-fctname') == this.fctManager.currentFacetField && !this.opened))) {
+          .attr('data-fctname') === this.fctManager.currentFacetField && !this.opened))) {
         if (this.opened) {
           this.close();
         }
@@ -104,7 +104,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
       } else if (this.opened) {
         this.close();
       }
-    } else if (element.attr('class') == 'h3' && this.opened) {
+    } else if (element.attr('class') === 'h3' && this.opened) {
       this.close();
     } else {
       return false;
@@ -230,7 +230,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     } else {
       flyoutRightHeadTitle = $(document.createElement('span'));
     }
-    if (field == this.fctManager.currentFacetField && facetValues.length > 0) {
+    if (field === this.fctManager.currentFacetField && facetValues.length > 0) {
       flyoutRightHeadTitle.html(this.field_MostRelevant);
       if (facetValues.length > 5) {
         this.rightBody.addClass('body-extender');
@@ -243,7 +243,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
         $.each(facetValues, function(index) {
           if (jQuery.inArray(this.value,
-              currObjInstance.fctManager.currentFacetValuesSelected) == -1) {
+              currObjInstance.fctManager.currentFacetValuesSelected) === -1) {
             var facetValueContainer = $(document.createElement('li'));
             var facetValueAnchor = $(document.createElement('a'));
             var spanCount = $(document.createElement('span'));
@@ -358,12 +358,12 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
               $.each(paramsFacetValues, function(key, value) {
                 paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
               });
-  
+
               if (jQuery.inArray(search, paramsFacetValues) != -1) {
                 roleFacetValueCheckbox.prop('checked', true);
               }
             }
-  
+
             // add action handler
             roleFacetValueCheckbox
                 .click(function() {
