@@ -90,27 +90,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   /**
-   * Makes an AJAX request to fetch all facet definitions from the backend.
-   */
-  fetchFacetsDefinition : function(flyoutWidget) {
-    var currObjInstance = this;
-
-    var url = jsContextPath + '/search/facets/';
-    var request = $.ajax({
-      type : 'GET',
-      dataType : 'json',
-      async : true,
-      url : url,
-      complete : function(data) {
-        currObjInstance.allFacets = jQuery.parseJSON(request.responseText);
-        
-        // invoke the callback method to continue initializing the facets
-        currObjInstance.initializeSelectedFacetOnLoad(flyoutWidget);
-      }
-    });
-  },  
-
-  /**
    * Makes an AJAX request to fetch the role values for the currently selected facet field and value
    * 
    * @param facetValueContainer: The DOM element
@@ -495,7 +474,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     }
 
                     var selectedFacetValue = currObjInstance.connectedflyoutWidget.renderSelectedFacetValue(this, localizedValue);
-                    var roleFacets = currObjInstance.getRolesForFacet(currObjInstance.currentFacetField);
 
                     if (fctField.indexOf("_role") >= 0) {
                       currObjInstance.fetchRoleFacetValues(selectedFacetValue, facetValue, fctField);
@@ -520,39 +498,5 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     //init TimeFacet
     currObjInstance.timeFacet.initOnLoad();
   },
-
-  /**
-   * Search the allFacets definition for the given facet name.
-   * Returns <code>true<code> if the given facet has been found.
-   */
-  isMainFacet : function(fctField) {
-    var currObjInstance = this;
-    var isMainFacet = false;
-
-    $.each(currObjInstance.allFacets, function() {
-      if (fctField == this.name) {
-        isMainFacet = true;
-      }
-    });
-
-    return isMainFacet;
-  },
-
-  /**
-   * Searches the roles for a facet in the facetDefinition
-   */
-  getRolesForFacet : function(fctField) {
-    var currObjInstance = this;
-    var roleFacets = [];
-
-    $.each(currObjInstance.allFacets, function() {
-      if (fctField == this.name) {
-        //TODO get only roleFacets that are in the roleFacets list
-        roleFacets = Object.keys(this.roles);
-      }
-    });
-
-    return roleFacets;
-  }
 
 });
