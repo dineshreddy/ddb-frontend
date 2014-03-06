@@ -17,6 +17,13 @@ function monkeyPatchAutocomplete() {
   $.ui.autocomplete.prototype._renderItem = function(ul, item) {
     var termLength = this.term.length;
     
+    var urlEncodedItem = encodeURIComponent(item.label);
+
+    // DDBNEXT-1270: Filter all items that contains special backend sort chars     
+    if ((urlEncodedItem.indexOf("%C2%98") != -1) || (urlEncodedItem.indexOf("%C2%9C") != -1)) {
+      return ul;
+    }
+    
     var highLightedItemPart = "<span style='font-weight:bold;'>" + item.label.substring(0, termLength) + "</span>";
     var normalItemPart = item.label.substring(termLength);
     
@@ -38,7 +45,6 @@ $(function() {
         },
         success : function(data) {
           response($.map(data, function(n, i) {
-            //console.log(n)
             return {
               label : n.substring(0, 45),
               value : n
