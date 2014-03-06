@@ -1,9 +1,9 @@
 
 $(document).ready(function() {
-  
+
   DDBMap = function() {
     this.init();
-  }
+  };
 
   /** Capsulate main logic in object * */
   $.extend(DDBMap.prototype, {
@@ -33,18 +33,18 @@ $(document).ready(function() {
 
       display : function(config) {
         var self = this;
-        
+
         this._applyConfiguration(config);
-        
+
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
           //Set the base folder for images
           OpenLayers.ImgPath = this.imageFolder;
-          
+
           //Initialize Map
           var options = {
-            theme: this.themeFolder, 
+            theme: this.themeFolder,
             projection: "EPSG:900913"
           };
           this.osmMap = new OpenLayers.Map(this.rootDivId, options);
@@ -55,18 +55,18 @@ $(document).ready(function() {
           this.osmMap.addControlToMap(new OpenLayers.Control.DDBPanZoomBar({"zoomBarOffsetTop": 17, "zoomStopHeight": 7}), new OpenLayers.Pixel(5,-25));
           this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
           this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
-          
+
           //Set the tiles data provider
           //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
           var tiles = new OpenLayers.Layer.OSM();
           this.osmMap.addLayer(tiles);
-          
+
           //Adds the waiting overlay
           this._createWaitingLayer();
-          
+
           //Centers and zooms the map to the initial point
-          var position = this._getLonLat(this.initLon, this.initLat);   
-          this.osmMap.setCenter(position, this.initZoom); 
+          var position = this._getLonLat(this.initLon, this.initLat);
+          this.osmMap.setCenter(position, this.initZoom);
 
           //Add the institutions vector layer
           this._addInstitutionsLayer();
@@ -78,65 +78,63 @@ $(document).ready(function() {
           this.osmMap.events.register("zoomend", null, function(event){
             self._drawClustersOnMap();
           });
-          
+
           //Register a load tiles finished event listener
-          function onTilesLoaded() { //on load finished
-            
-            //Show the waiting layer 
+          var onTilesLoaded = function() { //on load finished
+
+            //Show the waiting layer
             self._showWaitingLayer();
-            
+
             self._loadClusteredInstitutionList(function() { //on clusters loaded
-              
+
               //Draws the institutions on the vector layer
               self._drawClustersOnMap();
-  
+
               //Hide the waiting layer again
               self._hideWaitingLayer();
-  
+
               //Remove the tiles load listener again. We only want it on initialization.
               tiles.events.unregister("loadend", tiles, onTilesLoaded);
             });
-            
+
           }
-          
+
           if(jQuery.browser.msie && jQuery.browser.version < 9) {
             onTilesLoaded(); // just call immediatelly
           }else{
-            tiles.events.register("loadend", tiles, onTilesLoaded); // current browser can use tile loaded event   
+            tiles.events.register("loadend", tiles, onTilesLoaded); // current browser can use tile loaded event
           }
-          
+
         }
-        
+
       },
 
       applyFilters : function() {
         var self = this;
-        
-        //Show the waiting layer 
+
+        //Show the waiting layer
         self._showWaitingLayer();
-        
+
         while( self.osmMap.popups.length ) {
           self.osmMap.removePopup(self.osmMap.popups[0]);
         }
-          
+
         self._loadClusteredInstitutionList(function(){
-          
+
           //Draws the institutions on the vector layer
           self._drawClustersOnMap();
-    
+
           //Hide the waiting layer again
           self._hideWaitingLayer();
-          
+
         });
-        
-            
+
       },
-      
 
       _addInstitutionsLayer : function() {
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-        
+
         var institutionCircleStyle = new OpenLayers.Style({
           strokeColor: "#A5003B",
           strokeOpacity: 1,
@@ -146,21 +144,21 @@ $(document).ready(function() {
           pointRadius: "${radius}",
           pointerEvents: "visiblePainted"
         });
-        
+
         this.vectorLayer = new OpenLayers.Layer.Vector("Institutions", {
           styleMap: new OpenLayers.StyleMap({
-            "default": institutionCircleStyle, 
+            "default": institutionCircleStyle,
             "select": institutionCircleStyle
           }),
           renderers: renderer
         });
         this.osmMap.addLayer(this.vectorLayer);
-        
+
       },
 
       _addInstitutionsClickListener : function(){
         var self = this;
-        
+
         var selectionEventControl = new OpenLayers.Control.SelectFeature(this.vectorLayer);
         this.osmMap.addControl(selectionEventControl);
         selectionEventControl.activate();
@@ -168,28 +166,27 @@ $(document).ready(function() {
             'featureselected': onFeatureSelect,
             'featureunselected': onFeatureUnselect
         });          
-        
-        
+
         function onFeatureSelect(event) {
           var feature = event.feature;
           var institutionList = feature.data.institutions;
-          
+
           var popup = new OpenLayers.Popup.FramedDDB(
-            "institutionPopup", 
+            "institutionPopup",
             feature.geometry.getBounds().getCenterLonLat(),
             new OpenLayers.Size(315,100),
             self._getPopupContentHtml(institutionList),
-            null, 
-            true, 
-            onPopupClose, 
+            null,
+            true,
+            onPopupClose,
             self.imageFolder);
-          
+
           feature.popup = popup;
           popup.feature = feature;
           self.osmMap.addPopup(popup, true);
-          
+
         };
-        
+
         function onFeatureUnselect(event) {
           feature = event.feature;
           var popup = feature.popup;
@@ -200,8 +197,8 @@ $(document).ready(function() {
               feature.popup = null;
           }
         };
-        
-        function onPopupClose(event) {
+
+        function onPopupClose() {
           var feature = this.feature;
           if (feature.popup) {
             selectionEventControl.unselect(feature);
@@ -209,7 +206,7 @@ $(document).ready(function() {
         };
 
       },
-      
+
       _applyConfiguration : function(config) {
         for (var key in config) {
           if (config.hasOwnProperty(key)) {
@@ -217,13 +214,13 @@ $(document).ready(function() {
           }
         }
       },
-      
+
       _log : function(text){
         if("console" in window && "log" in window.console){
           console.log(text);
         }
       },
-      
+
       _getLonLat : function(lon, lat) {
         return new OpenLayers.LonLat(lon, lat).transform(this.fromProjection, this.toProjection);
       },
@@ -231,7 +228,7 @@ $(document).ready(function() {
       _getPoint : function(lon, lat) {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
-      
+
       _prepareInstitutionHierarchy : function(institutionIdsParam) {
         var institutionIds = institutionIdsParam.slice();
         var institutionHierarchy = [];
@@ -242,8 +239,8 @@ $(document).ready(function() {
           institution.childInstitutions = [];
 
           // First case: institution has no children or parents -> just add it
-          if(institution.parents.length == 0 && institution.children.length == 0){
-            institutionHierarchy.push(institution)
+          if(institution.parents.length === 0 && institution.children.length === 0){
+            institutionHierarchy.push(institution);
 
           // Second case: institution is a child -> add parent and let it handle it
           }else if(institution.parents.length > 0){
@@ -251,7 +248,7 @@ $(document).ready(function() {
             // If parent is also in cluster: just remove child from the institutionsList. It will get handled by the parent.
             var isParentInCluster = false;
             for(var j=0; j<institutionIds.length; j++){
-              if(institutionIds[j] == parentId){
+              if(institutionIds[j] === parentId){
                 isParentInCluster = true;
                 break;
               }
@@ -262,10 +259,10 @@ $(document).ready(function() {
               institutionIds.push(parentId);
               institution.highlight = true;
             }
-            
+
           // Third case: institution is a parent
           }else if(institution.children.length > 0){
-            
+
             // Check if childs are in the cluster
             for(var j=0;j<institution.children.length;j++){
               var childId = institution.children[j];
@@ -282,16 +279,16 @@ $(document).ready(function() {
                 childInstitution.id = childId;
                 institution.childInstitutions.push(childInstitution);
               }
-              
-            }            
+
+            }
             institutionHierarchy.push(institution);
           }
         }
-        
+
         return institutionHierarchy;
-        
+
       },
-      
+
       _getPopupContentHtml : function(dataObjectList) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
@@ -309,16 +306,15 @@ $(document).ready(function() {
         html += "      <ul>";
         for(var i=0; i<institutionHierarchy.length; i++){
           var institutionItem = institutionHierarchy[i];
-          var institutionChildren = institutionItem.childInstitutions;          
-            
+          var institutionChildren = institutionItem.childInstitutions;
+
           html += "      <li>";
           html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
           html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
-            
+
           // If the institution has children -> display them
-          var childsToDisplay = [];
-          if(institutionChildren.length > 0){ 
+          if(institutionChildren.length > 0){
             html += "      <ul>";
             for(var j=0; j<institutionChildren.length; j++){
               var childInstitution = institutionChildren[j];
@@ -337,7 +333,7 @@ $(document).ready(function() {
             html += "      </ul>";
           }
           html += "      </li>";
-          
+
         }
         html += "      </ul>";
         html += "    </div>";
@@ -345,7 +341,7 @@ $(document).ready(function() {
         html += "</div>";
         return html;
       },
-      
+
       _getSectorSelection : function() {
         var sectors = {};
         sectors['selected'] = [];
@@ -374,13 +370,12 @@ $(document).ready(function() {
         return sectors;
       },
 
-      
       _loadClusteredInstitutionList : function(onCompleteCallbackFunction) {
         var self = this;
-        
+
         var selectedSectors = this._getSelectedSectors();
         var selectedSectorsText = JSON.stringify(selectedSectors);
-        
+
         $.ajax({
           type : 'GET',
           dataType : 'text',
@@ -395,29 +390,28 @@ $(document).ready(function() {
         });
       },
 
-    
     _drawClustersOnMap : function() {
       this.vectorLayer.removeAllFeatures();
       if(this.clusters != null) {
-        
-        var zoomLevel = this.osmMap.getZoom(); 
+
+        var zoomLevel = this.osmMap.getZoom();
         if(this.clusters.clusters[zoomLevel] != null) {
-          
+
           var clustersToDisplay = this.clusters.clusters[zoomLevel];
-    
+
           var institutionCollections = [];
           for(var i=0;i<clustersToDisplay.length; i++){
             var clusterItem = clustersToDisplay[i];
             var lon = clusterItem.x;
             var lat = clusterItem.y;
             var radius = clusterItem.radius;
-    
+
             var point = new OpenLayers.Geometry.Point(lon, lat);
             var institutionCollection = new OpenLayers.Feature.Vector(point, {radius: radius, institutions: clusterItem.institutions});
-            
+
             institutionCollections.push(institutionCollection);
           }
-    
+
           this.vectorLayer.addFeatures(institutionCollections);
         }
       }
@@ -425,12 +419,12 @@ $(document).ready(function() {
 
     _createWaitingLayer : function(){
       var mapDiv = $("#"+this.rootDivId);
-      
+
       //Create overlay div
       this.waitingLayer = $(document.createElement("div"));
       this.waitingLayer.addClass("osm-load-waiting");
       this.waitingLayer.addClass("off");
-      
+
       //Create waiting img div
       var waitingImg = $(document.createElement("div"));
       waitingImg.addClass("osm-load-waiting-img");
@@ -438,15 +432,14 @@ $(document).ready(function() {
       //Create transparancy div
       var transparancyDiv = $(document.createElement("div"));
       transparancyDiv.addClass("osm-load-waiting-div");
-      
-      
+
       //Join stuff
       this.waitingLayer.prepend(waitingImg);
       this.waitingLayer.prepend(transparancyDiv);
       mapDiv.prepend(this.waitingLayer);
 
     },
-    
+
     _showWaitingLayer : function() {
       this.waitingLayer.removeClass("off");
     },
@@ -460,27 +453,22 @@ $(document).ready(function() {
       
       //Loads all institutions over ajax
       this._loadFullInstitutionList(function(){
-        
+
         //Draws the institutions on the vector layer
         self._drawClustersOnMap();
       });
     }
 
-  });  
-  
-  
+  });
 
-  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  
-  
   /**
    * Class: OpenLayers.Popup.FramedDDB
-   * 
-   * Inherits from: 
+   *
+   * Inherits from:
    *  - <OpenLayers.Popup.Framed>
    */
   OpenLayers.Popup.FramedDDB = 
@@ -512,12 +500,12 @@ $(document).ready(function() {
 
       /**
        * APIProperty: isAlphaImage
-       * {Boolean} The FramedCloud does not use an alpha image (in honor of the 
+       * {Boolean} The FramedCloud does not use an alpha image (in honor of the
        *     good ie6 folk out there)
        */
       isAlphaImage: false,
 
-      /** 
+      /**
        * APIProperty: fixedRelativePosition
        * {Boolean} The Framed Cloud popup works in just one fixed position.
        */
@@ -666,10 +654,10 @@ $(document).ready(function() {
        * {<OpenLayers.Size>}
        */
       maxSize: new OpenLayers.Size(1200, 660),
-      
+
       imageSrc: null,
 
-      /** 
+      /**
        * Constructor: OpenLayers.Popup.FramedCloud
        * 
        * Parameters:
@@ -677,21 +665,21 @@ $(document).ready(function() {
        * lonlat - {<OpenLayers.LonLat>}
        * contentSize - {<OpenLayers.Size>}
        * contentHTML - {String}
-       * anchor - {Object} Object to which we'll anchor the popup. Must expose 
-       *     a 'size' (<OpenLayers.Size>) and 'offset' (<OpenLayers.Pixel>) 
+       * anchor - {Object} Object to which we'll anchor the popup. Must expose
+       *     a 'size' (<OpenLayers.Size>) and 'offset' (<OpenLayers.Pixel>)
        *     (Note that this is generally an <OpenLayers.Icon>).
        * closeBox - {Boolean}
        * closeBoxCallback - {Function} Function to be called on closeBox click.
        */
-      initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
+      initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox,
                           closeBoxCallback, imageSrc) {
 
           //this.imageSrc = OpenLayers.Util.getImageLocation('cloud-popup-relative.png');
           OpenLayers.Popup.Framed.prototype.initialize.apply(this, arguments);
           this.contentDiv.className = this.contentDisplayClass;
-          
+
           this.imageSrc = imageSrc;
-          
+
           this.contentDiv.className = this.contentDisplayClass;
 
       },
@@ -702,7 +690,7 @@ $(document).ready(function() {
       createBlocks: function() {
           this.blocks = [];
 
-          //since all positions contain the same number of blocks, we can 
+          //since all positions contain the same number of blocks, we can
           // just pick the first position and use its blocks array to create
           // our blocks array
           var firstPosition = null;
@@ -710,7 +698,7 @@ $(document).ready(function() {
               firstPosition = key;
               break;
           }
-          
+
           var position = this.positionBlocks[firstPosition];
           for (var i = 0; i < position.blocks.length; i++) {
 
@@ -718,12 +706,12 @@ $(document).ready(function() {
               this.blocks.push(block);
 
               var divId = this.id + '_FrameDecorationDiv_' + i;
-              block.div = OpenLayers.Util.createDiv(divId, 
+              block.div = OpenLayers.Util.createDiv(divId,
                   null, null, null, "absolute", null, "hidden", null
               );
 
               var imgId = this.id + '_FrameDecorationImg_' + i;
-              var imageCreator = 
+              var imageCreator =
                   (this.isAlphaImage) ? OpenLayers.Util.createAlphaImageDiv
                                       : OpenLayers.Util.createImage;
 
@@ -734,25 +722,20 @@ $(document).ready(function() {
               this.groupDiv.appendChild(block.div);
           }
       },
-      
-
 
       CLASS_NAME: "OpenLayers.Popup.FramedDDB"
   });
-  
-  
-  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-  
-  
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   OpenLayers.Control.DDBHome = OpenLayers.Class(OpenLayers.Control, {
-      
+
       /**
        * APIProperty: zoomInId
        * {String}
-       * Instead of having the control create a zoom in link, you can provide 
+       * Instead of having the control create a zoom in link, you can provide
        *     the identifier for an anchor element already added to the document.
        *     By default, an element with id "olZoomInLink" will be searched for
        *     and used if it exists.
@@ -760,16 +743,16 @@ $(document).ready(function() {
       ddbHomeId: "olDDBHomeLink",
 
       ddbHomeImg: "ddb_ResetMap.png",
-      
+
       imageFolder: "",
-      
+
       ddbMap: null,
 
       initialize:function(imageFolder, ddbMap) {
         this.imageFolder = imageFolder;
         this.ddbMap = ddbMap;
       },
-  
+
       /**
        * Method: draw
        *
@@ -781,21 +764,21 @@ $(document).ready(function() {
               links = this.getOrCreateLinks(div),
               ddbHome = links.ddbHome,
               eventsInstance = this.map.events;
-          
+
           eventsInstance.register("buttonclick", this, this.onDDBHomeClick);
-          
+
           this.ddbHome = ddbHome;
           $(div).addClass("olControlDDBHome");
           return div;
       },
-      
+
       /**
        * Method: getOrCreateLinks
-       * 
+       *
        * Parameters:
        * el - {DOMElement}
        *
-       * Return: 
+       * Return:
        * {Object} Object with zoomIn and zoomOut properties referencing links.
        */
       getOrCreateLinks: function(el) {
@@ -811,12 +794,12 @@ $(document).ready(function() {
               el.appendChild(ddbHome);
           }
           OpenLayers.Element.addClass(ddbHome, "olButton");
-          
+
           return {
             ddbHome: ddbHome
           };
       },
-      
+
       /**
        * Method: onZoomClick
        * Called when zoomin/out link is clicked.
@@ -826,10 +809,10 @@ $(document).ready(function() {
           if (button === this.ddbHome) {
               var position = this.ddbMap._getLonLat(this.ddbMap.initLon, this.ddbMap.initLat);
               this.map.setCenter(position, this.ddbMap.initZoom, false, true);
-          } 
+          }
       },
-  
-      /** 
+
+      /**
        * Method: destroy
        * Clean up.
        */
@@ -840,45 +823,44 @@ $(document).ready(function() {
           delete this.ddbHomeLink;
           OpenLayers.Control.prototype.destroy.apply(this);
       },
-  
+
       CLASS_NAME: "OpenLayers.Control.DDBHome"
-  });  
+  });
   
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-  
-  
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   OpenLayers.Control.DDBPanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoom, {
 
-      /** 
+      /**
        * APIProperty: zoomStopWidth
        */
       zoomStopWidth: 18,
 
-      /** 
+      /**
        * APIProperty: zoomStopHeight
        */
       zoomStopHeight: 11,
 
-      /** 
+      /**
        * Property: slider
        */
       slider: null,
 
-      /** 
+      /**
        * Property: sliderEvents
        * {<OpenLayers.Events>}
        */
       sliderEvents: null,
 
-      /** 
+      /**
        * Property: zoombarDiv
        * {DOMElement}
        */
       zoombarDiv: null,
 
-      /** 
+      /**
        * APIProperty: zoomWorldIcon
        * {Boolean}
        */
@@ -894,7 +876,7 @@ $(document).ready(function() {
 
       /**
        * APIProperty: forceFixedZoomLevel
-       * {Boolean} Force a fixed zoom level even though the map has 
+       * {Boolean} Force a fixed zoom level even though the map has
        *     fractionalZoom
        */
       forceFixedZoomLevel: false,
@@ -916,7 +898,7 @@ $(document).ready(function() {
        * {<OpenLayers.Pixel>}
        */
       zoomStart: null,
-      
+
       zoomBarOffsetTop: 0,
 
       /**
@@ -941,12 +923,12 @@ $(document).ready(function() {
           delete this.mouseDragStart;
           delete this.zoomStart;
       },
-      
+
       /**
        * Method: setMap
-       * 
+       *
        * Parameters:
-       * map - {<OpenLayers.Map>} 
+       * map - {<OpenLayers.Map>}
        */
       setMap: function(map) {
           OpenLayers.Control.PanZoom.prototype.setMap.apply(this, arguments);
@@ -975,7 +957,7 @@ $(document).ready(function() {
       },
       
       /**
-      * Method: draw 
+      * Method: draw
       *
       * Parameters:
       * px - {<OpenLayers.Pixel>} 
@@ -1035,13 +1017,13 @@ $(document).ready(function() {
           var minZoom = this.map.getMinZoom();
           var zoomsToEnd = this.map.getNumZoomLevels() - 1 - this.map.getZoom();
           var slider = OpenLayers.Util.createAlphaImageDiv(id,
-                         centered.add(-1, zoomsToEnd * this.zoomStopHeight), 
+                         centered.add(-1, zoomsToEnd * this.zoomStopHeight),
                          {w: 20, h: 9},
                          imgLocation,
                          "absolute");
           slider.style.cursor = "move";
           this.slider = slider;
-          
+
           this.sliderEvents = new OpenLayers.Events(this, slider, null, true,
                                               {includeXY: true});
           this.sliderEvents.on({
@@ -1052,14 +1034,14 @@ $(document).ready(function() {
               "mousemove": this.zoomBarDrag,
               "mouseup": this.zoomBarUp
           });
-          
+
           var sz = {
               w: this.zoomStopWidth,
               h: this.zoomStopHeight * (this.map.getNumZoomLevels() - minZoom)
           };
-          var imgLocation = OpenLayers.Util.getImageLocation("zoombar.png");
+          imgLocation = OpenLayers.Util.getImageLocation("zoombar.png");
           var div = null;
-          
+
           if (OpenLayers.Util.alphaHack()) {
               var id = this.id + "_" + this.map.id;
               div = OpenLayers.Util.createAlphaImageDiv(id, centered,
@@ -1077,7 +1059,7 @@ $(document).ready(function() {
           div.style.cursor = "pointer";
           div.className = "olButton";
           this.zoombarDiv = div;
-          
+
           this.div.appendChild(div);
 
           this.startTop = parseInt(div.style.top);
@@ -1085,11 +1067,11 @@ $(document).ready(function() {
 
           this.map.events.register("zoomend", this, this.moveZoomBar);
 
-          centered = centered.add(0, 
+          centered = centered.add(0,
               this.zoomStopHeight * (this.map.getNumZoomLevels() - minZoom));
-          return centered; 
+          return centered;
       },
-      
+
       /**
        * Method: _removeZoomBar
        */
@@ -1103,15 +1085,15 @@ $(document).ready(function() {
               "mouseup": this.zoomBarUp
           });
           this.sliderEvents.destroy();
-          
+
           this.div.removeChild(this.zoombarDiv);
           this.zoombarDiv = null;
           this.div.removeChild(this.slider);
           this.slider = null;
-          
+
           this.map.events.unregister("zoomend", this, this.moveZoomBar);
       },
-      
+
       /**
        * Method: onButtonClick
        *
@@ -1124,31 +1106,31 @@ $(document).ready(function() {
               var levels = evt.buttonXY.y / this.zoomStopHeight;
               if(this.forceFixedZoomLevel || !this.map.fractionalZoom) {
                   levels = Math.floor(levels);
-              }    
+              }
               var zoom = (this.map.getNumZoomLevels() - 1) - levels; 
               zoom = Math.min(Math.max(zoom, 0), this.map.getNumZoomLevels() - 1);
               this.map.zoomTo(zoom);
           }
       },
-      
+
       /**
        * Method: passEventToSlider
        * This function is used to pass events that happen on the div, or the map,
        * through to the slider, which then does its moving thing.
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       passEventToSlider:function(evt) {
           this.sliderEvents.handleBrowserEvent(evt);
       },
-      
+
       /*
        * Method: zoomBarDown
        * event listener for clicks on the slider
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       zoomBarDown:function(evt) {
           if (!OpenLayers.Event.isLeftClick(evt) && !OpenLayers.Event.isSingleTouch(evt)) {
@@ -1161,15 +1143,15 @@ $(document).ready(function() {
               mouseup: this.passEventToSlider,
               scope: this
           });
-          
+
           this.mouseDragStart = evt.xy.clone();
           this.zoomStart = evt.xy.clone();
           this.div.style.cursor = "move";
           // reset the div offsets just in case the div moved
-          this.zoombarDiv.offsets = null; 
+          this.zoombarDiv.offsets = null;
           OpenLayers.Event.stop(evt);
       },
-      
+
       /*
        * Method: zoomBarDrag
        * This is what happens when a click has occurred, and the client is
@@ -1178,13 +1160,13 @@ $(document).ready(function() {
        * visual location
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       zoomBarDrag:function(evt) {
           if (this.mouseDragStart != null) {
               var deltaY = this.mouseDragStart.y - evt.xy.y;
               var offsets = OpenLayers.Util.pagePosition(this.zoombarDiv);
-              if ((evt.clientY - offsets[1]) > 0 && 
+              if ((evt.clientY - offsets[1]) > 0 &&
                   (evt.clientY - offsets[1]) < parseInt(this.zoombarDiv.style.height) - 2) {
                   var newTop = parseInt(this.slider.style.top) - deltaY;
                   this.slider.style.top = newTop+"px";
@@ -1195,14 +1177,14 @@ $(document).ready(function() {
               OpenLayers.Event.stop(evt);
           }
       },
-      
+
       /*
        * Method: zoomBarUp
        * Perform cleanup when a mouseup event is received -- discover new zoom
        * level and switch to it.
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       zoomBarUp:function(evt) {
           if (!OpenLayers.Event.isLeftClick(evt) && evt.type !== "touchend") {
@@ -1220,11 +1202,11 @@ $(document).ready(function() {
               var zoomLevel = this.map.zoom;
               if (!this.forceFixedZoomLevel && this.map.fractionalZoom) {
                   zoomLevel += this.deltaY/this.zoomStopHeight;
-                  zoomLevel = Math.min(Math.max(zoomLevel, 0), 
+                  zoomLevel = Math.min(Math.max(zoomLevel, 0),
                                        this.map.getNumZoomLevels() - 1);
               } else {
                   zoomLevel += this.deltaY/this.zoomStopHeight;
-                  zoomLevel = Math.max(Math.round(zoomLevel), 0);      
+                  zoomLevel = Math.max(Math.round(zoomLevel), 0);
               }
               this.map.zoomTo(zoomLevel);
               this.mouseDragStart = null;
@@ -1239,29 +1221,26 @@ $(document).ready(function() {
       * Change the location of the slider to match the current zoom level.
       */
       moveZoomBar:function() {
-          var newTop = 
-              ((this.map.getNumZoomLevels()-1) - this.map.getZoom()) * 
+          var newTop =
+              ((this.map.getNumZoomLevels()-1) - this.map.getZoom()) *
               this.zoomStopHeight + this.startTop + 1 + this.zoomBarOffsetTop;
           this.slider.style.top = newTop + "px";
-      },    
-      
-      CLASS_NAME: "OpenLayers.Control.DDBPanZoomBar"
-  });  
-  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
-  
+      },
 
-  
+      CLASS_NAME: "OpenLayers.Control.DDBPanZoomBar"
+  });
+
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
   var map = new DDBMap();
   map.display({"rootDivId": "ddb-map"});
-  
+
   $('.sector-facet input').each(function() {
     $(this).click(function(){
       map.applyFilters();
     });
   });
 
-  
 });
