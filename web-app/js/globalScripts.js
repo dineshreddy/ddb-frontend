@@ -20,7 +20,7 @@ $.cutoffStringAtSpace = function(text, limit) {
     return $.trim(text.toString()).substring(0, limit).split(" ").slice(0, -1).join(" ") + "...";
   }
   return text;
-}
+};
 
 // Initialization of the JWPlayer
 $.initializeJwPlayer = function(divId, videoFile, previewImage, width, height, onReadyCallback, onErrorCallback) {
@@ -53,13 +53,13 @@ $.initializeJwPlayer = function(divId, videoFile, previewImage, width, height, o
       onReady : onReadyCallback
     }
   });
-}
+};
 
-// Hiding of the errors in the binaries viewer 
+// Hiding of the errors in the binaries viewer
 $.hideErrors = function() {
   $("div.binary-viewer-error").addClass("off");
   $("div.binary-viewer-flash-upgrade").addClass("off");
-}
+};
 
 /** 
  * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
@@ -67,19 +67,19 @@ $.hideErrors = function() {
  */
 $.addParamToCurrentUrl = function(arrayParamVal, urlString) {
   return $.addParamToCurrentUrlWithHistorySupport(arrayParamVal, urlString);
-}
+};
 
-/** 
+/**
  * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
  * The methods checks for the global attribute historySupport.
- * 
+ *
  * IMPORTANT: remember to pass your arrayParamVal already URL decoded
  */
 $.addParamToCurrentUrlWithHistorySupport = function(arrayParamVal, urlString) {
   var currentUrl = (historySupport) ? location.search.substring(1) : globalUrl;
-  
+
   return $.addParamToUrl(currentUrl,arrayParamVal, null, urlString, true);
-}
+};
 
 /**
  * Adds the given params to the given url
@@ -89,7 +89,7 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
   while (m = re.exec(queryString)) {
     var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
     if (queryParameters[decodedKey] == null) {
-      queryParameters[decodedKey] = new Array();
+      queryParameters[decodedKey] = [];
     }
     queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
         .replace(/\+/g, '%20')));
@@ -99,17 +99,17 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
   });
   var tmp = jQuery.param(queryParameters, true);
 
-  //Update the language switch 
+  //Update the language switch
   if (updateLanguage) {
     $.updateLanguageSwitch(tmp);
   }
-  
+
   if (path == null) {
     return window.location.pathname + '?' + tmp;
   } else {
     return path + '?' + tmp;
   }
-}
+};
 
 /**
  * Removes an array of params from the given url
@@ -120,7 +120,7 @@ $.removeParamFromUrl = function(arrayParamVal, path, urlString) {
   while (m = re.exec(queryString)) {
     var keyParam = decodeURIComponent(m[1].replace(/\+/g, '%20'));
     if (queryParameters[keyParam] == null) {
-      queryParameters[keyParam] = new Array();
+      queryParameters[keyParam] = [];
     }
     queryParameters[keyParam].push(decodeURIComponent(m[2].replace(/\+/g, '%20')));
   }
@@ -139,10 +139,10 @@ $.removeParamFromUrl = function(arrayParamVal, path, urlString) {
   } else {
     return path + '?' + tmp;
   }
-}
+};
 
 /**
- * Update the language switch link for the given params 
+ * Update the language switch link for the given params
  */
 $.updateLanguageSwitch = function(params) {
   params = params.replace(/\&?lang=[^\&]*/g, '');
@@ -157,7 +157,7 @@ $.updateLanguageSwitch = function(params) {
     var matches = pattern.exec($(this).attr('href'));
     $(this).attr('href', matches[1] + params + matches[2]);
   });
-}
+};
 
 $(document)
     .ready(

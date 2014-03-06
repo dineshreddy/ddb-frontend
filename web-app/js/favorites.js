@@ -62,7 +62,7 @@ $(function() {
           $('.page-input').attr('value', this.value);
 
           var paramsArray = [['offset', (this.value - 1) *
-          getParamWithDefault("rows", 20)], new Array('rows', getParamWithDefault("rows", 20)), new Array('order', getParam("order"))];
+          getParamWithDefault("rows", 20)], ['rows', getParamWithDefault("rows", 20)], ['order', getParam("order")]];
 
           window.location.href = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
         }
@@ -77,7 +77,7 @@ $(function() {
       $('.totalNrSelectedObjects').html(selected.length);
       $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
-        var selected = new Array();
+        var selected = [];
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
@@ -183,7 +183,7 @@ $(function() {
       if (selected.length > 0) {
         $('#favoritesCopyDialog').modal('show');
         $('#copy-confirm').click(function() {
-          var selected = new Array();
+          var selected = [];
           $('#slaves input:checked').each(function() {
             selected.push($(this).attr('data-bookmark-id'));
           });
@@ -283,7 +283,7 @@ $(function() {
                       }
                     });
                 } else {
-                	showError(messages.ddbnext.favorites_list_Title_Required);
+                    showError(messages.ddbnext.favorites_list_Title_Required);
                 }
                 $('#folderEditConfirmDialog').modal('hide');
               });

@@ -75,7 +75,7 @@ $(document).ready(function() {
           this._addInstitutionsClickListener();
 
           //Register a zoom listener
-          this.osmMap.events.register("zoomend", null, function(event){
+          this.osmMap.events.register("zoomend", null, function(){
             self._drawClustersOnMap();
           });
 
@@ -97,7 +97,7 @@ $(document).ready(function() {
               tiles.events.unregister("loadend", tiles, onTilesLoaded);
             });
 
-          }
+          };
 
           if(jQuery.browser.msie && jQuery.browser.version < 9) {
             onTilesLoaded(); // just call immediatelly
@@ -165,7 +165,7 @@ $(document).ready(function() {
         this.vectorLayer.events.on({
             'featureselected': onFeatureSelect,
             'featureunselected': onFeatureUnselect
-        });          
+        });
 
         function onFeatureSelect(event) {
           var feature = event.feature;
@@ -450,7 +450,7 @@ $(document).ready(function() {
 
     refresh : function() {
       var self = this;
-      
+
       //Loads all institutions over ajax
       this._loadFullInstitutionList(function(){
 
@@ -471,10 +471,10 @@ $(document).ready(function() {
    * Inherits from:
    *  - <OpenLayers.Popup.Framed>
    */
-  OpenLayers.Popup.FramedDDB = 
+  OpenLayers.Popup.FramedDDB =
     OpenLayers.Class(OpenLayers.Popup.Framed, {
 
-      /** 
+      /**
        * Property: contentDisplayClass
        * {String} The CSS class of the popup content div.
        */
@@ -659,7 +659,7 @@ $(document).ready(function() {
 
       /**
        * Constructor: OpenLayers.Popup.FramedCloud
-       * 
+       *
        * Parameters:
        * id - {String}
        * lonlat - {<OpenLayers.LonLat>}
@@ -674,7 +674,6 @@ $(document).ready(function() {
       initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox,
                           closeBoxCallback, imageSrc) {
 
-          //this.imageSrc = OpenLayers.Util.getImageLocation('cloud-popup-relative.png');
           OpenLayers.Popup.Framed.prototype.initialize.apply(this, arguments);
           this.contentDiv.className = this.contentDisplayClass;
 
@@ -826,7 +825,7 @@ $(document).ready(function() {
 
       CLASS_NAME: "OpenLayers.Control.DDBHome"
   });
-  
+
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -903,7 +902,7 @@ $(document).ready(function() {
 
       /**
        * Constructor: OpenLayers.Control.PanZoomBar
-       */ 
+       */
 
       /**
        * APIMethod: destroy
@@ -932,7 +931,7 @@ $(document).ready(function() {
        */
       setMap: function(map) {
           OpenLayers.Control.PanZoom.prototype.setMap.apply(this, arguments);
-          
+
           if (this.outsideViewport) {
               this.events.attachToElement(this.div);
           }
@@ -944,7 +943,7 @@ $(document).ready(function() {
           });
       },
 
-      /** 
+      /**
        * Method: redraw
        * clear the div and start over.
        */
@@ -952,7 +951,7 @@ $(document).ready(function() {
           if (this.div != null) {
               this.removeButtons();
               this._removeZoomBar();
-          }  
+          }
           this.draw();
       },
       
@@ -960,7 +959,7 @@ $(document).ready(function() {
       * Method: draw
       *
       * Parameters:
-      * px - {<OpenLayers.Pixel>} 
+      * px - {<OpenLayers.Pixel>}
       */
       draw: function(px) {
           // initialize our internal div
@@ -1007,7 +1006,7 @@ $(document).ready(function() {
 
       /** 
       * Method: _addZoomBar
-      * 
+      *
       * Parameters:
       * centered - {<OpenLayers.Pixel>} where zoombar drawing is to start.
       */
@@ -1043,7 +1042,6 @@ $(document).ready(function() {
           var div = null;
 
           if (OpenLayers.Util.alphaHack()) {
-              var id = this.id + "_" + this.map.id;
               div = OpenLayers.Util.createAlphaImageDiv(id, centered,
                                         {w: sz.w, h: this.zoomStopHeight},
                                         imgLocation,
@@ -1107,7 +1105,7 @@ $(document).ready(function() {
               if(this.forceFixedZoomLevel || !this.map.fractionalZoom) {
                   levels = Math.floor(levels);
               }
-              var zoom = (this.map.getNumZoomLevels() - 1) - levels; 
+              var zoom = (this.map.getNumZoomLevels() - 1) - levels;
               zoom = Math.min(Math.max(zoom, 0), this.map.getNumZoomLevels() - 1);
               this.map.zoomTo(zoom);
           }
@@ -1125,7 +1123,7 @@ $(document).ready(function() {
           this.sliderEvents.handleBrowserEvent(evt);
       },
 
-      /*
+      /**
        * Method: zoomBarDown
        * event listener for clicks on the slider
        *
@@ -1215,7 +1213,7 @@ $(document).ready(function() {
               OpenLayers.Event.stop(evt);
           }
       },
-      
+
       /*
       * Method: moveZoomBar
       * Change the location of the slider to match the current zoom level.

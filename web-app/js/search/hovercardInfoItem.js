@@ -17,7 +17,7 @@
 /* Search namespace  */
 de.ddb.next.search = de.ddb.next.search || {};
 
-/** 
+/**
  * Hovercard Information Item constructor
  */
 de.ddb.next.search.HovercardInfoItem = function(element) {
@@ -81,7 +81,7 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
   },
   fetchInformationItem : function() {
     var currObjInstance = this;
-    var request = $.ajax({
+    $.ajax({
       type : 'GET',
       dataType : 'json',
       async : true,
@@ -99,7 +99,7 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
             fieldName.addClass('fieldName');
             fieldContent.addClass('fieldContent');
 
-            facetValues = new Array();
+            facetValues = [];
             for (i = 0; i < value.length; i++) {
               facetValues.push(value[i]);
             }

@@ -93,7 +93,7 @@ var page = {};
       $(selectors.row, $group).each(function() {
         if (hasFacetValueBeenEnteredForRow($(this))) {
           ret = true;
-          return false; // break;
+          return false;
         }
       });
 
@@ -119,7 +119,7 @@ var page = {};
                 resetFields($currentOperator);
 
                 // for each row, copy the values into the previous groups row
-                $prevRows.each(function(rowIndex, item) {
+                $prevRows.each(function(rowIndex) {
                   // find the previous group and get the related row by index
                   var $currentRow = $($currentRows.get(rowIndex));
                   var $prevRow = $(this);
@@ -130,7 +130,7 @@ var page = {};
                     var $currentElements = $(selector, $currentRow);
 
                     // use the index to copy current values into the corresponding previous element
-                    $prevElements.each(function(index, item) {
+                    $prevElements.each(function(index) {
                       var $current = $($currentElements[index]);
                       $(this).val($current.val());
                     });
@@ -194,7 +194,7 @@ var page = {};
               var $currentElements = $(selector, $that);
 
               // use the index to copy current values into the corresponding previous row element
-              $prevElements.each(function(idx, item) {
+              $prevElements.each(function(idx) {
                 var $current = $($currentElements[idx]);
                 $(this).val($current.val());
                 resetFields($current);
@@ -314,7 +314,7 @@ var page = {};
       var $allFacets = $(selectors.facetDisabled, root);
 
       // remove the non-js and prepare the js facet select list
-      $allFacets.each(function(index, item) {
+      $allFacets.each(function(index) {
         var textOnlyFacet = $textOnlyFacets[index];
 
         $(this).attr("class", textOnlyFacet.className).removeAttr("disabled").show();
@@ -424,7 +424,7 @@ var page = {};
       $(selectors.resetButton, root).click(function() {
         searchStateCookie.del();
 
-        $(selectors.group, root).each(function(index, item) {
+        $(selectors.group, root).each(function() {
           resetFields($(selectors.globalOperator, root));
           resetGroup(this);
         });

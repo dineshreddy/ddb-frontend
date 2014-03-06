@@ -366,7 +366,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    */
   disableTillDayAndMonth: function(disable) {
     $("#tillDay").prop('disabled', disable);
-    $("#tillMonth").prop('disabled', disable);    
+    $("#tillMonth").prop('disabled', disable);
   },
 
   /**
@@ -489,7 +489,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    */
   closeForm : function() {
     var currObjInstance = this;
-    var timespanFormDiv = $("#timespan-form"); 
+    var timespanFormDiv = $("#timespan-form");
     var timeFacetDiv = $(".time-facet");
 
     currObjInstance.opened = false;
@@ -518,7 +518,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
       return;
     }
-    
+
     var newTimeSpan = new de.ddb.next.search.TimeSpan(fromDayValue, fromMonthValue, fromYearValue, tillDayValue, tillMonthValue, tillYearValue);
     currObjInstance.selectedTimeSpan = newTimeSpan;
     currObjInstance.added = true;
@@ -633,11 +633,11 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       if(daysTill !== '*') {
         selectedFacetValues.push('begin_time=[* TO '+ daysTill + ']');
       }
-      if(daysFrom != '*') {
+      if(daysFrom !== '*') {
         selectedFacetValues.push('end_time=[' + daysFrom + ' TO *]');
       }
     }
-    
+
     //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
     paramsArray = [['facetValues[]', selectedFacetValues]];
 

@@ -36,7 +36,7 @@ $(document).ready(
 // Popup Manager --
 PopupManagerSendPdf = function() {
   this.init();
-}
+};
 
 $.extend(PopupManagerSendPdf.prototype, {
 
@@ -71,7 +71,7 @@ $.extend(PopupManagerSendPdf.prototype, {
     if (content) {
       content.appendTo(popupDialogContent);
     }
-    
+
     popupDialogCloseButton.attr('href', '#');
 
     popupDialogCloseImage.appendTo(popupDialogCloseButton);
@@ -81,7 +81,6 @@ $.extend(PopupManagerSendPdf.prototype, {
     popupDialogSubmitButton.appendTo(popupDialogWrapper);
     popupDialogFooter.appendTo(popupDialogWrapper);
 
-    //popupDialogWrapper.css('margin-left', offsetX + 'px');
     popupDialogWrapper.css('margin-top', offsetY + 'px');
 
     popupDialogWrapper.insertAfter(anchorTag);
@@ -100,7 +99,7 @@ $.extend(PopupManagerSendPdf.prototype, {
         if( !isValidEmailAddress( emailaddress ) ) {
             alert($("#i18ntranslateValidEmail").data("val"));
             }else{
-             var url = window.location.protocol + "//" + window.location.host+$('.sendmail-link-popup-anchor').attr('href')
+             var url = window.location.protocol + "//" + window.location.host+$('.sendmail-link-popup-anchor').attr('href');
                $.ajax({
                 url: url,
                 data: "email="+emailaddress,
