@@ -497,6 +497,5 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     //init TimeFacet
     currObjInstance.timeFacet.initOnLoad();
-  },
-
+  }
 });
