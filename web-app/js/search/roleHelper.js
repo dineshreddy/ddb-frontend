@@ -21,17 +21,17 @@ de.ddb.next.search = de.ddb.next.search || {};
 de.ddb.next.search.literalDividerPattern = /_[0-9]+_/;
 
 /**
- * Returns a role without its literal part. 
- * 
- * If a concrete role looks like this 
+ * Returns a role without its literal part.
+ *
+ * If a concrete role looks like this
  * "Cotta_1_affiliate_fct_involved"
- * 
+ *
  * The method return 
  * "_1_affiliate_fct_involved"
- * 
+ *
  * Roles have the following structure:
- * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
- * 
+ * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene>
+ *
  * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteral = function(role) {
