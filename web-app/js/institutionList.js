@@ -111,10 +111,9 @@
          * browser's back button and if they performed the sector
          * filters before.
          */
+        var isChecked = $('.sector-facet input:checked').filter(':checked').length;
         if ($('.multiselect').is(':visible')) {
-          var isChecked = $('.multiselect option:selected').filter(':selected').length;
-        } else {
-          var isChecked = $('.sector-facet input:checked').filter(':checked').length;
+          isChecked = $('.multiselect option:selected').filter(':selected').length;
         }
 
         // apply the filter, if the filters is not empty.
@@ -145,7 +144,6 @@
         var $allLi = $allHref.parent();
         $allLi.addClass('active');
         $allHref.addClass('selected');
-        // $allHref.css('color', '#a5003b');
       } else {
         var $aHref = $('#first-letter-index a[href="' + '#' + hash + '"]');
         var $li = $aHref.parent();
@@ -164,7 +162,6 @@
         var $otherLinks = $firstCharLinks.not($aHref);
         $otherLinks.parent().removeClass('active');
         $otherLinks.removeClass('selected');
-        // $otherLinks.removeAttr('style');
       }
 
       return true;
@@ -210,13 +207,12 @@
       /*
        * Now we have two sector widgets. Based on the screen resolution,
        * we show either the checkboxes or multiselect.
-       * 
+       *
        * Depends on which widget is visible, we get the selected values.
        */
+      var allSelectedSectors = $('.sector-facet input:checked');
       if ($('.multiselect').is(':visible')) {
-        var allSelectedSectors = $('.multiselect option:selected');
-      } else {
-        var allSelectedSectors = $('.sector-facet input:checked');
+        allSelectedSectors = $('.multiselect option:selected');
       }
 
       return _.reduce(allSelectedSectors, function(sectors, el) {
@@ -228,7 +224,6 @@
     filter : function(institutionList, sectors, firstLetter) {
       // reset the view to empty.
       var $listItems = $('li.institution-listitem');
-      // $listItems.css('display', 'none');
       $listItems.addClass('off');
       $listItems.removeClass('highlight');
 
@@ -257,7 +252,7 @@
          * firstLetter, for example 'W', including their children. The
          * children do *not* have to start with the selected first
          * letter.
-         * 
+         *
          * 2. we start to apply the sector filter, for example [Library]
          * to all institutions(roots and their children) collected from
          * the first step.
@@ -322,9 +317,7 @@
     },
 
     showAll : function() {
-      // $('#no-match-message').css('display', 'none');
       $('#no-match-message').addClass('off');
-      // $('li.institution-listitem').css('display', '');
       $('li.institution-listitem').removeClass('off');
     },
 
@@ -353,15 +346,12 @@
       // view manipulation
       if (visibleInstitution.length) {
         // hide the 'no result' message
-        // $msg.css('display', 'none');
         $msg.addClass('off');
 
         ddb.findElements(filteredBySector).addClass('highlight');
         var $visible = ddb.findElements(visibleInstitution);
-        // $visible.css('display', '');
         $visible.removeClass('off');
       } else {
-        // $msg.css('display', 'block');
         $msg.removeClass('off');
         $msg.addClass('visible');
       }
@@ -399,11 +389,9 @@
       });
 
       ddb.showAll();
-      // ddb.restEl.css('display', 'none');
       ddb.restEl.addClass('off');
       if (idList.length === 0) {
         var $msg = $('#no-match-message');
-        // $msg.css('display', 'block');
         $msg.addClass('visible');
       }
 
@@ -416,8 +404,6 @@
       // style the selected index.
       var $aHref = $('#first-letter-index a[href="' + '#' + firstLetter + '"]');
       $aHref.parent().addClass('active');
-      // TODO: replace this with a class.
-      // $aHref.css('color', '#a5003b');
       $aHref.addClass('selected');
 
     },
@@ -440,8 +426,6 @@
         // style the selected index.
         $li.addClass('active');
         $this.addClass('selected');
-        // TODO: replace this with a class.
-        //$this.css('color', '#a5003b');
 
         // reset other indexes to the initial style.
         var $otherLinks = $firstCharLinks.not(this);
@@ -456,7 +440,6 @@
         } else {
           // TODO: test on IE8,9
           window.location.hash = this.hash;
-          //window.location.reload(false);
         }
 
         return false;
