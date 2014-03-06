@@ -25,34 +25,34 @@ de.ddb.next.search.getFacetValuesFromUrl = function() {
   if (facetValuesFromUrl == null) {
     facetValuesFromUrl = de.ddb.next.search.getUrlVar('facetValues[]');
   }
-  
+
   return facetValuesFromUrl;
 };
 
 /**
  * Adds a new facetValue to the facetValues[] params of the window url.
  * An offset param is added to this list too. So a new search request can be performed based on the updated facetValues[] params
- * 
+ *
  * Returns an array with request params for a new facet based search
  */
 de.ddb.next.search.addFacetValueToParams = function(facetField, facetValue) {
   var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
-  
+
   //The facet values will be stored in a two dimensional Array ["facetValues[]",['type_fctyDmediatype_003','time_begin_fct=1014', 'time_end_fct=2014',]]
   var paramsArray = null;
-  
+
   if (paramsFacetValues) {
     $.each(paramsFacetValues, function(key, value) {
       paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
     });
     paramsFacetValues.push(facetField + '=' + facetValue);
-    paramsArray = new Array(new Array('facetValues[]', paramsFacetValues));
+    paramsArray = [['facetValues[]', paramsFacetValues]];
   } else {
-    paramsArray = new Array(new Array('facetValues[]', facetField + '=' + facetValue));
+    paramsArray = [['facetValues[]', facetField + '=' + facetValue]];
   }
 
-  paramsArray.push(new Array('offset', 0));
-  
+  paramsArray.push(['offset', 0]);
+
   return paramsArray;
 };
 
@@ -73,7 +73,7 @@ de.ddb.next.search.getUrlVars = function() {
   for ( var i = 0; i < hashes.length; i++) {
     hash = hashes[i].split('=');
     if (!Object.prototype.hasOwnProperty.call(vars, hash[0])) {
-      vars[hash[0]] = new Array();
+      vars[hash[0]] = [];
     }
     vars[hash[0]].push(hash[1]);
   }

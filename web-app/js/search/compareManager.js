@@ -165,7 +165,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
    */
   setCompareCookieParameter: function(itemId, imgSrc, text) {
     var currObjInstance = this;
-    
+
     var cookieVal = currObjInstance.getComparisonCookieVal();
 
     de.ddb.next.search.hideError();
@@ -280,21 +280,19 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     compareButton.removeClass('button');
     compareButton.addClass('button-disabled');
 
-    if (cookieVal !== null) {
-      // Enable the compare button only if two items are selected for comparison
-      if ((cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
-        compareButton.removeClass('button-disabled');
-        compareButton.addClass('button');
-                       
-        // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
-        compareButton.off();
-        compareButton.on("click", function(event) {
-          var urlQuery = window.location.search
-          var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
-              + cookieVal.id2 + urlQuery;
-          compareButton.attr("href", url);
-        });
-      }
+    // Enable the compare button only if two items are selected for comparison
+    if ((cookieVal !== null) && (cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
+      compareButton.removeClass('button-disabled');
+      compareButton.addClass('button');
+
+      // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
+      compareButton.off();
+      compareButton.on("click", function() {
+        var urlQuery = window.location.search;
+        var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
+            + cookieVal.id2 + urlQuery;
+        compareButton.attr("href", url);
+      });
     }
   },
 

@@ -16,20 +16,19 @@
 function monkeyPatchAutocomplete() {
   $.ui.autocomplete.prototype._renderItem = function(ul, item) {
     var termLength = this.term.length;
-    
+
     var urlEncodedItem = encodeURIComponent(item.label);
 
-    // DDBNEXT-1270: Filter all items that contains special backend sort chars     
-    if ((urlEncodedItem.indexOf("%C2%98") != -1) || (urlEncodedItem.indexOf("%C2%9C") != -1)) {
+    // DDBNEXT-1270: Filter all items that contains special backend sort chars
+    if ((urlEncodedItem.indexOf("%C2%98") != -1) || (urlEncodedItem.indexOf("%C2%9C") != -1)) {console.log("##")
       return ul;
     }
-    
+
     var highLightedItemPart = "<span style='font-weight:bold;'>" + item.label.substring(0, termLength) + "</span>";
     var normalItemPart = item.label.substring(termLength);
-    
+
     var autocompleteItem = highLightedItemPart + normalItemPart;
-    
-    
+
     return $("<li></li>").data("item.autocomplete", item).append("<a>" + autocompleteItem + "</a>").appendTo(ul);
   };
 }
@@ -44,11 +43,11 @@ $(function() {
           query : request.term
         },
         success : function(data) {
-          response($.map(data, function(n, i) {
+          response($.map(data, function(n) {
             return {
               label : n.substring(0, 45),
               value : n
-            }
+            };
           }));
         }
       });

@@ -19,7 +19,7 @@ $(document)
 
           SocialMediaManager = function() {
             this.init();
-          }
+          };
 
           /** Capsulate main logic in object * */
           $
@@ -55,13 +55,13 @@ $(document)
                       var self = this;
 
                       /** Fade in overlay when social icon is clicked * */
-                      $(".socialmedia .social-locked ul li").mouseover(function(event) {
+                      $(".socialmedia .social-locked ul li").mouseover(function() {
                         self.showPrivacyInformationOverlay();
                       });
 
                       /** Fade out overlay when overlay div is leaved * */
                       $(".socialmedia .social-locked .social-overlay-container").mouseleave(
-                          function(event) {
+                          function() {
                             self.hidePrivacyInformationOverlay();
                           });
 
@@ -77,7 +77,7 @@ $(document)
                        * If the user revokes the social integration -> remove
                        * integration from page and delete cookie *
                        */
-                      $(".socialmedia .social-open .social-lockagain").click(function(event) {
+                      $(".socialmedia .social-open .social-lockagain").click(function() {
                         self.removeSocialCodeFromPage();
                       });
                     },

@@ -91,11 +91,11 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
   /**
    * Makes an AJAX request to fetch the role values for the currently selected facet field and value
-   * 
+   *
    * @param facetValueContainer: The DOM element
    * @param facetValue: The selected (main) facet value
    * @param facetField: The selected facet field. E.g: "affiliate_fct"
-   * @param role: A specific role. E.g: "_1_affiliate_fct_involved" 
+   * @param role: A specific role. E.g: "_1_affiliate_fct_involved"
    */
   fetchRoleFacetValues : function(facetValueContainer, facetValue, facetField) {
     var currObjInstance = this;
@@ -247,7 +247,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   },
 
   /**
-   * Shows the facet values in the Flyout window for the previous page. 
+   * Shows the facet values in the Flyout window for the previous page.
    */
   goPrevPage : function() {
     this.currentOffset -= 10;
@@ -278,7 +278,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     // render the selected facet
     var facetValueContainer = this.connectedflyoutWidget.renderSelectedFacetValue(facetValue, localizedValue);
-    
+
     // if the facet field contains the string "_role" -> search for role values
     if (currObjInstance.currentFacetField.indexOf("_role") >= 0) {
       currObjInstance.fetchRoleFacetValues(facetValueContainer, facetValue, currObjInstance.currentFacetField);
@@ -294,7 +294,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     // add event listener for add more facet filters
     if (this.currentFacetValuesSelected.length === 1) {
       this.connectedflyoutWidget.renderAddMoreFiltersButton(currObjInstance.currentFacetField);
-      this.connectedflyoutWidget.addMoreFilters.click(function(event) {
+      this.connectedflyoutWidget.addMoreFilters.click(function() {
         currObjInstance.connectedflyoutWidget.build($(this));
       });
     }
@@ -374,13 +374,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Update the window url and Triggers a new search request!
    */
   unselectRoleFacetValue : function(facetField, facetValue) {
-    var currObjInstance = this;
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
-    if (decodeURIComponent(newUrl).indexOf('facetValues[]') == -1) {
+    if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(new Array(new Array('offset', 0)), newUrl
+    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
         .substr(newUrl.indexOf("?") + 1)));
   },
 

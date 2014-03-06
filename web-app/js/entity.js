@@ -16,13 +16,11 @@
 $(document).ready(
     function() {
 
-      if (jsPageName == "entity") {
+      if (jsPageName === "entity") {
 
         var defaultRowCount = 10;
 
         var allRowCount = 0;
-
-        var offset = 0;
 
         var windowWidth = 0;
 
@@ -40,8 +38,8 @@ $(document).ready(
 
         var windowSmallMin = 451;
 
-        function getNewSearchResults(query, offset, rows, entityid) {
-          var request = $.ajax({
+        var getNewSearchResults = function(query, offset, rows, entityid) {
+          $.ajax({
             type : 'GET',
             dataType : 'json',
             async : true,
@@ -75,14 +73,14 @@ $(document).ready(
 
         }
 
-        function disableCarouselArrows() {
+        var disableCarouselArrows = function() {
           $("#previous").addClass("disabled");
           $("#previous").off('click');
           $("#next").addClass("disabled");
           $("#next").off('click');
         }
 
-        function getUrlParam(name) {
+        var getUrlParam = function(name) {
           name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
           var regexS = "[\\?&]" + name + "=([^&#]*)";
           var regex = new RegExp(regexS);
@@ -99,21 +97,17 @@ $(document).ready(
           }
         }
 
-        function initPage() {
+        var initPage = function() {
           initCarousel();
 
           var query = $("#entity-title").html();
           var entityid = $("#entity-id").attr("data-entityid");
 
-          //var History = window.History;
-          //var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
-          //History.pushState("", document.title, decodeURI(urlParameters));
-
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount, entityid);
         }
 
-        function initCarousel() {
+        var initCarousel = function() {
           var carouselItems = $("#items");
 
           $('div.carousel').show();
@@ -131,9 +125,6 @@ $(document).ready(
                 var numberOfVisibleItems = currentVisibleItems.length;
                 var currentPosition = carouselItems.triggerHandler("currentPosition");
                 var nextVisbleItem = currentPosition + numberOfVisibleItems;
-
-                // console.log( "The carousel is at number " + currentPosition +
-                // " of " + currentLoadItems.length + "items");
 
                 if ((nextVisbleItem > (currentLoadItems.length - 1))
                     && (currentLoadItems.length < allRowCount)) {
