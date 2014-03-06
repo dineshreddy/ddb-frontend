@@ -21,56 +21,53 @@ de.ddb.next.search = de.ddb.next.search || {};
 de.ddb.next.search.literalDividerPattern = /_[0-9]+_/;
 
 /**
- * Returns a role without its literal part. 
- * 
- * If a concrete role looks like this 
+ * Returns a role without its literal part.
+ *
+ * If a concrete role looks like this
  * "Cotta_1_affiliate_fct_involved"
- * 
+ *
  * The method return 
  * "_1_affiliate_fct_involved"
- * 
+ *
  * Roles have the following structure:
- * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
- * 
+ * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene>
+ *
  * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteral = function(role) {
-  var currObjInstance = this;
   var roleWithoutLiteral = null;
-  
+
   //Check if the role value matches the pattern
   var divider = de.ddb.next.search.literalDividerPattern.exec(role);
   if (divider) {
-    var indexOfDivider = role.indexOf(divider); 
+    var indexOfDivider = role.indexOf(divider);
     roleWithoutLiteral = role.substring(indexOfDivider);
   }
-  
+
   return roleWithoutLiteral;
 };
 
 /**
- * Returns the literal part of a role 
- * 
- * If a concrete role looks like this 
+ * Returns the literal part of a role
+ *
+ * If a concrete role looks like this
  * "Cotta_1_affiliate_fct_involved"
- * 
- * The method return 
+ *
+ * The method return
  * "Cotta"
- * 
+ *
  * Roles have the following structure:
- * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
- * 
+ * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene>
+ *
  * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getLiteralFromRole = function(role) {
-  var currObjInstance = this;
-  
   var literal = null;
-  
+
   //Check if the role value matches the pattern
   var divider = de.ddb.next.search.literalDividerPattern.exec(role);
   if (divider) {
-    var split = role.split(divider); 
+    var split = role.split(divider);
     literal = split[0];
   }
   return literal;
@@ -78,37 +75,34 @@ de.ddb.next.search.getLiteralFromRole = function(role) {
 
 /**
  * Returns the role without literal and hierarchie number
- * 
- * If a concrete role looks like this 
+ *
+ * If a concrete role looks like this
  * "Cotta_1_affiliate_fct_involved"
- * 
- * The method return 
+ *
+ * The method return
  * "affiliate_fct_involved"
- * 
+ *
  * Roles have the following structure:
- * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene> 
- * 
+ * <Wert des Literals>_<Stufe der Hierarchie der Rolle>_<Name der Facette>_<Name der ersten Rollen-Ebene>_..._<Name der n-ten Rollen-Ebene>
+ *
  * If the divider pattern does not match, return <code>null</code>
  */
 de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber = function(role) {
-  var currObjInstance = this;
-  
   var splittedRole = null;
-  
+
   //Check if the role value matches the pattern
   var divider = de.ddb.next.search.literalDividerPattern.exec(role);
   if (divider) {
-    var split = role.split(divider); 
+    var split = role.split(divider);
     splittedRole = split[1];
   }
   return splittedRole;
 };
 
 /**
- * 
+ *
  */
 de.ddb.next.search.isRole  = function(value) {
-  var currObjInstance = this;  
   //Check if the role value matches the pattern
   var isRole = de.ddb.next.search.literalDividerPattern.test(value);
   return isRole;

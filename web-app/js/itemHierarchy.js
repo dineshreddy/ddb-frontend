@@ -13,27 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-$(document).ready(function() {
-  if ($(".item-hierarchy").length > 0) {
-    itemHierarchy.addWaitSymbol($(".item-hierarchy-result"));
-    itemHierarchy.createHierarchy(itemHierarchy.parseUrl(location.href));
-  }
-});
 
 var itemHierarchy = {
   /*
    * Add a leaf node to the current node.
-   * 
+   *
    * @param {Element} currentNode current node (li element)
-   * 
+   *
    * @param {JSON} value data object
-   * 
+   *
    * @param {boolean} isCurrent true if the value points to the currently
    * displayed object
-   * 
+   *
    * @param {boolean} isLast true if the current node is the last node in the
    * list
-   * 
+   *
    * @param {boolean} moreHidden true if there are more children which are not
    * displayed
    */
@@ -73,12 +67,12 @@ var itemHierarchy = {
   /*
    * Add the currently displayed object and a dotted line to the the current
    * node.
-   * 
+   *
    * @param {Element} currentNode current node (ul element)
    * 
    * @param {boolean} currentNodeFound true if the currently displayed object
    * was aleady added to the current node. Otherwise it will be added here.
-   * 
+   *
    * @param {JSON} value data object
    */
   addMoreHiddenNode : function(currentNode, currentNodeFound, value) {
@@ -98,29 +92,29 @@ var itemHierarchy = {
 
   /*
    * Add a parent (branch) node to the current node.
-   * 
+   *
    * @param {String} url URL to the item service
-   * 
+   *
    * @param {Element} currentNode current node (li element)
-   * 
+   *
    * @param {String} parentId id of the parent node in the hierarchy
-   * 
+   *
    * @param {JSON} value data object
-   * 
+   *
    * @param {boolean} isCurrent true if the value points to the currently
    * displayed object
-   * 
+   *
    * @param {boolean} isCurrentPath true if the value is a parent of the
    * currently displayed object
-   * 
+   *
    * @param {boolean} isLast true if the current node is the last node in the
    * list
-   * 
+   *
    * @param {boolean} countSiblings true if the number of siblings must be
    * counted
-   * 
+   *
    * @param {boolean} drawBorder draw a border around the plus sign if true
-   * 
+   *
    * @param {boolean} isExpanded show a minus sign if true
    */
   addParentNode : function(url, currentNode, parentId, value, isCurrent, isCurrentPath, isLast,
@@ -248,11 +242,11 @@ var itemHierarchy = {
 
   /*
    * Add the number of siblings to the current node's parent.
-   * 
+   *
    * @param {String} url URL to the item service
-   * 
+   *
    * @param {Element} currentNode current node (ul element)
-   * 
+   *
    * @param {String} parentId id of the parent node in the hierarchy
    */
   addSiblingCount : function(url, currentNode, parentId) {
@@ -282,11 +276,11 @@ var itemHierarchy = {
 
   /*
    * Add the hierarchy type name to the current node.
-   * 
+   *
    * @param {Element} currentNode current node (ul element)
-   * 
+   *
    * @param {String} type hierarchy type name
-   * 
+   *
    * @return {Element} replacement for the "ul" child
    */
   addTypeName : function(currentNode, type) {
@@ -309,7 +303,7 @@ var itemHierarchy = {
 
   /*
    * Add a wait image to the current node.
-   * 
+   *
    * @param {Element} currentNode current node (li element)
    */
   addWaitSymbol : function(currentNode) {
@@ -321,7 +315,7 @@ var itemHierarchy = {
 
   /*
    * Create the item hierarchy (main function).
-   * 
+   *
    * @param {String} url URL to the item service
    */
   createHierarchy : function(url) {
@@ -421,7 +415,7 @@ var itemHierarchy = {
             }
 
             // show hierarchy type
-            if (value.type != type) {
+            if (value.type !== type) {
               if (hasName) {
                 itemHierarchy.addTypeName(ul, value.type).append(leafNode);
                 showName = true;
@@ -491,9 +485,9 @@ var itemHierarchy = {
 
   /*
    * Set the node icon to a plus or a minus symbol
-   * 
+   *
    * @param {Element} currentNode current node of type "i"
-   * 
+   *
    * @param {boolean} setExpanded draw a minus symbol if true, otherwise draw a
    * plus symbol
    */
@@ -509,15 +503,15 @@ var itemHierarchy = {
 
   /*
    * Show all children of the current node.
-   * 
+   *
    * @param {String} url URL to the item service
-   * 
+   *
    * @param {Element} currentNode current node (li element)
-   * 
+   *
    * @param {String} currentId id of the current node in the hierarchy
-   * 
+   *
    * @param {String} parentId id of the parent node in the hierarchy
-   * 
+   *
    * @param {boolean} drawBorder draw a border around the plus sign if true
    */
   showChildren : function(url, currentNode, currentId, parentId, drawBorder) {
@@ -590,7 +584,7 @@ var itemHierarchy = {
         li.attr("data-bind", dataBind);
 
         // show hierarchy type
-        if (value.type != type) {
+        if (value.type !== type) {
           if (value.type != null) {
             currentNode = itemHierarchy.addTypeName(currentNode, value.type);
           }
@@ -615,9 +609,9 @@ var itemHierarchy = {
 
   /*
    * Truncate a label to a given number of characters.
-   * 
+   *
    * @param {String} title the title to be truncated
-   * 
+   *
    * @param {int} length maximum length until the title will be truncated
    */
   truncateTitle : function(title, length) {
@@ -631,3 +625,10 @@ var itemHierarchy = {
     return result;
   }
 };
+
+$(document).ready(function() {
+  if ($(".item-hierarchy").length > 0) {
+    itemHierarchy.addWaitSymbol($(".item-hierarchy-result"));
+    itemHierarchy.createHierarchy(itemHierarchy.parseUrl(location.href));
+  }
+});

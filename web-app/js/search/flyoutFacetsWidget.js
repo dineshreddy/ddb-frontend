@@ -19,16 +19,16 @@ de.ddb.next.search = de.ddb.next.search || {};
 
 /**
  * Flyout Widget
- * 
+ *
  * The main intend of this object is to render all content in the context of
  * facets. It's doing this by DOM manipulation triggered by the FacetManager
- * instance. 
+ * instance.
  * The Flyout Widget contains:
- * <ul> 
+ * <ul>
  * <li>facetLeftContainer: showing the AddMoreFilterButton and the selected facet values</li>
  * <li>facetRightContainer: showing the available facet values</li>
  * </ul>
- * 
+ *
  * Do not use AJAX calls in this class!
  */
 de.ddb.next.search.FlyoutFacetsWidget = function() {
@@ -75,11 +75,11 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
   /**
    * Is called when the user clicks on the AddMoreFiltersButton or a facet header.
-   * 
+   *
    * Open/Closes the widget which depends on the state and the already selected facet values.
-   * Identify the main facet elements for which the flyout widget should be created  
+   * Identify the main facet elements for which the flyout widget should be created
    * and triggers the asynchron loading of the associated facet values from the backend.
-   * 
+   *
    * A call of buildStructure() creates the html structure of the facetLeftContainer and the facetRightContainer.
    */
   build : function(element) {
@@ -113,7 +113,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
   /**
    * Creates the mainlayout of the flyout window (facetRightContainer) with the paging elements.
-   * 
+   *
    * A call of buildLeftContainer() will create the html of the left container.
    */
   buildStructure : function() {
@@ -121,8 +121,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     if (this.parentMainElement.find('.flyout-left-container').length > 0) {
       this.facetLeftContainer = this.parentMainElement.find('.flyout-left-container');
       this.selectedItems = this.parentMainElement.find('.selected-items');
-      var inputSearchContainer = this.parentMainElement
-          .find('.input-search-fct-container');
       this.inputSearch = this.parentMainElement.find('.input-search-fct');
     } else {
       this.buildLeftContainer();
@@ -200,7 +198,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
   /**
    * Creates the layout for the right container of the flyout widget.
-   * It defines two columns for presenting the facet values. 
+   * It defines two columns for presenting the facet values.
    */
   initializeFacetValues : function(field, facetValues) {
     var leftCol = $(document.createElement('ul'));
@@ -243,7 +241,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
         leftCol.empty();
         rightCol.empty();
 
-        $.each(facetValues, function(index) {          
+        $.each(facetValues, function(index) {
           if (jQuery.inArray(this.value,
               currObjInstance.fctManager.currentFacetValuesSelected) == -1) {
             var facetValueContainer = $(document.createElement('li'));
@@ -271,7 +269,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
               facetValueContainer.appendTo(rightCol);
             }
             facetValueAnchor.appendTo(facetValueContainer);
-            
+
             //If facet values contains '<' or '>' characters we have to escape them! But we have to keep the strong tags that comes from the server!
             var escapedLocalizedValue = _.escape(localizedValue);
             var escapedAndStrong = escapedLocalizedValue.replace('&lt;strong&gt;', '<strong>').replace('&lt;&#x2F;strong&gt;', '</strong>');
@@ -333,25 +331,25 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     $.each(roleValues.values,
         function(index, value) {
 
-      //The parent part of the role must match exactly the facet value! 
+      //The parent part of the role must match exactly the facet value!
           if (decodeURIComponent(facetValue.toString()) === de.ddb.next.search.getLiteralFromRole(value.value)) {
             var roleFacetValueLi = $(document.createElement('li'));
             var roleFacetValueSpan = $(document.createElement('span'));
             var roleFacetValueCheckbox = $(document.createElement('input'));
             var roleFieldMessage = messages.ddbnext['facet_' + de.ddb.next.search.getRoleWithoutLiteralAndHierarchieNumber(value.value)];
-  
+
             roleFacetValueLi.addClass('role-facet');
-  
+
             roleFacetValueSpan.attr('title', "RoleValue");
             roleFacetValueSpan.attr('facetField', facetField);
             roleFacetValueSpan.attr('roleValue', value.value);
             //roleFacetValueSpan.html(roleFieldMessage() + ' (' + value.count + ')'); //with document count
             roleFacetValueSpan.html(roleFieldMessage());
             roleFacetValueSpan.addClass('role-facet-value');
-  
+
             roleFacetValueCheckbox.attr('type', "checkbox");
             roleFacetValueCheckbox.addClass('role-facet-checkbox');
-  
+
             // If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad
             // we have to find out if the checkbox must be checked
             var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
@@ -368,14 +366,14 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   
             // add action handler
             roleFacetValueCheckbox
-                .click(function(event) {
+                .click(function() {
                   if (this.checked) {
                     currObjInstance.fctManager.selectRoleFacetValue(facetField, value.value);
                   } else {
                     currObjInstance.fctManager.unselectRoleFacetValue(facetField, value.value);
                   }
                 });
-  
+
             roleFacetValueSpan.appendTo(roleFacetValueLi);
             roleFacetValueCheckbox.appendTo(roleFacetValueLi);
             roleFacetValueLi.appendTo(roleFacetValueUl);
@@ -407,7 +405,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.facetLeftContainer.find('.input-search-fct-container').appendTo(
         this.facetLeftContainer);
 
-    this.addMoreFilters.click(function(event) {
+    this.addMoreFilters.click(function() {
       $(this).hide();
     });
   },
@@ -427,7 +425,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     var spanPGNumber = this.paginationLiSeite.find('span');
     if (spanPGNumber.length === 0) {
       ($(document.createElement('span')).html(pageNumber))
-          .appendTo(this.paginationLiSeite)
+          .appendTo(this.paginationLiSeite);
     }
     $(spanPGNumber[0]).html(pageNumber);
   },
@@ -481,12 +479,12 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
     this.inputSearch.attr('value', '');
     this.fctManager.currentPage = 1;
     this.fctManager.currentOffset = 0;
-    this.fctManager.currentFacetValuesSelected = new Array();
+    this.fctManager.currentFacetValuesSelected = [];
     this.opened = false;
   },
 
   /**
-   * Resets the input in the facets filter text input 
+   * Resets the input in the facets filter text input
    */
   resetFacetFieldFilter : function(element) {
     element.fadeOut('fast', function() {
