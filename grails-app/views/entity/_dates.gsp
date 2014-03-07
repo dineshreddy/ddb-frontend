@@ -36,7 +36,7 @@ limitations under the License.
         <g:if test="${hasBirthContent}">
           <div>
             <g:message code="ddbnext.Entity_Birth" />: 
-            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
+            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}"><g:if test="${entity.person.dateOfBirth}">,</g:if>
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.'@value']}" class="search_link">
                 <span>${entity.person.placeOfBirth.'@value'}</span>
               </g:link>
