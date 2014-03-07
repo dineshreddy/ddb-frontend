@@ -44,7 +44,7 @@ limitations under the License.
         </div>
         <div class="thumbnail-wrapper span2">
           <div class="thumbnail">
-            <g:link class="persist" controller="entity" action="index" params="${params + [id: entityItem.id]}" class="no-external-link-icon">
+            <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
               <%-- 
               <img src="${entityItem.thumbnail.link}" alt="${ entityItem.person.name }" />
               --%>
