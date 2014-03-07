@@ -139,4 +139,60 @@ class FacetsController {
         render (contentType:"text/json"){allFacets}
     }
 
+    /**
+     * 
+     * @return
+     */
+    def calculateTimeFacetDays() {
+        def dateFromString = params.dateFrom
+        def dateTillString = params.dateTill
+
+        println "dateFromString " + dateFromString
+        def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString);
+        println "dateFrom " + dateFrom
+        def daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+        println "daysFrom " + daysFrom
+
+
+        println "dateTillString " + dateTillString
+        def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString);
+        println "dateTill " + dateTill
+        def daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
+        println "daysTill " + daysTill
+
+        render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
+    }
+
+    /**
+     *
+     * @return
+     */
+    def calculateTimeFacetDates() {
+        println "calculateTimeFacetDates"
+        def endDateStr = null
+        def beginDateStr = null
+
+        def beginDays = params.beginDays
+        println " beginDays: " + beginDays
+
+        if(beginDays) {
+            def beginMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(beginDays)
+            def beginDate = new Date(beginMilis)
+            beginDateStr = TimeFacetHelper.formatDate(beginDate)
+        }
+
+
+        def endDays = params.endDays
+        println " endDays: " + endDays
+        if(endDays) {
+            def endMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(endDays)
+            def endDate = new Date(endMilis)
+            endDateStr = TimeFacetHelper.formatDate(endDate)
+        }
+
+        render (contentType:"text/json"){[dateFrom: beginDateStr, dateTill: endDateStr]}
+    }
+
+
+
 }

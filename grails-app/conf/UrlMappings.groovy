@@ -30,6 +30,17 @@ class UrlMappings {
             action="facetsList"
         }
 
+
+        "/facets/calculateTimeFacetDays/$q?" {
+            controller="facets"
+            action="calculateTimeFacetDays"
+        }
+
+        "/facets/calculateTimeFacetDates/$q?" {
+            controller="facets"
+            action="calculateTimeFacetDates"
+        }
+
         "/rolefacets/$q?" {
             controller="facets"
             action="getRolesForFacetValue"

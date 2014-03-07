@@ -17,11 +17,34 @@ class TimeFacetHelper {
     final static def DAYS_FROM_YEAR_0_TO_1970 = 719164;
 
 
-    def static calculateDaysForTimeFacet(String dateString) {
-        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date = dateFormat.parse(dateString);
+    def static getDatefromFormattedString(String date) {
+        def retVal = null
+        if (date) {
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            retVal =  dateFormat.parse(date);
+        }
 
-        return calculateDaysForTimeFacet(date);
+        return retVal
+    }
+
+
+    def static calculateDaysForTimeFacet(String dateString) {
+        if (dateString) {
+            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date date = dateFormat.parse(dateString);
+
+            return calculateDaysForTimeFacet(date);
+        }
+
+        return "";
+    }
+
+    def static formatDate(Date date) {
+        if (date) {
+            return dateFormat.format(date);
+        }
+
+        return "";
     }
 
     /**
@@ -43,7 +66,15 @@ class TimeFacetHelper {
      * @return
      */
     def static calculateTimeFromTimeFacetDays(days) {
-        def time = (days - DAYS_FROM_YEAR_0_TO_1970) * MILLISECONDS_DAY
+        def time = null
+
+        if (days) {
+            time = (days.toLong() - DAYS_FROM_YEAR_0_TO_1970) * MILLISECONDS_DAY
+            println "calculateTimeFromTimeFacetDays: " + time
+
+            println new Date(time)
+        }
+
         return time;
     }
 
