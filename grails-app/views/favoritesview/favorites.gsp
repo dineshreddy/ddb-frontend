@@ -22,7 +22,9 @@ limitations under the License.
 
 <html>
   <head>
-    <title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+    <title>
+      <g:message code="ddbnext.Favorites_List_Of" args="${[selectedFolder.folderId == mainFavoriteFolder.folderId ? message(code: 'ddbnext.All_Favorites') : selectedFolder.title.capitalize()]}"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
+    </title>
     
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
