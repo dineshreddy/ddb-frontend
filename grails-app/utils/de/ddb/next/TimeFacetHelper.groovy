@@ -44,7 +44,48 @@ class TimeFacetHelper {
      */
     def static calculateTimeFromTimeFacetDays(days) {
         def time = (days - DAYS_FROM_YEAR_0_TO_1970) * MILLISECONDS_DAY
-        println time
         return time;
     }
+
+
+    /**
+     * Creates the time facet values 
+     * 
+     * @param exact if the time range should be exact
+     * @return a list with time facet values
+     */
+    def static getTimeFacetValues(def dateFrom , def dateTill , boolean exact) {
+        def retVal = []
+
+        def daysFrom = '*';
+        def daysTill = '*';
+
+        if(dateFrom) {
+            daysFrom = calculateDaysForTimeFacet(dateFrom);
+        }
+
+        if(dateTill) {
+            daysTill = calculateDaysForTimeFacet(dateTill);
+        }
+
+        if(exact) {
+            if(daysFrom != '*') {
+                retVal.add('begin_time=[' + daysFrom + ' TO ' + daysTill + ']');
+            }
+            if(daysTill != '*') {
+                retVal.add('end_time=[' + daysFrom + ' TO ' + daysTill + ']');
+            }
+        }else{
+            //Unscharf
+            if(daysTill != '*') {
+                retVal.add('begin_time=[* TO '+ daysTill + ']');
+            }
+            if(daysFrom != '*') {
+                retVal.add('end_time=[' + daysFrom + ' TO *]');
+            }
+        }
+
+        return retVal;
+    }
+
 }
