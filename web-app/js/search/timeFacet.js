@@ -482,6 +482,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.opened = true;
     timespanFormDiv.fadeIn('fast');
     timeFacetDiv.addClass('active');
+    currObjInstance.manageOutsideClicks(currObjInstance);
   },
 
   /**
@@ -495,6 +496,18 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.opened = false;
     timespanFormDiv.fadeOut('fast');
     timeFacetDiv.removeClass('active');
+  },
+
+  /**
+   * Close the time facet form when the user clicks outside of it.
+   */
+  manageOutsideClicks : function(thisInstance) {
+    $(document).mouseup(function(e) {
+      var container = $(".time-facet");
+      if(!$(e.target).parents(container).is(container) && thisInstance.opened) {
+        thisInstance.closeForm();
+      }
+    });
   },
 
   /**

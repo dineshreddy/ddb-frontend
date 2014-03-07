@@ -445,8 +445,8 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
    */
   manageOutsideClicks : function(thisInstance) {
     $(document).mouseup(function(e) {
-      var container = $(".facets-list");
-      if (container.has(e.target).length === 0 && thisInstance.opened === true) {
+      var container = $(".facets-item");
+      if (!$(e.target).parents(container).is(container) && thisInstance.opened) {
         thisInstance.close();
       }
     });
