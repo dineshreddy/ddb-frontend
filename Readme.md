@@ -1,7 +1,7 @@
 DDB Next
 ================
 
-* Copyright (C) 2013 FIZ Karlsruhe
+* Copyright (C) 2013-2014 FIZ Karlsruhe
 * Licensed under the Apache License
 
 [DDB Next][DDB Next] is a beta-web interface for [Deutsche Digital Bibliothek][Deutsche Digital Bibliothek] build with the Grails web framework.
