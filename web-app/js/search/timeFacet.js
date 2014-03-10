@@ -342,7 +342,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   * This method initialize the TimeFacet widget based on the window url.
   * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
   */
-  initFormOnLoad: function(beginDateStr, endDateStr) {    
+  initFormOnLoad: function(beginDateStr, endDateStr, exact) {    
     var currObjInstance = this;
     var hasSelectedDate = false;
     var updatedFrom = false;
@@ -350,72 +350,29 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var beginDate = new Date(beginDateStr);
     var endDate = new Date(endDateStr); 
     
-    // Search for time facetValues[] in the window url
-    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
-
-    $("#limitationFuzzy").prop("checked", true);
     $(".time-facet").removeClass("off");
-  
-    if (facetValuesFromUrl) {
-      $.each(facetValuesFromUrl, function(key) {
-
-        if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(16);
-
-          //Unscharf/Fuzzy
-          if(beginDays.substr(0,1) === '*'){
-           // beginDays = beginDays.substr(5,beginDays.indexOf('%')-5);
-            //var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-
-            currObjInstance.selectedTimeSpan.setTillDate(endDate);
-            updatedTill = true;
-          }else {//Genau/Exactly
-            //beginDays = beginDays.substr(0,beginDays.indexOf('+'));
-            //var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-
-            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
-            updatedFrom = true;
-            $("#limitationExact").prop("checked", true);
-          }
-
-          hasSelectedDate = true;
-        }
-
-        if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var n = facetValuesFromUrl[key].search("TO") + 3;
-          var endDays = facetValuesFromUrl[key].substr(n);
-
-          //Unscharf/Fuzzy
-          if(endDays.substr(0,1) === '*'){
-            //endDays = facetValuesFromUrl[key].substr(14,n-18);
-            //var beginDateFuzzy = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
-
-            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
-            updatedFrom = true;
-          }else {//Genau/Exactly
-            //endDays = endDays.substr(0,endDays.indexOf('%'));
-            //var endDateFuzzy = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
-
-            currObjInstance.selectedTimeSpan.setTillDate(endDate);
-            updatedTill = true;
-            $("#limitationExact").prop("checked", true);
-          }
-
-          hasSelectedDate = true;
-        }
-      });
-
-      if(!updatedFrom) {
-        currObjInstance.selectedTimeSpan.clearFromDate();
-      }
-
-      if(!updatedTill) {
-        currObjInstance.selectedTimeSpan.clearTillDate();
-      }
+    
+    if(exact) {
+      $("#limitationExact").prop("checked", true);
+    }
+    else {
+      $("#limitationFuzzy").prop("checked", true);
+    }
+    
+    if (beginDate) {
+      currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+    } else {
+      currObjInstance.selectedTimeSpan.clearFromDate();
+    }
+    
+    if (endDate) {
+      currObjInstance.selectedTimeSpan.setTillDate(endDate);
+    } else {
+      currObjInstance.selectedTimeSpan.clearTillDate();
     }
 
     //Initialize the form
-    if (hasSelectedDate) {
+    if (beginDate || endDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
       $("#add-timespan").removeClass('without-date');
@@ -425,6 +382,78 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     }
   },
 
+  /**
+   * Parses the browser url for time facet values.
+   */
+   parseWindowsUrl: function() {    
+     var currObjInstance = this;
+     var dividerPattern = /\-?[0-9]+/;    
+     var beginDays = null;
+     var endDays = null;
+     var exact = null;
+     
+     // Search for time facetValues[] in the window url
+     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
+     console.log("facetValuesFromUrl: " + facetValuesFromUrl);
+     
+     if (facetValuesFromUrl) {
+       $.each(facetValuesFromUrl, function(key) {
+
+         var decodedValue = decodeURIComponent(facetValuesFromUrl[key]);
+         console.log("decodedValue           :" + decodedValue);
+         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
+           var split = dividerPattern.exec(decodedValue);
+           console.log("beginDays split: " + split);
+           
+           $.each(split, function() {
+             console.log($( this ));
+           });
+           
+           console.log("substr begin_time: " + decodedValue.substr(12,1));
+           //Unscharf/Fuzzy
+           if(decodedValue.substr(12,1) === '*'){
+             endDays = split[0];
+             console.log("fuzzy beginDays: " + beginDays);
+             exact = false;
+           }else {//Genau/Exactly
+             beginDays = split[0];
+             console.log("exact beginDays: " + beginDays);
+             exact = true;
+           }           
+         }
+
+         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
+
+           //Unscharf/Fuzzy
+           if(decodedValue.indexOf('TO+*') !== -1){
+             var split = dividerPattern.exec(decodedValue);
+             beginDays = split[0];
+
+             console.log("fuzzy endDays: " + endDays);
+             exact = false;
+           }else {//Genau/Exactly
+             var indexOfTo = decodedValue.indexOf('TO');
+             var endSubstring = decodedValue.substr(indexOfTo);
+             
+             console.log("endSubtring: " + endSubstring);
+             var split = dividerPattern.exec(endSubstring);
+             endDays = split[0];
+
+             console.log("exact endDays: " + endDays);
+             exact = true;
+           }
+         }
+       });
+     }
+
+     //Return an object containing the parsed information
+     return {
+       beginDays:beginDays, 
+       endDays:endDays,
+       exact:exact
+       }
+   },
+  
   /**
    * This method is toggles between the open and closed state of the timefacet form
    */
@@ -575,7 +604,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
-//      console.log("facetValuesFromUrl: " + facetValuesFromUrl)
       $.each(facetValuesFromUrl, function(key, value) {
         //Only add facetValues that do not start with "begin_time" or "end_time"
         if ((facetValuesFromUrl[key].indexOf("begin_time") === -1) && (facetValuesFromUrl[key].indexOf("end_time") === -1)) {
@@ -615,9 +643,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   },
   
   /**
-   * Converts a Date object to a day representation for the time facet
+   * Converts a Date object to a Day representation for the time facet
    */
-  calculateFacetDays: function(timeSpan) {
+  calculateFacetDays: function() {
     var currObjInstance = this;
     
     var url = jsContextPath + '/facets/calculateTimeFacetDays' + '?';
@@ -640,8 +668,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       url : url,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);       
-        console.log("fromDays: " + parsedResponse.daysFrom);
-        console.log("tillDays: " + parsedResponse.daysTill);
         currObjInstance.updateWindowUrl(parsedResponse.daysFrom, parsedResponse.daysTill);
       }
     });        
@@ -649,65 +675,29 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
   
   /**
-   * Converts a day representation for the time facet to a Date object
+   * Converts a Day representation for the time facet to a Javascript Date object
+   * 
+   * @param days An object containing the url values to be converted
    */
   calculateFacetDates: function(days) {
     var currObjInstance = this;
-    
-    var dividerPattern = /\-?[0-9]+/;    
-    var beginDays = null;
-    var endDays = null;
-    
-    // Search for time facetValues[] in the window url
-    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
-    
-    if (facetValuesFromUrl) {
-      $.each(facetValuesFromUrl, function(key) {
-        if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var decodedValue = decodeURIComponent(facetValuesFromUrl[key]);
-          
-          var split = dividerPattern.exec(decodedValue);
-          console.log("beginDays split: " + split);
-          
-          if (split.length > 1) {
-            beginDays = split[1];
-          }
-        }
-        
-        if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var decodedValue = decodeURIComponent(facetValuesFromUrl[key]);
-          
-          var split = dividerPattern.exec(decodedValue);
-          console.log("endDays split: " + split);
-          
-          if (split.length > 1) {
-            endDays = split[1];
-          }
-          
-          endDays = dividerPattern.exec(decodedValue);
-        }
-      });
-    }
 
-    console.log("beginDays: " + beginDays);
-    console.log("endDays: " + endDays);
+    // Search for time facet parameter in the window url
+    var urlValues = currObjInstance.parseWindowsUrl();
     
     var url = jsContextPath + '/facets/calculateTimeFacetDates' + '?';
-    if (beginDays) {
-      url += 'beginDays='+ beginDays;
+    if (urlValues.beginDays) {
+      url += 'beginDays='+ urlValues.beginDays;
     }
 
-    if (endDays) {
+    if (urlValues.endDays) {
       if (url.indexOf("beginDays") != -1) {
         url += "&";
       }
       
-      url += 'endDays=' + endDays;
+      url += 'endDays=' + urlValues.endDays;
     }
-
     
-    
-    console.log("url: " + url);
     $.ajax({
       type : 'GET',
       dataType : 'json',
@@ -720,7 +710,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
         console.log("tillDate: " + parsedResponse.dateTill);
         
         //Continue with initializing the form
-        currObjInstance.initFormOnLoad(parsedResponse.dateFrom, parsedResponse.dateTill);
+        currObjInstance.initFormOnLoad(parsedResponse.dateFrom, parsedResponse.dateTill, urlValues);
       }
     }); 
   }
