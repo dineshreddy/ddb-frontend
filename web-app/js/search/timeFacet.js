@@ -463,7 +463,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.opened = true;
     timespanFormDiv.fadeIn('fast');
     timeFacetDiv.addClass('active');
-    currObjInstance.manageOutsideClicks(currObjInstance);
+    //currObjInstance.manageOutsideClicks(currObjInstance);
   },
 
   /**
