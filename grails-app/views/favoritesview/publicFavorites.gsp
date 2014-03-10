@@ -23,13 +23,13 @@ limitations under the License.
   <head>
   
     <title>
-      ${selectedFolder.title} - <g:message code="ddbnext.Favorites_List_Of" args="${[selectedFolder.publishingName]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
