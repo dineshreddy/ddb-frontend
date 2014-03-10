@@ -1,5 +1,7 @@
 package ddb.next.utils
 
+import grails.test.mixin.*
+
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -8,7 +10,7 @@ import de.ddb.next.TimeFacetHelper
 
 class TimeFacetHelperTest extends GroovyTestCase {
 
-    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd");
 
     void setUp() {
         dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -16,12 +18,12 @@ class TimeFacetHelperTest extends GroovyTestCase {
 
 
     void testMillisecondsFor_1_1_1970() {
-        Date date = dateFormat.parse("1970-01-01");
+        Date date = dateFormat.parse("AD-1970-01-01");
         assert 0 == date.getTime()
     }
 
     void testCalculateDaysForTimeFacetFor1_1_1970() {
-        Date date = dateFormat.parse("1970-01-01");
+        Date date = dateFormat.parse("AD-1970-01-01");
 
         def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
 
@@ -29,7 +31,7 @@ class TimeFacetHelperTest extends GroovyTestCase {
     }
 
     void testCalculateDaysForTimeFacetFor1_1_1643() {
-        Date date = dateFormat.parse("1643-01-01");
+        Date date = dateFormat.parse("AD-1643-01-01");
 
         def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
 
@@ -37,21 +39,69 @@ class TimeFacetHelperTest extends GroovyTestCase {
     }
 
     void testCalculateDaysForTimeFacetFor29_10_1268() {
-        Date date = dateFormat.parse("1268-10-29");
+        Date date = dateFormat.parse("AD-1268-10-29");
 
         def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
 
         assert  463073 == days
     }
 
-    void testCalculateTimeFromTimeFacetDaysFor_1_1_1970() {
-        def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(719164)
+    void testCalculateDaysForTimeFacetFor01_01_3500BC() {
+        Date date = dateFormat.parse("BC-3500-01-01");
 
-        assert 0 == time
+        def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
+
+        assert  -1278375 == days
     }
 
+    void testCalculateDaysForTimeFacetFor01_01_3000BC() {
+        Date date = dateFormat.parse("BC-3000-01-01");
+
+        def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
+
+        assert  -1095750 == days
+    }
+
+    void testCalculateDaysForTimeFacetFor01_01_475BC() {
+        Date date = dateFormat.parse("BC-475-01-01");
+
+        def days = TimeFacetHelper.calculateDaysForTimeFacet(date)
+
+        assert  -173494 == days
+    }
+
+
+
+    void testCalculateTimeFromTimeFacetDaysFor_0_Days() {
+        def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(0)
+
+        Calendar cal = Calendar.getInstance()
+        cal.setTimeInMillis(time)
+        dateFormat.format(cal.getTime())
+        assert "AD-0001-01-01" ==  dateFormat.format(cal.getTime())
+    }
+
+
+    void testCalculateTimeFromTimeFacetDateFor_MINUS1095750_Days() {
+        def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(-1095750)
+        Calendar cal = Calendar.getInstance()
+        cal.setTimeInMillis(time)
+        dateFormat.format(cal.getTime())
+        assert "BC-3000-01-01" ==  dateFormat.format(cal.getTime())
+    }
+
+    void testCalculateTimeFromTimeFacetDateFor_MINUS1278375_Days() {
+        def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(-1278375)
+        Calendar cal = Calendar.getInstance()
+        cal.setTimeInMillis(time)
+        dateFormat.format(cal.getTime())
+        assert "BC-3500-01-01" ==  dateFormat.format(cal.getTime())
+    }
+
+
+
     void testGetFacetValuesWithOneDate() {
-        Date date = dateFormat.parse("1970-01-01")
+        Date date = dateFormat.parse("AD-1970-01-01")
 
         // Test 1 no dates -> no values!
         def facetValues = TimeFacetHelper.getTimeFacetValues(null, null, false)
@@ -79,8 +129,8 @@ class TimeFacetHelperTest extends GroovyTestCase {
     }
 
     void testGetFacetValuesWithTwoDates() {
-        Date date1 = dateFormat.parse("1800-01-01")
-        Date date2 = dateFormat.parse("2012-12-31")
+        Date date1 = dateFormat.parse("AD-1800-01-01")
+        Date date2 = dateFormat.parse("AD-2012-12-31")
 
         // Test from and till date exact
         def facetValues = TimeFacetHelper.getTimeFacetValues(date1, date2, true)

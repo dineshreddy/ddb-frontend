@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
  */
 class TimeFacetHelper {
 
-    final static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    final static DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd");
 
     final static def MILLISECONDS_DAY = 86400000;
 
@@ -47,6 +47,12 @@ class TimeFacetHelper {
         return "";
     }
 
+    def static formatMillis(def millis) {
+        Calendar cal = Calendar.getInstance()
+        cal.setTimeInMillis(millis)
+
+        return dateFormat.format(cal.getTime())
+    }
     /**
      * 
      * @param date
@@ -68,11 +74,8 @@ class TimeFacetHelper {
     def static calculateTimeFromTimeFacetDays(days) {
         def time = null
 
-        if (days) {
+        if (days != null) {
             time = (days.toLong() - DAYS_FROM_YEAR_0_TO_1970) * MILLISECONDS_DAY
-            println "calculateTimeFromTimeFacetDays: " + time
-
-            println new Date(time)
         }
 
         return time;
