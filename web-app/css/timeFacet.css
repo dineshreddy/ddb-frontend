@@ -69,15 +69,15 @@
 }
 
 #timespan-form .contextual-help {
-  margin-right: 150px;
+  left: 40%;
   margin-top: -7px;
 }
 
 .time-restriction .tooltip {
   font-size: 13px;
-  left: -12%;
   line-height: 20px;
-  margin: 10px;
+  left: -8%;
+  margin: 5px 10px;
 }
 
 .limitation {
