@@ -139,4 +139,46 @@ class FacetsController {
         render (contentType:"text/json"){allFacets}
     }
 
+    /**
+     * 
+     * @return
+     */
+    def calculateTimeFacetDays() {
+        def dateFromString = params.dateFrom
+        def dateTillString = params.dateTill
+
+        def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString);
+        def daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+
+        def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString);
+        def daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
+
+        render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
+    }
+
+    /**
+     *
+     * @return
+     */
+    def calculateTimeFacetDates() {
+        def endDateStr = null
+        def beginDateStr = null
+
+        def beginDays = params.beginDays
+
+        if(beginDays) {
+            def beginMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(beginDays)
+            beginDateStr = TimeFacetHelper.formatMillis(beginMilis)
+        }
+
+        def endDays = params.endDays
+        if(endDays) {
+            def endMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(endDays)
+            endDateStr = TimeFacetHelper.formatMillis(endMilis)
+
+        }
+
+        render (contentType:"text/json"){[dateFrom: beginDateStr, dateTill: endDateStr]}
+    }
+
 }
