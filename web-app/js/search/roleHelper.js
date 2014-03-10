@@ -26,7 +26,7 @@ de.ddb.next.search.literalDividerPattern = /_[0-9]+_/;
  * If a concrete role looks like this
  * "Cotta_1_affiliate_fct_involved"
  *
- * The method return 
+ * The method return
  * "_1_affiliate_fct_involved"
  *
  * Roles have the following structure:

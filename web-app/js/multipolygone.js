@@ -70,7 +70,7 @@ jQuery(document).ready(function($) {
 
             //Remove the tiles load listener again. We only want it on initialization.
             tiles.events.unregister("loadend", tiles, onTilesLoaded);
-          }
+          };
 
           if(jQuery.browser.msie && jQuery.browser.version < 9) {
             onTilesLoaded(); // just call immediatelly
@@ -174,11 +174,11 @@ jQuery(document).ready(function($) {
 
   /**
    * Class: OpenLayers.Popup.FramedDDB
-   * 
+   *
    * Inherits from:
    *  - <OpenLayers.Popup.Framed>
    */
-  OpenLayers.Popup.FramedDDB = 
+  OpenLayers.Popup.FramedDDB =
     OpenLayers.Class(OpenLayers.Popup.Framed, {
 
       /**
@@ -361,7 +361,7 @@ jQuery(document).ready(function($) {
        * {<OpenLayers.Size>}
        */
       maxSize: new OpenLayers.Size(1200, 660),
-      
+
       imageSrc: null,
 
       /**
@@ -378,15 +378,14 @@ jQuery(document).ready(function($) {
        * closeBox - {Boolean}
        * closeBoxCallback - {Function} Function to be called on closeBox click.
        */
-      initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox, 
+      initialize:function(id, lonlat, contentSize, contentHTML, anchor, closeBox,
                           closeBoxCallback, imageSrc) {
 
-          //this.imageSrc = OpenLayers.Util.getImageLocation('cloud-popup-relative.png');
           OpenLayers.Popup.Framed.prototype.initialize.apply(this, arguments);
           this.contentDiv.className = this.contentDisplayClass;
-          
+
           this.imageSrc = imageSrc;
-          
+
           this.contentDiv.className = this.contentDisplayClass;
 
       },
@@ -397,7 +396,7 @@ jQuery(document).ready(function($) {
       createBlocks: function() {
           this.blocks = [];
 
-          //since all positions contain the same number of blocks, we can 
+          //since all positions contain the same number of blocks, we can
           // just pick the first position and use its blocks array to create
           // our blocks array
           var firstPosition = null;
@@ -405,7 +404,7 @@ jQuery(document).ready(function($) {
               firstPosition = key;
               break;
           }
-          
+
           var position = this.positionBlocks[firstPosition];
           for (var i = 0; i < position.blocks.length; i++) {
 
@@ -413,12 +412,12 @@ jQuery(document).ready(function($) {
               this.blocks.push(block);
 
               var divId = this.id + '_FrameDecorationDiv_' + i;
-              block.div = OpenLayers.Util.createDiv(divId, 
+              block.div = OpenLayers.Util.createDiv(divId,
                   null, null, null, "absolute", null, "hidden", null
               );
 
               var imgId = this.id + '_FrameDecorationImg_' + i;
-              var imageCreator = 
+              var imageCreator =
                   (this.isAlphaImage) ? OpenLayers.Util.createAlphaImageDiv
                                       : OpenLayers.Util.createImage;
 
@@ -429,7 +428,6 @@ jQuery(document).ready(function($) {
               this.groupDiv.appendChild(block.div);
           }
       },
-      
 
       CLASS_NAME: "OpenLayers.Popup.FramedDDB"
   });
@@ -439,7 +437,7 @@ jQuery(document).ready(function($) {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
   OpenLayers.Control.DDBHome = OpenLayers.Class(OpenLayers.Control, {
-      
+
       /**
        * APIProperty: zoomInId
        * {String}
@@ -451,9 +449,9 @@ jQuery(document).ready(function($) {
       ddbHomeId: "olDDBHomeLink",
 
       ddbHomeImg: "ddb_ResetMap.png",
-      
+
       imageFolder: "",
-      
+
       ddbMap: null,
 
       initialize:function(imageFolder, ddbMap) {
@@ -472,9 +470,9 @@ jQuery(document).ready(function($) {
               links = this.getOrCreateLinks(div),
               ddbHome = links.ddbHome,
               eventsInstance = this.map.events;
-          
+
           eventsInstance.register("buttonclick", this, this.onDDBHomeClick);
-          
+
           this.ddbHome = ddbHome;
           $(div).addClass("olControlDDBHome");
           return div;
@@ -502,7 +500,7 @@ jQuery(document).ready(function($) {
               el.appendChild(ddbHome);
           }
           OpenLayers.Element.addClass(ddbHome, "olButton");
-          
+
           return {
             ddbHome: ddbHome
           };
@@ -517,7 +515,7 @@ jQuery(document).ready(function($) {
           if (button === this.ddbHome) {
               var position = this.ddbMap._getLonLat(this.ddbMap.initLon, this.ddbMap.initLat);
               this.map.setCenter(position, this.ddbMap.initZoom, false, true);
-          } 
+          }
       },
 
       /**
@@ -584,7 +582,7 @@ jQuery(document).ready(function($) {
 
       /**
        * APIProperty: forceFixedZoomLevel
-       * {Boolean} Force a fixed zoom level even though the map has 
+       * {Boolean} Force a fixed zoom level even though the map has
        *     fractionalZoom
        */
       forceFixedZoomLevel: false,
@@ -606,12 +604,12 @@ jQuery(document).ready(function($) {
        * {<OpenLayers.Pixel>}
        */
       zoomStart: null,
-      
+
       zoomBarOffsetTop: 0,
 
       /**
        * Constructor: OpenLayers.Control.PanZoomBar
-       */ 
+       */
 
       /**
        * APIMethod: destroy
@@ -636,11 +634,11 @@ jQuery(document).ready(function($) {
        * Method: setMap
        * 
        * Parameters:
-       * map - {<OpenLayers.Map>} 
+       * map - {<OpenLayers.Map>}
        */
       setMap: function(map) {
           OpenLayers.Control.PanZoom.prototype.setMap.apply(this, arguments);
-          
+
           if (this.outsideViewport) {
               this.events.attachToElement(this.div);
           }
@@ -652,7 +650,7 @@ jQuery(document).ready(function($) {
           });
       },
 
-      /** 
+      /**
        * Method: redraw
        * clear the div and start over.
        */
@@ -660,12 +658,12 @@ jQuery(document).ready(function($) {
           if (this.div != null) {
               this.removeButtons();
               this._removeZoomBar();
-          }  
+          }
           this.draw();
       },
 
       /**
-      * Method: draw 
+      * Method: draw
       *
       * Parameters:
       * px - {<OpenLayers.Pixel>}
@@ -713,7 +711,7 @@ jQuery(document).ready(function($) {
           return this.div;
       },
 
-      /** 
+      /**
       * Method: _addZoomBar
       * 
       * Parameters:
@@ -725,7 +723,7 @@ jQuery(document).ready(function($) {
           var minZoom = this.map.getMinZoom();
           var zoomsToEnd = this.map.getNumZoomLevels() - 1 - this.map.getZoom();
           var slider = OpenLayers.Util.createAlphaImageDiv(id,
-                         centered.add(-1, zoomsToEnd * this.zoomStopHeight), 
+                         centered.add(-1, zoomsToEnd * this.zoomStopHeight),
                          {w: 20, h: 9},
                          imgLocation,
                          "absolute");
@@ -767,7 +765,7 @@ jQuery(document).ready(function($) {
           div.style.cursor = "pointer";
           div.className = "olButton";
           this.zoombarDiv = div;
-          
+
           this.div.appendChild(div);
 
           this.startTop = parseInt(div.style.top);
@@ -775,9 +773,9 @@ jQuery(document).ready(function($) {
 
           this.map.events.register("zoomend", this, this.moveZoomBar);
 
-          centered = centered.add(0, 
+          centered = centered.add(0,
               this.zoomStopHeight * (this.map.getNumZoomLevels() - minZoom));
-          return centered; 
+          return centered;
       },
       
       /**
@@ -815,7 +813,7 @@ jQuery(document).ready(function($) {
               if(this.forceFixedZoomLevel || !this.map.fractionalZoom) {
                   levels = Math.floor(levels);
               }    
-              var zoom = (this.map.getNumZoomLevels() - 1) - levels; 
+              var zoom = (this.map.getNumZoomLevels() - 1) - levels;
               zoom = Math.min(Math.max(zoom, 0), this.map.getNumZoomLevels() - 1);
               this.map.zoomTo(zoom);
           }
@@ -827,7 +825,7 @@ jQuery(document).ready(function($) {
        * through to the slider, which then does its moving thing.
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       passEventToSlider:function(evt) {
           this.sliderEvents.handleBrowserEvent(evt);
@@ -838,7 +836,7 @@ jQuery(document).ready(function($) {
        * event listener for clicks on the slider
        *
        * Parameters:
-       * evt - {<OpenLayers.Event>} 
+       * evt - {<OpenLayers.Event>}
        */
       zoomBarDown:function(evt) {
           if (!OpenLayers.Event.isLeftClick(evt) && !OpenLayers.Event.isSingleTouch(evt)) {
@@ -856,7 +854,7 @@ jQuery(document).ready(function($) {
           this.zoomStart = evt.xy.clone();
           this.div.style.cursor = "move";
           // reset the div offsets just in case the div moved
-          this.zoombarDiv.offsets = null; 
+          this.zoombarDiv.offsets = null;
           OpenLayers.Event.stop(evt);
       },
 
@@ -874,7 +872,7 @@ jQuery(document).ready(function($) {
           if (this.mouseDragStart != null) {
               var deltaY = this.mouseDragStart.y - evt.xy.y;
               var offsets = OpenLayers.Util.pagePosition(this.zoombarDiv);
-              if ((evt.clientY - offsets[1]) > 0 && 
+              if ((evt.clientY - offsets[1]) > 0 &&
                   (evt.clientY - offsets[1]) < parseInt(this.zoombarDiv.style.height) - 2) {
                   var newTop = parseInt(this.slider.style.top) - deltaY;
                   this.slider.style.top = newTop+"px";
@@ -910,7 +908,7 @@ jQuery(document).ready(function($) {
               var zoomLevel = this.map.zoom;
               if (!this.forceFixedZoomLevel && this.map.fractionalZoom) {
                   zoomLevel += this.deltaY/this.zoomStopHeight;
-                  zoomLevel = Math.min(Math.max(zoomLevel, 0), 
+                  zoomLevel = Math.min(Math.max(zoomLevel, 0),
                                        this.map.getNumZoomLevels() - 1);
               } else {
                   zoomLevel += this.deltaY/this.zoomStopHeight;
@@ -929,7 +927,7 @@ jQuery(document).ready(function($) {
       * Change the location of the slider to match the current zoom level.
       */
       moveZoomBar:function() {
-          var newTop = 
+          var newTop =
               ((this.map.getNumZoomLevels()-1) - this.map.getZoom()) *
               this.zoomStopHeight + this.startTop + 1 + this.zoomBarOffsetTop;
           this.slider.style.top = newTop + "px";
