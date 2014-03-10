@@ -50,7 +50,11 @@ class SearchController {
                 apiResponse.throwException(request)
             }
             def resultsItems = apiResponse.getResponse()
-            def entities = (resultsItems.entities instanceof JSONNull) ?"":resultsItems.entities
+            def entities = ""
+            //Return a maximum of 2 entities as search result
+            if(! (resultsItems.entities instanceof JSONNull)) {
+                entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities;
+            }
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
