@@ -61,7 +61,7 @@ $.hideErrors = function() {
   $("div.binary-viewer-flash-upgrade").addClass("off");
 };
 
-/** 
+/**
  * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
  * IMPORTANT: remember to pass your arrayParamVal already URL decoded
  */

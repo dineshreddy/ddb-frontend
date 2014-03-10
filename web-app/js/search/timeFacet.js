@@ -164,48 +164,6 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   },
 
   /**
-   * Returns a Date object for the from Date
-   */
-  getFromDateObject: function(){
-    var currObjInstance = this;
-
-    //If no year is set -> return
-    if (!currObjInstance.hasFromDate()) {
-      return null;
-    }
-
-    currObjInstance.completeFromDate();
-
-    //Months starts from 0!
-    var date = new Date(Date.UTC(currObjInstance.fromYear,(currObjInstance.fromMonth - 1),currObjInstance.fromDay));
-    if(currObjInstance.fromYear < 100 && currObjInstance.fromYear >= 0) {
-      date.setUTCFullYear(("0000" + date.getYear()).slice(-4));
-    }
-    return date;
-  },
-
-  /**
-   * Returns a Date object for the from Date
-   */
-  getTillDateObject: function(){
-    var currObjInstance = this;
-
-    //If no year is set -> return
-    if (!currObjInstance.hasTillDate()) {
-      return null;
-    }
-
-    currObjInstance.completeTillDate();
-
-    //Months starts from 0!
-    date = new Date(Date.UTC(currObjInstance.tillYear,(currObjInstance.tillMonth - 1),currObjInstance.tillDay));
-    if(currObjInstance.tillYear < 100 && currObjInstance.tillYear >= 0) {
-      date.setUTCFullYear(("0000" + date.getYear()).slice(-4));
-    }
-    return date;
-  },
-
-  /**
    * Setter for the from Date
    */
   setFromDate: function(date){
@@ -322,7 +280,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       }
     });
   },
-  
+
   /**
    * Dis-/Enables the day and month input field for the from date
    */
@@ -339,69 +297,66 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     $("#tillMonth").prop('disabled', disable);
   },
 
-  
   /**
    * This method initialize the TimeFacet widget based on the window url.
    * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
    */
-  initOnLoad: function(endDate, beginDate) {
+  initOnLoad: function() {
     var currObjInstance = this;
-        
+
     //Asynchronously calculate the dates for the form! Continue the initialization in the success part
     currObjInstance.calculateFacetDates();
   },
 
   convertServerDateToJsDate: function(serverDate) {
-    var currObjInstance = this;
     var date = null;
-    
+
     if(serverDate) {
-      var year = null;    
-      var dateArray = serverDate.split("-")
-      
-      if(dateArray[0].indexOf("BC") != -1){
+      var year = null;
+      var dateArray = serverDate.split("-");
+
+      if(dateArray[0].indexOf("BC") !== -1){
         year = "-" + dateArray[1];
       }
       else {
         year = dateArray[1];
       }
-      
+
       //Months starts in Javascript with 0!
-      date = new Date(year,dateArray[2] -1,dateArray[3]);
+      //To work with years between 1-99
+      date = new Date();
+      date.setFullYear(year,dateArray[2] -1,dateArray[3]);
     }
-    
     return date;
 
   },
-    
+
   /**
   * This method initialize the TimeFacet widget based on the window url.
   * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
   */
-  initFormOnLoad: function(beginDateStr, endDateStr, exact) {    
+  initFormOnLoad: function(beginDateStr, endDateStr, exact) {
     var currObjInstance = this;
-    var hasSelectedDate = false;
-    var updatedFrom = false;
-    var updatedTill = false;
-    
+
     var beginDate = currObjInstance.convertServerDateToJsDate(beginDateStr);
     var endDate = currObjInstance.convertServerDateToJsDate(endDateStr);
-    
+
     $(".time-facet").removeClass("off");
-    
+
     if(exact) {
       $("#limitationExact").prop("checked", true);
     }
     else {
       $("#limitationFuzzy").prop("checked", true);
     }
-    
+
     if (beginDate) {
+
       currObjInstance.selectedTimeSpan.setFromDate(beginDate);
     } else {
       currObjInstance.selectedTimeSpan.clearFromDate();
     }
-    
+
     if (endDate) {
       currObjInstance.selectedTimeSpan.setTillDate(endDate);
     } else {
@@ -422,27 +377,22 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   /**
    * Parses the browser url for time facet values.
    */
-   parseWindowsUrl: function() {    
-     var currObjInstance = this;
-     var dividerPattern = /\-?[0-9]+/;    
+   parseWindowsUrl: function() {
+     var dividerPattern = /\-?[0-9]+/;
      var beginDays = null;
      var endDays = null;
      var exact = null;
-     
+
      // Search for time facetValues[] in the window url
      var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
-     
+
      if (facetValuesFromUrl) {
        $.each(facetValuesFromUrl, function(key) {
 
          var decodedValue = decodeURIComponent(facetValuesFromUrl[key]);
          if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
            var split = dividerPattern.exec(decodedValue);
-           
-           $.each(split, function() {
-             console.log($( this ));
-           });
-           
+
            //Unscharf/Fuzzy
            if(decodedValue.substr(12,1) === '*'){
              endDays = split[0];
@@ -450,7 +400,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
            }else {//Genau/Exactly
              beginDays = split[0];
              exact = true;
-           }           
+           }
          }
 
          if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
@@ -473,12 +423,12 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
      //Return an object containing the parsed information
      return {
-       beginDays:beginDays, 
+       beginDays:beginDays,
        endDays:endDays,
        exact:exact
-       }
+       };
    },
-  
+
   /**
    * This method is toggles between the open and closed state of the timefacet form
    */
@@ -506,7 +456,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.opened = true;
     timespanFormDiv.fadeIn('fast');
     timeFacetDiv.addClass('active');
-    currObjInstance.manageOutsideClicks(currObjInstance);
+    //currObjInstance.manageOutsideClicks(currObjInstance);
   },
 
   /**
@@ -627,13 +577,12 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
    * Updates the browser URL and performs a new search with the given time facet values.
    */
   updateWindowUrl: function(daysFrom, daysTill) {
-    var currObjInstance = this;
     var paramsArray = null;
     var selectedFacetValues = [];
 
     daysFrom = daysFrom || '*';
     daysTill = daysTill || '*';
-    
+
     // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
@@ -675,23 +624,23 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
   },
-  
+
   /**
    * Converts a Date object to a Day representation for the time facet
    */
   calculateFacetDays: function() {
     var currObjInstance = this;
-    
+
     var url = jsContextPath + '/facets/calculateTimeFacetDays' + '?';
     if (currObjInstance.selectedTimeSpan.hasFromDate()) {
       url += 'dateFrom='+ currObjInstance.selectedTimeSpan.formatFromDate();
     }
 
     if (currObjInstance.selectedTimeSpan.hasTillDate()) {
-      if (url.indexOf("dateFrom") != -1) {
+      if (url.indexOf("dateFrom") !== -1) {
         url += "&";
       }
-      
+
       url += 'dateTill=' + currObjInstance.selectedTimeSpan.formatTillDate();
     }
     $.ajax({
@@ -700,49 +649,48 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       async : true,
       url : url,
       complete : function(data) {
-        var parsedResponse = jQuery.parseJSON(data.responseText);       
+        var parsedResponse = jQuery.parseJSON(data.responseText);
         currObjInstance.updateWindowUrl(parsedResponse.daysFrom, parsedResponse.daysTill);
       }
-    });        
+    });
   },
 
-  
   /**
    * Converts a Day representation for the time facet to a Javascript Date object
-   * 
+   *
    * @param days An object containing the url values to be converted
    */
-  calculateFacetDates: function(days) {
+  calculateFacetDates: function() {
     var currObjInstance = this;
 
     // Search for time facet parameter in the window url
     var urlValues = currObjInstance.parseWindowsUrl();
-    
+
     var url = jsContextPath + '/facets/calculateTimeFacetDates' + '?';
     if (urlValues.beginDays) {
       url += 'beginDays='+ urlValues.beginDays;
     }
 
     if (urlValues.endDays) {
-      if (url.indexOf("beginDays") != -1) {
+      if (url.indexOf("beginDays") !== -1) {
         url += "&";
       }
-      
+
       url += 'endDays=' + urlValues.endDays;
     }
-    
+
     $.ajax({
       type : 'GET',
       dataType : 'json',
       async : true,
       url : url,
       complete : function(data) {
-        var parsedResponse = jQuery.parseJSON(data.responseText);  
-        
+        var parsedResponse = jQuery.parseJSON(data.responseText);
+
         //Continue with initializing the form
         currObjInstance.initFormOnLoad(parsedResponse.dateFrom, parsedResponse.dateTill, urlValues.exact);
       }
-    }); 
+    });
   }
-  
+
 });// End extend TimeFacet prototype

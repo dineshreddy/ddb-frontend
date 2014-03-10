@@ -69,7 +69,7 @@ var itemHierarchy = {
    * node.
    *
    * @param {Element} currentNode current node (ul element)
-   * 
+   *
    * @param {boolean} currentNodeFound true if the currently displayed object
    * was aleady added to the current node. Otherwise it will be added here.
    *
