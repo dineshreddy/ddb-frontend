@@ -26,8 +26,6 @@ import javax.servlet.http.HttpServletRequest
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
-import org.jsoup.Jsoup
-import org.jsoup.safety.Whitelist
 import org.springframework.context.i18n.LocaleContextHolder
 
 import de.ddb.next.constants.CortexConstants
@@ -356,25 +354,6 @@ class SearchService {
             tmpTitle = tmpTitle.replaceAll(replacementsRegex.toString(), '<strong>$1</strong>')
         }
         return tmpTitle
-    }
-
-    /**
-     * DDBNEXT-1261: Remove all HTML tags except "match" from the item view because inserting of highlighting
-     * information may corrupt other HTML tags.
-     *
-     * @param searchResult search result list
-     */
-    def void removeHtmlTags(def searchResult) {
-        def Whitelist whitelist = new Whitelist()
-        whitelist.addTags("match")
-        searchResult.results.docs.each {
-            def oldView = it.view
-            def newView = []
-            oldView.each {
-                newView.add(Jsoup.clean(it, whitelist))
-            }
-            it.view = newView
-        }
     }
 
     /**
