@@ -120,6 +120,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   formatFromDate: function(){
     var currObjInstance = this;
+    var date = null;
 
     //If no year is set -> return
     if (!currObjInstance.hasFromDate()) {
@@ -128,7 +129,13 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
 
     currObjInstance.completeFromDate();
 
-    return currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
+    if(currObjInstance.fromYear >= 0) {
+     date = "AD-" + currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
+    }
+    else {
+      date = "BC" + currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
+    }
+    return date;
 
   },
 
@@ -137,6 +144,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
    */
   formatTillDate: function(){
     var currObjInstance = this;
+    var date = null;
 
     //If no year is set -> return
     if (!currObjInstance.hasTillDate()) {
@@ -145,7 +153,13 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
 
     currObjInstance.completeTillDate();
 
-    return currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
+    if(currObjInstance.tillYear >= 0) {
+      date = "AD-" + currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
+     }
+     else {
+       date = "BC" + currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
+     }
+    return date;
 
   },
 
@@ -197,8 +211,8 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   setFromDate: function(date){
     var currObjInstance = this;
 
-    currObjInstance.fromDay =  date.getUTCDate();
-    currObjInstance.fromMonth = date.getUTCMonth() + 1;
+    currObjInstance.fromDay =  date.getDate();
+    currObjInstance.fromMonth = date.getMonth() + 1;
     currObjInstance.fromYear = date.getFullYear();
   },
 
@@ -208,8 +222,8 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   setTillDate: function(date){
     var currObjInstance = this;
 
-    currObjInstance.tillDay = date.getUTCDate();
-    currObjInstance.tillMonth = date.getUTCMonth() + 1;
+    currObjInstance.tillDay = date.getDate();
+    currObjInstance.tillMonth = date.getMonth() + 1;
     currObjInstance.tillYear = date.getFullYear();
   },
 
@@ -233,48 +247,6 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
 
 });
 
-//#############################################################################################
-//TimeFacetHelper Object
-//#############################################################################################
-/**
- * TimeFacet Constructor Function
- */
-de.ddb.next.search.TimeFacetHelper = function() {
-};
-
-/**
- * TimeFacetHelper prototype extension with JQuery
- * All calculations are based on this formula
- * (<Value> - 719164(Time from 0 to 01.01.1970 in Days)) * 86400000(Milliseconds of a day) = Time in Milliseconds since 01.01.1970
- */
-$.extend(de.ddb.next.search.TimeFacetHelper.prototype, {
-  MILLISECONDS_DAY: 86400000,
-  DAYS_FROM_YEAR_0_TO_1970: 719164,
-
-  /**
-   * Converts a Date object to a day representation for the time facet
-   */
-  convertDateObjectToFacetDays: function(date) {
-    var currObjInstance = this;
-    var timeSince1970 = date.getTime();
-    var days = (timeSince1970 / currObjInstance.MILLISECONDS_DAY) + currObjInstance.DAYS_FROM_YEAR_0_TO_1970;
-
-    return days;
-  },
-
-  /**
-   * Converts a day representation for the time facet to a Date object
-   */
-  convertFacetDaysToDate: function(days) {
-    var currObjInstance = this;
-
-    var time = (days - currObjInstance.DAYS_FROM_YEAR_0_TO_1970) * currObjInstance.MILLISECONDS_DAY;
-    var date = new Date(time);
-
-    return date;
-  }
-});
-
 
 //#############################################################################################
 //TimeFacet Object
@@ -296,7 +268,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   added: false,
   selectedTimeSpan: null,
   localisation : "unscharf",
-  timeFacetHelper: null,
 
   /**
    * Initialize the TimeFacet object
@@ -305,7 +276,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var currObjInstance = this;
 
     currObjInstance.facetsManager = facetsManager;
-    currObjInstance.timeFacetHelper = new de.ddb.next.search.TimeFacetHelper();
     currObjInstance.selectedTimeSpan = new de.ddb.next.search.TimeSpan();
 
     //Remove the off class for Non Javascript
@@ -352,7 +322,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
       }
     });
   },
-
+  
   /**
    * Dis-/Enables the day and month input field for the from date
    */
@@ -369,83 +339,77 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     $("#tillMonth").prop('disabled', disable);
   },
 
+  
   /**
    * This method initialize the TimeFacet widget based on the window url.
    * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
    */
-  initOnLoad: function() {
+  initOnLoad: function(endDate, beginDate) {
+    var currObjInstance = this;
+        
+    //Asynchronously calculate the dates for the form! Continue the initialization in the success part
+    currObjInstance.calculateFacetDates();
+  },
 
+  convertServerDateToJsDate: function(serverDate) {
+    var currObjInstance = this;
+    var date = null;
+    
+    if(serverDate) {
+      var year = null;    
+      var dateArray = serverDate.split("-")
+      
+      if(dateArray[0].indexOf("BC") != -1){
+        year = "-" + dateArray[1];
+      }
+      else {
+        year = dateArray[1];
+      }
+      
+      //Months starts in Javascript with 0!
+      date = new Date(year,dateArray[2] -1,dateArray[3]);
+    }
+    
+    return date;
+
+  },
+    
+  /**
+  * This method initialize the TimeFacet widget based on the window url.
+  * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
+  */
+  initFormOnLoad: function(beginDateStr, endDateStr, exact) {    
     var currObjInstance = this;
     var hasSelectedDate = false;
     var updatedFrom = false;
     var updatedTill = false;
-
-    // Search for time facetValues[] in the window url
-    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
-
-    $("#limitationFuzzy").prop("checked", true);
+    
+    var beginDate = currObjInstance.convertServerDateToJsDate(beginDateStr);
+    var endDate = currObjInstance.convertServerDateToJsDate(endDateStr);
+    
     $(".time-facet").removeClass("off");
-
-    if (facetValuesFromUrl) {
-      $.each(facetValuesFromUrl, function(key) {
-
-        if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
-          var beginDays = facetValuesFromUrl[key].substr(16);
-
-          //Unscharf/Fuzzy
-          if(beginDays.substr(0,1) === '*'){
-            beginDays = beginDays.substr(5,beginDays.indexOf('%')-5);
-            var endDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-
-            currObjInstance.selectedTimeSpan.setTillDate(endDate);
-            updatedTill = true;
-          }else {//Genau/Exactly
-            beginDays = beginDays.substr(0,beginDays.indexOf('+'));
-            var beginDate = currObjInstance.timeFacetHelper.convertFacetDaysToDate(beginDays);
-
-            currObjInstance.selectedTimeSpan.setFromDate(beginDate);
-            updatedFrom = true;
-            $("#limitationExact").prop("checked", true);
-          }
-
-          hasSelectedDate = true;
-        }
-
-        if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
-          var n = facetValuesFromUrl[key].search("TO") + 3;
-          var endDays = facetValuesFromUrl[key].substr(n);
-
-          //Unscharf/Fuzzy
-          if(endDays.substr(0,1) === '*'){
-            endDays = facetValuesFromUrl[key].substr(14,n-18);
-            var beginDateFuzzy = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
-
-            currObjInstance.selectedTimeSpan.setFromDate(beginDateFuzzy);
-            updatedFrom = true;
-          }else {//Genau/Exactly
-            endDays = endDays.substr(0,endDays.indexOf('%'));
-            var endDateFuzzy = currObjInstance.timeFacetHelper.convertFacetDaysToDate(endDays);
-
-            currObjInstance.selectedTimeSpan.setTillDate(endDateFuzzy);
-            updatedTill = true;
-            $("#limitationExact").prop("checked", true);
-          }
-
-          hasSelectedDate = true;
-        }
-      });
-
-      if(!updatedFrom) {
-        currObjInstance.selectedTimeSpan.clearFromDate();
-      }
-
-      if(!updatedTill) {
-        currObjInstance.selectedTimeSpan.clearTillDate();
-      }
+    
+    if(exact) {
+      $("#limitationExact").prop("checked", true);
+    }
+    else {
+      $("#limitationFuzzy").prop("checked", true);
+    }
+    
+    if (beginDate) {
+      currObjInstance.selectedTimeSpan.setFromDate(beginDate);
+    } else {
+      currObjInstance.selectedTimeSpan.clearFromDate();
+    }
+    
+    if (endDate) {
+      currObjInstance.selectedTimeSpan.setTillDate(endDate);
+    } else {
+      currObjInstance.selectedTimeSpan.clearTillDate();
     }
 
     //Initialize the form
-    if (hasSelectedDate) {
+    if (beginDate || endDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
       $("#add-timespan").removeClass('without-date');
@@ -455,6 +419,66 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     }
   },
 
+  /**
+   * Parses the browser url for time facet values.
+   */
+   parseWindowsUrl: function() {    
+     var currObjInstance = this;
+     var dividerPattern = /\-?[0-9]+/;    
+     var beginDays = null;
+     var endDays = null;
+     var exact = null;
+     
+     // Search for time facetValues[] in the window url
+     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
+     
+     if (facetValuesFromUrl) {
+       $.each(facetValuesFromUrl, function(key) {
+
+         var decodedValue = decodeURIComponent(facetValuesFromUrl[key]);
+         if ((facetValuesFromUrl[key].indexOf("begin_time") === 0)) {
+           var split = dividerPattern.exec(decodedValue);
+           
+           $.each(split, function() {
+             console.log($( this ));
+           });
+           
+           //Unscharf/Fuzzy
+           if(decodedValue.substr(12,1) === '*'){
+             endDays = split[0];
+             exact = false;
+           }else {//Genau/Exactly
+             beginDays = split[0];
+             exact = true;
+           }           
+         }
+
+         if ((facetValuesFromUrl[key].indexOf("end_time") === 0)) {
+
+           //Unscharf/Fuzzy
+           if(decodedValue.indexOf('TO+*') !== -1){
+             var split = dividerPattern.exec(decodedValue);
+             beginDays = split[0];
+             exact = false;
+           }else {//Genau/Exactly
+             var indexOfTo = decodedValue.indexOf('TO');
+             var endSubstring = decodedValue.substr(indexOfTo);
+             var split = dividerPattern.exec(endSubstring);
+             endDays = split[0];
+             exact = true;
+           }
+         }
+       });
+     }
+
+     //Return an object containing the parsed information
+     return {
+       beginDays:beginDays, 
+       endDays:endDays,
+       exact:exact
+       }
+   },
+  
   /**
    * This method is toggles between the open and closed state of the timefacet form
    */
@@ -539,8 +563,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.selectedTimeSpan.completeFromDate();
     currObjInstance.selectedTimeSpan.completeTillDate();
 
-    currObjInstance.updateTimeSpanForm();
-    currObjInstance.updateWindowUrl();
+    currObjInstance.updateTimeSpanForm();    
+    
+    currObjInstance.calculateFacetDays();
   },
 
   /**
@@ -601,35 +626,24 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   /**
    * Updates the browser URL and performs a new search with the given time facet values.
    */
-  updateWindowUrl: function() {
+  updateWindowUrl: function(daysFrom, daysTill) {
     var currObjInstance = this;
     var paramsArray = null;
     var selectedFacetValues = [];
 
+    daysFrom = daysFrom || '*';
+    daysTill = daysTill || '*';
+    
     // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
-//      console.log("facetValuesFromUrl: " + facetValuesFromUrl)
       $.each(facetValuesFromUrl, function(key, value) {
         //Only add facetValues that do not start with "begin_time" or "end_time"
         if ((facetValuesFromUrl[key].indexOf("begin_time") === -1) && (facetValuesFromUrl[key].indexOf("end_time") === -1)) {
           selectedFacetValues.push(decodeURIComponent(value.replace(/\+/g, '%20')));
         }
       });
-    }
-
-    var daysFrom = '*';
-    var daysTill = '*';
-
-    if(currObjInstance.selectedTimeSpan.hasFromDate()) {
-      var fromDate = currObjInstance.selectedTimeSpan.getFromDateObject();
-      daysFrom = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(fromDate);
-    }
-
-    if(currObjInstance.selectedTimeSpan.hasTillDate()) {
-      var tillDate = currObjInstance.selectedTimeSpan.getTillDateObject();
-      daysTill = currObjInstance.timeFacetHelper.convertDateObjectToFacetDays(tillDate);
     }
 
     //Genau
@@ -660,5 +674,75 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     var newUrl = $.addParamToCurrentUrl(paramsArray);
 
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
+  },
+  
+  /**
+   * Converts a Date object to a Day representation for the time facet
+   */
+  calculateFacetDays: function() {
+    var currObjInstance = this;
+    
+    var url = jsContextPath + '/facets/calculateTimeFacetDays' + '?';
+    if (currObjInstance.selectedTimeSpan.hasFromDate()) {
+      url += 'dateFrom='+ currObjInstance.selectedTimeSpan.formatFromDate();
+    }
+
+    if (currObjInstance.selectedTimeSpan.hasTillDate()) {
+      if (url.indexOf("dateFrom") != -1) {
+        url += "&";
+      }
+      
+      url += 'dateTill=' + currObjInstance.selectedTimeSpan.formatTillDate();
+    }
+    $.ajax({
+      type : 'GET',
+      dataType : 'json',
+      async : true,
+      url : url,
+      complete : function(data) {
+        var parsedResponse = jQuery.parseJSON(data.responseText);       
+        currObjInstance.updateWindowUrl(parsedResponse.daysFrom, parsedResponse.daysTill);
+      }
+    });        
+  },
+
+  
+  /**
+   * Converts a Day representation for the time facet to a Javascript Date object
+   * 
+   * @param days An object containing the url values to be converted
+   */
+  calculateFacetDates: function(days) {
+    var currObjInstance = this;
+
+    // Search for time facet parameter in the window url
+    var urlValues = currObjInstance.parseWindowsUrl();
+    
+    var url = jsContextPath + '/facets/calculateTimeFacetDates' + '?';
+    if (urlValues.beginDays) {
+      url += 'beginDays='+ urlValues.beginDays;
+    }
+
+    if (urlValues.endDays) {
+      if (url.indexOf("beginDays") != -1) {
+        url += "&";
+      }
+      
+      url += 'endDays=' + urlValues.endDays;
+    }
+    
+    $.ajax({
+      type : 'GET',
+      dataType : 'json',
+      async : true,
+      url : url,
+      complete : function(data) {
+        var parsedResponse = jQuery.parseJSON(data.responseText);  
+        
+        //Continue with initializing the form
+        currObjInstance.initFormOnLoad(parsedResponse.dateFrom, parsedResponse.dateTill, urlValues.exact);
+      }
+    }); 
   }
+  
 });// End extend TimeFacet prototype
