@@ -36,7 +36,7 @@ limitations under the License.
     <div class="modal-body">
       <p><g:message code="ddbnext.Added_To_Favorites"/></p>
       <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
-      <g:select name="favorite-folders" from="" multiple="true"/>
+      <g:select name="favorite-folders" from="" multiple="multiple"/>
     </div>
     <div class="modal-footer">
       <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
