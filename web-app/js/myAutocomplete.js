@@ -20,7 +20,7 @@ function monkeyPatchAutocomplete() {
     var urlEncodedItem = encodeURIComponent(item.label);
 
     // DDBNEXT-1270: Filter all items that contains special backend sort chars
-    if ((urlEncodedItem.indexOf("%C2%98") != -1) || (urlEncodedItem.indexOf("%C2%9C") != -1)) {console.log("##")
+    if ((urlEncodedItem.indexOf("%C2%98") !== -1) || (urlEncodedItem.indexOf("%C2%9C") !== -1)) {
       return ul;
     }
 

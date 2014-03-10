@@ -954,7 +954,7 @@ $(document).ready(function() {
           }
           this.draw();
       },
-      
+
       /**
       * Method: draw
       *
@@ -1004,7 +1004,7 @@ $(document).ready(function() {
           return this.div;
       },
 
-      /** 
+      /**
       * Method: _addZoomBar
       *
       * Parameters:

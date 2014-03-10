@@ -87,6 +87,13 @@ var InstitutionsMapAdapter = (function($, undefined) {
     _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
   };
 
+  var _initializeMap = function() {
+    if (!mapInitialized && !$('#institution-map').hasClass('off')) {
+      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
+      mapInitialized = true;
+    }
+  };
+
   var _enableListView = function() {
     window.location.hash = 'list';
     $('#institution-map').addClass('off');
@@ -103,13 +110,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
     $('#main-container').removeClass('map');
     $('#main-container').addClass('list');
     _initializeMap();
-  };
-
-  var _initializeMap = function() {
-    if (!mapInitialized && !$('#institution-map').hasClass('off')) {
-      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
-      mapInitialized = true;
-    }
   };
 
   var _enableMapView = function() {

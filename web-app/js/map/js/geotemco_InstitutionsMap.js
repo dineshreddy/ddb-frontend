@@ -246,7 +246,6 @@ GeoTemConfig.getMousePosition = function(e) {
     if (!e) {
         e = window.event;
     }
-    var body = (window.document.compatMode && window.document.compatMode == "CSS1Compat") ? window.document.documentElement : window.document.body;
     return {
         top : e.pageY ? e.pageY : e.clientY,
         left : e.pageX ? e.pageX : e.clientX
@@ -471,7 +470,6 @@ GeoTemConfig.loadKml = function(kml) {
     for (var i = 0; i < elements.length; i++) {
         var placemark = elements[i];
         var name, description, place, granularity, lon, lat, tableContent = [], time = [], location = [];
-        var weight = 1;
         var timeData = false;
         try {
             name = placemark.getElementsByTagName("name")[0].childNodes[0].nodeValue;
@@ -1134,7 +1132,6 @@ Binning.prototype = {
     genericBinning : function() {
         if (this.options.circlePackings || this.objects.length === 1) {
             this.binnings['generic'] = this.genericClustering(this.objects);
-            
         } else {
             var circleSets = [];
             var hashMaps = [];
@@ -1604,7 +1601,7 @@ Vertex.prototype.merge = function(v0, v1) {
         this.weights[i] = v0.weights[i] + v1.weights[i];
         this.size += this.weights[i];
     }
-}
+};
 
 Vertex.prototype.getType = function() {
     return "Vertex";
@@ -2463,7 +2460,7 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
             maxLon: 15.0419  // 18.5233
         };
 
-        var _mapWidget; 
+        var _mapWidget;
         var _allMapData;        // array of institutionData
         var _institutionsById;  // an object/map: institutionData.id->institutionData
 

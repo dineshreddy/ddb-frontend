@@ -188,7 +188,7 @@ $(document)
                 h = 200;
               }
 
-              $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function(event) {
+              $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function() {
                 if ($.browser.msie && this.getRenderingMode() === "html5") {
                   $("#binary-viewer").find("[id*='jwplayer']").each(function() {
                     $(this).attr("unselectable", "on");

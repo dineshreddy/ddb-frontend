@@ -29,10 +29,6 @@ $(document)
                 mediaQuery = false;
               }
             }
-            $(function() {
-              updatePreview($("div.all.first"), "first");
-              updatePreview($("div.all.second"), "second");
-            });
 
             var updatePreview = function(gallerydiv, position) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
@@ -122,7 +118,13 @@ $(document)
                 $(".item-title.second span").text(item_title);
               }
             };
-            function jwPlayerSetup(content, poster, firstElement) {
+
+            $(function() {
+              updatePreview($("div.all.first"), "first");
+              updatePreview($("div.all.second"), "second");
+            });
+
+            var jwPlayerSetup = function(content, poster, firstElement) {
               var w = 445;
               var h = 320;
               var mediaQueryMatches = 1;
@@ -132,8 +134,7 @@ $(document)
                 }
                 $(".first .previews").parent().addClass("off");
                 $(".first .binary-viewer").append('<div id="jwplayer-container-first"></div>');
-                
-                
+
                 if (navigator.appName.indexOf("Internet Explorer") === -1) {
                   mediaQueryMatches = mediaQuery;
                 }
@@ -141,13 +142,13 @@ $(document)
                   w = 260;
                   h = 200;
                 }
-                $.initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function(event) {
+                $.initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function() {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
                     $(".first .binary-viewer").find("[id*='jwplayer']").each(function() {
                       $(this).attr("unselectable", "on");
                     });
                   }
-                }, function(event) {
+                }, function() {
                   if ($("#jwplayer-container-first")) {
                     $("#jwplayer-container-first").remove();
                   }
@@ -173,7 +174,7 @@ $(document)
                   w = 260;
                   h = 200;
                 }
-  
+
                 $.initializeJwPlayer("jwplayer-container-second", content, poster, w, h, function() {
                   if ($.browser.msie && this.getRenderingMode() === "html5") {
                     $(".second .binary-viewer").find("[id*='jwplayer']").each(function() {

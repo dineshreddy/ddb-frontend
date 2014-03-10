@@ -80,7 +80,7 @@ $(function() {
       $('#totalNrSelectedObjects').html(selected.length);
       $('#deleteSavedSearchesModal').modal('show');
       $('#id-confirm').click(function() {
-        var selected = new Array();
+        var selected = [];
         $('#slaves input:checked').each(function() {
           selected.push($(this).val());
         });

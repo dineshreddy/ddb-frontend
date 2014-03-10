@@ -275,7 +275,7 @@ var page = {};
         resetFields($(selector, group));
       });
 
-      rows.each(function(index, item) {
+      rows.each(function() {
         resetRow($(this));
       });
     }

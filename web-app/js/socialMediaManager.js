@@ -69,7 +69,7 @@ $(document)
                        * If the user accepts the privacy tooltip -> attach
                        * social sites to page *
                        */
-                      $(".socialmedia .social-accept").click(function(event) {
+                      $(".socialmedia .social-accept").click(function() {
                         self.integrateSocialCodeInPage(true);
                       });
 
