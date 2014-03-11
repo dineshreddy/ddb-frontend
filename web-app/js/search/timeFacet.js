@@ -596,8 +596,14 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
   },
 
+
   /**
-   * Converts a Date object to a Day representation for the time facet
+   * Converts the Date representation of the time facet values to a Day represenation used by the backend.
+   * 
+   * The values for beginDays and endDays are evaluated form the browser url.
+   * The calculation itself done on the frontsend server and performed with an AJAX request. The response contains the formated dates:
+   * 
+   * http://localhost:8080/ddb-next/facets/calculateTimeFacetDays?dateFrom=AD-1000-1-1&dateTill=AD-2000-12-31
    */
   calculateFacetDays: function() {
     var currObjInstance = this;
@@ -627,9 +633,22 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   },
 
   /**
-   * Converts a Day representation for the time facet to a Javascript Date object
-   *
-   * @param days An object containing the url values to be converted
+   * Converts the Day representation of the time facet values to formated Dates which has the form:
+   * <code>G-yyyy-MM-dd</code>
+   * 
+   * <ul>
+   *   <li>G: is the era BC or AD</li>
+   *   <li>y: a year jdigit</li>
+   *   <li>M: a month digit</li>
+   *   <li>d: a day digit</li>
+   * </ul>
+   * 
+   * The values for beginDays and endDays are evaluated form the browser url.
+   * 
+   * The calculation itself done on the frontsend server and performed with an AJAX request which looks like the following:
+   * http://localhost:8080/ddb-next/facets/calculateTimeFacetDates?beginDays=364884&endDays=730486
+   * 
+   * After a succesful response, the time facet form is updated with the respone values.
    */
   calculateFacetDates: function() {
     var currObjInstance = this;
