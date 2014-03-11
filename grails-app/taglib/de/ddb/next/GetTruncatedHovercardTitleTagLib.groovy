@@ -22,6 +22,6 @@ class GetTruncatedHovercardTitleTagLib {
     def searchService
 
     def getTruncatedHovercardTitle = { attrs, body ->
-        out << searchService.trimString(attrs.title.toString().replaceAll("<match>", "").replaceAll("</match>", ""), attrs.length).encodeAsHTML()
+        out << searchService.trimString(attrs.title.toString().replaceAll("<match>", "").replaceAll("</match>", ""), attrs.length)
     }
 }
