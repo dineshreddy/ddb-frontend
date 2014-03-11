@@ -17,6 +17,17 @@ class TimeFacetHelper {
     final static def DAYS_FROM_YEAR_0_TO_1970 = 719164;
 
 
+    /**
+     * Returns a Date instance for a given formatted string with the form <code>G-yyyy-MM-dd</code>
+     * <ul>
+     *   <li>G: is the era BC or AD</li>
+     *   <li>y: a year jdigit</li>
+     *   <li>M: a month digit</li>
+     *   <li>d: a day digit</li>
+     * </ul>
+     * @param date the sting
+     * @return a Date instance for a given formatted string
+     */
     def static getDatefromFormattedString(String date) {
         def retVal = null
         if (date) {
@@ -27,7 +38,17 @@ class TimeFacetHelper {
         return retVal
     }
 
-
+    /**
+     * Calculate the time facet Days representation for a given formatted string with the form <code>G-yyyy-MM-dd</code>
+     * <ul>
+     *   <li>G: is the era BC or AD</li>
+     *   <li>y: a year jdigit</li>
+     *   <li>M: a month digit</li>
+     *   <li>d: a day digit</li>
+     * </ul> 
+     * @param dateString the string for which to calculate the days
+     * @return the time facet Days representation for a given date
+     */
     def static calculateDaysForTimeFacet(String dateString) {
         if (dateString) {
             dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -39,6 +60,12 @@ class TimeFacetHelper {
         return "";
     }
 
+    /**
+     * Returns a formated string for a given date
+     * 
+     * @param date the date to format
+     * @return a formated string for a given date
+     */
     def static formatDate(Date date) {
         if (date) {
             return dateFormat.format(date);
@@ -47,16 +74,25 @@ class TimeFacetHelper {
         return "";
     }
 
+    /**
+     * Returns a formated string for a given time.
+     * A Calendar instance is used to handle the right era (BC or AD) 
+     *
+     * @param date the time to format
+     * @return a formated string for a given time
+     */
     def static formatMillis(def millis) {
         Calendar cal = Calendar.getInstance()
         cal.setTimeInMillis(millis)
 
         return dateFormat.format(cal.getTime())
     }
+
     /**
+     * Calculate the time facet Days representation for a given date
      * 
-     * @param date
-     * @return
+     * @param dateString the date instance for which to calculate the Days
+     * @return the time facet Day representation for a given date
      */
     def static calculateDaysForTimeFacet(Date date) {
         def timeSince1970 = date.getTime()
@@ -67,9 +103,10 @@ class TimeFacetHelper {
     }
 
     /**
+     * Calculate the time for a given time facet Day value
      * 
-     * @param days
-     * @return
+     * @param day the Day value to convert
+     * @return the time for a given time facet Day value
      */
     def static calculateTimeFromTimeFacetDays(days) {
         def time = null
@@ -83,7 +120,7 @@ class TimeFacetHelper {
 
 
     /**
-     * Creates the time facet values 
+     * Creates the time facet url parameter values 
      * 
      * @param exact if the time range should be exact
      * @return a list with time facet values
