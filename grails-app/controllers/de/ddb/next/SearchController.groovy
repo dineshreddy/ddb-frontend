@@ -52,7 +52,7 @@ class SearchController {
             def resultsItems = apiResponse.getResponse()
             def entities = ""
             //Return a maximum of 2 entities as search result
-            if(! (resultsItems.entities instanceof JSONNull)) {
+            if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
                 entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities;
             }
 
