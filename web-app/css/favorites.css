@@ -165,6 +165,9 @@ hr {
   min-width: 400px;
   min-height: 25px;
 }
+.favorites-results-container .share-block .social-open {
+  margin: 10px 0 -10px 0;
+}
 
 @media (max-width: 767px) {
   .favorites-results-container .results-paginator-options {
@@ -197,6 +200,10 @@ hr {
   overflow: hidden;
   line-height: 28px;
   font-size: 0.938em;
+}
+
+.public-favorites .results-pagination {
+  display: inline;
 }
 
 .public-favorites .results-sorter {
@@ -529,6 +536,12 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
+   .favorites-results-container .share-block {
+     display: none;
+   }
+   .public-favorites .results-pagination {
+     display: block;
+   }
    #folder-create .submit{
    		width: 165px;
    }
@@ -546,9 +559,6 @@ hr {
    }
   .page-nav .bl {
     border-left: 0;
-   }
-   .favorites-results-container .share-block {
-     display: inline;
    }
    .favorites-results-controls .results-pagination {
      margin-bottom: 10px;
@@ -568,8 +578,7 @@ hr {
 }
 
 .public-favorites .delete-container {
-  display: inline-block;
-  float: right;
+  display: inline;
   margin-bottom: 0px !important;
 }
 
