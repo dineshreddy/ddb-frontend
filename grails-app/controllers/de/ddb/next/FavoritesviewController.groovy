@@ -383,4 +383,40 @@ class FavoritesviewController {
         }
     }
 
+    private def reportFavoritesList(String userId, String folderId){
+        log.info "reportFavoritesList()"
+        Folder folder = bookmarksService.findFolderById(folderId)
+        if(folder){
+            try {
+                // Only when no blockingToken is set.
+                if(folder.blockingToken?.isEmpty()){
+                    folder.setBlockingToken(UUID.randomUUID().toString())
+                    bookmarksService.updateFolder(folder)
+                }
+
+                def List emails = [
+                    configurationService.getFavoritesReportMailTo()
+                ]
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo configurationService.getFavoritesSendMailFrom()
+                    subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
+                    body( view:"_favoritesReportEmailBody",
+                    model:[
+                        userId: userId,
+                        folderId: folderId,
+                        publicLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                        blockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                        unblockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+                        selfBaseUrl: configurationService.getSelfBaseUrl()
+                    ])
+                }
+                flash.message = "ddbnext.favorites_list_reported"
+            } catch (e) {
+                log.error "An error occurred while reporting a favorites list: "+ e.getMessage(), e
+                flash.error = "ddbnext.favorites_list_notreported"
+            }
+        }
+    }
 }

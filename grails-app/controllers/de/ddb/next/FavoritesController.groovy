@@ -31,47 +31,6 @@ class FavoritesController {
     def bookmarksService
     def favoritesService
 
-    private def reportFavoritesList(String userId, String folderId){
-        log.info "reportFavoritesList()"
-        Folder folder = bookmarksService.findFolderById(folderId)
-        if(folder){
-
-            try {
-
-                // Only when no blockingToken is set.
-                if(folder.blockingToken?.isEmpty()){
-                    folder.setBlockingToken(UUID.randomUUID().toString())
-                    bookmarksService.updateFolder(folder)
-                }
-
-                def List emails = [
-                    configurationService.getFavoritesReportMailTo()
-                ]
-                sendMail {
-                    to emails.toArray()
-                    from configurationService.getFavoritesSendMailFrom()
-                    replyTo configurationService.getFavoritesSendMailFrom()
-                    subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
-                    body( view:"_favoritesReportEmailBody",
-                    model:[
-                        userId: userId,
-                        folderId: folderId,
-                        publicLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-                        blockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-                        unblockingLink: g.createLink(controller:"favoritesview", action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
-                        selfBaseUrl: configurationService.getSelfBaseUrl()
-                    ])
-
-                }
-
-                flash.message = "ddbnext.favorites_list_reported"
-            } catch (e) {
-                log.error "An error occurred while reporting a favorites list: "+ e.getMessage(), e
-                flash.error = "ddbnext.favorites_list_notreported"
-            }
-        }
-    }
-
     private def blockFavoritesList(String userId, String folderId, String blockingToken){
         log.info "blockFavoritesList()"
         Folder folder = bookmarksService.findFolderById(folderId)
@@ -96,8 +55,6 @@ class FavoritesController {
         }
     }
 
-
-
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (favoritesService.isUserLoggedIn()) {
             def List emails = []
@@ -110,7 +67,7 @@ class FavoritesController {
                 sendMail {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
-                    replyTo favoritesServiceontr.getUserFromSession().getEmail()
+                    replyTo favoritesService.getUserFromSession().getEmail()
                     subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
                         selectedFolder.title,
                         favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname()
@@ -709,28 +666,4 @@ class FavoritesController {
         }
         return selectedFolder
     }
-
-    private boolean handleReportingOrBlocking(User user, String folderId, Map params) {
-        if(params.report){
-            reportFavoritesList(user.id, folderId)
-            redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
-            return true
-        }
-
-        if(params.blockingToken) {
-            blockFavoritesList(user.id, folderId, params.blockingToken)
-            redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
-            return true
-        }
-
-        if(params.unblockingToken) {
-            unblockFavoritesList(user.id, folderId, params.unblockingToken)
-            redirect(controller: "favoritesview", action: "publicFavorites", params: [userId: user.id, folderId: folderId])
-            return true
-        }
-        return false
-    }
-
-
-
 }
