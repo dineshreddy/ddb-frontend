@@ -1,5 +1,7 @@
 package de.ddb.next
 
+import java.util.List;
+
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
@@ -380,6 +382,45 @@ class FavoritesviewController {
             }
         } else{
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+        }
+    }
+    
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
+        if (favoritesService.isUserLoggedIn()) {
+            def List emails = []
+            if (paramEmails.contains(',')){
+                emails=paramEmails.tokenize(',')
+            }else{
+                emails.add(paramEmails)
+            }
+            try {
+                sendMail {
+                    to emails.toArray()
+                    from configurationService.getFavoritesSendMailFrom()
+                    replyTo favoritesService.getUserFromSession().getEmail()
+                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
+                        selectedFolder.title,
+                        favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname()
+                    ]))
+                    body( view:"_favoritesEmailBody",
+                    model:[
+                        results: allResultsOrdered,
+                        dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
+                        userName:favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
+                        baseUrl: configurationService.getSelfBaseUrl(),
+                        contextUrl: configurationService.getContextUrl(),
+                        folderDescription:selectedFolder.description,
+                        folderTitle: selectedFolder.title
+                    ])
+
+                }
+                flash.message = "ddbnext.favorites_email_was_sent_succ"
+            } catch (e) {
+                log.info "An error occurred sending the email "+ e.getMessage(), e
+                flash.error = "ddbnext.favorites_email_was_not_sent_succ"
+            }
+        }else {
+            redirect(controller: "user", action: "index")
         }
     }
 
