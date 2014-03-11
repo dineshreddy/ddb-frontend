@@ -241,8 +241,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     //During initialisation hide the timespan form and disable the form elements
     $("#timespan-form").hide();
-    currObjInstance.disableFromDayAndMonth(true);
-    currObjInstance.disableTillDayAndMonth(true);
 
     // Click handler for Opening|Closing the time facet
     $(".time-facet a.h3").click(function(event) {
@@ -264,37 +262,15 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
     $("#fromYear").change(function(){
       if ($("#fromYear").val()) {
-        currObjInstance.disableFromDayAndMonth(false);
         $("#add-timespan").removeClass('without-date');
-      } else {
-        currObjInstance.disableFromDayAndMonth(true);
       }
     });
 
     $("#tillYear").change(function(){
       if ($("#tillYear").val()) {
-        currObjInstance.disableTillDayAndMonth(false);
         $("#add-timespan").removeClass('without-date');
-      } else {
-        currObjInstance.disableTillDayAndMonth(true);
-      }
+      } 
     });
-  },
-
-  /**
-   * Dis-/Enables the day and month input field for the from date
-   */
-  disableFromDayAndMonth: function(disable) {
-    $("#fromDay").prop('disabled', disable);
-    $("#fromMonth").prop('disabled', disable);
-  },
-
-  /**
-   * Dis-/Enables the day and month input field for the till date
-   */
-  disableTillDayAndMonth: function(disable) {
-    $("#tillDay").prop('disabled', disable);
-    $("#tillMonth").prop('disabled', disable);
   },
 
   /**
@@ -351,7 +327,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     }
 
     if (beginDate) {
-
       currObjInstance.selectedTimeSpan.setFromDate(beginDate);
     } else {
       currObjInstance.selectedTimeSpan.clearFromDate();
@@ -513,8 +488,8 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.selectedTimeSpan.completeFromDate();
     currObjInstance.selectedTimeSpan.completeTillDate();
 
-    currObjInstance.updateTimeSpanForm();    
-    
+    currObjInstance.updateTimeSpanForm();
+
     currObjInstance.calculateFacetDays();
   },
 
@@ -533,8 +508,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.selectedTimeSpan = newTimeSpan;
 
     //reset the GUI
-    currObjInstance.disableFromDayAndMonth(true);
-    currObjInstance.disableTillDayAndMonth(true);
     currObjInstance.updateTimeSpanForm();
 
     //reset buton Apply
@@ -552,24 +525,22 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   updateTimeSpanForm: function() {
     var currObjInstance = this;
 
-    $("#fromDay").val(currObjInstance.selectedTimeSpan.fromDay);
-    $("#fromMonth").val(currObjInstance.selectedTimeSpan.fromMonth);
     $("#fromYear").val(currObjInstance.selectedTimeSpan.fromYear);
-
-    $("#tillDay").val(currObjInstance.selectedTimeSpan.tillDay);
-    $("#tillMonth").val(currObjInstance.selectedTimeSpan.tillMonth);
-    $("#tillYear").val(currObjInstance.selectedTimeSpan.tillYear);
-
-    if ($("#fromYear").val()) {
-      currObjInstance.disableFromDayAndMonth(false);
+    if($("#fromYear").val()) {
+      $("#fromDay").val(currObjInstance.selectedTimeSpan.fromDay);
+      $("#fromMonth").val(currObjInstance.selectedTimeSpan.fromMonth);
     } else {
-      currObjInstance.disableFromDayAndMonth(true);
+      $("#fromDay").val(null);
+      $("#fromMonth").val(null);
     }
 
-    if ($("#tillYear").val()) {
-      currObjInstance.disableTillDayAndMonth(false);
+    $("#tillYear").val(currObjInstance.selectedTimeSpan.tillYear);
+    if($("#tillYear").val()) {
+      $("#tillDay").val(currObjInstance.selectedTimeSpan.tillDay);
+      $("#tillMonth").val(currObjInstance.selectedTimeSpan.tillMonth);
     } else {
-      currObjInstance.disableTillDayAndMonth(true);
+      $("#tillDay").val(null);
+      $("#tillMonth").val(null);
     }
   },
 
