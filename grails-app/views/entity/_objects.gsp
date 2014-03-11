@@ -33,8 +33,13 @@ limitations under the License.
     <g:set var="previousOffset" value="${0}" />
   </g:if>
 
-  <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
-
+  <h3>
+  	<g:message code="ddbnext.Entity_Objects" />: 
+  </h3>
+  <span class="contextual-help entity-header hidden-phone hidden-tablet" title="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}" data-content="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}"></span> 
+  <div class="tooltip off hasArrow"></div>
+  
+  
   <div class="carousel">
     <div id="items">
     <%--      Items are retrived via Javascript	  	  --%>

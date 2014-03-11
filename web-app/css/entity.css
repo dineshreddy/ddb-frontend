@@ -19,6 +19,14 @@
   margin-right: 10px;
 }
  
+.entity-page .objects h3{
+  display: inline-block;
+}
+ 
+.entity-page .entity-header {
+  display: inline-block;  
+}
+ 
 .entity-page .fields{
   font-size: 1em;
 }
