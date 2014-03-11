@@ -416,7 +416,7 @@ class FavoritesviewController {
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {
-                log.info "An error occurred sending the email "+ e.getMessage(), e
+                log.error "An error occurred sending the email "+ e.getMessage(), e
                 flash.error = "ddbnext.favorites_email_was_not_sent_succ"
             }
         }else {
