@@ -22,8 +22,15 @@
 .entity-page .objects h3{
   display: inline-block;
 }
- 
-.entity-page .entity-header {
+
+.entity-page .objects .tooltip{
+  margin-left:66px;
+  font-size: 0.813em;
+  width: 30%;
+}
+
+.entity-page .contextual-help {
+  vertical-align: middle;
   display: inline-block;  
 }
  
