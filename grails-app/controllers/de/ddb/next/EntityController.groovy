@@ -15,8 +15,11 @@
  */
 package de.ddb.next
 
+import de.ddb.next.ApiResponse.HttpStatus
+import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.exception.CultureGraphException
+import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
@@ -65,12 +68,26 @@ class EntityController {
         }
 
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityId)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
+        if(!apiResponse.isOk()){
+            if(apiResponse.getStatus() == HttpStatus.HTTP_404){
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_404)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }else{
+                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
+                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+                throw errorPageException
+            }
+        }
 
-        //Forward to a 404 page if the entityId is not known by the culture graph service
+        def jsonGraph = apiResponse.getResponse()
+
         if (jsonGraph == null) {
-            //throw new EntityNotFoundException()
-            throw new CultureGraphException()
+            // Should never be null. If null, something unexpected happened
+            CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
+            request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
+            throw errorPageException
         }
 
         def entityUri = request.forwardURI
@@ -88,16 +105,10 @@ class EntityController {
         def searchPreview = entityService.doItemSearch(queryName, offset, rows, jsonGraph)
 
         //------------------------- Involved Search -------------------------------
-        def searchInvolved = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_involved", entityId)
-
-        //------------------------- Involved Normdata Search -------------------------------
-        def searchInvolvedNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_involved", entityId)
+        def searchInvolved = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_INVOLVED, forename, surname, entityId)
 
         //------------------------- Subject Search -------------------------------
-        def searchSubject = entityService.doFacetSearch(title, 0, 4, false, "affiliate_fct_subject", entityId)
-
-        //------------------------- Subject Normdata Search -------------------------------
-        def searchSubjectNormdata = entityService.doFacetSearch(title, 0, 4, true, "affiliate_fct_subject", entityId)
+        def searchSubject = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_SUBJECT, forename, surname, entityId)
 
         //------------------------- Search preview media type count -------------------------------
         searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
@@ -106,15 +117,30 @@ class EntityController {
 
         searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
+        //------------------------- Check for entity picture -------------------------------
+        def entityImageUrl = null
+        def thumbnailUrl = jsonGraph?.person?.depiction?.thumbnail
+        def imageUrl = jsonGraph?.person?.depiction?.image
+        def entityImageExists = false
+
+        //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
+        if (entityService.entityImageExists(thumbnailUrl)){
+            entityImageUrl = thumbnailUrl
+            entityImageExists = true
+        } else if (entityService.entityImageExists(imageUrl)) {
+            entityImageUrl = imageUrl
+            entityImageExists = true
+        }
+
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
             "isFavorite": itemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
-            "searchInvolvedNormdata": searchInvolvedNormdata,
             "searchSubject": searchSubject,
-            "searchSubjectNormdata": searchSubjectNormdata
+            "entityImageExists": entityImageExists,
+            "entityImageUrl": entityImageUrl
         ]
 
         render(view: 'entity', model: model)
@@ -146,7 +172,12 @@ class EntityController {
             offset = 0
         }
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityid)
+        def jsonGraph = null
+        if(apiResponse.isOk()){
+            jsonGraph = apiResponse.getResponse()
+        }
+
 
         def entity = [:]
 

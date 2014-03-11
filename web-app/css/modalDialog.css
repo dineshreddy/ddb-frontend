@@ -21,7 +21,7 @@
   position: absolute;
   box-shadow: 0 10px 48px rgba(50, 50, 50, 0.5);
   border: 1px solid #ddd;
-  z-index: 100;
+  z-index: 1002;
 }
 
 .popup-dialog-title {

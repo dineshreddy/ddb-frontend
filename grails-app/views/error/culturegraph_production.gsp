@@ -1,6 +1,15 @@
+<%@page import="de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType"%>
 <html>
   <head>
-    <title><g:message code="error.culturegraph.title"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title>
+      <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
+        <g:message code="error.culturegraph.404.title"/>
+      </g:if>
+      <g:else>
+        <g:message code="error.culturegraph.500.title"/>
+      </g:else>
+      - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/>
+    </title>
     
     <meta name="page" content="500" />
     <meta name="layout" content="main" />
@@ -9,10 +18,20 @@
   <body>
     <div class="errorpage">
       <h1>
-        <g:message code="error.culturegraph.title"/>
+        <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
+          <g:message code="error.culturegraph.404.title"/>
+        </g:if>
+        <g:else>
+          <g:message code="error.culturegraph.500.title"/>
+        </g:else>
       </h1>
       <p>
-        <g:message code="error.culturegraph.body"/>
+        <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
+          <g:message code="error.culturegraph.404.body"/>
+        </g:if>
+        <g:else>
+          <g:message code="error.culturegraph.500.body"/>
+        </g:else>
       </p>
     </div>    
   </body>

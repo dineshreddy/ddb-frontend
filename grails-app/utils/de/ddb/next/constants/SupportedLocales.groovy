@@ -16,6 +16,7 @@
 package de.ddb.next.constants;
 
 public enum SupportedLocales {
+
     EN(Locale.US, 0),
     DE(Locale.GERMANY, 1)
 

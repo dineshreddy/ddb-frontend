@@ -15,116 +15,161 @@
  */
 package de.ddb.next
 
+import java.text.Collator
 import java.text.SimpleDateFormat
 
 import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
+import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
+import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
 
 class FavoritesService {
 
-	def transactional = false
-	def bookmarksService
-	def sessionService
-	def grailsApplication
-	def searchService
-	def configurationService
-	def messageSource
+    def transactional = false
+    def bookmarksService
+    def sessionService
+    def grailsApplication
+    def searchService
+    def configurationService
+    def messageSource
+    def entityService
 
-	def createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
-		def first = createFavoritesLinkNavigation(0, rows, order, by, folderId)
-		if (offset < rows){
-			first = null
-		}
-		def last = createFavoritesLinkNavigation(lastPgOffset, rows, order, by, folderId)
-		if (offset >= lastPgOffset){
-			last = null
-		}
-		return [
-			firstPg: first,
-			prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, by, folderId),
-			nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, by, folderId),
-			lastPg: last
-		]
-	}
-	def private createFavoritesLinkNavigation(offset,rows,order,by,folderId){
-		def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-		return g.createLink(controller:'favorites', action: 'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset,(SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by,id:folderId])
-	}
+    def sortFolders(allFoldersInformations, Closure folderAccess = { o -> o }){
+        allFoldersInformations = allFoldersInformations.sort({ o1, o2 ->
+            if (isMainBookmarkFolder(folderAccess(o1))) {
+                return -1
+            }
+            if (isMainBookmarkFolder(folderAccess(o2))) {
+                return 1
+            }
+            return Collator.getInstance(getLocale()).compare(folderAccess(o1).title, folderAccess(o2).title)
+        })
 
-	def createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
-		def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId, by)
-		if (offset < rows){
-			first = null
-		}
-		def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId, by)
-		if (offset >= lastPgOffset){
-			last = null
-		}
-		return [
-			firstPg: first,
-			prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId, by),
-			nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId, by),
-			lastPg: last
-		]
-	}
-	def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId, String by){
-		def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-		return g.createLink(controller:'favorites', action: 'publicFavorites', params:[userId: userId, folderId: folderId, (SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by])
-	}
+        //Check for empty titles
+        for (def folderInfo : allFoldersInformations) {
+            if(folderAccess(folderInfo).title.trim().isEmpty()){
+                folderAccess(folderInfo).title = "-"
+            }
+        }
+        return allFoldersInformations
+    }
 
-	/**
-	 * Retrieve from Backend the Metadata for the items retrieved from the favorites list
-	 * @param items
-	 * @return
-	 */
-	def retriveItemMD(List items, Locale locale){
-		def step = 20
-		def orQuery=""
-		def allRes = []
+    def Locale getLocale() {
+        def webUtils = WebUtils.retrieveGrailsWebRequest()
+        return SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(webUtils.getCurrentRequest()))
+    }
 
-		items.eachWithIndex() { it, i ->
-			if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
-				orQuery=it.itemId
-			}else if (i%step==0){
-				orQuery=orQuery + " OR "+ it.itemId
-				queryBackend(orQuery, locale).each { item ->
-					allRes.add(item)
-				}
-				orQuery=""
-			}else{
-				orQuery+=" OR "+ it.itemId
-			}
-		}
-		if (orQuery){
-			queryBackend(orQuery,locale).each { item ->
-				allRes.add(item)
-			}
-		}
+    private def isMainBookmarkFolder(folder) {
+        return folder.title == FolderConstants.MAIN_BOOKMARKS_FOLDER.value
+    }
 
-		// Add empty items for all orphaned elasticsearch bookmarks
-		if(items.size() > allRes.size()){
-			def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
-			def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMediaUnknown.png").toString()
-			def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
-            def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultEntity.png").toString()
-			def foundItemIds = allRes.collect{ it.id }
-			items.each{
-				// item not found
+    def createAllFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String folderId){
+        def first = createFavoritesLinkNavigation(0, rows, order, by, folderId)
+        if (offset < rows){
+            first = null
+        }
+        def last = createFavoritesLinkNavigation(lastPgOffset, rows, order, by, folderId)
+        if (offset >= lastPgOffset){
+            last = null
+        }
+        return [
+            firstPg: first,
+            prevPg: createFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, by, folderId),
+            nextPg: createFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, by, folderId),
+            lastPg: last
+        ]
+    }
+
+    def private createFavoritesLinkNavigation(offset,rows,order,by,folderId){
+        def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        return g.createLink(controller:'favoritesview', action: 'favorites',params:[(SearchParamEnum.OFFSET.getName()):offset,(SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by,id:folderId])
+    }
+
+    def createAllPublicFavoritesLink(Integer offset, Integer rows, String order, String by, Integer lastPgOffset, String userId, String folderId){
+        def first = createPublicFavoritesLinkNavigation(0, rows, order, userId, folderId, by)
+        if (offset < rows){
+            first = null
+        }
+        def last = createPublicFavoritesLinkNavigation(lastPgOffset, rows, order, userId, folderId, by)
+        if (offset >= lastPgOffset){
+            last = null
+        }
+        return [
+            firstPg: first,
+            prevPg: createPublicFavoritesLinkNavigation(offset.toInteger()-rows, rows, order, userId, folderId, by),
+            nextPg: createPublicFavoritesLinkNavigation(offset.toInteger()+rows, rows, order, userId, folderId, by),
+            lastPg: last
+        ]
+    }
+    def private createPublicFavoritesLinkNavigation(Integer offset, Integer rows, String order, String userId, String folderId, String by){
+        def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+        return g.createLink(controller:'favoritesview', action: 'publicFavorites', params:[userId: userId, folderId: folderId, (SearchParamEnum.OFFSET.getName()):offset, (SearchParamEnum.ROWS.getName()):rows, (SearchParamEnum.ORDER.getName()):order, (SearchParamEnum.BY.getName()):by])
+    }
+
+    /**
+     * Retrieve from Backend the Metadata for the items retrieved from the favorites list
+     * @param items
+     * @return
+     */
+    def retriveItemMD(List items, Locale locale){
+        def step = 20
+        def orQuery=""
+        def allRes = []
+
+        items.eachWithIndex() { it, i ->
+            if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
+                orQuery=it.itemId
+            }else if (i%step==0){
+                orQuery=orQuery + " OR "+ it.itemId
+                queryBackend(orQuery, locale).each { item ->
+                    allRes.add(item)
+                }
+                orQuery=""
+            }else{
+                orQuery+=" OR "+ it.itemId
+            }
+        }
+        if (orQuery){
+            queryBackend(orQuery,locale).each { item ->
+                allRes.add(item)
+            }
+        }
+
+        // Add empty items for all orphaned elasticsearch bookmarks
+        if(items.size() > allRes.size()){
+            def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
+            def dummyThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultMediaUnknown.png").toString()
+            def label = messageSource.getMessage("ddbnext.Item_No_Longer_Exists", null, LocaleContextHolder.getLocale())
+            def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/searchResultPerson.png").toString()
+            def foundItemIds = allRes.collect{ it.id }
+            items.each{
+                // item not found
                 if(it.type == Type.ENTITY){
                     def entity = [:]
-                    label = "Entity " + it.itemId
+                    def entityDetails = entityService.getEntityDetails(it.itemId)
+                    label = entityDetails?.preferredName
+                    def professions = entityDetails?.professionOrOccupation
+                    def subtitle = ""
+                    professions.each {
+                      subtitle += it
+                      if(it != professions.last())
+                        subtitle +=", "
+                    }
                     entity["id"] = it.itemId
                     entity["view"] = []
                     entity["label"] = label
                     entity["category"] = "Entity"
                     entity["preview"] = [:]
                     entity["preview"]["title"] = label
+                    entity["preview"]["subtitle"] = subtitle
                     entity["preview"]["media"] = ["entity"]
                     entity["preview"]["thumbnail"] = entityThumbnail
                     allRes.add((net.sf.json.JSONObject) entity)
@@ -145,91 +190,98 @@ class FavoritesService {
                     net.sf.json.JSONObject jsonDummyItem = (net.sf.json.JSONObject) emptyDummyItem
                     allRes.add(jsonDummyItem)
                 }
-			}
-		}
+            }
+        }
+        return allRes
+    }
 
-		return allRes
-	}
+    def private queryBackend(String query, Locale locale){
+        def params = RequestContextHolder.currentRequestAttributes().params
+        params.query = "id:("+query+")"
 
-	def private queryBackend(String query, Locale locale){
-		def params = RequestContextHolder.currentRequestAttributes().params
-		params.query = "id:("+query+")"
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        urlQuery[SearchParamEnum.OFFSET.getName()]=0
+        urlQuery[SearchParamEnum.ROWS.getName()]=21
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(request)
+        }
+        def resultsItems = apiResponse.getResponse()
 
-		def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-		urlQuery[SearchParamEnum.OFFSET.getName()]=0
-		urlQuery[SearchParamEnum.ROWS.getName()]=21
-		def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
-		if(!apiResponse.isOk()){
-			log.error "Json: Json file was not found"
-			apiResponse.throwException(request)
-		}
-		def resultsItems = apiResponse.getResponse()
+        //Replacing the mediatype images when not coming from backend server
+        resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
-		//Replacing the mediatype images when not coming from backend server
-		resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
+        return resultsItems["results"]["docs"]
+    }
 
-		return resultsItems["results"]["docs"]
-	}
+    def getAllFoldersPerUser(User user){
+        if (user != null) {
+            return bookmarksService.findAllFolders(user.getId())
+        }
+        else {
+            log.info "getFavorites returns " + response.SC_UNAUTHORIZED
+            return null
+        }
+    }
 
-	def getAllFoldersPerUser(User user){
-		if (user != null) {
-			return bookmarksService.findAllFolders(user.getId())
-		}
-		else {
-			log.info "getFavorites returns " + response.SC_UNAUTHORIZED
-			return null
-		}
-	}
+    List addBookmarkToFavResults(allRes, List items, Locale locale) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = []
+            temp = searchItem
+            for(int i=0; i<items.size(); i++){
+                if(items.get(i).itemId == searchItem.id){
+                    temp["bookmark"] = items.get(i).getAsMap()
+                    temp["bookmark"]["creationDateFormatted"] = formatDate(items.get(i).creationDate, locale)
+                    temp["bookmark"]["updateDateFormatted"] = formatDate(items.get(i).updateDate, locale)
+                    break
+                }
+            }
+            all.add(temp)
+        }
+        return all
+    }
 
-	List addBookmarkToFavResults(allRes, List items, Locale locale) {
-		def all = []
-		def temp = []
-		allRes.each { searchItem->
-			temp = []
-			temp = searchItem
-			for(int i=0; i<items.size(); i++){
-				if(items.get(i).itemId == searchItem.id){
-					temp["bookmark"] = items.get(i).getAsMap()
-					temp["bookmark"]["creationDateFormatted"] = formatDate(items.get(i).creationDate, locale)
-					temp["bookmark"]["updateDateFormatted"] = formatDate(items.get(i).updateDate, locale)
-					break
-				}
-			}
-			all.add(temp)
-		}
-		return all
-	}
+    List addFolderToFavResults(allRes, Folder folder) {
+        def all = []
+        def temp = []
+        allRes.each { searchItem->
+            temp = searchItem
+            temp["folder"] = folder.getAsMap()
+            all.add(temp)
+        }
+        return all
+    }
 
-	List addFolderToFavResults(allRes, Folder folder) {
-		def all = []
-		def temp = []
-		allRes.each { searchItem->
-			temp = searchItem
-			temp["folder"] = folder.getAsMap()
-			all.add(temp)
-		}
-		return all
-	}
+    private String formatDate(Date oldDate, Locale locale) {
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
+        newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
+        return newFormat.format(oldDate)
+    }
 
-	private String formatDate(Date oldDate, Locale locale) {
-		SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
-		newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-		return newFormat.format(oldDate)
-	}
+    private boolean isUserLoggedIn() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
 
-	List addCurrentUserToFavResults(allRes, User user) {
-		def userJson = [:]
-		userJson["id"] = user.id
-		userJson["username"] = user.username
-		userJson["status"] = user.status
-		userJson["firstname"] = user.firstname
-		userJson["lastname"] = user.lastname
-		userJson["email"] = user.email
+    private User getUserFromSession() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
 
-		allRes.each { searchItem ->
-			searchItem["user"] = userJson
-		}
-		return allRes
-	}
+    List addCurrentUserToFavResults(allRes, User user) {
+        def userJson = [:]
+        userJson["id"] = user.id
+        userJson["username"] = user.username
+        userJson["status"] = user.status
+        userJson["firstname"] = user.firstname
+        userJson["lastname"] = user.lastname
+        userJson["email"] = user.email
+
+        allRes.each { searchItem ->
+            searchItem["user"] = userJson
+        }
+        return allRes
+    }
 
 }

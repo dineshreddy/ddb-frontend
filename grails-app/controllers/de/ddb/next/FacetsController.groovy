@@ -33,6 +33,8 @@ class FacetsController {
 
     static defaultAction = "facets"
 
+    def apisService
+    def facetsService
     def searchService
     def configurationService
 
@@ -45,14 +47,15 @@ class FacetsController {
         def facetValues
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
-        // Key based facet value -> Search filtering must be done in the frontend
+        // Key based facets uses the "Search" endpoint (/apis/search)
         if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
-            //resultsItems = ApiConsumer.getTextAsJson(grailsApplication.config.ddb.apis.url.toString() ,'/apis/search', urlQuery).facets
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+            //Use query filter if roles were selected
+            def filteredQuery = apisService.filterForRoleFacets(urlQuery)
+
+            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, filteredQuery)
             if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
             }
 
@@ -61,16 +64,21 @@ class FacetsController {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
+        }
 
-        }else{
-
+        //All other facets uses the new "Autocomplete facets" endpoint of the backend
+        else{
             def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
             urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
-            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+            //Use query filter if roles were selected
+            def filteredQuery = apisService.filterForRoleFacets(urlQuery)
+
+            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
+
             if(!apiResponse.isOk()){
-                log.error "Json: Json file was not found"
                 apiResponse.throwException(request)
             }
 
@@ -78,21 +86,99 @@ class FacetsController {
 
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale)
+            //Filter the role values for mixed facets like affiliate_facet_role!
+            if (facetName.endsWith("role")) {
+                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
+            } else {
+                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+            }
         }
 
         render (contentType:"text/json"){facetValues}
     }
 
     /**
-     * Returns all role facets from the backend
+     * Returns the roles for a specific facet value
      * 
-     * @return a list of all role facets in the json format
+     * @return the roles for a specific facet value
      */
-    def roleFacets() {
-        def roleFacets = searchService.getRoleFacets()
+    def getRolesForFacetValue() {
+        def facetName = params.name
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
 
-        render (contentType:"text/json"){roleFacets}
+        def roleValues = null
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
+
+        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+        urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
+        urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+
+        if(!apiResponse.isOk()){
+            apiResponse.throwException(request)
+        }
+
+        def resultsItems = apiResponse.getResponse()
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        roleValues = searchService.getRolesForFacetValue(resultsItems, facetName, maxResults, locale)
+
+        render (contentType:"text/json"){roleValues}
+    }
+
+    /**
+     * Returns a list of all defined facets on the backend.
+     * The returned json is an array of facet objects.
+     * 
+     * @return a list of all facets in the json format
+     */
+    def allFacetsList() {
+        def allFacets = facetsService.getAllFacets()
+        render (contentType:"text/json"){allFacets}
+    }
+
+    /**
+     * 
+     * @return
+     */
+    def calculateTimeFacetDays() {
+        def dateFromString = params.dateFrom
+        def dateTillString = params.dateTill
+
+        def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString);
+        def daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+
+        def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString);
+        def daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
+
+        render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
+    }
+
+    /**
+     *
+     * @return
+     */
+    def calculateTimeFacetDates() {
+        def endDateStr = null
+        def beginDateStr = null
+
+        def beginDays = params.beginDays
+
+        if(beginDays) {
+            def beginMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(beginDays)
+            beginDateStr = TimeFacetHelper.formatMillis(beginMilis)
+        }
+
+        def endDays = params.endDays
+        if(endDays) {
+            def endMilis = TimeFacetHelper.calculateTimeFromTimeFacetDays(endDays)
+            endDateStr = TimeFacetHelper.formatMillis(endMilis)
+
+        }
+
+        render (contentType:"text/json"){[dateFrom: beginDateStr, dateTill: endDateStr]}
     }
 
 }

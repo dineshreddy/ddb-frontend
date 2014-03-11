@@ -17,7 +17,7 @@
 $(function() {
   Tooltip = function(element) {
     this.init(element);
-  }
+  };
 
   $.extend(Tooltip.prototype, {
 
@@ -63,7 +63,6 @@ $(function() {
       });
     },
     open : function() {
-      var currObjInstance = this;
       if (!this.opened) {
         this.opened = true;
         this.tooltip.fadeIn('fast');
@@ -77,6 +76,6 @@ $(function() {
   });
 
   $("span.contextual-help").each(function() {
-    new Tooltip($(this));
+    var tooltip = new Tooltip($(this));
   });
 });

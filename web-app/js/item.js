@@ -15,7 +15,7 @@
  */
 $(document).ready(function() {
 
-  if (jsPageName == "item") {
+  if (jsPageName === "item") {
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
   }

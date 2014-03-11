@@ -16,42 +16,37 @@
 $(document).ready(
     function() {
 
-      if (jsPageName == "entity") {
+      if (jsPageName === "entity") {
 
         var defaultRowCount = 10;
 
         var allRowCount = 0;
 
-        var offset = 0;
+        var windowWidth = 0;
 
-        $('#normdata-involved-checkbox').bind('click', function() {
-          updateRoleDivs();
-        });
+        var carouselWidth = 800;
 
-        $('#normdata-subject-checkbox').bind('click', function() {
-          updateRoleDivs();
-        });
+        var carouselHeight = 170;
 
-        function updateRoleDivs() {
-          if ($('#normdata-involved-checkbox').is(":checked")) {
-            $('#search-involved').hide();
-            $('#search-involved-normdata').show();
-          } else {
-            $('#search-involved').show();
-            $('#search-involved-normdata').hide();
-          }
+        var windowLarge = 1185;
 
-          if ($('#normdata-subject-checkbox').is(":checked")) {
-            $('#search-subject').hide();
-            $('#search-subject-normdata').show();
-          } else {
-            $('#search-subject').show();
-            $('#search-subject-normdata').hide();
-          }
-        }
+        var windowMediumMax = 965;
 
-        function getNewSearchResults(query, offset, rows, entityid) {
-          var request = $.ajax({
+        var windowMediumMin = 753;
+
+        var windowSmallMax = 661;
+
+        var windowSmallMin = 451;
+
+        var disableCarouselArrows = function() {
+          $("#previous").addClass("disabled");
+          $("#previous").off('click');
+          $("#next").addClass("disabled");
+          $("#next").off('click');
+        };
+
+        var getNewSearchResults = function(query, offset, rows, entityid) {
+          $.ajax({
             type : 'GET',
             dataType : 'json',
             async : true,
@@ -70,18 +65,22 @@ $(document).ready(
 
               allRowCount = jsonResponse.resultCount;
 
-              if ($("#items > div").size() < 5) {
-                $("#previous").addClass("disabled");
-                $("#previous").off('click');
-                $("#next").addClass("disabled");
-                $("#next").off('click');
+              windowWidth = $(window).width();
+
+              if (($(window).width() >= windowLarge && $("#items > div").size() < 6) ||
+                  (((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) && $("#items > div").size() < 4) ||
+                  (((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)) && $("#items > div").size() < 3) ||
+                  (windowWidth < windowSmallMin && $("#items > div").size() < 2)
+                 ) {
+                disableCarouselArrows();
               }
+
             }
           });
 
-        }
+        };
 
-        function getUrlParam(name) {
+        var getUrlParam = function(name) {
           name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
           var regexS = "[\\?&]" + name + "=([^&#]*)";
           var regex = new RegExp(regexS);
@@ -96,24 +95,9 @@ $(document).ready(
           } else {
             return decodeURIComponent(results[1].replace(/\+/g, " "));
           }
-        }
+        };
 
-        function initPage() {
-          initCarousel();
-
-          var query = $("#entity-title").html();
-          var entityid = $("#entity-id").attr("data-entityid");
-
-          //var History = window.History;
-          //var urlParameters = "?query=" + query + "&offset=" + offset + "&rows=" + defaultRowCount;
-          //History.pushState("", document.title, decodeURI(urlParameters));
-
-          // Initialize Search results
-          getNewSearchResults(query, 0, defaultRowCount, entityid);
-          updateRoleDivs();
-        }
-
-        function initCarousel() {
+        var initCarousel = function() {
           var carouselItems = $("#items");
 
           $('div.carousel').show();
@@ -132,9 +116,6 @@ $(document).ready(
                 var currentPosition = carouselItems.triggerHandler("currentPosition");
                 var nextVisbleItem = currentPosition + numberOfVisibleItems;
 
-                // console.log( "The carousel is at number " + currentPosition +
-                // " of " + currentLoadItems.length + "items");
-
                 if ((nextVisbleItem > (currentLoadItems.length - 1))
                     && (currentLoadItems.length < allRowCount)) {
                   var query = $("#entity-title").html();
@@ -152,11 +133,21 @@ $(document).ready(
             carouselItems.trigger("prev", 1);
           });
 
+          windowWidth = $(window).width();
+
+          if ((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) {
+            carouselWidth = 600;
+          } else if ((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)){
+            carouselWidth = 400;
+          } else if (windowWidth < windowSmallMin){
+            carouselWidth = 200;
+          }
+
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
-              width : 800,
-              height : 170,
+              width : carouselWidth,
+              height : carouselHeight,
               align : false,
               auto : false,
               scroll : 1,
@@ -171,8 +162,19 @@ $(document).ready(
               }
             });
           }
-        }
+        };
+
+        var initPage = function() {
+          initCarousel();
+
+          var query = $("#entity-title").html();
+          var entityid = $("#entity-id").attr("data-entityid");
+
+          // Initialize Search results
+          getNewSearchResults(query, 0, defaultRowCount, entityid);
+        };
 
         initPage();
+
       }
     });

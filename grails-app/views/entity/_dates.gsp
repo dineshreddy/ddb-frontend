@@ -26,7 +26,7 @@ limitations under the License.
     <g:if test="${hasProfessions}">
       <div class="profession">
         <g:each var="link" status="i" in="${entity.person.professionOrOccupation}">
-          <span>${link.value}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
+          <span>${link["@value"]}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
         </g:each>
       </div>
     </g:if>
@@ -36,9 +36,9 @@ limitations under the License.
         <g:if test="${hasBirthContent}">
           <div>
             <g:message code="ddbnext.Entity_Birth" />: 
-            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}">,
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.value]}" class="search_link">
-                <span>${entity.person.placeOfBirth.value}</span>
+            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}"><g:if test="${entity.person.dateOfBirth}">,</g:if>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.'@value']}" class="search_link">
+                <span>${entity.person.placeOfBirth.'@value'}</span>
               </g:link>
             </g:if>
           </div>
@@ -46,9 +46,9 @@ limitations under the License.
         <g:if test="${hasDeathContent}">
           <div>
             <g:message code="ddbnext.Entity_Death" />: 
-            ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}">, 
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.value]}" class="search_link">
-                <span>${entity.person.placeOfDeath.value}</span>
+            ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}"><g:if test="${entity.person.dateOfDeath}">,</g:if>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.'@value']}" class="search_link">
+                <span>${entity.person.placeOfDeath.'@value'}</span>
               </g:link>
             </g:if>
           </div>

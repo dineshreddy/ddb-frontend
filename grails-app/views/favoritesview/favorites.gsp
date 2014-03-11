@@ -22,16 +22,14 @@ limitations under the License.
 
 <html>
   <head>
-    <title><g:message code="ddbnext.Favorites_List_Of" args="${[userName]}" default="ddbnext.Favorites_List_Of" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+    <title>
+      <g:message code="ddbnext.Favorites_List_Of" args="${[selectedFolder.folderId == mainFavoriteFolder.folderId ? message(code: 'ddbnext.All_Favorites') : selectedFolder.title.capitalize()]}"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
+    </title>
     
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
-    
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Favorites_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
-    
   </head>
   <body>
-  
     <div class="favorites-results-container">
       <div class="row favorites-results-head">
         <div class="span8">
@@ -95,11 +93,6 @@ limitations under the License.
               </a>
             </div>
           </g:if>
-          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-            <div class="share-block">
-              <ddb:getSocialmediaBody />
-            </div>
-          </g:if>
           <div class="results-paginator-options">
             <div class="page-filter">
               <label><g:message code="ddbnext.Items_Per_Page" /></label> 
@@ -133,12 +126,12 @@ limitations under the License.
 
                   <g:if test="${it.folder.folderId != selectedFolder.folderId }">
                     <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
+                      <g:link controller="favoritesview" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         <g:message code="ddbnext.All_Favorites" />
                       </g:link>
                     </g:if>
                     <g:else>
-                      <g:link controller="user" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
+                      <g:link controller="favoritesview" action="favorites" params="${[id: it.folder.folderId]}" title="${folderTooltip}">
                         ${it.folder.title.capitalize()}
                       </g:link>
                     </g:else>
@@ -185,7 +178,7 @@ limitations under the License.
             <li class="">
               <span class="h3">
                 <g:form id="folder-create" method="POST" name="folder-create">
-                  <button id="button-new" type="submit" class="submit" title="<g:message code="ddbnext.Create_Folder_Title" />" onclick="clean()">
+                  <button id="button-new" type="submit" class="submit" title="<g:message code="ddbnext.Create_Folder_Title" />">
                     <span><g:message code="ddbnext.Create_Folder"></g:message></span>
                   </button>
                 </g:form>
@@ -225,7 +218,7 @@ limitations under the License.
                     </button>
                   </g:form>
                 </div>
-                <div class="span4 results-pagination fr">
+                <div class="span5 results-pagination fr">
                   <ddb:renderPaginationControls navData="${navigationData}"></ddb:renderPaginationControls>
                 </div>
               </div>

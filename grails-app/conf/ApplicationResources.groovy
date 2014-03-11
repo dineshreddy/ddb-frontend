@@ -16,7 +16,7 @@
 modules = {
     ddbnext {
         defaultBundle 'ddbnext'
-        dependsOn "images, cssscreen, cssprint, javascript"
+        dependsOn "images, cssscreen, cssprint, javascript, autocomplete, item"
     }
 
     images {  resource url:'/images/favicon.ico' }
@@ -50,6 +50,7 @@ modules = {
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
+        resource url:'/css/timeFacet.css'
     }
 
     cssprint {
@@ -94,7 +95,7 @@ modules = {
         resource url:'/js/persistentLinksModalDialog.js'
         resource url:'/js/binariesViewer.js'
         resource url:'/js/advancedSearchPage.js'
-        resource url:'/js/searchResults.js'
+        resource url:'/js/search/searchResults.js'
         resource url:'/js/favorites.js'
         resource url:'/js/registration.js'
         resource url:'/js/changeFavorite.js'
@@ -106,8 +107,15 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
-
+        resource url:'/js/search/urlHelper.js'
+        resource url:'/js/search/roleHelper.js'
+        resource url:'/js/search/timeFacet.js'
+        resource url:'/js/search/facetsManager.js'
+        resource url:'/js/search/flyoutFacetsWidget.js'
+        resource url:'/js/search/compareManager.js'
+        resource url:'/js/search/hovercardInfoItem.js'
     }
+    item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     map {
         resource url:'/js/map/css/map.css', bundle: 'screen'

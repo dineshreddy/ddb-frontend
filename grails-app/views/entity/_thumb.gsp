@@ -14,20 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:if test="${entity?.person?.depiction?.thumbnail}">  
+<g:if test="${entityImageExists}">
   <div class="thumb">
-  <hr>
-  	<div class="thumbinner">
-  		<!-- TODO: refactor to use figure element -->
-  		<!-- TODO: remove width and height, use CSS -->
-  		<img alt="${entity.title}" src="${entity.person.depiction.thumbnail}"
-  			class="thumbimage">
-  		<div class="thumbcaption">
+    <hr>
+    <div class="thumbinner">
+      <!-- TODO: refactor to use figure element -->
+      <img alt="${entity.title}" src="${entityImageUrl}" class="thumbimage">
+      <div class="thumbcaption">
         ${entity.person.preferredName}
-  			<br>
-        <g:message code="ddbnext.Entity_Source"/>: <a href="${entity.person.depiction.image}" class="wiki-link no-external-link-icon">Wikimedia</a>
-  		</div>
-  	</div>
+        <br>
+        <g:message code="ddbnext.Entity_Source" />: <a href="${entity.person.depiction.url}" class="wiki-link no-external-link-icon">Wikimedia</a>
+      </div>
+    </div>
   </div>
   <hr>
 </g:if>

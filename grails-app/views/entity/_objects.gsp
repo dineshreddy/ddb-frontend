@@ -33,8 +33,13 @@ limitations under the License.
     <g:set var="previousOffset" value="${0}" />
   </g:if>
 
-  <h3><g:message code="ddbnext.Entity_Objects" />:</h3>
-
+  <h3>
+  	<g:message code="ddbnext.Entity_Objects" />: 
+  </h3>
+  <span class="contextual-help hidden-phone hidden-tablet" title="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}" data-content="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}"></span> 
+  <div class="tooltip off hasArrow"></div>
+  
+  
   <div class="carousel">
     <div id="items">
     <%--      Items are retrived via Javascript	  	  --%>
@@ -55,21 +60,21 @@ limitations under the License.
       <g:set var="showAudios" value="${false}" />
     </g:if>
     <g:if test="${showPictures}">
-      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_002", FacetEnum.AFFILIATE.getName()+"="+searchPreview.linkQuery[(FacetEnum.AFFILIATE.getName())]]]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_002"]]}">
         <g:message code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})</g:link>
     </g:if>
     <g:if test="${(showPictures && showVideos) || (showPictures && showAudios)}">
       |
     </g:if>
     <g:if test="${showVideos}">
-      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_005", FacetEnum.AFFILIATE.getName()+"="+searchPreview.linkQuery[(FacetEnum.AFFILIATE.getName())]]]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_005"]]}">
         <g:message code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})</g:link>
     </g:if>
     <g:if test="${(showVideos && showAudios)}">
       |
     </g:if>
     <g:if test="${showAudios}">
-      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_001", FacetEnum.AFFILIATE.getName()+"="+searchPreview.linkQuery[(FacetEnum.AFFILIATE.getName())]]]}">
+      <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_001"]]}">
         <g:message code="ddbnext.Entity_All_Audios" /> (${searchPreview.audioCount})</g:link>
     </g:if>
   </div>

@@ -28,8 +28,7 @@ public enum SearchParamEnum {
     CALLBACK("callback"),
     MINDOCS("minDocs"),
     ENTITY_ID("entityid"),
-
-
+    ID("id"),
 
     private String name
 

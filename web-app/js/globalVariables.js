@@ -13,6 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+// Create a global namespace for ddb
+de = {};
+de.ddb = {};
+de.ddb.next = {};
+
 var jsContextPath = "";
 var jsLanguage = "";
 var jsPageName = "";

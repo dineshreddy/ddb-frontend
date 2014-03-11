@@ -35,12 +35,10 @@ class CultureGraphService {
         query[CultureGraphEnum.THUMB_WIDTH.getName()]=270
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getCulturegraphUrl(), "/entityfacts/" + gndId, false, query)
         if(!apiResponse.isOk()){
-            log.error "getCultureGraph(): Could not access culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId
-            //throw new CultureGraphException(apiResponse.getException().getMessage())
-            return null
+            log.error "getCultureGraph(): culturegraph api under: "+configurationService.getCulturegraphUrl() + "/entityfacts/" + gndId +" returned unsuccessfully"
         }
 
-        return apiResponse.getResponse()
+        return apiResponse
     }
 
     boolean isValidGndUri(String uriToTest){

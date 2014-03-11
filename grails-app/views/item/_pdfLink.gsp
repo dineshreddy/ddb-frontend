@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="row item-detail">
-  <div class="span6 origin">
-    <g:link controller="item" params="${params + [pdf:true]}" title="${message(code: 'ddbnext.export_pdf')}"><g:message code="ddbnext.export_pdf" /></g:link>
-  </div>
+<div class="link-block off">
+  <g:link class="pdf-link" controller="item" params="${params + [pdf:true]}" title="${message(code: 'ddbnext.export_pdf')}" target="_blank">
+    <span><g:message code="ddbnext.export_pdf" /></span>
+  </g:link>
 </div>

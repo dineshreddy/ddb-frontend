@@ -59,6 +59,7 @@ class UserController {
     def savedSearchesService
     def savedSearchService
     def bookmarksService
+    def favoritesService
 
     def index() {
         log.info "index()"
@@ -74,7 +75,7 @@ class UserController {
         if(!isCookiesActivated()){
             loginStatus = LoginStatus.NO_COOKIES
 
-        } else if(!isUserLoggedIn()){
+        } else if(!favoritesService.isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -111,7 +112,7 @@ class UserController {
                     log.info "redirect to referrer: " + referrerUrl
                     redirect(uri: referrerUrl)
                 } else {
-                    redirect(controller: 'favorites', action: 'favorites')
+                    redirect(controller: 'favoritesview', action: 'favorites')
                 }
             }
         }else{
@@ -135,8 +136,8 @@ class UserController {
 
     def getSavedSearches() {
         log.info "getSavedSearches()"
-        if (isUserLoggedIn()) {
-            def user = getUserFromSession()
+        if (favoritesService.isUserLoggedIn()) {
+            def user = favoritesService.getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
             def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
             def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
@@ -193,14 +194,14 @@ class UserController {
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
         } else {
-            redirect(controller: "user", action: "index")
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def sendSavedSearches() {
         log.info "sendSavedSearches()"
-        if (isUserLoggedIn()) {
-            def user = getUserFromSession()
+        if (favoritesService.isUserLoggedIn()) {
+            def user = favoritesService.getUserFromSession()
             def List emails = []
 
             if (params.email.contains(',')) {
@@ -212,7 +213,7 @@ class UserController {
                 sendMail {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
-                    replyTo getUserFromSession().getEmail()
+                    replyTo favoritesService.getUserFromSession().getEmail()
                     subject g.message(code: "ddbnext.Savedsearches_Of", args: [
                         user.getFirstnameAndLastnameOrNickname()
                     ], encodeAs: "none")
@@ -232,18 +233,19 @@ class UserController {
             }
             redirect(controller: "user", action: "getSavedSearches")
         } else {
-            redirect(controller: "user", action: "index")
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     /* end saved searches methods */
+
     private def getRegistrationUrls() {
         return [
+            registrationInfoUrl: configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
             accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
             accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
         ]
     }
-
     def registration() {
         log.info "registration()"
         render(view: "registration", model: getRegistrationUrls())
@@ -329,8 +331,8 @@ class UserController {
 
     def profile() {
         log.info "profile()"
-        if(isUserLoggedIn()){
-            User user = getUserFromSession().clone()
+        if(favoritesService.isUserLoggedIn()){
+            User user = favoritesService.getUserFromSession().clone()
             if (params.username) {
                 user.setUsername(params.username)
                 user.setFirstname(params.fname)
@@ -369,19 +371,19 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def saveProfile() {
         log.info "saveProfile()"
-        if (isUserLoggedIn()) {
+        if (favoritesService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
             boolean eMailDifference = false
             boolean profileDifference = false
             boolean newsletterDifference = false
-            User user = getUserFromSession().clone()
+            User user = favoritesService.getUserFromSession().clone()
 
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -465,7 +467,7 @@ class UserController {
             redirect(controller:"user", action:"profile", params:params)
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
         }
     }
 
@@ -488,8 +490,8 @@ class UserController {
 
     def passwordChangePage() {
         log.info "passwordChangePage()"
-        if(isUserLoggedIn()){
-            User user = getUserFromSession()
+        if(favoritesService.isUserLoggedIn()){
+            User user = favoritesService.getUserFromSession()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -516,16 +518,16 @@ class UserController {
             render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def passwordChange() {
         log.info "passwordChange()"
-        if (isUserLoggedIn()) {
+        if (favoritesService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = getUserFromSession().clone()
+            User user = favoritesService.getUserFromSession().clone()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -562,16 +564,16 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def delete() {
         log.info "delete()"
-        if (isUserLoggedIn()) {
+        if (favoritesService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = getUserFromSession().clone()
+            User user = favoritesService.getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -639,8 +641,8 @@ class UserController {
                 messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
-            if (isUserLoggedIn()) {
-                User user = getUserFromSession().clone()
+            if (favoritesService.isUserLoggedIn()) {
+                User user = favoritesService.getUserFromSession().clone()
                 if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
                     throw new BackendErrorException("user-attributes are not consistent")
                 }
@@ -670,21 +672,21 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+        if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
             discoveryUrl = "https://www.google.com/accounts/o8/id"
             fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
             fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
             fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
             fetch.setCount("openid.ext1.value.Email", 1)
-        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
+        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
             discoveryUrl = "https://me.yahoo.com"
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
-        }else{
+        }else {
             loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
         }
 
-        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST){
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST) {
             render(view: "login", model: ['loginStatus': loginStatus])
             return
         }
@@ -697,7 +699,10 @@ class UserController {
         sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
         sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
 
-        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
+        // Delete problem with url page with # and manager.authenticate
+        def referrerUrl = params.referrer.replaceAll("#.*", "")
+
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -716,7 +721,7 @@ class UserController {
 
         //ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
         ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
-        if(manager){
+        if(manager) {
             //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
@@ -737,17 +742,17 @@ class UserController {
                 def email = null
                 def identifier = null
 
-                if(provider == SupportedOpenIdProviders.GOOGLE.toString()){
+                if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
                     firstName = params["openid.ext1.value.FirstName"]
                     lastName = params["openid.ext1.value.LastName"]
                     username = firstName + " " + lastName
                     email = params["openid.ext1.value.Email"]
                     identifier = verified.getIdentifier()
-                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()){
+                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
                     username = params["openid.ax.value.fullname"]
                     email = params["openid.ax.value.email"]
                     identifier = verified.getIdentifier()
-                }else{
+                }else {
                     render(view: "login", model: [
                         'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
                     )
@@ -786,9 +791,21 @@ class UserController {
             }
         }
 
-        if(loginStatus == LoginStatus.SUCCESS){
-            redirect(controller: 'favorites', action: 'favorites')
-        }else{
+        if(loginStatus == LoginStatus.SUCCESS) {
+            if (params.referrer) {
+                def referrerUrl = params.referrer
+
+                //Remove the context path from the url, otherwise it will be appear twice in the redirect
+                def contextLength = grailsLinkGenerator.contextPath.length()
+                referrerUrl = referrerUrl.substring(contextLength)
+
+                log.info "redirect to referrer: " + referrerUrl
+                redirect(uri: referrerUrl)
+            }
+            else {
+                redirect(controller: 'favoritesview', action: 'favorites')
+            }
+        }else {
             render(view: "login", model: ['loginStatus': loginStatus])
         }
 
@@ -796,27 +813,27 @@ class UserController {
 
     def showApiKey() {
         log.info "showApiKey()"
-        if (isUserLoggedIn()) {
+        if (favoritesService.isUserLoggedIn()) {
 
-            User user = getUserFromSession()
+            User user = favoritesService.getUserFromSession()
             def apiKey = user.apiKey
 
             String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
-            if(apiKey){
+            if(apiKey) {
                 render(view: "apiKey", model: [
                     user: user,
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
-            }else{
+            }else {
                 render(view: "requestApiKey", model: [
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }
-        }else{
-            redirect(controller:"user", action:"index")
+        }else {
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
 
     }
@@ -824,14 +841,14 @@ class UserController {
     def requestApiKey() {
         log.info "requestApiKey()"
 
-        if (isUserLoggedIn()) {
+        if (favoritesService.isUserLoggedIn()) {
             def isConfirmed = false
             if(params.apiConfirmation){
                 isConfirmed = true
             }
 
             if(isConfirmed){
-                User user = getUserFromSession()
+                User user = favoritesService.getUserFromSession()
                 String newApiKey = aasService.createApiKey()
 
                 JSONObject aasUser = aasService.getPerson(user.getId())
@@ -845,14 +862,14 @@ class UserController {
             }
             redirect(controller: 'user', action: 'showApiKey')
         }else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def deleteApiKey() {
         log.info "deleteApiKey()"
-        if (isUserLoggedIn()) {
-            User user = getUserFromSession()
+        if (favoritesService.isUserLoggedIn()) {
+            User user = favoritesService.getUserFromSession()
 
             JSONObject aasUser = aasService.getPerson(user.getId())
             aasUser.put(AasService.APIKEY_FIELD, null)
@@ -865,7 +882,7 @@ class UserController {
 
             redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
-            redirect(controller:"user", action:"index")
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -893,16 +910,6 @@ class UserController {
                 log.info "sendApiKeyPerMail(): An error occurred sending the email "+ e.getMessage()
             }
         }
-    }
-
-
-
-    private boolean isUserLoggedIn() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-    }
-
-    private User getUserFromSession() {
-        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
     private boolean logoutUserFromSession() {

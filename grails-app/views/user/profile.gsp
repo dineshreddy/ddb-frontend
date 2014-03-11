@@ -94,7 +94,7 @@ limitations under the License.
                 </div>
               </div>
               <div class="span1 profile-links">
-                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favorites", action: 'favorites', params:[:])}">
+                <a class="profile-link" title="<g:message code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favoritesview", action: 'favorites', params:[:])}">
                   <g:message code="ddbnext.Favorites" /> (${favoritesCount})
                 </a>
                 <br>

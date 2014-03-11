@@ -16,12 +16,11 @@
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 $(function() {
 
-  if (jsPageName == "favorites") {
-
+  if (jsPageName === "favorites") {
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
     $("#favoritesCopyDialog select").MultiSelect({css_class_selected: "multiselect-selected-folder"});
-    $('.page-input').removeClass('off');   
+    $('.page-input').removeClass('off');
     $('.page-nonjs').addClass("off");
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
@@ -46,39 +45,39 @@ $(function() {
 
     updateNavigationUrl();
 
-    $('.page-input').keyup(
-        function(e) {
-          if (e.keyCode === 13) {
-            if (/^[0-9]+$/.test(this.value)) {
-              if (parseInt(this.value) <= 0) {
-                this.value = 1;
-              } else if (parseInt(this.value) > parseInt($('.result-pages-count').text())) {
-                this.value = $('.result-pages-count').text();
-              }
-            } else {
-              this.value = 1;
-            }
-            $('.page-input').attr('value', this.value);
-            var paramsArray = new Array(
-                new Array('offset', (this.value - 1) * getParam("rows", 20)), new Array('rows',
-                    getParam("rows", 20)), new Array('order', getParam("order")));
-            var newUrl = addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null,
-                paramsArray);
-            window.location.href = newUrl;
+    $('.page-input').keyup(function(e) {
+        if (e.keyCode === 13) {
+          if (/^[0-9]+$/.test(this.value)) {
+            var resultPagesCountText = $('.total-pages').text();
+            var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
 
+            if (parseInt(this.value) <= 0) {
+              this.value = 1;
+            } else if (parseInt(this.value) > resultPagesCountInt) {
+              this.value = $('.total-pages').text();
+            }
+          } else {
+            this.value = 1;
           }
-        });
+          $('.page-input').attr('value', this.value);
+
+          var paramsArray = [['offset', (this.value - 1) *
+          getParamWithDefault("rows", 20)], ['rows', getParamWithDefault("rows", 20)], ['order', getParam("order")]];
+
+          window.location.href = $.addParamToUrl(jsContextPath + "/user/favorites/", paramsArray, null, paramsArray, false);
+        }
+      });
 
     /** Delete favorites */
     $('#favorites-remove').submit(function() {
-      var selected = new Array();
+      var selected = [];
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
       $('.totalNrSelectedObjects').html(selected.length);
       $('#favoritesDeleteConfirmDialog').modal('show');
       $('#id-confirm').click(function() {
-        var selected = new Array();
+        var selected = [];
         $('#slaves input:checked').each(function() {
           selected.push($(this).attr('value'));
         });
@@ -94,7 +93,7 @@ $(function() {
           url : jsContextPath + "/apis/favorites/_delete",
           data : JSON.stringify(body),
           dataType : "json",
-          success : function(data) {
+          success : function() {
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -134,17 +133,17 @@ $(function() {
             url : jsContextPath + "/apis/favorites/folder/create",
             data : JSON.stringify(body),
             dataType : "json",
-            success : function(data) {
+            success : function() {
               window.setTimeout('location.reload();', 500);
             }
           });
-    	 } else {
-      	showError(messages.ddbnext.favorites_list_Title_Required);
+        } else {
+          showError(messages.ddbnext.favorites_list_Title_Required);
       }
       $('#folderCreateConfirmDialog').modal('hide');
       return false;
     });
-    
+
     /** Delete folder */
     $(".deletefolders").click(function(event) {
       event.preventDefault();
@@ -164,7 +163,7 @@ $(function() {
           url : jsContextPath + "/apis/favorites/folder/delete",
           data : JSON.stringify(body),
           dataType : "json",
-          success : function(data) {
+          success : function() {
             window.setTimeout('location.reload();', 500);
           }
         });
@@ -176,7 +175,7 @@ $(function() {
 
     /** Copy favorites */
     $('#favorites-copy').submit(function() {
-      var selected = new Array();
+      var selected = [];
       $('#slaves input:checked').each(function() {
         selected.push($(this).attr('value'));
       });
@@ -184,7 +183,7 @@ $(function() {
       if (selected.length > 0) {
         $('#favoritesCopyDialog').modal('show');
         $('#copy-confirm').click(function() {
-          var selected = new Array();
+          var selected = [];
           $('#slaves input:checked').each(function() {
             selected.push($(this).attr('data-bookmark-id'));
           });
@@ -202,7 +201,7 @@ $(function() {
             url : jsContextPath + "/apis/favorites/copy",
             data : JSON.stringify(body),
             dataType : "json",
-            success : function(data) {
+            success : function() {
               window.setTimeout('location.reload();', 500);
             }
           });
@@ -217,7 +216,7 @@ $(function() {
 
     /** Edit folder */
     $('.editfolder').click(
-        function(event) {
+        function() {
 
           var folderId = $(this).attr('data-folder-id');
 
@@ -262,7 +261,7 @@ $(function() {
                   isPublic = true;
                 }
 
-                var title = $('#folder-edit-name').val()
+                var title = $('#folder-edit-name').val();
                 var body = {
                   id : $('#folder-edit-id').val(),
                   title : title,
@@ -279,12 +278,12 @@ $(function() {
                       url : jsContextPath + "/apis/favorites/folder/edit",
                       data : JSON.stringify(body),
                       dataType : "json",
-                      success : function(data) {
+                      success : function() {
                         window.setTimeout('location.reload();', 500);
                       }
                     });
                 } else {
-                	showError(messages.ddbnext.favorites_list_Title_Required);
+                    showError(messages.ddbnext.favorites_list_Title_Required);
                 }
                 $('#folderEditConfirmDialog').modal('hide');
               });
@@ -296,7 +295,7 @@ $(function() {
         });
 
     /** Publish folder */
-    $('.publishfolder').click(function(event) {
+    $('.publishfolder').click(function() {
 
       var folderId = $(this).attr('data-folder-id');
       var body = {
@@ -310,7 +309,7 @@ $(function() {
         url : jsContextPath + "/apis/favorites/togglePublish",
         data : JSON.stringify(body),
         dataType : "json",
-        success : function(data) {
+        success : function() {
           window.setTimeout('location.reload();', 500);
         }
       });
@@ -318,7 +317,7 @@ $(function() {
     });
 
     /** Open comment favorites */
-    $('.comment-text-clickanchor').click(function(event) {
+    $('.comment-text-clickanchor').click(function() {
 
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-" + bookmarksId);
@@ -339,7 +338,7 @@ $(function() {
     });
 
     /** Cancel comment favorites */
-    $('.comment-cancel').click(function(event) {
+    $('.comment-cancel').click(function() {
 
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-" + bookmarksId);
@@ -367,7 +366,7 @@ $(function() {
     });
 
     /** Save comment favorites */
-    $('.comment-save').click(function(event) {
+    $('.comment-save').click(function() {
 
       var bookmarksId = $(this).attr('data-bookmark-id');
       var textField = $("#comment-text-" + bookmarksId);
@@ -386,7 +385,7 @@ $(function() {
         url : jsContextPath + "/apis/favorites/comment",
         data : JSON.stringify(body),
         dataType : "json",
-        success : function(data) {
+        success : function() {
 
           var newInput = $(inputField).val();
           if (newInput.trim()) {
@@ -415,26 +414,6 @@ $(function() {
 
 });
 
-function addParamToUrl(currentUrl, arrayParamVal, path, urlString) {
-  var queryParameters = {}, queryString = (urlString == null) ? currentUrl : urlString, re = /([^&=]+)=([^&]*)/g, m;
-  while (m = re.exec(queryString)) {
-    var decodedKey = decodeURIComponent(m[1].replace(/\+/g, '%20'));
-    if (queryParameters[decodedKey] == null) {
-      queryParameters[decodedKey] = new Array();
-    }
-    queryParameters[decodeURIComponent(m[1].replace(/\+/g, '%20'))].push(decodeURIComponent(m[2]
-        .replace(/\+/g, '%20')));
-  }
-  $.each(arrayParamVal, function(key, value) {
-    queryParameters[value[0]] = value[1];
-  });
-  var tmp = jQuery.param(queryParameters, true);
-  if (path == null) {
-    return window.location.pathname + '?' + tmp;
-  } else {
-    return path + '?' + tmp;
-  }
-}
 
 function updateNavigationUrl() {
   $.urlParam = function(name) {
@@ -517,8 +496,6 @@ function showError(errorHtml) {
 }
 
 function clean() {
-  //document.getElementById("folder-create-name").value="";
-  //document.getElementById("folder-create-description").value="";
   $('#folder-create-name').val("");
   $('#folder-create-description').val("");
 }

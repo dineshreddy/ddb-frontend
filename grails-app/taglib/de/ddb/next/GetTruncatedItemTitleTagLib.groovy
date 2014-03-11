@@ -23,6 +23,7 @@ class GetTruncatedItemTitleTagLib {
     def searchService
 
     def getTruncatedItemTitle = { attrs, body ->
+
         out << searchService.trimTitle(attrs.title.toString(), attrs.length)
     }
 }

@@ -49,6 +49,7 @@ class SecurityFilter implements Filter {
             String contextPath = requestWrapper.getContextPath()
             String requestedUri = requestWrapper.getRequestURI()
             if(requestedUri.startsWith(contextPath + "/appStatic") ||
+            requestedUri.startsWith(contextPath + "/apis/") ||
             requestedUri.endsWith(".png") ||
             requestedUri.endsWith(".jpg") ||
             requestedUri.endsWith(".jpeg") ||
@@ -58,7 +59,7 @@ class SecurityFilter implements Filter {
                 return
             }
 
-            //ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse) // temporarily deactivated sanitizer due to problems with cortex data. See DDBNEXT-988
+            ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
             chain.doFilter(requestWrapper, response)
             return
         }catch(InvalidUrlException i){

@@ -14,28 +14,37 @@
  * limitations under the License.
  */
  
- .back-to-list-greyed-out {
-  color: #878380;
+.back-to-list-greyed-out, .back-to-list {
   padding-left: 16px;
   margin-right: 10px;
-  background: url(../images/icons/listBackArrows.png) no-repeat 0 -40px
+  background: url(../images/icons/listBackArrows.png) no-repeat;
 }
+ 
+ .back-to-list-greyed-out {
+  color: #878380;
+  background-position: 0 -40px
+}
+
+.back-to-list {
+  background-position: 0 0;
+}
+
 .item-detail .rights {
   margin: 0 0 27px 0;
 }
-.back-to-list {
-  padding-left: 16px;
-  background: url(../images/icons/listBackArrows.png) no-repeat 0 0;
-  margin-right: 10px
+
+.page-link, .sendmail-link, .viewer.dfg {
+  padding-left: 22px;
+  background: url(../images/icons/objectViewerActions.png) no-repeat;
 }
 .page-link {
-  padding-left: 22px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat 0 0;
+  background-position: 0 0;
 }
-
+.sendmail-link {
+  background-position: 0 -200px;
+}
 .viewer.dfg {
-  padding-left: 22px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat 0 -40px;
+  background-position: 0 -40px;
 }
 
 .item-detail .institution {
@@ -75,20 +84,24 @@
 .origin {
   margin-top: 20px;
 }
-.origin span {
+
+.origin span, .show-origin {
   background: url("../images/icons/objectViewerActions.png") no-repeat;
+}
+.origin span {
   padding-left: 23px;
   line-height: 20px;
   background-position: -2px -120px;
 }
+.show-origin {
+  padding-left: 17px;
+  background-position: -2px -80px;
+  margin-right: 10px;
+}
+
 .origin .show-origin span {
   background: none;
   padding-left: 0;
-}
-.show-origin {
-  padding-left: 17px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -80px;
-  margin-right: 10px;
 }
 .has-origin {
   font-size: 0.938em;
@@ -100,7 +113,8 @@
 }
 
 .favorite {
-  text-align: right;
+  display: inline-block;
+  margin-right: 10px;
 }
 .favorite-actions {
   padding-left: 20px;
@@ -233,7 +247,7 @@
   font-size: 0.938em;
   margin-bottom: 20px;
 }
-.item-links .link-block, .item-links .favorite {
+.item-links .link-block, .item-links .favorite .sendmail-block{
   display: inline-block;
   margin-right: 10px;
 }
@@ -245,6 +259,14 @@
 .xml-link span {
   background: white;
 }
+.pdf-link {
+  padding-left: 27px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat;
+  background-position: -23px -360px;
+}
+.pdf-link span {
+  background: white;
+}
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
@@ -253,7 +275,7 @@
 }
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
-  .item-links .link-block,
+  .item-links .link-block .sendmail-block,
   .institution img {
     display: none;
   }
@@ -306,4 +328,33 @@
     width: 100%;
     max-width: 724px;
   }
+}
+.popup-sendpdf-dialog-wrapper {
+  width: 360px;
+  height: 150px;
+  background: #fff;
+  position: absolute;
+  box-shadow: 0 10px 48px rgba(50, 50, 50, 0.5);
+  border: 1px solid #ddd;
+  z-index: 100;
+}
+
+.popup-dialog-content input[type="email"] {
+  width: 100%;
+  padding: 5px 10px 5px 10px;
+  font-size: 1.063em;
+  font-style: italic;
+  box-shadow: none;
+}
+
+.popup-sendpdf-dialog-wrapper input[type="email"]:focus {
+  border-color: #EFEBE8;
+  box-shadow:none;
+  outline:none;
+}
+
+.popup-sendpdf-dialog-wrapper .btn-padding{
+  position: absolute;
+  top: 110px;
+  right: 16px;
 }

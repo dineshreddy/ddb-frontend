@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.facets-head {
+.facets-head, .compare-header, .time-restriction {
   position: relative;
 }
 
@@ -21,13 +21,26 @@
   padding: 0;
   margin: 0;
   line-height: 42px;
-  font-size: 0.938em;
+  font-size: 1em;
 }
 
-.facets-head .contextual-help {
+.facets-head .contextual-help, .compare-header .contextual-help, .fields .contextual-help,
+.time-restriction .contextual-help {
   position: absolute;
+}
+
+.facets-head .contextual-help, .compare-header .contextual-help, .time-restriction .contextual-help {
   right: 0;
   top: 14px;
+}
+
+.compare-header .contextual-help{
+  top: 10px;
+}
+
+.fields .contextual-help {
+  margin-left: 133px;
+  margin-top: 3px;
 }
 
 .facets-list {
@@ -35,14 +48,14 @@
   position: relative;
 }
 
-.facets-item {
+.facets-item, .time-facet {
   margin: 2px 0;
   line-height: 28px;
   position: relative;
   background-color: #efebe8;
 }
 
-.facets-item a.h3 {
+.facets-item a.h3, .time-facet  a.h3 {
   color: #3e3a37;
   font-size: 1.063em;
 }
@@ -54,7 +67,7 @@
   overflow: hidden;
 }
 
-.facets-item>a.h3 {
+.facets-item>a.h3, .time-facet>a.h3 {
   z-index: 10;
   display: block;
   padding: 0 20px 0 10px;
@@ -62,15 +75,15 @@
   background-position: 100% -48px;
 }
 
-.facets-list .facets-item >a:hover {
+.facets-list .facets-item >a:hover, .facets-list .time-facet >a:hover {
   background-color: #f6f5f3;
 }
 
-.facets-list .facets-item.mouseout {
+.facets-list .facets-item.mouseout,.facets-list .time-facet.mouseout {
   background-color: #efebe8;
 }
 
-.facets-list .facets-item>a.h3:hover {
+.facets-list .facets-item>a.h3:hover, .facets-list .time-facet>a.h3:hover {
   background-position: 100% -74px;
 }
 
@@ -503,32 +516,44 @@ input[type="checkbox"],input[type="radio"] {
   position:relative;
 }
 
-.search-results .results-list .summary .information {
+.search-results .results-list .summary .information, .search-results .results-list .summary .compare,
+.search-results .results-list .summary .compare.disabled, .search-results .results-list .summary .add-to-favorites,
+.search-results .results-list .summary .added-to-favorites {
   width: 30px;
   height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -180px;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat;
+}
+
+.search-results .results-list .summary .information, .search-results .results-list .summary .compare,
+.search-results .results-list .summary .add-to-favorites {
   cursor: pointer;
+}
+
+.search-results .results-list .summary .information {
+  background-position: 0 -180px;
   position: relative;
+}
+
+.search-results .results-list .summary .compare {
+  background-position: 0 -122px;
+}
+
+.search-results .results-list .summary .compare.disabled {
+  background-position: -30px -122px;
+  cursor: default;
+}
+
+.search-results .results-list .summary .add-to-favorites {
+  background-position: 0 -60px;
+}
+
+.search-results .results-list .summary .added-to-favorites {
+  background-position: 0 0;
 }
 
 .search-results .results-list .summary .information:hover {
   background-position: 0 -210px;
 }
-
-.search-results .results-list .summary .compare {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -122px;
-  cursor: pointer;
-}
-
-.search-results .results-list .summary .compare.disabled {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat -30px -122px;
-  cursor: default;
-}
-
 
 .search-results .results-list .summary .compare:hover :not(.disabled) {
   background-position: 0 -152px;
@@ -536,13 +561,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .summary .information.show-favorites {
   margin-right: 30px;
-}
-
-.search-results .results-list .summary .add-to-favorites {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -60px;
-  cursor: pointer;
 }
 
 .search-results .results-list .summary .add-to-favorites:hover {
@@ -553,25 +571,8 @@ input[type="checkbox"],input[type="radio"] {
   margin: -30px 10px 0 0 !important;
 }
 
-.search-results .results-list .summary .added-to-favorites {
-  width: 30px;
-  height: 30px;
-  background: url("../images/icons/itemActionsSprite.png") no-repeat 0 0;
-}
-
 .search-results .results-list .summary .added-to-favorites:hover {
     background: url("../images/icons/itemActionsSprite.png") no-repeat 0 -30px;
-}
-
-@media (max-width: 767px) {  /* Workaround for Android-Bug when onclick does not fire: DDBNEXT-696  */
-  .search-results .results-list .summary .add-to-favorites {
-    width: 40px;
-    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px -60px;
-  }
-  .search-results .results-list .summary .added-to-favorites {
-    width: 40px;
-    background: url("../images/icons/itemActionsSprite.png") no-repeat 0px 0px;
-  }
 }
 
 .search-noresults-content .noresults {
@@ -735,11 +736,26 @@ input[type="checkbox"],input[type="radio"] {
   line-height: 25px;
 }
 
-.facets-container .tooltip {
+.facets-container .tooltip, .compare-header .tooltip, .fields .tooltip, .time-restriction .tooltip {
   font-size: 0.813em;
+}
+
+.fields .tooltip {
+  width: 30%;
+  margin-left: 123px;
+  margin-top: 33px;
+}
+
+.facets-container .tooltip {
   left: 50%;
   width: 100%;
 }
+
+.compare-header .tooltip {
+  left: 46%;
+  margin: 10px;
+}
+
 .facets-container .tooltip .arrow {
   left: 50%;
   margin-left: -17px;
@@ -887,7 +903,7 @@ input[type="checkbox"],input[type="radio"] {
   margin=0px;
 }
 .role-facets-list .label {
-	margin-left: 45px;
+    margin-left: 45px;
 }
 .add-more-filters{
   margin: 0 10px;
@@ -1114,6 +1130,15 @@ color: #a5003b;
   background-color: #EFEBE8;
 }
 
+.compare-object .compare-default-pic {
+  background-image: url("../images/bg/compare_icon.png");
+  height: 36px;
+  width: 45px;
+  position: absolute;
+  margin-left: 25px;
+  margin-top: 47px;
+}
+
 .compare-objects .compare-main {  
   margin-bottom: 15px;
 }
@@ -1137,7 +1162,12 @@ color: #a5003b;
   max-width: 130px;
   margin: 0px;
   text-overflow: ellipsis;
-  overflow: hidden;  
+  overflow: hidden;
+}
+
+.compare-objects .compare-default {
+  vertical-align: -94px;
+  display: inline;
 }
 
 .compare-objects .compare-img {
@@ -1145,8 +1175,8 @@ color: #a5003b;
   max-height: 85px;
   max-width: 130px;
   margin-left: auto;
-  margin-right: auto;  
-  background-color: #EFEBE8;  
+  margin-right: auto;
+  background-color: #EFEBE8;
 }
 
 .compare-objects .compare-object {

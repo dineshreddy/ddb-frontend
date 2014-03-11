@@ -17,7 +17,7 @@ limitations under the License.
 <g:render template="institution" />
 <div class="row item-detail item-content">
   <div class="span6 item-description">
-    <h2 class="item-title ${position}"><span>${title}</span></h2>
+    <h2 class="item-title ${position}"><span>${title.encodeAsHTML()}</span></h2>
     <g:if test="${binaryList}">
       <g:render template="binaries" />
     </g:if>

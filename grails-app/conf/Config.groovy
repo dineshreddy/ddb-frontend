@@ -112,6 +112,7 @@ ddb {
                 [facetName:FacetEnum.KEYWORDS.getName(), filter:'null'],
                 [facetName:FacetEnum.PROVIDER.getName(), filter:'null'],
                 [facetName:FacetEnum.AFFILIATE.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_ROLE.getName(), filter:'null'],
                 [facetName:FacetEnum.TYPE.getName(), filter:'null'],
                 [facetName:FacetEnum.SECTOR.getName(), filter:'null'],
                 [facetName:FacetEnum.PLACE.getName(), filter:'null'],
@@ -167,8 +168,10 @@ ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.reportMailTo=""  // "geschaeftsstelle@deutsche-digitale-bibliothek.de"
 ddb.culturegraph.features.enabled=false
+ddb.exhibitions.features.enabled=true
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
 ddb.apikey.terms.url="/content/terms/api"
+ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 

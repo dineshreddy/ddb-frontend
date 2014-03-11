@@ -13,6 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+ 
+.link-block {
+  display: inline-block;
+  margin-right: 10px;
+}
+ 
+.entity-page .objects h3{
+  display: inline-block;
+}
+
+.entity-page .objects .tooltip{
+  margin-left:56px;
+  font-size: 0.813em;
+  width: 30%;
+}
+
+.entity-page .contextual-help {
+  vertical-align: middle;
+  display: inline-block;  
+}
+ 
 .entity-page .fields{
   font-size: 1em;
 }
@@ -158,6 +179,10 @@
   margin-left: 0 !important;
 }
 
+.entity-page .external-icon {
+  display: inline-block;
+}
+
 .entity-page .external-icon img {
   margin: 0;
   padding: 0;
@@ -179,7 +204,7 @@
 }
 
 .entity-page .external-link span {
-  margin:  -20px 0 0 20px;
+  margin: -20px 0 0 20px;
   display: block;
   background: none;
 }
@@ -190,6 +215,7 @@
 
 .entity-page .thumbimage {
   margin:  15px 0 5px 0;
+  max-width: 270px;
 }
 
 .entity-page .search_link {
@@ -222,10 +248,10 @@
 /* carousel controls responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
-    left: 0px;
+    left: 0;
   }
   .entity-page .carousel a.next {
-    right: 0px;
+    right: -8px;
   }
   .entity-page .preview-item {
     width: 160px;

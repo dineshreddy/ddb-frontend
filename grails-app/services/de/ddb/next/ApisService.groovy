@@ -1,3 +1,5 @@
+
+
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
  *
@@ -17,7 +19,6 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
-
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 
@@ -76,7 +77,6 @@ class ApisService {
             evaluateFacetParameter(query, queryParameters[it.getName()], it.getName())
         }
 
-
         if(queryParameters.grid_preview){
             query["grid_preview"]=queryParameters.grid_preview
         }
@@ -102,10 +102,45 @@ class ApisService {
                 queryParameter.each {
                     query[facetName].add(it)
                 }
-            }else {
-                query[facetName]=queryParameter
-            }
+            }else
+                query[facetName]= queryParameter
         }
     }
 
+    /**
+     * If a role is an element of an query parameter, than the according root facet value must be removed!
+     * 
+     * Example for the query parameter affiliate_fct_role:
+     * affiliate_fct_role:[Schiller, Friedrich (1759-1805), Schiller, Friedrich (1759-1805)_1_affiliate_fct_subject]]
+     * 
+     * The parameter contains the role "Schiller, Friedrich (1759-1805)_1_affiliate_fct_subject"
+     * and the root facet "Schiller, Friedrich (1759-1805)"
+     * 
+     * So the root facet must be removed to perform a valid role search!
+     * 
+     * @param query the query parameter map
+     * 
+     * @return the filtered query parameter map
+     */
+    def filterForRoleFacets(Map query) {
+        query.each { key, value ->
+            //Search for root facets that must be removed
+            Set rootFacetsToRemove = []
+            if (key.endsWith('_role')) {
+                value.each {
+                    if (it =~ /_\d+_/) {
+                        //Get the literal part of the role, which must be removed from the query parameter
+                        rootFacetsToRemove.add(it.split(/_\d+_/)[0])
+                    }
+                }
+            }
+
+            //Remove the root facets from the parameter
+            if (rootFacetsToRemove.size()) {
+                value.removeAll(rootFacetsToRemove)
+            }
+        }
+
+        return query
+    }
 }

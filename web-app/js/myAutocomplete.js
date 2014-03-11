@@ -15,9 +15,21 @@
  */
 function monkeyPatchAutocomplete() {
   $.ui.autocomplete.prototype._renderItem = function(ul, item) {
-    var re = new RegExp("^" + this.term);
-    var t = item.label.replace(re, "<span style='font-weight:bold;'>" + this.term + "</span>");
-    return $("<li></li>").data("item.autocomplete", item).append("<a>" + t + "</a>").appendTo(ul);
+    var termLength = this.term.length;
+
+    var urlEncodedItem = encodeURIComponent(item.label);
+
+    // DDBNEXT-1270: Filter all items that contains special backend sort chars
+    if ((urlEncodedItem.indexOf("%C2%98") !== -1) || (urlEncodedItem.indexOf("%C2%9C") !== -1)) {
+      return ul;
+    }
+
+    var highLightedItemPart = "<span style='font-weight:bold;'>" + item.label.substring(0, termLength) + "</span>";
+    var normalItemPart = item.label.substring(termLength);
+
+    var autocompleteItem = highLightedItemPart + normalItemPart;
+
+    return $("<li></li>").data("item.autocomplete", item).append("<a>" + autocompleteItem + "</a>").appendTo(ul);
   };
 }
 $(function() {
@@ -31,17 +43,16 @@ $(function() {
           query : request.term
         },
         success : function(data) {
-          response($.map(data, function(n, i) {
-            //console.log(n)
+          response($.map(data, function(n) {
             return {
               label : n.substring(0, 45),
               value : n
-            }
+            };
           }));
         }
       });
     },
-    minLength : 2,
+    minLength : 1,
     open : function() {
       $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
       $(this).autocomplete("widget").css('width', (parseInt($(this).outerWidth()) - 6) + 'px');

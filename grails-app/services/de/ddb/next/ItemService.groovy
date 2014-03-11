@@ -122,12 +122,15 @@ class ItemService {
 
         def logoResource=new UrlResource(model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
-
-        model.binaryList.each{
-            it.thumbnail.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.thumbnail.uri[0]).getURL().bytes
-            it.preview.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.preview.uri[0]).getURL().bytes
-            it.full.uri = new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.full.uri[0]).getURL().bytes
+        def viewerContent
+        if (model.binaryList.first().preview.uri == '') {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+        }else {
+            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
         }
+
+
+        model.put("binariesListViewerContent", viewerContent)
 
         return model
     }
@@ -143,7 +146,6 @@ class ItemService {
         def searchResultParameters = handleSearchResultParameters(params, request)
 
         def item = null
-
         //If the id is lastHit get the item id from the searchResultParameters
         if (id == 'lasthit') {
             item = findItemById(searchResultParameters["lastItemId"])
@@ -624,15 +626,19 @@ class ItemService {
 
     def createEntityLinks(fields){
         fields.each {
-            def valueTags = it.value
-            valueTags.each { valueTag ->
+            // https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1166
+            // Do not create entity link for this field.
+            if (it.'@id' != "flex_arch_033") {
+                def valueTags = it.value
+                    valueTags.each { valueTag ->
 
-                def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
+                    def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
 
-                if(resource != null && !resource.isEmpty()){
-                    if(cultureGraphService.isValidGndUri(resource)){
-                        def entityId = cultureGraphService.getGndIdFromGndUri(resource)
-                        valueTag.@entityId = entityId
+                    if(resource != null && !resource.isEmpty()){
+                        if(cultureGraphService.isValidGndUri(resource)){
+                            def entityId = cultureGraphService.getGndIdFromGndUri(resource)
+                            valueTag.@entityId = entityId
+                        }
                     }
                 }
             }

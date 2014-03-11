@@ -15,12 +15,11 @@
  */
 package de.ddb.next
 
-import static groovyx.net.http.ContentType.*
 import groovy.json.*
-
 import de.ddb.next.constants.FacetEnum
+import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
-
+import de.ddb.next.exception.EntityNotFoundException
 
 /**
  * Service class for all entity related methods
@@ -32,22 +31,11 @@ class EntityService {
     //Autowire the grails application bean
     def grailsApplication
     def configurationService
+    def cultureGraphService
 
     def transactional=false
 
-    /**
-     * Returns the result of a special entity facet search.
-     * 
-     * @param query the name of the entity to search for
-     * @param offset the search offset
-     * @param rows the number of documents that should be returned
-     * @param normdata indicates whether normdata object should be searched or not
-     * @param facetName the name of the facet to search for
-     * @param entityid the id of the entity
-     * 
-     * @return the search result
-     */
-    def doFacetSearch(def query, def offset, def rows, def normdata, def facetName, def entityid) {
+    def doFacetSearch(def offset, def rows, RoleFacetEnum roleFacetEnum, def entityForename, def entitySurname, def entityId) {
         def facetSearch = [:]
 
         def searchQuery = []
@@ -56,26 +44,20 @@ class EntityService {
 
         def gndUrl = CultureGraphService.GND_URI_PREFIX
 
-        if (normdata) {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.FACET.getName()): [], (facetName+'_normdata') : (gndUrl + entityid)]
-            searchQuery[SearchParamEnum.FACET.getName()].add(facetName + "_normdata")
+        def normdataFacetValue = gndUrl + entityId + roleFacetEnum.getHierarchicalName()
 
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    (facetName+'_normdata')+ "="+(gndUrl + entityid)
-                ]]
-        } else {
-            searchQuery = [(SearchParamEnum.QUERY.getName()): query, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.OFFSET.getName()): offset, (SearchParamEnum.SORT.getName()): SearchParamEnum.SORT_RELEVANCE.getName(), (SearchParamEnum.FACET.getName()): [], (FacetEnum.AFFILIATE.getName()) : query]
-            searchQuery[facetName] = query
-            searchQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.AFFILIATE.getName())
-            searchQuery[SearchParamEnum.FACET.getName()].add(facetName)
+        def normdataQuery = FacetEnum.AFFILIATE_ROLE_NORMDATA.getName() + ":(\"" + normdataFacetValue + "\")"
 
-            //These parameters are for the frontend to create a search link
-            searchUrlParameter = [(SearchParamEnum.QUERY.getName()):query, (SearchParamEnum.FACETVALUES.getName()): [
-                    FacetEnum.AFFILIATE.getName() + "="+query,
-                    FacetEnum.AFFILIATE_INVOLVED.getName()+"="+query
-                ]]
-        }
+        searchQuery = [
+            (SearchParamEnum.ROWS.getName()): rows,
+            (SearchParamEnum.OFFSET.getName()): offset,
+            (SearchParamEnum.QUERY.getName()): normdataQuery]
+
+
+        //These parameters are for the frontend to create a search link which is not limited to 4 documents...
+        searchUrlParameter = [
+            (SearchParamEnum.QUERY.getName()): normdataQuery
+        ]
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchQuery)
 
@@ -93,6 +75,7 @@ class EntityService {
 
         return facetSearch
     }
+
 
     /**
      * Performs a search request on the backend. 
@@ -126,6 +109,37 @@ class EntityService {
         return searchPreview
     }
 
+    /**
+     * Get the detailed information for the given entity id from the entity service
+     *
+     * @param entityId the entity id
+     *
+     * @return detailed information about this entity
+     */
+    def Map getEntityDetails(String entityId) {
+        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entity", false,
+                [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
+
+        if (apiResponse.isOk()) {
+            def response = apiResponse.getResponse()
+
+            if (response.numberOfResults == 1) {
+                return response.results[0]
+            }
+            else if (response.numberOfResults == 0) {
+                throw new EntityNotFoundException()
+            }
+            else {
+                throw new RuntimeException("number of results should be 1 but is " + response.numberOfResults)
+            }
+        }
+        else {
+            def message = "getEntityDetails(): Entitiy response contained error"
+
+            log.error message
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+    }
 
     /**
      * Gets the number of results for a given query and facet type
@@ -177,6 +191,23 @@ class EntityService {
         searchQuery[(SearchParamEnum.SORT.getName())] = SearchParamEnum.SORT_RELEVANCE.getName()
 
         return searchQuery
+    }
+
+    def entityImageExists(imageUrl) {
+        def imageExists = false;
+
+        if (imageUrl) {
+            URL url = new URL(imageUrl)
+
+            ApiResponse apiResponse = ApiConsumer.headAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
+            if(apiResponse.isOk()){
+                imageExists = true;
+            } else {
+                log.warn "Entity image response is " + apiResponse.status +  " . The image is not available under " + imageUrl
+            }
+        }
+
+        return imageExists
     }
 
 }

@@ -13,9 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<h2>
-  ${itemTitle}
-</h2>
 <table border="0" cellpadding="8" cellspacing="0" width="100%">
   <g:each in="${fields}">
     <tr>
@@ -25,14 +22,15 @@ limitations under the License.
           var="value" in="${it.value }">
           <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}">
             <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">
-              ${value}
+              <![CDATA[ ${value} ]]>
             </g:link>
           </g:if>
           <g:else>
-            ${value}
+            <![CDATA[ ${value} ]]>
           </g:else>
           <br />
-        </g:each></td>
+        </g:each>
+        </td>
     </tr>
   </g:each>
   <!-- Item Rights -->
@@ -60,7 +58,7 @@ limitations under the License.
 <!-- Original Object View -->
 <div class="origin">
   <g:if test="${!originUrl?.toString()?.isEmpty()}">
-    <a class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message code="ddbnext.stat_008" />">
+    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
       <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
     </a>
   </g:if>

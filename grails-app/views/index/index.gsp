@@ -35,7 +35,7 @@ limitations under the License.
             <label> 
               <span><g:message code="ddbnext.Search_text_field"/></span>
             </label>
-            <input type="search" class="query" name="query" autocomplete="off" value="" />
+            <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" />
             <button type="submit">
               <!--[if !IE]><!-->
                 <g:message code="ddbnext.Go_Button"/>

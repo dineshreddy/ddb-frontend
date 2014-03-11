@@ -16,17 +16,17 @@ limitations under the License.
 <div class="external-links">
   <h3><g:message code="ddbnext.External_Links" />:</h3>
   <ul class="unstyled">  
-    <g:each var="link" in="${entity.sameAs}">      
+    <g:each var="link" in="${entity.sameAs}">
       <ddb:isValidUrl url="${link.'@id'}">
 	      <li class="external-link">
 	        <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
-            <g:if test="${ link.icon != null}">
-              <i class="external-icon"><img src="${link.icon}" alt="" /></i>
-              <span>${link.name}</span>
+            <g:if test="${!(link.publisher.icon instanceof net.sf.json.JSONNull)}">
+              <i class="external-icon"><img src="${link.publisher.icon}" alt="" /></i>
+              <span>${link.publisher.name}</span>
             </g:if>
             <g:else>
               <div class="external-dummy-icon"></div>
-              <span>${link.name}</span>
+              <span>${link.publisher.name}</span>
             </g:else>
 	        </a>
 	      </li>

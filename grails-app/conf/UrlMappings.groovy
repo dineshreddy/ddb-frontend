@@ -30,9 +30,25 @@ class UrlMappings {
             action="facetsList"
         }
 
-        "/rolefacets" {
+
+        "/facets/calculateTimeFacetDays/$q?" {
             controller="facets"
-            action="roleFacets"
+            action="calculateTimeFacetDays"
+        }
+
+        "/facets/calculateTimeFacetDates/$q?" {
+            controller="facets"
+            action="calculateTimeFacetDates"
+        }
+
+        "/rolefacets/$q?" {
+            controller="facets"
+            action="getRolesForFacetValue"
+        }
+
+        "/search/facets/" {
+            controller="facets"
+            action="allFacetsList"
         }
 
         "/informationitem/$id"{
@@ -73,6 +89,11 @@ class UrlMappings {
         "/apis/favorites" {
             controller="favorites"
             action="getFavorites"
+        }
+
+        "/item/sendpdf/$id" {
+            controller="item"
+            action="sendPdf"
         }
 
         name delFavorites: "/apis/favorites/_delete" {
@@ -136,12 +157,12 @@ class UrlMappings {
         }
 
         "/user/favorites/$id?" {
-            controller="favorites"
+            controller="favoritesview"
             action="favorites"
         }
 
         "/user/$userId/favorites/$folderId" {
-            controller="favorites"
+            controller="favoritesview"
             action="publicFavorites"
         }
 

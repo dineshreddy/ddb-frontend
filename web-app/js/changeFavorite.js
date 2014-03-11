@@ -27,7 +27,7 @@ function changeFavoriteState() {
   if (vActn == "POST") { // Currently only allow to add favorites, not to delete them
     var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid")
         + '/?reqType=ajax';
-    var request = $.ajax({
+    $.ajax({
       type : vActn,
       dataType : 'json',
       async : true,
@@ -47,7 +47,6 @@ function addToFavorites(data) {
   case 200:
   case 201:
     // -- success
-    //var JSONresponse = jQuery.parseJSON(data.responseText);
     $("#favorite-confirmation").modal("show");
     $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
       if (folders.length > 1) {

@@ -17,6 +17,9 @@ package de.ddb.next
 
 import grails.util.Environment
 
+import de.ddb.next.exception.CultureGraphException
+import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
+
 /**
  * Central controller for handling error situations (404, 500, etc).
  */
@@ -25,7 +28,7 @@ class ErrorController {
     def configurationService
 
     enum Type404 {
-        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND, ENTITY_NOT_FOUND
+        DEFAULT, ITEM_NOT_FOUND, FAVORITELIST_NOT_FOUND, ENTITY_NOT_FOUND, PDF_NOT_FOUND
     }
 
     def uncaughtException() {
@@ -180,16 +183,26 @@ class ErrorController {
     def entityNotFound() {
         notFound(Type404.ENTITY_NOT_FOUND)
     }
+    
+    def pdfNotFound() {
+        notFound(Type404.PDF_NOT_FOUND)
+    }
 
     def cultureGraphError() {
         def exceptionMessage = ""
+        def exceptionType = CultureGraphExceptionType.RESPONSE_500
 
         // Does it come from a automatically handled backend request?
         if(request?.exception){
-            exceptionMessage = request.exception.getMessage()
+            exceptionMessage = request.exception.getCause().getMessage()
+            exceptionType = request.exception.getCause().getExceptionType()
         }
 
-        response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500
+        if(exceptionType == CultureGraphExceptionType.RESPONSE_404){
+            response.status = response.SC_NOT_FOUND // Return response code 404
+        }else{
+            response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500
+        }
         response.setHeader("Error-Message", exceptionMessage)
 
         // The content type and encoding of the error page (should be explicitly set, otherwise the mime
@@ -202,13 +215,13 @@ class ErrorController {
 
             // Return the 404 view
             log.error "cultureGraphError(): Return view 'culturegraph_production'"
-            return render(view:'culturegraph_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [:])
+            return render(view:'culturegraph_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [exceptionType: exceptionType])
 
         } else {
 
             // Not it production? show an ugly, developer-focused error message
             log.error "cultureGraphError(): Return view 'culturegraph_development'"
-            return render(view:'culturegraph_development', model: ["error_message": exceptionMessage], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
+            return render(view:'culturegraph_development', model: ["error_message": exceptionMessage, exceptionType: exceptionType], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
 
         }
 

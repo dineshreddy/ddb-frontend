@@ -43,13 +43,14 @@ limitations under the License.
       </ddb:isPersonalFavoritesAvailable>
     </ddb:isLoggedIn>
     <div class="link-block">
-      <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+      <a class="page-link page-link-popup-anchor hidden-phone hidden-tablet" href="${itemUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
+    <g:render template="pdfLink" />
     <ddb:isLoggedIn>
       <div class="link-block">
-        <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
+        <g:link class="xml-link hidden-phone hidden-tablet" controller="item" action="showXml" params="[id: itemId]" target="_blank">
           <span><g:message code="ddbnext.View" /></span>
         </g:link>
       </div>

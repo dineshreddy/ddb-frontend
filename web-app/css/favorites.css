@@ -160,25 +160,17 @@ hr {
 
 .favorites-results-container .share-block {
   display: inline-block;
+  line-height: 42px;
   margin-right: 10px;
   min-width: 400px;
   min-height: 25px;
 }
-
-@media (max-width: 979px) {
-  .favorites-results-container .share-block {
-    display: none;
-  }
+.favorites-results-container .share-block .social-open {
+  margin: 10px 0 -10px 0;
 }
 
 @media (max-width: 767px) {
   .favorites-results-container .results-paginator-options {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-  .favorites-results-container .link-block {
     display: none;
   }
 }
@@ -208,6 +200,10 @@ hr {
   overflow: hidden;
   line-height: 28px;
   font-size: 0.938em;
+}
+
+.public-favorites .results-pagination {
+  display: inline;
 }
 
 .public-favorites .results-sorter {
@@ -397,21 +393,17 @@ hr {
 }
 
 .favorites-results .results-list .summary .extra .types li.entity {
-  background: url("../images/placeholder/searchResultEntity.png") no-repeat center top;
-  background-size: 23px 19px;
-  padding-left: 0;
+  background-position: 0 -152px;
 }
 
 .favorites-results .results-list .summary .extra .types .unknown {
   background-position: 0 0;
 }
 
-
 .favorites-results .results-list .summary-main {
   min-height: 74px;
   margin-left: 36px;
 }
-
 
 .favorites-results .remove-item-check {
   position: absolute;
@@ -427,7 +419,6 @@ hr {
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
   padding-left: 25px;
 }
-
 
 .favorites-results .results-list .extra {
   margin-left: 36px;
@@ -449,6 +440,11 @@ hr {
 
 .favorites-results .results-list .summary .information:hover {
   background-position: 0 -20px;
+}
+
+.favorites-results .thumbnail .entity-link {
+  width: 138px !important;
+  height: 103px !important;
 }
 
 .bookmarks-lists .active {
@@ -540,6 +536,12 @@ hr {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
+   .favorites-results-container .share-block {
+     display: none;
+   }
+   .public-favorites .results-pagination {
+     display: block;
+   }
    #folder-create .submit{
    		width: 165px;
    }
@@ -570,12 +572,13 @@ hr {
 }
 .delete-container {
   overflow:hidden;
-  display:block;
+  display: block;
   margin-bottom: -10px;
   min-width: 260px;
 }
 
 .public-favorites .delete-container {
+  display: inline;
   margin-bottom: 0px !important;
 }
 
@@ -584,7 +587,7 @@ hr {
 }
 
 .orderList{
-	margin:10px 0 10px 3px;
+  margin:10px 0 10px 3px;
 }
 
 #favoritesCreateConfirmDialog.modal{
@@ -671,7 +674,6 @@ hr {
   padding: 0;
   margin: 0;
 }
-
 
 .icon-not-publish {
   background: url("../images/icons/favorites.png") no-repeat 0 0;

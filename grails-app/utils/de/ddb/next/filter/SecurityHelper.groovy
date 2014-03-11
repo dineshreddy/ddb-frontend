@@ -72,23 +72,10 @@ class SecurityHelper {
      */
     private void sanitizeRequestHeaders(ServletRequestWrapper request) {
         request.getHeaderNames().each {
-            if(it.toLowerCase() == "host"){
+            if(it.toLowerCase() == "host" || it.toLowerCase() == "referer"){
                 String header = request.getHeader(it)
                 if(header.contains(">") || header.contains("<") || header.contains("%3C") || header.contains("%3E") ){
-                    log.warn "sanitizeRequestHeaders(): possible xss attempt over 'host' header: '"+header+"'"
-                }
-                header = header.replace(">", "")
-                header = header.replace("<", "")
-                header = header.replace("%3C", "") // <
-                header = header.replace("%3E", "") // >
-                header = header.replace("\"", "")
-                header = header.replace("'", "")
-                request.setHeader(it, header)
-            }
-            if(it.toLowerCase() == "referer"){
-                String header = request.getHeader(it)
-                if(header.contains(">") || header.contains("<") || header.contains("%3C") || header.contains("%3E") ){
-                    log.warn "sanitizeRequestHeaders(): possible xss attempt over 'referer' header: '"+header+"'"
+                    log.warn "sanitizeRequestHeaders(): possible xss attempt over '" + it + "' header: '"+header+"'"
                 }
                 header = header.replace(">", "")
                 header = header.replace("<", "")
@@ -115,13 +102,13 @@ class SecurityHelper {
 
             String key = keys[i]
             String[] valueArray = parameterMap.get(key)
-
             for (int j=0; j<valueArray.length; j++) {
-                String parsedText = slurper.parseText(valueArray[j]).text()
-                if(valueArray[j] != parsedText){
-                    log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"
-                }
-                valueArray[j] = parsedText
+                //FIXME Due to special character problems in DDBNEXT1238 and DDBNEXT-1263, the XmlSlurper approach has been commented out for release 4.3
+                //                String parsedText = slurper.parseText(valueArray[j]).text()
+                //                if(valueArray[j] != parsedText){
+                //                    log.warn "sanitizeRequestParameters(): possible xss attempt over request parameters: '"+valueArray[j]+"' -> '"+parsedText+"'"
+                //                }
+                //                valueArray[j] = parsedText
             }
 
             parameterMap.put(key, valueArray)

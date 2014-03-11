@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import groovy.json.*
+import net.sf.json.JSONNull
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -49,6 +50,11 @@ class SearchController {
                 apiResponse.throwException(request)
             }
             def resultsItems = apiResponse.getResponse()
+            def entities = ""
+            //Return a maximum of 2 entities as search result
+            if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
+                entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities;
+            }
 
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
@@ -77,10 +83,11 @@ class SearchController {
                 //Workaround, find id of last hit when calling last hit.
                 //Set id to "lasthit" to signal ItemController to find id of lasthit.
                 params[SearchParamEnum.LASTHIT.getName()] = 'lasthit'
+
             }
 
             //Replacing the mediatype images when not coming from backend server
-            resultsItems = searchService.checkAndReplaceMediaTypeImages(resultsItems)
+            searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
@@ -105,11 +112,9 @@ class SearchController {
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
                 queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
-            def gndItems = getGndItems(resultsItems, page)
-
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], gndResults: gndItems, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], entities: entities, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
                     offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
@@ -140,22 +145,16 @@ class SearchController {
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
 
-                def roleFacetsUrl = [:]
-                def selectedRoleFacets = searchService.buildRoleFacets(urlQuery)
-                if(urlQuery[SearchParamEnum.FACET.getName()]){
-                    roleFacetsUrl = searchService.buildRoleFacetsUrl(selectedRoleFacets, mainFacetsUrl, subFacetsUrl, urlQuery)
-                }
-
                 render(view: "results", model: [
                     facetsList:mainFacets,
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
-                    gndResults: gndItems,
+                    entities: entities,
                     isThumbnailFiltered: params.isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
-                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl, selectedRoleFacets: selectedRoleFacets, roleFacetsUrl: roleFacetsUrl],
+                    facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
@@ -176,59 +175,6 @@ class SearchController {
         }
     }
 
-    private def getGndItems(resultItems, page) {
-        def gndItems = null
-        if(configurationService.isCulturegraphFeaturesEnabled()){
-
-            if(page == "1"){
-
-                def gndLinkItems = []
-                resultItems.facets.each { facet ->
-                    if(facet.field == FacetEnum.AFFILIATE_INVOLVED_NORMDATA.getName() || facet.field == FacetEnum.AFFILIATE_SUBJECT.getName()) {
-                        facet.facetValues.each { entry ->
-                            if(cultureGraphService.isValidGndUri(entry.value)){
-                                gndLinkItems.addAll(entry)
-                            }
-                        }
-                    }
-                }
-
-                int initialGndItemsToDisplay = 2
-                int maxGndIdsAvailable = gndLinkItems.size()
-                int displayCount = Math.min(maxGndIdsAvailable, initialGndItemsToDisplay)
-
-                gndItems = []
-
-                int gndItemsRetrieved = 0
-                int i = 0
-                while (gndItemsRetrieved < displayCount) {
-                    def gndItem = [:]
-                    def gndId = cultureGraphService.getGndIdFromGndUri(gndLinkItems.get(i).value)
-                    def gndData = cultureGraphService.getCultureGraph(gndId)
-
-                    if(gndData != null) {
-                        gndItem['id'] = gndId
-                        gndItem['data'] = gndData
-                        gndItems.add(gndItem)
-
-                        gndItemsRetrieved ++
-                    }
-
-                    i ++
-
-                    if(i == maxGndIdsAvailable){
-                        break
-                    }
-
-                }
-            }
-
-
-        }
-
-        return gndItems
-
-    }
 
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()

@@ -21,7 +21,7 @@ limitations under the License.
     <div class="search-entity">   
       <div>
         <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.preferredName] }">
-          "${entity.person.preferredName}" <g:message code="ddbnext.Entity_Search_DDB" />
+          <g:message code="ddbnext.Entity_Search_DDB" args="${[entity.person.preferredName]}"/>
         </g:link>
       </div>
     </div>

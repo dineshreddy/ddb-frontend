@@ -20,7 +20,6 @@ import grails.converters.JSON
 import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
-
 import de.ddb.next.constants.SupportedLocales
 
 class ApisController {
@@ -34,7 +33,10 @@ class ApisController {
         def docs = []
         def query = apisService.getQueryParameters(params)
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, query)
+        //Use query filter if roles were selected
+        def filteredQuery = apisService.filterForRoleFacets(query)
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, filteredQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -72,6 +74,7 @@ class ApisController {
         resultList["correctedQuery"] = jsonResp.correctedQuery
         resultList["numberOfResults"] = jsonResp.numberOfResults
         resultList["randomSeed"] = jsonResp.randomSeed
+        resultList["entities"] = jsonResp?.entities
         resultList["results"] = [ name:jsonResp.results.name,
             docs:docs,
             numberOfDocs:jsonResp.results.numberOfDocs]
@@ -157,6 +160,7 @@ class ApisController {
     def autocomplete (){
         def query = apisService.getQueryParameters(params)
         def callback = apisService.getQueryParameters(params)
+
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
