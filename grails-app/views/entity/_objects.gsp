@@ -36,7 +36,7 @@ limitations under the License.
   <h3>
   	<g:message code="ddbnext.Entity_Objects" />: 
   </h3>
-  <span class="contextual-help entity-header hidden-phone hidden-tablet" title="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}" data-content="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}"></span> 
+  <span class="contextual-help hidden-phone hidden-tablet" title="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}" data-content="${g.message(code: "ddbnext.Entity_Objects_Tooltip")}"></span> 
   <div class="tooltip off hasArrow"></div>
   
   
