@@ -172,6 +172,10 @@
   margin-left: 0 !important;
 }
 
+.entity-page .external-icon {
+  display: inline-block;
+}
+
 .entity-page .external-icon img {
   margin: 0;
   padding: 0;
@@ -193,7 +197,7 @@
 }
 
 .entity-page .external-link span {
-  margin:  -20px 0 0 20px;
+  margin: -20px 0 0 20px;
   display: block;
   background: none;
 }
