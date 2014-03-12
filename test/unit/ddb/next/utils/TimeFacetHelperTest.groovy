@@ -14,7 +14,7 @@ import de.ddb.next.TimeFacetHelper
  */
 class TimeFacetHelperTest extends GroovyTestCase {
 
-    DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd");
+    DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd", Locale.ENGLISH);
 
     /**
      * Setting up the tests. As general timezone we will use UTC
@@ -107,7 +107,6 @@ class TimeFacetHelperTest extends GroovyTestCase {
 
         Calendar cal = Calendar.getInstance()
         cal.setTimeInMillis(time)
-        dateFormat.format(cal.getTime())
         assert "AD-0001-01-01" ==  dateFormat.format(cal.getTime())
     }
 
@@ -118,7 +117,6 @@ class TimeFacetHelperTest extends GroovyTestCase {
         def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(-1095750)
         Calendar cal = Calendar.getInstance()
         cal.setTimeInMillis(time)
-        dateFormat.format(cal.getTime())
         assert "BC-3000-01-01" ==  dateFormat.format(cal.getTime())
     }
 
@@ -129,7 +127,6 @@ class TimeFacetHelperTest extends GroovyTestCase {
         def time = TimeFacetHelper.calculateTimeFromTimeFacetDays(-1278375)
         Calendar cal = Calendar.getInstance()
         cal.setTimeInMillis(time)
-        dateFormat.format(cal.getTime())
         assert "BC-3500-01-01" ==  dateFormat.format(cal.getTime())
     }
 

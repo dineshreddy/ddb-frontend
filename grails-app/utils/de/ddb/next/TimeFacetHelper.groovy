@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat
  */
 class TimeFacetHelper {
 
-    final static DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd");
+    final static DateFormat dateFormat = new SimpleDateFormat("G-yyyy-MM-dd", Locale.ENGLISH);
 
     final static def MILLISECONDS_DAY = 86400000;
 
