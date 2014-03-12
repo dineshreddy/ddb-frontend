@@ -17,7 +17,13 @@ limitations under the License.
 <g:if test="${entities}">
   <g:render template="entityResultsList" model="${[entities: entities]}" />
 </g:if>
-
+<g:if test="${flash.error}">
+  <div class="errors-container">
+    <ul class="unstyled">
+      <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+    </ul>
+  </div>
+</g:if>
 <ul class="results-list unstyled  <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">grid</g:if>">
   <g:set var="pageHitCounter" value="${0}"/>
   <g:each in="${results}">
