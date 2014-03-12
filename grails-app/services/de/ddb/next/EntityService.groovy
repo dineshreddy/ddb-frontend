@@ -196,15 +196,19 @@ class EntityService {
     def entityImageExists(imageUrl) {
         def imageExists = false;
 
-        if (imageUrl) {
-            URL url = new URL(imageUrl)
+        try {
+            if (imageUrl) {
+                URL url = new URL(imageUrl)
 
-            ApiResponse apiResponse = ApiConsumer.headAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
-            if(apiResponse.isOk()){
-                imageExists = true;
-            } else {
-                log.warn "Entity image response is " + apiResponse.status +  " . The image is not available under " + imageUrl
+                ApiResponse apiResponse = ApiConsumer.headAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
+                if(apiResponse.isOk()){
+                    imageExists = true;
+                } else {
+                    log.warn "Entity image response is " + apiResponse.status +  " . The image is not available under " + imageUrl
+                }
             }
+        } catch (Exception e) {
+            log.warn("An error occurs during requesting this imageUrl: " + imageUrl)
         }
 
         return imageExists
