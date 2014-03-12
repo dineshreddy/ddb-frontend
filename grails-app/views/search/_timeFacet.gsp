@@ -42,7 +42,7 @@ limitations under the License.
             <g:set var="i" value="${i + 1}" />
           </g:while>
         </select>
-        <input type="text" pattern="-?\[0-9]*" id="fromYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
+        <input type="text" pattern="-?[0-9]+" id="fromYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
       </div>
       <div><g:message code="ddbnext.facet_time_to"/></div>
       <div>
@@ -62,7 +62,7 @@ limitations under the License.
             <g:set var="i" value="${i+1}" />
           </g:while>
         </select> 
-        <input type="text" pattern="-?\[0-9]*" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
+        <input type="text" pattern="-?[0-9]+" id="tillYear" class="year" placeholder="<g:message code="ddbnext.facet_time_year"/>"/>
       </div>
       <div class="time-restriction">
         <g:message code="ddbnext.facet_time_restrict_to"/>
