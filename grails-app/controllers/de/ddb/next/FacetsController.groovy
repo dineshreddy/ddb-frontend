@@ -140,8 +140,9 @@ class FacetsController {
     }
 
     /**
+     * Calculates the time facet day representation for the given dates.
      * 
-     * @return
+     * @return  the time facet day representations in JSON format
      */
     def calculateTimeFacetDays() {
         def dateFromString = params.dateFrom
@@ -157,8 +158,9 @@ class FacetsController {
     }
 
     /**
-     *
-     * @return
+     * Calculates the date representation for the given time facet days.
+     * 
+     * @return the date representation in JSON format
      */
     def calculateTimeFacetDates() {
         def endDateStr = null
