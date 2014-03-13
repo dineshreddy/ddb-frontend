@@ -104,6 +104,13 @@ class InstitutionController {
             }else{
                 organisationLogo = selectedOrgXML.logo
             }
+            try {
+              new URL(organisationLogo?.toString())
+            }
+            catch (MalformedURLException e) {
+                // get logo from institution object itself
+                organisationLogo = g.resource("dir": "binary", "file": itemId + "/list/1.jpg")
+            }
             render(
                     view: "institution",
                     model: [
