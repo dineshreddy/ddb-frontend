@@ -399,8 +399,8 @@ class ItemService {
      * @return DDB id for the institution the logo belongs to
      */
     private def String getProviderDdbId(String institutionLogoUrl) {
-        int startIndex = institutionLogoUrl.indexOf("institution-institutionen")
-        String itemId = institutionLogoUrl.substring(startIndex + 40, startIndex + 48)
+        int startIndex = institutionLogoUrl.indexOf("/edit/")
+        String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
         return new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
     }
 
