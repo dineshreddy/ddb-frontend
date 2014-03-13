@@ -141,16 +141,19 @@ class ItemService {
         def response = utils.getCurrentResponse()
         def params = utils.getParameterMap()
         def itemId = id
+        def itemUri = null
 
         //Check if Item-Detail was called from search-result and fill parameters
         def searchResultParameters = handleSearchResultParameters(params, request)
 
-        def item = null
         //If the id is lastHit get the item id from the searchResultParameters
         if (itemId == 'lasthit') {
             itemId = searchResultParameters["lastItemId"]
+            itemUri = grailsLinkGenerator.link(url: [controller: 'item', action: 'findById', id: itemId ])
+        } else {
+            itemUri = request.forwardURI
         }
-        item = findItemById(itemId)
+        def item = findItemById(itemId)
 
         if("404".equals(item)){
             throw new ItemNotFoundException()
@@ -182,7 +185,6 @@ class ItemService {
 
         def licenseInformation = buildLicenseInformation(item, request)
 
-        def itemUri = request.forwardURI
         def fields = translate(item.fields, convertToHtmlLink, request)
 
         if(configurationService.isCulturegraphFeaturesEnabled()){
