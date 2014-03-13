@@ -129,7 +129,6 @@ class ItemService {
             viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
         }
 
-
         model.put("binariesListViewerContent", viewerContent)
 
         return model
@@ -141,34 +140,35 @@ class ItemService {
         def request = utils.getCurrentRequest()
         def response = utils.getCurrentResponse()
         def params = utils.getParameterMap()
+        def itemId = id
 
         //Check if Item-Detail was called from search-result and fill parameters
         def searchResultParameters = handleSearchResultParameters(params, request)
 
         def item = null
         //If the id is lastHit get the item id from the searchResultParameters
-        if (id == 'lasthit') {
-            item = findItemById(searchResultParameters["lastItemId"])
-        } else {
-            item = findItemById(id)
+        if (itemId == 'lasthit') {
+            itemId = searchResultParameters["lastItemId"]
         }
+        item = findItemById(itemId)
 
+            println response
         if("404".equals(item)){
             throw new ItemNotFoundException()
         }
 
-        def isFavorite = isFavorite(id)
+        def isFavorite = isFavorite(itemId)
         log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
         if (params.reqActn) {
-            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
+            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(itemId)) {
                 isFavorite = response.SC_FOUND
             }
-            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
+            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(itemId)) {
                 isFavorite = response.SC_NOT_FOUND
             }
         }
 
-        def binaryList = findBinariesById(id)
+        def binaryList = findBinariesById(itemId)
         def binariesCounter = binariesCounter(binaryList)
 
         def flashInformation = [:]
@@ -195,7 +195,7 @@ class ItemService {
             viewerUri: item.viewerUri,
             title: item.title,
             item: item.item,
-            itemId: id,
+            itemId: itemId,
             institution: item.institution,
             institutionImage: item.institutionImage,
             originUrl: item.originUrl,
