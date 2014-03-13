@@ -152,7 +152,6 @@ class ItemService {
         }
         item = findItemById(itemId)
 
-            println response
         if("404".equals(item)){
             throw new ItemNotFoundException()
         }
