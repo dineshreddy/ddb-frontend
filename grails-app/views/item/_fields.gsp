@@ -24,7 +24,7 @@ limitations under the License.
             <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
           </g:if>
           <g:else>
-            ${value}
+            ${ddb.encodeNonHtmlTags(text:value)}
           </g:else>
           <br />
         </g:each>
