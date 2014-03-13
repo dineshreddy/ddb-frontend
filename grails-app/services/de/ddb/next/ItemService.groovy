@@ -24,6 +24,7 @@ import java.util.regex.Pattern
 
 import net.sf.json.JSONNull
 
+import org.apache.commons.codec.binary.Base32
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.io.support.UrlResource
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -90,8 +91,13 @@ class ItemService {
         def institution= xml.item.institution
 
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
-        if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
-            institutionLogoUrl = filterOutSurroundingTag(xml.item.institution.logo.toString())
+        String institutionId = xml.item.institution."logo-institution-ddbid"
+
+        if(!institutionId && !xml.item.institution.logo?.toString().trim().isEmpty()){
+            institutionId = getProviderDdbId(xml.item.institution.logo.toString())
+        }
+        if (institutionId) {
+            institutionLogoUrl = grailsLinkGenerator.resource("dir": "binary", "file": institutionId + "/list/1.jpg")
         }
 
         String originUrl = filterOutSurroundingTag(xml.item.origin.toString())
@@ -386,6 +392,17 @@ class ItemService {
         return (['images':images,'audios':audios,'videos':videos])
     }
 
+    /**
+     * Extract the institution id from the given logo URL and calculate the DDB id of the institution.
+     *
+     * @param institutionLogoUrl URL pointing to the provider logo
+     * @return DDB id for the institution the logo belongs to
+     */
+    private def String getProviderDdbId(String institutionLogoUrl) {
+        int startIndex = institutionLogoUrl.indexOf("institution-institutionen")
+        String itemId = institutionLogoUrl.substring(startIndex + 40, startIndex + 48)
+        return new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
+    }
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"
