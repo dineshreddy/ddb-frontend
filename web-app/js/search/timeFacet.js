@@ -116,7 +116,15 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   },
 
   /**
-   * Formats the till date in this form: yyyy-MM-dd
+   * Formats the from date in this form:
+   * <code>G-yyyy-MM-dd</code>
+   * 
+   * <ul>
+   *   <li>G: is the era BC or AD</li>
+   *   <li>y: a year digit</li>
+   *   <li>M: a month digit</li>
+   *   <li>d: a day digit</li>
+   * </ul> 
    */
   formatFromDate: function(){
     var currObjInstance = this;
@@ -133,6 +141,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
      date = "AD-" + currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
     }
     else {
+      //For BC we can reuse the minus sign of the number as separator in the date.
       date = "BC" + currObjInstance.fromYear + "-" + currObjInstance.fromMonth + "-" + currObjInstance.fromDay;
     }
     return date;
@@ -140,7 +149,15 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
   },
 
   /**
-   * Formats the till date in this form: yyyy-MM-dd
+   * Formats the till date in this form:
+   * <code>G-yyyy-MM-dd</code>
+   * 
+   * <ul>
+   *   <li>G: is the era BC or AD</li>
+   *   <li>y: a year digit</li>
+   *   <li>M: a month digit</li>
+   *   <li>d: a day digit</li>
+   * </ul>
    */
   formatTillDate: function(){
     var currObjInstance = this;
@@ -157,6 +174,7 @@ $.extend(de.ddb.next.search.TimeSpan.prototype, {
       date = "AD-" + currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
      }
      else {
+       //For BC we can reuse the minus sign of the number as separator in the date.
        date = "BC" + currObjInstance.tillYear + "-" + currObjInstance.tillMonth + "-" + currObjInstance.tillDay;
      }
     return date;
@@ -284,6 +302,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.calculateFacetDates();
   },
 
+  /**
+   * Converts a string of the form <code>G-yyyy-MM-dd</code> to a Javascript Date object.
+   */
   convertServerDateToJsDate: function(serverDate) {
     var date = null;
 
@@ -308,8 +329,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   },
 
   /**
-  * This method initialize the TimeFacet widget based on the window url.
-  * It search for facetValues[] 'begin_time' and 'end_time'. Contained values will be set into the form.
+  * This method initialize the TimeFacet form based on the given beginDate, endDate and calculation method (excact/fuzzy)
   */
   initFormOnLoad: function(beginDateStr, endDateStr, exact) {
     var currObjInstance = this;
@@ -596,8 +616,17 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     de.ddb.next.search.fetchResultsList(newUrl, function() {});
   },
 
+
   /**
-   * Converts a Date object to a Day representation for the time facet
+   * Converts the Date representation of the time facet values to a backend related Day represenation.
+   * The method works with the formated values of the fromDate and tillDate from the inner model.
+   * 
+   * The calculation itself is performed on the frontsend server and triggered by an AJAX request:
+   * http://localhost:8080/ddb-next/facets/calculateTimeFacetDays?dateFrom=AD-1000-1-1&dateTill=AD-2000-12-31
+   * 
+   * After a successful response the window url is updated and a new search is performed.
+   * 
+   * The AJAX call must be async, otherwise the browser might freeze!
    */
   calculateFacetDays: function() {
     var currObjInstance = this;
@@ -627,9 +656,22 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   },
 
   /**
-   * Converts a Day representation for the time facet to a Javascript Date object
-   *
-   * @param days An object containing the url values to be converted
+   * Converts the Day representation of the time facet values (stored in the window url) to Date formates values which has the form:
+   * <code>G-yyyy-MM-dd</code>
+   * 
+   * <ul>
+   *   <li>G: is the era BC or AD</li>
+   *   <li>y: a year jdigit</li>
+   *   <li>M: a month digit</li>
+   *   <li>d: a day digit</li>
+   * </ul>
+   * 
+   * The calculation itself is done on the frontsend server and performed with an AJAX request which looks like the following:
+   * http://localhost:8080/ddb-next/facets/calculateTimeFacetDates?beginDays=364884&endDays=730486
+   * 
+   * After a successful response, the time facet form is updated with the response values.
+   * 
+   * The AJAX call must be async, otherwise the browser might freeze!
    */
   calculateFacetDates: function() {
     var currObjInstance = this;

@@ -140,25 +140,37 @@ class FacetsController {
     }
 
     /**
+     * Calculates the time facet day representation for the given dates.
      * 
-     * @return
+     * @return  the time facet day representations in JSON format
      */
     def calculateTimeFacetDays() {
         def dateFromString = params.dateFrom
         def dateTillString = params.dateTill
 
-        def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString);
-        def daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+        def daysTill = ""
+        def daysFrom = ""
 
-        def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString);
-        def daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
-
+        try {
+            if(dateFromString) {
+                def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString)
+                daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+            }
+            if(dateTillString) {
+                def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString)
+                daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
+            }
+        }
+        catch (Exception e){
+            flash.error = "ddbnext.facet_time_right"
+        }
         render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
     }
 
     /**
-     *
-     * @return
+     * Calculates the date representation for the given time facet days.
+     * 
+     * @return the date representation in JSON format
      */
     def calculateTimeFacetDates() {
         def endDateStr = null

@@ -428,8 +428,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
         $('.page-nav a, .page-nav-mob a').each(function() {
           this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
         });
+        
         $('.results-list a').each(function() {
-          this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+          this.href = $.addParamToUrl(null, paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
@@ -535,7 +536,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
           this.href = $.addParamToCurrentUrl(paramsArray, this.href.split("?")[1]);
         });
         $('.results-list a').each(function() {
-          this.href = addParamToUrl(paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
+          this.href = $.addParamToUrl(null, paramsArray, this.href.split("?")[0], this.href.split("?")[1]);
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));

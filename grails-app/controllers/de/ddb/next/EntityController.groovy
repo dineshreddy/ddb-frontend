@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import net.sf.json.JSONArray
 import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
@@ -119,8 +120,8 @@ class EntityController {
 
         //------------------------- Check for entity picture -------------------------------
         def entityImageUrl = null
-        def thumbnailUrl = jsonGraph?.person?.depiction?.thumbnail
-        def imageUrl = jsonGraph?.person?.depiction?.image
+        def thumbnailUrl = (jsonGraph?.person?.depiction?.thumbnail instanceof JSONArray) ? jsonGraph?.person?.depiction?.thumbnail[0] : jsonGraph?.person?.depiction?.thumbnail
+        def imageUrl =  (jsonGraph?.person?.depiction?.image instanceof JSONArray) ? jsonGraph?.person?.depiction?.image[0] : jsonGraph?.person?.depiction?.image
         def entityImageExists = false
 
         //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
