@@ -1125,6 +1125,7 @@ h3,h3 a {
 a {
   color: #3e3a37;
   text-decoration: none;
+  word-wrap: break-word;
 }
 
 a:hover,a:active,a:focus {
