@@ -148,12 +148,22 @@ class FacetsController {
         def dateFromString = params.dateFrom
         def dateTillString = params.dateTill
 
-        def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString);
-        def daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+        def daysTill = ""
+        def daysFrom = ""
 
-        def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString);
-        def daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
-
+        try {
+            if(dateFromString) {
+                def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString)
+                daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
+            }
+            if(dateTillString) {
+                def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString)
+                daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
+            }
+        }
+        catch (Exception e){
+            flash.error = "ddbnext.facet_time_right"
+        }
         render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
     }
 

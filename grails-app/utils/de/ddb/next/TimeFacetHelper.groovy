@@ -29,13 +29,9 @@ class TimeFacetHelper {
      * @return a Date instance for a given formatted string
      */
     def static getDatefromFormattedString(String date) {
-        def retVal = null
-        if (date) {
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            retVal =  dateFormat.parse(date);
-        }
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
-        return retVal
+        return dateFormat.parse(date);
     }
 
     /**
@@ -50,14 +46,10 @@ class TimeFacetHelper {
      * @return the time facet Days representation for a given date
      */
     def static calculateDaysForTimeFacet(String dateString) {
-        if (dateString) {
-            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-            Date date = dateFormat.parse(dateString);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date = dateFormat.parse(dateString);
 
-            return calculateDaysForTimeFacet(date);
-        }
-
-        return "";
+        return calculateDaysForTimeFacet(date);
     }
 
     /**
