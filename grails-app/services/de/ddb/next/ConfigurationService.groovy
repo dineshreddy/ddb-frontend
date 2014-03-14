@@ -222,6 +222,11 @@ class ConfigurationService {
         return true
     }
 
+    public boolean isExhibitionsFeaturesEnabled() {
+        def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
+        return Boolean.parseBoolean(value.toString())
+    }
+
     public def logConfigurationSettings() {
         log.info "------------- System.properties -----------------------"
         log.info "proxyHost = " + getProxyHost()
@@ -262,6 +267,7 @@ class ConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
+        log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
         log.info "ddb.registration.info.url = " + getRegistrationInfoUrl()
