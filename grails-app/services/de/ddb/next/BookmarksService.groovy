@@ -62,7 +62,7 @@ class BookmarksService {
         ]
         def postBodyAsJson = postBody as JSON
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder", false, postBodyAsJson)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder", false, postBodyAsJson)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -87,7 +87,7 @@ class BookmarksService {
     private int getDocumentCountByType(String type) {
         int count = -1
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/" + type + "/_search", false)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/" + type + "/_search", false)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -115,7 +115,7 @@ class BookmarksService {
 
         List<Folder> folderList = []
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false,
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
             ["q":userId, "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
@@ -160,7 +160,7 @@ class BookmarksService {
         List<Bookmark> all = []
 
         def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -199,7 +199,7 @@ class BookmarksService {
         }
 
         def query = ["q":"folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, query, [:], true)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -261,7 +261,7 @@ class BookmarksService {
             updatedAt: new Date().getTime()
         ]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark", false, postBody as JSON)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -276,7 +276,7 @@ class BookmarksService {
     private void refresh() {
         log.info "refresh(): refreshing index ddb..."
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/_refresh", false, "")
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -298,7 +298,7 @@ class BookmarksService {
 
         def postBody = [filter: [terms: [item: itemIdList]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -343,7 +343,7 @@ class BookmarksService {
         idList.each { id ->
             postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -361,7 +361,7 @@ class BookmarksService {
 
         def postBody = [filter: [term: [title: title]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false, postBody as JSON, ["q":"user:\"${userId}\""])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -411,7 +411,7 @@ class BookmarksService {
 
         List<Bookmark> all = []
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:\"${userId}\"", "size":"${DEFAULT_SIZE}"])
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, "", ["q":"user:\"${userId}\"", "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -513,7 +513,7 @@ class BookmarksService {
 
         def postBody = [filter: [terms: [item: itemIdList]]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_search", false, postBody as JSON, queryParameter, [:], true)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, postBody as JSON, queryParameter, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
@@ -554,7 +554,7 @@ class BookmarksService {
     Bookmark findBookmarkById(String bookmarkId) {
         log.info "findBookmarkById()"
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${bookmarkId}", false, [:])
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/${bookmarkId}", false, [:])
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
@@ -582,7 +582,7 @@ class BookmarksService {
     Folder findFolderById(String folderId) {
         log.info "findFolderById()"
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false, [:])
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folderId}", false, [:])
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
@@ -628,7 +628,7 @@ class BookmarksService {
             postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken]]
         }
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             refresh()
@@ -640,7 +640,7 @@ class BookmarksService {
 
         def postBody = [doc: [description: newDescription, updatedAt: System.currentTimeMillis()]]
 
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/${bookmarkId}/_update", false, postBody as JSON)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/${bookmarkId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
             refresh()
@@ -656,7 +656,7 @@ class BookmarksService {
                     '{ "delete" : {"_id" : "'+ it + '", "_type" : "bookmark", "_index" : "ddb"}}'+
                     '{ "script" : "ctx._source.folder.remove(otherFolder);", "params" : { "otherFolder" : "' + folderId + '"}}\n'
         }
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getBookmarkUrl(), "/ddb/bookmark/_bulk", false, postBody)
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
             refresh()
@@ -666,7 +666,7 @@ class BookmarksService {
     void deleteFolder(String folderId) {
         log.info "deleteFolder()"
 
-        ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getBookmarkUrl(), "/ddb/folder/${folderId}", false)
+        ApiResponse apiResponse = ApiConsumer.deleteJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folderId}", false)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()

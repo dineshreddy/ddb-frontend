@@ -56,14 +56,6 @@ class ConfigurationService {
         return getConfigValue("ddb.culturegraph.url")
     }
 
-    public String getBookmarkUrl(){
-        return getConfigValue("ddb.bookmark.url")
-    }
-
-    public String getNewsletterUrl(){
-        return getConfigValue("ddb.newsletter.url")
-    }
-
     public String getElasticSearchUrl(){
         return getConfigValue("ddb.elasticsearch.url")
     }
@@ -244,8 +236,6 @@ class ConfigurationService {
         log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
-        log.info "ddb.bookmark.url = " + getBookmarkUrl()
-        log.info "ddb.newsletter.url = " + getNewsletterUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
         log.info "ddb.favorites.reportMailTo = " + getFavoritesReportMailTo()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
