@@ -22,6 +22,7 @@ limitations under the License.
 <![endif]-->
 
 <!--[if !IE]><!-->
+<g:set var="config" bean="configurationService"/>
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
@@ -77,7 +78,7 @@ limitations under the License.
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
           </li><!-- /end of help -->
-          <g:if test="${grailsApplication.config.ddb.exhibitions.features.enabled}">
+          <g:if test="${config.isExhibitionsFeaturesEnabled()}">
             <li class="<ddb:isMappingActive context="${params}"
               testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
               <g:link controller="content" params="[dir: 'exhibits']"><g:message code="ddbnext.Exhibitions" /></g:link>
@@ -194,7 +195,7 @@ limitations under the License.
                   class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "help"]]}">active-default</ddb:isMappingActive>">
                   <g:link controller="content" params="[dir: 'help']"><g:message code="ddbnext.Help" /></g:link>
                 </li>
-                <g:if test="${grailsApplication.config.ddb.exhibitions.features.enabled}">
+                <g:if test="${config.isExhibitionsFeaturesEnabled()}">
                   <li
                     class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="content" params="[dir: 'exhibits']"><g:message code="ddbnext.Exhibitions" /></g:link>
