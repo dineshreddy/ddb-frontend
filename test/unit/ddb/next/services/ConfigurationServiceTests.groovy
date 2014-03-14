@@ -60,14 +60,6 @@ class ConfigurationServiceTests {
         stringConfigTest("ddb.culturegraph.url", { it.getCulturegraphUrl() })
     }
 
-    void testGetBookmarkUrl_Complete() {
-        stringConfigTest("ddb.bookmark.url", { it.getBookmarkUrl() })
-    }
-
-    void testGetNewsletterUrl_Complete() {
-        stringConfigTest("ddb.newsletter.url", { it.getNewsletterUrl() })
-    }
-
     void testGetElasticSearchUrl_Complete() {
         stringConfigTest("ddb.elasticsearch.url", { it.getElasticSearchUrl() })
     }
