@@ -45,10 +45,10 @@ class SecurityHelper {
         Parser tagsoupParser = new Parser()
         XmlSlurper slurper = new XmlSlurper(tagsoupParser)
 
-        sanitizeRequestUrl(request, response)
-        sanitizeRequestParameters(request, slurper)
-        sanitizeRequestCookies(request, slurper)
-        sanitizeRequestHeaders(request)
+//        sanitizeRequestUrl(request, response)
+//        sanitizeRequestParameters(request, slurper)
+//        sanitizeRequestCookies(request, slurper)
+//        sanitizeRequestHeaders(request)
         addReponseSecurityHeaders(request, response)
     }
 
