@@ -90,6 +90,7 @@ class ItemService {
         //def institution= xml.institution
         def institution= xml.item.institution
 
+        // institution logo
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
         String institutionId = xml.item.institution."logo-institution-ddbid"
 
@@ -399,9 +400,13 @@ class ItemService {
      * @return DDB id for the institution the logo belongs to
      */
     private def String getProviderDdbId(String institutionLogoUrl) {
+        String result = null
         int startIndex = institutionLogoUrl.indexOf("/edit/")
-        String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
-        return new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
+        if (startIndex > 0) {
+          String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
+          result = new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
+        }
+        return result
     }
 
     def getParent(itemId){

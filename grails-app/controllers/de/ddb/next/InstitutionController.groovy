@@ -98,19 +98,15 @@ class InstitutionController {
                 }
             }
 
+            // logo
             def organisationLogo
-            if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
-            }else{
-                organisationLogo = selectedOrgXML.logo
-            }
-            try {
-              new URL(organisationLogo?.toString())
-            }
-            catch (MalformedURLException e) {
-                // get logo from institution object itself
+            if (!selectedOrgXML?.logo.toString().isEmpty()) {
                 organisationLogo = g.resource("dir": "binary", "file": itemId + "/list/1.jpg")
             }
+            else {
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")
+            }
+
             render(
                     view: "institution",
                     model: [
