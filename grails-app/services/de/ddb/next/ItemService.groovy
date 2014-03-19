@@ -22,7 +22,9 @@ import grails.util.Holders
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
+import net.sf.json.JSONArray
 import net.sf.json.JSONNull
+import net.sf.json.JSONObject
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.io.support.UrlResource
@@ -33,7 +35,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.User
-import de.ddb.next.constants.CortexNamespace
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
@@ -74,39 +75,39 @@ class ItemService {
         final def componentsPath = "/items/" + id + "/"
         final def viewPath = componentsPath + "view"
 
-        def apiResponse = ApiConsumer.getXml(configurationService.getBackendUrl(), viewPath)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), viewPath)
         if(!apiResponse.isOk()){
-            log.error "findItemById: xml file was not found"
+            log.error "findItemById: JSON file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
-        def xml = apiResponse.getResponse()
 
-        def ns2Namespace = xml.lookupNamespace(CortexNamespace.NS2.prefix)
-        if(ns2Namespace == CortexNamespace.RDF.uri){
-            log.error "findItemById(): Cortex returned namespace ns2 instead of rdf for item "+id
-        }
-
-        //def institution= xml.institution
-        def institution= xml.item.institution
+        def json = apiResponse.getResponse()
+        def institution= json.item.institution
 
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
-        if(xml.item.institution.logo != null && !xml.item.institution.logo.toString().trim().isEmpty()){
-            institutionLogoUrl = filterOutSurroundingTag(xml.item.institution.logo.toString())
+        if(json.item.institution.logo != null && !json.item.institution.logo.toString().trim().isEmpty()){
+            institutionLogoUrl = filterOutSurroundingTag(json.item.institution.logo.toString())
         }
 
-        String originUrl = filterOutSurroundingTag(xml.item.origin.toString())
+        String originUrl = filterOutSurroundingTag(json.item.origin.toString())
 
-        def item = xml.item
+        def item = json.item
 
         def title = shortenTitle(id, item)
-
-        def displayFieldsTag = xml.item.fields.findAll{ it.@usage.text().contains('display') }
-        def fields = displayFieldsTag[0].field.findAll()
+        def fields
+        if (json.item.fields instanceof JSONArray) {
+            def displayFieldsTag = json.item.fields.findAll{ it."@usage".contains('display') }
+            fields = displayFieldsTag[0].field.findAll()
+        }
+        else {
+            // old data format
+            fields = json.item.fields.field
+        }
 
         def viewerUri = buildViewerUri(item, componentsPath)
 
         return ['uri': '', 'viewerUri': viewerUri, 'institution': institution, 'item': item, 'title': title,
-            'fields': fields, pageLabel: xml.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
+            'fields': fields, pageLabel: json.pagelabel, 'institutionImage': institutionLogoUrl, 'originUrl': originUrl]
     }
 
     /**
@@ -188,7 +189,7 @@ class ItemService {
         def fields = translate(item.fields, convertToHtmlLink, request)
 
         if(configurationService.isCulturegraphFeaturesEnabled()){
-            fields = createEntityLinks(fields)
+            createEntityLinks(fields)
         }
 
         def model = [
@@ -525,7 +526,7 @@ class ItemService {
 
         if(item.item?.license && !item.item.license.isEmpty()){
 
-            def licenseId = getTagAttribute(item.item.license, CortexNamespace.RDF.prefix, "resource")
+            def licenseId = item.item.license."@resource"
 
             def propertyId = convertUriToProperties(licenseId)
 
@@ -579,15 +580,6 @@ class ItemService {
         }
     }
 
-    def String getTagAttribute(def tag, String namespacePrefix, String attributeName ) {
-        String out = null
-        out = tag["@"+namespacePrefix+":"+attributeName].toString().trim()
-        if(out == null || out.isEmpty()){
-            out = tag["@"+CortexNamespace.NS2.prefix+":"+attributeName].toString().trim()
-        }
-        return out
-    }
-
     def boolean isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
         if(user != null) {
@@ -615,13 +607,10 @@ class ItemService {
     }
 
     def convertToHtmlLink = { field ->
-        for(int i=0; i<field.value.size(); i++) {
-            def fieldValue = field.value[i].toString()
-            if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
-                field.value[i] = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
-            }
+        def fieldValue = field.value.toString()
+        if(fieldValue.startsWith(HTTP) || fieldValue.startsWith(HTTPS)) {
+            field.value = '<a href="' + fieldValue + '">' + fieldValue + '</a>'
         }
-
         return field
     }
 
@@ -631,20 +620,20 @@ class ItemService {
             // Do not create entity link for this field.
             if (it.'@id' != "flex_arch_033") {
                 def valueTags = it.value
-                    valueTags.each { valueTag ->
+                valueTags.each { valueTag ->
+                    if (valueTag instanceof JSONObject) {
+                        def resource = valueTag."@resource"
 
-                    def resource = getTagAttribute(valueTag, CortexNamespace.RDF.prefix, "resource")
-
-                    if(resource != null && !resource.isEmpty()){
-                        if(cultureGraphService.isValidGndUri(resource)){
-                            def entityId = cultureGraphService.getGndIdFromGndUri(resource)
-                            valueTag.@entityId = entityId
+                        if(resource != null && !resource.isEmpty()){
+                            if(cultureGraphService.isValidGndUri(resource)){
+                                def entityId = cultureGraphService.getGndIdFromGndUri(resource)
+                                valueTag."@entityId" = entityId
+                            }
                         }
                     }
                 }
             }
         }
-        return fields
     }
 
     def delFavorite(itemId) {
