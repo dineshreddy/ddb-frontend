@@ -27,9 +27,9 @@ var InstitutionsMapAdapter = (function($, undefined) {
   'use strict';
 
   var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
-  var osmTileset = [ 'http://a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
-      'http://b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
-      'http://c.tile.' + osmTileServer + '/${z}/${x}/${y}.png' ];
+  var osmTileset = [ '//a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+      '//b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+      '//c.tile.' + osmTileServer + '/${z}/${x}/${y}.png' ];
 
   var institutionsMapOptions = {
     resetMap : true,
