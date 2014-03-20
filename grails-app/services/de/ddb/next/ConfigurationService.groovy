@@ -48,6 +48,14 @@ class ConfigurationService {
         return getConfigValue("ddb.backend.url")
     }
 
+    public String getAasAdminUserId(){
+        return getConfigValue("ddb.aas.admin.userid")
+    }
+
+    public String getAasAdminPassword(){
+        return getConfigValue("ddb.aas.admin.password")
+    }
+
     public String getAasUrl(){
         return getConfigValue("ddb.aas.url")
     }

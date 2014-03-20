@@ -18,6 +18,8 @@ package de.ddb.next
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
 import groovyjarjarcommonscli.MissingArgumentException
+import groovyx.net.http.ContentType
+import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
 import org.apache.commons.lang.StringUtils
@@ -114,6 +116,39 @@ class AasService {
      */
     public JSONObject getPerson(String id) {
         return request(PERSON_URI + id)
+    }
+
+    /**
+     * Get detailed information about a person using an admin account.
+     *
+     * @param id id of person to retrieve
+     * @return person as User object
+     */
+    public User getPersonAsAdmin(String id) {
+        User result
+
+        // TODO use ApiConsumer after integrating "ddb-common" project
+        def http = new HTTPBuilder(configurationService.getAasUrl())
+
+        http.request(Method.GET, ContentType.JSON) {
+            http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
+            uri.path = PERSON_URI + id
+            response.success = { resp, user ->
+                result = new User(
+                        username: user.nickname,
+                        status: user.status,
+                        lastname: user.surName,
+                        firstname: user.foreName,
+                        email: user.email,
+                        apiKey: user.apiKey)
+                result.setId(user.id)
+            }
+            response.failure = { resp ->
+                result = new User(username: "username")
+                result.setId(id)
+            }
+        }
+        return result
     }
 
     /**
