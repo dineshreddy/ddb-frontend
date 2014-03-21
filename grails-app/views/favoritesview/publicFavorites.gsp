@@ -23,13 +23,13 @@ limitations under the License.
   <head>
   
     <title>
-      ${selectedFolder.title} - <g:message code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message code="ddbnext.Public_List_Of" args="${[selectedUser.getFirstnameAndLastnameOrNickname()]}" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUser.getFirstnameAndLastnameOrNickname()]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -77,7 +77,7 @@ limitations under the License.
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
           <div class="folder-information bt bb bl br">
-            <g:message code="ddbnext.List_Of"/> ${selectedFolder.publishingName}
+            <g:message code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
               <br />          
@@ -88,7 +88,7 @@ limitations under the License.
           </div>
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
             <div class="folder-information bt bb bl br">
-              <g:message code="ddbnext.Other_Lists_Of"/> ${selectedFolder.publishingName}:
+              <g:message code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}:
               <ul>
                 <g:each var="publicFolder" in="${publicFolders}">
                   <g:if test="${publicFolder.folderId != selectedFolder.folderId}">

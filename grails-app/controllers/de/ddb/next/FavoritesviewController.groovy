@@ -14,6 +14,7 @@ class FavoritesviewController {
     private final static String ORDER_TITLE = "title"
     private final static String ORDER_DATE = "date"
 
+    def aasService
     def bookmarksService
     def favoritesService
     def configurationService
@@ -42,10 +43,7 @@ class FavoritesviewController {
         }
         def order = params.order
 
-        //def user = aasService.getPerson(params.userId) // does not work yet because of security constraints in AAS
-        User user = new User()
-        user.id = params.userId
-        user.username = "TODO"
+        def user = aasService.getPersonAsAdmin(params.userId)
 
         // A user want to report this list to DDB
         if(params.report){
