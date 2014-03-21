@@ -162,6 +162,8 @@ OpenSource service for handling registration, authentication and authorization f
  
 Configuration parameter:
 * 'ddb.aas.url' defines the url to reach the aas service
+* 'ddb.aas.admin.userid' defines an id for a AAS user with administrator rights
+* 'ddb.aas.admin.password' defines the password of the AAS user with administrator rights
  
 More info's about this service can be found here:
 https://github.com/Deutsche-Digitale-Bibliothek/aas-AASWebServices
