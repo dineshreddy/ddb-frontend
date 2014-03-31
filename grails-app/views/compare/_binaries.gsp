@@ -97,7 +97,7 @@ limitations under the License.
                   data-type="image"
                   data-author="${it.preview.author}"
                   data-rights="${it.preview.rights}"
-                  title="${(it.full.title).encodeAsHTML()}"
+                  title="${(it.preview.title).encodeAsHTML()}"
                   <g:set var="type" value="image"/>
                 </g:if>
                 <g:elseif test="${it.orig.uri.video != ''}">
