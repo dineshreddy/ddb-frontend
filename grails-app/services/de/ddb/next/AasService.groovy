@@ -22,8 +22,10 @@ import groovyx.net.http.ContentType
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
+import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.logging.LogFactory
+import org.apache.http.util.EntityUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
@@ -158,6 +160,48 @@ class AasService {
      */
     public JSONObject createPerson(JSONObject person) {
         return request(PERSON_URI, Method.POST, person)
+    }
+
+    /**
+     * Create or update a person in AAS. This method is used to store OpenId users in AAS.
+     *
+     * @param user user object
+     */
+    public void createOrUpdatePersonAsAdmin(User user) {
+        // TODO use ApiConsumer after integrating "ddb-common" project
+        def http = new HTTPBuilder(configurationService.getAasUrl())
+
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put(NICKNAME_FIELD, user.username)
+        jsonObject.put(LASTNAME_FIELD, user.lastname)
+        jsonObject.put(FIRSTNAME_FIELD, user.firstname)
+        jsonObject.put(EMAIL_FIELD, user.email)
+
+        User aasUser = getPersonAsAdmin(user.email)
+        if (aasUser.email) {
+            // user exists - update it
+            jsonObject.put(ID_FIELD, aasUser.id)
+            http.request(Method.PUT, ContentType.JSON) {
+                body = jsonObject
+                http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
+                uri.path = PERSON_URI + "/" + aasUser.id
+                response.failure = { updateResponse ->
+                    log.error "AAS request failed: " + EntityUtils.toString(updateResponse.entity)
+                }
+            }
+        }
+        else {
+            // user doesn't exist - create it
+            jsonObject.put(PASSWORD_FIELD, RandomStringUtils.randomAlphanumeric(12))
+            http.request(Method.POST, ContentType.JSON) {
+                body = jsonObject
+                http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
+                uri.path = PERSON_URI
+                response.failure = { createResponse ->
+                    log.error "AAS request failed: " + EntityUtils.toString(createResponse.entity)
+                }
+            }
+        }
     }
 
     /**

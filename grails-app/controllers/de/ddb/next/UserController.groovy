@@ -750,6 +750,11 @@ class UserController {
                     identifier = verified.getIdentifier()
                 }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
                     username = params["openid.ax.value.fullname"]
+                    def index = username.trim().lastIndexOf(' ')
+                    if (index > 0) {
+                        firstName = username.substring(0, index)
+                        lastName = username.substring(index + 1)
+                    }
                     email = params["openid.ax.value.email"]
                     identifier = verified.getIdentifier()
                 }else {
@@ -784,7 +789,7 @@ class UserController {
                 loginStatus = LoginStatus.SUCCESS
 
                 createFavoritesFolderIfNotExisting(user)
-
+                aasService.createOrUpdatePersonAsAdmin(user)
             }else {
                 log.info "doOpenIdLogin(): failure verification"
                 loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
