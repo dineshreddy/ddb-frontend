@@ -386,7 +386,9 @@ $(document)
               } else {
                 jwPlayerSetup(previewHref, previewUri);
               }
-              $("div.binary-title span").text(title);
+              // title limited to 200 characters
+              var title_text = $.cutoffStringAtSpace(title, 200);
+              $("div.binary-title span").text(title_text);
               $("div.binary-title").attr("title", title);
               $("div.binary-author span").text(author);
               $("div.binary-author").attr("title", author);
