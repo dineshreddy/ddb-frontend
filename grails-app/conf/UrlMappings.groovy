@@ -30,7 +30,6 @@ class UrlMappings {
             action="facetsList"
         }
 
-
         "/facets/calculateTimeFacetDays/$q?" {
             controller="facets"
             action="calculateTimeFacetDays"
@@ -319,6 +318,11 @@ class UrlMappings {
         "/multipolygone" {
             controller="map"
             action="multipolygone"
+        }
+
+        "/searchPerson/$q?" {
+            controller="person"
+            action="search"
         }
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
