@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import grails.util.Environment
+
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
@@ -20,6 +22,13 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+
+def environment = Environment.getCurrent()
+
+if (environment == Environment.DEVELOPMENT) {
+    println "| Using local version of common plugin"
+    grails.plugin.location.'ddb-common' = "../ddb-common"
+}
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -76,6 +85,11 @@ grails.project.dependency.resolution = {
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
+
+        if (environment != Environment.DEVELOPMENT) {
+            println "Using maven repo for common plugin"
+            compile "de.ddb:ddb-common:0.2-SNAPSHOT"
+        }
     }
 
     // don't put Selenium tests into war file
