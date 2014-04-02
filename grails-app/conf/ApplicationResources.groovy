@@ -121,7 +121,7 @@ modules = {
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     multipolygone {
-        resource url:'/js/map/css/map.css', bundle: 'screen'
+        resource url:'/css/multipolygone.css'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/multipolygone.js'
         dependsOn "ddbnext"
