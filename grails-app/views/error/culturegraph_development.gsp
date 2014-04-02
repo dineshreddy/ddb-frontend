@@ -1,4 +1,4 @@
-<%@page import="de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType"%>
+<%@page import="de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType"%>
 <html>
   <head>
     <title>

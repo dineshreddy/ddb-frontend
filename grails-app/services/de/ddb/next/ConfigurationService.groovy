@@ -18,7 +18,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
-import de.ddb.next.exception.ConfigurationException
+import de.ddb.common.exception.ConfigurationException
 
 /**
  * Service for accessing the configuration.

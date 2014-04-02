@@ -20,10 +20,10 @@ import net.sf.json.JSONNull
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.exception.BadRequestException
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.exception.BadRequestException
 
 class SearchController {
 

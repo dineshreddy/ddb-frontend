@@ -31,15 +31,14 @@ import org.apache.commons.io.IOUtils
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.context.ServletContextHolder
 import org.codehaus.groovy.grails.web.util.WebUtils
-
 import org.springframework.context.i18n.LocaleContextHolder
 
+import de.ddb.common.exception.AuthorizationException
+import de.ddb.common.exception.BackendErrorException
+import de.ddb.common.exception.BadRequestException
+import de.ddb.common.exception.ConflictException
+import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.User
-import de.ddb.next.exception.AuthorizationException
-import de.ddb.next.exception.BackendErrorException
-import de.ddb.next.exception.BadRequestException
-import de.ddb.next.exception.ConflictException
-import de.ddb.next.exception.ItemNotFoundException
 
 
 /**

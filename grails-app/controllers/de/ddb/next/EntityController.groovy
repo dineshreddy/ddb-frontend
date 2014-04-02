@@ -16,11 +16,11 @@
 package de.ddb.next
 
 import net.sf.json.JSONArray
+import de.ddb.common.exception.CultureGraphException
+import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 import de.ddb.next.ApiResponse.HttpStatus
 import de.ddb.next.constants.RoleFacetEnum
 import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.exception.CultureGraphException
-import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
