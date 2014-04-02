@@ -68,20 +68,15 @@ limitations under the License.
 	        </g:each>
 	      </div>
 	</noscript>
-	
-  	<%-- Shows the facets supported in the JS version. --%>
+
+    <%-- Shows the facets supported in the JS version. --%>
     <div class="js facets-list bt bb off">
       <%-- TimeFacet is handle by its own template --%>
       <g:render template="timeFacet" />
-      
       <%-- All other facets are handled in the same way --%>          
-      <g:each in="${jsFacetsList}">
-	      <div class="facets-item bt bb bl br">
-	        <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
-	      </div>
-      </g:each>
-    </div>	  	
-	
+      <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
+    </div>
+
       <div class="keep-filters off">
         <label class="checkbox"> 
           <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />

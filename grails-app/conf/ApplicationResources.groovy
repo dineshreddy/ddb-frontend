@@ -48,6 +48,7 @@ modules = {
         resource url:'/css/socialMedia.css', bundle: 'screen'
         resource url:'/css/apiKey.css', bundle: 'screen'
         resource url:'/css/compare.css', bundle: 'screen'
+        resource url:'/css/person.css', bundle: 'screen'
         resource url:'/third-party/map/css/style.css', bundle: 'screen'
         resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
         resource url:'/css/timeFacet.css'
