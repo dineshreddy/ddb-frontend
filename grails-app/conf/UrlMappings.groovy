@@ -311,11 +311,6 @@ class UrlMappings {
             action="index"
         }
 
-        "/maptest" {
-            controller="map"
-            action="index"
-        }
-
         "/multipolygone" {
             controller="map"
             action="multipolygone"
