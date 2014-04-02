@@ -19,11 +19,6 @@ import de.ddb.next.exception.ItemNotFoundException
 
 class MapController {
 
-    def index() {
-        //throw new ItemNotFoundException() // Deactivated maptest for 4.3.RC1, see DDBNEXT-1110
-        render(view: "map", model: [])
-    }
-
     def multipolygone() {
         //throw new ItemNotFoundException() // Deactivated multipolygone for 4.3.RC1, like for the maptest
         render(view: "multipolygone", model: [])
