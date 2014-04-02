@@ -128,7 +128,7 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        def logoResource=new UrlResource(model.institutionImage).getURL()
+        def logoResource=new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
         def viewerContent
         if (model.binaryList.first().preview.uri == '') {
