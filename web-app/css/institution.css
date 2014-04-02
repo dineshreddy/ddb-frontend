@@ -26,6 +26,7 @@
   font-style: italic;
   margin-bottom: 20px;
   float: right;
+  border: 1px solid black;
 }
 
 @media (min-width: 768px) and (max-width: 979px) {

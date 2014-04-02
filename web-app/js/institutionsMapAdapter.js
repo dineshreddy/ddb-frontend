@@ -20,6 +20,7 @@ var INSTITUTION_PAGE_NAME = 'institution';
 ////div where map for 1 institution is written in
 //var INSTITUTION_DIV = 'divOSM';
 //
+var MAP_DIV = 'ddb-map';
 
 //only initialize map once, then remember in this variable
 var mapInitialized = false;
@@ -49,10 +50,14 @@ var InstitutionsMapAdapter = (function($, undefined) {
   //for public properties. avoid the reserved keyword "public"
   var Public = {};
 //
-//  Public.drawInstitution = function(mapDiv, lang, lon, lat) {
-//    InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
-//  };
-//
+  Public.drawInstitution = function(mapDiv, lang, lon, lat) {
+    //InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
+    if(typeof map === "undefined"){
+      map = new DDBMap();
+    }
+    map.displayMarker({"rootDivId": MAP_DIV}, lang, lon, lat, 16);
+  };
+
   var _getSectorSelection = function() {
     var sectors = {};
     sectors['selected'] = [];
@@ -97,8 +102,10 @@ var InstitutionsMapAdapter = (function($, undefined) {
     if (!mapInitialized && !$('#institution-map').hasClass('off')) {
 //      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
       mapInitialized = true;
-      map = new DDBMap();
-      map.display({"rootDivId": "ddb-map"});
+      if(typeof map === "undefined"){
+        map = new DDBMap();
+      }
+      map.display({"rootDivId": MAP_DIV});
     }
   };
 
@@ -185,8 +192,7 @@ $(document).ready(
 //      GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//'
 //          + window.document.location.host + MAP_DIR;
       if (jsPageName === INSTITUTION_PAGE_NAME) {
-//        InstitutionsMapAdapter
-//            .drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+        InstitutionsMapAdapter.drawInstitution(MAP_DIV, jsLanguage, jsLongitude, jsLatitude);
       } else if (jsPageName === INSTITUTIONLIST_PAGE_NAME) {
         $('.loader').addClass('off');
         InstitutionsMapAdapter.setupDom4MapDisplay();

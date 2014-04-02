@@ -107,7 +107,10 @@ limitations under the License.
               </g:if>
             </div>
 
-            <div id="divOSM" class="span5"></div>
+<%--            <div id="divOSM" class="span5"></div>--%>
+            <div id="divOSM" class="span5">
+              <div id="ddb-map"></div>
+            </div>
 
         </div>
       </div>
