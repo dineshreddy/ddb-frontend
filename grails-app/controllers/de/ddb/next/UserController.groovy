@@ -17,6 +17,8 @@ package de.ddb.next
 
 import grails.converters.*
 
+import java.security.MessageDigest
+
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
@@ -724,7 +726,7 @@ class UserController {
             //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
-            ParameterList openidResp = new ParameterList(request.getParameterMap())
+            ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
             String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
@@ -773,7 +775,7 @@ class UserController {
                 HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
-                user.setId(identifier.encodeAsMD5().toString())
+                user.setId(encodeAsMD5(identifier))
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
@@ -949,4 +951,10 @@ class UserController {
         }
     }
 
+    private def String encodeAsMD5(String decodedString) {
+        MessageDigest md5 = MessageDigest.getInstance("MD5")
+        md5.update(decodedString.getBytes())
+        BigInteger hash = new BigInteger(1, md5.digest())
+        return hash.toString(16)
+    }
 }
