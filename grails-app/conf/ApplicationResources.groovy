@@ -49,9 +49,11 @@ modules = {
         resource url:'/css/apiKey.css', bundle: 'screen'
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/css/person.css', bundle: 'screen'
-        resource url:'/third-party/map/css/style.css', bundle: 'screen'
-        resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
+        resource url:'/js/map/css/map.css', bundle: 'screen'
+        //resource url:'/third-party/map/css/style.css', bundle: 'screen'
+        //resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
         resource url:'/css/timeFacet.css'
+
     }
 
     cssprint {
@@ -60,8 +62,8 @@ modules = {
         resource url:'/css/institutionList.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/results.css', attrs:[media:'print'], bundle: 'print'
         resource url:'/css/print.css', attrs:[media:'print'], bundle: 'print'
-        //        resource url:'/third-party/map/css/style.css', attrs:[media:'print'], bundle: 'print'
-        //        resource url:'/third-party/map/css/ddbPlacenamePopupList.css', attrs:[media:'print'], bundle: 'print'
+        //resource url:'/third-party/map/css/style.css', attrs:[media:'print'], bundle: 'print'
+        //resource url:'/third-party/map/css/ddbPlacenamePopupList.css', attrs:[media:'print'], bundle: 'print'
     }
 
     javascript {
@@ -120,7 +122,7 @@ modules = {
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     multipolygone {
-        resource url:'/js/map/css/map.css', bundle: 'screen'
+        resource url:'/css/multipolygone.css'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/multipolygone.js'
         dependsOn "ddbnext"
@@ -142,14 +144,15 @@ modules = {
     //These are pages that include third party components
     institution {
         dependsOn "ddbnext"
+        //resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/map.js'
         resource url:'/js/institutionsMapAdapter.js'
-        resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
     }
 
     institutionlist {
         dependsOn "ddbnext"
-        //        resource url:'/third-party/map/geotemco_InstitutionsMap.js'
-        resource url:'/js/map/css/map.css'
+        //resource url:'/third-party/map/geotemco_InstitutionsMap.js'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/map/map.js'
         resource url:'/js/institutionsMapAdapter.js'

@@ -79,7 +79,7 @@ limitations under the License.
     </div>
     <div id="institution-map" class="span9 off">
       <div id="mapview">
-<%--        <div id="mapContainerDiv"></div>--%>
+        <%--<div id="mapContainerDiv"></div>--%>
         <div id="ddb-map"></div>
       </div>
     </div>
