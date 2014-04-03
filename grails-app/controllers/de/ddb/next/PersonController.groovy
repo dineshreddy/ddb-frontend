@@ -14,7 +14,6 @@ class PersonController {
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def results = []
         def correctedQuery = ""
-        def entities = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())

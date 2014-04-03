@@ -643,7 +643,6 @@ class SearchService {
      */
     def getRolesForFacetValue(net.sf.json.JSONObject facets, String fctName, int numberOfElements, Locale locale){
         def res = [type: fctName, values: []]
-        def allFacetFilters = configurationService.getFacetsFilter()
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){

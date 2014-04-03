@@ -60,7 +60,6 @@ class CompareController {
     def handleSearchResultParameters(reqParameters, httpRequest) {
         def searchResultParameters = [:]
         searchResultParameters["searchParametersMap"] = [:]
-        def resultsItems
         def searchResultUri
 
         if (reqParameters[SearchParamEnum.QUERY.getName()] != null) {

@@ -119,8 +119,6 @@ public class FacetsService {
      * @return a list of all facets in the json format
      */
     public getAllFacets() {
-        def res = []
-
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/search/facets/')
         if(!apiResponse.isOk()){
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())

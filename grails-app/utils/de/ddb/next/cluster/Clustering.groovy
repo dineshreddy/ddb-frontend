@@ -370,7 +370,6 @@ class Clustering {
         this.deleteEdges = new BinaryHeap()
         this.weightEdges(resolution, circleGap)
 
-        def index = 0
         while (this.deleteEdges.size() > 0) {
             def e = this.deleteEdges.pop()
             if (e.legal) {

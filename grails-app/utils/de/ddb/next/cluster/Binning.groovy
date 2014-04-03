@@ -480,7 +480,6 @@ class Binning {
                 hashMap.push([])
                 selectionMap.push([])
             }
-            def points = []
             def max = 0
             def radius = 0
             def resolution = this.map.getResolutionForZoom(i)
