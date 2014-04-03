@@ -1,10 +1,6 @@
 package de.ddb.next
 
-import javax.activation.FileDataSource;
-
 import org.codehaus.groovy.grails.io.support.UrlResource
-
-import com.sun.org.apache.bcel.internal.generic.RETURN;
 
 class FileService {
     def transactional = false

@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.GET
 import net.sf.json.JSONNull
 
 import org.codehaus.groovy.grails.web.util.WebUtils
