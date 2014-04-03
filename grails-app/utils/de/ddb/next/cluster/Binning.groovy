@@ -14,7 +14,7 @@ class Binning {
     def circleGap = 0
     def circlePackings = true
     def binning = "generic"
-    def minimumRadius = 4
+    def minimumRadius = 6
     def noBinningRadii = "dynamic"
     def binCount = 10
     def objects = null
