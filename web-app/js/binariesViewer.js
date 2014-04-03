@@ -60,61 +60,28 @@ $(document)
               }
             }
             $(function() {
-              currentTab($("p.all"));
-              $("div.all").show();
-              $("p.divider").show();
+              var totImages = $(".gallery-images li").size();
+              var totVideos = $(".gallery-videos li").size();
+              var totAudios = $(".gallery-audios li").size();
+              var currentGallery = "";
+              if (totImages > 0) {
+                currentGallery = "images";
+              } else if (totVideos > 0) {
+                currentGallery = "videos";
+              } else if (totAudios > 0) {
+                currentGallery = "audios";
+              }
+              currentTab($("p."+currentGallery));
+              $("div."+currentGallery).show();
               $(".tab").addClass('show-divider');
               $("div.tabs").addClass("fix");
-              updatePreview($("div.all"));
-              createGallery($(".gallery-all"));
-              updateGalleryPagination(0, ".gallery-all li");
+              updatePreview($("div."+currentGallery));
+              createGallery($(".gallery-"+currentGallery));
             });
-            var updateGalleryPagination = function(pag, list) {
-              var pos;
-              var tot = $(list).size();
-              var mediaQueryMatches = 1;
-              if (navigator.appName.indexOf("Internet Explorer") === -1) {
-                mediaQueryMatches = mediaQuery;
-              }
-              if (mediaQueryMatches) {
-                // window width is at least 530px
-                if (tot > 1) {
-                  if (tot === 2) {
-                    pos = "1-2";
-                  } else {
-                    a = 1 + pag * 3;
-                    b = 3 + pag * 3;
-                    while (b > tot) {
-                      a--;
-                      b--;
-                    }
-                    pos = a + "-" + b;
-                  }
-                } else {
-                  pos = "1";
-                }
-              } else {
-                // window width is less than 530px
-                if (tot > 1) {
-                  a = 1 + pag * 2;
-                  b = 2 + pag * 2;
-                  while (b > tot) {
-                    a--;
-                    b--;
-                  }
-                  pos = a + "-" + b;
-                } else {
-                  pos = "1";
-                }
-              }
-              $("p.gallery-pagination").text(pos + "/" + tot);
-            }
-            ;
             var currentTab = function(el) {
               $("p.tab").removeClass("current-tab");
               $(el).addClass("current-tab");
-            }
-            ;
+            };
             var updatePreview = function(gallerydiv) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
               var previewUri = $(a).attr("href");
@@ -247,9 +214,6 @@ $(document)
             $(".btn-prev").click(function() {
               if (!$(this).hasClass("disabled")) {
                 var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
-                var prevPage = parseInt(currentTabPage) - 1;
-                updateGalleryPagination(prevPage, $(this).parent().find(".gallery-tab li"));
-                $(this).parent().find(".gallery-pagination").attr("data-pag", prevPage);
                 $(this).addClass("disabled");
                 setTimeout(function() {
                   $(this).removeClass("disabled");
@@ -259,28 +223,12 @@ $(document)
             $(".btn-next").click(function() {
               if (!$(this).hasClass("disabled")) {
                 var currentTabPage = $(this).parent().find(".gallery-pagination").attr("data-pag");
-                var nextPage = parseInt(currentTabPage) + 1;
-                updateGalleryPagination(nextPage, $(this).parent().find(".gallery-tab li"));
-                $(this).parent().find(".gallery-pagination").attr("data-pag", nextPage);
                 $(this).addClass("disabled");
                 setTimeout(function() {
                   $(this).removeClass("disabled");
                 }, 500);
               }
             });
-            $("p.all").click(
-                function() {
-                  var tab = $("div.all");
-                  currentTab(this);
-                  $("div.scroller").hide();
-                  tab.show();
-                  if ($(".gallery-all").find('li').size() > 3) {
-                    createGallery($(".gallery-all"));
-                  }
-                  updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-all li");
-                });
             $("p.images").click(
                 function() {
                   var tab = $("div.images");
@@ -292,8 +240,6 @@ $(document)
                   tab.show();
                   createGallery($(".gallery-images"));
                   updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-images li");
                 });
             $("p.videos").click(
                 function() {
@@ -306,8 +252,6 @@ $(document)
                   tab.show();
                   createGallery($(".gallery-videos"));
                   updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-videos li");
                 });
             $("p.audios").click(
                 function() {
@@ -320,8 +264,6 @@ $(document)
                   tab.show();
                   createGallery($(".gallery-audios"));
                   updatePreview(tab);
-                  updateGalleryPagination(tab.find(".gallery-pagination").attr("data-pag"),
-                      ".gallery-audios li");
                 });
             $(".previews")
                 .click(

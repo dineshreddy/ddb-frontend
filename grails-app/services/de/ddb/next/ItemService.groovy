@@ -182,7 +182,6 @@ class ItemService {
         def binariesCounter = binariesCounter(binaryList)
 
         def flashInformation = [:]
-        flashInformation.all = [binaryList.size]
         flashInformation.images = [binariesCounter.images]
         flashInformation.audios = [binariesCounter.audios]
         flashInformation.videos = [binariesCounter.videos]
