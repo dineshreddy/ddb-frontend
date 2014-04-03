@@ -27,7 +27,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
  */
 public class FacetsService {
     //Backend URL
-    String url
+    private final String url
 
     def transactional=false
 

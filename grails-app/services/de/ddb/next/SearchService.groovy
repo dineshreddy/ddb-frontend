@@ -48,10 +48,10 @@ class SearchService {
     private static final String CHARACTER_ENCODING = "UTF-8"
 
     //Name of search-cookie
-    private searchCookieName = "searchParameters"
+    private static final String SEARCH_COOKIE_NAME = "searchParameters"
 
     //The list of the NON JS supported facets
-    private static facetsList = [
+    private static final facetsList = [
         FacetEnum.PLACE.getName(),
         FacetEnum.AFFILIATE.getName(),
         FacetEnum.KEYWORDS.getName(),
@@ -760,7 +760,7 @@ class SearchService {
                 jSonObject.put(entry.key, entry.value)
             }
         }
-        def cookie = new Cookie(searchCookieName + requestObject.contextPath, jSonObject.toString())
+        def cookie = new Cookie(SEARCH_COOKIE_NAME + requestObject.contextPath, jSonObject.toString())
         cookie.maxAge = -1
         return cookie
     }
@@ -775,7 +775,7 @@ class SearchService {
         def searchParams
         def searchParamsMap = [:]
         for (cookie in cookies) {
-            if (cookie.name == searchCookieName + requestObject.contextPath) {
+            if (cookie.name == SEARCH_COOKIE_NAME + requestObject.contextPath) {
                 searchParams = cookie.value
             }
         }

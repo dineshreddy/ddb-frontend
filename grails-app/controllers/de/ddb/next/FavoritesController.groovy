@@ -541,15 +541,6 @@ class FavoritesController {
         return output
     }
 
-    private def createFavoritesLink(String order, String by, Map commonParams, String action) {
-        Map currentParams = [
-            (SearchParamEnum.ORDER.getName()):order,
-            (SearchParamEnum.BY.getName()):by
-        ]
-        currentParams.putAll(commonParams)
-        return g.createLink(controller:'favorites', action:action, params: currentParams)
-    }
-
     private Folder getSelectedFolder(String folderId, User user) {
         def selectedFolder = bookmarksService.findPublicFolderById(folderId)
 
