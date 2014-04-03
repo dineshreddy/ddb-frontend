@@ -20,11 +20,11 @@ import grails.converters.JSON
 import org.ccil.cowan.tagsoup.Parser
 
 import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.Type
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {

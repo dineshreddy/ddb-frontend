@@ -26,11 +26,11 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.Type
 
 class FavoritesService {
 

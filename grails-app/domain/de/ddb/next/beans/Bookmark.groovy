@@ -16,8 +16,8 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
+import de.ddb.common.constants.Type
 import de.ddb.next.JsonUtil
-import de.ddb.next.constants.Type
 
 @ToString(includeNames=true)
 class Bookmark {

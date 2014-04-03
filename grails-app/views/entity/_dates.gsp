@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 
 <g:set var="hasProfessions" value="${entity.person.professionOrOccupation != null && entity.person.professionOrOccupation.size() > 0}"/>
 <g:set var="hasBirthContent" value="${entity.person.dateOfBirth != null || entity.person.placeOfBirth != null}"/>

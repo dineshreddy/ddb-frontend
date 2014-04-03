@@ -21,10 +21,10 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.RoleFacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.exception.EntityNotFoundException
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.RoleFacetEnum
-import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Service class for all entity related methods

@@ -20,8 +20,8 @@ import net.sf.json.JSONNull
 import org.codehaus.groovy.grails.web.json.*
 
 import de.ddb.common.beans.User
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.beans.SavedSearch
-import de.ddb.next.constants.SearchParamEnum
 
 class SavedSearchesService {
     def transactional = false

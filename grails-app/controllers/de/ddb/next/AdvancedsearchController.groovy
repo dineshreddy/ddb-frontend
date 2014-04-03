@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.constants.SearchParamEnum
 
 
 

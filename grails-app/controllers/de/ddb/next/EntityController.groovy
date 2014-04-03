@@ -18,10 +18,10 @@ package de.ddb.next
 import net.sf.json.JSONArray
 import de.ddb.common.ApiResponse
 import de.ddb.common.ApiResponse.HttpStatus
+import de.ddb.common.constants.RoleFacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
-import de.ddb.next.constants.RoleFacetEnum
-import de.ddb.next.constants.SearchParamEnum
 
 /**
  * Controller class for all entity related views

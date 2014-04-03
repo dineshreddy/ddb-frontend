@@ -33,17 +33,17 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ProxyUtil
 import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.LoginStatus
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.SupportedOpenIdProviders
+import de.ddb.common.constants.UserStatus
 import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.LoginStatus
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.SupportedOpenIdProviders
-import de.ddb.next.constants.UserStatus
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"

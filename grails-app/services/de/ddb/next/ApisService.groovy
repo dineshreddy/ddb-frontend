@@ -19,8 +19,8 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 
 /**
  * Set of services used in the ApisController for views/search

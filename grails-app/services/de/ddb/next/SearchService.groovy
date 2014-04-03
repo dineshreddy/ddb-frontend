@@ -29,9 +29,9 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
 import de.ddb.common.ApiConsumer
-import de.ddb.next.constants.CortexConstants
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.constants.CortexConstants
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 
 /**
  * Set of services used in the SearchController for views/search
