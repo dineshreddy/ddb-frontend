@@ -261,6 +261,14 @@ class FavoritesService {
         return newFormat.format(oldDate)
     }
 
+    boolean isUserLoggedIn() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
+
+    User getUserFromSession() {
+        return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+    }
+
     List addCurrentUserToFavResults(allRes, User user) {
         def userJson = [:]
         userJson["id"] = user.id
