@@ -10,10 +10,10 @@ import de.ddb.next.EncodeInvalidHtmlTagLib
 class EncodeInvalidHtmlTagLibTests {
 
     @Test
-    void brShouldNotbeEncoded() {
+    void textShouldBeEncoded() {
         String text = "before<br /><Izchak><br />after"
         String result = applyTemplate('<ddb:encodeInvalidHtml text="${text}"/>', [text : text]).trim()
 
-//        assert result.equals(text)
+        assert result.equals(text.encodeAsHTML())
     }
 }
