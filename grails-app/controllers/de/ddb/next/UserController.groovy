@@ -47,7 +47,6 @@ import de.ddb.next.exception.ItemNotFoundException
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
-    private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
     def LinkGenerator grailsLinkGenerator
     def aasService

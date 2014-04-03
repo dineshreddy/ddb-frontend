@@ -23,7 +23,6 @@ import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.Type
 import de.ddb.next.exception.FavoritelistNotFoundException
 

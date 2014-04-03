@@ -26,8 +26,6 @@ class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
 
-    private static final def NUMBERS = 0..9
-
     private static final def NUMBER_KEY = '0-9'
 
     def transactional = false
