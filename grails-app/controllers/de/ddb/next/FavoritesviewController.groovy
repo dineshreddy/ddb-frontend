@@ -1,7 +1,5 @@
 package de.ddb.next
 
-import java.util.List;
-
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.next.beans.Folder
