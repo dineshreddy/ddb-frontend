@@ -20,6 +20,7 @@ import net.sf.json.JSONNull
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
 import de.ddb.common.exception.BadRequestException
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum

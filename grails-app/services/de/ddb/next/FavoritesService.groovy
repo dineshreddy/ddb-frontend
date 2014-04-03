@@ -24,8 +24,9 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.beans.User
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.SupportedLocales
@@ -159,9 +160,9 @@ class FavoritesService {
                     def professions = entityDetails?.professionOrOccupation
                     def subtitle = ""
                     professions.each {
-                      subtitle += it
-                      if(it != professions.last())
-                        subtitle +=", "
+                        subtitle += it
+                        if(it != professions.last())
+                            subtitle +=", "
                     }
                     entity["id"] = it.itemId
                     entity["view"] = []

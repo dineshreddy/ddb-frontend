@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.next.constants.CultureGraphEnum
 
 /**

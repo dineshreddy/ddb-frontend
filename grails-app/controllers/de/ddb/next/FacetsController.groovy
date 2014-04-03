@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
 import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum

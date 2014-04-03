@@ -28,6 +28,7 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
+import de.ddb.common.ApiConsumer
 import de.ddb.next.constants.CortexConstants
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum

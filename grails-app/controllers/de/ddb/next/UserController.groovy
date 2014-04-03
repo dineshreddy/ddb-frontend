@@ -31,12 +31,13 @@ import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ProxyUtil
+import de.ddb.common.beans.User
 import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.LoginStatus
 import de.ddb.next.constants.SearchParamEnum

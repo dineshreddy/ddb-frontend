@@ -16,6 +16,11 @@
 package de.ddb.next
 
 import groovy.json.*
+
+import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.common.exception.EntityNotFoundException
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.RoleFacetEnum

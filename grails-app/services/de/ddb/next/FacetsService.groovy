@@ -21,6 +21,8 @@ import net.sf.json.JSONNull
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.common.ApiConsumer
+
 /**
  * Get facetted searchfields and values for facet from Backend.
  * 

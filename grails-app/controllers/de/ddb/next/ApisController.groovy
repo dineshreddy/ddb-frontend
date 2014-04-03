@@ -20,6 +20,7 @@ import grails.converters.JSON
 import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
+import de.ddb.common.ApiConsumer
 import de.ddb.next.constants.SupportedLocales
 
 class ApisController {

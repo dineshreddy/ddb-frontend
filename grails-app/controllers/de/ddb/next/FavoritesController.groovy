@@ -19,9 +19,9 @@ import grails.converters.JSON
 
 import org.ccil.cowan.tagsoup.Parser
 
+import de.ddb.common.beans.User
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
 import de.ddb.next.constants.FolderConstants
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.Type
@@ -43,12 +43,10 @@ class FavoritesController {
                     bookmarksService.updateFolder(folder)
 
                     flash.message = "ddbnext.favorites_list_blocked"
-
                 } catch (e) {
                     log.error "An error occurred while blocking a favorites list: " + e.getMessage(), e
                     flash.error = "ddbnext.favorites_list_notblocked"
                 }
-
             }else{
                 flash.error = "ddbnext.favorites_list_notblockedtoken"
             }
@@ -82,7 +80,6 @@ class FavoritesController {
                         folderDescription:selectedFolder.description,
                         folderTitle: selectedFolder.title
                     ])
-
                 }
                 flash.message = "ddbnext.favorites_email_was_sent_succ"
             } catch (e) {

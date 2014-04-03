@@ -15,8 +15,8 @@
  */
 package de.ddb.next
 import grails.converters.JSON
+import de.ddb.common.beans.User
 import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.User
 import de.ddb.next.constants.Type
 
 class InstitutionController {

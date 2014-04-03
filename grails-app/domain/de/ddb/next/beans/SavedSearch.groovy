@@ -16,7 +16,6 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-
 import de.ddb.next.constants.FacetEnum
 import de.ddb.next.constants.SearchParamEnum
 

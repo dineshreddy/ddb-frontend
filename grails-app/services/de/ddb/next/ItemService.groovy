@@ -34,9 +34,11 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
 import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.User
 import de.ddb.next.constants.SearchParamEnum
 import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.constants.Type
