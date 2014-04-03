@@ -8,11 +8,12 @@ import de.ddb.next.constants.SupportedLocales
 class PersonController {
 
     def searchService
+    def entityService
 
     def search() {
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        def results = []
+        def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def entities = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))

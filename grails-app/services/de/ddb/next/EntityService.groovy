@@ -76,6 +76,32 @@ class EntityService {
         return facetSearch
     }
 
+    /**
+     * Performs a search request on the backend.
+     *
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     *
+     * @return the serach result
+     */
+    def doEntitySearch(def query) {
+        log.info  "QUERY *******************" + query
+        def searchPreview = [:]
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/entity', false, query)
+        if(!apiResponse.isOk()){
+            def message = "doEntitySearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+
+        searchPreview["entity"] = jsonSearchResult.results
+
+        return searchPreview
+    }
 
     /**
      * Performs a search request on the backend. 
