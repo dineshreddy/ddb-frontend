@@ -29,7 +29,7 @@ import de.ddb.common.ApiConsumer
  */
 public class FacetsService {
     //Backend URL
-    private final String url
+    String url
 
     def transactional=false
 
