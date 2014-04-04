@@ -30,9 +30,9 @@ class IndexController {
 
         // fetch the DDB news from static server.
         if(locale.toString().substring(0, 2)== "de") {
-            path = "/static/" + SupportedLocales.DE.getISO2() + "/homepage.xml"
+            path = SupportedLocales.DE.getISO2() + "/homepage.xml"
         } else {
-            path = "/static/" + SupportedLocales.EN.getISO2() + "/homepage.xml"
+            path = SupportedLocales.EN.getISO2() + "/homepage.xml"
         }
 
         def query = [ client: "DDB-NEXT" ]
