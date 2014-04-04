@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import grails.util.Environment
+
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
@@ -20,6 +22,13 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+
+def environment = Environment.getCurrent()
+
+if (environment == Environment.DEVELOPMENT) {
+    println "| Using local version of common plugin"
+    grails.plugin.location.'ddb-common' = "../ddb-common"
+}
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -49,6 +58,7 @@ grails.project.dependency.resolution = {
         // This are the geotools repositories required for coordinate transformation
         mavenRepo "http://repo.opengeo.org/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
+        mavenRepo "https://www.escidoc.org/artifactory/repo/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
@@ -70,11 +80,17 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.0'
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
+        compile ":message-digest:1.1"
         build ":tomcat:$grailsVersion"
         runtime ":resources:1.2.1"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
+
+        if (environment != Environment.DEVELOPMENT) {
+            println "Using maven repo for common plugin"
+            compile "de.ddb:ddb-common:0.3-SNAPSHOT"
+        }
     }
 
     // don't put Selenium tests into war file

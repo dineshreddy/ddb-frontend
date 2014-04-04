@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="link-block">
-  <g:link class="pdf-link" controller="item" params="${params + [pdf:true]}" title="${message(code: 'ddbnext.export_pdf')}" target="_blank">
-    <span><g:message code="ddbnext.export_pdf" /></span>
-  </g:link>
-</div>
+<g:each in="${jsFacetsList}">
+  <div class="facets-item bt bb bl br">
+    <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
+  </div>
+</g:each>

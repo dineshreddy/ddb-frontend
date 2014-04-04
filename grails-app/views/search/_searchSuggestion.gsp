@@ -1,4 +1,4 @@
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <div class="searchSuggestion off">
   <div>
     <g:message code="ddbnext.Search_Suggestion"/>

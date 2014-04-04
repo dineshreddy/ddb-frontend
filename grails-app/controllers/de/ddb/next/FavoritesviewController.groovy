@@ -1,12 +1,9 @@
 package de.ddb.next
 
-import java.util.List;
-
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.constants.SupportedLocales
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesviewController {
@@ -113,7 +110,6 @@ class FavoritesviewController {
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-            def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
             lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
 
             if (totalPages.toFloat()<page.toFloat()){
@@ -291,7 +287,6 @@ class FavoritesviewController {
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-                def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
                 lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
 
                 if (totalPages.toFloat()<page.toFloat()){
@@ -382,7 +377,7 @@ class FavoritesviewController {
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
-    
+
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (favoritesService.isUserLoggedIn()) {
             def List emails = []

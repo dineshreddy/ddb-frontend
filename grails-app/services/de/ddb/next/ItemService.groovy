@@ -26,6 +26,7 @@ import net.sf.json.JSONArray
 import net.sf.json.JSONNull
 import net.sf.json.JSONObject
 
+import org.apache.commons.codec.binary.Base32
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.io.support.UrlResource
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -33,12 +34,14 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
+import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.User
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.Type
-import de.ddb.next.exception.ItemNotFoundException
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -84,9 +87,15 @@ class ItemService {
         def json = apiResponse.getResponse()
         def institution= json.item.institution
 
+        // institution logo
         String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
-        if(json.item.institution.logo != null && !json.item.institution.logo.toString().trim().isEmpty()){
-            institutionLogoUrl = filterOutSurroundingTag(json.item.institution.logo.toString())
+        String institutionId = json.item.institution."logo-institution-ddbid"
+
+        if(!institutionId && !json.item.institution.logo?.toString().trim().isEmpty()){
+            institutionId = getProviderDdbId(json.item.institution.logo.toString())
+        }
+        if (institutionId) {
+            institutionLogoUrl = grailsLinkGenerator.resource("dir": "binary", "file": institutionId + "/list/1.jpg")
         }
 
         String originUrl = filterOutSurroundingTag(json.item.origin.toString())
@@ -121,7 +130,7 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        def logoResource=new UrlResource(model.institutionImage).getURL()
+        def logoResource=new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
         model.institutionImage = logoResource.bytes
         def viewerContent
         if (model.binaryList.first().preview.uri == '') {
@@ -388,6 +397,21 @@ class ItemService {
         return (['images':images,'audios':audios,'videos':videos])
     }
 
+    /**
+     * Extract the institution id from the given logo URL and calculate the DDB id of the institution.
+     *
+     * @param institutionLogoUrl URL pointing to the provider logo
+     * @return DDB id for the institution the logo belongs to
+     */
+    private def String getProviderDdbId(String institutionLogoUrl) {
+        String result = null
+        int startIndex = institutionLogoUrl.indexOf("/edit/")
+        if (startIndex > 0) {
+            String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
+            result = new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
+        }
+        return result
+    }
 
     def getParent(itemId){
         final def parentsPath = "/hierarchy/" + itemId + "/parent/"

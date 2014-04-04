@@ -28,9 +28,10 @@ import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
-import de.ddb.next.constants.CortexConstants
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.CortexConstants
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 
 /**
  * Set of services used in the SearchController for views/search
@@ -48,10 +49,10 @@ class SearchService {
     private static final String CHARACTER_ENCODING = "UTF-8"
 
     //Name of search-cookie
-    private searchCookieName = "searchParameters"
+    private static final String SEARCH_COOKIE_NAME = "searchParameters"
 
     //The list of the NON JS supported facets
-    private static facetsList = [
+    private static final facetsList = [
         FacetEnum.PLACE.getName(),
         FacetEnum.AFFILIATE.getName(),
         FacetEnum.KEYWORDS.getName(),
@@ -643,7 +644,6 @@ class SearchService {
      */
     def getRolesForFacetValue(net.sf.json.JSONObject facets, String fctName, int numberOfElements, Locale locale){
         def res = [type: fctName, values: []]
-        def allFacetFilters = configurationService.getFacetsFilter()
 
         int max = (numberOfElements != -1 && facets.numberOfFacets>numberOfElements)?numberOfElements:facets.numberOfFacets
         for(int i=0;i<max;i++){
@@ -760,7 +760,7 @@ class SearchService {
                 jSonObject.put(entry.key, entry.value)
             }
         }
-        def cookie = new Cookie(searchCookieName + requestObject.contextPath, jSonObject.toString())
+        def cookie = new Cookie(SEARCH_COOKIE_NAME + requestObject.contextPath, jSonObject.toString())
         cookie.maxAge = -1
         return cookie
     }
@@ -775,7 +775,7 @@ class SearchService {
         def searchParams
         def searchParamsMap = [:]
         for (cookie in cookies) {
-            if (cookie.name == searchCookieName + requestObject.contextPath) {
+            if (cookie.name == SEARCH_COOKIE_NAME + requestObject.contextPath) {
                 searchParams = cookie.value
             }
         }

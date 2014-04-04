@@ -48,6 +48,9 @@ limitations under the License.
     </div>
   </div>
   <div class="row institutionlist">
+    <div class="span3">
+      <g:render template="filterNotPhone" />
+    </div>
     <div class="span9">
     <noscript>
       <div class="off">
@@ -76,11 +79,9 @@ limitations under the License.
     </div>
     <div id="institution-map" class="span9 off">
       <div id="mapview">
-        <div id="mapContainerDiv"></div>
+        <%--<div id="mapContainerDiv"></div>--%>
+        <div id="ddb-map"></div>
       </div>
-    </div>
-    <div class="span3">
-      <g:render template="filterNotPhone" />
     </div>
   </div>
 </body>

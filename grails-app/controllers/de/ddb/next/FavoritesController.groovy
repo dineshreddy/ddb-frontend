@@ -19,80 +19,16 @@ import grails.converters.JSON
 
 import org.ccil.cowan.tagsoup.Parser
 
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.Type
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesController {
     def bookmarksService
     def favoritesService
-
-    private def blockFavoritesList(String userId, String folderId, String blockingToken){
-        log.info "blockFavoritesList()"
-        Folder folder = bookmarksService.findFolderById(folderId)
-        if(folder){
-            if(blockingToken == folder.getBlockingToken()){
-
-                try {
-                    folder.setIsPublic(false)
-                    folder.setIsBlocked(true)
-                    bookmarksService.updateFolder(folder)
-
-                    flash.message = "ddbnext.favorites_list_blocked"
-
-                } catch (e) {
-                    log.error "An error occurred while blocking a favorites list: " + e.getMessage(), e
-                    flash.error = "ddbnext.favorites_list_notblocked"
-                }
-
-            }else{
-                flash.error = "ddbnext.favorites_list_notblockedtoken"
-            }
-        }
-    }
-
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
-        if (favoritesService.isUserLoggedIn()) {
-            def List emails = []
-            if (paramEmails.contains(',')){
-                emails=paramEmails.tokenize(',')
-            }else{
-                emails.add(paramEmails)
-            }
-            try {
-                sendMail {
-                    to emails.toArray()
-                    from configurationService.getFavoritesSendMailFrom()
-                    replyTo favoritesService.getUserFromSession().getEmail()
-                    subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
-                        selectedFolder.title,
-                        favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname()
-                    ]))
-                    body( view:"_favoritesEmailBody",
-                    model:[
-                        results: allResultsOrdered,
-                        dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                        userName:favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
-                        baseUrl: configurationService.getSelfBaseUrl(),
-                        contextUrl: configurationService.getContextUrl(),
-                        folderDescription:selectedFolder.description,
-                        folderTitle: selectedFolder.title
-                    ])
-
-                }
-                flash.message = "ddbnext.favorites_email_was_sent_succ"
-            } catch (e) {
-                log.info "An error occurred sending the email "+ e.getMessage(), e
-                flash.error = "ddbnext.favorites_email_was_not_sent_succ"
-            }
-        }else {
-            redirect(controller: "user", action: "index")
-        }
-    }
 
     def deleteFavorite() {
         log.info "deleteFavorite " + params.id
@@ -398,32 +334,6 @@ class FavoritesController {
         render(status: result)
     }
 
-    private def unblockFavoritesList(String userId, String folderId, String unblockingToken){
-        log.info "unblockFavoritesList()"
-        Folder folder = bookmarksService.findFolderById(folderId)
-        if(folder){
-            if(unblockingToken == folder.getBlockingToken()){
-
-                try {
-                    folder.setIsBlocked(false)
-                    folder.setBlockingToken("")
-                    bookmarksService.updateFolder(folder)
-
-                    flash.message = "ddbnext.favorites_list_unblocked"
-
-                } catch (e) {
-                    log.error "An error occurred while blocking a favorites list: " + e.getMessage(), e
-                    flash.error = "ddbnext.favorites_list_notunblocked"
-                }
-
-            }else{
-                flash.error = "ddbnext.favorites_list_notunblockedtoken"
-            }
-        }
-    }
-
-
-
     def addFavorite() {
         log.info "addFavorite " + params.id
         long timestampStart = System.currentTimeMillis() // This is because of the slow request: See DDBNEXT-932
@@ -628,33 +538,6 @@ class FavoritesController {
             output = output.replaceAll("`", "'")
         }
         return output
-    }
-
-    private int getIntegerParam(String paramKey, int defaultValue) {
-        if (params[paramKey]){
-            return params[paramKey].toInteger()
-        }
-        return defaultValue
-    }
-
-    private Closure linkGenerator(String action, int offset, int rows, Map extraParams) {
-        Map commonParams = [
-            (SearchParamEnum.OFFSET.getName()):offset,
-            (SearchParamEnum.ROWS.getName()):rows
-        ]
-        commonParams.putAll(extraParams)
-        return { String order, String by ->
-            createFavoritesLink(order, by, commonParams, action)
-        }
-    }
-
-    private def createFavoritesLink(String order, String by, Map commonParams, String action) {
-        Map currentParams = [
-            (SearchParamEnum.ORDER.getName()):order,
-            (SearchParamEnum.BY.getName()):by
-        ]
-        currentParams.putAll(commonParams)
-        return g.createLink(controller:'favorites', action:action, params: currentParams)
     }
 
     private Folder getSelectedFolder(String folderId, User user) {

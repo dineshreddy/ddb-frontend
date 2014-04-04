@@ -15,10 +15,10 @@
  */
 package de.ddb.next
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpSession
 
-import org.codehaus.groovy.grails.web.util.WebUtils;
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 class SessionService {
 

@@ -31,6 +31,24 @@ $(document).ready(function() {
       init : function() {
       },
 
+      displayMarker : function(config, lang, lon, lat, zoom){
+        var self = this;
+
+        this._applyConfiguration(config);
+
+        var rootDiv = $("#"+this.rootDivId);
+        if(rootDiv.length > 0){
+
+          //Initialize Map
+          var tiles = this._initializeMap(lon, lat, zoom);
+
+          this._addMarkerLayer();
+          
+          this._addMarkerToMap(lon, lat);
+          
+        }        
+      },
+      
       display : function(config) {
         var self = this;
 
@@ -39,34 +57,11 @@ $(document).ready(function() {
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
-          //Set the base folder for images
-          OpenLayers.ImgPath = this.imageFolder;
-
           //Initialize Map
-          var options = {
-            theme: this.themeFolder,
-            projection: "EPSG:900913"
-          };
-          this.osmMap = new OpenLayers.Map(this.rootDivId, options);
-          this.osmMap.displayProjection = this.fromProjection;
-
-          //Add controls to map
-          this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
-          this.osmMap.addControlToMap(new OpenLayers.Control.DDBPanZoomBar({"zoomBarOffsetTop": 17, "zoomStopHeight": 7}), new OpenLayers.Pixel(5,-25));
-          this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
-          this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
-
-          //Set the tiles data provider
-          //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
-          var tiles = new OpenLayers.Layer.OSM();
-          this.osmMap.addLayer(tiles);
+          var tiles = this._initializeMap(this.initLon, this.initLat, this.initZoom);
 
           //Adds the waiting overlay
           this._createWaitingLayer();
-
-          //Centers and zooms the map to the initial point
-          var position = this._getLonLat(this.initLon, this.initLat);
-          this.osmMap.setCenter(position, this.initZoom);
 
           //Add the institutions vector layer
           this._addInstitutionsLayer();
@@ -130,6 +125,36 @@ $(document).ready(function() {
         });
 
       },
+      
+      _initializeMap : function(lon, lat, zoom) {
+        //Set the base folder for images
+        OpenLayers.ImgPath = this.imageFolder;
+
+        var options = {
+          theme: this.themeFolder,
+          projection: "EPSG:900913"
+        };
+        this.osmMap = new OpenLayers.Map(this.rootDivId, options);
+        this.osmMap.displayProjection = this.fromProjection;
+
+        //Add controls to map
+        this.osmMap.addControlToMap(new OpenLayers.Control.Navigation(), new OpenLayers.Pixel(0,0));
+        this.osmMap.addControlToMap(new OpenLayers.Control.DDBPanZoomBar({"zoomBarOffsetTop": 17, "zoomStopHeight": 7}), new OpenLayers.Pixel(5,-25));
+        this.osmMap.addControlToMap(new OpenLayers.Control.Attribution());
+        this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
+
+        //Set the tiles data provider
+        //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+        var tiles = new OpenLayers.Layer.OSM();
+        this.osmMap.addLayer(tiles);
+        
+        //Centers and zooms the map to the initial point
+        var position = this._getLonLat(lon, lat);
+        this.osmMap.setCenter(position, zoom);
+        
+        return tiles;
+        
+      },
 
       _addInstitutionsLayer : function() {
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
@@ -154,6 +179,21 @@ $(document).ready(function() {
         });
         this.osmMap.addLayer(this.vectorLayer);
 
+      },
+      
+      _addMarkerLayer : function() {
+        var markersLayer = new OpenLayers.Layer.Markers("Markers");
+        markersLayer.id = "Markers";
+        this.osmMap.addLayer(markersLayer);        
+      },
+      
+      _addMarkerToMap : function(lon, lat) {
+        var position = this._getLonLat(lon, lat);
+        var size = new OpenLayers.Size(38,45);
+        var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
+        var icon = new OpenLayers.Icon(this.imageFolder+"ddb_marker_final.png", size, offset);   
+        var markersLayer = this.osmMap.getLayer('Markers');
+        markersLayer.addMarker(new OpenLayers.Marker(position,icon));
       },
 
       _addInstitutionsClickListener : function(){
@@ -1232,13 +1272,13 @@ $(document).ready(function() {
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-  var map = new DDBMap();
-  map.display({"rootDivId": "ddb-map"});
-
-  $('.sector-facet input').each(function() {
-    $(this).click(function(){
-      map.applyFilters();
-    });
-  });
+//  var map = new DDBMap();
+//  map.display({"rootDivId": "ddb-map"});
+//
+//  $('.sector-facet input').each(function() {
+//    $(this).click(function(){
+//      map.applyFilters();
+//    });
+//  });
 
 });

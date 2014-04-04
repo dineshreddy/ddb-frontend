@@ -17,6 +17,8 @@ package de.ddb.next
 
 import grails.converters.*
 
+import java.security.MessageDigest
+
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
@@ -31,23 +33,23 @@ import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ProxyUtil
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.LoginStatus
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.SupportedOpenIdProviders
+import de.ddb.common.constants.UserStatus
+import de.ddb.common.exception.AuthorizationException
+import de.ddb.common.exception.BackendErrorException
+import de.ddb.common.exception.ConflictException
+import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.LoginStatus
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.SupportedOpenIdProviders
-import de.ddb.next.constants.UserStatus
-import de.ddb.next.exception.AuthorizationException
-import de.ddb.next.exception.BackendErrorException
-import de.ddb.next.exception.ConflictException
-import de.ddb.next.exception.ItemNotFoundException
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
-    private final static String SESSION_FAVORITES_RESULTS = "SESSION_FAVORITES_RESULTS_ATTRIBUTE"
 
     def LinkGenerator grailsLinkGenerator
     def aasService
@@ -725,7 +727,7 @@ class UserController {
             //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
-            ParameterList openidResp = new ParameterList(request.getParameterMap())
+            ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
             String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
@@ -774,7 +776,7 @@ class UserController {
                 HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
-                user.setId(identifier.encodeAsMD5())
+                user.setId(encodeAsMD5(identifier))
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
@@ -950,4 +952,10 @@ class UserController {
         }
     }
 
+    private def String encodeAsMD5(String decodedString) {
+        MessageDigest md5 = MessageDigest.getInstance("MD5")
+        md5.update(decodedString.getBytes())
+        BigInteger hash = new BigInteger(1, md5.digest())
+        return hash.toString(16)
+    }
 }

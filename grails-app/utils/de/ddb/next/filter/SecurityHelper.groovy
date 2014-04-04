@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse
 import org.apache.commons.logging.LogFactory
 import org.ccil.cowan.tagsoup.Parser
 
-import de.ddb.next.exception.InvalidUrlException
+import de.ddb.common.exception.InvalidUrlException
 
 
 /**
@@ -45,10 +45,10 @@ class SecurityHelper {
         Parser tagsoupParser = new Parser()
         XmlSlurper slurper = new XmlSlurper(tagsoupParser)
 
-//        sanitizeRequestUrl(request, response)
-//        sanitizeRequestParameters(request, slurper)
-//        sanitizeRequestCookies(request, slurper)
-//        sanitizeRequestHeaders(request)
+        //        sanitizeRequestUrl(request, response)
+        //        sanitizeRequestParameters(request, slurper)
+        //        sanitizeRequestCookies(request, slurper)
+        //        sanitizeRequestHeaders(request)
         addReponseSecurityHeaders(request, response)
     }
 

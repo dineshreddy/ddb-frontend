@@ -1,52 +1,61 @@
-/**
- * built according to "Revealing Module Pattern (Public & Private)"
- * http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
- */
-//URI to institutions-data
-var INSTITUTIONS_MAP_REF = '/apis/institutionsmap';
-
-//Directory where map-application is located
-var MAP_DIR = '/third-party/map/';
-
+///**
+// * built according to "Revealing Module Pattern (Public & Private)"
+// * http://enterprisejquery.com/2010/10/how-good-c-habits-can-encourage-bad-javascript-habits-part-1/
+// */
+////URI to institutions-data
+//var INSTITUTIONS_MAP_REF = '/apis/institutionsmap';
+//
+////Directory where map-application is located
+//var MAP_DIR = '/third-party/map/';
+//
 //name of page where map with all institutions is written in
 var INSTITUTIONLIST_PAGE_NAME = 'institutionList';
 
 //name of page where map for 1 institution is written in
 var INSTITUTION_PAGE_NAME = 'institution';
 
-//div where map with all institutions is written in
-var INSTITUTIONLIST_DIV = 'mapContainerDiv';
-
-//div where map for 1 institution is written in
-var INSTITUTION_DIV = 'divOSM';
+////div where map with all institutions is written in
+//var INSTITUTIONLIST_DIV = 'mapContainerDiv';
+//
+////div where map for 1 institution is written in
+//var INSTITUTION_DIV = 'divOSM';
+//
+var MAP_DIV = 'ddb-map';
 
 //only initialize map once, then remember in this variable
 var mapInitialized = false;
 
+var map;
+
 var InstitutionsMapAdapter = (function($, undefined) {
   'use strict';
-
-  var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
-  var osmTileset = [ '//a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
-      '//b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
-      '//c.tile.' + osmTileServer + '/${z}/${x}/${y}.png' ];
-
-  var institutionsMapOptions = {
-    resetMap : true,
-    mapHeight : false,
-    mapWidth : false,
-    osmTileset : osmTileset
-  };
-
-  var institutionMapOptions = {
-    osmTileset : osmTileset
-  };
-
-//for public properties. avoid the reserved keyword "public"
+//
+//  var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
+//  var osmTileset = [ '//a.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+//      '//b.tile.' + osmTileServer + '/${z}/${x}/${y}.png',
+//      '//c.tile.' + osmTileServer + '/${z}/${x}/${y}.png' ];
+//
+//  var institutionsMapOptions = {
+//    resetMap : true,
+//    mapHeight : false,
+//    mapWidth : false,
+//    osmTileset : osmTileset
+//  };
+//
+//  var institutionMapOptions = {
+//    osmTileset : osmTileset
+//  };
+//
+  
+  //for public properties. avoid the reserved keyword "public"
   var Public = {};
-
+//
   Public.drawInstitution = function(mapDiv, lang, lon, lat) {
-    InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
+    //InstitutionItemMapController.drawMap(mapDiv, lang, lon, lat, institutionMapOptions);
+    if(typeof map === "undefined"){
+      map = new DDBMap();
+    }
+    map.displayMarker({"rootDivId": MAP_DIV}, lang, lon, lat, 16);
   };
 
   var _getSectorSelection = function() {
@@ -69,28 +78,34 @@ var InstitutionsMapAdapter = (function($, undefined) {
   Public.selectSectors = function() {
     if (mapInitialized) {
       var sectors = _getSectorSelection();
-      InstitutionsMapController.selectSectors(sectors);
+      //InstitutionsMapController.selectSectors(sectors);
+      map.applyFilters();
     }
   };
 
-  var _fetchDataAjax = function(a_url, a_successFn) {
-    $.ajax({
-      type : 'GET',
-      dataType : 'json',
-      async : true,
-      url : a_url,
-      success : a_successFn
-    });
-  };
-
-  Public.fetchAllInstitutions = function(successFn) {
-    _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
-  };
-
+//  var _fetchDataAjax = function(a_url, a_successFn) {
+//    $.ajax({
+//      type : 'GET',
+//      dataType : 'json',
+//      async : true,
+//      url : a_url,
+//      success : a_successFn
+//    });
+//  };
+//
+//  Public.fetchAllInstitutions = function(successFn) {
+//    _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
+//  };
+//
+  
   var _initializeMap = function() {
     if (!mapInitialized && !$('#institution-map').hasClass('off')) {
-      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
+//      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
       mapInitialized = true;
+      if(typeof map === "undefined"){
+        map = new DDBMap();
+      }
+      map.display({"rootDivId": MAP_DIV});
     }
   };
 
@@ -172,13 +187,12 @@ $('#institution-list').ready(function() {
 
 $(document).ready(
     function() {
-      INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
-      MAP_DIR = jsContextPath + MAP_DIR;
-      GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//'
-          + window.document.location.host + MAP_DIR;
+//      INSTITUTIONS_MAP_REF = jsContextPath + INSTITUTIONS_MAP_REF;
+//      MAP_DIR = jsContextPath + MAP_DIR;
+//      GeoTemCoMinifier_urlPrefix = window.document.location.protocol + '//'
+//          + window.document.location.host + MAP_DIR;
       if (jsPageName === INSTITUTION_PAGE_NAME) {
-        InstitutionsMapAdapter
-            .drawInstitution(INSTITUTION_DIV, jsLanguage, jsLongitude, jsLatitude);
+        InstitutionsMapAdapter.drawInstitution(MAP_DIV, jsLanguage, jsLongitude, jsLatitude);
       } else if (jsPageName === INSTITUTIONLIST_PAGE_NAME) {
         $('.loader').addClass('off');
         InstitutionsMapAdapter.setupDom4MapDisplay();

@@ -23,7 +23,7 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletResponse
 
-import de.ddb.next.exception.InvalidUrlException
+import de.ddb.common.exception.InvalidUrlException
 
 
 /**

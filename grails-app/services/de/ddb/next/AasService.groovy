@@ -29,8 +29,9 @@ import org.apache.http.util.EntityUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
-import de.ddb.next.beans.User
-import de.ddb.next.exception.BackendErrorException
+import de.ddb.common.ApiConsumer
+import de.ddb.common.beans.User
+import de.ddb.common.exception.BackendErrorException
 
 /**
  * Set of Methods that encapsulate REST-calls to the AASWebService

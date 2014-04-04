@@ -1,0 +1,26 @@
+.entities .search-results-content .search-results .item {
+  padding: 15px 0 0 0;
+  position: relative;
+}
+
+.entities .results-paginator-view {
+  background: none;
+}
+
+.entities .results-paginator-options {
+  height: 40px;
+  line-height: 40px;
+}
+
+.entities .facets-list .facets-item:first-child {
+  margin-top: 14px;
+}
+
+.entities .clear-filters a {
+  font-weight:bold;
+  float: right;
+}
+
+.entities .add-to-saved-searches {
+  margin-top: 10px;
+}

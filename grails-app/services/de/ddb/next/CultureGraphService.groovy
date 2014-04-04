@@ -15,7 +15,9 @@
  */
 package de.ddb.next
 
-import de.ddb.next.constants.CultureGraphEnum
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.constants.CultureGraphEnum
 
 /**
  * Service class for accesing the CultureGraphService

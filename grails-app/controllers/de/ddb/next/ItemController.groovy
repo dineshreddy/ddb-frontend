@@ -15,7 +15,9 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.ItemNotFoundException
+import de.ddb.common.exception.ItemNotFoundException
+
+
 
 class ItemController {
     static defaultAction = "findById"
@@ -49,7 +51,7 @@ class ItemController {
             }
 
         } catch(ItemNotFoundException infe) {
-            
+
             forward controller: "error", action: "itemNotFound"
         }
     }
@@ -72,7 +74,7 @@ class ItemController {
         response.contentType = "text/xml"
         response.outputStream << itemService.fetchXMLMetadata(itemId)
     }
-    
+
     def sendPdf() {
         def itemId = params.id
         def url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
@@ -95,7 +97,7 @@ class ItemController {
             log.error "Failed Sending PDF per Email! Reason!? Cannot retrieve PDF file "+ e.getLocalizedMessage()
             message = g.message(code: 'ddbnext.item.sendPdfFailsToSendMailPDF')
         }
-        
+
 
         render(contentType:"application/json", text: message)
     }

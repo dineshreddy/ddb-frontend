@@ -7,8 +7,8 @@ import org.apache.commons.logging.Log
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import de.ddb.common.exception.ConfigurationException
 import de.ddb.next.ConfigurationService
-import de.ddb.next.exception.ConfigurationException
 
 @TestFor(ConfigurationService)
 class ConfigurationServiceTests {

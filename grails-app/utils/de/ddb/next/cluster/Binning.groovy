@@ -14,7 +14,7 @@ class Binning {
     def circleGap = 0
     def circlePackings = true
     def binning = "generic"
-    def minimumRadius = 4
+    def minimumRadius = 6
     def noBinningRadii = "dynamic"
     def binCount = 10
     def objects = null
@@ -480,7 +480,6 @@ class Binning {
                 hashMap.push([])
                 selectionMap.push([])
             }
-            def points = []
             def max = 0
             def radius = 0
             def resolution = this.map.getResolutionForZoom(i)

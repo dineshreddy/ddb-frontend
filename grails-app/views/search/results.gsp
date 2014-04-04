@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
-<%@page import="de.ddb.next.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.FacetEnum"%>
 
 <g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
@@ -68,20 +68,15 @@ limitations under the License.
 	        </g:each>
 	      </div>
 	</noscript>
-	
-  	<%-- Shows the facets supported in the JS version. --%>
+
+    <%-- Shows the facets supported in the JS version. --%>
     <div class="js facets-list bt bb off">
       <%-- TimeFacet is handle by its own template --%>
       <g:render template="timeFacet" />
-      
       <%-- All other facets are handled in the same way --%>          
-      <g:each in="${jsFacetsList}">
-	      <div class="facets-item bt bb bl br">
-	        <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
-	      </div>
-      </g:each>
-    </div>	  	
-	
+      <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
+    </div>
+
       <div class="keep-filters off">
         <label class="checkbox"> 
           <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />

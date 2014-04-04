@@ -16,9 +16,9 @@
 package de.ddb.next
 
 import grails.util.Environment
-
-import de.ddb.next.exception.CultureGraphException
-import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
+import de.ddb.common.ApiResponse
+import de.ddb.common.exception.CultureGraphException
+import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Central controller for handling error situations (404, 500, etc).
@@ -183,7 +183,7 @@ class ErrorController {
     def entityNotFound() {
         notFound(Type404.ENTITY_NOT_FOUND)
     }
-    
+
     def pdfNotFound() {
         notFound(Type404.PDF_NOT_FOUND)
     }

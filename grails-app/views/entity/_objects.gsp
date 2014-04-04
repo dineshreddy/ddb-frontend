@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.FacetEnum"%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <div class="objects">
   <g:set var="showPictures" value="${true}" />
   <g:set var="showVideos" value="${true}" />

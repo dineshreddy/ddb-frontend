@@ -16,9 +16,8 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-
+import de.ddb.common.constants.FolderConstants
 import de.ddb.next.JsonUtil
-import de.ddb.next.constants.FolderConstants
 
 @ToString(includeNames=true)
 class Folder {

@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span3</g:if>">
   <div class="thumbnail" id="thumbnail-${item.id}">

@@ -15,9 +15,9 @@
  */
 package de.ddb.next
 import grails.converters.JSON
+import de.ddb.common.beans.User
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.User
-import de.ddb.next.constants.Type
 
 class InstitutionController {
 
@@ -98,12 +98,15 @@ class InstitutionController {
                 }
             }
 
+            // logo
             def organisationLogo
-            if(selectedOrgXML.logo == null || selectedOrgXML.logo.toString().trim().isEmpty()){
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
-            }else{
-                organisationLogo = selectedOrgXML.logo
+            if (!selectedOrgXML?.logo.toString().isEmpty()) {
+                organisationLogo = g.resource("dir": "binary", "file": id + "/list/1.jpg")
             }
+            else {
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")
+            }
+
             render(
                     view: "institution",
                     model: [

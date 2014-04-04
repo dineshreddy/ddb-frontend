@@ -1,4 +1,4 @@
-import de.ddb.next.constants.FacetEnum
+import de.ddb.common.constants.FacetEnum
 
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
@@ -151,7 +151,7 @@ ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
 ddb.backend.url="http://localhost/backend:9998/"
 ddb.backend.apikey=""
-ddb.aas.admin.userid=""
+ddb.aas.admin.userid="userid"
 ddb.aas.admin.password=""
 ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"

@@ -19,11 +19,12 @@ package de.ddb.next
 import grails.converters.JSON
 import groovy.json.*
 import net.sf.json.JSONNull
-
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.Type
 
 
 /**
@@ -116,7 +117,7 @@ class BookmarksService {
         List<Folder> folderList = []
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
-            ["q":userId, "size":"${DEFAULT_SIZE}"])
+                ["q":userId, "size":"${DEFAULT_SIZE}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
