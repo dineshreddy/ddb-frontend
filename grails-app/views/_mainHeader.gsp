@@ -280,7 +280,7 @@ limitations under the License.
                         <g:message code="ddbnext.Go_Button"/>
                       <![endif]-->
                 </button>
-                <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" />
+                <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" hasArrow="true"/>
                 <g:link class="link-adv-search"
                   controller="advancedsearch">
                   <g:message code="ddbnext.Advanced_search" />

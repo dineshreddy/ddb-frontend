@@ -25,4 +25,4 @@ limitations under the License.
   <span class="contextual-help hidden-phone hidden-tablet" title="${g.message(code: messageCode, encodeAs: "none")}" data-content="${g.message(code: messageCode, encodeAs: "none")}">
   </span>
 </g:else>
-<div class="tooltip off"></div>
+<div class="tooltip off ${ hasArrow ? "hasArrow" : "" }"></div>

@@ -39,6 +39,6 @@ class RenderInfoTooltipTagLib {
             link = grailsLinkGenerator.link(controller: "content", action: controllerAction)
         }
 
-        out << render(template:"/common/infoTooltip", model:[messageCode: attrs.messageCode, link: link])
+        out << render(template:"/common/infoTooltip", model:[messageCode: attrs.messageCode, link: link, hasArrow: attrs.hasArrow])
     }
 }

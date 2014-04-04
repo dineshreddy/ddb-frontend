@@ -66,7 +66,7 @@ limitations under the License.
       </div>
       <div class="time-restriction">
         <g:message code="ddbnext.facet_time_restrict_to"/>
-        <ddb:renderInfoTooltip messageCode="ddbnext.Time_Restriction_Tooltip" infoId="search-filters" infoDir="help" />
+        <ddb:renderInfoTooltip messageCode="ddbnext.Time_Restriction_Tooltip" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <div>
         <input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" /> <label for="limitationFuzzy"><g:message code="ddbnext.facet_time_fuzzy"/></label>
