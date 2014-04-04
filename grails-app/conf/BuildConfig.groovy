@@ -58,6 +58,7 @@ grails.project.dependency.resolution = {
         // This are the geotools repositories required for coordinate transformation
         mavenRepo "http://repo.opengeo.org/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
+        mavenRepo "https://www.escidoc.org/artifactory/repo/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
