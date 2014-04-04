@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 .slide-viewer {
-  width:445px;
+  width:440px;
   padding:10px;
-  background:#efebe8;
+  border:1px solid #efebe8;
 }
 @media (min-width: 1200px) {
   .slide-viewer {
     float: right;
-    width: 445px !important;
+    width: 440px !important;
   }
 }
 @media (max-width: 1199px) {
@@ -48,6 +48,9 @@
 .slide-viewer ul {
   list-style: none;
   margin: 0;
+}
+.slide-viewer .scroller {
+  border:1px solid #efebe8;
 }
 .scroller ul {
   padding:0;
@@ -111,8 +114,7 @@
   -webkit-box-shadow:none;
 }
 .slide-viewer .btn-prev,.slide-viewer .btn-next {
-  background:white;
-  overflow:hidden;
+  background-color: #efebe8;
   outline:none;
 }
 .slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
@@ -302,23 +304,21 @@ noscript .scroller, .pdf-scroller {
   color:#3e3a37;
 }
 .binary-viewer-container {
-  background-color:#fff;
   overflow:hidden;
 }
 .binary-title {
-  padding-top:7px;
+  padding-top:10px;
   font-size: 0.938em;      
 }
 .binary-author, .binary-rights {
-  padding-top:7px;
+  /*padding-top:7px;*/
   font-size: 0.938em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;  
 }
 #binary-viewer {
-  width: 445px;
-  height: 323px;
+  width: 440px;
 }
 
 #binary-viewer .previews {
@@ -329,6 +329,11 @@ noscript .scroller, .pdf-scroller {
   cursor: pointer;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
+}
+
+#binary-viewer.img-binary {
+  min-height: 105px;
+  max-height: 330px;
 }
 
 @media (max-width: 767px) {
