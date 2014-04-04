@@ -34,20 +34,8 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextual-help hidden-phone hidden-tablet" 
-           title="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
-                              args: [('<a href="' + createLink(controller: "content",
-                                                               params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
-                                     '</a>'],
-                              encodeAs: "none")}"
-           data-content="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
-                                     args: [('<a href="' + createLink(controller: "content",
-                                                                      params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
-                                            '</a>'],
-                                     encodeAs: "none")}">
-        </span> 
-        <div class="tooltip off hasArrow"></div>
-      </div>     
+        <ddb:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" />
+      </div>
       
 	  <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
@@ -124,10 +112,7 @@ limitations under the License.
         <div class="compare-header">
           <hr/>
           <b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
-          <span class="contextual-help hidden-phone hidden-tablet" 
-            title="${g.message(code: "ddbnext.Compare_Tooltip")}" data-content="${g.message(code: "ddbnext.Compare_Tooltip")}">
-          </span> 
-          <div class="tooltip off hasArrow"></div>
+          <ddb:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" />
         </div>
         <div class="compare-main">
           <div id="compare-object1" class="compare-object">

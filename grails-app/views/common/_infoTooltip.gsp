@@ -14,13 +14,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%--<span class="contextual-help hidden-phone hidden-tablet" --%>
-<%--  data-content="Geben Sie Ihren Suchbegriff in das Suchfeld ein. Klicken Sie auf das Lupensymbol oder drücken Sie die Eingabetaste. --%>
-<%--  <a href="/current/content/help/search-simple"> Hilfe zur einfachen Suche </a>"> --%>
-<%--</span>--%>
-
-<span class="contextual-help hidden-phone hidden-tablet" 
-title="${g.message(code: messageCode, args: [('<a href="' + createLink(controller: "content", params: [dir: 'help', id: infoPath]) + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}" 
-data-content="${g.message(code: messageCode, args: [('<a href="' + createLink(controller: "content", params: [dir: 'help', id: infoPath]) + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}"> 
-</span>
+<%-- If an infoPath is specified, a more detailed help is available via an link. --%>
+<g:if test="${link}">
+  <span class="contextual-help hidden-phone hidden-tablet" 
+  title="${g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}" 
+  data-content="${g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}"> 
+  </span>
+</g:if>
+<g:else>
+  <span class="contextual-help hidden-phone hidden-tablet" title="${g.message(code: messageCode, encodeAs: "none")}" data-content="${g.message(code: messageCode, encodeAs: "none")}">
+  </span>
+</g:else>
 <div class="tooltip off"></div>

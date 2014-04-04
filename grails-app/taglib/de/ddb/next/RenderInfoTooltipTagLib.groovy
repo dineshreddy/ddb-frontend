@@ -19,13 +19,26 @@ class RenderInfoTooltipTagLib {
 
     static namespace = "ddb"
 
-    /**
-     * Renders the infoTooltip template
-     *
-     * @attr infoText, linkHref, linkText
-     */
+    def grailsLinkGenerator
 
+    /**
+     * Renders the infoTooltip template.
+     * The tooltip can contain a link. The path of the link is specified via an (infoDir & infoId) or via an controllerAction
+     *
+     * @attr messageCode, infoId, infoDir, controllerAction
+     */
     def renderInfoTooltip = { attrs, body ->
-        out << render(template:"/common/infoTooltip", model:[messageCode: attrs.messageCode, infoPath: infoPath])
+        def link = null
+        def infoId = attrs.infoId
+        def infoDir = attrs.infoDir
+        def controllerAction = attrs.controllerAction
+
+        if(infoId && infoDir) {
+            link = grailsLinkGenerator.link(controller: "content", params: [dir: infoDir, id: infoId])
+        } else if (controllerAction) {
+            link = grailsLinkGenerator.link(controller: "content", action: controllerAction)
+        }
+
+        out << render(template:"/common/infoTooltip", model:[messageCode: attrs.messageCode, link: link])
     }
 }

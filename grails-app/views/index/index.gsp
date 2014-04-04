@@ -45,7 +45,7 @@ limitations under the License.
               <![endif]-->
             </button>
             <%-- InfoTooltip --%>
-            <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoPath="search-simple"></ddb:renderInfoTooltip>
+            <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" />
             
             <div class="link-adv-search">
               <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>

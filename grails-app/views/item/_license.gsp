@@ -18,15 +18,9 @@ limitations under the License.
   <div class="fields">
     <div class="row">
       <div class="span2"><strong><g:message code="ddbnext.License_Field" />: </strong></div>
-      <span class="contextual-help hidden-phone hidden-tablet"
-            title="${g.message(code: "ddbnext.Licence_TooltipContent", 
-                               args: [('<a href="' + createLink(controller: "content",
-                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'], encodeAs: "none")}"
-     data-content="${g.message(code: "ddbnext.Licence_TooltipContent", 
-                               args: [('<a href="' + createLink(controller: "content",
-                             action: "lizenzen") + '">').encodeAsHTML(),'</a>'], encodeAs: "none")}">
-      </span> 
-      <div class="tooltip off hasArrow"></div>
+      
+      <ddb:renderInfoTooltip messageCode="ddbnext.Licence_TooltipContent" controllerAction="lizenzen" />
+      
       <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
         <a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span>${license.text}</span></a>
       </div>
