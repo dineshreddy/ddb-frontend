@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <div class="span6 slide-viewer item-detail">
   <div class="binary-viewer-container">
-    <div id="binary-viewer">
+    <div id="binary-viewer" <g:if test="${flashInformation.images[0] > 0}">class="img-binary"</g:if>>
       <g:if test="${flashInformation.images[0] == 1}">
         <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />"></a>
       </g:if>
