@@ -88,7 +88,7 @@ grails.project.dependency.resolution = {
 
         if (environment != Environment.DEVELOPMENT) {
             println "Using maven repo for common plugin"
-            compile "de.ddb:ddb-common:0.2-SNAPSHOT"
+            compile "de.ddb:ddb-common:0.3-SNAPSHOT"
         }
     }
 
