@@ -13,10 +13,8 @@ class FileService {
     }
 
 
-    def String getContentType(byte[] fileDataSource, String name)
-    {
-        if (fileDataSource == null)
-        {
+    def String getContentType(byte[] fileDataSource, String name) {
+        if (fileDataSource == null) {
             return null;
         }
         byte[] header = new byte[11];
@@ -33,13 +31,11 @@ class FileService {
         int c10 = header[9] & 0xff;
         int c11 = header[10] & 0xff;
 
-        if (c1 == 0xCA && c2 == 0xFE && c3 == 0xBA && c4 == 0xBE)
-        {
+        if (c1 == 0xCA && c2 == 0xFE && c3 == 0xBA && c4 == 0xBE) {
             return "application/java-vm";
         }
 
-        if (c1 == 0xD0 && c2 == 0xCF && c3 == 0x11 && c4 == 0xE0 && c5 == 0xA1 && c6 == 0xB1 && c7 == 0x1A && c8 == 0xE1)
-        {
+        if (c1 == 0xD0 && c2 == 0xCF && c3 == 0x11 && c4 == 0xE0 && c5 == 0xA1 && c6 == 0xB1 && c7 == 0x1A && c8 == 0xE1) {
             // if the name is set then check if it can be validated by name, because it could be a xls or powerpoint
             String contentType = contentTypeByName(name);
             if (contentType != null)

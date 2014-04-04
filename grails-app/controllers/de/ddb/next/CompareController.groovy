@@ -17,7 +17,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.constants.SearchParamEnum
 
 class CompareController {
     def searchService

@@ -34,12 +34,14 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
+import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.User
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.Type
-import de.ddb.next.exception.ItemNotFoundException
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -405,8 +407,8 @@ class ItemService {
         String result = null
         int startIndex = institutionLogoUrl.indexOf("/edit/")
         if (startIndex > 0) {
-          String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
-          result = new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
+            String itemId = institutionLogoUrl.substring(startIndex + 6, startIndex + 14)
+            result = new Base32().encodeAsString(("www_fiz-karlsruhe_de" + itemId).encodeAsSHA1())
         }
         return result
     }

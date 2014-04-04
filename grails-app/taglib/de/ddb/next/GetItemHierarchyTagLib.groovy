@@ -15,8 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.common.constants.CortexConstants
 import de.ddb.next.beans.Item
-import de.ddb.next.constants.CortexConstants
 
 class GetItemHierarchyTagLib {
 

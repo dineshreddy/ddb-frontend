@@ -1,10 +1,10 @@
 package ddb.next.controllers
 
 import grails.test.mixin.TestFor
+import de.ddb.common.constants.FolderConstants
 import de.ddb.next.FavoritesController
 import de.ddb.next.FavoritesService
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
@@ -13,46 +13,46 @@ import de.ddb.next.constants.FolderConstants
 class FavoritesControllerTests {
 
     private FavoritesService favoritesService = new FavoritesService()
-    
-	void testSortFolders_WithEmptyList() {
-		List sortedFolders = favoritesService.sortFolders([])
-		assert sortedFolders.size() == 0
-	}
 
-	void testSortFolders_WithOneFolder() {
-		def folder1 = createFolder("first folder")
+    void testSortFolders_WithEmptyList() {
+        List sortedFolders = favoritesService.sortFolders([])
+        assert sortedFolders.size() == 0
+    }
 
-		assert favoritesService.sortFolders([folder1]) == [folder1]
-	}
+    void testSortFolders_WithOneFolder() {
+        def folder1 = createFolder("first folder")
 
-	void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
-		def folder1 = createFolder(" \t\r\n")
+        assert favoritesService.sortFolders([folder1]) == [folder1]
+    }
 
-		assert favoritesService.sortFolders([folder1])[0].title == "-"
-	}
+    void testSortFolders_WithEmptyFolderTitle_GetsRenamed() {
+        def folder1 = createFolder(" \t\r\n")
 
-	void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
-		def folder1 = createFolder("first folder")
-		def folder2 = createFolder("second folder")
+        assert favoritesService.sortFolders([folder1])[0].title == "-"
+    }
 
-		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
-	}
+    void testSortFolders_WithTwoFoldersInWrongOrder_GetSortedInCorrectOrder() {
+        def folder1 = createFolder("first folder")
+        def folder2 = createFolder("second folder")
 
-	void testSortFolders_IncludingMainFolder_PullsMainFolderToTheBeginning() {
-		def folder1 = createFolder(FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
-		def folder2 = createFolder("aaaaa first normal folder")
+        assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
+    }
 
-		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
-	}
+    void testSortFolders_IncludingMainFolder_PullsMainFolderToTheBeginning() {
+        def folder1 = createFolder(FolderConstants.MAIN_BOOKMARKS_FOLDER.value)
+        def folder2 = createFolder("aaaaa first normal folder")
 
-	void testSortFolders_IncludingUmlautFolder() {
-		def folder1 = createFolder("Ägypten")
-		def folder2 = createFolder("zzzz last folder")
+        assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
+    }
 
-		assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
-	}
+    void testSortFolders_IncludingUmlautFolder() {
+        def folder1 = createFolder("Ägypten")
+        def folder2 = createFolder("zzzz last folder")
 
-	private def createFolder(String title) {
-		return new Folder("folder id", "user", title, null, false, null, false, null)
-	}
+        assert favoritesService.sortFolders([folder2, folder1]) == [folder1, folder2]
+    }
+
+    private def createFolder(String title) {
+        return new Folder("folder id", "user", title, null, false, null, false, null)
+    }
 }

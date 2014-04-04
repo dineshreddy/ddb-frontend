@@ -2,8 +2,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
 
 class PersonController {
 
@@ -23,5 +23,4 @@ class PersonController {
         render(view: "searchPerson", model: model)
 
     }
-
 }

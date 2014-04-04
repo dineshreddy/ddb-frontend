@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import de.ddb.next.exception.ItemNotFoundException
-
 class MapController {
 
     def multipolygone() {

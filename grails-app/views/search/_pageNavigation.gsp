@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <div class="page-info-nav <g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>grid</g:if>">
   <div class="page-info">
     <span class="results-overall-index">${navData.resultsOverallIndex} </span> 

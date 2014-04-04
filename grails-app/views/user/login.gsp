@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.next.constants.SupportedOpenIdProviders"%>
-<%@page import="de.ddb.next.constants.LoginStatus"%>
+<%@page import="de.ddb.common.constants.SupportedOpenIdProviders"%>
+<%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
     <title><g:message code="ddbnext.Login" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>

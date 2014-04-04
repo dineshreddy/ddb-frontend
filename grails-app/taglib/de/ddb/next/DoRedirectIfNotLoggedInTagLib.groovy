@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import de.ddb.next.beans.User
+import de.ddb.common.beans.User
 
 
 class DoRedirectIfNotLoggedInTagLib {

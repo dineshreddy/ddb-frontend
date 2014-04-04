@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
  
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="java.awt.event.ItemEvent"%>
 
 <!-- The time facet should only be available via Javascript. So per default set the class off. -->

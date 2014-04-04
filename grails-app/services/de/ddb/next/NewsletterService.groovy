@@ -21,7 +21,9 @@ import groovy.json.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
-import de.ddb.next.beans.User
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
 
 /**
  * Set of Methods that encapsulate REST-calls to the NewsletterService

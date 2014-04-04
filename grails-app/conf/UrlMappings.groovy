@@ -315,20 +315,21 @@ class UrlMappings {
             action="multipolygone"
         }
 
+
         "/searchPerson/$q?" {
             controller="person"
             action="search"
         }
 
-        "500"(controller: "error", action: "badRequest", exception: de.ddb.next.exception.BadRequestException)
-        "500"(controller: "error", action: "auth", exception: de.ddb.next.exception.AuthorizationException)
-        "500"(controller: "error", action: "itemNotFound", exception: de.ddb.next.exception.ItemNotFoundException)
-        "500"(controller: "error", action: "entityNotFound", exception: de.ddb.next.exception.EntityNotFoundException)
+        "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
+        "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
+        "500"(controller: "error", action: "itemNotFound", exception: de.ddb.common.exception.ItemNotFoundException)
+        "500"(controller: "error", action: "entityNotFound", exception: de.ddb.common.exception.EntityNotFoundException)
         "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
-        "500"(controller: "error", action: "conflict", exception: de.ddb.next.exception.ConflictException)
-        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.ConfigurationException)
-        "500"(controller: "error", action: "serverError", exception: de.ddb.next.exception.BackendErrorException)
-        "500"(controller: "error", action: "cultureGraphError", exception: de.ddb.next.exception.CultureGraphException)
+        "500"(controller: "error", action: "conflict", exception: de.ddb.common.exception.ConflictException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.ConfigurationException)
+        "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.BackendErrorException)
+        "500"(controller: "error", action: "cultureGraphError", exception: de.ddb.common.exception.CultureGraphException)
         "500"(controller: "error", action: "uncaughtException")
         "404"(controller: "error", action: "defaultNotFound")
 

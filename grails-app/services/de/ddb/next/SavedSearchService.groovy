@@ -18,6 +18,8 @@ package de.ddb.next
 import grails.converters.JSON
 import groovy.json.*
 import net.sf.json.JSONNull
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 
 /**
  * @author chh

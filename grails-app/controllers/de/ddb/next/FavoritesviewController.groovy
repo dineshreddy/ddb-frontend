@@ -2,9 +2,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.constants.SupportedLocales
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import de.ddb.next.constants.SupportedLocales
 import de.ddb.next.exception.FavoritelistNotFoundException
 
 class FavoritesviewController {
@@ -378,7 +377,7 @@ class FavoritesviewController {
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
-    
+
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (favoritesService.isUserLoggedIn()) {
             def List emails = []

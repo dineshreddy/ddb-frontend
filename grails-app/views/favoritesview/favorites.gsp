@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
-<%@page import="de.ddb.next.constants.FolderConstants"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.FolderConstants"%>
 <%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>

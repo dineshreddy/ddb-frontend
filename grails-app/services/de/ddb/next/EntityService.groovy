@@ -16,10 +16,15 @@
 package de.ddb.next
 
 import groovy.json.*
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.RoleFacetEnum
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.exception.EntityNotFoundException
+
+import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.RoleFacetEnum
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.exception.EntityNotFoundException
 
 /**
  * Service class for all entity related methods

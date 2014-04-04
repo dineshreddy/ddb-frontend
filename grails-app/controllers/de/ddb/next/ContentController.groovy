@@ -17,8 +17,9 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.exception.ItemNotFoundException
+import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.exception.ItemNotFoundException
 
 class ContentController {
     static defaultAction = "staticcontent"
