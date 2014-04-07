@@ -280,23 +280,11 @@ limitations under the License.
                         <g:message code="ddbnext.Go_Button"/>
                       <![endif]-->
                 </button>
-                <span class="contextual-help hidden-phone hidden-tablet"
-                  title="${g.message(code: "ddbnext.Search_Hint", 
-                                     args: [('<a href="' + createLink(controller: "content",
-                                                                      params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
-                                            '</a>'],
-                                     encodeAs: "none")}"
-                  data-content="${g.message(code: "ddbnext.Search_Hint", 
-                                            args: [('<a href="' + createLink(controller: "content",
-                                                                             params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
-                                                   '</a>'],
-                                            encodeAs: "none")}">
-                </span>
+                <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" hasArrow="true"/>
                 <g:link class="link-adv-search"
                   controller="advancedsearch">
                   <g:message code="ddbnext.Advanced_search" />
                 </g:link>
-                <div class="tooltip off hasArrow"></div>
               </g:form>
             </div>
           </div>

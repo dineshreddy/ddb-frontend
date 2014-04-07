@@ -16,20 +16,8 @@ limitations under the License.
 <div class="row item-detail">
   <div class="span12 item-hierarchy off">
     <div class="field-header">
-        <span><g:message code="ddbnext.View_related_objects" /></span>
-        <span class="contextual-help hidden-phone hidden-tablet"
-           title="${g.message(code: "ddbnext.HierarchyHelp_Text",
-                              args: [('<a href="' + createLink(controller: "content",
-                                                               params: [dir: 'help', id: 'objdetails-hierarchy']) + '">').encodeAsHTML(),
-                                     '</a>'],
-                              encodeAs: "none")}"
-           data-content="${g.message(code: "ddbnext.HierarchyHelp_Text",
-                                     args: [('<a href="' + createLink(controller: "content",
-                                                                      params: [dir: 'help', id: 'objdetails-hierarchy']) + '">').encodeAsHTML(),
-                                            '</a>'],
-                                     encodeAs: "none")}">
-        </span>
-        <div class="tooltip off hasArrow"></div>
+      <span><g:message code="ddbnext.View_related_objects" /></span>
+      <ddb:renderInfoTooltip messageCode="ddbnext.HierarchyHelp_Text" infoId="objdetails-hierarchy" infoDir="help" hasArrow="true" />
     </div>
     <div class="row">
       <div class="span12 item-hierarchy-result"></div>

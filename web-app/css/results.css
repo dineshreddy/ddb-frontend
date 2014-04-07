@@ -39,8 +39,10 @@
 }
 
 .fields .contextual-help {
-  margin-left: 133px;
+  position: absolute;
+  display: inline-block;
   margin-top: 3px;
+  margin-left: 3px;
 }
 
 .facets-list {
@@ -742,8 +744,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .fields .tooltip {
   width: 30%;
-  margin-left: 123px;
-  margin-top: 33px;
+  margin: 10px;
 }
 
 .facets-container .tooltip {
@@ -756,10 +757,6 @@ input[type="checkbox"],input[type="radio"] {
   margin: 10px;
 }
 
-.facets-container .tooltip .arrow {
-  left: 50%;
-  margin-left: -17px;
-}
 /*Facets flyout*/
 .flyout-left-container {
   width: 100%;
