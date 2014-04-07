@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.common.ApiConsumer
+
 class GetBackendVersionTagLib {
 
     static namespace = "ddb"
