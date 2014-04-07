@@ -16,6 +16,7 @@
 //tooltip function
 $(function() {
   Tooltip = function(element) {
+    this.container = element;
     this.init(element);
   };
 
@@ -23,6 +24,7 @@ $(function() {
 
     hint : null,
     tooltip : null,
+    arrow : null,
     opened : false,
     lock : false,
     hoverTime : 0,
@@ -33,11 +35,14 @@ $(function() {
       this.tooltip = element.siblings("div.tooltip");
       element.removeAttr("title");
       this.tooltip.html(this.hint).text();
+      
       if (this.tooltip.hasClass('hasArrow')) {
-        var arrow = $(document.createElement('div'));
-        arrow.addClass('arrow');
-        arrow.appendTo(this.tooltip);
+        this.arrow = $(document.createElement('div'));
+        this.arrow.addClass('arrow');
+        //arrow.style.position = "fixed";
+        this.arrow.appendTo(this.tooltip);
       }
+      
       this.tooltip.hide();
       this.tooltip.removeClass("off");
       element.hover(function() {
@@ -63,9 +68,17 @@ $(function() {
       });
     },
     open : function() {
+      var currObjInstance = this;
       if (!this.opened) {
         this.opened = true;
-        this.tooltip.fadeIn('fast');
+        this.tooltip.fadeIn('fast')
+        
+        var positionInfoIcon = currObjInstance.container.offset();
+
+        //set position of arrow under the info icon
+        if (this.tooltip.hasClass('hasArrow')) {
+          this.arrow.offset({ left: positionInfoIcon.left})
+        }
       }
     },
     close : function() {

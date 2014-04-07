@@ -497,10 +497,6 @@ header .header-spacer,.header .header-spacer {
   margin-left: 10px;
 }
 
-.search-header .tooltip .arrow {
-  right: 5px;
-}
-
 .search-header form .contextual-help a {
   display: block;
   overflow: hidden;
