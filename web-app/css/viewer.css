@@ -69,7 +69,7 @@
   }
 }
 .scroller li .group {
-  height:131px;
+  height:96px;
   width:120px;
   display:table-cell;
   vertical-align:middle;
@@ -105,8 +105,8 @@
 .slide-viewer button {
   position:absolute;
   top:0;
-  width:24px;
-  height:131px;
+  width:25px;
+  height:96px;
   text-indent:-999em;
   display:block;
   box-shadow:none;
@@ -114,7 +114,7 @@
   -webkit-box-shadow:none;
 }
 .slide-viewer .btn-prev,.slide-viewer .btn-next {
-  background-color: #efebe8;
+  background:#efebe8;
   outline:none;
 }
 .slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
@@ -154,14 +154,14 @@
   height:auto
 }
 .slide-viewer .fix {
-  height:175px;
+  height:150px;
 }
 .slide-viewer .tab {
   cursor:pointer;
   float:left;
   color:#3e3a37;
   font-size:1em;
-  margin-top:16px;
+  margin-top:30px;
   line-height: 1em;
 }
 .slide-viewer .show-divider{
@@ -200,7 +200,7 @@
   position:absolute;
   bottom:0;
   display:none;
-  width:445px;
+  width:440px;
   overflow:hidden;
   background-color:white;
 }
@@ -260,7 +260,6 @@ noscript .scroller, .pdf-scroller {
     right: -5px;
   }
 }
-
 
 .fancybox-inner:hover .fancybox-pagination{
   display: block !important;
@@ -324,18 +323,40 @@ noscript .scroller, .pdf-scroller {
 #binary-viewer .previews {
   outline: none;
 }
-
 #binary-viewer img {
   cursor: pointer;
   margin: 0 0 0 0;
   padding: 0 0 0 0;
 }
-
 #binary-viewer.img-binary {
   min-height: 105px;
   max-height: 330px;
+  position: relative;
 }
-
+#binary-viewer .viewer-icon {
+  position: absolute;
+  right: 0;
+}
+#binary-viewer .show-origin, #binary-viewer .show-lightbox {
+  background: url("../images/icons/ddbIkonographie.png") no-repeat;
+  display: block;
+  width: 29px;
+  height: 29px;
+  padding-left: 0;
+}
+#binary-viewer .show-origin {
+  background-position: -180px -150px;
+  margin-right: 0;
+}
+#binary-viewer .show-origin:hover {
+  background-position: -210px -150px;
+}
+#binary-viewer .show-lightbox {
+  background-position: -180px -180px;
+}
+#binary-viewer .show-lightbox:hover {
+  background-position: -210px -180px;
+}
 @media (max-width: 767px) {
   .slide-viewer {
     margin-left: auto;

@@ -66,15 +66,23 @@ $(document)
               var currentGallery = "";
               if (totImages > 0) {
                 currentGallery = "images";
+                if (totImages > 1) {
+                  $("div.tabs").addClass("fix");
+                }
               } else if (totVideos > 0) {
                 currentGallery = "videos";
+                if (totVideos > 1) {
+                  $("div.tabs").addClass("fix");
+                }
               } else if (totAudios > 0) {
                 currentGallery = "audios";
+                if (totAudios > 1) {
+                  $("div.tabs").addClass("fix");
+                }
               }
               currentTab($("p."+currentGallery));
               $("div."+currentGallery).show();
               $(".tab").addClass('show-divider');
-              $("div.tabs").addClass("fix");
               updatePreview($("div."+currentGallery));
               createGallery($(".gallery-"+currentGallery));
             });
@@ -188,9 +196,9 @@ $(document)
               el.carouFredSel({
                 circular : false,
                 infinite : false,
-                width : 445,
+                width : 435,
                 align : false,
-                height : 110,
+                height : 96,
                 items : {
                   visible : img,
                   minimum : 1
