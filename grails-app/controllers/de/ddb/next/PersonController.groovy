@@ -8,11 +8,12 @@ import de.ddb.common.constants.SupportedLocales
 class PersonController {
 
     def searchService
+    def entityService
 
     def search() {
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        def results = []
+        def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)

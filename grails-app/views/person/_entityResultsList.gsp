@@ -13,20 +13,19 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+    <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
-
-  <g:set var="pageHitCounter" value="${0}"/>
-
-  <g:each in="${entities}" var="entityItem">
-    <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
+  <g:each in="${entities.entity}" var="entityItem">
+    <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}" />
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span6">
           <div class="summary-main">
             <h2 class="title">
-              <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
-                <strong><ddb:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
+              <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}">
+                <strong><ddb:getTruncatedItemTitle title="${entityItem.preferredName}"
+                    length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
@@ -39,19 +38,24 @@ limitations under the License.
         </div>
         <div class="thumbnail-wrapper span3">
           <div class="thumbnail" id="thumbnail-${entityItem.id}">
-            <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
-              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ entityItem.preferredName }"/>
+            <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}"
+              class="no-external-link-icon">
+              <g:img dir="images/placeholder" file="searchResultEntity.png"
+                alt="${ entityItem.preferredName }" />
             </g:link>
           </div>
           <div class="item-options bl">
             <ul class="item-options-ul">
               <ddb:isLoggedIn>
                 <li>
-                  <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+                  <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
-                <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog"
+                  aria-labelledby="myModalLabel" aria-hidden="true">
                   <div class="modal-body">
-                    <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+                    <p>
+                      <g:message code="ddbnext.Added_To_Favorites" />
+                    </p>
                   </div>
                 </div>
               </ddb:isLoggedIn>

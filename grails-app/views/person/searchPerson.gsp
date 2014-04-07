@@ -13,27 +13,25 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
-
 <g:set var="nonJsFacetsList" value="${[]}"></g:set>
 <g:set var="jsFacetsList" value="${["Name", "Beruf", FacetEnum.PLACE.getName()]}"></g:set>
-
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
+<title>
+  ${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="person" />
 <meta name="layout" content="main" />
-
 </head>
-
 <body>
   <div class="row search-results-container entities">
-
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
-        <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
+        <h3>
+          <g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
+        </h3>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
@@ -42,10 +40,12 @@ limitations under the License.
             <g:each in="${(facets.selectedFacets)}">
               <g:if test="${mit == it.field}">
                 <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-                  <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
+                  <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}"
+                    data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
                   <g:if test="${it.facetValues.size() > 0}">
                     <ul class="unstyled">
-                      <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></ddb:renderFacetList>
+                      <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}"
+                        facetType="${it.field}"></ddb:renderFacetList>
                     </ul>
                   </g:if>
                 </div>
@@ -54,18 +54,14 @@ limitations under the License.
           </g:each>
         </div>
       </noscript>
-
       <%-- Shows the facets supported in the JS version. --%>
       <div class="js facets-list bt off">
         <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
       </div>
-
       <div class="clear-filters">
-        <a href="${clearFilters.encodeAsHTML()}"><g:message code="ddbnext.Clear_filters"/></a>
+        <a href="${clearFilters.encodeAsHTML()}"><g:message code="ddbnext.Clear_filters" /></a>
       </div>
-
     </div>
-
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
       <g:if test="${correctedQuery!='null'}">
         <g:if test="${correctedQuery}">
@@ -74,14 +70,16 @@ limitations under the License.
       </g:if>
       <div class="noresults">
         <div>
-          <g:message code="ddbnext.No_results_found_for_the_search"/>
+          <g:message code="ddbnext.No_results_found_for_the_search" />
         </div>
       </div>
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
-      <div class="off result-pages-count">${totalPages}</div>
-        <ddb:renderSearchTabulation all="0" entities="2" places="0" institution="0" />
-<%-- 
+      <div class="off result-pages-count">
+        ${totalPages}
+      </div>
+      <ddb:renderSearchTabulation all="0" entities="${results.entity.size()}" places="0" institution="0" />
+      <%-- 
       <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
       <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
@@ -90,26 +88,29 @@ limitations under the License.
         <div class="span9">
           <div class="results-paginator-view">
             <div class="group-actions">
-              <strong>1</strong>
-              <strong>2</strong>
-              <strong>3</strong>
-              <strong>4</strong>
-              <strong>5</strong>
-              <strong>Weiter</strong>
+              <strong>1</strong> <strong>2</strong> <strong>3</strong> <strong>4</strong> <strong>5</strong> <strong>Weiter</strong>
             </div>
             <div class="view-type-switch">
               <!--[if lt IE 9]>
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+                <button id="view-list" type="button"
+                  class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
+                  title="<g:message code="ddbnext.View_as_List" />">
+                  <g:message code="ddbnext.View_as_List" />
+                </button>
               </div>
               <!--[if lt IE 9]>
               </div>
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+                <button id="view-grid" type="button"
+                  class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
+                  title="<g:message code="ddbnext.View_as_Grid" />">
+                  <g:message code="ddbnext.View_as_Grid" />
+                </button>
               </div>
               <!--[if lt IE 9]>
               </div>
@@ -119,9 +120,9 @@ limitations under the License.
         </div>
       </div>
       <g:if test="${correctedQuery!='null'}">
-          <g:if test="${correctedQuery}">
-            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
-          </g:if>
+        <g:if test="${correctedQuery}">
+          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+        </g:if>
       </g:if>
       <div class="row">
         <div class="span9">
@@ -130,78 +131,6 @@ limitations under the License.
               <g:if test="${results}">
                 <g:render template="entityResultsList" model="${[entities: results]}" />
               </g:if>
-
-              <%--static code for the first page prototype --%>
-              <ul class="results-list unstyled">
-                <li class="item bt">
-                  <div class="summary row">
-                    <div class="summary-main-wrapper span6">
-                      <div class="summary-main">
-                        <h2 class="title">
-                          <a href="/ddb-next/item/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP?sort=random_214993804815738645&amp;query=aldo&amp;viewType=list&amp;rows=20&amp;offset=0&amp;firstHit=BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP&amp;lastHit=lasthit&amp;hitNumber=1" class="persist" title="Moro, Aldo">
-                            <strong>Entity name 1</strong>
-                          </a>
-                        </h2>
-                        <div class="subtitle">
-                          <span>
-                            entity role 1, entity role 2, entity role3
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="thumbnail-wrapper span3">
-                      <div class="thumbnail" id="thumbnail-BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP">
-                        <a href="/ddb-next/item/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP?sort=random_214993804815738645&amp;query=aldo&amp;viewType=list&amp;rows=20&amp;offset=0&amp;firstHit=BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP&amp;lastHit=lasthit&amp;hitNumber=1">
-                          <img src="/ddb-next/binary/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP/list/1.jpg" alt="Moro, Aldo">
-                        </a>
-                      </div>
-                      <div class="item-options bl">
-                        <ul class="item-options-ul">
-                          <li>
-                            <div id="favorite-ILL7O3BSG7ZXIZMX6RT23AR7FDT3NUPK" class="add-to-favorites bb" title="Zu Favoriten hinzufügen"></div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-                <li class="item bt">
-                  <div class="summary row">
-                    <div class="summary-main-wrapper span6">
-                      <div class="summary-main">
-                        <h2 class="title">
-                          <a href="/ddb-next/item/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP?sort=random_214993804815738645&amp;query=aldo&amp;viewType=list&amp;rows=20&amp;offset=0&amp;firstHit=BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP&amp;lastHit=lasthit&amp;hitNumber=1" class="persist" title="Moro, Aldo">
-                            <strong>Entity name 2</strong>
-                          </a>
-                        </h2>
-                        <div class="subtitle">
-                          <span>
-                            entity role 1, entity role 2, entity role3
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="thumbnail-wrapper span3">
-                      <div class="thumbnail" id="thumbnail-BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP">
-                        <a href="/ddb-next/item/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP?sort=random_214993804815738645&amp;query=aldo&amp;viewType=list&amp;rows=20&amp;offset=0&amp;firstHit=BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP&amp;lastHit=lasthit&amp;hitNumber=1">
-                          <img src="/ddb-next/binary/BAT3NQOT2UQSUKIFRN6DH6TTIVAIQVDP/list/1.jpg" alt="Moro, Aldo">
-                        </a>
-                      </div>
-                      <div class="item-options bl">
-                        <ul class="item-options-ul">
-                          <li>
-                            <div id="favorite-ILL7O3BSG7ZXIZMX6RT23AR7FDT3NUPK" class="add-to-favorites bb" title="Zu Favoriten hinzufügen"></div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-              <%--static code for the first page prototype --end-- --%>
-
             </div>
           </div>
         </div>
