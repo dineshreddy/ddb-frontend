@@ -39,7 +39,6 @@ $(function() {
       if (this.tooltip.hasClass('hasArrow')) {
         this.arrow = $(document.createElement('div'));
         this.arrow.addClass('arrow');
-        //arrow.style.position = "fixed";
         this.arrow.appendTo(this.tooltip);
       }
       
@@ -71,7 +70,7 @@ $(function() {
       var currObjInstance = this;
       if (!this.opened) {
         this.opened = true;
-        this.tooltip.fadeIn('fast')
+        this.tooltip.fadeIn('fast');
         
         var positionInfoIcon = currObjInstance.container.offset();
 
