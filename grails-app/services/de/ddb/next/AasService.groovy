@@ -132,10 +132,10 @@ class AasService {
         if (apiResponse.isOk()) {
             JSONObject jsonObject = apiResponse.getResponse()
             result = new User(
-                    username: jsonObject.username,
+                    username: jsonObject.nickname,
                     status: jsonObject.status,
-                    lastname: jsonObject.lastname,
-                    firstname: jsonObject.firstname,
+                    lastname: jsonObject.surName,
+                    firstname: jsonObject.foreName,
                     email: jsonObject.email,
                     apiKey: jsonObject.apiKey)
             result.setId(jsonObject.id)
@@ -161,11 +161,11 @@ class AasService {
      *
      * @param user user object
      */
-    public void createOrUpdatePersonAsAdmin(User user) {
+    public User createOrUpdatePersonAsAdmin(User user) {
+        User result = user
         String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
 
         JSONObject jsonObject = new JSONObject()
-        jsonObject.put(ID_FIELD, user.id)
         jsonObject.put(NICKNAME_FIELD, user.username)
         jsonObject.put(LASTNAME_FIELD, user.lastname)
         jsonObject.put(FIRSTNAME_FIELD, user.firstname)
@@ -174,10 +174,14 @@ class AasService {
         User aasUser = getPersonAsAdmin(user.email)
         if (aasUser.email) {
             // user exists - update it
+            jsonObject.put(ID_FIELD, aasUser.id)
             def apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), PERSON_URI + aasUser.id, false,
                     jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
             if (!apiResponse.isOk()) {
                 log.error "AAS update request failed: " + apiResponse
+            }
+            else {
+                result.setId(apiResponse.getResponse().id)
             }
         }
         else {
@@ -188,7 +192,11 @@ class AasService {
             if (!apiResponse.isOk()) {
                 log.error "AAS create request failed: " + apiResponse
             }
+            else {
+                result.setId(apiResponse.getResponse().id)
+            }
         }
+        return result
     }
 
     /**
