@@ -18,14 +18,11 @@ package de.ddb.next
 import static groovyx.net.http.ContentType.*
 import groovy.json.*
 import groovyjarjarcommonscli.MissingArgumentException
-import groovyx.net.http.ContentType
-import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 
 import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.logging.LogFactory
-import org.apache.http.util.EntityUtils
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
@@ -93,13 +90,13 @@ class AasService {
 
             User user = new User()
             user.setId(aasResponse.id)
-            user.setUsername(aasResponse.nickname)
+            user.setUsername(aasResponse.username)
             user.setStatus(aasResponse.status)
             user.setEmail(aasResponse.email)
-            user.setFirstname(aasResponse.foreName)
+            user.setFirstname(aasResponse.firstname)
             //workaround for aas default value
-            if (aasResponse.surName != null && !aasResponse.surName.equals("surname is unknown")) {
-                user.setLastname(aasResponse.surName)
+            if (aasResponse.lastname != null && !aasResponse.lastname.equals("surname is unknown")) {
+                user.setLastname(aasResponse.lastname)
             }
             user.setPassword(password)
             user.setOpenIdUser(false)
@@ -129,27 +126,23 @@ class AasService {
      */
     public User getPersonAsAdmin(String id) {
         User result
-
-        // TODO use ApiConsumer after integrating "ddb-common" project
-        def http = new HTTPBuilder(configurationService.getAasUrl())
-
-        http.request(Method.GET, ContentType.JSON) {
-            http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
-            uri.path = PERSON_URI + id
-            response.success = { resp, user ->
-                result = new User(
-                        username: user.nickname,
-                        status: user.status,
-                        lastname: user.surName,
-                        firstname: user.foreName,
-                        email: user.email,
-                        apiKey: user.apiKey)
-                result.setId(user.id)
-            }
-            response.failure = { resp ->
-                result = new User(username: "username")
-                result.setId(id)
-            }
+        String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
+        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:],
+        ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+        if (apiResponse.isOk()) {
+            JSONObject jsonObject = apiResponse.getResponse()
+            result = new User(
+                    username: jsonObject.username,
+                    status: jsonObject.status,
+                    lastname: jsonObject.lastname,
+                    firstname: jsonObject.firstname,
+                    email: jsonObject.email,
+                    apiKey: jsonObject.apiKey)
+            result.setId(jsonObject.id)
+        }
+        else {
+            result = new User(username: "username")
+            result.setId(id)
         }
         return result
     }
@@ -169,10 +162,10 @@ class AasService {
      * @param user user object
      */
     public void createOrUpdatePersonAsAdmin(User user) {
-        // TODO use ApiConsumer after integrating "ddb-common" project
-        def http = new HTTPBuilder(configurationService.getAasUrl())
+        String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
 
         JSONObject jsonObject = new JSONObject()
+        jsonObject.put(ID_FIELD, user.id)
         jsonObject.put(NICKNAME_FIELD, user.username)
         jsonObject.put(LASTNAME_FIELD, user.lastname)
         jsonObject.put(FIRSTNAME_FIELD, user.firstname)
@@ -181,26 +174,19 @@ class AasService {
         User aasUser = getPersonAsAdmin(user.email)
         if (aasUser.email) {
             // user exists - update it
-            jsonObject.put(ID_FIELD, aasUser.id)
-            http.request(Method.PUT, ContentType.JSON) {
-                body = jsonObject
-                http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
-                uri.path = PERSON_URI + "/" + aasUser.id
-                response.failure = { updateResponse ->
-                    log.error "AAS request failed: " + EntityUtils.toString(updateResponse.entity)
-                }
+            def apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), PERSON_URI + aasUser.id, false,
+                    jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+            if (!apiResponse.isOk()) {
+                log.error "AAS update request failed: " + apiResponse
             }
         }
         else {
             // user doesn't exist - create it
             jsonObject.put(PASSWORD_FIELD, RandomStringUtils.randomAlphanumeric(12))
-            http.request(Method.POST, ContentType.JSON) {
-                body = jsonObject
-                http.auth.basic configurationService.getAasAdminUserId(), configurationService.getAasAdminPassword()
-                uri.path = PERSON_URI
-                response.failure = { createResponse ->
-                    log.error "AAS request failed: " + EntityUtils.toString(createResponse.entity)
-                }
+            def apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), PERSON_URI, false,
+                    jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+            if (!apiResponse.isOk()) {
+                log.error "AAS create request failed: " + apiResponse
             }
         }
     }
