@@ -105,7 +105,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
       if(typeof map === "undefined"){
         map = new DDBMap();
       }
-      map.display({"rootDivId": MAP_DIV});
+      map.display({"rootDivId": MAP_DIV, "initZoom": 6});
     }
   };
 
