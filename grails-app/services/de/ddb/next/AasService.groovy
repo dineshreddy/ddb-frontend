@@ -138,7 +138,7 @@ class AasService {
                     firstname: jsonObject.foreName,
                     email: jsonObject.email,
                     apiKey: jsonObject.apiKey)
-            result.setId(jsonObject.id)
+            result.setId(id)
         }
         else {
             result = new User(username: "username")
