@@ -278,8 +278,7 @@ $(document)
                 .click(
                     function(e) {
                       e.preventDefault();
-                      $
-                          .fancybox(
+                      $.fancybox(
                               $(".previews"),
                               {
                                 'padding' : 0,
@@ -309,6 +308,11 @@ $(document)
                       }
                       return false;
                     });
+            $(".show-lightbox").click(function(e) {
+              e.preventDefault();
+              $(".previews").trigger( "click" );
+              return false;
+            });
             $("a.group").click(function(e) {
               e.preventDefault();
               var previewUri = $(this).attr("href");

@@ -37,18 +37,22 @@ limitations under the License.
           <g:if test="${it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <g:set var="counter" value="${counter + 1}" />
             <li>
-              <div class="viewer-icon">
-                <g:if test="${it.full.uri == ''}">
+              <g:if test="${it.full.uri == ''}">
+                <div class="viewer-icon">
                   <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />"></a>
-                </g:if>
-                <g:else>
-                  <a target="_blank" class="show-lightbox" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />"></a>
-                  <%-- <a class="previews show-lightbox" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}"></a> --%>
-                </g:else>
-              </div>
-              <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
-                <img src="${viewerContent}" alt="${(it.preview.title).encodeAsHTML()}" />
-              </a>
+                </div>
+                <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
+                  <img src="${viewerContent}" alt="${(it.preview.title).encodeAsHTML()}" />
+                </a>
+              </g:if>
+              <g:else>
+                <div class="viewer-icon">
+                  <a class="show-lightbox" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}"></a>
+                </div>
+                <a class="previews" data-caption="${(it.preview.title).encodeAsHTML()}" data-pos="${counter}" href="${content}">
+                  <img src="${viewerContent}" alt="${(it.preview.title).encodeAsHTML()}" />
+                </a>
+              </g:else>
             </li>
           </g:if>
         </g:each>
