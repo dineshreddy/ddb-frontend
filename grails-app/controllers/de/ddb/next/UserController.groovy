@@ -791,7 +791,9 @@ class UserController {
                 loginStatus = LoginStatus.SUCCESS
 
                 createFavoritesFolderIfNotExisting(user)
-                aasService.createOrUpdatePersonAsAdmin(user)
+
+                // deactivated until we have unique id for both OpenId and AAS
+                // aasService.createOrUpdatePersonAsAdmin(user)
             }else {
                 log.info "doOpenIdLogin(): failure verification"
                 loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
