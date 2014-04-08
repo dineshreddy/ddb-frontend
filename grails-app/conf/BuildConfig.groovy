@@ -62,6 +62,7 @@ grails.project.dependency.resolution = {
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        compile "net.sf.ehcache:ehcache-core:2.4.6"
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
         runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
@@ -81,7 +82,7 @@ grails.project.dependency.resolution = {
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
         compile ":message-digest:1.1"
-        build ":tomcat:$grailsVersion"
+        build ":tomcat:7.0.42"
         runtime ":resources:1.2.1"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
