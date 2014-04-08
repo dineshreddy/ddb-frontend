@@ -32,5 +32,5 @@ limitations under the License.
   </g:if>
     <meta name="layout" content="main" />
   </head>
-  <body>${content}</body>
+  <body>${raw(content)}</body>
 </html>
