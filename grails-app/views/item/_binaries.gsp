@@ -107,7 +107,7 @@ limitations under the License.
           <g:else>
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
-          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:if test="${(it.full.uri != '' || it.preview.uri != '') && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
               <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
