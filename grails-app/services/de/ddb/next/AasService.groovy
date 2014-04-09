@@ -90,13 +90,13 @@ class AasService {
 
             User user = new User()
             user.setId(aasResponse.id)
-            user.setUsername(aasResponse.username)
+            user.setUsername(aasResponse.nickname)
             user.setStatus(aasResponse.status)
             user.setEmail(aasResponse.email)
-            user.setFirstname(aasResponse.firstname)
+            user.setFirstname(aasResponse.foreName)
             //workaround for aas default value
-            if (aasResponse.lastname != null && !aasResponse.lastname.equals("surname is unknown")) {
-                user.setLastname(aasResponse.lastname)
+            if (aasResponse.surName != null && !aasResponse.surName.equals("surname is unknown")) {
+                user.setLastname(aasResponse.surName)
             }
             user.setPassword(password)
             user.setOpenIdUser(false)

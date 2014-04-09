@@ -60,9 +60,9 @@ class ContentController {
                 def secondLvl = getSecLvl()
                 def url = configurationService.getStaticUrl()
                 def lang = it.getISO2()
-                def path = "/static/"+lang+"/"+firstLvl+"/index.html"
+                def path = lang+"/"+firstLvl+"/index.html"
                 if (params.id!=null){
-                    path = "/static/"+lang+"/"+firstLvl+"/"+secondLvl+".html"
+                    path = lang+"/"+firstLvl+"/"+secondLvl+".html"
                 }
 
                 def apiResponse = ApiConsumer.getText(url, path, false)

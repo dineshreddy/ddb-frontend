@@ -1,10 +1,14 @@
 package de.ddb.next
 
 import static org.junit.Assert.*
+import grails.test.mixin.TestMixin
+import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
-class EntityServiceIntegrationTests extends GroovyTestCase {
+
+@TestMixin(IntegrationTestMixin)
+class EntityServiceIntegrationTests {
 
     def entityService
 
