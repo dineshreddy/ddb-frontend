@@ -41,10 +41,10 @@ limitations under the License.
       <div class="comment-button off" id="comment-button-${item.bookmark.bookmarkId}">
         <g:form id="comment-save" method="POST" name="comment-save">
           <button type="submit" class="submit comment-save" title="<g:message encodeAs="html" code="ddbnext.Save" />" data-bookmark-id="${item.bookmark.bookmarkId}">
-            <span><g:message encodeAs="html" code="ddbnext.Save"></g:message encodeAs="html"></span>
+            <span><g:message encodeAs="html" code="ddbnext.Save"></g:message></span>
           </button>
           <button type="submit" class="submit comment-cancel" title="<g:message encodeAs="html" code="ddbnext.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
-            <span><g:message encodeAs="html" code="ddbnext.Cancel"></g:message encodeAs="html"></span>
+            <span><g:message encodeAs="html" code="ddbnext.Cancel"></g:message></span>
           </button>
         </g:form>
       </div>

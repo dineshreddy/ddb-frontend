@@ -144,7 +144,7 @@ limitations under the License.
                 <span>
                 <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
-                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message encodeAs="html">
+                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
@@ -157,7 +157,7 @@ limitations under the License.
                   </g:if> 
                   <g:else>
                     <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
-                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message encodeAs="html">
+                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>

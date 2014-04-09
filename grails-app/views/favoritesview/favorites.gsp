@@ -179,7 +179,7 @@ limitations under the License.
               <span class="h3">
                 <g:form id="folder-create" method="POST" name="folder-create">
                   <button id="button-new" type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Create_Folder_Title" />">
-                    <span><g:message encodeAs="html" code="ddbnext.Create_Folder"></g:message encodeAs="html"></span>
+                    <span><g:message encodeAs="html" code="ddbnext.Create_Folder"></g:message></span>
                   </button>
                 </g:form>
               </span>
@@ -207,14 +207,14 @@ limitations under the License.
                 <div class="span1 delete-btn">
                   <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
                     <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
-                      <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message encodeAs="html"></span>
+                      <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
                     </button>
                   </g:form>
                 </div>
                 <div class="span1 delete-btn">
                   <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
                     <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
-                      <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message encodeAs="html"></span>
+                      <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
                     </button>
                   </g:form>
                 </div>
@@ -227,7 +227,7 @@ limitations under the License.
                 <span>
                 <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
-                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message encodeAs="html">
+                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
@@ -240,7 +240,7 @@ limitations under the License.
                   </g:if> 
                   <g:else>
                     <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
-                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message encodeAs="html">
+                      <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
