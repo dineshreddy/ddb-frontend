@@ -19,7 +19,7 @@ limitations under the License.
 
 <html>
 <head>
-<title>${selectedOrgXML.name} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title>${selectedOrgXML.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
@@ -34,7 +34,7 @@ limitations under the License.
          <div class="row">
            <div class="span9">
              <div>
-               <g:message code="ddbnext.${selectedOrgXML.sector}"/>
+               <g:message encodeAs="html" code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
                  <h2>${selectedOrgXML.name} 
@@ -43,10 +43,10 @@ limitations under the License.
                     <g:link class="count" controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): '', (SearchParamEnum.OFFSET.getName()): '0', (SearchParamEnum.ROWS.getName()): '20', (SearchParamEnum.FACETVALUES.getName()): facetvalue]}" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
-                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
+                            <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
                         </g:if>
                         <g:if test="${(countObjcs > 1)}">
-                            <g:message args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
+                            <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
                         </g:if>
                      </g:link>
                  </g:if>
@@ -83,7 +83,7 @@ limitations under the License.
 
               <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
                 <div class="hierarchy">
-                  <span class="title"><g:message code="ddbnext.InstitutionItem_OtherLocations" /></span>
+                  <span class="title"><g:message encodeAs="html" code="ddbnext.InstitutionItem_OtherLocations" /></span>
                   <ol class="institution-list">
                     <li class="institution-listitem">
                       <g:if test="${(selectedItemId == itemId)}">
@@ -116,7 +116,7 @@ limitations under the License.
       </div>
   </div> 
   <div class="printViewUrl off">
-    <strong><g:message code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+    <strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink"/></strong>: 
     <div>${url}</div>
   </div> 
 </body>

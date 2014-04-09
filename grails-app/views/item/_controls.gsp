@@ -19,12 +19,12 @@ limitations under the License.
     <!-- buttons -->
     <div class="span6 item-nav-left">
       <g:if test="${searchResultUri != null}">
-          <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
-              <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
+          <a class="back-to-list" href="${searchResultUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
+              <span><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
           </a>
       </g:if> 
       <g:else>
-          <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
+          <span class="back-to-list-greyed-out"><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
       </g:else>
     </div>
     <!-- search results navigation -->
@@ -40,7 +40,7 @@ limitations under the License.
       <div class="span5 item-nav fr">
         <ul class="inline">
           <li class="items-overall-index">
-              <span><g:message code="ddbnext.Hit" /> 1 <g:message code="ddbnext.Of" /> 1</span>
+              <span><g:message encodeAs="html" code="ddbnext.Hit" /> 1 <g:message encodeAs="html" code="ddbnext.Of" /> 1</span>
           </li>
         </ul>
       </div>

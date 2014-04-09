@@ -16,7 +16,7 @@ limitations under the License.
 <div class="row item-detail">
   <div class="span12 item-hierarchy off">
     <div class="field-header">
-      <span><g:message code="ddbnext.View_related_objects" /></span>
+      <span><g:message encodeAs="html" code="ddbnext.View_related_objects" /></span>
       <ddb:renderInfoTooltip messageCode="ddbnext.HierarchyHelp_Text" infoId="objdetails-hierarchy" infoDir="help" hasArrow="true" />
     </div>
     <div class="row">

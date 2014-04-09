@@ -17,14 +17,14 @@ limitations under the License.
   <div class="span12">
     <div class="row">
       <div class="span11 operator group-operator">
-        <label for="operator-group-${group}"><g:message code="ddbnext.AdvancedSearch_Operator_MatchLabel"/></label>
+        <label for="operator-group-${group}"><g:message encodeAs="html" code="ddbnext.AdvancedSearch_Operator_MatchLabel"/></label>
         <select id="operator-group-${group}" name="operator-group-${group}">
-          <option value="OR"><g:message code="ddbnext.AdvancedSearchGroupOperator_AnyTerms"/></option>
-          <option value="AND"><g:message code="ddbnext.AdvancedSearchGroupOperator_AllTerms"/></option>
+          <option value="OR"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGroupOperator_AnyTerms"/></option>
+          <option value="AND"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGroupOperator_AllTerms"/></option>
         </select>
       </div>
       <div class="span1 button-group">
-        <button type="button" class="remove-group-button fr" style="display:none" title="<g:message code="ddbnext.AdvancedSearch_RemoveGroupButton_Title"/>"></button>
+        <button type="button" class="remove-group-button fr" style="display:none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_RemoveGroupButton_Title"/>"></button>
       </div>
     </div>
 

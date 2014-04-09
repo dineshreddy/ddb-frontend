@@ -19,7 +19,7 @@ limitations under the License.
   
     <ddb:doRedirectIfNotLoggedIn />
     
-    <title><g:message code="ddbnext.Api" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+    <title><g:message encodeAs="html" code="ddbnext.Api" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
     
     <meta name="page" content="apikey" />
     <meta name="layout" content="main" />
@@ -33,25 +33,25 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
+                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
               </div>
             </div>
             
             <div class="control-group">
-              <label class="control-label"><g:message code="ddbnext.Api_My_Key" /></label>
+              <label class="control-label"><g:message encodeAs="html" code="ddbnext.Api_My_Key" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-wrench"></i></span>
-                  <input type="text" class="profile-input apikey-input" name="apikey" placeholder="<g:message code="ddbnext.Api_My_Key" />" value="${user.apiKey}">
-                  <button type="submit" class="apikey-delete" id="apikey-delete" title="<g:message code="ddbnext.Api_Key_Delete"/>"></button>
+                  <input type="text" class="profile-input apikey-input" name="apikey" placeholder="<g:message encodeAs="html" code="ddbnext.Api_My_Key" />" value="${user.apiKey}">
+                  <button type="submit" class="apikey-delete" id="apikey-delete" title="<g:message encodeAs="html" code="ddbnext.Api_Key_Delete"/>"></button>
                 </div>
               </div>
             </div>
 
             <div>
-              <g:message code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
+              <g:message encodeAs="html" code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
               <br />            
-              <g:message code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
+              <g:message encodeAs="html" code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
             </div>            
             
           </div>
@@ -60,17 +60,17 @@ limitations under the License.
     </div>
     <div id="msDeleteApiKey" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3>
-          <g:message code="ddbnext.delete_confirmation" />
+          <g:message encodeAs="html" code="ddbnext.delete_confirmation" />
         </h3>
       </div>
       <div class="modal-body">
-        <g:message code="ddbnext.Api_Key_Delete_Confirmation" />
+        <g:message encodeAs="html" code="ddbnext.Api_Key_Delete_Confirmation" />
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" id="delete-apikey-confirm"><g:message code="ddbnext.Ok" /></button>
-        <button class="submit" data-dismiss="modal"><g:message code="ddbnext.Cancel" /></button>
+        <button class="submit" data-dismiss="modal" id="delete-apikey-confirm"><g:message encodeAs="html" code="ddbnext.Ok" /></button>
+        <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbnext.Cancel" /></button>
       </div>
     </div>
   </body>

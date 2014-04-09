@@ -15,6 +15,6 @@ limitations under the License.
 --%>
 <div>
   <a href="${item.uri}">
-    ${ item?.name } <span>(<g:message code="${ item?.sectorLabelKey }" />)</span>
+    ${ item?.name } <span>(<g:message encodeAs="html" code="${ item?.sectorLabelKey }" />)</span>
   </a>
 </div>

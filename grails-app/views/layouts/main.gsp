@@ -42,7 +42,7 @@ limitations under the License.
       <div class="container">
         <div class="row">
           <div class="span12 warning">
-            <span><g:message code="ddbnext.Warning_Non_Javascript"/></span>
+            <span><g:message encodeAs="html" code="ddbnext.Warning_Non_Javascript"/></span>
           </div>
         </div>
       </div>
