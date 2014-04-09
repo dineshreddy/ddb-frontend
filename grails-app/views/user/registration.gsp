@@ -29,7 +29,7 @@ limitations under the License.
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
         <div><h1><g:message encodeAs="html" code="ddbnext.Sign_up_here" /></h1></div>
-        <div id="enduser" class="reg-subtitle bt-white"><span><g:message encodeAs="html" code="ddbnext.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
+        <div id="enduser" class="reg-subtitle bt-white"><span><g:message encodeAs="none" code="ddbnext.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
 
         <div class="control-group">
           <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username" />*</label>
@@ -98,7 +98,7 @@ limitations under the License.
             </div>
           </div>
           <label class="checkbox-label control-label">
-            <g:message encodeAs="html" code="ddbnext.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
+            <g:message encodeAs="none" code="ddbnext.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
           </label>
         </div>
 
