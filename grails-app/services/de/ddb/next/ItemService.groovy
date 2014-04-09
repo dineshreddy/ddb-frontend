@@ -130,15 +130,27 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        def logoResource=new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
-        model.institutionImage = logoResource.bytes
-        def viewerContent
-        if (model.binaryList.first().preview.uri == '') {
-            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
-        }else {
-            viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+        def logoResource
+        try {
+            logoResource = new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
+            model.institutionImage = logoResource.bytes
+        }
+        catch (IOException e) {
+            // use placeholder logo as fallback
+            logoResource = new UrlResource(configurationService.getSelfBaseUrl() +
+                    grailsLinkGenerator.resource(
+                    "dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
+            model.institutionImage = logoResource.bytes
         }
 
+        def viewerContent
+        if (model.binaryList.size() > 0) {
+            if (model.binaryList.first().preview.uri == '') {
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+            }else {
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+            }
+        }
         model.put("binariesListViewerContent", viewerContent)
 
         return model
