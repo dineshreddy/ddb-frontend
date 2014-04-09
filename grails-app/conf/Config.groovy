@@ -66,6 +66,10 @@ grails.resources.adhoc.patterns = [
     '/js/*',
     '/plugins/*'
 ]
+grails.resources.adhoc.excludes = [
+    '**/WEB-INF/**',
+    '**/META-INF/**'
+]
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "html" // none, html, base64

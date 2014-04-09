@@ -96,8 +96,8 @@ grails.project.dependency.resolution = {
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
         compile ":message-digest:1.1"
-        build ":tomcat:7.0.42"
-        runtime ":resources:1.2.1"
+        build ":tomcat:7.0.52.1"
+        runtime ":resources:1.2.7"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
