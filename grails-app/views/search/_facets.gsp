@@ -15,6 +15,6 @@ limitations under the License.
 --%>
 <g:each in="${jsFacetsList}">
   <div class="facets-item bt bb bl br">
-    <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
+    <a class="h3" href="#" data-fctName="${it}"><g:message encodeAs="html" code="ddbnext.facet_${it}" /></a>
   </div>
 </g:each>

@@ -25,19 +25,19 @@ limitations under the License.
     <ul class="item-options-ul">
       <ddb:isLoggedIn>
         <li>
-          <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+          <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
           <ddb:isPersonalFavoritesAvailable>
             <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
-                <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-                <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
+                <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
+                <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
                 <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
                 <div class="modal-footer">
                   <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                    <g:message code="ddbnext.Close"/>
+                    <g:message encodeAs="html" code="ddbnext.Close"/>
                   </button>
                   <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-                    <g:message code="ddbnext.Save"/>
+                    <g:message encodeAs="html" code="ddbnext.Save"/>
                   </button>
                 </div>
               </div>
@@ -52,7 +52,7 @@ limitations under the License.
       </g:each>
       <g:if test="${mediaType != 'institution'}">
         <li>
-          <div class="compare bb off" data-iid="${item.id}" title="<g:message code="ddbnext.SearchResultsCompareObject"/>"></div>
+          <div class="compare bb off" data-iid="${item.id}" title="<g:message encodeAs="html" code="ddbnext.SearchResultsCompareObject"/>"></div>
         </li>
       </g:if>
       <li>

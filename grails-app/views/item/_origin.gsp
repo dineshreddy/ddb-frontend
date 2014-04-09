@@ -16,12 +16,12 @@ limitations under the License.
 <div class="row item-detail">
   <div class="span6 origin">
     <g:if test="${!originUrl?.toString()?.isEmpty()}">
-      <a target="_blank" class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message code="ddbnext.stat_008" />">
-        <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
+      <a target="_blank" class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+        <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
       </a>
     </g:if>
     <g:else>
-      <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
+      <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
     </g:else>
   </div>
 </div>

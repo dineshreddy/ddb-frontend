@@ -21,7 +21,7 @@ limitations under the License.
 <html>
 <head>
 <title>
-  ${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="person" />
 <meta name="layout" content="main" />
 </head>
@@ -30,7 +30,7 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3>
-          <g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
+          <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
         </h3>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
@@ -41,7 +41,7 @@ limitations under the License.
               <g:if test="${mit == it.field}">
                 <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
                   <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}"
-                    data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
+                    data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>
                   <g:if test="${it.facetValues.size() > 0}">
                     <ul class="unstyled">
                       <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}"
@@ -59,7 +59,7 @@ limitations under the License.
         <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
       </div>
       <div class="clear-filters">
-        <a href="${clearFilters.encodeAsHTML()}"><g:message code="ddbnext.Clear_filters" /></a>
+        <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters" /></a>
       </div>
     </div>
     <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
@@ -70,7 +70,7 @@ limitations under the License.
       </g:if>
       <div class="noresults">
         <div>
-          <g:message code="ddbnext.No_results_found_for_the_search" />
+          <g:message encodeAs="html" code="ddbnext.No_results_found_for_the_search" />
         </div>
       </div>
     </div>
@@ -97,8 +97,8 @@ limitations under the License.
               <div>
                 <button id="view-list" type="button"
                   class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
-                  title="<g:message code="ddbnext.View_as_List" />">
-                  <g:message code="ddbnext.View_as_List" />
+                  title="<g:message encodeAs="html" code="ddbnext.View_as_List" />">
+                  <g:message encodeAs="html" code="ddbnext.View_as_List" />
                 </button>
               </div>
               <!--[if lt IE 9]>
@@ -108,8 +108,8 @@ limitations under the License.
               <div>
                 <button id="view-grid" type="button"
                   class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
-                  title="<g:message code="ddbnext.View_as_Grid" />">
-                  <g:message code="ddbnext.View_as_Grid" />
+                  title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />">
+                  <g:message encodeAs="html" code="ddbnext.View_as_Grid" />
                 </button>
               </div>
               <!--[if lt IE 9]>

@@ -16,7 +16,7 @@ limitations under the License.
 <html>
 <!-- TODO my do write the head element again? -->
 <head>
-  <title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
   <meta name="page" content="staticcontent" />
   <g:if test="${author}">
     <meta name="author" content="${author}" />

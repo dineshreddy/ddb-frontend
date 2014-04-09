@@ -40,7 +40,7 @@ limitations under the License.
   <!-- Item Rights -->
   <g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:
+      <td style="width: 35%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.stat_007" />:
       </strong></td>
       <td style="width: 65%" class="valign-top">
         ${item.rights}
@@ -50,7 +50,7 @@ limitations under the License.
   <!-- Item License -->
   <g:if test="${license}">
     <tr>
-      <td style="width: 30%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:
+      <td style="width: 30%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.License_Field" />:
       </strong></td>
       <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
             <g:img file="${license.img}" alt="${license.text}" class="license-icon" />
@@ -62,11 +62,11 @@ limitations under the License.
 <!-- Original Object View -->
 <div class="origin">
   <g:if test="${!originUrl?.toString()?.isEmpty()}">
-    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
-      <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
+    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+      <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
     </a>
   </g:if>
   <g:else>
-    <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
+    <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
   </g:else>
 </div>

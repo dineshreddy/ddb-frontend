@@ -16,7 +16,7 @@ limitations under the License.
 <html>
   <head>
 
-    <title><g:message code="ddbnext.Confirm" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message encodeAs="html" code="ddbnext.Confirm" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="confirm" />
     <meta name="layout" content="main" />

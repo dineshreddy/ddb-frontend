@@ -41,17 +41,17 @@ limitations under the License.
 <ul class="inline">
   <li>
     <g:if test="${searchResultUri != null}">
-      <a class="back-to-list" href="${searchResultUri}" title="<g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
-        <span><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
+      <a class="back-to-list" href="${searchResultUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
+        <span><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
       </a>
     </g:if> 
     <g:else>
-      <span class="back-to-list-greyed-out"><g:message code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
+      <span class="back-to-list-greyed-out"><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
     </g:else>
   </li>
   <li class="next-item bl fr">
     <g:if test="${enableRightPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span><g:message code="ddbnext.Next_Label" /></span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>
@@ -59,7 +59,7 @@ limitations under the License.
   </li>
   <li class="prev-item bl fr">
     <g:if test="${enableLeftPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span><g:message code="ddbnext.Previous_Label" /></span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>

@@ -18,12 +18,12 @@ limitations under the License.
   <div class="social-locked">
     <div class="social-overlay-container">
       <div class="social-overlay">
-        <b><g:message code="ddbnext.Social_Tooltip_Header"/></b>
+        <b><g:message encodeAs="html" code="ddbnext.Social_Tooltip_Header"/></b>
         <br />
-        <g:message code="ddbnext.Social_Tooltip_Body"/>
+        <g:message encodeAs="html" code="ddbnext.Social_Tooltip_Body"/>
         <br />
         <br />
-        <a href="javascript:void(0);" class="social-accept" ><g:message code="ddbnext.Social_Tooltip_Accept"/></a>      
+        <a href="javascript:void(0);" class="social-accept" ><g:message encodeAs="html" code="ddbnext.Social_Tooltip_Accept"/></a>      
       </div>
     </div>
     <ul>
@@ -51,7 +51,7 @@ limitations under the License.
         <iframe></iframe>
         --%>
       </li>
-      <li class="social-lockagain" title="<g:message code="ddbnext.Social_Tooltip_Revoke" />">
+      <li class="social-lockagain" title="<g:message encodeAs="html" code="ddbnext.Social_Tooltip_Revoke" />">
         <i class="icon-lockagain" ></i>
       </li>
     </ul>
