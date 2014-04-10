@@ -220,6 +220,11 @@ class UrlMappings {
             action="getAjaxRoleSearchResultsAsJson"
         }
 
+        "/entity/search/person/$q?" {
+            controller="entity"
+            action="personsearch"
+        }
+
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -315,15 +320,13 @@ class UrlMappings {
             action="multipolygone"
         }
 
+        //TODO: Remove. Left for legacy
         "/searchPerson/$q?" {
-            controller="person"
-            action="search"
-        }
-        
-        "/entity/search/person/$q?" {
             controller="entity"
             action="personsearch"
         }
+        
+
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
