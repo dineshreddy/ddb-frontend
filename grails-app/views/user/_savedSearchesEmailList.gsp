@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div style="margin-top: 20px; margin-bottom: 20px">
-  <g:message code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}" />
+  <g:message encodeAs="html" code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}" />
   <br />
 </div>
 <table border="1" style="width: 100%; margin-bottom: 20px; border-spacing: 0">
@@ -22,12 +22,12 @@ limitations under the License.
     <tr>
       <g:if test="${results.size() == 1}">
         <th style="margin-top: 20px">
-          <g:message code="ddbnext.HierarchyHelp_Leaf" />
+          <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf" />
         </th>
       </g:if>
       <g:else>
         <th style="margin-top: 20px">
-          <g:message code="ddbnext.Searches" />
+          <g:message encodeAs="html" code="ddbnext.Searches" />
         </th>
       </g:else>
     </tr>

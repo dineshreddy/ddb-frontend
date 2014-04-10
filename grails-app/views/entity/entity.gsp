@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-  <title>${entity.person.preferredName} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <title>${entity.person.preferredName} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
   <meta name="page" content="entity" />
   <meta name="layout" content="main" />

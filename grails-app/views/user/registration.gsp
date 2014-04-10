@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message code="ddbnext.Registration" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message encodeAs="html" code="ddbnext.Registration" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="registration" />
 <meta name="layout" content="main" />
@@ -28,65 +28,65 @@ limitations under the License.
     <div class="well">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
-        <div><h1><g:message code="ddbnext.Sign_up_here" /></h1></div>
-        <div id="enduser" class="reg-subtitle bt-white"><span><g:message code="ddbnext.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
+        <div><h1><g:message encodeAs="html" code="ddbnext.Sign_up_here" /></h1></div>
+        <div id="enduser" class="reg-subtitle bt-white"><span><g:message encodeAs="none" code="ddbnext.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Username" />*</label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username" />" value="${params.username}">
+              <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username" />" value="${params.username}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.User.First_Name" /></label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.First_Name" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message code="ddbnext.User.First_Name" />" value="${params.fname}">
+              <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbnext.User.First_Name" />" value="${params.fname}">
             </div>
           </div>
         </div>
 
         <div class="control-group ">
-          <label class="control-label"><g:message code="ddbnext.User.Last_Name" /></label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.Last_Name" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-user"></i></span>
-              <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message code="ddbnext.User.Last_Name" />" value="${params.lname}">
+              <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbnext.User.Last_Name" />" value="${params.lname}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Email" />*</label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.Email" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-envelope"></i></span>
-              <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message code="ddbnext.Email" />" value="${params.email}">
+              <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbnext.Email" />" value="${params.email}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Your_Password" />*</label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.Your_Password" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
-              <input type="Password" id="passwd" class="profile-input" name="passwd" placeholder="<g:message code="ddbnext.Your_Password" />" value="${params.passwd}">
+              <input type="Password" id="passwd" class="profile-input" name="passwd" placeholder="<g:message encodeAs="html" code="ddbnext.Your_Password" />" value="${params.passwd}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message code="ddbnext.Confirm_password" />*</label>
+          <label class="control-label"><g:message encodeAs="html" code="ddbnext.Confirm_password" />*</label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span>
-              <input type="Password" id="conpasswd" class="profile-input" name="conpasswd" placeholder="<g:message code="ddbnext.Confirm_password" />" value="${params.conpasswd}">
+              <input type="Password" id="conpasswd" class="profile-input" name="conpasswd" placeholder="<g:message encodeAs="html" code="ddbnext.Confirm_password" />" value="${params.conpasswd}">
             </div>
           </div>
         </div>
@@ -98,22 +98,22 @@ limitations under the License.
             </div>
           </div>
           <label class="checkbox-label control-label">
-            <g:message code="ddbnext.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
+            <g:message encodeAs="none" code="ddbnext.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
           </label>
         </div>
 
         <div class="control-group">
           <label class="control-label"></label>
           <div class="controls">
-            <button type="submit" class="btn-padding"><g:message code="ddbnext.User.Create_Account" /></button>
+            <button type="submit" class="btn-padding"><g:message encodeAs="html" code="ddbnext.User.Create_Account" /></button>
           </div>
         </div>
         <ul id="error-messages" class="off">
-          <li><a><g:message code="ddbnext.Field_Required" /></a></li>
-          <li><a><g:message code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
-          <li><a><g:message code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
-          <li><a><g:message code="ddbnext.Enter_A_Valid_Email" /></a></li>
-          <li><a><g:message code="ddbnext.Insert_Again_The_Password" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbnext.Insert_Again_The_Password" /></a></li>
         </ul>
       </g:form>
     </div>

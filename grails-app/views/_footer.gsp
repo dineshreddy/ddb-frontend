@@ -18,16 +18,16 @@ limitations under the License.
 <![endif]-->
 <footer class="container">
   <div class="row">
-    <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Footer"/></h1>
+    <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Footer"/></h1>
     <div class="span12 legal">
       <div class="inner">
-        <small><g:message code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
+        <small><g:message encodeAs="html" code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
         <ul>
-          <li><g:link controller="content" params="[dir: 'terms']"><g:message code="ddbnext.Terms_of_Use"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'privacy']"><g:message code="ddbnext.Privacy_Policy"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'publisher']"><g:message code="ddbnext.Publisher"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'sitemap']"><g:message code="ddbnext.Sitemap"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'contact']"><g:message code="ddbnext.Contact"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'terms']"><g:message encodeAs="html" code="ddbnext.Terms_of_Use"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'privacy']"><g:message encodeAs="html" code="ddbnext.Privacy_Policy"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'publisher']"><g:message encodeAs="html" code="ddbnext.Publisher"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'sitemap']"><g:message encodeAs="html" code="ddbnext.Sitemap"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'contact']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
         </ul>
         <div class="build"><ddb:getFrontendVersion /> / <ddb:getBackendVersion/></div>
       </div>

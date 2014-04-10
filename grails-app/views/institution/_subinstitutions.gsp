@@ -40,7 +40,7 @@ limitations under the License.
            </g:each>
        </g:if>
        <g:else>
-           <g:message code=" | broken loop at a depth of more than ${maxDepthOfLoop}" />
+           <g:message encodeAs="html" code=" | broken loop at a depth of more than ${maxDepthOfLoop}" />
        </g:else>
 
     </ol>

@@ -25,7 +25,7 @@ limitations under the License.
         <div class="summary-main-wrapper summary-main-wrapper-gnd span7">
           <div class="summary-main summary-entity">
             <div class="entity-type">
-              <g:message code="ddbnext.Entity_Page_Person"/>
+              <g:message encodeAs="html" code="ddbnext.Entity_Page_Person"/>
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
@@ -53,10 +53,10 @@ limitations under the License.
           </div>
           <%-- 
           <ddb:isLoggedIn>
-            <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>" ></div>
+            <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
-                <p><g:message code="ddbnext.Added_To_Favorites"/></p>
+                <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
               </div>
             </div>
           </ddb:isLoggedIn>

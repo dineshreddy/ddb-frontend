@@ -23,7 +23,7 @@ limitations under the License.
     <div class="comment-text <g:if test="${!publicView}">comment-text-clickanchor</g:if>" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
       <span class="comment-meta">
         <g:if test="${!item.bookmark.description.isEmpty()}">
-          <g:if test="${publicView}"><g:message code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, </g:if>${item.bookmark.updateDateFormatted}:
+          <g:if test="${publicView}"><g:message encodeAs="html" code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, </g:if>${item.bookmark.updateDateFormatted}:
         </g:if>
       </span>
       <span id="comment-text-dyn-${item.bookmark.bookmarkId}">
@@ -31,7 +31,7 @@ limitations under the License.
           ${item.bookmark.description.trim()}
         </g:if>
         <g:else>
-          <g:message code="ddbnext.Favorites_Comment_Label" />
+          <g:message encodeAs="html" code="ddbnext.Favorites_Comment_Label" />
         </g:else>
       </span>
     </div>
@@ -40,11 +40,11 @@ limitations under the License.
       <br />
       <div class="comment-button off" id="comment-button-${item.bookmark.bookmarkId}">
         <g:form id="comment-save" method="POST" name="comment-save">
-          <button type="submit" class="submit comment-save" title="<g:message code="ddbnext.Save" />" data-bookmark-id="${item.bookmark.bookmarkId}">
-            <span><g:message code="ddbnext.Save"></g:message></span>
+          <button type="submit" class="submit comment-save" title="<g:message encodeAs="html" code="ddbnext.Save" />" data-bookmark-id="${item.bookmark.bookmarkId}">
+            <span><g:message encodeAs="html" code="ddbnext.Save"></g:message></span>
           </button>
-          <button type="submit" class="submit comment-cancel" title="<g:message code="ddbnext.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
-            <span><g:message code="ddbnext.Cancel"></g:message></span>
+          <button type="submit" class="submit comment-cancel" title="<g:message encodeAs="html" code="ddbnext.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
+            <span><g:message encodeAs="html" code="ddbnext.Cancel"></g:message></span>
           </button>
         </g:form>
       </div>

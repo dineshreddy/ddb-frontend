@@ -16,7 +16,7 @@ limitations under the License.
 
 <html>
   <head>
-    <title><g:message code="ddbnext.Compare_Header" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message encodeAs="html" code="ddbnext.Compare_Header" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="compare" />
     <meta name="layout" content="main" />
@@ -29,7 +29,7 @@ limitations under the License.
       <div class="span12 compare">
         <div class="row">
           <div class="span12 compare-header">
-            <h1><g:message code="ddbnext.Compare_Header" /></h1>    
+            <h1><g:message encodeAs="html" code="ddbnext.Compare_Header" /></h1>    
           </div>
         </div>
         <g:render template="compareLinks" />
