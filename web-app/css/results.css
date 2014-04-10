@@ -874,12 +874,12 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advancedSearchSolidJointStandardTopFirst.png") no-repeat 0px -68px;
+  background: url("../images/bg/advancedSearchDottedJointFirst.png") no-repeat 0px -62px;
   position:relative;
   border-top: none;
 }
 .selected-items .role-facet:last-child {
-  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -10px;
+  background: url("../images/bg/advancedSearchDottedJointEnd.png") no-repeat 0px -10px;
 }
 
 .role-facet .role-facet-value {  
