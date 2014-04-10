@@ -113,14 +113,13 @@ limitations under the License.
         </div>
       </ddb:isLoggedIn>
       
-      <div class="compare-objects off">
+      <div class="compare-objects bt br bb bl off">
         <div class="compare-header">
-          <hr/>
           <b><g:message encodeAs="html" code="ddbnext.SearchResultsCompareObjects"/></b>
           <ddb:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
         </div>
         <div class="compare-main">
-          <div id="compare-object1" class="compare-object">
+          <div id="compare-object1" class="compare-object bt br bb bl">
             <div class="compare-table">
               <span class="compare-default-pic"></span>
               <span class="compare-default"><g:message encodeAs="html" code="ddbnext.SearchResultsChooseObject1" /></span>
@@ -131,7 +130,7 @@ limitations under the License.
               <span data-index="1" class="fancybox-toolbar-close"></span>
             </div>
           </div>
-          <div id="compare-object2" class="compare-object">
+          <div id="compare-object2" class="compare-object bt br bb bl">
             <div class="compare-table">
               <span class="compare-default-pic"></span>
               <span class="compare-default"><g:message encodeAs="html" code="ddbnext.SearchResultsChooseObject2" /></span>
