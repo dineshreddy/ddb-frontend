@@ -27,7 +27,7 @@
       </h1>
       <p>
         <g:if test="${exceptionType == CultureGraphExceptionType.RESPONSE_404 }">
-          <g:message encodeAs="html" code="error.culturegraph.404.body"/>
+          <g:message encodeAs="none" code="error.culturegraph.404.body"/>
         </g:if>
         <g:else>
           <g:message encodeAs="html" code="error.culturegraph.500.body"/>

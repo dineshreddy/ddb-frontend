@@ -49,9 +49,9 @@ limitations under the License.
             </div>
 
             <div>
-              <g:message encodeAs="html" code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
+              <g:message encodeAs="none" code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
               <br />            
-              <g:message encodeAs="html" code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
+              <g:message encodeAs="none" code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
             </div>            
             
           </div>

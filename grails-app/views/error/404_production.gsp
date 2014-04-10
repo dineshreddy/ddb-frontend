@@ -15,7 +15,7 @@
           <g:message encodeAs="html" code="error.notfound.title"/>
         </h1>
         <p>
-          <g:message encodeAs="html" code="error.notfound.body"/>
+          <g:message encodeAs="none" code="error.notfound.body"/>
         </p>
       </g:if>
       <g:elseif test="${type==Type404.FAVORITELIST_NOT_FOUND}">
@@ -23,7 +23,7 @@
           <g:message encodeAs="html" code="error.favlistnotfound.title"/>
         </h1>
         <p>
-          <g:message encodeAs="html" code="error.favlistnotfound.body"/>
+          <g:message encodeAs="none" code="error.favlistnotfound.body"/>
         </p>
       </g:elseif>
       <g:else>
@@ -31,7 +31,7 @@
           <g:message encodeAs="html" code="error.notfound.title"/>
         </h1>
         <p>
-          <g:message encodeAs="html" code="error.notfound.body"/>
+          <g:message encodeAs="none" code="error.notfound.body"/>
         </p>
       </g:else>
       
