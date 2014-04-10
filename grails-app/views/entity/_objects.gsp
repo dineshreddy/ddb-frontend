@@ -34,7 +34,7 @@ limitations under the License.
   </g:if>
 
   <h3>
-  	<g:message code="ddbnext.Entity_Objects" />: 
+  	<g:message encodeAs="html" code="ddbnext.Entity_Objects" />: 
   </h3>
   <ddb:renderInfoTooltip messageCode="ddbnext.Entity_Objects_Tooltip" hasArrow="true"/>
   
@@ -43,8 +43,8 @@ limitations under the License.
     <%--      Items are retrived via Javascript	  	  --%>
     </div>
     <div class="clearfix"></div>
-    <a class="previous" id="previous"><span><g:message code="ddbnext.Previous_Label" /></span></a>
-    <a class="next" id="next"><span><g:message code="ddbnext.Next_Label" /></span></a>	
+    <a class="previous" id="previous"><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></a>
+    <a class="next" id="next"><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></a>	
   </div>
 
   <div class="media-bar">
@@ -59,21 +59,21 @@ limitations under the License.
     </g:if>
     <g:if test="${showPictures}">
       <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_002"]]}">
-        <g:message code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})</g:link>
+        <g:message encodeAs="html" code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})</g:link>
     </g:if>
     <g:if test="${(showPictures && showVideos) || (showPictures && showAudios)}">
       |
     </g:if>
     <g:if test="${showVideos}">
       <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_005"]]}">
-        <g:message code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})</g:link>
+        <g:message encodeAs="html" code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})</g:link>
     </g:if>
     <g:if test="${(showVideos && showAudios)}">
       |
     </g:if>
     <g:if test="${showAudios}">
       <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): searchPreview.linkQuery.query, (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE.getName()+"=mediatype_001"]]}">
-        <g:message code="ddbnext.Entity_All_Audios" /> (${searchPreview.audioCount})</g:link>
+        <g:message encodeAs="html" code="ddbnext.Entity_All_Audios" /> (${searchPreview.audioCount})</g:link>
     </g:if>
   </div>
 </div>

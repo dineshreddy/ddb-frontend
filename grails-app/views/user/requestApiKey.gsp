@@ -19,7 +19,7 @@ limitations under the License.
   
     <ddb:doRedirectIfNotLoggedIn />
     
-    <title><g:message code="ddbnext.Api" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+    <title><g:message encodeAs="html" code="ddbnext.Api" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
     
     <meta name="page" content="apirequest" />
     <meta name="layout" content="main" />
@@ -33,17 +33,17 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
+                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
               </div>
             </div>
             <div>
-              <g:message code="ddbnext.Api_Description_Text" />
+              <g:message encodeAs="none" code="ddbnext.Api_Description_Text" />
             </div>
             <div>
               <ul id="error-messages" class="off">
-                <li><a><g:message code="ddbnext.Field_Required" /></a></li>
-                <li><a><g:message code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
-                <li><a><g:message code="ddbnext.Enter_A_Valid_Email" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
               </ul>
             </div>
 
@@ -52,25 +52,25 @@ limitations under the License.
               <g:if test="${flash.error}">
                 <div class="errors-container">
                   <ul class="unstyled">
-                    <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+                    <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
                   </ul>
                 </div>
               </g:if>
               <g:if test="${flash.message}">
                 <div class="messages-container">
                   <ul class="unstyled">
-                    <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
+                    <li><i class="icon-ok-circle"></i><span><g:message encodeAs="html" code="${flash.message}" /></span></li>
                   </ul>
                 </div>
               </g:if>
               <div class="input-prepend">
                 <input type="checkbox" class="api-checkbox" name="apiConfirmation">
               </div>
-              <label class="checkbox-label control-label"><g:message code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
+              <label class="checkbox-label control-label"><g:message encodeAs="none" code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
             </div>
 
             <div class="control-group">
-              <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Api_Request"/>"><g:message code="ddbnext.Api_Request"/></button>
+              <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Api_Request"/>"><g:message encodeAs="html" code="ddbnext.Api_Request"/></button>
             </div>
           </div>
         </g:form>

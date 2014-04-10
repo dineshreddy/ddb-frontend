@@ -26,5 +26,5 @@ limitations under the License.
 </ol>
 
 <g:link controller="search" action="results" params="${data?.searchUrlParameter }">
-  <span class="all-objects-link"><g:message code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
+  <span class="all-objects-link"><g:message encodeAs="html" code="ddbnext.Entity_All_Objects"/> (${data?.resultCount})</span>
 </g:link>

@@ -173,23 +173,23 @@ a {
   <![endif]-->
 </head>
 <body style="font-family:Calibri,Arial,sans-serif;">
-  <g:message code="ddbnext.Report_Public_List_Email_Title" />
+  <g:message encodeAs="html" code="ddbnext.Report_Public_List_Email_Title" />
   <br />
   <br />
-  <g:message code="ddbnext.Report_Public_List_Email_Item" />
+  <g:message encodeAs="html" code="ddbnext.Report_Public_List_Email_Item" />
   <a href="${selfBaseUrl}${publicLink}">
     ${selfBaseUrl}${publicLink}
   </a>
   <br />
   <br />
-  <g:message code="ddbnext.Report_Public_List_Email_Block" />
+  <g:message encodeAs="html" code="ddbnext.Report_Public_List_Email_Block" />
   <br /> 
   <a href="${selfBaseUrl}${blockingLink}">
     ${selfBaseUrl}${blockingLink}
   </a>
   <br />
   <br />
-  <g:message code="ddbnext.Report_Public_List_Email_Unblock" />
+  <g:message encodeAs="html" code="ddbnext.Report_Public_List_Email_Unblock" />
   <br />
   <a href="${selfBaseUrl}${unblockingLink}">
     ${selfBaseUrl}${unblockingLink}
@@ -197,7 +197,7 @@ a {
   <br />
   <br />
   <br />
-  <g:message code="ddbnext.Report_Public_List_Email_Footer" />
+  <g:message encodeAs="html" code="ddbnext.Report_Public_List_Email_Footer" />
   
 </body>
 </html>

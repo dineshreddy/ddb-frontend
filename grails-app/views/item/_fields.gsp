@@ -26,13 +26,13 @@ limitations under the License.
               <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
-              ${ddb.encodeInvalidHtml(text:value)}
+              ${raw(ddb.encodeInvalidHtml(text:value))}
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-          ${ddb.encodeInvalidHtml(text:it.value)}
+          ${raw(ddb.encodeInvalidHtml(text:it.value))}
         </g:else>
       </div>
       

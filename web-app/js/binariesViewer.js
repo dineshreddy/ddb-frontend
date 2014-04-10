@@ -152,14 +152,14 @@ $(document)
               }
               $(".previews").parent().addClass("off");
               $("#binary-viewer").append('<div id="jwplayer-container"></div>');
-              var w = 445;
+              var w = 440;
               var h = 320;
               var mediaQueryMatches = 1;
               if (navigator.appName.indexOf("Internet Explorer") === -1) {
                 mediaQueryMatches = mediaQuery;
               }
               if (!mediaQueryMatches) {
-                w = 260;
+                w = 278;
                 h = 200;
               }
 
@@ -259,7 +259,7 @@ $(document)
                   tab.show();
                   createGallery($(".gallery-videos"));
                   updatePreview(tab);
-                  $("#binary-viewer").remove( ".img-binary" );
+                  $("#binary-viewer").removeClass("img-binary");
                 });
             $("p.audios").click(
                 function() {

@@ -123,10 +123,14 @@ modules = {
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     multipolygone {
-        resource url:'/css/multipolygone.css'
-        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
-        resource url:'/js/multipolygone.js'
         dependsOn "ddbnext"
+        resource url:'/css/multipolygone.css'
+        //        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/vendor/proj4-2.1.2/proj4.js'
+        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/projections.js'
+        resource url:'/js/map/map.js'
+        resource url:'/js/multipolygone.js'
     }
 
     autocomplete {
@@ -142,23 +146,23 @@ modules = {
         resource url:'/css/startPage.css', attrs:[media:'print'], bundle: 'startpageprint'
     }
 
-    //These are pages that include third party components
     institution {
         dependsOn "ddbnext"
-        //resource url:'/third-party/map/geotemco_InstitutionItemMap.js'
+        resource url:'/js/vendor/proj4-2.1.2/proj4.js'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/projections.js'
         resource url:'/js/map/map.js'
         resource url:'/js/institutionsMapAdapter.js'
     }
 
     institutionlist {
         dependsOn "ddbnext"
-        //resource url:'/third-party/map/geotemco_InstitutionsMap.js'
+        resource url:'/js/vendor/proj4-2.1.2/proj4.js'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
+        resource url:'/js/map/projections.js'
         resource url:'/js/map/map.js'
         resource url:'/js/institutionsMapAdapter.js'
     }
-
 
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and

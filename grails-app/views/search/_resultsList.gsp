@@ -20,7 +20,7 @@ limitations under the License.
 <g:if test="${flash.error}">
   <div class="errors-container">
     <ul class="unstyled">
-      <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+      <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
     </ul>
   </div>
 </g:if>
@@ -39,10 +39,10 @@ limitations under the License.
       <div class="summary <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">row</g:if>">
         <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, hitNumber: hitNumber, action: action, controller: controller]}" />
-          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller]}" />
+          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller, mediaIcons: false]}" />
         </g:if>
         <g:else>
-          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller]}" />
+          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller, mediaIcons: false]}" />
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, hitNumber: hitNumber, action: action, controller: controller]}" />
         </g:else>
       </div>

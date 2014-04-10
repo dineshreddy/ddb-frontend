@@ -39,9 +39,9 @@ limitations under the License.
             <li>
               <g:if test="${it.full.uri == ''}">
                 <div class="viewer-icon">
-                  <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />"></a>
+                  <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
                 </div>
-                <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
+                <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                   <img src="${viewerContent}" alt="${(it.preview.title).encodeAsHTML()}" />
                 </a>
               </g:if>
@@ -58,19 +58,19 @@ limitations under the License.
         </g:each>
       </ul>
       <div class="binary-viewer-error off">
-        <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
+        <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
         <p>
-          <g:message code="ddbnext.You_can_download_or_use_alternative" />
+          <g:message encodeAs="html" code="ddbnext.You_can_download_or_use_alternative" />
         </p>
       </div>
       <div class="binary-viewer-flash-upgrade off">
-        <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
+        <p class="error-header"><g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
         <p>
-          <g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
+          <g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
         </p>
-        <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
+        <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
         <p>
-          <g:message code="ddbnext.You_can_download_or_use_alternative" />
+          <g:message encodeAs="html" code="ddbnext.You_can_download_or_use_alternative" />
         </p>
       </div>
     </div>
@@ -96,7 +96,7 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+      <p class="tab images" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
     </div>
     <div class="scroller images ${display}" role="tabpanel">
       <ul class="gallery-images gallery-tab">
@@ -107,7 +107,7 @@ limitations under the License.
           <g:else>
             <g:set var="content" value="${it.full.uri}"/>
           </g:else>
-          <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
+          <g:if test="${(it.full.uri != '' || it.preview.uri != '') && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
               <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${(it.preview.title).encodeAsHTML()}">
                 <div class="thumbnail image">
@@ -120,11 +120,11 @@ limitations under the License.
         </g:each>
       </ul>
       <button class="btn-prev">
-        <g:message code="ddbnext.Previous_Label" />
+        <g:message encodeAs="html" code="ddbnext.Previous_Label" />
         <span class="opaque"></span>
       </button>
       <button class="btn-next">
-        <g:message code="ddbnext.Next_Label" />
+        <g:message encodeAs="html" code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
     </div>
@@ -155,7 +155,7 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+      <p class="tab videos" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
     </div>
     <div class="scroller videos ${display}" role="tabpanel">
       <ul class="gallery-videos gallery-tab">
@@ -180,11 +180,11 @@ limitations under the License.
         </g:each>
       </ul>
       <button class="btn-prev">
-        <g:message code="ddbnext.Previous_Label" />
+        <g:message encodeAs="html" code="ddbnext.Previous_Label" />
         <span class="opaque"></span>
       </button>
       <button class="btn-next">
-        <g:message code="ddbnext.Next_Label" />
+        <g:message encodeAs="html" code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
       <p class="gallery-pagination" data-pag="0"></p>
@@ -214,7 +214,7 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab audios ${display}" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+      <p class="tab audios ${display}" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     </div>
     <div class="scroller audios" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
@@ -239,11 +239,11 @@ limitations under the License.
         </g:each>
       </ul>
       <button class="btn-prev">
-        <g:message code="ddbnext.Previous_Label" />
+        <g:message encodeAs="html" code="ddbnext.Previous_Label" />
         <span class="opaque"></span>
       </button>
       <button class="btn-next">
-        <g:message code="ddbnext.Next_Label" />
+        <g:message encodeAs="html" code="ddbnext.Next_Label" />
         <span class="opaque"></span>
       </button>
       <p class="gallery-pagination" data-pag="0"></p>

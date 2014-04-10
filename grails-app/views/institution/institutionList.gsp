@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message code="ddbnext.Institutions" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message encodeAs="html" code="ddbnext.Institutions" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
@@ -24,23 +24,23 @@ limitations under the License.
 
 </head>
 <body>
-  <h1><g:message code="ddbnext.Institutions" /></h1>
+  <h1><g:message encodeAs="html" code="ddbnext.Institutions" /></h1>
   <div class="row">
     <div class="view-type-switch span12 off">
       <!--[if lt IE 9]>
       <div class="ie8-version">
       <![endif]-->
         <button id="view-institution-map" class="selected"
-          type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
-          <g:message code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
+          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
+          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
         </button>
       <!--[if lt IE 9]>
       </div>
       <div class="ie8-version">
       <![endif]-->
         <button id="view-institution-list"
-          type="button" title="<g:message code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
-          <g:message code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
+          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
+          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
         </button>
       <!--[if lt IE 9]>
       </div>
@@ -64,7 +64,7 @@ limitations under the License.
     <g:render template="filterPhone" />
     <g:render template="pagination" />
       <div id="no-match-message" class="off">
-        <g:message code="ddbnext.InstitutionPage_NoMatches" />
+        <g:message encodeAs="html" code="ddbnext.InstitutionPage_NoMatches" />
       </div>
       <ol id="institution-list">
         <g:each in="${ all }">

@@ -26,7 +26,6 @@ $(document).ready(function() {
       waitingLayer: null,
       institutionList: null,
 
-
       /** Initialization * */
       init : function() {
       },
@@ -45,11 +44,11 @@ $(document).ready(function() {
           this._addMarkerLayer();
           
           this._addMarkerToMap(lon, lat);
-          
-        }        
+
+        }
       },
-      
-      display : function(config) {
+
+      displayClusters : function(config) {
         var self = this;
 
         this._applyConfiguration(config);
@@ -104,6 +103,35 @@ $(document).ready(function() {
 
       },
 
+      displayMultipolygone : function(config) {
+        var self = this;
+
+        this._applyConfiguration(config);
+
+        var rootDiv = $("#"+this.rootDivId);
+        if(rootDiv.length > 0){
+
+          //Initialize Map
+          var tiles = this._initializeMap(this.initLon, this.initLat, this.initZoom);
+
+          //Add the multipolygon vector layer
+          this._addMultiPolygonLayer();
+
+//          //Register a load tiles finished event listener
+//          var onTilesLoaded = function() { //on load finished
+//
+//            //Remove the tiles load listener again. We only want it on initialization.
+//            tiles.events.unregister("loadend", tiles, onTilesLoaded);
+//          };
+//
+//          if(jQuery.browser.msie && jQuery.browser.version < 9) {
+//            onTilesLoaded(); // just call immediatelly
+//          }else{
+//            tiles.events.register("loadend", tiles, onTilesLoaded); // current browser can use tile loaded event
+//          }
+        }
+      },
+
       applyFilters : function() {
         var self = this;
 
@@ -125,7 +153,7 @@ $(document).ready(function() {
         });
 
       },
-      
+
       _initializeMap : function(lon, lat, zoom) {
         //Set the base folder for images
         OpenLayers.ImgPath = this.imageFolder;
@@ -144,16 +172,16 @@ $(document).ready(function() {
         this.osmMap.addControlToMap(new OpenLayers.Control.DDBHome(this.imageFolder, this), new OpenLayers.Pixel(150,150));
 
         //Set the tiles data provider
-        //var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
-        var tiles = new OpenLayers.Layer.OSM();
+        var tiles = new OpenLayers.Layer.OSM("DDB tile server layer", this.tileServerUrls, {numZoomLevels: 19});
+        //var tiles = new OpenLayers.Layer.OSM();
         this.osmMap.addLayer(tiles);
-        
+
         //Centers and zooms the map to the initial point
         var position = this._getLonLat(lon, lat);
         this.osmMap.setCenter(position, zoom);
-        
+
         return tiles;
-        
+
       },
 
       _addInstitutionsLayer : function() {
@@ -180,13 +208,48 @@ $(document).ready(function() {
         this.osmMap.addLayer(this.vectorLayer);
 
       },
-      
+
+      _addMultiPolygonLayer : function() {
+        var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
+        renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
+
+        var wkt = new OpenLayers.Format.WKT();
+
+        this.vectorLayer = new OpenLayers.Layer.Vector('My Vectors');
+        this.osmMap.addLayer(this.vectorLayer);
+
+        var polygonFeature = wkt.read("MULTIPOLYGON(((8.68321180343628 50.59392260878307,8.68344783782959 50.59345947217545,8.684005737304688 50.59292822163223,8.68467092514038 50.59318703674835,8.684391975402832 50.593350498193814,8.683834075927734 50.59420866147027,8.68321180343628 50.59392260878307)))");
+        //var polygonFeature = wkt.read("MULTIPOLYGON(((5743353 3452343,62345234 62345234)))");
+        /*
+         * the coordinates should be retrieved from the backend (loadMultiPolygonWKT) and then transformed with the getLonLatFromGaussKrueger
+         * method, for every single point (lon, lat) 
+         * 
+         */
+        polygonFeature.geometry.transform(this.osmMap.displayProjection, this.osmMap.getProjectionObject());
+        this.vectorLayer.addFeatures([polygonFeature]);
+        this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
+      },
+
+      _loadMultiPolygonWKT : function() {
+        $.ajax({
+          type : 'GET',
+          dataType : 'xml',
+          async : true,
+          cache: true,
+          url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/Q57RUQMSOXXKNFKZLOFXIENEUKYHS45W/source?client=DDB-NEXT&oauth_consumer_key",
+          success : function(dataText){
+            var dataXML = XML.parse(dataText);
+            this.polygon = dataXML.geometry;
+          }
+        });
+      },
+
       _addMarkerLayer : function() {
         var markersLayer = new OpenLayers.Layer.Markers("Markers");
         markersLayer.id = "Markers";
-        this.osmMap.addLayer(markersLayer);        
+        this.osmMap.addLayer(markersLayer);
       },
-      
+
       _addMarkerToMap : function(lon, lat) {
         var position = this._getLonLat(lon, lat);
         var size = new OpenLayers.Size(38,45);
@@ -263,6 +326,36 @@ $(document).ready(function() {
 
       _getLonLat : function(lon, lat) {
         return new OpenLayers.LonLat(lon, lat).transform(this.fromProjection, this.toProjection);
+      },
+
+      _getLonLatFromGaussKrueger : function(lon, lat) {
+
+        //Bounds zone2
+        var minLon2 = 2490547.1867;
+        var maxLon2 = 2609576.6008;
+        var minLat2 = 5440321.7879;
+        var maxLat2 = 5958700.0208;
+
+        //Bounds zone3
+        var minLon3 = 3386564.9400;
+        var maxLon3 = 3613579.2251;
+        var minLat3 = 5237917.9109;
+        var maxLat3 = 6104500.7393;
+
+        //Select zone from bounds
+        var source  
+        if(lon >= minLon2 && lon <= maxLon2 && lat >= minLat2 && lat <= maxLat2) {
+          source = new proj4.Proj("EPSG:31466");  
+        }else if(lon >= minLon3 && lon <= maxLon3 && lat >= minLat3 && lat <= maxLat3) {
+          source = new proj4.Proj("EPSG:31467");  
+        }else{
+          console.log("Error: Gauss-Krueger coordinates out of bounds!");          
+        }
+
+        var dest = new proj4.Proj("EPSG:900913");  
+        var p = new proj4.Point(lon,lat);  
+        proj4.transform(source, dest, p);     
+        return new OpenLayers.LonLat(p.x, p.y);
       },
 
       _getPoint : function(lon, lat) {

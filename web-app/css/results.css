@@ -35,7 +35,7 @@
 }
 
 .compare-header .contextual-help{
-  top: 10px;
+  top: 2px;
 }
 
 .fields .contextual-help {
@@ -228,7 +228,11 @@
 }
 
 .clear-filters {
+  background: url("../images/icons/searchActions.png") no-repeat right -39px;
   margin-bottom: 12px;
+  text-align: right;
+  padding-right: 20px;
+  font-weight: bold;
 }
 
 .results-paginator-view {
@@ -757,6 +761,10 @@ input[type="checkbox"],input[type="radio"] {
   margin: 10px;
 }
 
+#thumbnail-filter {
+  margin: 3px 0 6px 10px;
+}
+
 /*Facets flyout*/
 .flyout-left-container {
   width: 100%;
@@ -866,12 +874,12 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advancedSearchSolidJointStandardTopFirst.png") no-repeat 0px -68px;
+  background: url("../images/bg/advancedSearchDottedJointFirst.png") no-repeat 0px -62px;
   position:relative;
   border-top: none;
 }
 .selected-items .role-facet:last-child {
-  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -10px;
+  background: url("../images/bg/advancedSearchDottedJointEnd.png") no-repeat 0px -10px;
 }
 
 .role-facet .role-facet-value {  
@@ -1108,6 +1116,7 @@ color: #a5003b;
 
 .compare-objects {
   margin-top: 15px;
+  padding: 15px 10px;
 }
 
 .compare-objects hr {
@@ -1119,12 +1128,10 @@ color: #a5003b;
 .compare-object {
   position: relative;
   text-align: center;
-  border: 1px solid black;
-  height: 130px;
-  width: 130px;
-  max-height: 130px;
-  max-width: 130px;
-  background-color: #EFEBE8;
+  height: 120px;
+  width: 120px;
+  max-height: 120px;
+  max-width: 120px;
 }
 
 .compare-object .compare-default-pic {
@@ -1132,8 +1139,10 @@ color: #a5003b;
   height: 36px;
   width: 45px;
   position: absolute;
-  margin-left: 25px;
-  margin-top: 47px;
+  left: 50%;
+  top: 50%;
+  margin-top: -36px;
+  margin-left: -23px;
 }
 
 .compare-objects .compare-main {  
@@ -1146,6 +1155,24 @@ color: #a5003b;
 
 .compare-objects .compare-footer {
   margin-top: 15px;
+  line-height: 28px;
+  position: relative;
+  background-color: #efebe8;
+  text-align: center;
+  font-weight: bold;
+}
+
+.compare-objects .compare-footer a{
+  cursor: pointer;
+}
+
+.compare-objects .compare-footer a.compare-disabled{
+  cursor: default;
+  color: #ccc;
+}
+
+.compare-objects .compare-footer .compare-disabled:hover{
+  text-decoration: none;
 }
 
 .compare-objects .compare-link {
@@ -1163,14 +1190,15 @@ color: #a5003b;
 }
 
 .compare-objects .compare-default {
-  vertical-align: -94px;
+  vertical-align: -72px;
   display: inline;
+  color: #adadad;
 }
 
 .compare-objects .compare-img {
   overflow: hidden;
   max-height: 85px;
-  max-width: 130px;
+  max-width: 120px;
   margin-left: auto;
   margin-right: auto;
   background-color: #EFEBE8;

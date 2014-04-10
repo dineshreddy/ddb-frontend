@@ -14,6 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="row item-detail linkurl off">
-  <div><strong><g:message code="ddbnext.CulturalItem_Deeplink" />: </strong></div>
+  <div><strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink" />: </strong></div>
   <div class="value">http://${request.serverName}${itemUri}</div>
 </div>

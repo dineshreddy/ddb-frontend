@@ -16,12 +16,12 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 
 <div class="search">
-  <h3><g:message code="ddbnext.Search" />:</h3>
+  <h3><g:message encodeAs="html" code="ddbnext.Search" />:</h3>
   <div class="">
     <div class="search-entity">   
       <div>
         <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.preferredName] }">
-          <g:message code="ddbnext.Entity_Search_DDB" args="${[entity.person.preferredName]}"/>
+          <g:message encodeAs="html" code="ddbnext.Entity_Search_DDB" args="${[entity.person.preferredName]}"/>
         </g:link>
       </div>
     </div>

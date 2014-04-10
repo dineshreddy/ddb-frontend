@@ -16,13 +16,14 @@ limitations under the License.
 
 <%-- If an infoPath is specified, a more detailed help is available via an link. --%>
 <g:if test="${link}">
-  <span class="contextual-help hidden-phone hidden-tablet" 
-  title="${g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}" 
-  data-content="${g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>'], encodeAs: "none")}"> 
+  <span class="contextual-help hidden-phone hidden-tablet"
+  title="${raw(g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>']))}"
+  data-content="${raw(g.message(code: messageCode, args: [('<a href="' + link + '">').encodeAsHTML(), '</a>']))}">
   </span>
 </g:if>
 <g:else>
-  <span class="contextual-help hidden-phone hidden-tablet" title="${g.message(code: messageCode, encodeAs: "none")}" data-content="${g.message(code: messageCode, encodeAs: "none")}">
+  <span class="contextual-help hidden-phone hidden-tablet" title="${raw(g.message(code: messageCode))}"
+        data-content="${raw(g.message(code: messageCode))}">
   </span>
 </g:else>
 <div class="tooltip off ${ hasArrow ? "hasArrow" : "" }"></div>

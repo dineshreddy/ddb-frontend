@@ -30,25 +30,25 @@ limitations under the License.
 <div class="page-nav">
   <ul class="inline">
     <li class="first-page ${displayLeftPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg.encodeAsHTML()}"><g:message code="ddbnext.First_Label" /></a>  
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.First_Label" /></a>  
     </li>
     <li class="prev-page br ${displayLeftPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><g:message code="ddbnext.Previous_Label" /></a> 
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></a> 
     </li>
     <li class="pages-overall-index">
       <span>
-          <g:message code="ddbnext.Page" /> 
+          <g:message encodeAs="html" code="ddbnext.Page" /> 
           <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
           <span class="page-nonjs">${navData.page}</span> 
-          <g:message code="ddbnext.Of" /> 
+          <g:message encodeAs="html" code="ddbnext.Of" /> 
           <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
       </span>
     </li>
     <li class="next-page bl ${displayRightPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><g:message code="ddbnext.Next_Label" /></a> 
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
     </li>
     <li class="last-page ${displayRightPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg.encodeAsHTML()}"><g:message code="ddbnext.Last_Label" /></a> 
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Last_Label" /></a> 
     </li>
   </ul>
 </div>
@@ -56,21 +56,21 @@ limitations under the License.
   <ul class="inline">
     <li class="prev-page bl">
       <g:if test="${enableLeftPagination}">
-        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Previous_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
         <div class="disabled-arrow off"></div> 
       </g:if>
       <g:else>
-        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Previous_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
         <div class="disabled-arrow"></div>
       </g:else>
     </li>
     <li class="next-page bl">
       <g:if test="${enableRightPagination}">
-        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Next_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
         <div class="disabled-arrow off"></div>
       </g:if>
       <g:else>
-        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message code="ddbnext.Next_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
         <div class="disabled-arrow"></div>
       </g:else> 
     </li>
