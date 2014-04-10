@@ -24,9 +24,16 @@ grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
 
 def environment = Environment.getCurrent()
-
+def localDdbCommonFound = false
 if (environment == Environment.DEVELOPMENT) {
-    println "| Using local version of common plugin"
+
+    if (!new File("../ddb-common").exists()){
+        println "-> Local version of ddb-common not found under path ../ddb-common\n\r A "
+    }else{
+        println "| Using local version of common plugin"
+        localDdbCommonFound=true
+    }
+
     grails.plugin.location.'ddb-common' = "../ddb-common"
 }
 
@@ -102,7 +109,7 @@ grails.project.dependency.resolution = {
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
 
-        if (environment != Environment.DEVELOPMENT) {
+        if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
             compile "de.ddb:ddb-common:0.3-SNAPSHOT"
         }
