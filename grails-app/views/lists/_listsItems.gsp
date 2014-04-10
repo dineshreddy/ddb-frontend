@@ -20,49 +20,29 @@ limitations under the License.
   </div>
   <div class="list-items">
     <ul class="unstyled">
-      <li class="item bt">
-        <div class="summary row">
-          <div class="summary-main-wrapper span6">
-            <h2 class="title">
-              <a title="Schwarz-weiß Filme">Schwarz-weiß Filme</a>
-            </h2>
-            <div class="item-details">Eine Liste von username mit 45 Objekten, erstellt: 15.02.2014</div>
-            <div class="item-description">Hier befindet sich eine Bescsdddddddddddddd dddddddddddddddd dddddddddddddddddddddddddddd ddddddddddddddddddd hreibung der Liste....</div>
-          </div>
-          <div class="thumbnail-wrapper span3">
-            <div id="thumbnail-HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC"
-              class="thumbnail">
-              <a
-                href="/ddb-next/item/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC?query=&rows=20&offset=0&viewType=list&sort=random_2823211999603515745&firstHit=I4PDAE2VE5QI27IX5N3KOETKQZNIVFQJ&lastHit=lasthit&hitNumber=4">
-                <img alt="Briefbeschwerer"
-                src="/ddb-next/binary/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC/list/1.jpg">
-              </a>
+      <g:each in="${folders}" var="folder">
+        <li class="item bt">
+          <div class="summary row">
+            <div class="summary-main-wrapper span6">
+              <h2 class="title">
+                <a title="${folder.title}">${folder.title}</a>
+              </h2>
+              <div class="item-details">Eine Liste von ${folder.publishingName} mit 45 Objekten, erstellt: 15.02.2014</div>
+              <div class="item-description"><span title="${folder.description}"><ddb:getTruncatedItemTitle title="${folder.description}" length="${ 100 }"/></span></div>
+            </div>
+            <div class="thumbnail-wrapper span3">
+              <div id="thumbnail-HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC"
+                class="thumbnail">
+                <a
+                  href="/ddb-next/item/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC?query=&rows=20&offset=0&viewType=list&sort=random_2823211999603515745&firstHit=I4PDAE2VE5QI27IX5N3KOETKQZNIVFQJ&lastHit=lasthit&hitNumber=4">
+                  <img alt="Briefbeschwerer"
+                  src="/ddb-next/binary/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC/list/1.jpg">
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      </li>
-      
-      <li class="item bt">
-        <div class="summary row">
-          <div class="summary-main-wrapper span6">
-            <h2 class="title">
-              <a title="Schwarz-weiß Filme">Schwarz-weiß Filme</a>
-            </h2>
-            <div class="item-details">Eine Liste von username mit 45 Objekten, erstellt: 15.02.2014</div>
-            <div class="item-description">Hier befindet sich eine Bescsdddddddddddddd dddddddddddddddd dddddddddddddddddddddddddddd ddddddddddddddddddd hreibung der Liste....</div>
-          </div>
-          <div class="thumbnail-wrapper span3">
-            <div id="thumbnail-HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC"
-              class="thumbnail">
-              <a
-                href="/ddb-next/item/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC?query=&rows=20&offset=0&viewType=list&sort=random_2823211999603515745&firstHit=I4PDAE2VE5QI27IX5N3KOETKQZNIVFQJ&lastHit=lasthit&hitNumber=4">
-                <img alt="Briefbeschwerer"
-                src="/ddb-next/binary/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC/list/1.jpg">
-              </a>
-            </div>
-          </div>
-        </div>
-      </li>      
+        </li>
+     </g:each>
       
       
     </ul>
