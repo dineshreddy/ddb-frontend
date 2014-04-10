@@ -48,7 +48,7 @@ limitations under the License.
             <ul class="item-options-ul">
               <ddb:isLoggedIn>
                 <li>
-                  <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
+                  <div id="favorite-${entityItem.id.substring("http://d-nb.info/gnd/".length())}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
                 <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog"
                   aria-labelledby="myModalLabel" aria-hidden="true">
