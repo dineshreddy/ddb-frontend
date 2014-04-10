@@ -1,26 +1,53 @@
-.lists .search-results-content .search-results .item {
-  padding: 15px 0 0 0;
+.lists .lists-menu-item {
+  background-color: #EFEBE8;
+  line-height: 28px;
+  margin: 2px 0;
   position: relative;
 }
 
-.lists .results-paginator-view {
+.lists .lists-menu-item>a.h3 {
+  background: url("VABM6OOCM4KNLZuL0M6f5FUWo7BwfmcYI1SClM4m9J8.png")
+    no-repeat scroll 100% -48px rgba(0, 0, 0, 0);
+  display: block;
+  padding: 0 20px 0 10px;
+  z-index: 10;
+}
+
+.lists .lists-content .results-paginator-view {
   background: none;
 }
 
-.lists .results-paginator-options {
+.lists .lists-content .results-paginator-options {
   height: 40px;
   line-height: 40px;
 }
 
-.lists .facets-list .facets-item:first-child {
+.lists .lists-content .item {
+  padding: 15px 0;
+  position: relative;
+}
+
+.lists .lists-content .facets-item:first-child {
   margin-top: 14px;
 }
 
-.lists .clear-filters a {
-  font-weight:bold;
-  float: right;
+.lists .lists-content .summary-main-wrapper .title a {
+  font-weight: normal;
+  word-wrap: break-word;
 }
 
-.lists .add-to-saved-searches {
-  margin-top: 10px;
+.lists .lists-content .summary-main-wrapper .title {
+  max-height: 8em;
+}
+
+.lists .lists-content .title {
+  line-height: 1.1em;
+  margin: 0;
+  max-height: 2.2em;
+  overflow: hidden;
+  padding: 4px 10px 0 0;
+}
+
+.lists .lists-content .item-details, .lists .lists-content .item-description {
+  padding: 4px 10px 0 0;
 }

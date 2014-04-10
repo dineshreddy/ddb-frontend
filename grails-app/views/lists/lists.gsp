@@ -24,115 +24,16 @@ limitations under the License.
 <meta name="layout" content="main" />
 </head>
 <body>
-  <div class="row search-results-container lists">
-    <h1>Listen</h1>
-    <div class="span3 list-container hidden-phone">
-      <div class="list bt bb">
-      </div>
-      <div class="list bt bb">
-      </div>
-<%--      <div class="facets-head">--%>
-<%--        <h3>--%>
-<%--          <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />--%>
-<%--        </h3>--%>
-<%--      </div>--%>
-<%--       Shows the facets supported in the NON JS version--%>
-<%--      <noscript>--%>
-<%--        <div class="facets-list bt">--%>
-<%--          <g:each in="${nonJsFacetsList}" var="mit">--%>
-<%--            <g:each in="${(facets.selectedFacets)}">--%>
-<%--              <g:if test="${mit == it.field}">--%>
-<%--                <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">--%>
-<%--                  <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}"--%>
-<%--                    data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>--%>
-<%--                  <g:if test="${it.facetValues.size() > 0}">--%>
-<%--                    <ul class="unstyled">--%>
-<%--                      <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}"--%>
-<%--                        facetType="${it.field}"></ddb:renderFacetList>--%>
-<%--                    </ul>--%>
-<%--                  </g:if>--%>
-<%--                </div>--%>
-<%--              </g:if>--%>
-<%--            </g:each>--%>
-<%--          </g:each>--%>
-<%--        </div>--%>
-<%--      </noscript>--%>
-    </div>
-    </div>
-    <div class="span9 search-noresults-content">
-<%--      <g:if test="${correctedQuery!='null'}">--%>
-<%--        <g:if test="${correctedQuery}">--%>
-<%--          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />--%>
-<%--        </g:if>--%>
-<%--      </g:if>--%>
-<%--      <div class="noresults">--%>
-<%--        <div>--%>
-<%--          <g:message encodeAs="html" code="ddbnext.No_results_found_for_the_search" />--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--    <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">--%>
-<%--      <div class="off result-pages-count">--%>
-<%--        ${totalPages}--%>
-<%--      </div>--%>
-<%--      <ddb:renderSearchTabulation all="0" entities="${results.entity.size()}" places="0" institution="0" />--%>
-<%--       --%>
-<%--      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />--%>
-<%----%>
-<%--      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />--%>
-<%----%>
-<%--      <div class="row">--%>
-<%--        <div class="span9">--%>
-<%--          <div class="results-paginator-view">--%>
-<%--            <div class="group-actions">--%>
-<%--              <strong>1</strong> <strong>2</strong> <strong>3</strong> <strong>4</strong> <strong>5</strong> <strong>Weiter</strong>--%>
-<%--            </div>--%>
-<%--            <div class="view-type-switch">--%>
-<%--              <!--[if lt IE 9]>--%>
-<%--              <div class="ie8-version">--%>
-<%--              <![endif]-->--%>
-<%--              <div>--%>
-<%--                <button id="view-list" type="button"--%>
-<%--                  class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"--%>
-<%--                  title="<g:message encodeAs="html" code="ddbnext.View_as_List" />">--%>
-<%--                  <g:message encodeAs="html" code="ddbnext.View_as_List" />--%>
-<%--                </button>--%>
-<%--              </div>--%>
-<%--              <!--[if lt IE 9]>--%>
-<%--              </div>--%>
-<%--              <div class="ie8-version">--%>
-<%--              <![endif]-->--%>
-<%--              <div>--%>
-<%--                <button id="view-grid" type="button"--%>
-<%--                  class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"--%>
-<%--                  title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />">--%>
-<%--                  <g:message encodeAs="html" code="ddbnext.View_as_Grid" />--%>
-<%--                </button>--%>
-<%--              </div>--%>
-<%--              <!--[if lt IE 9]>--%>
-<%--              </div>--%>
-<%--              <![endif]-->--%>
-<%--            </div>--%>
-<%--          </div>--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--      <g:if test="${correctedQuery!='null'}">--%>
-<%--        <g:if test="${correctedQuery}">--%>
-<%--          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />--%>
-<%--        </g:if>--%>
-<%--      </g:if>--%>
-<%--      <div class="row">--%>
-<%--        <div class="span9">--%>
-<%--          <div class="search-results">--%>
-<%--            <div class="search-results-list">--%>
-<%--              <g:if test="${results}">--%>
-<%--                <g:render template="entityResultsList" model="${[entities: results]}" />--%>
-<%--              </g:if>--%>
-<%--            </div>--%>
-<%--          </div>--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--    </div>--%>
+  <div class="row lists">
+    <h1>
+      <g:message encodeAs="html" code="ddbnext.lists.header" />
+    </h1>
+
+    <%-- Lists menu on the left side  --%>
+    <g:render template="listsMenu" />
+
+    <%-- Lists content on the right side   --%>
+    <g:render template="listsItems" />
   </div>
 </body>
 </html>
