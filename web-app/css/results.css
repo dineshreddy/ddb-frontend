@@ -1154,6 +1154,20 @@ color: #a5003b;
 
 .compare-objects .compare-footer {
   margin-top: 15px;
+  line-height: 28px;
+  position: relative;
+  background-color: #efebe8;
+  text-align: center;
+  font-weight: bold;
+}
+
+.compare-objects .compare-footer .compare-disabled{
+  cursor: default;
+  color: #ccc;
+}
+
+.compare-objects .compare-footer .compare-disabled:hover{
+  text-decoration: none;
 }
 
 .compare-objects .compare-link {

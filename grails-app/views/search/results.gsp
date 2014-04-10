@@ -143,8 +143,12 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <div class="compare-footer">
-            <a class="button" id="compare-button"><g:message encodeAs="html" code="ddbnext.SearchResultsStartComparison"/></a>
+        <div class="compare-footer bt bb bl br">
+            <a id="compare-button">
+                <div>
+                    <g:message encodeAs="html" code="ddbnext.SearchResultsStartComparison"/>
+                </div>
+            </a>
         </div>
       </div>
     </div>
