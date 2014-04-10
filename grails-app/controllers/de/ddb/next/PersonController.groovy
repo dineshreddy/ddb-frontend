@@ -4,6 +4,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.ProjectConstants
 
 class PersonController {
 
@@ -19,7 +20,7 @@ class PersonController {
         //Calculating results pagination (previous page, next page, first page, and last page)
         def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
         def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted]
+        def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
 
         render(view: "searchPerson", model: model)
 

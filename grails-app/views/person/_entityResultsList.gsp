@@ -16,7 +16,7 @@ limitations under the License.
     <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
   <g:each in="${entities.entity}" var="entityItem">
-    <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}" />
+    <g:set var="entityId" value="${entityItem.id.substring(cultureGraphUrl.length())}" />
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="item bt">
       <div class="summary row">
@@ -48,7 +48,7 @@ limitations under the License.
             <ul class="item-options-ul">
               <ddb:isLoggedIn>
                 <li>
-                  <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"></div>
+                  <div id="favorite-${entityItem.id.substring(cultureGraphUrl".length())}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
                 <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog"
                   aria-labelledby="myModalLabel" aria-hidden="true">

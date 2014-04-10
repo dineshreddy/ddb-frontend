@@ -181,7 +181,7 @@ a {
 </head>
 <body style="font-family: Calibri, Arial, sans-serif;">
   <div>
-    <g:message encodeAs="html" code="ddbnext.Api_Key_Email_Intro"/> 
+    <g:message encodeAs="none" code="ddbnext.Api_Key_Email_Intro"/> 
     <br />            
     <br />   
   </div>
@@ -191,15 +191,15 @@ a {
     <br />
   </div>
   <div>
-    <g:message encodeAs="html" code="ddbnext.Api_Key_Email_Outro" />
+    <g:message encodeAs="none" code="ddbnext.Api_Key_Email_Outro" />
     <br />   
     <br />
   </div>
   --------------------
   <div>
-    <g:message encodeAs="html" code="ddbnext.Api_Key_Email_Api" args="${[apiKeyTermsUrl]}" />
+    <g:message encodeAs="none" code="ddbnext.Api_Key_Email_Api" args="${[apiKeyTermsUrl]}" />
     <br />            
-    <g:message encodeAs="html" code="ddbnext.Api_Key_Email_Docu" args="${[apiKeyDocUrl]}" />
+    <g:message encodeAs="none" code="ddbnext.Api_Key_Email_Docu" args="${[apiKeyDocUrl]}" />
   </div>            
   
 </body>

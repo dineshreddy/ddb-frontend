@@ -117,6 +117,7 @@ modules = {
         resource url:'/js/search/flyoutFacetsWidget.js'
         resource url:'/js/search/compareManager.js'
         resource url:'/js/search/hovercardInfoItem.js'
+        resource url:'/js/resultsFavorites.js'
     }
 
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
