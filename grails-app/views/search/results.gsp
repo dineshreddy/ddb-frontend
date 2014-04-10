@@ -63,7 +63,12 @@ limitations under the License.
       <g:render template="timeFacet" />
       <%-- All other facets are handled in the same way --%>          
       <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
+      <div class="facets-item bt bb bl br">
+        <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
+        <label for="thumbnail-filter" title="<g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" />"><g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" /></label>
+      </div>
     </div>
+
 
       <div class="keep-filters off">
         <label class="checkbox"> 
@@ -163,8 +168,6 @@ limitations under the License.
         <div class="span9">
           <div class="results-paginator-view off">
             <div class="group-actions">
-              <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
-              <label for="thumbnail-filter" title="<g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" />"><g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" /></label>
               <%-- HLA: deactivated until there is the possibility to cluster results (See DDBNEXT-328) 
               <input class="disabled" id="toggle-cluster" type="checkbox" disabled="disabled">
               <label class="disabled" for="toggle-cluster" title="<g:message encodeAs="html" code="ddbnext.View_as_Cluster" />"><g:message encodeAs="html" code="ddbnext.View_as_Cluster" /></label>
