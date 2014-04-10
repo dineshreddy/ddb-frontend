@@ -126,7 +126,7 @@ limitations under the License.
                   <input type="checkbox" id="newsletter" class="profile-checkbox" name="newsletter" ${newsletterCheck}>
                 </div>
               </div>
-              <label class="checkbox-label control-label"><g:message encodeAs="html" code="ddbnext.Newsletter_Subscription" /></label>
+              <label class="checkbox-label control-label"><g:message encodeAs="none" code="ddbnext.Newsletter_Subscription" /></label>
             </div>
             --%>
 

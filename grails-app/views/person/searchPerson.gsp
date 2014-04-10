@@ -70,7 +70,7 @@ limitations under the License.
       </g:if>
       <div class="noresults">
         <div>
-          <g:message encodeAs="html" code="ddbnext.No_results_found_for_the_search" />
+          <g:message encodeAs="none" code="ddbnext.No_results_found_for_the_search" />
         </div>
       </div>
     </div>

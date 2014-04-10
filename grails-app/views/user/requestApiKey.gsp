@@ -37,7 +37,7 @@ limitations under the License.
               </div>
             </div>
             <div>
-              <g:message encodeAs="html" code="ddbnext.Api_Description_Text" />
+              <g:message encodeAs="none" code="ddbnext.Api_Description_Text" />
             </div>
             <div>
               <ul id="error-messages" class="off">
@@ -66,7 +66,7 @@ limitations under the License.
               <div class="input-prepend">
                 <input type="checkbox" class="api-checkbox" name="apiConfirmation">
               </div>
-              <label class="checkbox-label control-label"><g:message encodeAs="html" code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
+              <label class="checkbox-label control-label"><g:message encodeAs="none" code="ddbnext.Api_Confirmation" args="${[apiKeyTermsUrl]}"/></label>
             </div>
 
             <div class="control-group">
