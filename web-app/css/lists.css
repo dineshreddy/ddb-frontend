@@ -1,0 +1,26 @@
+.lists .search-results-content .search-results .item {
+  padding: 15px 0 0 0;
+  position: relative;
+}
+
+.lists .results-paginator-view {
+  background: none;
+}
+
+.lists .results-paginator-options {
+  height: 40px;
+  line-height: 40px;
+}
+
+.lists .facets-list .facets-item:first-child {
+  margin-top: 14px;
+}
+
+.lists .clear-filters a {
+  font-weight:bold;
+  float: right;
+}
+
+.lists .add-to-saved-searches {
+  margin-top: 10px;
+}
