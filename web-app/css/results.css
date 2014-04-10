@@ -209,24 +209,6 @@
   display: none;
 }
 
-.keep-filters {
-  margin-bottom: 12px;
-}
-
-.keep-filters .checkbox {
-  display: block;
-}
-
-.keep-filters .checkbox:hover {
-  text-decoration: underline;
-  color: #a5003b;
-}
-
-.keep-filters .checkbox input {
-  float: none;
-  margin-top: -3px;
-}
-
 .clear-filters {
   background: url("../images/icons/searchActions.png") no-repeat right -39px;
   margin-bottom: 12px;

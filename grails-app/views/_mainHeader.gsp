@@ -156,14 +156,8 @@ limitations under the License.
             <div role="navigation">
               <ul class="navigation inline">
                 <li
-                  class="root <ddb:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</ddb:isMappingActive><ddb:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-closed</ddb:isMappingActive>">
-                  <g:link uri="/"><g:message encodeAs="html" code="ddbnext.Search" /></g:link>
-                  <ul>
-                    <li
-                      class="<ddb:isMappingActive context="${params}" testif="${[[controller: "advancedsearch"]]}">active-default</ddb:isMappingActive>">
-                      <g:link controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.Advanced_search" /></g:link>
-                    </li>
-                  </ul>
+                  class="<ddb:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-default</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'index']"><g:message encodeAs="html" code="ddbnext.Homepage" /></g:link>
                 </li>
                 <li
                   class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</ddb:isMappingActive>">
@@ -280,11 +274,18 @@ limitations under the License.
                         <g:message encodeAs="html" code="ddbnext.Go_Button"/>
                       <![endif]-->
                 </button>
-                <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" hasArrow="true"/>
-                <g:link class="link-adv-search"
-                  controller="advancedsearch">
-                  <g:message encodeAs="html" code="ddbnext.Advanced_search" />
-                </g:link>
+                <div class="search-small-bottom">
+                  <div class="keep-filters off">
+                    <label class="checkbox"> 
+                      <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+                      <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
+                    </label>
+                  </div>
+                  <g:link class="link-adv-search"
+                    controller="advancedsearch">
+                    <g:message encodeAs="html" code="ddbnext.Advanced_search" />
+                  </g:link>
+                </div>
               </g:form>
             </div>
           </div>

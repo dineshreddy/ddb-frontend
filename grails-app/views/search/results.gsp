@@ -69,14 +69,6 @@ limitations under the License.
       </div>
     </div>
 
-
-      <div class="keep-filters off">
-        <label class="checkbox"> 
-          <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
-          <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
-        </label>
-      </div>
-
       <div class="clear-filters">
         <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters"/></a>
       </div>
