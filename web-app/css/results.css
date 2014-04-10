@@ -228,7 +228,11 @@
 }
 
 .clear-filters {
+  background: url("../images/icons/searchActions.png") no-repeat right -39px;
   margin-bottom: 12px;
+  text-align: right;
+  padding-right: 20px;
+  font-weight: bold;
 }
 
 .results-paginator-view {

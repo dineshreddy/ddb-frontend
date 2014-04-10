@@ -73,7 +73,7 @@ limitations under the License.
       </div>
 
       <div class="clear-filters">
-        <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message encodeAs="html" code="ddbnext.Clear_filters"/></a>
+        <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters"/></a>
       </div>
 
       <ddb:isLoggedIn>
