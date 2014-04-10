@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 package de.ddb.next
-
+import org.springframework.web.servlet.support.RequestContextUtils
 import net.sf.json.JSONArray
 import de.ddb.common.ApiResponse
 import de.ddb.common.ApiResponse.HttpStatus
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.ProjectConstants
+import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
@@ -34,6 +36,7 @@ class EntityController {
     def configurationService
     def entityService
     def itemService
+    def searchService
 
     int PREVIEW_COUNT = 4
 
@@ -146,6 +149,26 @@ class EntityController {
         ]
 
         render(view: 'entity', model: model)
+    }
+
+    /** 
+     * USed to search for entities of Person
+     * Mapped to /entities/search/person
+     * @return
+     */
+    def personsearch() {
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def results = entityService.doEntitySearch(urlQuery)
+        def correctedQuery = ""
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+
+        render(view: "searchPerson", model: model)
+
     }
 
     /**

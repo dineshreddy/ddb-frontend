@@ -315,10 +315,14 @@ class UrlMappings {
             action="multipolygone"
         }
 
-
         "/searchPerson/$q?" {
             controller="person"
             action="search"
+        }
+        
+        "/entity/search/person/$q?" {
+            controller="entity"
+            action="personsearch"
         }
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
