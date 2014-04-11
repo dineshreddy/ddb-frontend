@@ -19,11 +19,15 @@ limitations under the License.
     <hr>
     <div class="thumbinner">
       <!-- TODO: refactor to use figure element -->
-      <img alt="${entity.title}" src="${entityImageUrl}" class="thumbimage">
+      <a href="${entity.person.depiction.url}" class="wiki-link no-external-link-icon">
+        <img alt="${entity.title}" src="${entityImageUrl}" class="thumbimage">
+      </a>
       <div class="thumbcaption">
         ${entity.person.preferredName}
         <br>
         <g:message encodeAs="html" code="ddbnext.Entity_Source" />: <a href="${entity.person.depiction.url}" class="wiki-link no-external-link-icon">Wikimedia</a>
+        <br>
+        <g:message encodeAs="html" code="ddbnext.Entity_MediaLicence" />
       </div>
     </div>
   </div>
