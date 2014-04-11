@@ -38,6 +38,7 @@ class BookmarksService {
     public static final boolean IS_PUBLIC = false
     public static final int DEFAULT_SIZE = 9999
 
+    def elasticSearchService
     def configurationService
     def transactional = false
 
@@ -68,7 +69,7 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             newFolderId = response._id
-            refresh()
+            elasticSearchService.refresh()
         }
 
         return newFolderId
@@ -77,26 +78,15 @@ class BookmarksService {
 
     int getFolderCount() {
         log.info "getFolderCount()"
-        return getDocumentCountByType("folder")
+        return elasticSearchService.getDocumentCountByType("folder")
     }
 
     int getBookmarkCount() {
         log.info "getBookmarkCount()"
-        return getDocumentCountByType("bookmark")
+        return elasticSearchService.getDocumentCountByType("bookmark")
     }
 
-    private int getDocumentCountByType(String type) {
-        int count = -1
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/" + type + "/_search", false)
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            count = response.hits.total
-        }
-
-        return count
-    }
 
     List<Folder> findAllPublicFolders(String userId) {
         log.info "findAllPublicFolders()"
@@ -267,22 +257,10 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             newBookmarkId = response._id
-            refresh()
+            elasticSearchService.refresh()
         }
 
         return newBookmarkId
-    }
-
-
-    private void refresh() {
-        log.info "refresh(): refreshing index ddb..."
-
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            log.info "Response: ${response}, finished refreshing index ddb."
-        }
     }
 
     /**
@@ -347,7 +325,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
             return true
         }else{
             return false
@@ -632,7 +610,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -644,7 +622,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/${bookmarkId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -660,7 +638,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -672,7 +650,7 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "Is folder with the ID ${folderId} deleted(true/false)? ${response.ok}"
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 

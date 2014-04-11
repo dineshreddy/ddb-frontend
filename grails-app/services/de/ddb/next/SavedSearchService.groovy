@@ -28,6 +28,7 @@ import de.ddb.common.ApiResponse
 class SavedSearchService {
     static final def DEFAULT_SIZE = 9999
 
+    def elasticSearchService
     def configurationService
     def transactional = false
 
@@ -47,7 +48,7 @@ class SavedSearchService {
             def response = apiResponse.getResponse()
             def savedSearchId = response._id
             log.info "Saved Search with the ID ${savedSearchId} is created."
-            refresh()
+            elasticSearchService.refresh()
 
             return savedSearchId
         }
@@ -115,20 +116,8 @@ class SavedSearchService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
             return true
-        }
-    }
-
-    // TODO: move to a util class.
-    private refresh() {
-        log.info "refresh()"
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            log.info "Response: ${response}"
-            log.info "finished refreshing index ddb."
         }
     }
 
@@ -159,7 +148,7 @@ class SavedSearchService {
             def response = apiResponse.getResponse()
             def savedSearchId = response._id
             log.info "Saved Search with the ID ${savedSearchId} is updated."
-            refresh()
+            elasticSearchService.refresh()
             return savedSearchId
         }
     }
@@ -176,5 +165,4 @@ class SavedSearchService {
 
         return count
     }
-
 }
