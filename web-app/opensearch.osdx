@@ -2,5 +2,5 @@
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
   <ShortName>Deutsche Digitale Bibliothek</ShortName>
   <Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.deutsche-digitale-bibliothek.de/appStatic/images/favicon.ico</Image>
-  <Url type="text/html" template="http://www.deutsche-digitale-bibliothek.de/searchresults?query={searchTerms}" />
+  <Url type="text/html" template="http://www.deutsche-digitale-bibliothek.de/searchresults?query={searchTerms}&rows={count?}" />
 </OpenSearchDescription>
