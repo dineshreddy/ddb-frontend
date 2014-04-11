@@ -62,6 +62,10 @@ echo
 deleteSchemaFile "savedSearch"
 echo
 
+deleteSchemaFile "folderList"
+echo
+
+
 echo Script finished. Exit.
 echo ----------------------
 echo

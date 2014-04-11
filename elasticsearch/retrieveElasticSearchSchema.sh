@@ -55,6 +55,9 @@ echo
 retrieveSchemaFile "savedSearch"
 echo
 
+retrieveSchemaFile "folderList"
+echo
+
 echo Script finished. Exit.
 echo ----------------------
 echo

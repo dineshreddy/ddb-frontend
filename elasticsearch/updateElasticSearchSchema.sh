@@ -52,12 +52,15 @@ echo --------------------
 contentFolder=`readSchemaFile folder.json`
 contentBookmark=`readSchemaFile bookmark.json`
 contentSavedSearch=`readSchemaFile savedSearch.json`
+contentFolderList=`readSchemaFile folderList.json`
 
 echo "folder: " $contentFolder
 echo
 echo "bookmark: " $contentBookmark
 echo
 echo "savedSearch: " $contentSavedSearch
+echo
+echo "FolderList: " $contentFolderList
 echo
 
 echo "Schema files ok"
@@ -69,6 +72,7 @@ echo
 
 postSchemaFile() {
   response=`curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
+  echo $response
   case "`echo $response | jshon -k`" in
     *ok*) echo "ok"
           ;;
@@ -80,9 +84,8 @@ postSchemaFile() {
 
 echo Curling new schema to elasticsearch
 echo -----------------------------------
-                
 
-postSchemaFile "folder" "$contentFolder"
+postSchemaFile "folderList" "$contentFolderList"
 echo
 
 postSchemaFile "bookmark" "$contentBookmark"
@@ -90,6 +93,10 @@ echo
 
 postSchemaFile "savedSearch" "$contentSavedSearch"
 echo
+
+postSchemaFile "folder" "$contentFolder"
+echo
+
 
 echo Script finished. Exit.
 echo ----------------------

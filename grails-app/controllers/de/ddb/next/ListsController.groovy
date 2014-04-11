@@ -34,7 +34,7 @@ class ListsController {
     def index() {
         log.info "ListsController index"
 
-        def model = [title: "Listen", folders:null]
+        def model = [title: "Listen", folders:[]]
 
         log.info "getFavoriteFolders"
 
@@ -42,15 +42,21 @@ class ListsController {
         if (user != null) {
             def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
             def folders = bookmarksService.findAllFolders(user.getId())
+
             folders.find {it.folderId == mainFolder.folderId}.isMainFolder = true
             folders = favoritesService.sortFolders(folders)
-            folders.each {it.blockingToken = ""} // Don't expose the blockingToken to Javascript
-            log.info "getFavoriteFolders returns " + folders
+            folders.each {
+                //Set the blocking token to ""
+                it.blockingToken = ""
+                //Retrieve the number of favorites
+                //TODO: use the elastic search query syntax for doing this!
+                List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
+                it.count = favoritesOfFolder.size()
+            }
+
             model.folders = folders as JSON
-            render(view: "lists", model: model)
-        } else {
-            log.info "getFavoriteFolders returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
         }
+
+        render(view: "lists", model: model)
     }
 }
