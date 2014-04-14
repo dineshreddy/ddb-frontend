@@ -30,20 +30,65 @@ class ListsController {
     def configurationService
     def searchService
     def sessionService
+    def listsService
 
+    /**
+     * Build the model for the lists
+     * 
+     * @return
+     */
     def index() {
-        log.info "ListsController index"
-
-        def model = [title: "Listen", folders:[]]
-
-        log.info "getFavoriteFolders"
+        def model = [title: "Listen", lists: []]
 
         def User user = favoritesService.getUserFromSession()
         if (user != null) {
-            def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-            def folders = bookmarksService.findAllFolders(user.getId())
+            // Get the public folder list of the user
+            def publicFolderList = listsService.getPublicFolderListForUser(user.getId())
+            model.lists.add(publicFolderList)
+        }
 
-            folders.find {it.folderId == mainFolder.folderId}.isMainFolder = true
+        def lists = listsService.findAllLists()
+        lists?.each {
+            model.lists.add(it)
+        }
+
+        if (params.id) {
+            model.folders = getFoldersOfList(params.id)
+        }
+
+        render(view: "lists", model: model)
+    }
+
+    /**
+     * Returns the folders for a given list
+     * 
+     * @param listId the id of the list
+     * @return the folders for a given list
+     */
+    private getFoldersOfList(def listId) {
+        def folders = null
+
+        if (listId == "0") {
+            folders = getPublicFoldersForUser()
+        } else {
+            folders = listsService.getFoldersForList(listId)
+        }
+
+        return folders as JSON
+    }
+
+    /**
+     * Returns the public folders for the already logged in user
+     *  
+     * @return the public folders for the already logged in user
+     */
+    private getPublicFoldersForUser() {
+        def folders
+
+        def User user = favoritesService.getUserFromSession()
+        if (user != null) {
+            folders = bookmarksService.findAllPublicFolders(user.getId())
+
             folders = favoritesService.sortFolders(folders)
             folders.each {
                 //Set the blocking token to ""
@@ -53,10 +98,8 @@ class ListsController {
                 List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
                 it.count = favoritesOfFolder.size()
             }
-
-            model.folders = folders as JSON
         }
 
-        render(view: "lists", model: model)
+        return folders
     }
 }

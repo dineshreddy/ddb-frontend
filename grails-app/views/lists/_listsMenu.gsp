@@ -14,12 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="span3 lists-menu hidden-phone">
-  <div class="lists-menu-item bt bb">
-    <a class="h3" data-fctname="affiliate_fct_role" href="#">Neueste
-      Listen</a>
-  </div>
-  <div class="lists-menu-item bt bb">
-    <a class="h3" data-fctname="affiliate_fct_role" href="#">Highlights
-      Institutionen</a>
-  </div>
+  <g:each in="${lists}">
+    <div class="lists-menu-item bt bb">
+      <a class="h3" data-listid="${it.folderListId }" href="<g:createLink controller="lists" action="index" params="${[id:it.folderListId]}"/>" title="${it.description}">${it.title}</a>
+    </div>
+  </g:each>
 </div>

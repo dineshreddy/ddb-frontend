@@ -68,7 +68,7 @@ class FolderList {
             }else{
                 this.folders = [folders]
             }
-        }else{
+        } else{
             this.folders = folders
         }
     }

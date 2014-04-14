@@ -21,6 +21,7 @@ import grails.converters.JSON
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.next.beans.Folder
 import de.ddb.next.beans.FolderList
 
 /**
@@ -34,6 +35,7 @@ class ListsService {
 
     def elasticSearchService
     def configurationService
+    def bookmarksService
     def transactional = false
 
 
@@ -70,6 +72,47 @@ class ListsService {
     }
 
     /**
+     * Finds all {@link FolderList} of the index
+     *
+     * @return all {@link FolderList} of the index
+     */
+    List<FolderList> findAllLists() {
+        log.info "findAllLists()"
+
+        List<FolderList> folderLists = []
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def resultList = response.hits.hits
+
+            resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
+
+                def folderList = new FolderList(
+                        it._id,
+                        it._source.user,
+                        it._source.title,
+                        description,
+                        it._source.createdAt,
+                        it._source.folders
+                        )
+                if(folderList.isValid()){
+                    folderLists.add(folderList)
+                }else{
+                    log.error "findAllListsByUserId(): found corrupt folder: "+folder
+                }
+            }
+        }
+        return folderLists
+    }
+
+
+    /**
      * Finds all {@link FolderList} belonging to a userId
      * @param userId the id of a user
      * 
@@ -86,7 +129,7 @@ class ListsService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
-            println response
+
             resultList.each { it ->
                 def description = "null"
                 if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
@@ -182,5 +225,44 @@ class ListsService {
         }
 
         return elasticSearchService.deleteTypeEntriesByIds(folderIds, "folderList")
+    }
+
+    /**
+     * Return a {@link FolderList} containing all public folders for a given user
+     * 
+     * @return a {@link FolderList} containing all public folders for a given user
+     */
+    def getPublicFolderListForUser(String userId) {
+        List<Folder> publicFolders = bookmarksService.findAllPublicFolders(userId)
+
+        def folderIds = []
+        publicFolders.each { it ->
+            folderIds.add(it.folderId)
+        }
+
+        def folderList = new FolderList(
+                "0",
+                userId,
+                "My public folders",
+                "Public lists of user " + userId,
+                null,
+                folderIds
+                )
+    }
+
+    /**
+     * 
+     * @param userId
+     * @return
+     */
+    List<Folder> getFoldersForList(String folderId) {
+        List<Folder> folders = []
+        FolderList folderList = findListById(folderId)
+
+        folderList.folders.each {
+            folders.add(bookmarksService.findFolderById(it))
+        }
+
+        return folders
     }
 }
