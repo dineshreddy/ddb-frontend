@@ -157,7 +157,7 @@ limitations under the License.
               <ul class="navigation inline">
                 <li
                   class="<ddb:isMappingActive context="${params}" testif="${[[controller: "index"]]}">active-default</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'index']"><g:message encodeAs="html" code="ddbnext.Homepage" /></g:link>
+                  <g:link controller="index"><g:message encodeAs="html" code="ddbnext.Homepage" /></g:link>
                 </li>
                 <li
                   class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</ddb:isMappingActive>">
