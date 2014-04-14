@@ -44,8 +44,6 @@ limitations under the License.
                 <g:message encodeAs="html" code="ddbnext.Go_Button"/>
               <![endif]-->
             </button>
-            <%-- InfoTooltip --%>
-            <ddb:renderInfoTooltip messageCode="ddbnext.Search_Hint" infoId="search-simple" infoDir="help" />
             
             <div class="link-adv-search">
               <g:link class="fl" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.Advanced_search"/></g:link>

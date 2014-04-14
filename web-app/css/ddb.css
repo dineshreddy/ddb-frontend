@@ -845,7 +845,7 @@ header .language-widget form,.header .language-widget form {
 
 #form-search input {
   font-size: 1.25em;
-  width: 463px;
+  width: 506px;
   height: 38px !important;
   line-height: 40px;
   float: left;
@@ -857,7 +857,7 @@ header .language-widget form,.header .language-widget form {
     width: 50%;
   }
   #form-search input {
-    width: 85%;
+    width: 86%;
   }
   .search-widget form button {
     float: right;
@@ -872,7 +872,7 @@ header .language-widget form,.header .language-widget form {
 
 @media (max-width: 480px) {
   #form-search input {
-    width: 80%;
+    width: 81%;
   }
 }
 
