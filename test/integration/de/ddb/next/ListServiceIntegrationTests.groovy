@@ -6,8 +6,7 @@ import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
-import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.Folder
+import de.ddb.next.beans.FolderList
 
 
 @TestMixin(IntegrationTestMixin)
@@ -16,6 +15,7 @@ class ListServiceIntegrationTests {
     private static final def SIZE = 99999
 
     def bookmarksService
+    def listsService
 
     /** The userId is refreshed in setUp() for every test method*/
     def userId = null
@@ -39,13 +39,10 @@ class ListServiceIntegrationTests {
     void tearDown() {
         println "Cleanup tests"
 
-        List<Bookmark> bookmarks = bookmarksService.findBookmarksByUserId(userId)
-        println "User bookmarks after test: " + bookmarks.size()
+        List<FolderList> lists = listsService.findListsByUserId(userId)
+        println "User lists after test: " + lists.size()
 
-        List<Folder> folders = bookmarksService.findAllFolders(userId)
-        println "User folders after test: " + folders.size()
-
-        boolean contentDeleted = bookmarksService.deleteAllUserContent(userId)
+        boolean contentDeleted = listsService.deleteAllUserLists(userId)
         println "User content deleted: : " + contentDeleted
 
         logStats()
@@ -55,25 +52,43 @@ class ListServiceIntegrationTests {
 
     def logStats() {
         println "userId " + userId
-        println "Index has " + bookmarksService.getFolderCount() + " folders"
-        println "Index has " + bookmarksService.getBookmarkCount() + " bookmarks"
+        println "Index has " + listsService.getListCount() + " lists"
     }
 
 
-    @Test void shouldCreateNewFolderList() {
-        //        def folderTitle= 'Favorites-' + new Date().getTime().toString()
-        //        def isPublic = true
-        //        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.getValue()
-        //        Folder newFolder = new Folder(
-        //                null,
-        //                userId,
-        //                folderTitle,
-        //                "",
-        //                isPublic,
-        //                publishingName,
-        //                false,
-        //                "")
-        //        return bookmarksService.createFolder(newFolder)
-        assert true
+    @Test void shouldCreateNewList() {
+        def listTitle= 'List-' + new Date().getTime().toString()
+
+        FolderList newFolderList = new FolderList(
+                null,
+                userId,
+                listTitle,
+                "",
+                System.currentTimeMillis())
+
+        assert listsService.createList(newFolderList)
+    }
+
+    @Test void shouldReturnListCount() {
+        assert listsService.getListCount() > 0
+    }
+
+    @Test void shouldDeleteUserLists() {
+        def listTitle= 'List-' + new Date().getTime().toString()
+
+        FolderList newFolderList = new FolderList(
+                null,
+                userId,
+                listTitle,
+                "",
+                System.currentTimeMillis())
+
+        assert listsService.createList(newFolderList)
+
+        assert listsService.findListsByUserId(userId).size() == 1
+
+        assert listsService.deleteAllUserLists(userId)
+
+        assert listsService.findListsByUserId(userId).size() == 0
     }
 }

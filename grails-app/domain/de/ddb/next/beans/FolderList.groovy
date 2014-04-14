@@ -23,7 +23,7 @@ import de.ddb.next.JsonUtil
  * 
  * @author boz
  */
-@ToString(includeNames=true, excludes="count")
+@ToString(includeNames=true)
 class FolderList {
 
     String folderListId
@@ -40,7 +40,7 @@ class FolderList {
      * @param description
      * @param creationDateAsLong
      */
-    public FolderList(String folderListId, String userId, String title, def description, Date creationDateAsLong) {
+    public FolderList(String folderListId, String userId, String title, def description, def creationDateAsLong) {
         this.folderListId = folderListId
         this.userId = userId
         this.title = title

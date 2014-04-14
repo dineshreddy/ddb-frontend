@@ -17,13 +17,20 @@ package de.ddb.next
 
 import net.sf.json.JSON
 
-import org.codehaus.groovy.grails.web.json.*
-
+import grails.converters.JSON
+import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.next.beans.FolderList
 
+/**
+ * Service class for the FolderList mapping in the elastic search
+ * 
+ * @author boz
+ */
 class ListsService {
+
+    public static final int DEFAULT_SIZE = 9999
 
     def elasticSearchService
     def configurationService
@@ -31,13 +38,13 @@ class ListsService {
 
 
     /**
-     * Create a new bookmark folder.
+     * Create a new {@link FolderList}
      *
-     * @param newFolder Folder object to persist
-     * @return          the newly created folder ID.
+     * @param newFolder FolderList object to persist
+     * @return the id of the created FolderList
      */
     String createList(FolderList newFolderList) {
-        log.info "createFolder(): creating a new folder: ${newFolder}"
+        log.info "createList(): creating a new folder: ${newFolderList}"
 
         String newFolderListId = null
 
@@ -45,10 +52,10 @@ class ListsService {
             user: newFolderList.userId,
             title : newFolderList.title,
             description: newFolderList.description,
-            createdAt: newFolderList.creationDate
+            createdAt: newFolderList.creationDate.getTime()
         ]
         def postBodyAsJson = postBody as JSON
-
+        log.info "postBodyAsJson" + postBodyAsJson
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folderList", false, postBodyAsJson)
 
         if(apiResponse.isOk()){
@@ -58,5 +65,83 @@ class ListsService {
         }
 
         return newFolderListId
+    }
+
+    /**
+     * Finds all {@link FolderList} belonging to a userId
+     * @param userId the id of a user
+     * 
+     * @return all {@link FolderList} belonging to a userId
+     */
+    List<FolderList> findListsByUserId(String userId) {
+        log.info "findAllListsByUserId()"
+
+        List<FolderList> folderList = []
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false,
+                ["q":userId, "size":"${DEFAULT_SIZE}"])
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def resultList = response.hits.hits
+            println response
+            resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
+
+                def folder = new FolderList(
+                        it._id,
+                        it._source.user,
+                        it._source.title,
+                        description,
+                        it._source.createdAt
+                        )
+                if(folder.isValid()){
+                    folderList.add(folder)
+                }else{
+                    log.error "findAllListsByUserId(): found corrupt folder: "+folder
+                }
+            }
+        }
+        return folderList
+    }
+
+    /**
+     * Returns the number of lists available in the elasticsearch index
+     * @return the number of lists in the search index
+     */
+    int getListCount() {
+        int count = -1
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
+
+    /**
+     * Deletes all lists belonging to a userId
+     *
+     * @param userId the id of a user
+     *
+     * @return <code>true</code> if at least one list has been deleted for the given userId
+     */
+    boolean deleteAllUserLists(String userId) {
+        log.info "deleteAllUserLists()"
+        List<FolderList> allUserFolders = findListsByUserId(userId)
+
+        List<String> folderIds = []
+
+        allUserFolders.each { it ->
+            folderIds.add(it.folderListId)
+        }
+
+        return elasticSearchService.deleteTypeEntriesByIds(folderIds, "folderList")
     }
 }

@@ -33,9 +33,10 @@ class ElasticSearchService {
     def transactional = false
 
     /**
+     * Return the number of documents for a given type
      * 
-     * @param type
-     * @return
+     * @param type the mapping type
+     * @return the number of documents for a given type
      */
     def int getDocumentCountByType(String type) {
         int count = -1
@@ -51,7 +52,7 @@ class ElasticSearchService {
     }
 
     /**
-     * 
+     * Refresh the ddb index
      */
     def void refresh() {
         log.info "refresh(): refreshing index ddb..."
@@ -61,6 +62,29 @@ class ElasticSearchService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "Response: ${response}, finished refreshing index ddb."
+        }
+    }
+
+    /**
+     * Delete the entries of a list for a given indexType
+     *
+     * @param idList a list of ids
+     * @param indexType the index type of the items to delete
+     */
+    private boolean deleteTypeEntriesByIds(List<String> idList, String indexType) {
+        log.info "deleteIndexTypeByIds()"
+
+        def postBody = ''
+        idList.each { id ->
+            postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
+        }
+        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
+
+        if(apiResponse.isOk()){
+            refresh()
+            return true
+        }else{
+            return false
         }
     }
 }
