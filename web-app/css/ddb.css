@@ -1385,6 +1385,10 @@ select {
   border-right: solid 1px #ffffff;
 }
 
+.hidden {
+  visibility: hidden;
+}
+
 .off {
   display: none !important;
 }
