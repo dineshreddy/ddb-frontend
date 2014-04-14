@@ -64,9 +64,34 @@ class ListServiceIntegrationTests {
                 userId,
                 listTitle,
                 "",
-                System.currentTimeMillis())
+                System.currentTimeMillis(),
+                "[123]")
 
         assert listsService.createList(newFolderList)
+    }
+
+    @Test void shouldFindListById() {
+        def listTitle= 'List-' + new Date().getTime().toString()
+
+        FolderList newFolderList = new FolderList(
+                null,
+                userId,
+                listTitle,
+                "",
+                System.currentTimeMillis(),
+                [
+                    "12313",
+                    "234356436",
+                    "43654"
+                ])
+
+        def listId = listsService.createList(newFolderList)
+        assert listId != null
+
+        def folderList = listsService.findListById(listId)
+        assert folderList != null
+        assert folderList.title == listTitle
+        assert folderList.folders.size() == 3
     }
 
     @Test void shouldReturnListCount() {
@@ -81,7 +106,8 @@ class ListServiceIntegrationTests {
                 userId,
                 listTitle,
                 "",
-                System.currentTimeMillis())
+                System.currentTimeMillis(),
+                "[123]")
 
         assert listsService.createList(newFolderList)
 

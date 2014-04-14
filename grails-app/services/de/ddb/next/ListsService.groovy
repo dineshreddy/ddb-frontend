@@ -52,8 +52,10 @@ class ListsService {
             user: newFolderList.userId,
             title : newFolderList.title,
             description: newFolderList.description,
-            createdAt: newFolderList.creationDate.getTime()
+            createdAt: newFolderList.creationDate.getTime(),
+            folders: newFolderList.folders
         ]
+
         def postBodyAsJson = postBody as JSON
         log.info "postBodyAsJson" + postBodyAsJson
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folderList", false, postBodyAsJson)
@@ -76,7 +78,7 @@ class ListsService {
     List<FolderList> findListsByUserId(String userId) {
         log.info "findAllListsByUserId()"
 
-        List<FolderList> folderList = []
+        List<FolderList> folderLists = []
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false,
                 ["q":userId, "size":"${DEFAULT_SIZE}"])
@@ -91,21 +93,58 @@ class ListsService {
                     description = it._source.description
                 }
 
-                def folder = new FolderList(
+                def folderList = new FolderList(
                         it._id,
                         it._source.user,
                         it._source.title,
                         description,
-                        it._source.createdAt
+                        it._source.createdAt,
+                        it._source.folders
                         )
-                if(folder.isValid()){
-                    folderList.add(folder)
+                if(folderList.isValid()){
+                    folderLists.add(folderList)
                 }else{
                     log.error "findAllListsByUserId(): found corrupt folder: "+folder
                 }
             }
         }
-        return folderList
+        return folderLists
+    }
+
+    /**
+     * Finds a {@link FolderList} by its id
+     * @param listId the id of the list to search for
+     * 
+     * @return a {@link FolderList}
+     */
+    FolderList findListById(String listId) {
+        log.info "findFolderById()"
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/${listId}", false, [:])
+
+        if(apiResponse.isOk()){
+            def it = apiResponse.getResponse()
+
+            def description = "null"
+            if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                description = it._source.description
+            }
+
+            def folderList = new FolderList(
+                    it._id,
+                    it._source.user,
+                    it._source.title,
+                    description,
+                    it._source.createdAt,
+                    it._source.folders
+                    )
+            if(folderList.isValid()){
+                return folderList
+            }else{
+                log.error "findFolderById(): found corrupt folder: " + folderList
+            }
+        }
+        return null
     }
 
     /**

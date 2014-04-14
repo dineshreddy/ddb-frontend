@@ -31,6 +31,7 @@ class FolderList {
     String title
     String description
     Date creationDate
+    Collection folders
 
     /**
      * Constructor
@@ -40,7 +41,7 @@ class FolderList {
      * @param description
      * @param creationDateAsLong
      */
-    public FolderList(String folderListId, String userId, String title, def description, def creationDateAsLong) {
+    public FolderList(String folderListId, String userId, String title, def description, def creationDateAsLong, def folders) {
         this.folderListId = folderListId
         this.userId = userId
         this.title = title
@@ -56,6 +57,20 @@ class FolderList {
         }else{
             this.creationDate = new Date(creationDateAsLong)
         }
+
+        if(JsonUtil.isAnyNull(folders)){
+            this.folders = null
+        }else if(folders instanceof String){
+            String folderString = folders.toString()
+            if(folderString.startsWith("[")){
+                folderString = folderString.substring(1,folderString.length()-1)
+                this.folders = Arrays.asList(folderString.split(","))
+            }else{
+                this.folders = [folders]
+            }
+        }else{
+            this.folders = folders
+        }
     }
 
     /**
@@ -69,6 +84,7 @@ class FolderList {
         out["title"] = title
         out["description"] = description
         out["creationDate"] = creationDate
+        out["folders"] = folders
         return out
     }
 
