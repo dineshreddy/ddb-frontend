@@ -29,6 +29,7 @@ import org.apache.commons.logging.LogFactory
 class SecurityHelper {
 
     private def log = LogFactory.getLog(this.class)
+    private final CSPPoliciesApplier cspPoliciesApplier = new CSPPoliciesApplier()
 
     /**
      * Performs a set of security tasks defined in separated methods.
@@ -37,6 +38,7 @@ class SecurityHelper {
      */
     void performSecurityTasks(ServletRequestWrapper request, HttpServletResponse response){
         addReponseSecurityHeaders(request, response)
+        cspPoliciesApplier.applyPolicies(request, response)
     }
 
     private void addReponseSecurityHeaders(ServletRequestWrapper request, HttpServletResponse response) {
