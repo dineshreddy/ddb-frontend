@@ -25,7 +25,7 @@ import org.apache.commons.codec.binary.Hex
 public class CSPPoliciesApplier {
 
     /** Configuration member to specify if web app use web fonts */
-    private static final boolean APP_USE_WEBFONTS = false
+    private static final boolean APP_USE_WEBFONTS = true
 
     /** Configuration member to specify if web app use videos or audios */
     private static final boolean APP_USE_AUDIOS_OR_VIDEOS = true
@@ -68,7 +68,10 @@ public class CSPPoliciesApplier {
         // --Define loading policies for Styles (CSS)
         cspPolicies.add("style-src " + originLocationRef)
         // --Define loading policies for Images
-        cspPolicies.add("img-src " + originLocationRef)
+        cspPolicies.add("img-src " + originLocationRef +
+        " http://a.tile.maps.deutsche-digitale-bibliothek.de" +
+        " http://b.tile.maps.deutsche-digitale-bibliothek.de" +
+        " http://c.tile.maps.deutsche-digitale-bibliothek.de")
         // --Define loading policies for Form
         cspPolicies.add("form-action " + originLocationRef)
         // --Define loading policies for Audios/Videos
