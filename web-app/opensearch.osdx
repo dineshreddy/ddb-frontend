@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
   <ShortName>Deutsche Digitale Bibliothek</ShortName>
-  <Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.deutsche-digitale-bibliothek.de/favicon.ico</Image>
-  <Url type="text/html" template="http://www.deutsche-digitale-bibliothek.de/searchresults?query={searchTerms}" />
+  <Description>Die Deutsche Digitale Bibliothek ist das zentrale Portal für Kultur und Wissen.</Description>
+  <Tags>Deutsche Digitale Bibliothek DDB Archiv Bibliothek Denkmalpflege Forschung Mediathek Museum</Tags>
+  <Contact>service@deutsche-digitale-bibliothek.de</Contact>
+  <Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.deutsche-digitale-bibliothek.de/appStatic/images/favicon.ico</Image>
+  <Url type="text/html" template="http://www.deutsche-digitale-bibliothek.de/searchresults?query={searchTerms}&amp;rows={count?}" />
 </OpenSearchDescription>
