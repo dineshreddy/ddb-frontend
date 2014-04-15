@@ -215,7 +215,6 @@
 
 .entity-page .thumbimage {
   margin:  15px 0 5px 0;
-  max-width: 270px;
 }
 
 .entity-page .search_link {
@@ -228,6 +227,16 @@
 
 .entity-page .wiki-link {
   text-decoration: underline;
+}
+
+.entity-page .thumbcaption {
+  font-size: 15px;
+}
+
+.entity-page .thumblicense {
+  padding-top: 8px;
+  font-size: 15px;
+  font-style: italic;
 }
 
 .entity-page .object-controls {
