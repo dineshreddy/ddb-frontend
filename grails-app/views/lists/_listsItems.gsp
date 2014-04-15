@@ -47,6 +47,6 @@ limitations under the License.
     </div>
   </g:if>
   <g:else>
-    Bitte wählen sie eine Liste aus!
+    <g:message encodeAs="html" code="ddbnext.lists.pleaseSelectList" />
   </g:else>
 </div>

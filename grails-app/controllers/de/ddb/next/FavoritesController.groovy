@@ -210,7 +210,8 @@ class FavoritesController {
                     false,
                     publishingName,
                     false,
-                    "")
+                    "",
+                    System.currentTimeMillis())
             String newFolderId = bookmarksService.createFolder(newFolder)
             if(newFolderId){
                 result = response.SC_CREATED

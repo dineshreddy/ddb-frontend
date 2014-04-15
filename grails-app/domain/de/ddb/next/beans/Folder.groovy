@@ -31,10 +31,11 @@ class Folder {
     boolean isBlocked = false
     String blockingToken
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
+    Date creationDate
 
     def count = null // this field is not stored in elastic search. It is excluded from serialization!
 
-    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken) {
+    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong) {
         this.folderId = folderId
         this.userId = userId
         this.title = title
@@ -60,6 +61,12 @@ class Folder {
             this.blockingToken = ""
         }else{
             this.blockingToken = blockingToken.toString()
+        }
+
+        if(JsonUtil.isAnyNull(creationDateAsLong)){
+            this.creationDate = new Date()
+        }else{
+            this.creationDate = new Date(creationDateAsLong)
         }
     }
 

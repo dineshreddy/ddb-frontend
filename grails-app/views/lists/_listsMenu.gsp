@@ -16,7 +16,9 @@ limitations under the License.
 <div class="span3 lists-menu hidden-phone">
   <g:each in="${lists}">
     <div class="lists-menu-item bt bb">
-      <a class="h3" data-listid="${it.folderListId }" href="<g:createLink controller="lists" action="index" params="${[id:it.folderListId]}"/>" title="${it.description}">${it.title}</a>
+      <a class="h3" data-listid="${it.folderListId }" href="<g:createLink controller="lists" action="index" params="${[id:it.folderListId]}"/>" title="${it.description}">
+        <g:message encodeAs="html" code="${it.title}" />
+      </a>
     </div>
   </g:each>
 </div>

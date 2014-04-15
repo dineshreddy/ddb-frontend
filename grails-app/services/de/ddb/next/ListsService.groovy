@@ -232,7 +232,7 @@ class ListsService {
      * 
      * @return a {@link FolderList} containing all public folders for a given user
      */
-    def getPublicFolderListForUser(String userId) {
+    def getUserList(String userId) {
         List<Folder> publicFolders = bookmarksService.findAllPublicFolders(userId)
 
         def folderIds = []
@@ -241,13 +241,33 @@ class ListsService {
         }
 
         def folderList = new FolderList(
-                "0",
+                "UserList",
                 userId,
-                "My public folders",
-                "Public lists of user " + userId,
+                "ddbnext.lists.userList",
+                "Your public favorite lists",
                 null,
                 folderIds
                 )
+
+        return folderList
+    }
+
+    /**
+     * Return a {@link FolderList} containing the public folders for the current day
+     *
+     * @return  a {@link FolderList} containing the public folders for the current day
+     */
+    def getDdbDailyList() {
+
+        def folderList = new FolderList(
+                "DdbDailyList",
+                "",
+                "ddbnext.lists.ddbDailyList",
+                "The DDB daily favorite lists",
+                null,
+                ""
+                )
+        return folderList
     }
 
     /**

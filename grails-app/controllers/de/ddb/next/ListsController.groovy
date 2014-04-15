@@ -41,11 +41,17 @@ class ListsController {
         def model = [title: "Listen", lists: []]
 
         def User user = favoritesService.getUserFromSession()
+
+        //If the user is logged in initialize his public favorite lists
         if (user != null) {
             // Get the public folder list of the user
-            def publicFolderList = listsService.getPublicFolderListForUser(user.getId())
-            model.lists.add(publicFolderList)
+            def userList = listsService.getUserList(user.getId())
+            model.lists.add(userList)
         }
+
+        //Initialize the daily favorite lists
+        def ddbDailyList = listsService.getDdbDailyList()
+        model.lists.add(ddbDailyList)
 
         def lists = listsService.findAllLists()
         lists?.each {
@@ -68,8 +74,10 @@ class ListsController {
     private getFoldersOfList(def listId) {
         def folders = null
 
-        if (listId == "0") {
+        if (listId == "UserList") {
             folders = getPublicFoldersForUser()
+        } else if (listId == "DdbDailyList") {
+            folders = listsService.getFoldersForList(listId)
         } else {
             folders = listsService.getFoldersForList(listId)
         }

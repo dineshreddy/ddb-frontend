@@ -60,7 +60,8 @@ class BookmarksService {
             isPublic : newFolder.isPublic,
             publishingName : newFolder.publishingName,
             isBlocked : false,
-            blockingToken : ""
+            blockingToken : "",
+            createdAt : newFolder.creationDate.getTime()
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -126,7 +127,8 @@ class BookmarksService {
                         it._source.isPublic,
                         it._source.publishingName,
                         it._source.isBlocked,
-                        it._source.blockingToken
+                        it._source.blockingToken,
+                        it._source.createdAt
                         )
                 if(folder.isValid()){
                     folderList.add(folder)
@@ -137,6 +139,55 @@ class BookmarksService {
         }
         return folderList
     }
+
+    /**
+     * Return all public folders that were created from a specific date in a range of 24 hours
+     * 
+     * @return a list of public folders for a specific date
+     */
+    List<Folder> findAllPublicFoldersIn24Hours(Date date) {
+        log.info "findAllPublicFoldersOfToday()"
+
+        def timeFrom = date.getTime()
+        def timeTo = timeFrom + 86400000
+
+        List<Folder> folderList = []
+
+        def dateQuery = '{"range" : {"createdAt" : {"gte" : ' + timeFrom + ',"lte" : ' + timeTo + ',"boost" : 2.0}}}'
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
+                ["source":dateQuery, "size":"${DEFAULT_SIZE}"])
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def resultList = response.hits.hits
+            resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
+
+                def folder = new Folder(
+                        it._id,
+                        it._source.user,
+                        it._source.title,
+                        description,
+                        it._source.isPublic,
+                        it._source.publishingName,
+                        it._source.isBlocked,
+                        it._source.blockingToken,
+                        it._source.createdAt
+                        )
+                if(folder.isValid()){
+                    folderList.add(folder)
+                }else{
+                    log.error "findAllFolders(): found corrupt folder: "+folder
+                }
+            }
+        }
+        return folderList
+    }
+
 
     /**
      * List all bookmarks in a folder that belongs to the user.
@@ -358,7 +409,8 @@ class BookmarksService {
                         it._source.isPublic,
                         it._source.publishingName,
                         it._source.isBlocked,
-                        it._source.blockingToken
+                        it._source.blockingToken,
+                        it._source.createdAt
                         )
 
 
@@ -573,7 +625,8 @@ class BookmarksService {
                     it._source.isPublic,
                     it._source.publishingName,
                     it._source.isBlocked,
-                    it._source.blockingToken
+                    it._source.blockingToken,
+                    it._source.createdAt
                     )
             if(folder.isValid()){
                 return folder
