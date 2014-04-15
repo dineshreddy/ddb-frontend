@@ -26,7 +26,8 @@ limitations under the License.
         ${entity.person.preferredName}
         <br>
         <g:message encodeAs="html" code="ddbnext.Entity_Source" />: <a href="${entity.person.depiction.url}" class="wiki-link no-external-link-icon">Wikimedia</a>
-        <br>
+      </div>
+      <div class="thumblicense">
         <g:message encodeAs="html" code="ddbnext.Entity_MediaLicence" />
       </div>
     </div>
