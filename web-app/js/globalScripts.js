@@ -165,7 +165,7 @@ $(document)
 
           // Open all external links in a new window
           $(
-              'a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href^="https://www.deutsche-digitale-bibliothek.de"])')
+              'a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href*="deutsche-digitale-bibliothek.de"])')
               .attr('target', '_blank');
 
         });
