@@ -26,6 +26,6 @@ class RenderSearchTabulationTagLib {
      */
 
     def renderSearchTabulation = { attrs, body ->
-        out << render(template:"/search/searchTabulation", model:[allCount: attrs.all, entitiesCount: attrs.entities, placesCount: attrs.places, institutionsCount: attrs.institution])
+        out << render(template:"/search/searchTabulation", model:[totalResults: attrs.totalResults,query:attrs.query,active:attrs.active ])
     }
 }

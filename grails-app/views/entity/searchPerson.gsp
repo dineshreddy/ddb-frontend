@@ -78,7 +78,7 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation all="0" entities="${results.entity.size()}" places="0" institution="0" />
+            <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="institution" />
       <%-- 
       <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
