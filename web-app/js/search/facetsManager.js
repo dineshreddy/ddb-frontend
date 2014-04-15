@@ -458,6 +458,9 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                   currObjInstance.connectedflyoutWidget.parentMainElement.find(
                       '.input-search-fct-container').hide();
 
+                  //set field as active
+                  currObjInstance.connectedflyoutWidget.parentMainElement.addClass('active');
+                  
                   $.each(fctValues, function() {
                     //Check if the value is a role. They need special handling!
                     var facetValue = this;
