@@ -224,6 +224,11 @@ class UrlMappings {
             controller="entity"
             action="personsearch"
         }
+        
+        "/entity/search/institution/$q?" {
+            controller="entity"
+            action="institutionsearch"
+        }
 
         "/binary/$filename**" {
             controller="apis"

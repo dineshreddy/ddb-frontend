@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 $(function() {
-  if (jsPageName === "person") {
+  if ((jsPageName === "person") || jsPageName === "searchinstitution") {
     checkFavorites();
   }
 });

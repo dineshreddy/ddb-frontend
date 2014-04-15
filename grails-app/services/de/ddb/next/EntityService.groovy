@@ -91,7 +91,6 @@ class EntityService {
      * @return the serach result
      */
     def doEntitySearch(def query) {
-        log.info  "QUERY *******************" + query
         def searchPreview = [:]
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/entity', false, query)
@@ -105,6 +104,31 @@ class EntityService {
 
         searchPreview["entity"] = jsonSearchResult.results
 
+        return searchPreview
+    }
+    
+    /**
+     * Performs a search request on the backend.
+     * Used in the EntityController in the /search/institute
+     *
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     *
+     * @return the serach result
+     */
+    def doInstitutionSearch(def query) {
+        def searchPreview = [:]
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, query)
+        if(!apiResponse.isOk()){
+            def message = "doInstitutionSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+        searchPreview["entity"] = jsonSearchResult.results?.docs
         return searchPreview
     }
 
