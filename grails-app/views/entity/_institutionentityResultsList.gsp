@@ -24,27 +24,20 @@ limitations under the License.
         <div class="summary-main-wrapper span6">
           <div class="summary-main">
             <h2 class="title">
-              <g:link class="persist" controller="institution"
-                action="showInstitutionsTreeByItemId"
-                params="${params + [id:entityId]}">
-                <strong><ddb:getTruncatedItemTitle
-                    title="${entityItem.preview.title}" length="${ 100 }" /></strong>
+              <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
+                <strong><ddb:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
               <g:if test="${(entityItem.preview?.subtitle != null)}">
-                <ddb:stripTags
-                  text="${entityItem.preview.subtitle.replaceAll('match', 'strong')}"
-                  allowedTags="strong" />
+                <ddb:stripTags text="${entityItem.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
               </g:if>
             </div>
           </div>
         </div>
         <div class="thumbnail-wrapper span3">
           <div class="thumbnail-entity" id="thumbnail-${entityItem.id}">
-            <g:link class="persist" controller="institution"
-              action="showInstitutionsTreeByItemId"
-              params="${params + [id:entityId]}">
+            <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
               <g:if test="${entityItem.preview.thumbnail!="null"}">
 	              <img src="${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
               </g:if><g:else>
@@ -56,12 +49,9 @@ limitations under the License.
             <ul class="item-options-ul">
               <ddb:isLoggedIn>
                 <li>
-                  <div id="favorite-${entityItem.id}" class="add-to-favorites"
-                    title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
+                  <div id="favorite-${entityItem.id}" class="add-to-favorites"title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
-                <div id="favorite-confirmation" class="modal hide fade"
-                  tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                  aria-hidden="true">
+                <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"aria-hidden="true">
                   <div class="modal-body">
                     <p>
                       <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
@@ -70,6 +60,16 @@ limitations under the License.
                 </div>
               </ddb:isLoggedIn>
             </ul>
+            <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
+              <div class="hovercard-info-item" data-iid="${entityItem.id}">
+                <h4><ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" /></h4>
+                <ul class="unstyled">
+                  <li>
+                    <div class="small-loader"></div>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
       </div>
