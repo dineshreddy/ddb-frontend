@@ -15,35 +15,38 @@ limitations under the License.
 --%>
 <div class="results-paginator-options bb">
   <div class="span6 tabulator">
-    <span class="small"> ${totalResults} <g:message
-        code="ddbnext.Multi_Page_Results" />:
-    </span> 
-    <span><g:link controller="search" action="results" params="[query:query]" class="${(active=='items') ? 'active-link' : '' }">
-        <g:message code="ddbnext.Entity_Objects" />
-      </g:link></span>
-      <span><g:link controller="entity" action="personsearch" params="[query:query]" class="${(active=='person') ? 'active-link' : '' }" >
-        <g:message code="ddbnext.entity.tabulator.persons" />
-      </g:link></span> <span><g:message code="ddbnext.Locations" /></span>
-      <span ><g:link controller="entity" action="institutionsearch"params="[query:query]" class="${(active=='institution') ? 'active-link' : '' }">
-        <g:message code="ddbnext.Institutions" />
-      </g:link></span>
+    <ul id="tabulator">
+      <li>
+        ${totalResults} <g:message code="ddbnext.Multi_Page_Results" />:
+      </li>
+      <li><g:link controller="search" action="results" params="[query:query]"
+          class="${(active=='items') ? 'active-link' : '' }">
+          <g:message code="ddbnext.Entity_Objects" />
+        </g:link></li>
+      <li><g:link controller="entity" action="personsearch" params="[query:query]"
+          class="${(active=='person') ? 'active-link' : '' }">
+          <g:message code="ddbnext.entity.tabulator.persons" />
+        </g:link></li>
+      <%--<li><g:message code="ddbnext.Locations" /></li>--%>
+      <li><g:link controller="entity" action="institutionsearch" params="[query:query]" class="${(active=='institution') ? 'active-link' : '' }">
+          <g:message code="ddbnext.Institutions" />
+        </g:link></li>
+
+    </ul>
   </div>
-  <div class="span2">
+  <div class="span3">
     <%-- <ddb:isLoggedIn> --%>
     <div id="addToSavedSearches">
       <div class="add-to-saved-searches"></div>
-      <a id="addToSavedSearchesAnchor"> <g:message encodeAs="html"
-          code="ddbnext.Save_Savedsearch" />
-      </a> <span id="addToSavedSearchesSpan" class="off"><g:message
-          encodeAs="html" code="ddbnext.Saved_Savedsearch" /></span>
+      <a id="addToSavedSearchesAnchor"> <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" />
+      </a> <span id="addToSavedSearchesSpan" class="off"><g:message encodeAs="html" code="ddbnext.Saved_Savedsearch" /></span>
     </div>
 
-    <div id="addToSavedSearchesModal" class="modal hide fade"
-      tabindex="-1" role="dialog" aria-labelledby="addToSavedSearchesLabel"
-      aria-hidden="true">
+    <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+      aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close"/>"
-          data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal"
+          class="fancybox-toolbar-close"></span>
         <h3 id="addToSavedSearchesLabel">
           <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" />
         </h3>
@@ -65,8 +68,7 @@ limitations under the License.
         <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
           <g:message encodeAs="html" code="ddbnext.Close" />
         </button>
-        <button class="btn-padding" type="submit"
-          id="addToSavedSearchesConfirm">
+        <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
           <g:message encodeAs="html" code="ddbnext.Save" />
         </button>
       </div>

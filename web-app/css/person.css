@@ -1,40 +1,53 @@
 .entities .search-results-content .search-results .item {
- padding: 15px 0 0 0;
- position: relative;
+  padding: 15px 0 0 0;
+  position: relative;
 }
 
 .entities .results-paginator-view {
- background: none;
+  background: none;
 }
 
 .entities .results-paginator-options {
- height: 40px;
- line-height: 40px;
+  height: 40px;
+  line-height: 40px;
 }
 
 .entities .facets-list .facets-item:first-child {
- margin-top: 14px;
+  margin-top: 14px;
 }
 
 .entities .clear-filters a {
- font-weight: bold;
- float: right;
+  font-weight: bold;
+  float: right;
 }
 
 .entities .add-to-saved-searches {
- margin-top: 10px;
+  margin-top: 10px;
 }
 
 .tabulator {
- margin: 10px 0;
- font-family: inherit;
- font-weight: bold;
- line-height: 20px;
- color: inherit;
- text-rendering: optimizelegibility;
+  margin: 10px 0;
+  font-family: inherit;
+  font-size:14px;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
 }
-.tabulator span .active-link {
- color:#a5003b;
- text-decoration: none;
- word-wrap: break-word;
+
+#tabulator li .active-link {
+  color: #a5003b;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+ul#tabulator   {
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
+#tabulator li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
 }
