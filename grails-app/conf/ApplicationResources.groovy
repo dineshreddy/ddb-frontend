@@ -119,7 +119,7 @@ modules = {
         resource url:'/js/search/compareManager.js'
         resource url:'/js/search/hovercardInfoItem.js'
         resource url:'/js/resultsFavorites.js'
-        resource url:'/js/entityHoverCard.js'
+        resource url:'/js/search/searchinstitution.js'
     }
 
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
