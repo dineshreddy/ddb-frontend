@@ -27,10 +27,10 @@ import de.ddb.next.JsonUtil
 class FolderList {
 
     String folderListId
-    String userId
     String title
     String description
     Date creationDate
+    Collection users
     Collection folders
 
     /**
@@ -41,9 +41,8 @@ class FolderList {
      * @param description
      * @param creationDateAsLong
      */
-    public FolderList(String folderListId, String userId, String title, def description, def creationDateAsLong, def folders) {
+    public FolderList(String folderListId,  String title, def description, def creationDateAsLong, def users,def folders) {
         this.folderListId = folderListId
-        this.userId = userId
         this.title = title
 
         if(JsonUtil.isAnyNull(description)){
@@ -71,6 +70,20 @@ class FolderList {
         } else{
             this.folders = folders
         }
+
+        if(JsonUtil.isAnyNull(users)){
+            this.users = null
+        }else if(users instanceof String){
+            String userString = users.toString()
+            if(userString.startsWith("[")){
+                userString = userString.substring(1,userString.length()-1)
+                this.folders = Arrays.asList(userString.split(","))
+            }else{
+                this.users = [users]
+            }
+        } else{
+            this.users = users
+        }
     }
 
     /**
@@ -80,10 +93,10 @@ class FolderList {
     public def getAsMap() {
         def out = [:]
         out["folderListId"] = folderListId
-        out["userId"] = userId
         out["title"] = title
         out["description"] = description
         out["creationDate"] = creationDate
+        out["users"] = users
         out["folders"] = folders
         return out
     }
@@ -94,7 +107,7 @@ class FolderList {
      */
     boolean isValid(){
         if(folderListId != null
-        && userId != null) {
+        && creationDate != null && title != null) {
             return true
         }
         return false

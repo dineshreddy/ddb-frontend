@@ -51,10 +51,10 @@ class ListsService {
         String newFolderListId = null
 
         def postBody = [
-            user: newFolderList.userId,
             title : newFolderList.title,
             description: newFolderList.description,
             createdAt: newFolderList.creationDate.getTime(),
+            users: newFolderList.users,
             folders: newFolderList.folders
         ]
 
@@ -88,23 +88,12 @@ class ListsService {
             def resultList = response.hits.hits
 
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
+                def folderList = mapJsonToFolderList(it)
 
-                def folderList = new FolderList(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.createdAt,
-                        it._source.folders
-                        )
-                if(folderList.isValid()){
+                if(folderList && folderList.isValid()){
                     folderLists.add(folderList)
                 }else{
-                    log.error "findAllListsByUserId(): found corrupt folder: "+folder
+                    log.error "findAllListsByUserId(): found corrupt list: " + folderList
                 }
             }
         }
@@ -131,23 +120,12 @@ class ListsService {
             def resultList = response.hits.hits
 
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
+                def folderList = mapJsonToFolderList(it)
 
-                def folderList = new FolderList(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.createdAt,
-                        it._source.folders
-                        )
-                if(folderList.isValid()){
+                if(folderList && folderList.isValid()){
                     folderLists.add(folderList)
                 }else{
-                    log.error "findAllListsByUserId(): found corrupt folder: "+folder
+                    log.error "findAllListsByUserId(): found corrupt list: " + folderList
                 }
             }
         }
@@ -162,31 +140,43 @@ class ListsService {
      */
     FolderList findListById(String listId) {
         log.info "findFolderById()"
+        def retVal = null
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/${listId}", false, [:])
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
-
-            def description = "null"
-            if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                description = it._source.description
-            }
-
-            def folderList = new FolderList(
-                    it._id,
-                    it._source.user,
-                    it._source.title,
-                    description,
-                    it._source.createdAt,
-                    it._source.folders
-                    )
-            if(folderList.isValid()){
-                return folderList
-            }else{
-                log.error "findFolderById(): found corrupt folder: " + folderList
-            }
+            retVal = mapJsonToFolderList(it)
         }
+        return retVal
+    }
+
+    /**
+     * Maps the JSON from a elasticsearch request to an {@link FolderList} instance
+     * 
+     * @return a {@link FolderList} instance of the JSON
+     */
+    private FolderList mapJsonToFolderList(def json) {
+        def description = "null"
+        if(!(json._source.description instanceof JSONNull) && (json._source.description != null)){
+            description = json._source.description
+        }
+
+        def folderList = new FolderList(
+                json._id,
+                json._source.title,
+                description,
+                json._source.createdAt,
+                json._source.users,
+                json._source.folders
+                )
+
+        if(folderList.isValid()){
+            return folderList
+        }else{
+            log.error "findFolderById(): found corrupt folder: " + folderList
+        }
+
         return null
     }
 
@@ -242,10 +232,10 @@ class ListsService {
 
         def folderList = new FolderList(
                 "UserList",
-                userId,
                 "ddbnext.lists.userList",
                 "Your public favorite lists",
                 null,
+                userId,
                 folderIds
                 )
 
@@ -261,10 +251,10 @@ class ListsService {
 
         def folderList = new FolderList(
                 "DdbDailyList",
-                "",
                 "ddbnext.lists.ddbDailyList",
                 "The DDB daily favorite lists",
                 null,
+                "",
                 ""
                 )
         return folderList

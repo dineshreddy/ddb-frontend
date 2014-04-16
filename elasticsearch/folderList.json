@@ -1,1 +1,1 @@
-{"folderList":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"title":{"type":"string"},"user":{"type":"string"},"folders":{"type":"string"}}}}
+{"folderList":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"title":{"type":"string"},"users":{"type":"string"},"folders":{"type":"string"}}}}
