@@ -264,14 +264,14 @@
 }
 
 .view-type-switch #view-list {
-  width: 24px;
-  height: 24px;
-  background: url("../images/icons/viewSelector.png");
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/ddbIkonographie.png");
 }
 
 .view-type-switch #view-list,.view-type-switch #view-grid {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   box-shadow: none;
   overflow: hidden;
   background: none;
@@ -283,39 +283,39 @@
 
 .view-type-switch button:before {
   display: inline-block;
-  content: url("../images/icons/viewSelector.png");
+  content: url("../images/icons/ddbIkonographie.png");
 }
 
 .view-type-switch #view-list:before {
-  margin: -24px 0 0 0;
+  margin: -60px 0 0 -180px;
 }
 
 .view-type-switch #view-list:hover:before {
-  margin: -24px 0 0 -24px;
+  margin: -60px 0 0 -210px;
 }
 
 .view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before {
-  margin: -24px 0 0 -48px;
+  margin: -60px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-list.selected:before,.view-type-switch .ie8-version #view-list.selected:hover:before,.view-type-switch .ie8-version #view-list.selected:focus:before {
-  margin: -24px 0 0 0;
+  margin: -60px 0 0 -180px;
 }
 
 .view-type-switch #view-grid:before {
-  margin: 0;
+  margin: -90px 0 0 -180px;
 }
 
 .view-type-switch #view-grid:hover:before {
-  margin: 0 0 0 -24px;
+  margin: -90px 0 0 -210px;
 }
 
 .view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before {
-  margin: 0 0 0 -48px;
+  margin: -90px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-grid.selected:before,.view-type-switch .ie8-version #view-grid.selected:hover:before,.view-type-switch .ie8-version #view-grid.selected:focus:before {
-  margin: 0;
+  margin: -90px 0 0 -180px;
 }
 
 input[type="checkbox"],input[type="radio"] {
