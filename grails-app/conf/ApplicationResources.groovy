@@ -49,6 +49,7 @@ modules = {
         resource url:'/css/apiKey.css', bundle: 'screen'
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/css/person.css', bundle: 'screen'
+        resource url:'/css/searchTabulator.css', bundle: 'screen'
         resource url:'/js/map/css/map.css', bundle: 'screen'
         //resource url:'/third-party/map/css/style.css', bundle: 'screen'
         //resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
@@ -118,6 +119,7 @@ modules = {
         resource url:'/js/search/compareManager.js'
         resource url:'/js/search/hovercardInfoItem.js'
         resource url:'/js/resultsFavorites.js'
+        resource url:'/js/search/searchinstitution.js'
     }
 
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }

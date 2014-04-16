@@ -224,6 +224,11 @@ class UrlMappings {
             controller="entity"
             action="personsearch"
         }
+        
+        "/entity/search/institution/$q?" {
+            controller="entity"
+            action="institutionsearch"
+        }
 
         "/binary/$filename**" {
             controller="apis"
@@ -319,14 +324,6 @@ class UrlMappings {
             controller="map"
             action="multipolygone"
         }
-
-        //TODO: Remove. Left for legacy
-        "/searchPerson/$q?" {
-            controller="entity"
-            action="personsearch"
-        }
-        
-
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)

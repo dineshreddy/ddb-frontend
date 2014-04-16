@@ -13,19 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+$(function() {
+  if (jsPageName === "searchinstitution") {
+    setHovercardEvents();
+  }
+});
 
-class RenderSearchTabulationTagLib {
-
-    static namespace = "ddb"
-
-    /**
-     * Renders the tabulation row for the search.
-     *
-     * @attr allCount, entitiesCount, placesCount, institutionCount, the count of every different search result
-     */
-
-    def renderSearchTabulation = { attrs, body ->
-        out << render(template:"/search/searchTabulation", model:[totalResults: attrs.totalResults,query:attrs.query,active:attrs.active ])
-    }
+function setHovercardEvents() {
+  $('.information').each(function() {
+    var infoItem = new de.ddb.next.search.HovercardInfoItem($(this));
+  });
 }

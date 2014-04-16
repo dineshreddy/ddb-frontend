@@ -13,19 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
 
-class RenderSearchTabulationTagLib {
+.tabulator {
+  margin: 10px 0;
+  font-family: inherit;
+  font-size:14px;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
 
-    static namespace = "ddb"
+#tabulator li .active-link {
+  color: #a5003b;
+  text-decoration: none;
+  word-wrap: break-word;
+}
 
-    /**
-     * Renders the tabulation row for the search.
-     *
-     * @attr allCount, entitiesCount, placesCount, institutionCount, the count of every different search result
-     */
+ul#tabulator   {
+  padding: 0;
+  margin: 0 0 0 0;
+}
 
-    def renderSearchTabulation = { attrs, body ->
-        out << render(template:"/search/searchTabulation", model:[totalResults: attrs.totalResults,query:attrs.query,active:attrs.active ])
-    }
+#tabulator li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
 }
