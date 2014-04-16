@@ -1,6 +1,5 @@
 package ddb.next.services
 
-import grails.test.mixin.*
 import de.ddb.next.FacetsService
 
 /**
