@@ -13,29 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.entities .search-results-content .search-results .item {
-  padding: 15px 0 0 0;
-  position: relative;
-}
 
-.entities .results-paginator-view {
-  background: none;
-}
-
-.entities .results-paginator-options {
-  height: 40px;
-  line-height: 40px;
-}
-
-.entities .facets-list .facets-item:first-child {
-  margin-top: 14px;
-}
-
-.entities .clear-filters a {
+.tabulator {
+  margin: 10px 0;
+  font-family: inherit;
+  font-size:14px;
   font-weight: bold;
-  float: right;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
 }
 
-.entities .add-to-saved-searches {
-  margin-top: 10px;
+#tabulator li .active-link {
+  color: #a5003b;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+ul#tabulator   {
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
+#tabulator li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
 }
