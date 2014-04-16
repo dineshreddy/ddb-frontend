@@ -40,7 +40,7 @@ class ListsController {
         if (params.id) {
             createListDetails(model)
         } else {
-            model.errorMessage = "Bitte wählen sie eine Liste aus"
+            model.errorMessage = "ddbnext.lists.pleaseSelectList"
         }
 
         render(view: "lists", model: model)
@@ -81,7 +81,7 @@ class ListsController {
         model.folders = getFoldersOfList(params.id)
 
         if (model?.folders?.size() == 0) {
-            model.errorMessage = "Die Liste enthält keine Einträge"
+            model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
     }
 
@@ -100,7 +100,7 @@ class ListsController {
         } else if (listId == "DdbDailyList") {
             folders = listsService.getDdbDailyFolders()
         } else {
-            folders = listsService.getListFolders(listId)
+            folders = listsService.getPublicFoldersForList(listId)
         }
 
         return folders as JSON

@@ -18,7 +18,14 @@ package de.ddb.next
 import net.sf.json.JSON
 
 import grails.converters.JSON
+
+import java.text.SimpleDateFormat
+
 import net.sf.json.JSONNull
+
+import org.springframework.web.context.request.RequestContextHolder
+import org.springframework.web.servlet.support.RequestContextUtils
+
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.beans.User
@@ -293,12 +300,37 @@ class ListsService {
     }
 
     /**
+     * 
+     * @param userId
+     * @return
+     */
+    List<Folder> getPublicFoldersForList(String listId) {
+        List<Folder> folders = []
+        FolderList folderList = findListById(listId)
+
+        folderList.users.each {
+            folders.addAll(bookmarksService.findAllPublicFolders(it))
+        }
+
+        folderList.folders.each {
+            def folder = bookmarksService.findFolderById(it)
+            if (folder.isPublic) {
+                folders.add(folder)
+            }
+        }
+
+        return enhanceFolderInformation(folders)
+    }
+
+    /**
      * Sorts the found folders and adds the number of favorites
      * @param folders the folder to enhance
      *
      * @return the enhanced Folder
      */
     private enhanceFolderInformation(def folders) {
+        def request = RequestContextHolder.currentRequestAttributes().request
+        Locale locale = RequestContextUtils.getLocale(request)
         folders = favoritesService.sortFolders(folders)
         folders.each {
             //Set the blocking token to ""
@@ -307,22 +339,13 @@ class ListsService {
             //TODO: use the elastic search query syntax for doing this!
             List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
             it.count = favoritesOfFolder.size()
+            it.creationDateFormatted = formatDate(it.creationDate, locale)
         }
     }
 
-    /**
-     * 
-     * @param userId
-     * @return
-     */
-    List<Folder> getListFolders(String folderId) {
-        List<Folder> folders = []
-        FolderList folderList = findListById(folderId)
-
-        folderList.folders.each {
-            folders.add(bookmarksService.findFolderById(it))
-        }
-
-        return folders
+    private String formatDate(Date oldDate, Locale locale) {
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy")
+        newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
+        return newFormat.format(oldDate)
     }
 }

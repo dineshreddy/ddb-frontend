@@ -27,7 +27,7 @@ limitations under the License.
                 <h2 class="title">
                   <a title="${folder?.title}">${folder?.title}</a>
                 </h2>
-                <div class="item-details">Eine Liste von ${folder?.publishingName} mit ${folder?.count} Objekten, erstellt: 15.02.2014</div>
+                <div class="item-details">Eine Liste von ${folder?.publishingName} mit ${folder?.count} Objekten, erstellt: ${folder?.creationDateFormatted}</div>
                 <div class="item-description"><span title="${folder?.description}"><ddb:getTruncatedItemTitle title="${folder?.description}" length="${ 100 }"/></span></div>
               </div>
               <div class="thumbnail-wrapper span3">
