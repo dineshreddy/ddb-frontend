@@ -13,21 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package de.ddb.next
 
-package de.ddb.next.exception
+class RenderSearchTabulationTagLib {
 
-/**
- * Exception indication that a configuration entry was not found or invalid.
- * 
- * @author hla
- */
-class ConfigurationException extends Exception {
+    static namespace = "ddb"
 
-    ConfigurationException() {
-        super()
-    }
+    /**
+     * Renders the tabulation row for the search.
+     *
+     * @attr allCount, entitiesCount, placesCount, institutionCount, the count of every different search result
+     */
 
-    ConfigurationException(String description) {
-        super(description)
+    def renderSearchTabulation = { attrs, body ->
+        out << render(template:"/search/searchTabulation", model:[totalResults: attrs.totalResults,query:attrs.query,active:attrs.active ])
     }
 }

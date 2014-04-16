@@ -17,7 +17,7 @@ limitations under the License.
   <div class="span6 institution">
     <div class="row">
       <div class="span6">
-        <div><g:message code="ddbnext.Institution" /></div>
+        <div><g:message encodeAs="html" code="ddbnext.Institution" /></div>
         <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
           ${institution.name}
         </g:link>
@@ -25,14 +25,14 @@ limitations under the License.
         <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
           <div class="origin">
             <g:if test="${!originUrl?.toString()?.isEmpty()}">
-              <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
-                <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
+              <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+                <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
               </a>
             </g:if>
             <!-- (DFG) viewer -->
             <g:if test="${!viewerUri?.isEmpty()}">
               <a target="_blank" href="${viewerUri}" class="no-external-link-icon">
-                <span class="viewer dfg"><g:message code="ddbnext.ObjectViewer_dfgKey" /></span>
+                <span class="viewer dfg"><g:message encodeAs="html" code="ddbnext.ObjectViewer_dfgKey" /></span>
               </a>
             </g:if>
           </div>

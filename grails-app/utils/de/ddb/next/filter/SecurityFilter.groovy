@@ -23,7 +23,7 @@ import javax.servlet.ServletRequest
 import javax.servlet.ServletResponse
 import javax.servlet.http.HttpServletResponse
 
-import de.ddb.next.exception.InvalidUrlException
+import de.ddb.common.exception.InvalidUrlException
 
 
 /**
@@ -59,7 +59,7 @@ class SecurityFilter implements Filter {
                 return
             }
 
-            ddbSecurityHelper.sanitizeRequest(requestWrapper, httpResponse)
+            ddbSecurityHelper.performSecurityTasks(requestWrapper, httpResponse)
             chain.doFilter(requestWrapper, response)
             return
         }catch(InvalidUrlException i){

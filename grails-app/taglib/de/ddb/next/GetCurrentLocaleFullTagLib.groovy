@@ -18,7 +18,7 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.next.constants.SupportedLocales;
+import de.ddb.common.constants.SupportedLocales
 
 class GetCurrentLocaleFullTagLib {
 

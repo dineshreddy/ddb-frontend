@@ -18,15 +18,15 @@ limitations under the License.
 		<!-- buttons -->
 		<div class="span6">
           <ddb:isLoggedIn>
-            <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message code="ddbnext.Add_To_Favorites"/>"</g:else>>
+            <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
               <span data-itemid="${entityId}" data-objecttype="entity" data-actn="POST" id="idFavorite">
-                <g:message code="ddbnext.favorit" />
+                <g:message encodeAs="html" code="ddbnext.favorit" />
               </span>
             </span>
           </ddb:isLoggedIn>
           <div class="link-block">
-            <a class="page-link page-link-popup-anchor" href="${entityUri}" title="<g:message code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
-              <span><g:message code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+            <a class="page-link page-link-popup-anchor" href="${entityUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+              <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
           </div>
 		</div>
@@ -34,16 +34,16 @@ limitations under the License.
 
   <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-body">
-      <p><g:message code="ddbnext.Added_To_Favorites"/></p>
-      <p><g:message code="ddbnext.Add_To_Personal_Favorites"/></p>
+      <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
+      <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
       <g:select name="favorite-folders" from="" multiple="multiple"/>
     </div>
     <div class="modal-footer">
       <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message code="ddbnext.Close"/>
+        <g:message encodeAs="html" code="ddbnext.Close"/>
       </button>
       <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-        <g:message code="ddbnext.Save"/>
+        <g:message encodeAs="html" code="ddbnext.Save"/>
       </button>
     </div>
   </div>

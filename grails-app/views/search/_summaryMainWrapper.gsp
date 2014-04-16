@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <div class="summary-main-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span6</g:if>">
   <div class="summary-main">
     <h2 class="title">
@@ -23,7 +23,7 @@ limitations under the License.
     </h2>
     <div class="subtitle">
       <g:if test="${(item.preview?.subtitle != null) && (item.preview?.subtitle?.toString() != "null")}">
-        ${item.preview.subtitle}
+        <ddb:stripTags text="${item.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
       </g:if>
     </div>
     <ul class="matches unstyled">
@@ -36,7 +36,9 @@ limitations under the License.
       </li>
     </ul>
   </div>
-  <div class="extra">
-    <ddb:renderMediaTypesList mediaTypesArray="${item.preview.media}"></ddb:renderMediaTypesList>
-  </div>
+  <g:if test="${(mediaIcons && mediaIcons != false) || mediaIcons == null}">
+    <div class="extra">
+      <ddb:renderMediaTypesList mediaTypesArray="${item.preview.media}"></ddb:renderMediaTypesList>
+    </div>
+  </g:if>
 </div>

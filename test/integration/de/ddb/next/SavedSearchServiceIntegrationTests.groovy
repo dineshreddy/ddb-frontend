@@ -1,10 +1,14 @@
 package de.ddb.next
 
 import static org.junit.Assert.*
+import grails.test.mixin.TestMixin
+import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
-class SavedSearchServiceIntegrationTests extends GroovyTestCase {
+
+@TestMixin(IntegrationTestMixin)
+class SavedSearchServiceIntegrationTests {
 
     def savedSearchService
 
@@ -16,7 +20,6 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
      * Creates a new userId for the test.
      */
     void setUp() {
-        super.setUp()
         println "--------------------------------------------------------------------"
         println "Setup tests"
         userId = UUID.randomUUID() as String
@@ -28,7 +31,6 @@ class SavedSearchServiceIntegrationTests extends GroovyTestCase {
      * Cleanup user content created by a test method
      */
     void tearDown() {
-        super.tearDown()
         println "Cleanup tests"
 
         def results = savedSearchService.findSavedSearchByUserId(userId)

@@ -14,11 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.next.constants.SupportedOpenIdProviders"%>
-<%@page import="de.ddb.next.constants.LoginStatus"%>
+<%@page import="de.ddb.common.constants.SupportedOpenIdProviders"%>
+<%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
-    <title><g:message code="ddbnext.Login" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message encodeAs="html" code="ddbnext.Login" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="login" />
     <meta name="layout" content="main" />
@@ -29,7 +29,7 @@ limitations under the License.
       <div class="span12">
         <div class="row heading">
           <div class="span6">
-            <div class="fl"><h1><g:message code="ddbnext.Login"/></h1></div>
+            <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.Login"/></h1></div>
           </div>
         </div>
         <div class="row">
@@ -43,34 +43,34 @@ limitations under the License.
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message code="ddbnext.Error_Email_Password_Combination" />
+                        <g:message encodeAs="html" code="ddbnext.Error_Email_Password_Combination" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_DENIED}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message code="ddbnext.Error_Authentication_Provider_Denied" />
+                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Denied" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_UNKNOWN}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message code="ddbnext.Error_Authentication_Provider_Unknown" />
+                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Unknown" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.NO_COOKIES}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message code="ddbnext.Error_Authentication_No_Cookies" />
+                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_No_Cookies" />
                       </div>  
                     </div>
                   </g:if>
                   <div class="row">
                     <div class="span4"> 
-                      <label for="login-username"><g:message code="ddbnext.Username_Or_Email" />:</label>
+                      <label for="login-username"><g:message encodeAs="html" code="ddbnext.Username_Or_Email" />:</label>
                     </div>  
                   </div>
                   <div class="row">
@@ -80,7 +80,7 @@ limitations under the License.
                   </div>
                   <div class="row spacer-vertical">
                     <div class="span4">                 
-                      <label for="login-password"><g:message code="ddbnext.Your_Password" />:</label>
+                      <label for="login-password"><g:message encodeAs="html" code="ddbnext.Your_Password" />:</label>
                     </div>
                   </div>
                   <div class="row">
@@ -91,18 +91,18 @@ limitations under the License.
                   <div class="row spacer-vertical">
                     <div class="span4">    
                       <button type="submit" class="login-button">       
-                        <g:message code="ddbnext.Login_Button" />
+                        <g:message encodeAs="html" code="ddbnext.Login_Button" />
                       </button>       
                     </div>
                   </div>
                   <div class="row spacer-vertical">
                     <div class="span4">                  
-                      <g:link controller="user" action="registration" class="login-link"><g:message code="ddbnext.Register" /></g:link>  
+                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbnext.Register" /></g:link>  
                     </div>
                   </div>
                   <div class="row">
                     <div class="span4">                  
-                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message code="ddbnext.Forgot_Password" /></g:link>  
+                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message encodeAs="html" code="ddbnext.Forgot_Password" /></g:link>  
                     </div>
                   </div>
                 
@@ -111,7 +111,7 @@ limitations under the License.
               <div class="span4 openid" >
                 <div class="row">
                   <div class="span4">                  
-                    <g:message code="ddbnext.Login_OpenID" />
+                    <g:message encodeAs="html" code="ddbnext.Login_OpenID" />
                   </div>
                 </div>
                 <div class="row spacer-vertical">
@@ -131,10 +131,10 @@ limitations under the License.
             <ddb:isLoggedIn>
               <div class="span4 feedback">
                 <g:if test="${loginStatus == LoginStatus.SUCCESS}">
-                  <g:message code="ddbnext.Login_Success" />
+                  <g:message encodeAs="html" code="ddbnext.Login_Success" />
                 </g:if>
                 <g:else>
-                  <g:message code="ddbnext.Already_Logged_In" />
+                  <g:message encodeAs="html" code="ddbnext.Already_Logged_In" />
                 </g:else>
               </div>
             

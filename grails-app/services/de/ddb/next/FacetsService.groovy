@@ -16,10 +16,11 @@
 package de.ddb.next
 
 import static groovyx.net.http.ContentType.JSON
-import static groovyx.net.http.Method.GET
 import net.sf.json.JSONNull
 
 import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.common.ApiConsumer
 
 /**
  * Get facetted searchfields and values for facet from Backend.
@@ -120,8 +121,6 @@ public class FacetsService {
      * @return a list of all facets in the json format
      */
     public getAllFacets() {
-        def res = []
-
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/search/facets/')
         if(!apiResponse.isOk()){
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())

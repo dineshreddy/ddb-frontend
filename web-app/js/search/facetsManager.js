@@ -102,7 +102,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     var oldParams = de.ddb.next.search.getUrlVars();
     var fctValues = '';
-    var isThumbnailFIltered = '';
+    var isThumbnailFiltered = '';
     var queryParam = '&query=' + facetValue;
 
     //Looking for existing facetvalues[] in the window url parameters
@@ -111,12 +111,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues : fctValues + '&facetValues%5B%5D=' + value;
       });
     }
-    if (oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered'] === 'true') {
-      isThumbnailFIltered = '&isThumbnailFiltered=true';
+    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
+      isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
 
     var url = jsContextPath + '/rolefacets' + '?name=' + facetField + '&facetValues%5B%5D=' + facetField + "%3D" + facetValue + '&searchQuery='
-    + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
+    + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows;
 
     var request = $.ajax({
@@ -143,7 +143,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var oldParams = de.ddb.next.search.getUrlVars();
     var currObjInstance = this;
     var fctValues = '';
-    var isThumbnailFIltered = '';
+    var isThumbnailFiltered = '';
     var queryParam = '';
 
     //Looking for existing facetvalues[] in the window url parameters
@@ -153,8 +153,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
             : fctValues + '&facetValues%5B%5D=' + value;
       });
     }
-    if (oldParams['isThumbnailFiltered'] && oldParams['isThumbnailFiltered'] === 'true') {
-      isThumbnailFIltered = '&isThumbnailFiltered=true';
+    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
+      isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
     if (query) {
       query = encodeURIComponent(query);
@@ -167,7 +167,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       dataType : 'json',
       async : true,
       url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + '&searchQuery='
-          + oldParams['query'] + queryParam + fctValues + isThumbnailFIltered
+          + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
           + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);
@@ -458,6 +458,9 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                   currObjInstance.connectedflyoutWidget.parentMainElement.find(
                       '.input-search-fct-container').hide();
 
+                  //set field as active
+                  currObjInstance.connectedflyoutWidget.parentMainElement.addClass('active');
+                  
                   $.each(fctValues, function() {
                     //Check if the value is a role. They need special handling!
                     var facetValue = this;

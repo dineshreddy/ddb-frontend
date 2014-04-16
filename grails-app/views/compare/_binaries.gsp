@@ -46,19 +46,19 @@ limitations under the License.
           </g:each>
         </ul>
         <div class="binary-viewer-error off">
-          <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
+          <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
           <p>
-            <g:message code="ddbnext.You_can_download_or_use_alternative" />
+            <g:message encodeAs="html" code="ddbnext.You_can_download_or_use_alternative" />
           </p>
         </div>
         <div class="binary-viewer-flash-upgrade off">
-          <p class="error-header"><g:message code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
+          <p class="error-header"><g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
           <p>
-            <g:message code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
+            <g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
           </p>
-          <p class="error-header"><g:message code="ddbnext.We_could_not_play_the_file" /></p>
+          <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
           <p>
-            <g:message code="ddbnext.You_can_download_or_use_alternative" />
+            <g:message encodeAs="html" code="ddbnext.You_can_download_or_use_alternative" />
           </p>
         </div>
       </div>
@@ -75,7 +75,7 @@ limitations under the License.
     <div class="tabs off">
       <div role="tablist">
         <p class="tab all" role="tab">
-          <g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
+          <g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_All" 
                      args="${flashInformation.all}" 
                      default="ddbnext.BinaryViewer_MediaCountLabelFormat_All"/>
         </p>
@@ -97,7 +97,7 @@ limitations under the License.
                   data-type="image"
                   data-author="${it.preview.author}"
                   data-rights="${it.preview.rights}"
-                  title="${(it.full.title).encodeAsHTML()}"
+                  title="${(it.preview.title).encodeAsHTML()}"
                   <g:set var="type" value="image"/>
                 </g:if>
                 <g:elseif test="${it.orig.uri.video != ''}">
@@ -152,16 +152,16 @@ limitations under the License.
           </g:each>
         </ul>
         <button class="btn-prev">
-          <g:message code="ddbnext.Previous_Label" />
+          <g:message encodeAs="html" code="ddbnext.Previous_Label" />
           <span class="opaque"></span>
         </button>
         <button class="btn-next">
-          <g:message code="ddbnext.Next_Label" />
+          <g:message encodeAs="html" code="ddbnext.Next_Label" />
           <span class="opaque"></span>
         </button>
       </div>
       <div role="tablist">
-        <p class="tab images" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+        <p class="tab images" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
       </div>
       <div class="scroller images" role="tabpanel">
         <ul class="gallery-images gallery-tab">
@@ -185,17 +185,17 @@ limitations under the License.
           </g:each>
         </ul>
         <button class="btn-prev">
-          <g:message code="ddbnext.Previous_Label" />
+          <g:message encodeAs="html" code="ddbnext.Previous_Label" />
           <span class="opaque"></span>
         </button>
         <button class="btn-next">
-          <g:message code="ddbnext.Next_Label" />
+          <g:message encodeAs="html" code="ddbnext.Next_Label" />
           <span class="opaque"></span>
         </button>
         <p class="gallery-pagination" data-pag="0"></p>
       </div>
       <div role="tablist">
-        <p class="tab videos" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+        <p class="tab videos" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
       </div>
       <div class="scroller videos" role="tabpanel">
         <ul class="gallery-videos gallery-tab">
@@ -220,17 +220,17 @@ limitations under the License.
           </g:each>
         </ul>
         <button class="btn-prev">
-          <g:message code="ddbnext.Previous_Label" />
+          <g:message encodeAs="html" code="ddbnext.Previous_Label" />
           <span class="opaque"></span>
         </button>
         <button class="btn-next">
-          <g:message code="ddbnext.Next_Label" />
+          <g:message encodeAs="html" code="ddbnext.Next_Label" />
           <span class="opaque"></span>
         </button>
         <p class="gallery-pagination" data-pag="0"></p>
       </div>
       <div role="tablist">
-        <p class="tab audios" role="tab"><g:message code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+        <p class="tab audios" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
       </div>
       <div class="scroller audios" role="tabpanel">
         <ul class="gallery-audios gallery-tab">
@@ -255,11 +255,11 @@ limitations under the License.
           </g:each>
         </ul>
         <button class="btn-prev">
-          <g:message code="ddbnext.Previous_Label" />
+          <g:message encodeAs="html" code="ddbnext.Previous_Label" />
           <span class="opaque"></span>
         </button>
         <button class="btn-next">
-          <g:message code="ddbnext.Next_Label" />
+          <g:message encodeAs="html" code="ddbnext.Next_Label" />
           <span class="opaque"></span>
         </button>
         <p class="gallery-pagination" data-pag="0"></p>

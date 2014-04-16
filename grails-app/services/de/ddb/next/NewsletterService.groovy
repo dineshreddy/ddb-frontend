@@ -21,7 +21,9 @@ import groovy.json.*
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
-import de.ddb.next.beans.User
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
 
 /**
  * Set of Methods that encapsulate REST-calls to the NewsletterService
@@ -43,7 +45,7 @@ class NewsletterService {
             email: user.email
         ]
 
-        def apiResponse = ApiConsumer.putJson(configurationService.getNewsletterUrl(),
+        def apiResponse = ApiConsumer.putJson(configurationService.getElasticSearchUrl(),
                 "${SUBSCRIPTION_PATH}${user.id}", false, new JSONObject(body))
         if(!apiResponse.isOk()){
             log.error "fail to add newsletter subscriber ${user.toString()}"
@@ -55,7 +57,7 @@ class NewsletterService {
 
     def removeSubscriber(User user) {
         log.info "remove user ${user} as newsletter subscriber"
-        def apiResponse = ApiConsumer.deleteJson(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
+        def apiResponse = ApiConsumer.deleteJson(configurationService.getElasticSearchUrl(), "${SUBSCRIPTION_PATH}${user.id}")
         if(!apiResponse.isOk()){
             log.error "fail to add remove subscriber ${user.toString()}"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -64,7 +66,7 @@ class NewsletterService {
     }
 
     def isSubscriber(User user) {
-        def apiResponse = ApiConsumer.getJson(configurationService.getNewsletterUrl(), "${SUBSCRIPTION_PATH}${user.id}")
+        def apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "${SUBSCRIPTION_PATH}${user.id}")
 
         // when 200 return true
         // when 404 return false

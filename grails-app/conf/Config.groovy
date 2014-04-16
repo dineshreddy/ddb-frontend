@@ -1,4 +1,4 @@
-import de.ddb.next.constants.FacetEnum
+import de.ddb.common.constants.FacetEnum
 
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
@@ -66,11 +66,33 @@ grails.resources.adhoc.patterns = [
     '/js/*',
     '/plugins/*'
 ]
+grails.resources.adhoc.excludes = [
+    '**/WEB-INF/**',
+    '**/META-INF/**'
+]
 
 // The default codec used to encode data with ${}
-grails.views.default.codec = "none" // none, html, base64
-grails.views.gsp.encoding = "UTF-8"
-grails.converters.encoding = "UTF-8"
+grails.views.default.codec = "html" // none, html, base64
+//grails.views.gsp.encoding = "UTF-8"
+//grails.converters.encoding = "UTF-8"
+
+grails {
+    views {
+        gsp {
+            encoding = 'UTF-8'
+            htmlcodec = 'xml' // use xml escaping instead of HTML4 escaping
+            codecs {
+                expression = 'html' // escapes values inside ${}
+                scriptlet = 'html' // escapes output from scriptlets in GSPs
+                taglib = 'none' // escapes output from taglibs
+                staticparts = 'none' // escapes output from static template parts
+            }
+        }
+        // escapes all not-encoded output at final stage of outputting
+        //filteringCodecForContentType.'text/html' = 'html'
+    }
+}
+
 // enable Sitemesh preprocessing of GSP pages
 grails.views.gsp.sitemesh.preprocess = true
 // scaffolding templates configuration
@@ -151,10 +173,10 @@ ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
 ddb.backend.url="http://localhost/backend:9998/"
 ddb.backend.apikey=""
+ddb.aas.admin.userid="userid"
+ddb.aas.admin.password=""
 ddb.aas.url="http://localhost/aas:8081/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
-ddb.bookmark.url="http://localhost:9200"
-ddb.newsletter.url="http://localhost:9200"
 ddb.elasticsearch.url="http://localhost:9200"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"

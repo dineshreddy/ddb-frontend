@@ -17,7 +17,7 @@ limitations under the License.
 <html>
 <head>
 <title>
-  ${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
 <ddb:getSocialmediaMeta
@@ -42,11 +42,11 @@ limitations under the License.
 <%--
          Sending PDF per Mail Start    
       <div class="sendmail-block">
-        <div id="i18ntranslateSend" data-val="<g:message code="ddbnext.Send_Button" />"></div>
-        <div id="i18ntranslateValidEmail" data-val="<g:message code="ddbnext.Enter_A_Valid_Email" />"></div>
+        <div id="i18ntranslateSend" data-val="<g:message encodeAs="html" code="ddbnext.Send_Button" />"></div>
+        <div id="i18ntranslateValidEmail" data-val="<g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" />"></div>
         <a class="sendmail-link sendmail-link-popup-anchor"
           href="${createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])}"
-          title="<g:message code="ddbnext.item.sendPdf" />"> <span style="margin-left: 10px"></span>
+          title="<g:message encodeAs="html" code="ddbnext.item.sendPdf" />"> <span style="margin-left: 10px"></span>
         </a>
       </div>
          Sending PDF per Mail End    

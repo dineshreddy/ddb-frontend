@@ -15,30 +15,30 @@ limitations under the License.
 --%>
 <ul class="types unstyled inline">
   <g:each var="mediaType" in="${mediaTypesArray}">
-    <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_007" /></g:set>
+    <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_007" /></g:set>
     <g:if test="${mediaType == 'audio'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_001" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_001" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'image'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_002" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_002" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'text'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_003" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_003" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'fullText'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_004" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_004" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'video'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_005" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_005" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'other'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.type_fct_mediatype_006" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.type_fct_mediatype_006" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'institution'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.Institution" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.Institution" /></g:set>
     </g:if>
     <g:if test="${mediaType == 'entity'}">
-      <g:set var="mediaTitle"><g:message code="ddbnext.Entity_MediaTitle" /></g:set>
+      <g:set var="mediaTitle"><g:message encodeAs="html" code="ddbnext.Entity_MediaTitle" /></g:set>
     </g:if>
     <li class="${mediaType}" title="${mediaTitle}">${mediaTitle}</li>
   </g:each>

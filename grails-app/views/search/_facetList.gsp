@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.FacetEnum"%>
 <g:set var="upperBound" value="${(facetValues.size()<10)?facetValues.size():10}"></g:set>
 <g:set var="i" value="0"></g:set>
 <g:each var="i" in="${ (0..<upperBound) }">
@@ -24,16 +24,16 @@ limitations under the License.
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == FacetEnum.TYPE.getName() }">
-        <span class="label"><g:message code="${FacetEnum.TYPE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TYPE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
       <g:if test="${facetType == FacetEnum.TIME.getName() }">
-        <span class="label"><g:message code="${FacetEnum.TIME.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TIME.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
       <g:if test="${facetType == FacetEnum.LANGUAGE.getName() }">
-        <span class="label"><g:message code="${FacetEnum.LANGUAGE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.LANGUAGE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
       <g:if test="${facetType == FacetEnum.SECTOR.getName() }">
-        <span class="label"><g:message code="${FacetEnum.SECTOR.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.SECTOR.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
     </a>	
   </li>

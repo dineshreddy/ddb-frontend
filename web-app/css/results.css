@@ -35,12 +35,14 @@
 }
 
 .compare-header .contextual-help{
-  top: 10px;
+  top: 2px;
 }
 
 .fields .contextual-help {
-  margin-left: 133px;
+  position: absolute;
+  display: inline-block;
   margin-top: 3px;
+  margin-left: 3px;
 }
 
 .facets-list {
@@ -207,26 +209,16 @@
   display: none;
 }
 
-.keep-filters {
-  margin-bottom: 12px;
-}
-
-.keep-filters .checkbox {
-  display: block;
-}
-
-.keep-filters .checkbox:hover {
-  text-decoration: underline;
-  color: #a5003b;
-}
-
-.keep-filters .checkbox input {
-  float: none;
-  margin-top: -3px;
-}
-
 .clear-filters {
+  background: url("../images/icons/searchActions.png") no-repeat right -39px;
   margin-bottom: 12px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.clear-filters a{
+  display: block;
+  padding-right: 20px;
 }
 
 .results-paginator-view {
@@ -272,14 +264,14 @@
 }
 
 .view-type-switch #view-list {
-  width: 24px;
-  height: 24px;
-  background: url("../images/icons/viewSelector.png");
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/ddbIkonographie.png");
 }
 
 .view-type-switch #view-list,.view-type-switch #view-grid {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   box-shadow: none;
   overflow: hidden;
   background: none;
@@ -291,39 +283,39 @@
 
 .view-type-switch button:before {
   display: inline-block;
-  content: url("../images/icons/viewSelector.png");
+  content: url("../images/icons/ddbIkonographie.png");
 }
 
 .view-type-switch #view-list:before {
-  margin: -24px 0 0 0;
+  margin: -60px 0 0 -180px;
 }
 
 .view-type-switch #view-list:hover:before {
-  margin: -24px 0 0 -24px;
+  margin: -60px 0 0 -210px;
 }
 
 .view-type-switch #view-list.selected:before,.view-type-switch #view-list.selected:hover:before,.view-type-switch #view-list.selected:focus:before {
-  margin: -24px 0 0 -48px;
+  margin: -60px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-list.selected:before,.view-type-switch .ie8-version #view-list.selected:hover:before,.view-type-switch .ie8-version #view-list.selected:focus:before {
-  margin: -24px 0 0 0;
+  margin: -60px 0 0 -180px;
 }
 
 .view-type-switch #view-grid:before {
-  margin: 0;
+  margin: -90px 0 0 -180px;
 }
 
 .view-type-switch #view-grid:hover:before {
-  margin: 0 0 0 -24px;
+  margin: -90px 0 0 -210px;
 }
 
 .view-type-switch #view-grid.selected:before,.view-type-switch #view-grid.selected:hover:before,.view-type-switch #view-grid.selected:focus:before {
-  margin: 0 0 0 -48px;
+  margin: -90px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-grid.selected:before,.view-type-switch .ie8-version #view-grid.selected:hover:before,.view-type-switch .ie8-version #view-grid.selected:focus:before {
-  margin: 0;
+  margin: -90px 0 0 -180px;
 }
 
 input[type="checkbox"],input[type="radio"] {
@@ -443,6 +435,15 @@ input[type="checkbox"],input[type="radio"] {
 .search-results .results-list .thumbnail img {
   max-width: 100%;
   max-height: 105px;
+  display: block;
+  float: none;
+  border: 0;
+  margin: auto;
+}
+
+.search-results .results-list .thumbnail-entity img {
+  max-width: 100%;
+  max-height: 90px;
   display: block;
   float: none;
   border: 0;
@@ -742,8 +743,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .fields .tooltip {
   width: 30%;
-  margin-left: 123px;
-  margin-top: 33px;
+  margin: 10px;
 }
 
 .facets-container .tooltip {
@@ -756,10 +756,10 @@ input[type="checkbox"],input[type="radio"] {
   margin: 10px;
 }
 
-.facets-container .tooltip .arrow {
-  left: 50%;
-  margin-left: -17px;
+#thumbnail-filter {
+  margin: 3px 0 6px 10px;
 }
+
 /*Facets flyout*/
 .flyout-left-container {
   width: 100%;
@@ -869,12 +869,12 @@ input[type="checkbox"],input[type="radio"] {
   background-position-y: -60px;
 }
 .selected-items .role-facet {
-  background: url("../images/bg/advancedSearchSolidJointStandardTopFirst.png") no-repeat 0px -68px;
+  background: url("../images/bg/advancedSearchDottedJointFirst.png") no-repeat 0px -62px;
   position:relative;
   border-top: none;
 }
 .selected-items .role-facet:last-child {
-  background: url("../images/bg/advancedSearchSolidJointLastItem.png") no-repeat 0px -10px;
+  background: url("../images/bg/advancedSearchDottedJointEnd.png") no-repeat 0px -10px;
 }
 
 .role-facet .role-facet-value {  
@@ -1111,6 +1111,7 @@ color: #a5003b;
 
 .compare-objects {
   margin-top: 15px;
+  padding: 15px 10px;
 }
 
 .compare-objects hr {
@@ -1122,12 +1123,10 @@ color: #a5003b;
 .compare-object {
   position: relative;
   text-align: center;
-  border: 1px solid black;
-  height: 130px;
-  width: 130px;
-  max-height: 130px;
-  max-width: 130px;
-  background-color: #EFEBE8;
+  height: 120px;
+  width: 120px;
+  max-height: 120px;
+  max-width: 120px;
 }
 
 .compare-object .compare-default-pic {
@@ -1135,8 +1134,10 @@ color: #a5003b;
   height: 36px;
   width: 45px;
   position: absolute;
-  margin-left: 25px;
-  margin-top: 47px;
+  left: 50%;
+  top: 50%;
+  margin-top: -36px;
+  margin-left: -23px;
 }
 
 .compare-objects .compare-main {  
@@ -1149,6 +1150,24 @@ color: #a5003b;
 
 .compare-objects .compare-footer {
   margin-top: 15px;
+  line-height: 28px;
+  position: relative;
+  background-color: #efebe8;
+  text-align: center;
+  font-weight: bold;
+}
+
+.compare-objects .compare-footer a{
+  cursor: pointer;
+}
+
+.compare-objects .compare-footer a.compare-disabled{
+  cursor: default;
+  color: #ccc;
+}
+
+.compare-objects .compare-footer .compare-disabled:hover{
+  text-decoration: none;
 }
 
 .compare-objects .compare-link {
@@ -1166,14 +1185,15 @@ color: #a5003b;
 }
 
 .compare-objects .compare-default {
-  vertical-align: -94px;
+  vertical-align: -72px;
   display: inline;
+  color: #adadad;
 }
 
 .compare-objects .compare-img {
   overflow: hidden;
   max-height: 85px;
-  max-width: 130px;
+  max-width: 120px;
   margin-left: auto;
   margin-right: auto;
   background-color: #EFEBE8;

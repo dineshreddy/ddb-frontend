@@ -13,15 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.constants.SearchParamEnum"%>
-<%@page import="de.ddb.next.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.FacetEnum"%>
 
 <g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 
 <html>
 <head>
-<title>${title} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="results" />
 <meta name="layout" content="main" />
@@ -33,21 +33,9 @@ limitations under the License.
   
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
-        <h3><g:message code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <span class="contextual-help hidden-phone hidden-tablet" 
-           title="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
-                              args: [('<a href="' + createLink(controller: "content",
-                                                               params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
-                                     '</a>'],
-                              encodeAs: "none")}"
-           data-content="${g.message(code: "ddbnext.SearchResultsFacetHeading_TooltipContent", 
-                                     args: [('<a href="' + createLink(controller: "content",
-                                                                      params: [dir: 'help', id: 'search-filters']) + '">').encodeAsHTML(),
-                                            '</a>'],
-                                     encodeAs: "none")}">
-        </span> 
-        <div class="tooltip off hasArrow"></div>
-      </div>     
+        <h3><g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
+        <ddb:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
+      </div>
       
 	  <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
@@ -56,7 +44,7 @@ limitations under the License.
 	          <g:each in="${(facets.selectedFacets)}">
 	            <g:if test="${mit == it.field}">
 	              <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-	                <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message code="ddbnext.facet_${it.field}" /></a>
+	                <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>
 	                <g:if test="${it.facetValues.size() > 0}">
 	                  <ul class="unstyled">
 	                    <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></ddb:renderFacetList>
@@ -68,77 +56,67 @@ limitations under the License.
 	        </g:each>
 	      </div>
 	</noscript>
-	
-  	<%-- Shows the facets supported in the JS version. --%>
+
+    <%-- Shows the facets supported in the JS version. --%>
     <div class="js facets-list bt bb off">
       <%-- TimeFacet is handle by its own template --%>
       <g:render template="timeFacet" />
-      
       <%-- All other facets are handled in the same way --%>          
-      <g:each in="${jsFacetsList}">
-	      <div class="facets-item bt bb bl br">
-	        <a class="h3" href="#" data-fctName="${it}"><g:message code="ddbnext.facet_${it}" /></a>
-	      </div>
-      </g:each>
-    </div>	  	
-	
-      <div class="keep-filters off">
-        <label class="checkbox"> 
-          <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
-          <g:message code="ddbnext.Keep_filters"/>
-        </label>
+      <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
+      <div class="facets-item bt bb bl br">
+        <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
+        <label for="thumbnail-filter" title="<g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" />"><g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" /></label>
       </div>
+    </div>
 
       <div class="clear-filters">
-        <a href="${clearFilters.encodeAsHTML()}" class="button"><g:message code="ddbnext.Clear_filters"/></a>
+        <a href="${clearFilters.encodeAsHTML()}">
+            <g:message encodeAs="html" code="ddbnext.Clear_filters"/>
+        </a>
       </div>
 
       <ddb:isLoggedIn>
         <div id="addToSavedSearches">
           <div class="add-to-saved-searches"></div>
-          <a id="addToSavedSearchesAnchor"><g:message code="ddbnext.Save_Savedsearch"/></a>
-          <span id="addToSavedSearchesSpan" class="off"><g:message code="ddbnext.Saved_Savedsearch"/></span>
+          <a id="addToSavedSearchesAnchor"><g:message encodeAs="html" code="ddbnext.Save_Savedsearch"/></a>
+          <span id="addToSavedSearchesSpan" class="off"><g:message encodeAs="html" code="ddbnext.Saved_Savedsearch"/></span>
         </div>
       
         <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
            aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
           <div class="modal-header">
-            <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+            <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
             <h3 id="addToSavedSearchesLabel">
-              <g:message code="ddbnext.Save_Savedsearch"/>
+              <g:message encodeAs="html" code="ddbnext.Save_Savedsearch"/>
             </h3>
           </div>
           <div class="modal-body">
-            <div><b><g:message code="ddbnext.Mandatory"/></b></div>
+            <div><b><g:message encodeAs="html" code="ddbnext.Mandatory"/></b></div>
             <br/>
-            <div><g:message code="ddbnext.Savedsearch_Title"/>*</div>
+            <div><g:message encodeAs="html" code="ddbnext.Savedsearch_Title"/>*</div>
             <div><input id="addToSavedSearchesTitle" type="text"></div>
           </div>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message code="ddbnext.Close"/>
+              <g:message encodeAs="html" code="ddbnext.Close"/>
             </button>
             <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
-              <g:message code="ddbnext.Save"/>
+              <g:message encodeAs="html" code="ddbnext.Save"/>
             </button>
           </div>
         </div>
       </ddb:isLoggedIn>
       
-      <div class="compare-objects off">
+      <div class="compare-objects bt br bb bl off">
         <div class="compare-header">
-          <hr/>
-          <b><g:message code="ddbnext.SearchResultsCompareObjects"/></b>
-          <span class="contextual-help hidden-phone hidden-tablet" 
-            title="${g.message(code: "ddbnext.Compare_Tooltip")}" data-content="${g.message(code: "ddbnext.Compare_Tooltip")}">
-          </span> 
-          <div class="tooltip off hasArrow"></div>
+          <b><g:message encodeAs="html" code="ddbnext.SearchResultsCompareObjects"/></b>
+          <ddb:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
         </div>
         <div class="compare-main">
-          <div id="compare-object1" class="compare-object">
+          <div id="compare-object1" class="compare-object bt br bb bl">
             <div class="compare-table">
               <span class="compare-default-pic"></span>
-              <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject1" /></span>
+              <span class="compare-default"><g:message encodeAs="html" code="ddbnext.SearchResultsChooseObject1" /></span>
               <a class="compare-link">
                 <span class="compare-text"></span>
                 <img class="compare-img" src="#" alt="" />
@@ -146,10 +124,10 @@ limitations under the License.
               <span data-index="1" class="fancybox-toolbar-close"></span>
             </div>
           </div>
-          <div id="compare-object2" class="compare-object">
+          <div id="compare-object2" class="compare-object bt br bb bl">
             <div class="compare-table">
               <span class="compare-default-pic"></span>
-              <span class="compare-default"><g:message code="ddbnext.SearchResultsChooseObject2" /></span>
+              <span class="compare-default"><g:message encodeAs="html" code="ddbnext.SearchResultsChooseObject2" /></span>
               <a class="compare-link">
                 <span class="compare-text"></span>
                 <img class="compare-img" src="#" alt="" />
@@ -158,8 +136,12 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <div class="compare-footer">
-            <a class="button" id="compare-button"><g:message code="ddbnext.SearchResultsStartComparison"/></a>
+        <div class="compare-footer bt bb bl br">
+            <a id="compare-button">
+                <div>
+                    <g:message encodeAs="html" code="ddbnext.SearchResultsStartComparison"/>
+                </div>
+            </a>
         </div>
       </div>
     </div>
@@ -183,11 +165,9 @@ limitations under the License.
         <div class="span9">
           <div class="results-paginator-view off">
             <div class="group-actions">
-              <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
-              <label for="thumbnail-filter" title="<g:message code="ddbnext.Show_items_with_thumbnails" />"><g:message code="ddbnext.Show_items_with_thumbnails" /></label>
               <%-- HLA: deactivated until there is the possibility to cluster results (See DDBNEXT-328) 
               <input class="disabled" id="toggle-cluster" type="checkbox" disabled="disabled">
-              <label class="disabled" for="toggle-cluster" title="<g:message code="ddbnext.View_as_Cluster" />"><g:message code="ddbnext.View_as_Cluster" /></label>
+              <label class="disabled" for="toggle-cluster" title="<g:message encodeAs="html" code="ddbnext.View_as_Cluster" />"><g:message encodeAs="html" code="ddbnext.View_as_Cluster" /></label>
               --%>
             </div>
             <div class="view-type-switch">
@@ -195,14 +175,14 @@ limitations under the License.
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_List" />"><g:message code="ddbnext.View_as_List" /></button>
+                <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_List" />"><g:message encodeAs="html" code="ddbnext.View_as_List" /></button>
               </div>
               <!--[if lt IE 9]>
               </div>
               <div class="ie8-version">
               <![endif]-->
               <div>
-                <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message code="ddbnext.View_as_Grid" />"><g:message code="ddbnext.View_as_Grid" /></button>
+                <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />"><g:message encodeAs="html" code="ddbnext.View_as_Grid" /></button>
               </div>
               <!--[if lt IE 9]>
               </div>

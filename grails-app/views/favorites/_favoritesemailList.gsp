@@ -17,19 +17,19 @@ limitations under the License.
 <g:set var="offset" value="${0}" />
 <g:set var="index" value="${0}" />
 <div style="margin-top:20px; margin-bottom:20px">
-<g:message code="ddbnext.send_favorites_email_body_pre" 
+<g:message encodeAs="html" code="ddbnext.send_favorites_email_body_pre" 
              args="${[folderTitle, userName]}" encodeAs="none" /><br />
 </div>
-<g:message code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
+<g:message encodeAs="html" code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
 
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
     <tr>
       <g:if test="${results.size() == 1}">
-        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.HierarchyHelp_Leaf" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th style="width: 70%; margin-top:20px"><g:message code="ddbnext.Entity_Objects" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Entity_Objects" /></th>
       </g:else>
       <th style="width: 170px;"></th>
     </tr>
@@ -59,7 +59,7 @@ limitations under the License.
               <br /><br /><br />
               <span style="font-size:x-small;color:#333333">
                 <g:if test="${!it.bookmark.description.isEmpty()}">
-                  <g:message code="ddbnext.Favorites_Comment_Of" /> ${it.folder.publishingName}, ${it.bookmark.updateDateFormatted}:
+                  <g:message encodeAs="html" code="ddbnext.Favorites_Comment_Of" /> ${it.folder.publishingName}, ${it.bookmark.updateDateFormatted}:
                 </g:if>
               </span><br />
               <span>

@@ -17,7 +17,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
-import de.ddb.next.constants.SearchParamEnum
+import de.ddb.common.constants.SearchParamEnum
 
 class CompareController {
     def searchService
@@ -60,7 +60,6 @@ class CompareController {
     def handleSearchResultParameters(reqParameters, httpRequest) {
         def searchResultParameters = [:]
         searchResultParameters["searchParametersMap"] = [:]
-        def resultsItems
         def searchResultUri
 
         if (reqParameters[SearchParamEnum.QUERY.getName()] != null) {

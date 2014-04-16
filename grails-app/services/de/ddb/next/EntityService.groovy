@@ -16,10 +16,15 @@
 package de.ddb.next
 
 import groovy.json.*
-import de.ddb.next.constants.FacetEnum
-import de.ddb.next.constants.RoleFacetEnum
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.exception.EntityNotFoundException
+
+import org.codehaus.groovy.grails.web.util.WebUtils
+
+import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.RoleFacetEnum
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.exception.EntityNotFoundException
 
 /**
  * Service class for all entity related methods
@@ -76,6 +81,56 @@ class EntityService {
         return facetSearch
     }
 
+    /**
+     * Performs a search request on the backend.
+     *
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     *
+     * @return the serach result
+     */
+    def doEntitySearch(def query) {
+        def searchPreview = [:]
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/entity', false, query)
+        if(!apiResponse.isOk()){
+            def message = "doEntitySearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+        searchPreview["entity"] = jsonSearchResult.results
+        searchPreview["totalResults"] = jsonSearchResult.numberOfResults
+        return searchPreview
+    }
+    
+    /**
+     * Performs a search request on the backend.
+     * Used in the EntityController in the /search/institute
+     *
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     *
+     * @return the serach result
+     */
+    def doInstitutionSearch(def query) {
+        def searchPreview = [:]
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, query)
+        if(!apiResponse.isOk()){
+            def message = "doInstitutionSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+        searchPreview["entity"] = jsonSearchResult.results?.docs
+        searchPreview["totalResults"] = jsonSearchResult.numberOfResults
+        return searchPreview
+    }
 
     /**
      * Performs a search request on the backend. 

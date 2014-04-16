@@ -69,8 +69,10 @@
 }
 
 #timespan-form .contextual-help {
-  left: 40%;
-  margin-top: -7px;
+  position: inherit;
+  display: inline-block;
+  margin-left: 3px;
+  top: 5px;
 }
 
 .time-restriction .tooltip {

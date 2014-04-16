@@ -20,13 +20,15 @@ import groovy.json.*
 import groovyjarjarcommonscli.MissingArgumentException
 import groovyx.net.http.Method
 
+import org.apache.commons.lang.RandomStringUtils
 import org.apache.commons.lang.StringUtils
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.util.WebUtils
 
-import de.ddb.next.beans.User
-import de.ddb.next.exception.BackendErrorException
+import de.ddb.common.ApiConsumer
+import de.ddb.common.beans.User
+import de.ddb.common.exception.BackendErrorException
 
 /**
  * Set of Methods that encapsulate REST-calls to the AASWebService
@@ -117,12 +119,84 @@ class AasService {
     }
 
     /**
+     * Get detailed information about a person using an admin account.
+     *
+     * @param id id of person to retrieve
+     * @return person as User object
+     */
+    public User getPersonAsAdmin(String id) {
+        User result
+        String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
+        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:],
+        ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+        if (apiResponse.isOk()) {
+            JSONObject jsonObject = apiResponse.getResponse()
+            result = new User(
+                    username: jsonObject.nickname,
+                    status: jsonObject.status,
+                    lastname: jsonObject.surName,
+                    firstname: jsonObject.foreName,
+                    email: jsonObject.email,
+                    apiKey: jsonObject.apiKey)
+            result.setId(id)
+        }
+        else {
+            result = new User(username: "username")
+            result.setId(id)
+        }
+        return result
+    }
+
+    /**
      * 
      * @param id id of person to retrieve
      * @return person as JSON object
      */
     public JSONObject createPerson(JSONObject person) {
         return request(PERSON_URI, Method.POST, person)
+    }
+
+    /**
+     * Create or update a person in AAS. This method is used to store OpenId users in AAS.
+     *
+     * @param user user object
+     */
+    public User createOrUpdatePersonAsAdmin(User user) {
+        User result = user
+        String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
+
+        JSONObject jsonObject = new JSONObject()
+        jsonObject.put(NICKNAME_FIELD, user.username)
+        jsonObject.put(LASTNAME_FIELD, user.lastname)
+        jsonObject.put(FIRSTNAME_FIELD, user.firstname)
+        jsonObject.put(EMAIL_FIELD, user.email)
+
+        User aasUser = getPersonAsAdmin(user.email)
+        if (aasUser.email) {
+            // user exists - update it
+            jsonObject.put(ID_FIELD, aasUser.id)
+            def apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), PERSON_URI + aasUser.id, false,
+                    jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+            if (!apiResponse.isOk()) {
+                log.error "AAS update request failed: " + apiResponse
+            }
+            else {
+                result.setId(apiResponse.getResponse().id)
+            }
+        }
+        else {
+            // user doesn't exist - create it
+            jsonObject.put(PASSWORD_FIELD, RandomStringUtils.randomAlphanumeric(12))
+            def apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), PERSON_URI, false,
+                    jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+            if (!apiResponse.isOk()) {
+                log.error "AAS create request failed: " + apiResponse
+            }
+            else {
+                result.setId(apiResponse.getResponse().id)
+            }
+        }
+        return result
     }
 
     /**

@@ -17,31 +17,31 @@ limitations under the License.
   <div class="row">
     <div class="span3">
       <label for="facet-js-${group}-${row}">
-        <g:message code="ddbnext.AdvancedSearch_Facet_SelectLabel"/>
+        <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Facet_SelectLabel"/>
       </label>
       <select class="facet facet-js" id="facet-js-${group}-${row}" name="facet-${group}-${row}" style="display: none" disabled="disabled">
         <g:each in="${facetSearchfields}">
           <g:if test="${it.searchType?.equals(enumSearchType)}">
             <option value="${it.name}"
               data-inputid="${it.name}${facetNameSuffix}-${group}-${row}">
-              <g:message code="${languageTagPrefix}${it.name}" />
+              <g:message encodeAs="html" code="${languageTagPrefix}${it.name}" />
             </option>
           </g:if>
           <g:else>
             <option value="${it.name}" data-inputid="value-${group}-${row}">
-              <g:message code="${languageTagPrefix}${it.name}" />
+              <g:message encodeAs="html" code="${languageTagPrefix}${it.name}" />
             </option>
           </g:else>
         </g:each>
       </select> 
       <label for="facet-${group}-${row}">
-        <g:message code="ddbnext.AdvancedSearch_Facet_SelectLabel"/>
+        <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Facet_SelectLabel"/>
       </label>
       <select class="facet facet-simple" id="facet-${group}-${row}" name="facet-${group}-${row}">
         <g:each in="${facetSearchfields}">
           <g:if test="${it.searchType?.equals(textSearchType)}">
             <option value="${it.name}">
-              <g:message code="${languageTagPrefix}${it.name}" />
+              <g:message encodeAs="html" code="${languageTagPrefix}${it.name}" />
             </option>
           </g:if>
         </g:each>
@@ -52,14 +52,14 @@ limitations under the License.
       <g:each var="facetSearchfield" in="${facetSearchfields}">
         <g:if test="${facetSearchfield.searchType?.equals(enumSearchType)}">
           <label for="${facetSearchfield.name}${facetNameSuffix}-${group}-${row}">
-            <g:message code="ddbnext.AdvancedSearch_Facet_ListLabel"/>
+            <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Facet_ListLabel"/>
           </label>
           <select class="facet-values"
             id="${facetSearchfield.name}${facetNameSuffix}-${group}-${row}"
             name="${facetSearchfield.name}${facetNameSuffix}-${group}-${row}"
             style="display: none">
             <option value="">
-              <g:message code="ddbnext.AdvancedSearch_PleaseSelect" />
+              <g:message encodeAs="html" code="ddbnext.AdvancedSearch_PleaseSelect" />
             </option>
             <g:set var="key" value="${facetSearchfield.name}${facetNameSuffix}" />
             <g:each var="facetValue" in="${facetValuesMap[key]}">
@@ -72,7 +72,7 @@ limitations under the License.
       </g:each>
 
       <label for="value-${group}-${row}">
-        <g:message code="ddbnext.Search_text_field"/>
+        <g:message encodeAs="html" code="ddbnext.Search_text_field"/>
       </label>
       <input class="value" type="text" id="value-${group}-${row}"
         name="value-${group}-${row}" />
@@ -80,24 +80,24 @@ limitations under the License.
 
     <div class="span3">
       <label for="match-${group}-${row}">
-        <g:message code="ddbnext.AdvancedSearch_Match_TypeLabel"/>
+        <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Match_TypeLabel"/>
       </label>
       <select class="match" name="match-${group}-${row}" id="match-${group}-${row}">
         <option value="ANY">
-          <g:message code="ddbnext.AdvancedSearch_Any" />
+          <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Any" />
         </option>
         <option value="ALL">
-          <g:message code="ddbnext.AdvancedSearch_All" />
+          <g:message encodeAs="html" code="ddbnext.AdvancedSearch_All" />
         </option>
         <option value="EXACT">
-          <g:message code="ddbnext.AdvancedSearch_Exact" />
+          <g:message encodeAs="html" code="ddbnext.AdvancedSearch_Exact" />
         </option>
       </select>
     </div>
   </div>
 </div>
 <div class="span1 row-button-group">
-  <button type="button" class="remove-button" style="display: none" title="<g:message code="ddbnext.AdvancedSearch_RemoveRowButton_Title"/>"></button>
-  <button type="button" class="add-button" style="display: none" title="<g:message code="ddbnext.AdvancedSearch_AddRowButton_Title"/>"></button>
+  <button type="button" class="remove-button" style="display: none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_RemoveRowButton_Title"/>"></button>
+  <button type="button" class="add-button" style="display: none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddRowButton_Title"/>"></button>
 </div>
 <div class="clearfix"></div>

@@ -24,12 +24,13 @@ import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Folder
-import de.ddb.next.beans.User
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.constants.SupportedLocales
-import de.ddb.next.constants.Type
 
 class FavoritesService {
 
@@ -159,9 +160,9 @@ class FavoritesService {
                     def professions = entityDetails?.professionOrOccupation
                     def subtitle = ""
                     professions.each {
-                      subtitle += it
-                      if(it != professions.last())
-                        subtitle +=", "
+                        subtitle += it
+                        if(it != professions.last())
+                            subtitle +=", "
                     }
                     entity["id"] = it.itemId
                     entity["view"] = []
@@ -261,11 +262,11 @@ class FavoritesService {
         return newFormat.format(oldDate)
     }
 
-    private boolean isUserLoggedIn() {
+    boolean isUserLoggedIn() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
-    private User getUserFromSession() {
+    User getUserFromSession() {
         return sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
     }
 
@@ -283,5 +284,4 @@ class FavoritesService {
         }
         return allRes
     }
-
 }

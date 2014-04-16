@@ -13,21 +13,27 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@ page import="net.sf.json.*" %>
 <div class="fields">
   <g:each in="${fields}">
     <div class="row">
       <div class="span2"><strong>${it.name}: </strong></div>
       <div class="value span4">
         <div>
-          <g:each var="value" in="${it.value }">
-            <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}"> 
-              <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">${value}</g:link>
-            </g:if>
-            <g:else>
-              ${value}
-            </g:else>
-            <br />
-          </g:each>
+          <g:if test="${it.value instanceof JSONArray}"> 
+            <g:each var="value" in="${it.value }">
+              <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
+                <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
+              </g:if>
+              <g:else>
+                ${raw(ddb.encodeInvalidHtml(text:value))}
+              </g:else>
+              <br />
+            </g:each>
+          </g:if>
+          <g:else>
+            ${raw(ddb.encodeInvalidHtml(text:it.value))}
+          </g:else>
         </div>
       </div>
     </div>

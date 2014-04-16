@@ -1,14 +1,16 @@
 package de.ddb.next
 
 import static org.junit.Assert.*
-import groovy.util.GroovyTestCase
+import grails.test.mixin.TestMixin
+import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
-import de.ddb.next.NewsletterService
-import de.ddb.next.beans.User
+import de.ddb.common.beans.User
 
-class NewsletterServiceIntegrationTests extends GroovyTestCase {
+
+@TestMixin(IntegrationTestMixin)
+class NewsletterServiceIntegrationTests {
 
     def newsletterService
 

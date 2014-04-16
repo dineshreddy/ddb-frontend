@@ -58,15 +58,13 @@ A list of some predefined variables is set below:
 
 	#DDB services configuration
     ddb.binary.url="http://api.deutsche-digitale-bibliothek.de" (used from the DFG viewer)
-    ddb.static.url="http://static-p1.deutsche-digitale-bibliothek.de"
+    ddb.static.url="http://www.deutsche-digitale-bibliothek.de/static"
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
     ddb.backend.apikey= (put a valid API key here or leave it empty)
-    ddb.aas.url=http://ddbaas1-t1.deutsche-digitale-bibliothek.de:8081
+    ddb.aas.url=http://aas-p1.deutsche-digitale-bibliothek.de:8081
     ddb.culturegraph.url=http://hub.culturegraph.org
-    ddb.bookmark.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
-    ddb.newsletter.url=http://ddbelse1-t1.deutsche-digitale-bibliothek.de:9200
-    ddb.elasticsearch.url=http://whvmescidev6.fiz-karlsruhe.de:9200
+    ddb.elasticsearch.url=http://else-p1.deutsche-digitale-bibliothek.de:9200
 
 	#Favorites configuration
     ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
@@ -164,6 +162,8 @@ OpenSource service for handling registration, authentication and authorization f
  
 Configuration parameter:
 * 'ddb.aas.url' defines the url to reach the aas service
+* 'ddb.aas.admin.userid' defines an id for a AAS user with administrator rights
+* 'ddb.aas.admin.password' defines the password of the AAS user with administrator rights
  
 More info's about this service can be found here:
 https://github.com/Deutsche-Digitale-Bibliothek/aas-AASWebServices
@@ -185,8 +185,6 @@ Elastic search is used to manage personal content like bookmarks and saved searc
 The service is based on elastic search (http://www.elasticsearch.org/) and developed by the DDB-NEXT team
 
 Configuration parameter:
-* 'ddb.bookmark.url' defines the url where to retrieve documents of type bookmark
-* 'ddb.newsletter.url' defines the url where to retrieve documents of type bookmark
 * 'ddb.elasticsearch.url' defines the url where to retrieve documents of type bookmark
 
 More infos to the service can be found here (https://github.com/Deutsche-Digitale-Bibliothek/ddb-bookmark-web-api)

@@ -10,7 +10,7 @@ if [ -z "$elasticSearchServer" ]
 then
     echo "ERROR: You must provide an ElasticSearch server!"
     echo "       A valid call could be: "
-    echo "       shell> $0 htp://whvmescidev6.fiz-karlsruhe.de:9200/"
+    echo "       shell> $0 http://whvmescidev6.fiz-karlsruhe.de:9200/"
     echo "       Schema was not updated."
     exit 1 #exit script
 fi

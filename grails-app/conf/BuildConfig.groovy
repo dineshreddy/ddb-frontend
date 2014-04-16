@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+import grails.util.Environment
+
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
@@ -20,6 +22,34 @@ grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
+
+def environment = Environment.getCurrent()
+def localDdbCommonFound = false
+if (environment == Environment.DEVELOPMENT) {
+
+    if (!new File("../ddb-common").exists()){
+        println "-> Local version of ddb-common not found under path ../ddb-common\n\r A "
+    }else{
+        println "| Using local version of common plugin"
+        localDdbCommonFound=true
+    }
+
+    grails.plugin.location.'ddb-common' = "../ddb-common"
+}
+
+grails.project.fork = [
+    // configure settings for the test-app JVM, uses the daemon by default
+    test: false,
+    // configure settings for the run-app JVM
+    //run: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+    run: false,
+    // configure settings for the run-war JVM
+    //war: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256, forkReserve:false],
+    war: false,
+    // configure settings for the Console UI JVM
+    //console: [maxMemory: 768, minMemory: 64, debug: false, maxPerm: 256],
+    console: false,
+]
 
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
@@ -49,9 +79,11 @@ grails.project.dependency.resolution = {
         // This are the geotools repositories required for coordinate transformation
         mavenRepo "http://repo.opengeo.org/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
+        mavenRepo "https://www.escidoc.org/artifactory/repo/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
+        compile "net.sf.ehcache:ehcache-core:2.4.6"
 
         // runtime 'mysql:mysql-connector-java:5.1.20'
         runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
@@ -70,11 +102,17 @@ grails.project.dependency.resolution = {
         compile ':cache:1.0.0'
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
-        build ":tomcat:$grailsVersion"
-        runtime ":resources:1.2.1"
+        compile ":message-digest:1.1"
+        build ":tomcat:7.0.52.1"
+        runtime ":resources:1.2.7"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
+
+        if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
+            println "Using maven repo for common plugin"
+            compile "de.ddb:ddb-common:0.3-SNAPSHOT"
+        }
     }
 
     // don't put Selenium tests into war file

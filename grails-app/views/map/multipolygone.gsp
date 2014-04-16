@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
   <head>
-    <title>Multipolygone prototype - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title>Multipolygone prototype - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     <meta name="layout" content="main" />
     <r:require module="multipolygone"/>
   </head>

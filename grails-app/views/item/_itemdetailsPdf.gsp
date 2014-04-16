@@ -13,30 +13,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@ page import="net.sf.json.*" %>
 <table border="0" cellpadding="8" cellspacing="0" width="100%">
   <g:each in="${fields}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> ${it.name}:
       </strong></td>
-      <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>"><g:each
-          var="value" in="${it.value }">
-          <g:if test="${value.@entityId != null && !value.@entityId.isEmpty()}">
-            <g:link controller="entity" action="index" params="${["id": value.@entityId]}" class="entity-link">
+      <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
+        <g:if test="${it.value instanceof JSONArray}"> 
+          <g:each var="value" in="${it.value }">
+            <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
+              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
+            </g:if>
+            <g:else>
               <![CDATA[ ${value} ]]>
-            </g:link>
-          </g:if>
-          <g:else>
-            <![CDATA[ ${value} ]]>
-          </g:else>
-          <br />
-        </g:each>
-        </td>
+            </g:else>
+            <br />
+          </g:each>
+        </g:if>
+        <g:else>
+          <![CDATA[ ${value} ]]>
+        </g:else>
+      </td>
     </tr>
   </g:each>
   <!-- Item Rights -->
   <g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:
+      <td style="width: 35%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.stat_007" />:
       </strong></td>
       <td style="width: 65%" class="valign-top">
         ${item.rights}
@@ -46,7 +50,7 @@ limitations under the License.
   <!-- Item License -->
   <g:if test="${license}">
     <tr>
-      <td style="width: 30%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:
+      <td style="width: 30%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.License_Field" />:
       </strong></td>
       <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
             <g:img file="${license.img}" alt="${license.text}" class="license-icon" />
@@ -58,11 +62,11 @@ limitations under the License.
 <!-- Original Object View -->
 <div class="origin">
   <g:if test="${!originUrl?.toString()?.isEmpty()}">
-    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message code="ddbnext.stat_008" />">
-      <span class="has-origin"><g:message code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
+    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+      <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
     </a>
   </g:if>
   <g:else>
-    <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
+    <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
   </g:else>
 </div>

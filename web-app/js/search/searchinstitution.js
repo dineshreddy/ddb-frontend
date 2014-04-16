@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.exception
+$(function() {
+  if (jsPageName === "searchinstitution") {
+    setHovercardEvents();
+  }
+});
 
-class ConflictException extends Exception {
-    ConflictException() {
-        super()
-    }
-
-    ConflictException(String description) {
-        super(description)
-    }
+function setHovercardEvents() {
+  $('.information').each(function() {
+    var infoItem = new de.ddb.next.search.HovercardInfoItem($(this));
+  });
 }

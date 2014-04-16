@@ -1,15 +1,19 @@
 package de.ddb.next
 
 import static org.junit.Assert.*
+import grails.test.mixin.TestMixin
+import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
-import de.ddb.next.constants.FolderConstants
-import de.ddb.next.constants.Type
 
-class BookmarkServiceIntegrationTests extends GroovyTestCase {
+
+@TestMixin(IntegrationTestMixin)
+class BookmarkServiceIntegrationTests {
 
     private static final def SIZE = 99999
 
@@ -24,7 +28,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
      * Creates a new userId for the test. 
      */
     void setUp() {
-        super.setUp()
         println "--------------------------------------------------------------------"
         println "Setup tests"
         userId = UUID.randomUUID() as String
@@ -36,7 +39,6 @@ class BookmarkServiceIntegrationTests extends GroovyTestCase {
      * Cleanup user content created by a test method
      */
     void tearDown() {
-        super.tearDown()
         println "Cleanup tests"
 
         List<Bookmark> bookmarks = bookmarksService.findBookmarksByUserId(userId)

@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.exception
+package de.ddb.next
 
-class BadRequestException extends Exception {
-    BadRequestException() {
-        super()
-    }
+class RenderFacetsTagLib {
 
-    BadRequestException(String description) {
-        super(description)
+    static namespace = "ddb"
+
+    /**
+     * Renders left column list of facets.
+     *
+     * @attr jsFacetsList the list of facets
+     */
+
+    def renderFacets = { attrs, body ->
+        out << render(template:"/search/facets", model:[jsFacetsList: attrs.jsFacetsList])
     }
 }

@@ -314,6 +314,11 @@ header .navigation-header-logo,.header .navigation-header-logo {
   overflow: hidden;
 }
 
+header .navigation-header-logo img {
+  margin-left: 25px;
+  height: 80%;
+}
+
 header ul,div.header ul {
   margin: 0;
   list-style: none;
@@ -331,6 +336,7 @@ header .navigation,.header .navigation {
   text-transform: uppercase;
   clear: left;
   height: 40px;
+  padding-top: 10px;
 }
 
 header .navigation li,.header .navigation li {
@@ -455,15 +461,43 @@ header .header-spacer,.header .header-spacer {
   width: 1px;
   height: 14px;
   margin: 0 10px 0 10px;
-  border-right: 2px solid #e9e5e2;
+  border-right: 1px solid #e9e5e2;
+}
+
+#search-small{
+  margin-right: 3px;
 }
 
 #form-search-header .link-adv-search {
   font-size: 0.938em;
   display: inline-block;
-  float: left;
+  float: right;
   text-align: left;
-  margin-left: 130px;
+}
+
+.keep-filters {
+  float: left;
+  margin-bottom: 12px;
+  margin-top: 3px;
+  margin-left: 3px;
+}
+
+.keep-filters .checkbox {
+  display: block;
+}
+
+.keep-filters .checkbox:hover {
+  text-decoration: underline;
+  color: #a5003b;
+}
+
+.keep-filters .checkbox input {
+  float: none;
+  margin-top: -3px;
+}
+
+.keep-filters label{
+  width: auto!important;
 }
 
 .header .link-adv-search {
@@ -495,10 +529,6 @@ header .header-spacer,.header .header-spacer {
   display: inline-block;
   vertical-align: middle;
   margin-left: 10px;
-}
-
-.search-header .tooltip .arrow {
-  right: 5px;
 }
 
 .search-header form .contextual-help a {
@@ -699,8 +729,18 @@ header .language-widget form,.header .language-widget form {
   .search-header form input {
     width: 180px!important;
   }
-  #form-search-header .link-adv-search, .header .link-adv-search {
-    margin-left: 60px;
+  .search-header .keep-filters input{
+    width: auto!important;
+  }
+  .search-header .keep-filters {
+    margin-top:1px;
+    border-right: 1px solid #efebe8;
+    padding-right: 5px;
+    margin-right: 5px;
+  }
+  
+  .search-small-bottom{
+    margin-top: 5px;
   }
 }
 
@@ -805,7 +845,7 @@ header .language-widget form,.header .language-widget form {
 
 #form-search input {
   font-size: 1.25em;
-  width: 463px;
+  width: 506px;
   height: 38px !important;
   line-height: 40px;
   float: left;
@@ -817,7 +857,7 @@ header .language-widget form,.header .language-widget form {
     width: 50%;
   }
   #form-search input {
-    width: 85%;
+    width: 86%;
   }
   .search-widget form button {
     float: right;
@@ -832,7 +872,7 @@ header .language-widget form,.header .language-widget form {
 
 @media (max-width: 480px) {
   #form-search input {
-    width: 80%;
+    width: 81%;
   }
 }
 

@@ -17,6 +17,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import de.ddb.common.ApiConsumer
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -25,8 +26,6 @@ import de.ddb.next.cluster.InstitutionMapModel
 class InstitutionService {
 
     private static final def LETTERS='A'..'Z'
-
-    private static final def NUMBERS = 0..9
 
     private static final def NUMBER_KEY = '0-9'
 

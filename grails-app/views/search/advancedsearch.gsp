@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message code="ddbnext.Advanced_search" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message encodeAs="html" code="ddbnext.Advanced_search" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
@@ -26,20 +26,8 @@ limitations under the License.
       <div class="span12">
           <div class="row heading bb">
               <div class="span12">
-                  <div class="fl"><h1><g:message code="ddbnext.AdvancedSearch"/></h1></div>
-                  <span class="contextual-help fl hidden-phone hidden-tablet" 
-                    title="${g.message(code: "ddbnext.AdvancedSearch_Hint", 
-                                       args: [('<a href="' + createLink(controller: "content",
-                                                                        params: [dir: 'help', id: 'search-advanced']) + '">').encodeAsHTML(),
-                                              '</a>'],
-                                       encodeAs: "none")}"
-                    data-content="${g.message(code: "ddbnext.AdvancedSearch_Hint", 
-                                              args: [('<a href="' + createLink(controller: "content",
-                                                                               params: [dir: 'help', id: 'search-advanced']) + '">').encodeAsHTML(),
-                                                     '</a>'],
-                                              encodeAs: "none")}">
-                  </span> 
-                  <div class="tooltip off"></div>
+                  <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></h1></div>
+                  <ddb:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoId="search-advanced" infoDir="help" />
               </div>
           </div>
           <div class="row">
@@ -50,10 +38,10 @@ limitations under the License.
                               <fieldset>
                                 <div class="row operator global-operator">
                                   <div class="span12">
-                                      <label for="operator" ><g:message code="ddbnext.AdvancedSearch_AllGroupsOperator_MatchLabel"/></label>
+                                      <label for="operator" ><g:message encodeAs="html" code="ddbnext.AdvancedSearch_AllGroupsOperator_MatchLabel"/></label>
                                       <select id="operator" name="operator">
-                                          <option value="OR"><g:message code="ddbnext.AdvancedSearchGlobalOperator_AnyGroups"/></option>
-                                          <option value="AND"><g:message code="ddbnext.AdvancedSearchGlobalOperator_AllGroups"/></option>
+                                          <option value="OR"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGlobalOperator_AnyGroups"/></option>
+                                          <option value="AND"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGlobalOperator_AllGroups"/></option>
                                       </select>
                                   </div>
                                 </div>
@@ -67,8 +55,8 @@ limitations under the License.
                               <fieldset>
                                 <div class="row bb">
                                   <div class="span12 button-group">
-                                      <button type="button" class="add-group-button fr" style="display: none" title="<g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
-                                        <g:message code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>
+                                      <button type="button" class="add-group-button fr" style="display: none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
+                                        <g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>
                                       </button>
                                   </div>
                                 </div>
@@ -76,8 +64,8 @@ limitations under the License.
                               <fieldset>
                                 <div class="row">
                                   <div class="span6 button-group fr">
-                                    <button class="reset" type="reset"><span><g:message code="ddbnext.Reset"/></span></button>
-                                    <button class="submit" type="submit"><span><g:message code="ddbnext.Search"/></span></button>
+                                    <button class="reset" type="reset"><span><g:message encodeAs="html" code="ddbnext.Reset"/></span></button>
+                                    <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.Search"/></span></button>
                                   </div>
                                 </div>
                               </fieldset>

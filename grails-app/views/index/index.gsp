@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message code="ddbnext.Homepage"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message encodeAs="html" code="ddbnext.Homepage"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="index" />
 <meta name="layout" content="main" />
@@ -25,40 +25,28 @@ limitations under the License.
 <body>
   <div class="row">
     <div class="span12 search-widget">
-      <h1 class="invisible-but-readable"><g:message code="ddbnext.Heading_Search_Widget"/></h1>
+      <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Search_Widget"/></h1>
       <div class="row">
-        <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description").encodeAsHTML()}" title="<g:message code="ddbnext.Logo_Title"/>" />
+        <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description").encodeAsHTML()}" title="<g:message encodeAs="html" code="ddbnext.Logo_Title"/>" />
       </div>
       <div class="row">
         <div class="span12">
           <g:form method="get" role="search" id="form-search" url="[controller:'search', action:'results']">
             <label> 
-              <span><g:message code="ddbnext.Search_text_field"/></span>
+              <span><g:message encodeAs="html" code="ddbnext.Search_text_field"/></span>
             </label>
             <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" />
             <button type="submit">
               <!--[if !IE]><!-->
-                <g:message code="ddbnext.Go_Button"/>
+                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
               <!--<![endif]-->
               <!--[if gt IE 8]>
-                <g:message code="ddbnext.Go_Button"/>
+                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
               <![endif]-->
             </button>
-            <span class="contextual-help hidden-phone hidden-tablet"
-                  title="${g.message(code: "ddbnext.Search_Hint",
-                                     args: [('<a href="' + createLink(controller: "content",
-                                                                      params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
-                                            '</a>'],
-                                     encodeAs: "none")}"
-                  data-content="${g.message(code: "ddbnext.Search_Hint", 
-                                            args: [('<a href="' + createLink(controller: "content",
-                                                                             params: [dir: 'help', id: 'search-simple']) + '">').encodeAsHTML(),
-                                                   '</a>'],
-                                            encodeAs: "none")}">
-            </span>
-            <div class="tooltip off"></div>
+            
             <div class="link-adv-search">
-              <g:link class="fl" controller="advancedsearch"><g:message code="ddbnext.Advanced_search"/></g:link>
+              <g:link class="fl" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.Advanced_search"/></g:link>
             </div>
           </g:form>
         </div>
@@ -97,8 +85,8 @@ limitations under the License.
           </g:if>
         </div>
         <div class="clearfix"></div>
-        <a class="previous" id="articles-prev" href=""><span><g:message code="ddbnext.Homepage_Carousel_Previous"/></span></a>
-        <a class="next" id="articles-next" href=""><span><g:message code="ddbnext.Homepage_Carousel_Next"/></span></a>
+        <a class="previous" id="articles-prev" href=""><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Previous"/></span></a>
+        <a class="next" id="articles-next" href=""><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Next"/></span></a>
       </div>
     </div>
   </div>

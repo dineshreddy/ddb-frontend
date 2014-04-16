@@ -13,13 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.constants
 
+.tabulator {
+  margin: 10px 0;
+  font-family: inherit;
+  font-size:14px;
+  font-weight: bold;
+  line-height: 20px;
+  color: inherit;
+  text-rendering: optimizelegibility;
+}
 
-/**
- * @author chh
- *
- */
-public enum Type {
-    CULTURAL_ITEM, INSTITUTION, ENTITY
+#tabulator li .active-link {
+  color: #a5003b;
+  text-decoration: none;
+  word-wrap: break-word;
+}
+
+ul#tabulator   {
+  padding: 0;
+  margin: 0 0 0 0;
+}
+
+#tabulator li {
+  display: inline;
+  list-style-type: none;
+  padding-right: 20px;
 }

@@ -16,7 +16,8 @@
 package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
-import de.ddb.next.constants.SupportedLocales;
+import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.SupportedLocales
 
 class IndexController {
 
@@ -30,9 +31,9 @@ class IndexController {
 
         // fetch the DDB news from static server.
         if(locale.toString().substring(0, 2)== "de") {
-            path = "/static/" + SupportedLocales.DE.getISO2() + "/homepage.xml"
+            path = SupportedLocales.DE.getISO2() + "/homepage.xml"
         } else {
-            path = "/static/" + SupportedLocales.EN.getISO2() + "/homepage.xml"
+            path = SupportedLocales.EN.getISO2() + "/homepage.xml"
         }
 
         def query = [ client: "DDB-NEXT" ]

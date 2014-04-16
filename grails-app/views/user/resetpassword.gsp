@@ -16,7 +16,7 @@ limitations under the License.
 <html>
 <head>
 
-<title><g:message code="ddbnext.Password_Reset" /> - <g:message
+<title><g:message encodeAs="html" code="ddbnext.Password_Reset" /> - <g:message encodeAs="html"
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="passwordreset" />
@@ -34,15 +34,15 @@ limitations under the License.
         </g:if>
         <div class="well">
             <div class="profile-nav">
-                <div><h1><g:message code="ddbnext.Reset_Password_Label"/></h1></div>
+                <div><h1><g:message encodeAs="html" code="ddbnext.Reset_Password_Label"/></h1></div>
             </div>
 
             <div class="control-group bt-white">
-              <label class="control-label"><g:message code="ddbnext.Username_Or_Email" /></label>
+              <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username_Or_Email" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message code="ddbnext.Username_Or_Email" />" value="${params.username}">
+                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username_Or_Email" />" value="${params.username}">
                 </div>
               </div>
             </div>
@@ -50,7 +50,7 @@ limitations under the License.
             <div class="control-group">
               <label class="control-label"></label>
               <div class="controls">
-                <button type="submit" class="btn-padding" title="<g:message code="ddbnext.Reset_Password_Commit"/>"><g:message code="ddbnext.Reset_Password_Commit"/></button>
+                <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Reset_Password_Commit"/>"><g:message encodeAs="html" code="ddbnext.Reset_Password_Commit"/></button>
               </div>
             </div>
         </div>

@@ -16,8 +16,8 @@ limitations under the License.
 <g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
   <div class="row item-detail">
     <div class="rights">
-      <div class="span2"><strong><g:message code="ddbnext.stat_007" />: </strong></div>
-      <div class="value span3">${item.rights}</div>
+      <div class="span2"><strong><g:message encodeAs="html" code="ddbnext.stat_007" />: </strong></div>
+      <div class="value span3">${raw(item.rights)}</div>
     </div>
   </div>
 </g:if>

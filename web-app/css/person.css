@@ -13,24 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next.constants
+.entities .search-results-content .search-results .item {
+  padding: 15px 0 0 0;
+  position: relative;
+}
 
-public enum CultureGraphEnum {
+.entities .results-paginator-view {
+  background: none;
+}
 
-    THUMB_WIDTH('thumbWidth')
+.entities .results-paginator-options {
+  height: 40px;
+  line-height: 40px;
+}
 
-    private String name
+.entities .facets-list .facets-item:first-child {
+  margin-top: 14px;
+}
 
-    private CultureGraphEnum(String name) {
-        this.name = name
-    }
+.entities .clear-filters a {
+  font-weight: bold;
+  float: right;
+}
 
-    /**
-     * Return the name of the enum
-     *
-     * @return the name of the enum
-     */
-    public String getName() {
-        return name
-    }
+.entities .add-to-saved-searches {
+  margin-top: 10px;
 }

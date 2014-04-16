@@ -45,7 +45,7 @@ $(function() {
         success : function(data) {
           response($.map(data, function(n) {
             return {
-              label : n.substring(0, 45),
+              label : n,
               value : n
             };
           }));

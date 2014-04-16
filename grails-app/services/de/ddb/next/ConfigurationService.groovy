@@ -18,7 +18,7 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
-import de.ddb.next.exception.ConfigurationException
+import de.ddb.common.exception.ConfigurationException
 
 /**
  * Service for accessing the configuration.
@@ -48,20 +48,20 @@ class ConfigurationService {
         return getConfigValue("ddb.backend.url")
     }
 
+    public String getAasAdminUserId(){
+        return getConfigValue("ddb.aas.admin.userid")
+    }
+
+    public String getAasAdminPassword(){
+        return getConfigValue("ddb.aas.admin.password")
+    }
+
     public String getAasUrl(){
         return getConfigValue("ddb.aas.url")
     }
 
     public String getCulturegraphUrl(){
         return getConfigValue("ddb.culturegraph.url")
-    }
-
-    public String getBookmarkUrl(){
-        return getConfigValue("ddb.bookmark.url")
-    }
-
-    public String getNewsletterUrl(){
-        return getConfigValue("ddb.newsletter.url")
     }
 
     public String getElasticSearchUrl(){
@@ -249,8 +249,6 @@ class ConfigurationService {
         log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
-        log.info "ddb.bookmark.url = " + getBookmarkUrl()
-        log.info "ddb.newsletter.url = " + getNewsletterUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
         log.info "ddb.favorites.reportMailTo = " + getFavoritesReportMailTo()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()

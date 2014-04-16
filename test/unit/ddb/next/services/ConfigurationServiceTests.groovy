@@ -7,8 +7,8 @@ import org.apache.commons.logging.Log
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
+import de.ddb.common.exception.ConfigurationException
 import de.ddb.next.ConfigurationService
-import de.ddb.next.exception.ConfigurationException
 
 @TestFor(ConfigurationService)
 class ConfigurationServiceTests {
@@ -58,14 +58,6 @@ class ConfigurationServiceTests {
 
     void testGetCulturegraphUrl_Complete() {
         stringConfigTest("ddb.culturegraph.url", { it.getCulturegraphUrl() })
-    }
-
-    void testGetBookmarkUrl_Complete() {
-        stringConfigTest("ddb.bookmark.url", { it.getBookmarkUrl() })
-    }
-
-    void testGetNewsletterUrl_Complete() {
-        stringConfigTest("ddb.newsletter.url", { it.getNewsletterUrl() })
     }
 
     void testGetElasticSearchUrl_Complete() {

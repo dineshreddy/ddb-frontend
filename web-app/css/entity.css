@@ -225,6 +225,16 @@
   padding-bottom: 10px;
 }
 
+.entity-page .thumbcaption {
+  font-size: 15px;
+}
+
+.entity-page .thumblicense {
+  padding-top: 8px;
+  font-size: 15px;
+  font-style: italic;
+}
+
 .entity-page .wiki-link {
   text-decoration: underline;
 }

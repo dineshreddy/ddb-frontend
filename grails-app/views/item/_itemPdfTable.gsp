@@ -17,7 +17,7 @@ limitations under the License.
 <html>
 <head>
 <title>
-  ${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="layout" content="pdftable" />
 <style type="text/css">
 @media print {

@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 package de.ddb.next
-
+import org.springframework.web.servlet.support.RequestContextUtils
 import net.sf.json.JSONArray
-import de.ddb.next.ApiResponse.HttpStatus
-import de.ddb.next.constants.RoleFacetEnum
-import de.ddb.next.constants.SearchParamEnum
-import de.ddb.next.exception.CultureGraphException
-import de.ddb.next.exception.CultureGraphException.CultureGraphExceptionType
+import de.ddb.common.ApiResponse
+import de.ddb.common.ApiResponse.HttpStatus
+import de.ddb.common.constants.RoleFacetEnum
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.ProjectConstants
+import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.exception.CultureGraphException
+import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
@@ -33,6 +36,7 @@ class EntityController {
     def configurationService
     def entityService
     def itemService
+    def searchService
 
     int PREVIEW_COUNT = 4
 
@@ -147,6 +151,50 @@ class EntityController {
         render(view: 'entity', model: model)
     }
 
+    /** 
+     * Used to search for entities of Person
+     * Mapped to /entities/search/person
+     * @return
+     */
+    def personsearch() {
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def results = entityService.doEntitySearch(urlQuery)
+        def correctedQuery = ""
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+
+        render(view: "searchPerson", model: model)
+    }
+
+     /**
+     * Used to search for entities of Person
+     * Mapped to /entities/search/person
+     * @return
+     */
+    def institutionsearch() {
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def title = urlQuery[SearchParamEnum.QUERY.getName()]
+        if (urlQuery["query"]=="*"){
+            urlQuery["query"]="category:Institution"
+        }else{
+            urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
+        }
+        
+        def results = entityService.doInstitutionSearch(urlQuery)
+        def correctedQuery = ""
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+
+        render(view: "searchInstitution", model: model)
+    }
+    
     /**
      * Controller method for rendering AJAX calls for an entity based item search
      * 
