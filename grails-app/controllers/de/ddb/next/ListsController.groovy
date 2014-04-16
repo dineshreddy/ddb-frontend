@@ -24,12 +24,7 @@ import de.ddb.common.beans.User
  * @author boz
  */
 class ListsController {
-    def aasService
-    def bookmarksService
     def favoritesService
-    def configurationService
-    def searchService
-    def sessionService
     def listsService
 
     /**
@@ -40,6 +35,22 @@ class ListsController {
     def index() {
         def model = [title: "Listen", lists: []]
 
+        createListMenu(model)
+
+        if (params.id) {
+            createListDetails(model)
+        } else {
+            model.errorMessage = "Bitte wählen sie eine Liste aus"
+        }
+
+        render(view: "lists", model: model)
+    }
+
+    /**
+     * 
+     * @param model
+     */
+    private void createListMenu(def model) {
         def User user = favoritesService.getUserFromSession()
 
         //If the user is logged in initialize his public favorite lists
@@ -53,17 +64,27 @@ class ListsController {
         def ddbDailyList = listsService.getDdbDailyList()
         model.lists.add(ddbDailyList)
 
+        //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
         lists?.each {
             model.lists.add(it)
         }
-
-        if (params.id) {
-            model.folders = getFoldersOfList(params.id)
-        }
-
-        render(view: "lists", model: model)
     }
+
+
+    /**
+     * 
+     * @param model
+     */
+    private void createListDetails(def model) {
+        //Load the folders of a list
+        model.folders = getFoldersOfList(params.id)
+
+        if (model?.folders?.size() == 0) {
+            model.errorMessage = "Die Liste enthält keine Einträge"
+        }
+    }
+
 
     /**
      * Returns the folders for a given list
@@ -75,39 +96,14 @@ class ListsController {
         def folders = null
 
         if (listId == "UserList") {
-            folders = getPublicFoldersForUser()
+            folders = listsService.getUserFolders()
         } else if (listId == "DdbDailyList") {
-            folders = listsService.getFoldersForList(listId)
+            folders = listsService.getDdbDailyFolders()
         } else {
-            folders = listsService.getFoldersForList(listId)
+            folders = listsService.getListFolders(listId)
         }
 
         return folders as JSON
     }
 
-    /**
-     * Returns the public folders for the already logged in user
-     *  
-     * @return the public folders for the already logged in user
-     */
-    private getPublicFoldersForUser() {
-        def folders
-
-        def User user = favoritesService.getUserFromSession()
-        if (user != null) {
-            folders = bookmarksService.findAllPublicFolders(user.getId())
-
-            folders = favoritesService.sortFolders(folders)
-            folders.each {
-                //Set the blocking token to ""
-                it.blockingToken = ""
-                //Retrieve the number of favorites
-                //TODO: use the elastic search query syntax for doing this!
-                List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
-                it.count = favoritesOfFolder.size()
-            }
-        }
-
-        return folders
-    }
 }

@@ -89,7 +89,9 @@ class BookmarkServiceIntegrationTests {
     }
 
     @Test void shouldGetAllFolders() {
+
         def folderId = createNewFolder()
+        assert folderId
 
         def folderList = bookmarksService.findAllFolders(userId)
         assertTrue folderList.size() >0
@@ -104,12 +106,28 @@ class BookmarkServiceIntegrationTests {
         }
     }
 
-    @Test void shouldFindAllPublicFoldersIn24Hours() {
-        def now = new Date()
-        def folderId = createNewFolder()
+    @Test void shouldFindAllPublicFoldersDaily() {
+        //Create a new folder with an old creation date set
+        Folder newFolder = new Folder(
+                null,
+                userId,
+                "Old folder",
+                "",
+                true,
+                "My old folder",
+                false,
+                "",
+                Calendar.getInstance().set(2000, 10, 10))
+        def folderId = bookmarksService.createFolder(newFolder)
+        assertNotNull folderId
 
-        def folderList = bookmarksService.findAllPublicFoldersIn24Hours(now)
-        assertTrue folderList.size() == 1
+        //Create a new folder with creationdate now
+        def now = new Date()
+        folderId = createNewFolder()
+        assertNotNull folderId
+
+        def folderList = bookmarksService.findAllPublicFoldersDaily(now)
+        assertTrue folderList.size() > 0
     }
 
     // Bookmark

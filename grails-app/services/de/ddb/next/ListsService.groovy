@@ -21,6 +21,7 @@ import grails.converters.JSON
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.beans.User
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.FolderList
 
@@ -33,9 +34,11 @@ class ListsService {
 
     public static final int DEFAULT_SIZE = 9999
 
-    def elasticSearchService
-    def configurationService
     def bookmarksService
+    def favoritesService
+    def configurationService
+    def searchService
+    def elasticSearchService
     def transactional = false
 
 
@@ -261,11 +264,58 @@ class ListsService {
     }
 
     /**
+     * Returns the public folders for the already logged in user
+     *
+     * @return the public folders for the already logged in user
+     */
+    private getUserFolders() {
+        def folders = null
+
+        def User user = favoritesService.getUserFromSession()
+        if (user != null) {
+            folders = bookmarksService.findAllPublicFolders(user.getId())
+            folders = enhanceFolderInformation(folders)
+        }
+
+        return folders
+    }
+
+    /**
+     * Returns the public folders for the already logged in user
+     *
+     * @return the public folders for the already logged in user
+     */
+    private getDdbDailyFolders() {
+        def folders = null
+
+        folders = bookmarksService.findAllPublicFoldersDaily(new Date())
+        return enhanceFolderInformation(folders)
+    }
+
+    /**
+     * Sorts the found folders and adds the number of favorites
+     * @param folders the folder to enhance
+     *
+     * @return the enhanced Folder
+     */
+    private enhanceFolderInformation(def folders) {
+        folders = favoritesService.sortFolders(folders)
+        folders.each {
+            //Set the blocking token to ""
+            it.blockingToken = ""
+            //Retrieve the number of favorites
+            //TODO: use the elastic search query syntax for doing this!
+            List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
+            it.count = favoritesOfFolder.size()
+        }
+    }
+
+    /**
      * 
      * @param userId
      * @return
      */
-    List<Folder> getFoldersForList(String folderId) {
+    List<Folder> getListFolders(String folderId) {
         List<Folder> folders = []
         FolderList folderList = findListById(folderId)
 

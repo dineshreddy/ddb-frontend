@@ -90,7 +90,7 @@ class BookmarksService {
 
 
     List<Folder> findAllPublicFolders(String userId) {
-        log.info "findAllPublicFolders()"
+        log.info "findAllPublicFolders(userId)"
 
         List<Folder> folders = findAllFolders(userId)
         List<Folder> publicFolders = []
@@ -145,15 +145,22 @@ class BookmarksService {
      * 
      * @return a list of public folders for a specific date
      */
-    List<Folder> findAllPublicFoldersIn24Hours(Date date) {
+    List<Folder> findAllPublicFoldersDaily(Date date) {
         log.info "findAllPublicFoldersOfToday()"
 
-        def timeFrom = date.getTime()
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(date)
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND));
+
+        def timeFrom = cal.getTimeInMillis()
         def timeTo = timeFrom + 86400000
 
         List<Folder> folderList = []
 
-        def dateQuery = '{"range" : {"createdAt" : {"gte" : ' + timeFrom + ',"lte" : ' + timeTo + ',"boost" : 2.0}}}'
+        def dateQuery = '{"query": {"range" : {"createdAt" : {"gte" : ' + timeFrom + ',"lte" : ' + timeTo + ',"boost" : 2.0}}}}'
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
                 ["source":dateQuery, "size":"${DEFAULT_SIZE}"])
@@ -179,7 +186,9 @@ class BookmarksService {
                         it._source.createdAt
                         )
                 if(folder.isValid()){
-                    folderList.add(folder)
+                    if (folder.isPublic) {
+                        folderList.add(folder)
+                    }
                 }else{
                     log.error "findAllFolders(): found corrupt folder: "+folder
                 }

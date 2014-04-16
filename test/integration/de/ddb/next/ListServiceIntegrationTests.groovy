@@ -98,6 +98,22 @@ class ListServiceIntegrationTests {
     }
 
     @Test void shouldReturnListCount() {
+        def listTitle= 'List-' + new Date().getTime().toString()
+
+        FolderList newFolderList = new FolderList(
+                null,
+                listTitle,
+                "",
+                System.currentTimeMillis(),
+                userId,
+                [
+                    "12313",
+                    "234356436",
+                    "43654"
+                ])
+
+        def listId = listsService.createList(newFolderList)
+
         assert listsService.getListCount() > 0
     }
 
