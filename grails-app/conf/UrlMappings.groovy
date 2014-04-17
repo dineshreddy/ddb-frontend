@@ -20,11 +20,16 @@ class UrlMappings {
         "/$controller/$action?/$id?"{ constraints { /* apply constraints here */ } }
         //@formatter:on
 
+        "/searchresults/institution/$q?" {
+            controller="search"
+            action="institution"
+        }
+        
         "/searchresults/$q?" {
             controller="search"
             action="results"
         }
-
+        
         "/facets/$q?" {
             controller="facets"
             action="facetsList"
@@ -225,11 +230,6 @@ class UrlMappings {
             action="personsearch"
         }
         
-        "/entity/search/institution/$q?" {
-            controller="entity"
-            action="institutionsearch"
-        }
-
         "/binary/$filename**" {
             controller="apis"
             action="binary"

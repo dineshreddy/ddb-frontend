@@ -29,6 +29,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.common.constants.CortexConstants
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
@@ -913,6 +914,32 @@ class SearchService {
             }
         }
         return searchResult
+    }
+    
+    /**
+     * Performs a search request on the backend.
+     * Used in the EntityController in the /search/institute
+     *
+     * @param query the name of the entity
+     * @param offset the search offset
+     * @param rows the number of search results
+     *
+     * @return the serach result
+     */
+    def doInstitutionSearch(def query) {
+        def searchPreview = [:]
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, query)
+        if(!apiResponse.isOk()){
+            def message = "doInstitutionSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+        searchPreview["entity"] = jsonSearchResult.results?.docs
+        searchPreview["totalResults"] = jsonSearchResult.numberOfResults
+        return searchPreview
     }
 
 }

@@ -28,7 +28,7 @@ limitations under the License.
           <g:message code="ddbnext.entity.tabulator.persons" />
         </g:link></li>
       <%--<li><g:message code="ddbnext.Locations" /></li>--%>
-      <li><g:link controller="entity" action="institutionsearch" params="[query:query]" class="${(active=='institution') ? 'active-link' : '' }">
+      <li><g:link controller="search" action="institution" params="[query:query]" class="${(active=='institution') ? 'active-link' : '' }">
           <g:message code="ddbnext.Institutions" />
         </g:link></li>
 
