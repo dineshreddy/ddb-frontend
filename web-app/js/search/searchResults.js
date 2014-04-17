@@ -183,6 +183,21 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
               $('.page-nav-mob .prev-page .disabled-arrow').removeClass('off');
               $('.page-nav .first-page').addClass('off');
             }
+            
+            if(JSONresponse.paginationURL.pages){
+              var indexes = $('.page-nav .pages-overall-index');
+              $.each(indexes, function(){
+                $(this).find('a').each(function(index){
+                  $(this).text(JSONresponse.paginationURL.pages[index].pageNumber)
+                  $(this).attr('href', JSONresponse.paginationURL.pages[index].url);
+                  if(JSONresponse.paginationURL.pages[index].active){
+                    $(this).addClass('active');
+                  }else{
+                    $(this).removeClass('active');
+                  }
+                });
+              });
+            }
 
             $('.search-results-list').fadeIn('fast');
 

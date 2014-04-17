@@ -42,7 +42,7 @@ class PaginationService {
      */
     def getPagesNumbers(int currentPage, int totalPages, int maxPagesNumberToShow){
         def result = []
-        def pivot = Math.ceil(maxPagesNumberToShow/2)
+        def pivot = Math.ceil(maxPagesNumberToShow/2).toInteger()
         def leftRightHandSide = pivot-1
 
         //Case in which we have the same amount of numbers on the left and on the right-hand side.
@@ -57,7 +57,7 @@ class PaginationService {
                     result.add(currentPage-i)
                 }
             }
-            result += createListOfIntInRange(currentPage, currentPage+maxPagesNumberToShow-result.size())
+            result += createListOfIntInRange(currentPage, currentPage+maxPagesNumberToShow-result.size()-1)
 
         }
         //Case in which we have more numbers on the left-hand side.
@@ -68,7 +68,7 @@ class PaginationService {
                     tmpRightHandSide.add(currentPage+i)
                 }
             }
-            result += createListOfIntInRange(currentPage-maxPagesNumberToShow-tmpRightHandSide.size(), currentPage)
+            result += createListOfIntInRange(currentPage-maxPagesNumberToShow-tmpRightHandSide.size()+1, currentPage)
             result += tmpRightHandSide
 
         }
