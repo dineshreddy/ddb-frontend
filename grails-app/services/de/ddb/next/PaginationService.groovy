@@ -68,7 +68,7 @@ class PaginationService {
                     tmpRightHandSide.add(currentPage+i)
                 }
             }
-            result += createListOfIntInRange(currentPage-maxPagesNumberToShow-tmpRightHandSide.size()+1, currentPage)
+            result += createListOfIntInRange(currentPage-(maxPagesNumberToShow-tmpRightHandSide.size())+1, currentPage)
             result += tmpRightHandSide
 
         }
