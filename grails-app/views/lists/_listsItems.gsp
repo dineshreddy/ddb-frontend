@@ -23,7 +23,7 @@ limitations under the License.
         <g:each in="${folders}" var="folder">
           <li class="item bt">
             <div class="summary row">
-              <div class="summary-main-wrapper span6">
+              <div class="span7">
                 <h2 class="title">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
                   ${folder?.title}
@@ -32,14 +32,10 @@ limitations under the License.
                 <div class="item-details">Eine Liste von ${folder?.publishingName} mit ${folder?.count} Objekten, erstellt: ${folder?.creationDateFormatted}</div>
                 <div class="item-description"><span title="${folder?.description}"><ddb:getTruncatedItemTitle title="${folder?.description}" length="${ 100 }"/></span></div>
               </div>
-              <div class="thumbnail-wrapper span3">
-                <div id="thumbnail-HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC"
-                  class="thumbnail">
+              <div class="span2">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
-                    <img alt="Briefbeschwerer"
-                    src="/ddb-next/binary/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC/list/1.jpg">
+                    <img src="<g:if test="${folder?.oldestItemMetaData?.preview?.thumbnail?.contains('binary')}">${request.getContextPath()}</g:if>${folder?.oldestItemMetaData?.preview?.thumbnail}" alt="<ddb:getWithoutTags>${folder?.oldestItemMetaData?.preview?.title}</ddb:getWithoutTags>" />
                   </a>
-                </div>
               </div>
             </div>
           </li>

@@ -25,10 +25,11 @@ limitations under the License.
 </head>
 <body>
   <div class="row lists">
-    <h1>
-      <g:message encodeAs="html" code="ddbnext.lists.header" />
-    </h1>
-
+    <div class="span12">
+      <h1>
+        <g:message encodeAs="html" code="ddbnext.lists.header" />
+      </h1>
+    </div>
     <%-- Lists menu on the left side  --%>
     <g:render template="listsMenu" />
 

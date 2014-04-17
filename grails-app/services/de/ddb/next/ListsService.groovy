@@ -332,12 +332,20 @@ class ListsService {
         def request = RequestContextHolder.currentRequestAttributes().request
         Locale locale = RequestContextUtils.getLocale(request)
         folders = favoritesService.sortFolders(folders)
+
         folders.each {
             //Set the blocking token to ""
             it.blockingToken = ""
-            //Retrieve the number of favorites
-            //TODO: use the elastic search query syntax for doing this!
+
+            //Get the image path of the oldest item in the list
             List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
+            favoritesOfFolder.sort{it.creationDate}
+            if (favoritesOfFolder.size() > 0) {
+                def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
+                it.oldestItemMetaData = itemMd.get(0)
+            }
+
+            //Retrieve the number of favorites
             it.count = favoritesOfFolder.size()
             it.creationDateFormatted = formatDate(it.creationDate, locale)
         }

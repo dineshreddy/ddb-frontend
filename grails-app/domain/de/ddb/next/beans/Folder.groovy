@@ -19,7 +19,7 @@ import groovy.transform.ToString
 import de.ddb.common.constants.FolderConstants
 import de.ddb.next.JsonUtil
 
-@ToString(includeNames=true, excludes="count, creationDateFormatted")
+@ToString(includeNames=true, excludes="count, creationDateFormatted, oldestBookmarkImage")
 class Folder {
 
     String folderId
@@ -33,8 +33,10 @@ class Folder {
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
     Date creationDate
 
-    def count = null // this field is not stored in elastic search. It is excluded from serialization!
-    def creationDateFormatted = null // this field is not stored in elastic search. It is excluded from serialization!
+    // these fields are not stored in elastic search and filled via runtime. They are excluded from serialization!
+    def count = null
+    def creationDateFormatted = null
+    def oldestItemMetaData = null
 
 
     public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong) {
