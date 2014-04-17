@@ -30,7 +30,7 @@ limitations under the License.
 <div class="page-nav">
   <ul class="inline">
     <li class="prev-page br ${displayLeftPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></a> 
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></a> 
     </li>
     <li class="pages-overall-index">
       <span>
@@ -42,7 +42,7 @@ limitations under the License.
       </span>
     </li>
     <li class="next-page bl ${displayRightPagination}">
-      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
+      <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
     </li>
     <g:if test="${navData.totalPages>4}">
       <li class="extra-controls">
@@ -50,10 +50,10 @@ limitations under the License.
             <div class="arrow-up"></div>
             <ul>
               <li class="first-page bb ${displayLeftPagination}">
-                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.First_Page_Label" /></a>  
+                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg}"><g:message encodeAs="html" code="ddbnext.First_Page_Label" /></a>  
               </li>
               <li class="last-page bb ${displayRightPagination}">
-                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Last_Page_Label" /></a> 
+                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg}"><g:message encodeAs="html" code="ddbnext.Last_Page_Label" /></a> 
               </li>
               <li>
                 <span>
@@ -74,21 +74,21 @@ limitations under the License.
   <ul class="inline">
     <li class="prev-page bl">
       <g:if test="${enableLeftPagination}">
-        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
         <div class="disabled-arrow off"></div> 
       </g:if>
       <g:else>
-        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.prevPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.prevPg}"><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></a>
         <div class="disabled-arrow"></div>
       </g:else>
     </li>
     <li class="next-page bl">
       <g:if test="${enableRightPagination}">
-        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
         <div class="disabled-arrow off"></div>
       </g:if>
       <g:else>
-        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.nextPg.encodeAsHTML()}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
+        <a class="page-nav-result noclickfocus off" href="${navData.paginationURL.nextPg}"><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></a>
         <div class="disabled-arrow"></div>
       </g:else> 
     </li>
