@@ -16,16 +16,13 @@
  */
 package de.ddb.next
 
-import groovy.json.JsonSlurper
-
-import java.util.regex.Pattern
-
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletRequest
 
-import org.codehaus.groovy.grails.web.json.JSONObject
+import net.sf.json.JSONObject
+import net.sf.json.groovy.JsonSlurper
+
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
-import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
 import de.ddb.common.ApiConsumer
@@ -45,6 +42,7 @@ class SearchService {
     def grailsApplication
 
     def configurationService
+    def paginationService
 
     //CharacterEncoding of query-String
     private static final String CHARACTER_ENCODING = "UTF-8"
@@ -62,6 +60,8 @@ class SearchService {
         FacetEnum.SECTOR.getName(),
         FacetEnum.PROVIDER.getName()
     ]
+
+    private static final maxPageNumberToShow = 5
 
     def transactional=false
 
@@ -271,7 +271,7 @@ class SearchService {
     }
 
     def buildPagination(int resultsNumber, LinkedHashMap queryParameters, String getQuery){
-        def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null]
+        def res = [firstPg:null,lastPg:null,prevPg:null,nextPg:null,pages:[]]
         //if resultsNumber greater rows number no buttons else we can start to create the pagination
         def currentRows = queryParameters[SearchParamEnum.ROWS.getName()].toInteger()
         def currentOffset = queryParameters[SearchParamEnum.OFFSET.getName()].toInteger()
@@ -284,15 +284,9 @@ class SearchService {
                 def firstUrl
                 def offsetPrev = currentOffset - currentRows
                 def offsetFirst = 0
-                if(getQuery.contains(SearchParamEnum.OFFSET.getName())){
-                    prevUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetPrev)
-                    firstUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetFirst)
-                }else{
-                    prevUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetPrev
-                    firstUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetFirst
-                }
-                res["firstPg"]= firstUrl
-                res["prevPg"]= prevUrl
+
+                res["firstPg"]= setOffset(getQuery, currentOffset, offsetFirst)
+                res["prevPg"]= setOffset(getQuery, currentOffset, offsetPrev)
             }
             //We are not at the last page
             if(currentOffset+currentRows<resultsNumber){
@@ -300,18 +294,35 @@ class SearchService {
                 def offsetLast = ((Math.ceil(resultsNumber/currentRows)*currentRows)-currentRows).toInteger()
                 def nextUrl
                 def lastUrl
-                if(getQuery.contains(SearchParamEnum.OFFSET.getName())){
-                    nextUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetNext)
-                    lastUrl = getQuery.replaceAll(SearchParamEnum.OFFSET.getName()+'='+currentOffset, SearchParamEnum.OFFSET.getName()+'='+offsetLast)
-                }else{
-                    nextUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetNext
-                    lastUrl = getQuery+'&'+SearchParamEnum.OFFSET.getName()+'='+offsetLast
-                }
-                res["lastPg"]= lastUrl
-                res["nextPg"]= nextUrl
+
+                res["lastPg"]= setOffset(getQuery, currentOffset, offsetLast)
+                res["nextPg"]= setOffset(getQuery, currentOffset, offsetNext)
             }
         }
+
+        //Calculate pagination numbers
+        int currentPageNumber = (currentOffset/currentRows)+1
+        List paginationNumbers = paginationService.getPagesNumbers(currentPageNumber, Math.ceil(resultsNumber/currentRows).toInteger(), maxPageNumberToShow)
+        for(int i=0; i<paginationNumbers.size; i++){
+            def tmpPageOffset = (paginationNumbers.get(i)*currentRows)-currentRows
+            def tmpEntry = ["pageNumber": paginationNumbers.get(i), "url":setOffset(getQuery, currentOffset, tmpPageOffset),active:false]
+            if(paginationNumbers.get(i) == currentPageNumber){
+                tmpEntry["active"] = true
+            }
+            res["pages"].add(tmpEntry)
+        }
+
         return res
+    }
+
+    def setOffset(String url, int oldOffserValue, int newOffsetValue){
+        def result = ""
+        if(url.contains(SearchParamEnum.OFFSET.getName())){
+            result = url.replaceAll(SearchParamEnum.OFFSET.getName()+'='+oldOffserValue, SearchParamEnum.OFFSET.getName()+'='+newOffsetValue)
+        }else{
+            result = url+'&'+SearchParamEnum.OFFSET.getName()+'='+newOffsetValue
+        }
+        return result
     }
 
     def buildPaginatorOptions(LinkedHashMap queryMap){

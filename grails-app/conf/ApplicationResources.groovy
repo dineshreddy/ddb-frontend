@@ -54,6 +54,7 @@ modules = {
         //resource url:'/third-party/map/css/style.css', bundle: 'screen'
         //resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
         resource url:'/css/timeFacet.css'
+        resource url:'/css/paginationWidget.css', bundle: 'screen'
 
     }
 
