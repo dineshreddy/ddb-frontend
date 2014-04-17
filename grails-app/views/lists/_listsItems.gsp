@@ -25,7 +25,9 @@ limitations under the License.
             <div class="summary row">
               <div class="summary-main-wrapper span6">
                 <h2 class="title">
-                  <a title="${folder?.title}">${folder?.title}</a>
+                  <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
+                  ${folder?.title}
+                  </a>
                 </h2>
                 <div class="item-details">Eine Liste von ${folder?.publishingName} mit ${folder?.count} Objekten, erstellt: ${folder?.creationDateFormatted}</div>
                 <div class="item-description"><span title="${folder?.description}"><ddb:getTruncatedItemTitle title="${folder?.description}" length="${ 100 }"/></span></div>
@@ -33,8 +35,7 @@ limitations under the License.
               <div class="thumbnail-wrapper span3">
                 <div id="thumbnail-HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC"
                   class="thumbnail">
-                  <a
-                    href="/ddb-next/item/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC?query=&rows=20&offset=0&viewType=list&sort=random_2823211999603515745&firstHit=I4PDAE2VE5QI27IX5N3KOETKQZNIVFQJ&lastHit=lasthit&hitNumber=4">
+                  <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
                     <img alt="Briefbeschwerer"
                     src="/ddb-next/binary/HG6S3VRYZIO7LVXUIJC7U2NGKAXNYYEC/list/1.jpg">
                   </a>
