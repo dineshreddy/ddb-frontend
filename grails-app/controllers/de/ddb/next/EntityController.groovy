@@ -169,31 +169,6 @@ class EntityController {
 
         render(view: "searchPerson", model: model)
     }
-
-     /**
-     * Used to search for entities of Person
-     * Mapped to /entities/search/person
-     * @return
-     */
-    def institutionsearch() {
-
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        def title = urlQuery[SearchParamEnum.QUERY.getName()]
-        if (urlQuery["query"]=="*"){
-            urlQuery["query"]="category:Institution"
-        }else{
-            urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
-        }
-        
-        def results = entityService.doInstitutionSearch(urlQuery)
-        def correctedQuery = ""
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
-
-        render(view: "searchInstitution", model: model)
-    }
     
     /**
      * Controller method for rendering AJAX calls for an entity based item search

@@ -25,6 +25,7 @@ import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.BadRequestException
+import de.ddb.common.constants.ProjectConstants
 
 class SearchController {
 
@@ -176,7 +177,30 @@ class SearchController {
         }
     }
 
+    /**
+     * Used to search for entities of Person
+     * Mapped to /entities/search/person
+     * @return
+     */
+    def institution() {
 
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def title = urlQuery[SearchParamEnum.QUERY.getName()]
+        if (urlQuery["query"]=="*"){
+            urlQuery["query"]="category:Institution"
+        }else{
+            urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
+        }
+        
+        def results = searchService.doInstitutionSearch(urlQuery)
+        def correctedQuery = ""
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+        render(view: "searchInstitution", model: model)
+    }
+    
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
         def jsonSubresp = new JsonSlurper().parseText(newInformationItem.toString())
@@ -198,7 +222,7 @@ class SearchController {
         render (contentType:"text/json"){properties}
     }
 
-
+    
     /**
      * Adds the value(s) of a facet-type to a Map
      *
