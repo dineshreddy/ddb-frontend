@@ -72,7 +72,6 @@ echo
 
 postSchemaFile() {
   response=`curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
-  echo $response
   case "`echo $response | jshon -k`" in
     *ok*) echo "ok"
           ;;

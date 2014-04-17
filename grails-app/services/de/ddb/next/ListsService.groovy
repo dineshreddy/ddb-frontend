@@ -167,7 +167,7 @@ class ListsService {
      * @return a {@link FolderList} instance of the JSON
      */
     private FolderList mapJsonToFolderList(def json) {
-        def description = "null"
+        def description = ""
         if(!(json._source.description instanceof JSONNull) && (json._source.description != null)){
             description = json._source.description
         }
@@ -242,8 +242,8 @@ class ListsService {
 
         def folderList = new FolderList(
                 "UserList",
-                "ddbnext.lists.userList",
-                "Your public favorite lists",
+                "ddbnext.lists.userListTitle",
+                "ddbnext.lists.userListDescription",
                 null,
                 userId,
                 folderIds
@@ -261,8 +261,8 @@ class ListsService {
 
         def folderList = new FolderList(
                 "DdbDailyList",
-                "ddbnext.lists.ddbDailyList",
-                "The DDB daily favorite lists",
+                "ddbnext.lists.dailyListTitle",
+                "ddbnext.lists.dailyListDescription",
                 null,
                 "",
                 ""
@@ -308,11 +308,11 @@ class ListsService {
         List<Folder> folders = []
         FolderList folderList = findListById(listId)
 
-        folderList.users.each {
+        folderList?.users?.each {
             folders.addAll(bookmarksService.findAllPublicFolders(it))
         }
 
-        folderList.folders.each {
+        folderList?.folders?.each {
             def folder = bookmarksService.findFolderById(it)
             if (folder.isPublic) {
                 folders.add(folder)

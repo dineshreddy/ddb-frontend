@@ -15,6 +15,8 @@ limitations under the License.
 --%>
 <div class="span9 lists-content">
   <g:if test="${folders?.size() > 0}">
+  
+    <%-- TODO Replace this dummy navigation with DDBNEXT-1383 --%>
     <div class="results-paginator-options bb">
       <strong>1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;Weiter</strong>
     </div>
@@ -29,8 +31,7 @@ limitations under the License.
                   ${folder?.title}
                   </a>
                 </h2>
-                <div class="item-details">Eine Liste von ${folder?.publishingName} mit ${folder?.count} Objekten, erstellt: ${folder?.creationDateFormatted}</div>
-                <div class="item-description"><span title="${folder?.description}"><ddb:getTruncatedItemTitle title="${folder?.description}" length="${ 100 }"/></span></div>
+                <div class="item-details"><g:message encodeAs="html" code="ddbnext.lists.itemDetails" args="${[folder?.publishingName, folder?.count, folder?.creationDateFormatted]}"/></div>
               </div>
               <div class="span2">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
