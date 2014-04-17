@@ -68,5 +68,5 @@ postData "bookmark" "bookmark5" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","fol
 
 
 #Create some folderLists
-postData "folderList" "folderList1" '{"title":"List1Benutzer","description":"BnutzerListe","createdAt":1397648865712,"users":["5e2d10109f9011b02ae381f2fc2731ef"],"folders":[]}'
-postData "folderList" "folderList2" '{"title":"List2Ordner","description":"OrdnerListe","createdAt":1397648865712,"users":[],"folders":["folder1","folder3"]}'
+postData "folderList" "folderList1" '{"title":"List1Benutzer","createdAt":1397648865712,"users":["5e2d10109f9011b02ae381f2fc2731ef"],"folders":[]}'
+postData "folderList" "folderList2" '{"title":"List2Ordner","createdAt":1397648865712,"users":[],"folders":["folder1","folder3"]}'

@@ -62,7 +62,6 @@ class ListServiceIntegrationTests {
         FolderList newFolderList = new FolderList(
                 null,
                 listTitle,
-                "",
                 System.currentTimeMillis(),
                 userId,
                 "[123]")
@@ -78,7 +77,6 @@ class ListServiceIntegrationTests {
         FolderList newFolderList = new FolderList(
                 null,
                 listTitle,
-                "",
                 System.currentTimeMillis(),
                 userId,
                 [
@@ -103,7 +101,6 @@ class ListServiceIntegrationTests {
         FolderList newFolderList = new FolderList(
                 null,
                 listTitle,
-                "",
                 System.currentTimeMillis(),
                 userId,
                 [
@@ -123,7 +120,6 @@ class ListServiceIntegrationTests {
         FolderList newFolderList = new FolderList(
                 null,
                 listTitle,
-                "",
                 System.currentTimeMillis(),
                 userId,
                 "[123]")

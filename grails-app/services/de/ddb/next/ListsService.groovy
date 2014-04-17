@@ -21,8 +21,6 @@ import grails.converters.JSON
 
 import java.text.SimpleDateFormat
 
-import net.sf.json.JSONNull
-
 import org.springframework.web.context.request.RequestContextHolder
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -62,7 +60,6 @@ class ListsService {
 
         def postBody = [
             title : newFolderList.title,
-            description: newFolderList.description,
             createdAt: newFolderList.creationDate.getTime(),
             users: newFolderList.users,
             folders: newFolderList.folders
@@ -167,15 +164,10 @@ class ListsService {
      * @return a {@link FolderList} instance of the JSON
      */
     private FolderList mapJsonToFolderList(def json) {
-        def description = ""
-        if(!(json._source.description instanceof JSONNull) && (json._source.description != null)){
-            description = json._source.description
-        }
 
         def folderList = new FolderList(
                 json._id,
                 json._source.title,
-                description,
                 json._source.createdAt,
                 json._source.users,
                 json._source.folders
@@ -242,8 +234,7 @@ class ListsService {
 
         def folderList = new FolderList(
                 "UserList",
-                "ddbnext.lists.userListTitle",
-                "ddbnext.lists.userListDescription",
+                "ddbnext.lists.userList",
                 null,
                 userId,
                 folderIds
@@ -261,8 +252,7 @@ class ListsService {
 
         def folderList = new FolderList(
                 "DdbDailyList",
-                "ddbnext.lists.dailyListTitle",
-                "ddbnext.lists.dailyListDescription",
+                "ddbnext.lists.dailyList",
                 null,
                 "",
                 ""
