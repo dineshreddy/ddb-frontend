@@ -23,7 +23,7 @@ limitations under the License.
         <g:each in="${folders}" var="folder">
           <li class="item bt">
             <div class="summary row">
-              <div class="span7">
+              <div class="summary-main-wrapper span7">
                 <h2 class="title">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
                   ${folder?.title}
