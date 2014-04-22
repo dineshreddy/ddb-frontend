@@ -90,32 +90,6 @@ limitations under the License.
             <div class="group-actions">
               <strong>1</strong> <strong>2</strong> <strong>3</strong> <strong>4</strong> <strong>5</strong> <strong>Weiter</strong>
             </div>
-            <div class="view-type-switch">
-              <!--[if lt IE 9]>
-              <div class="ie8-version">
-              <![endif]-->
-              <div>
-                <button id="view-list" type="button"
-                  class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
-                  title="<g:message encodeAs="html" code="ddbnext.View_as_List" />">
-                  <g:message encodeAs="html" code="ddbnext.View_as_List" />
-                </button>
-              </div>
-              <!--[if lt IE 9]>
-              </div>
-              <div class="ie8-version">
-              <![endif]-->
-              <div>
-                <button id="view-grid" type="button"
-                  class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>"
-                  title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />">
-                  <g:message encodeAs="html" code="ddbnext.View_as_Grid" />
-                </button>
-              </div>
-              <!--[if lt IE 9]>
-              </div>
-              <![endif]-->
-            </div>
           </div>
         </div>
       </div>
