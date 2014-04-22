@@ -26,6 +26,13 @@ import de.ddb.next.beans.Bookmark
 import de.ddb.next.beans.Folder
 import de.ddb.next.exception.FavoritelistNotFoundException
 
+
+/**
+ * This controller is mainly used for AJAX calls.
+ * All other favorites requests should be handled by FavoritesviewController
+ *
+ * @author boz
+ */
 class FavoritesController {
     def bookmarksService
     def favoritesService
@@ -203,7 +210,8 @@ class FavoritesController {
                     false,
                     publishingName,
                     false,
-                    "")
+                    "",
+                    System.currentTimeMillis())
             String newFolderId = bookmarksService.createFolder(newFolder)
             if(newFolderId){
                 result = response.SC_CREATED

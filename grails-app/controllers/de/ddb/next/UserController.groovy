@@ -940,6 +940,7 @@ class UserController {
 
         if(mainFavoriteFolder == null){
             def publishingName = user.getUsername()
+            def creationDate = new Date()
             Folder newFolder = new Folder(
                     null,
                     user.getId(),
@@ -948,7 +949,8 @@ class UserController {
                     false,
                     publishingName,
                     false,
-                    "")
+                    "",
+                    creationDate.getTime())
             String folderId = bookmarksService.createFolder(newFolder)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }

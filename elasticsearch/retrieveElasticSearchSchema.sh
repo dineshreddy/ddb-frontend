@@ -39,7 +39,7 @@ echo
 ##################################
 
 retrieveSchemaFile() {
-  curl --output $1.json --silent $elasticSearchServer/$index/$1/_mapping
+  export http_proxy="" && curl --output $1.json --silent $elasticSearchServer/$index/$1/_mapping
 }
 
 echo Retrieving schema from elasticsearch
@@ -53,6 +53,9 @@ retrieveSchemaFile "bookmark"
 echo
 
 retrieveSchemaFile "savedSearch"
+echo
+
+retrieveSchemaFile "folderList"
 echo
 
 echo Script finished. Exit.

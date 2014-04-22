@@ -6,6 +6,12 @@ import de.ddb.common.constants.SupportedLocales
 import de.ddb.next.beans.Folder
 import de.ddb.next.exception.FavoritelistNotFoundException
 
+
+/**
+ * AJAX requests should be handled by FavoritesController
+ * 
+ * @author boz
+ */
 class FavoritesviewController {
 
     private final static String ORDER_TITLE = "title"

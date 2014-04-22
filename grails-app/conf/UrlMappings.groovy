@@ -325,6 +325,11 @@ class UrlMappings {
             action="multipolygone"
         }
 
+        "/lists/$q?" {
+            controller="lists"
+            action="index"
+        }
+
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
         "500"(controller: "error", action: "itemNotFound", exception: de.ddb.common.exception.ItemNotFoundException)
