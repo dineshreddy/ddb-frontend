@@ -457,6 +457,19 @@ class ItemService {
         return result
     }
 
+    def getSimilarItems(itemId){
+        println "getSimilarItems"
+        //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
+        def apiResponse = ApiConsumer.getJson("http://ddb-fiz-frontend.iais.fraunhofer.de", "/cortex/api/mlt?query=id:" + itemId + "&fields=affiliate,label,description&rows=10")
+
+        println apiResponse
+        if(!apiResponse.isOk()){
+            log.error "Json: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return apiResponse.getResponse()
+    }
+
     private def log(list) {
         list.each { it ->
             log.debug "---"
