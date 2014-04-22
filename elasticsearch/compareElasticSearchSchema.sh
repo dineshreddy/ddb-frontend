@@ -49,10 +49,13 @@ echo
 echo Reading schema files
 echo --------------------
 
+contentFolderList=`readSchemaFile folderList.json`
 contentFolder=`readSchemaFile folder.json`
 contentBookmark=`readSchemaFile bookmark.json`
 contentSavedSearch=`readSchemaFile savedSearch.json`
 
+echo "folderList: " $contentFolderList
+echo
 echo "folder: " $contentFolder
 echo
 echo "bookmark: " $contentBookmark
@@ -80,6 +83,8 @@ compareSchemaFile() {
 echo Comparing current schema with elasticsearch
 echo -------------------------------------------
                 
+compareSchemaFile "folderList" "$contentFolderList"
+echo
 
 compareSchemaFile "folder" "$contentFolder"
 echo
