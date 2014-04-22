@@ -71,7 +71,7 @@ echo
 ###############################
 
 postSchemaFile() {
-  response=`curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
+  response=`export http_proxy="" && curl --request POST --data $2 --silent $elasticSearchServer/$index/$1/_mapping`
   case "`echo $response | jshon -k`" in
     *ok*) echo "ok"
           ;;

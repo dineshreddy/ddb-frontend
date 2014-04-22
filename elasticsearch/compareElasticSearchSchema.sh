@@ -68,7 +68,7 @@ echo
 #################################
 
 compareSchemaFile() {
-  response=`curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
+  response=`export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
   diff --brief <(echo "$2") <(echo "$response")
   if [ $? -ne 0 ]; then
     diff --side-by-side <(echo "$2") <(echo "$response") | less

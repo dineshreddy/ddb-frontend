@@ -39,7 +39,7 @@ echo
 ###############################
 
 deleteSchemaFile() {
-  response=`curl --request DELETE --silent $elasticSearchServer/$index/$1/_mapping`
+  response=`export http_proxy="" && curl --request DELETE --silent $elasticSearchServer/$index/$1/_mapping`
   case "`echo $response | jshon -k`" in
     *ok*) echo "ok"
           ;;

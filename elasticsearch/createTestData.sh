@@ -40,7 +40,7 @@ echo $index
 postData() {
   echo Posting data to $elasticSearchServer/$index/$1/
   
-  response=`curl --request POST --data $3 --silent $elasticSearchServer/$index/$1/$2`
+  response=`export http_proxy="" && curl --request POST --data $3 --silent $elasticSearchServer/$index/$1/$2`
   echo $response
   case "`echo $response | jshon -k`" in
     *ok*) echo "ok"
