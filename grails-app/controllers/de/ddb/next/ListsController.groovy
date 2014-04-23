@@ -18,6 +18,7 @@ package de.ddb.next
 import net.sf.json.JSON
 import de.ddb.common.beans.User
 
+
 /**
  * Controller class for list related views
  *  
@@ -33,14 +34,25 @@ class ListsController {
      * @return
      */
     def index() {
-        def model = [title: "Listen", lists: []]
+        def model = [lists: [], folders: null, selectedListId : null]
 
-        createListMenu(model)
+        model.lists = createListMenu()
 
+        //If a list of the menu has been selected take it
         if (params.id) {
-            createListDetails(model)
-        } else {
-            model.errorMessage = "ddbnext.lists.pleaseSelectList"
+            model.selectedListId = params.id
+            model.folders = getFoldersOfList(params.id)
+        }
+        //If the page is loaded for the first time, take the first entry in the menu
+        else if (model.lists.size() > 0) {
+            def firstList = model.lists.get(0)
+            model.selectedListId = firstList.folderListId
+            model.folders = getFoldersOfList(firstList.folderListId)
+        }
+
+        //If a list has no folder, show an error message
+        if (model.folders?.size() == 0) {
+            model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
 
         render(view: "lists", model: model)
@@ -50,40 +62,29 @@ class ListsController {
      * 
      * @param model
      */
-    private void createListMenu(def model) {
+    private createListMenu() {
         def User user = favoritesService.getUserFromSession()
+
+        def menu = []
 
         //If the user is logged in initialize his public favorite lists
         if (user != null) {
             // Get the public folder list of the user
             def userList = listsService.getUserList(user.getId())
-            model.lists.add(userList)
+            menu.add(userList)
         }
 
         //Initialize the daily favorite lists
         def ddbDailyList = listsService.getDdbDailyList()
-        model.lists.add(ddbDailyList)
+        menu.add(ddbDailyList)
 
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
-        lists?.each {
-            model.lists.add(it)
-        }
+        lists?.each { menu.add(it) }
+
+        return menu
     }
 
-
-    /**
-     * 
-     * @param model
-     */
-    private void createListDetails(def model) {
-        //Load the folders of a list
-        model.folders = getFoldersOfList(params.id)
-
-        if (model?.folders?.size() == 0) {
-            model.errorMessage = "ddbnext.lists.listHasNoItems"
-        }
-    }
 
 
     /**
