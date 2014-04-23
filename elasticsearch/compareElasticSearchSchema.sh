@@ -49,10 +49,13 @@ echo
 echo Reading schema files
 echo --------------------
 
+contentFolderList=`readSchemaFile folderList.json`
 contentFolder=`readSchemaFile folder.json`
 contentBookmark=`readSchemaFile bookmark.json`
 contentSavedSearch=`readSchemaFile savedSearch.json`
 
+echo "folderList: " $contentFolderList
+echo
 echo "folder: " $contentFolder
 echo
 echo "bookmark: " $contentBookmark
@@ -68,7 +71,7 @@ echo
 #################################
 
 compareSchemaFile() {
-  response=`curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
+  response=`export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
   diff --brief <(echo "$2") <(echo "$response")
   if [ $? -ne 0 ]; then
     diff --side-by-side <(echo "$2") <(echo "$response") | less
@@ -80,6 +83,8 @@ compareSchemaFile() {
 echo Comparing current schema with elasticsearch
 echo -------------------------------------------
                 
+compareSchemaFile "folderList" "$contentFolderList"
+echo
 
 compareSchemaFile "folder" "$contentFolder"
 echo

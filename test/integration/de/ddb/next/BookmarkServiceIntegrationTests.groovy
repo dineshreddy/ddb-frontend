@@ -66,6 +66,7 @@ class BookmarkServiceIntegrationTests {
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
         def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.getValue()
+        def date = new Date()
         Folder newFolder = new Folder(
                 null,
                 userId,
@@ -74,7 +75,8 @@ class BookmarkServiceIntegrationTests {
                 isPublic,
                 publishingName,
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         return bookmarksService.createFolder(newFolder)
     }
 
@@ -87,7 +89,9 @@ class BookmarkServiceIntegrationTests {
     }
 
     @Test void shouldGetAllFolders() {
+
         def folderId = createNewFolder()
+        assert folderId
 
         def folderList = bookmarksService.findAllFolders(userId)
         assertTrue folderList.size() >0
@@ -100,6 +104,30 @@ class BookmarkServiceIntegrationTests {
         } else {
             log.info 'empty folder.'
         }
+    }
+
+    @Test void shouldFindAllPublicFoldersDaily() {
+        //Create a new folder with an old creation date set
+        Folder newFolder = new Folder(
+                null,
+                userId,
+                "Old folder",
+                "",
+                true,
+                "My old folder",
+                false,
+                "",
+                Calendar.getInstance().set(2000, 10, 10))
+        def folderId = bookmarksService.createFolder(newFolder)
+        assertNotNull folderId
+
+        //Create a new folder with creationdate now
+        def now = new Date()
+        folderId = createNewFolder()
+        assertNotNull folderId
+
+        def folderList = bookmarksService.findAllPublicFoldersDaily(now)
+        assertTrue folderList.size() > 0
     }
 
     // Bookmark
@@ -166,7 +194,8 @@ class BookmarkServiceIntegrationTests {
                 BookmarksService.IS_PUBLIC,
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${FolderConstants.MAIN_BOOKMARKS_FOLDER.value} folder(${folderId}) for a user(${userId})"
 
@@ -400,7 +429,8 @@ class BookmarkServiceIntegrationTests {
                 isPublic,
                 publishingName,
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         String folderId = bookmarksService.createFolder(newFolder)
 
         def folders = bookmarksService.findAllFolders(userId)
@@ -425,7 +455,8 @@ class BookmarkServiceIntegrationTests {
                 isPublic,
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         String folderId = bookmarksService.createFolder(newFolder)
         Bookmark newBookmark = new Bookmark(
                 null,
@@ -435,7 +466,7 @@ class BookmarkServiceIntegrationTests {
                 Type.CULTURAL_ITEM,
                 [folderId],
                 "",
-                new Date().getTime())
+                System.currentTimeMillis())
         def favoriteId = bookmarksService.createBookmark(newBookmark)
 
         assert favoriteId != null
@@ -478,7 +509,8 @@ class BookmarkServiceIntegrationTests {
                 BookmarksService.IS_PUBLIC,
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
@@ -508,7 +540,8 @@ class BookmarkServiceIntegrationTests {
                 BookmarksService.IS_PUBLIC,
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
-                "")
+                "",
+                System.currentTimeMillis())
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 

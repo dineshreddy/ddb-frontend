@@ -38,6 +38,7 @@ class BookmarksService {
     public static final boolean IS_PUBLIC = false
     public static final int DEFAULT_SIZE = 9999
 
+    def elasticSearchService
     def configurationService
     def transactional = false
 
@@ -59,7 +60,8 @@ class BookmarksService {
             isPublic : newFolder.isPublic,
             publishingName : newFolder.publishingName,
             isBlocked : false,
-            blockingToken : ""
+            blockingToken : "",
+            createdAt : newFolder.creationDate.getTime()
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -68,7 +70,7 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             newFolderId = response._id
-            refresh()
+            elasticSearchService.refresh()
         }
 
         return newFolderId
@@ -77,29 +79,18 @@ class BookmarksService {
 
     int getFolderCount() {
         log.info "getFolderCount()"
-        return getDocumentCountByType("folder")
+        return elasticSearchService.getDocumentCountByType("folder")
     }
 
     int getBookmarkCount() {
         log.info "getBookmarkCount()"
-        return getDocumentCountByType("bookmark")
+        return elasticSearchService.getDocumentCountByType("bookmark")
     }
 
-    private int getDocumentCountByType(String type) {
-        int count = -1
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/" + type + "/_search", false)
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            count = response.hits.total
-        }
-
-        return count
-    }
 
     List<Folder> findAllPublicFolders(String userId) {
-        log.info "findAllPublicFolders()"
+        log.info "findAllPublicFolders(userId)"
 
         List<Folder> folders = findAllFolders(userId)
         List<Folder> publicFolders = []
@@ -136,7 +127,8 @@ class BookmarksService {
                         it._source.isPublic,
                         it._source.publishingName,
                         it._source.isBlocked,
-                        it._source.blockingToken
+                        it._source.blockingToken,
+                        it._source.createdAt
                         )
                 if(folder.isValid()){
                     folderList.add(folder)
@@ -147,6 +139,64 @@ class BookmarksService {
         }
         return folderList
     }
+
+    /**
+     * Return all public folders that were created from a specific date in a range of 24 hours
+     * 
+     * @return a list of public folders for a specific date
+     */
+    List<Folder> findAllPublicFoldersDaily(Date date) {
+        log.info "findAllPublicFoldersOfToday()"
+
+        Calendar cal = Calendar.getInstance()
+        cal.setTime(date)
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
+        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE));
+        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND));
+        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND));
+
+        def timeFrom = cal.getTimeInMillis()
+        def timeTo = timeFrom + 86400000
+
+        List<Folder> folderList = []
+
+        def dateQuery = '{"query": {"range" : {"createdAt" : {"gte" : ' + timeFrom + ',"lte" : ' + timeTo + ',"boost" : 2.0}}}}'
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
+                ["source":dateQuery, "size":"${DEFAULT_SIZE}"])
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def resultList = response.hits.hits
+            resultList.each { it ->
+                def description = "null"
+                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                    description = it._source.description
+                }
+
+                def folder = new Folder(
+                        it._id,
+                        it._source.user,
+                        it._source.title,
+                        description,
+                        it._source.isPublic,
+                        it._source.publishingName,
+                        it._source.isBlocked,
+                        it._source.blockingToken,
+                        it._source.createdAt
+                        )
+                if(folder.isValid()){
+                    if (folder.isPublic) {
+                        folderList.add(folder)
+                    }
+                }else{
+                    log.error "findAllFolders(): found corrupt folder: "+folder
+                }
+            }
+        }
+        return folderList
+    }
+
 
     /**
      * List all bookmarks in a folder that belongs to the user.
@@ -267,22 +317,10 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             newBookmarkId = response._id
-            refresh()
+            elasticSearchService.refresh()
         }
 
         return newBookmarkId
-    }
-
-
-    private void refresh() {
-        log.info "refresh(): refreshing index ddb..."
-
-        ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/_refresh", false, "")
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            log.info "Response: ${response}, finished refreshing index ddb."
-        }
     }
 
     /**
@@ -347,7 +385,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
             return true
         }else{
             return false
@@ -380,7 +418,8 @@ class BookmarksService {
                         it._source.isPublic,
                         it._source.publishingName,
                         it._source.isBlocked,
-                        it._source.blockingToken
+                        it._source.blockingToken,
+                        it._source.createdAt
                         )
 
 
@@ -595,7 +634,8 @@ class BookmarksService {
                     it._source.isPublic,
                     it._source.publishingName,
                     it._source.isBlocked,
-                    it._source.blockingToken
+                    it._source.blockingToken,
+                    it._source.createdAt
                     )
             if(folder.isValid()){
                 return folder
@@ -632,7 +672,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -644,7 +684,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/${bookmarkId}/_update", false, postBody as JSON)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -660,7 +700,7 @@ class BookmarksService {
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_bulk", false, postBody)
 
         if(apiResponse.isOk()){
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
@@ -672,7 +712,7 @@ class BookmarksService {
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             log.info "Is folder with the ID ${folderId} deleted(true/false)? ${response.ok}"
-            refresh()
+            elasticSearchService.refresh()
         }
     }
 
