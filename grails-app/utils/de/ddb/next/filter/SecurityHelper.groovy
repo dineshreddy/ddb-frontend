@@ -44,5 +44,6 @@ class SecurityHelper {
     private void addReponseSecurityHeaders(ServletRequestWrapper request, HttpServletResponse response) {
         response.addHeader("X-Frame-Options", "SAMEORIGIN")
         response.addHeader("X-Content-Type-Options", "nosniff")
+        response.addHeader("X-XSS-Protection", "1; mode=block")
     }
 }
