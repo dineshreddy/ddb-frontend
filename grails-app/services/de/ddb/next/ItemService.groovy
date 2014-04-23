@@ -212,6 +212,8 @@ class ItemService {
             createEntityLinks(fields)
         }
 
+        def similarItems = getSimilarItems(itemId)
+
         def model = [
             itemUri: itemUri,
             viewerUri: item.viewerUri,
@@ -232,7 +234,8 @@ class ItemService {
             flashInformation: flashInformation,
             license: licenseInformation,
             isFavorite: isFavorite,
-            baseUrl: configurationService.getSelfBaseUrl()
+            baseUrl: configurationService.getSelfBaseUrl(),
+            similarItems : similarItems
         ]
 
         return model
@@ -458,16 +461,18 @@ class ItemService {
     }
 
     def getSimilarItems(itemId){
-        println "getSimilarItems"
-        //def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), childrenPath)
-        def apiResponse = ApiConsumer.getJson("http://ddb-fiz-frontend.iais.fraunhofer.de", "/cortex/api/mlt?query=id:" + itemId + "&fields=affiliate,label,description&rows=10")
+        def query = "id:"+itemId
 
-        println apiResponse
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        def retVal = null
+        def queryParams = ["query": query, "fields": "affiliate,label,description", "rows" : "5"]
+
+        //FIXME Replace test domain from IAIS
+        def apiResponse = ApiConsumer.getJson("http://ddb-fiz-frontend.iais.fraunhofer.de", "/cortex/api/search/mlt", false, queryParams)
+
+        if(apiResponse.isOk()){
+            retVal = apiResponse.getResponse()
         }
-        return apiResponse.getResponse()
+        return retVal
     }
 
     private def log(list) {

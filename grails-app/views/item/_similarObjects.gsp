@@ -13,20 +13,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:if test="${similarItems?.results}">
 <div class="row item-detail">
   <div class="span12 item-similar-objects">
 
     <div data-toggle="collapse" data-target="#similar-object-items">
-      <h1>Similar Objects</h1>
+      <h3>Similar Objects</h3>
     </div>
 
     <div id="similar-object-items" class="collapse in">
-      <ul>
-        <li>Item 1</li>
-        <li>Item 2</li>
-        <li>Item 3</li>
+      <ul class="unstyled">
+        <g:each var="resultDocs" in="${similarItems.results.docs}">
+          <g:each var="doc" in="${resultDocs}">
+              <li class="similar-object-item">
+                <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}" title="${ddb.getTruncatedHovercardTitle(title: doc.title, length: 350)}">
+                  <ddb:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
+                </g:link>
+              </li>
+          </g:each>
+        </g:each>
       </ul>
     </div>
 
   </div>
 </div>
+</g:if>
