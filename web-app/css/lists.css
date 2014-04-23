@@ -3,15 +3,24 @@
   line-height: 28px;
   margin: 2px 0;
   position: relative;
+  border-top: 1px solid #EFEBE8;
+  border-bottom: 1px solid #EFEBE8;
+}
+
+.lists .active {
+  background-color: #fff;
+  position: relative;
+  border-top: 0px;
+  border-bottom: 0px;
 }
 
 .lists .lists-menu-item>a.h3 {
-  background: url("VABM6OOCM4KNLZuL0M6f5FUWo7BwfmcYI1SClM4m9J8.png")
-    no-repeat scroll 100% -48px rgba(0, 0, 0, 0);
+  background: url("../images/icons/arrows.png") no-repeat scroll 100% -48px rgba(0, 0, 0, 0);
   display: block;
   padding: 0 20px 0 10px;
   z-index: 10;
 }
+
 
 .lists .lists-content .results-paginator-view {
   background: none;
