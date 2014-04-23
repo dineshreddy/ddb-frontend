@@ -10,8 +10,8 @@
 .lists .active {
   background-color: #fff;
   position: relative;
-  border-top: 0px;
-  border-bottom: 0px;
+  border-top: 0;
+  border-bottom: 0;
 }
 
 .lists .lists-menu-item>a.h3 {
