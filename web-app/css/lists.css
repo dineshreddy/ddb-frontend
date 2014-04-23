@@ -57,6 +57,10 @@
   padding: 4px 10px 0 0;
 }
 
-.lists .lists-content .item-details, .lists .lists-content .item-description {
+.lists .lists-content .item-details {
   padding: 4px 10px 0 0;
+}
+
+.lists .lists-content .item-description {
+  padding: 10px 10px 0 0;
 }
