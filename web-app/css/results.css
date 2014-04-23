@@ -1136,6 +1136,10 @@ color: #a5003b;
   cursor: pointer;
 }
 
+.compare-objects .compare-footer .button{
+  padding:0;
+}
+
 .compare-objects .compare-footer a.compare-disabled{
   cursor: default;
   color: #ccc;
