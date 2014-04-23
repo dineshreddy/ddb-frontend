@@ -34,9 +34,9 @@ class ListsController {
      * @return
      */
     def index() {
-        def model = [lists: [], folders: "", selectedListId : null]
+        def model = [lists: [], folders: null, selectedListId : null]
 
-        model.lists = createListMenu(model)
+        model.lists = createListMenu()
 
         //If a list of the menu has been selected take it
         if (params.id) {
@@ -48,10 +48,6 @@ class ListsController {
             def firstList = model.lists.get(0)
             model.selectedListId = firstList.folderListId
             model.folders = getFoldersOfList(firstList.folderListId)
-        }
-        //Otherwise show an error message
-        else {
-            model.errorMessage = "Keine Listen verfügbar"
         }
 
         //If a list has no folder, show an error message
@@ -66,7 +62,7 @@ class ListsController {
      * 
      * @param model
      */
-    private createListMenu(def model) {
+    private createListMenu() {
         def User user = favoritesService.getUserFromSession()
 
         def menu = []
