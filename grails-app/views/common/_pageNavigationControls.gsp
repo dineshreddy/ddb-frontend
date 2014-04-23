@@ -44,7 +44,7 @@ limitations under the License.
     <li class="next-page ${displayRightPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
     </li>
-    <g:if test="${navData.totalPages>4}">
+    <g:if test="${navData.totalPages>5}">
       <li class="extra-controls">
           <div>
             <div class="arrow-container">
