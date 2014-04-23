@@ -30,7 +30,7 @@ limitations under the License.
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-        <span class="icon-bar" style="visibility: hidden;"></span>
+        <span class="icon-bar hidden"></span>
       </button>
       <g:link uri="/" class="brand"
         title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
