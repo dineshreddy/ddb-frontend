@@ -29,30 +29,32 @@ limitations under the License.
 </g:else>
 <div class="page-nav">
   <ul class="inline">
-    <li class="prev-page br ${displayLeftPagination}">
+    <li class="prev-page ${displayLeftPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.prevPg}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></a> 
     </li>
     <li class="pages-overall-index">
       <span>
         <g:each in="${navData.paginationURL.pages}">
-            <a href="${it.url}" class="page-nav-result <g:if test="${it.active}">active</g:if>">
+            <a <g:if test="${!it.active}">href="${it.url}"</g:if> class="page-nav-result <g:if test="${it.active}">active</g:if>">
                 ${it.pageNumber}
             </a>
         </g:each>
       </span>
     </li>
-    <li class="next-page bl ${displayRightPagination}">
+    <li class="next-page ${displayRightPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
     </li>
     <g:if test="${navData.totalPages>4}">
       <li class="extra-controls">
           <div>
-            <div class="arrow-up"></div>
+            <div class="arrow-container">
+                <div class="arrow-up"></div>
+            </div>
             <ul>
-              <li class="first-page bb ${displayLeftPagination}">
+              <li class="first-page ${displayLeftPagination}">
                 <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg}"><g:message encodeAs="html" code="ddbnext.First_Page_Label" /></a>  
               </li>
-              <li class="last-page bb ${displayRightPagination}">
+              <li class="last-page ${displayRightPagination}">
                 <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg}"><g:message encodeAs="html" code="ddbnext.Last_Page_Label" /></a> 
               </li>
               <li>
@@ -62,6 +64,7 @@ limitations under the License.
                     <span class="page-nonjs">${navData.page}</span> 
                     <g:message encodeAs="html" code="ddbnext.Of" /> 
                     <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
+                    <span class="go-to-page"></span>
                 </span>
               </li>
             </ul>

@@ -189,11 +189,14 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
               $.each(indexes, function(){
                 $(this).find('a').each(function(index){
                   $(this).text(JSONresponse.paginationURL.pages[index].pageNumber)
-                  $(this).attr('href', JSONresponse.paginationURL.pages[index].url);
                   if(JSONresponse.paginationURL.pages[index].active){
+                    $(this).removeAttr('href');
                     $(this).addClass('active');
+                    $(this).focus();
                   }else{
+                    $(this).attr('href', JSONresponse.paginationURL.pages[index].url);
                     $(this).removeClass('active');
+                    $(this).blur();
                   }
                 });
               });
@@ -477,6 +480,13 @@ de.ddb.next.search.searchResultsInitializer = function() {
       de.ddb.next.search.fetchResultsList(newUrl);
     }
   });
+  //Triggering the enter keyup on click over the fake submit button
+  var enterButtonEvent = jQuery.Event("keyup");
+  enterButtonEvent.keyCode = 13;
+  $('.go-to-page').click(function(){
+    $('.page-input').trigger(enterButtonEvent);
+  });
+  
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
     var paramsArray = [['isThumbnailFiltered', 'false']];
