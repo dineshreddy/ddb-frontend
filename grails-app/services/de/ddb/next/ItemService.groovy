@@ -212,6 +212,8 @@ class ItemService {
             createEntityLinks(fields)
         }
 
+        def similarItems = getSimilarItems(itemId)
+
         def model = [
             itemUri: itemUri,
             viewerUri: item.viewerUri,
@@ -232,7 +234,8 @@ class ItemService {
             flashInformation: flashInformation,
             license: licenseInformation,
             isFavorite: isFavorite,
-            baseUrl: configurationService.getSelfBaseUrl()
+            baseUrl: configurationService.getSelfBaseUrl(),
+            similarItems : similarItems
         ]
 
         return model
@@ -455,6 +458,21 @@ class ItemService {
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
         return result
+    }
+
+    def getSimilarItems(itemId){
+        def query = "id:"+itemId
+
+        def retVal = null
+        def queryParams = ["query": query, "fields": "affiliate,label,description", "rows" : "5"]
+
+        //FIXME Replace test domain from IAIS
+        def apiResponse = ApiConsumer.getJson("http://ddb-fiz-frontend.iais.fraunhofer.de", "/cortex/api/search/mlt", false, queryParams)
+
+        if(apiResponse.isOk()){
+            retVal = apiResponse.getResponse()
+        }
+        return retVal
     }
 
     private def log(list) {
