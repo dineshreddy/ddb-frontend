@@ -79,22 +79,33 @@ limitations under the License.
             <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
           </li><!-- /end of help -->
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
-            <li class="<ddb:isMappingActive context="${params}"
-              testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
-              <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
+            <li class="">
+              <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+              <ul class="nav">
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
+                </li>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                </li>
+                <!-- TODO change link to person pages -->
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                </li>
+              </ul>
             </li><!-- /end of exhibitions -->
           </g:if>
             <ddb:isLoggedIn>
               <li class="">
                 <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
-                  <li class="">
+                  <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "favoritesview", action: "favorites"]]}">active</ddb:isMappingActive>">
                     <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.Favorites" /></g:link>
                   </li>
-                  <li class="">
-                    <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
+                  <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active</ddb:isMappingActive>">
+                    <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                   </li>
-                  <li class="">
+                  <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active</ddb:isMappingActive>">
                     <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbnext.Profile" /></g:link>
                   </li>
                 </ul>
@@ -190,9 +201,25 @@ limitations under the License.
                   <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
                 </li>
                 <g:if test="${config.isExhibitionsFeaturesEnabled()}">
+                  <!-- TODO add link to person pages -->
                   <li
-                    class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
-                    <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
+                    class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"],[controller: "lists"]]}">active-default</ddb:isMappingActive>">
+                    <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+                    <ul>
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
+                      </li>
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                      </li>
+                      <!-- TODO change link to person pages -->
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                      </li>
+                    </ul>
                   </li>
                 </g:if>
                 <ddb:isLoggedIn>
@@ -206,7 +233,7 @@ limitations under the License.
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
+                        <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
