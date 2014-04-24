@@ -244,9 +244,9 @@
 }
 
 .field-header .tooltip {
-  font-size: 0.938em;
-  color: #3e3a37;
-  margin-left: 13px;
+  font-size: 13px;
+  max-width: 340px;
+  line-height: 20px;
 }
 
 @media (max-width: 767px) {
