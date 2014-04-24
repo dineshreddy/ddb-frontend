@@ -227,7 +227,7 @@ class SearchController {
         ]
         if(params.reqType=="ajax"){
             def resultsHTML = ""
-            resultsHTML = g.render(template:"/search/institutionentityResultsList",model:[entities: results, viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+            resultsHTML = g.render(template:"/search/institutionResultsList",model:[entities: results, viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
                 offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
             def jsonReturn = [results: resultsHTML,
                 resultsPaginatorOptions: resultsPaginatorOptions,
