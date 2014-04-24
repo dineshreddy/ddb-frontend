@@ -18,6 +18,18 @@ $(document).ready(function() {
   if (jsPageName === "item") {
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
+    
+    //Similar objects
+    var similarObjects
+    $(".similar-objects-items").hide();
+    $(".similar-objects-header").removeClass("active");
+    
+    $(".similar-objects-header").click(function() {
+      $(".similar-objects-items").toggle( "slow", function() {
+      });
+      
+      $(".similar-objects-header").toggleClass("active");
+    });
   }
 
 });

@@ -15,17 +15,17 @@ limitations under the License.
 --%>
 <g:if test="${similarItems?.results}">
 <div class="row item-detail">
-  <div class="span12 item-similar-objects">
+  <div class="span12 similar-objects bt">
 
-    <div data-toggle="collapse" data-target="#similar-object-items">
-      <h3>Similar Objects</h3>
+    <div class="similar-objects-header active">
+      <h3><g:message encodeAs="html" code="ddbnext.item.similarObjects" /></h3>
     </div>
 
-    <div id="similar-object-items" class="collapse in">
+    <div class="similar-objects-items">
       <ul class="unstyled">
         <g:each var="resultDocs" in="${similarItems.results.docs}">
           <g:each var="doc" in="${resultDocs}">
-              <li class="similar-object-item">
+              <li class="similar-objects-item">
                 <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}" title="${ddb.getTruncatedHovercardTitle(title: doc.title, length: 350)}">
                   <ddb:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
                 </g:link>
