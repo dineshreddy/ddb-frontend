@@ -79,20 +79,11 @@ limitations under the License.
         ${totalPages}
       </div>
       <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="institution" />
-      <%-- 
+ 
       <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
-      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
---%>
-      <div class="row">
-        <div class="span9">
-          <div class="results-paginator-view">
-            <div class="group-actions">
-              <strong>1</strong> <strong>2</strong> <strong>3</strong> <strong>4</strong> <strong>5</strong> <strong>Weiter</strong>
-            </div>
-          </div>
-        </div>
-      </div>
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+
       <g:if test="${correctedQuery!='null'}">
         <g:if test="${correctedQuery}">
           <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
