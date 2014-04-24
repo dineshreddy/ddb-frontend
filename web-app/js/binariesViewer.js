@@ -117,7 +117,7 @@ $(document)
               rights = $.cutoffStringAtSpace(rights, 270);
 
               $.hideErrors();
-              if (type == "image") {
+              if (type === "image") {
                 if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
                 }
@@ -126,7 +126,7 @@ $(document)
                 }
                 $(".previews").parent().addClass("off");
                 $(".previews").each(function() {
-                  if ($(this).attr("href") == previewHref) {
+                  if ($(this).attr("href") === previewHref) {
                     $(this).parent().removeClass("off");
                     return false;
                   } else {
@@ -162,7 +162,6 @@ $(document)
                 w = 278;
                 h = 200;
               }
-
               $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function() {
                 if ($.browser.msie && this.getRenderingMode() === "html5") {
                   $("#binary-viewer").find("[id*='jwplayer']").each(function() {

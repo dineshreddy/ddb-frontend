@@ -17,9 +17,10 @@ limitations under the License.
 <div class="fields">
   <g:each in="${fields}">
     <div class="row">
-      <div class="span2"><strong>${it.name}: </strong></div>
-      
-      <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
+      <div class="span2">
+        <strong>${it.name}: </strong>
+      </div>
+      <div class="value span4">
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
@@ -35,7 +36,6 @@ limitations under the License.
           ${raw(ddb.encodeInvalidHtml(text:it.value))}
         </g:else>
       </div>
-      
     </div>
   </g:each>
 </div>
