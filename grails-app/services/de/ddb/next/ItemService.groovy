@@ -288,7 +288,7 @@ class ItemService {
                 binaryServerUrl = binaryServerUrl.substring(0, firstOccuranceOfBinaryString)
             }
 
-            def sourceUri = binaryServerUrl + componentsPath + 'source'
+            def sourceUri = new URL(new URL(binaryServerUrl), componentsPath + 'source').toString()
             def encodedSourceUri= URLEncoder.encode sourceUri, 'UTF-8'
             return withoutPlaceholder + encodedSourceUri
         }
