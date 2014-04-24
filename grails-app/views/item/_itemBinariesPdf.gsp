@@ -6,13 +6,13 @@
     <td class="slice-viewer-tabsection">
       <!--  This section should contain info on the first viewed Item -->
       <div class="binary-title">
-        <span>${binaryList.first().full.title}</span>
+        <span><![CDATA[ ${binaryList.first().full.title} ]]></span>
       </div>
       <div class="binary-author">
-        <span>${binaryList.first().full.author}</span>
+        <span><![CDATA[ ${binaryList.first().full.author} ]]></span>
       </div>
       <div class="binary-rights">
-        <span>${binaryList.first().full.rights}</span>
+        <span><![CDATA[ ${binaryList.first().full.rights} ]]></span>
       </div>
     </td>
   </tr>
