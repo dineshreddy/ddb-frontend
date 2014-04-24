@@ -60,7 +60,8 @@ $(function() {
       // It will be used as reference URL for all the ajax actions
       globalUrl = location.search.substring(1);
     }
-
+    
+    de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     de.ddb.next.search.searchResultsInitializer();
 
   }
@@ -101,6 +102,7 @@ de.ddb.next.search.getLocalizedFacetField = function(facetField) {
   return messages.ddbnext['facet_' + facetField];
 };
 
+
 de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
   divSearchResultsOverlayModal.addClass('search-results-overlay-modal');
@@ -140,13 +142,13 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.page-input').attr('value', JSONresponse.page);
             $('.page-nonjs').html(JSONresponse.page);
             $('.total-pages').html(JSONresponse.totalPages);
-            $('.result-pages-count').html(JSONresponse.totalPages);
-            $('.results-total').html(JSONresponse.numberOfResults);
-            if (JSONresponse.numberOfResults === '1') {
+            //$('.result-pages-count').html(JSONresponse.totalPages);
+            //$('.results-total').html(JSONresponse.numberOfResults);
+            /*if (JSONresponse.numberOfResults === '1') {
               $('.results-label').html(messages.ddbnext.Result_lowercase);
             } else {
               $('.results-label').html(messages.ddbnext.Results_lowercase);
-            }
+            }*/
             if (JSONresponse.paginationURL.nextPg) {
               // first selector for desktop view, the second one for mobile
               // view
@@ -321,7 +323,7 @@ de.ddb.next.search.initializeFacets = function() {
 };
 
 de.ddb.next.search.searchResultsInitializer = function() {
-
+  
   $(window).on("searchChange", function() {
     setHovercardEvents();
     var compareManager = new de.ddb.next.search.CompareManager();
@@ -361,14 +363,16 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }
         return false;
       });
-
-  $('.page-nav-result').click(function() {
-    de.ddb.next.search.fetchResultsList(this.href);
-    $('html, body').animate({
-      scrollTop : 0
-    }, 1000);
-    return false;
-  });
+  
+  de.ddb.next.search.paginationWidget.setPageNavigatorsClickHandler(
+      function() {
+        de.ddb.next.search.fetchResultsList(this.href);
+        $('html, body').animate({
+          scrollTop : 0
+        }, 1000);
+      }
+  );
+  
   $('#form-search-header button').click(
       function() {
         var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
