@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
-
 <div class="page-info-nav <g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>grid</g:if>">
   <ddb:renderPaginationControls navData="${navData}"></ddb:renderPaginationControls>
 </div>

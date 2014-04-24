@@ -191,16 +191,62 @@ class SearchController {
         }else{
             urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
         }
-        
+
+        def queryString = request.getQueryString()
+
+        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+
         def results = searchService.doInstitutionSearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+        def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
         def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
-        render(view: "searchInstitution", model: model)
+        //Calculating results details info (number of results in page, total results number)
+        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
+                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
+                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
+        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
+        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+        
+        def model = [
+            title: title,
+            facets:[],
+            viewType: "list",
+            results: results,
+            correctedQuery: correctedQuery,
+            totalPages: totalPages,
+            resultsOverallIndex: resultsOverallIndex,
+            numberOfResults: numberOfResultsFormatted,
+            page: page,
+            resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
+            paginationURL:searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+            cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL
+        ]
+        if(params.reqType=="ajax"){
+            def resultsHTML = ""
+            resultsHTML = g.render(template:"/search/institutionResultsList",model:[results: results, viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
+            def jsonReturn = [results: resultsHTML,
+                resultsPaginatorOptions: resultsPaginatorOptions,
+                resultsOverallIndex:resultsOverallIndex,
+                page: page,
+                totalPages: totalPagesFormatted,
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                numberOfResults: numberOfResultsFormatted,
+                offset: params[SearchParamEnum.OFFSET.getName()]
+            ]
+            render (contentType:"text/json"){jsonReturn}
+        }else {
+            render(view: "searchInstitution", model: model)
+        }
+        
+        
     }
-    
+
+
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
         def jsonSubresp = new JsonSlurper().parseText(newInformationItem.toString())
@@ -222,7 +268,7 @@ class SearchController {
         render (contentType:"text/json"){properties}
     }
 
-    
+
     /**
      * Adds the value(s) of a facet-type to a Map
      *
