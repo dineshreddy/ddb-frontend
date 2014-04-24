@@ -201,6 +201,13 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
                 });
               });
             }
+            
+            //Showing extra arrow
+            if(JSONresponse.totalPages > 5){
+              $('.extra-controls').removeClass('off');
+            }else{
+              $('.extra-controls').addClass('off');
+            }
 
             $('.search-results-list').fadeIn('fast');
 
