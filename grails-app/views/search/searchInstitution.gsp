@@ -94,7 +94,7 @@ limitations under the License.
           <div class="search-results">
             <div class="search-results-list">
               <g:if test="${results}">
-                <g:render template="institutionResultsList" model="${[entities: results]}" />
+                <g:render template="institutionResultsList" model="${[results: results]}" />
               </g:if>
             </div>
           </div>

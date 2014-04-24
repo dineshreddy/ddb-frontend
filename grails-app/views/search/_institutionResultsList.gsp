@@ -16,7 +16,7 @@ limitations under the License.
 
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
-  <g:each in="${entities.entity}" var="entityItem">
+  <g:each in="${results.entity}" var="entityItem">
     <g:set var="entityId" value="${entityItem.id}" />
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="item bt">
