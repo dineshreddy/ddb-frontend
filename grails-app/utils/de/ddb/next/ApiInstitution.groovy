@@ -74,21 +74,22 @@ class ApiInstitution {
         return apiResponse.getResponse()
     }
 
-    def getFacetValues(String provName, String url) {
-        log.debug("get facets values for: ${provName}")
-        def jsonResult
-        def uriPath = "/search"
-        def query = [(SearchParamEnum.QUERY.getName()):"*",(SearchParamEnum.FACET.getName()):FacetEnum.PROVIDER.getName(), (FacetEnum.PROVIDER.getName()):"${provName}", (SearchParamEnum.ROWS.getName()):"0" ]
-        log.debug(SearchParamEnum.QUERY.getName()+" = '" + query + "'")
-        def apiResponse = ApiConsumer.getJson(url, uriPath, false, query)
+    def getProviderObjectCount(String provName, String url) {
+        def result = 0
+        def query = [(SearchParamEnum.QUERY.getName()):"*",
+                     (SearchParamEnum.FACET.getName()):FacetEnum.PROVIDER.getName(),
+                     (FacetEnum.PROVIDER.getName()):"${provName}",
+                     (SearchParamEnum.ROWS.getName()):"0"]
+        def apiResponse = ApiConsumer.getJson(url, "/search", false, query)
         if(!apiResponse.isOk()){
             log.error "Json: json file was not found"
             apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
-        jsonResult = apiResponse.getResponse()
-        log.debug("jsonResult = " + jsonResult.toString())
-        log.debug("jsonResult.numberOfResults = " + jsonResult.numberOfResults)
-        log.debug("jsonResult.facets[5] = " + (jsonResult.facets.size() >= 6 ? jsonResult.facets[5] : "null"))
-        return jsonResult.facets[5]
+        def jsonResult = apiResponse.getResponse()
+        def providerFct = jsonResult.facets.find {e -> e.field == "provider_fct"}
+        if (providerFct?.facetValues?.count?.size() > 0) {
+            result = providerFct.facetValues.count[0]
+        }
+        return result
     }
 }
