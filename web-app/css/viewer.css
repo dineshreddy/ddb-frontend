@@ -305,9 +305,13 @@ noscript .scroller, .pdf-scroller {
 .binary-viewer-container {
   overflow:hidden;
 }
+.binary-viewer-container .viewer-placeholder {
+  width: 100%;
+  background-color: #EFEBE8;
+}
 .binary-title {
   padding-top:10px;
-  font-size: 0.938em;      
+  font-size: 0.938em;
 }
 .binary-author, .binary-rights {
   /*padding-top:7px;*/

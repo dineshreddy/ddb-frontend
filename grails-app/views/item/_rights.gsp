@@ -17,7 +17,7 @@ limitations under the License.
   <div class="row item-detail">
     <div class="rights">
       <div class="span2"><strong><g:message encodeAs="html" code="ddbnext.stat_007" />: </strong></div>
-      <div class="value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">${raw(item.rights)}</div>
+      <div class="value span4">${raw(item.rights)}</div>
     </div>
   </div>
 </g:if>
