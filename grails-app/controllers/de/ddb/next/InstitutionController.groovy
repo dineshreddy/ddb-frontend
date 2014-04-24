@@ -87,16 +87,7 @@ class InstitutionController {
             log.debug("root itemId = ${itemId}")
             def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
             log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
-            def jsonFacets = vApiInstitution.getFacetValues(selectedOrgXML.name.text(), configurationService.getBackendUrl())
-            int countObjectsForProv = 0
-            if ((jsonFacets != null)&&(jsonFacets.facetValues != null)&&(jsonFacets.facetValues.count != null)&&(jsonFacets.facetValues.count[0] != null)) {
-                try {
-                    countObjectsForProv = jsonFacets.facetValues.count[0].intValue()
-                }
-                catch (NumberFormatException ex) {
-                    countObjectsForProv = -1
-                }
-            }
+            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name.text(), configurationService.getBackendUrl())
 
             // logo
             def organisationLogo
