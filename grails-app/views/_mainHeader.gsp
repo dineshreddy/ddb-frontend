@@ -109,7 +109,7 @@ limitations under the License.
                   <g:message encodeAs="html" code="ddbnext.language_de" />
                 </ddb:getLanguageLink>
               </li>
-              <li class="<<ddb:isCurrentLanguage locale="en">selected-language</ddb:isCurrentLanguage>">
+              <li class="<ddb:isCurrentLanguage locale="en">selected-language</ddb:isCurrentLanguage>">
                 <ddb:getLanguageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message encodeAs="html" code="ddbnext.language_en" />
                 </ddb:getLanguageLink>

@@ -44,33 +44,31 @@ limitations under the License.
     <li class="next-page ${displayRightPagination}">
       <a class="page-nav-result noclickfocus" href="${navData.paginationURL.nextPg}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></a> 
     </li>
-    <g:if test="${navData.totalPages>5}">
-      <li class="extra-controls">
-          <div>
-            <div class="arrow-container">
-                <div class="arrow-up"></div>
-            </div>
-            <ul>
-              <li class="first-page ${displayLeftPagination}">
-                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg}"><g:message encodeAs="html" code="ddbnext.First_Page_Label" /></a>  
-              </li>
-              <li class="last-page ${displayRightPagination}">
-                <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg}"><g:message encodeAs="html" code="ddbnext.Last_Page_Label" /></a> 
-              </li>
-              <li>
-                <span>
-                    <g:message encodeAs="html" code="ddbnext.Go_To_Page" /> 
-                    <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
-                    <span class="page-nonjs">${navData.page}</span> 
-                    <g:message encodeAs="html" code="ddbnext.Of" /> 
-                    <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
-                    <span class="go-to-page"></span>
-                </span>
-              </li>
-            </ul>
+    <li class="extra-controls <g:if test="${navData.totalPages<6}">off</g:if>">
+        <div>
+          <div class="arrow-container">
+              <div class="arrow-up"></div>
           </div>
-      </li>
-    </g:if>
+          <ul>
+            <li class="first-page ${displayLeftPagination}">
+              <a class="page-nav-result noclickfocus" href="${navData.paginationURL.firstPg}"><g:message encodeAs="html" code="ddbnext.First_Page_Label" /></a>  
+            </li>
+            <li class="last-page ${displayRightPagination}">
+              <a class="page-nav-result noclickfocus" href="${navData.paginationURL.lastPg}"><g:message encodeAs="html" code="ddbnext.Last_Page_Label" /></a> 
+            </li>
+            <li>
+              <span>
+                  <g:message encodeAs="html" code="ddbnext.Go_To_Page" /> 
+                  <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
+                  <span class="page-nonjs">${navData.page}</span> 
+                  <g:message encodeAs="html" code="ddbnext.Of" /> 
+                  <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
+                  <span class="go-to-page"></span>
+              </span>
+            </li>
+          </ul>
+        </div>
+    </li>
   </ul>
 </div>
 <div class="page-nav-mob">

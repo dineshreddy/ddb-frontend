@@ -187,19 +187,33 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             if(JSONresponse.paginationURL.pages){
               var indexes = $('.page-nav .pages-overall-index');
               $.each(indexes, function(){
-                $(this).find('a').each(function(index){
-                  $(this).text(JSONresponse.paginationURL.pages[index].pageNumber)
-                  if(JSONresponse.paginationURL.pages[index].active){
-                    $(this).removeAttr('href');
-                    $(this).addClass('active');
-                    $(this).focus();
-                  }else{
-                    $(this).attr('href', JSONresponse.paginationURL.pages[index].url);
-                    $(this).removeClass('active');
-                    $(this).blur();
+                
+                var spanContainer = $(this).find('span')
+                
+                $(this).find('a').each(function(){
+                  $(this).remove();
+                });
+                
+                $.each(JSONresponse.paginationURL.pages, function(){
+                  var tmpAnchor = $(document.createElement('a'));
+                  tmpAnchor.addClass('page-nav-result');
+                  tmpAnchor.html(this.pageNumber);
+                  if(this.active){
+                    tmpAnchor.addClass('active');
                   }
+                  else{
+                    tmpAnchor.attr('href', this.url);
+                  }
+                  spanContainer.append(tmpAnchor);
                 });
               });
+            }
+            
+            //Showing extra arrow
+            if(JSONresponse.totalPages > 5){
+              $('.extra-controls').removeClass('off');
+            }else{
+              $('.extra-controls').addClass('off');
             }
 
             $('.search-results-list').fadeIn('fast');
