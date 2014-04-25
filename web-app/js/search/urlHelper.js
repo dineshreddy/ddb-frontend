@@ -18,6 +18,45 @@
 de.ddb.next.search = de.ddb.next.search || {};
 
 /**
+ * Initialize the history support for the search page(s)
+ * 
+ * @param stateManager callback triggered on history state changes
+ */
+de.ddb.next.search.initHistorySupport = function(stateManager) {
+  if (window.history && history.pushState) {
+    historyedited = false;
+    historySupport = true;
+    $(window).bind('popstate', function() {
+      if (historyedited) {
+        stateManager(location.pathname + location.search);
+      }
+    });
+  } else {
+    historySupport = false;
+    // Utilized for browser that doesn't supports pushState.
+    // It will be used as reference URL for all the ajax actions
+    globalUrl = location.search.substring(1);
+  }
+}
+
+/**
+ * Adds new paths to the history
+ * 
+ * @param path the path to add to the history
+ */
+de.ddb.next.search.historyManager = function(path) {
+  if (historySupport) {
+    window.history.pushState({
+      path : path
+    }, '', path);
+    historyedited = true;
+  } else {
+    globalUrl = (path.indexOf('?') > -1) ? path.split('?')[1] : path;
+    window.location = path;
+  }
+};
+
+/**
  * Gets all request params from the window url that starts with facetValues[]
  */
 de.ddb.next.search.getFacetValuesFromUrl = function() {

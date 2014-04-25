@@ -23,7 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
-  if (jsPageName === "results" || jsPageName==="searchinstitution") {
+  if (jsPageName === "results") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function() {
@@ -40,66 +40,19 @@ $(function() {
       $("#form-search-header .query").val(queryString);
     }
 
+    //Callback function for history changes
     var stateManager = function(url) {
       $('#main-container').load(url + ' .search-results-container', function() {
         de.ddb.next.search.searchResultsInitializer();
       });
     };
 
-    if (window.history && history.pushState) {
-      historyedited = false;
-      historySupport = true;
-      $(window).bind('popstate', function() {
-        if (historyedited) {
-          stateManager(location.pathname + location.search);
-        }
-      });
-    } else {
-      historySupport = false;
-      // Utilized for browser that doesn't supports pushState.
-      // It will be used as reference URL for all the ajax actions
-      globalUrl = location.search.substring(1);
-    }
+    de.ddb.next.search.initHistorySupport(stateManager);
 
     de.ddb.next.search.searchResultsInitializer();
-
   }
 });
 
-de.ddb.next.search.historyManager = function(path) {
-  if (historySupport) {
-    window.history.pushState({
-      path : path
-    }, '', path);
-    historyedited = true;
-  } else {
-    globalUrl = (path.indexOf('?') > -1) ? path.split('?')[1] : path;
-    window.location = path;
-  }
-};
-
-de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
-  if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct') {
-    return facetValue.toString();
-  }
-  if (facetField === 'type_fct') {
-    return messages.ddbnext['type_fct_' + facetValue];
-  }
-  if (facetField === 'time_fct') {
-    return messages.ddbnext['time_fct_' + facetValue];
-  }
-  if (facetField === 'language_fct') {
-    return messages.ddbnext['language_fct_' + facetValue];
-  }
-  if (facetField === 'sector_fct') {
-    return messages.ddbnext['sector_fct_' + facetValue];
-  }
-  return '';
-};
-
-de.ddb.next.search.getLocalizedFacetField = function(facetField) {
-  return messages.ddbnext['facet_' + facetField];
-};
 
 de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
@@ -310,7 +263,8 @@ de.ddb.next.search.showError = function(errorHtml) {
 };
 
 de.ddb.next.search.initializeFacets = function() {
-  var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget();
+  var facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+  var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget(facetsManager);
   $('.facets-item a').each(function() {
     $(this).click(function(event) {
       event.preventDefault();

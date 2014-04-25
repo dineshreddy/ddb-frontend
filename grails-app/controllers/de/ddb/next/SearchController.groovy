@@ -22,10 +22,10 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.BadRequestException
-import de.ddb.common.constants.ProjectConstants
 
 class SearchController {
 
@@ -210,7 +210,7 @@ class SearchController {
                 urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-        
+
         def model = [
             title: title,
             facets:[],
@@ -242,8 +242,8 @@ class SearchController {
         }else {
             render(view: "searchInstitution", model: model)
         }
-        
-        
+
+
     }
 
 

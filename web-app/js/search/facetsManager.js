@@ -30,7 +30,8 @@ de.ddb.next.search = de.ddb.next.search || {};
  *
  * Do not make synchronous AJAX calls in this class. Otherwise the GUI might freeze!
  */
-de.ddb.next.search.FacetsManager = function() {
+de.ddb.next.search.FacetsManager = function(fetchResultsList) {
+  this.fetchResultsList = fetchResultsList;
   this.init();
 };
 
@@ -304,7 +305,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var paramsArray = de.ddb.next.search.addFacetValueToParams(this.currentFacetField, facetValue);
 
     //Perform a search with the new facet value
-    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray), function() {
+    currObjInstance.fetchResultsList($.addParamToCurrentUrl(paramsArray), function() {
       currObjInstance.unselectFacetValue(facetValueContainer, true);
     });
 
@@ -316,6 +317,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Update the window url and Triggers a new search request!
    */
   unselectFacetValue : function(element, unselectWithoutFetch) {
+    var currObjInstance = this;
+    
     var facetFieldFilter = element.parents('.facets-item');
     var facetValue = decodeURIComponent(element.attr('data-fctvalue'));
 
@@ -350,7 +353,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
-      de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
+      currObjInstance.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
           .substr(newUrl.indexOf("?") + 1)));
     }
     element.remove();
@@ -365,8 +368,9 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Update the window url and Triggers a new search request!
    */
   selectRoleFacetValue : function(facetField, facetValue) {
+    var currObjInstance = this;
     var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
-    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
+    currObjInstance.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
 
   /**
@@ -374,12 +378,13 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Update the window url and Triggers a new search request!
    */
   unselectRoleFacetValue : function(facetField, facetValue) {
+    var currObjInstance = this;
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
+    currObjInstance.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
         .substr(newUrl.indexOf("?") + 1)));
   },
 
@@ -426,7 +431,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   initializeOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
-
+    console.log("Init on load")
     $('.clear-filters').removeClass('off');
     $(".js.facets-list").removeClass("off");
 

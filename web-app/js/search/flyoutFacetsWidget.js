@@ -31,7 +31,8 @@ de.ddb.next.search = de.ddb.next.search || {};
  *
  * Do not use AJAX calls in this class!
  */
-de.ddb.next.search.FlyoutFacetsWidget = function() {
+de.ddb.next.search.FlyoutFacetsWidget = function(fctManager) {
+  this.fctManager = fctManager;
   this.init();
 };
 
@@ -42,7 +43,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   mainElement : null,
   parentMainElement : null,
   opened : false,
-  fctManager : new de.ddb.next.search.FacetsManager(),
 
   facetLeftContainer : null,
   facetRightContainer : null,
