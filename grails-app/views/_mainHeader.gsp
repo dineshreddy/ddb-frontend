@@ -40,7 +40,7 @@ limitations under the License.
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
-          <li class=""><g:form class="navbar-search pull-left"
+          <li><g:form class="navbar-search pull-left"
               method="get" role="search" id="form-search-header-mobile"
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
@@ -79,7 +79,7 @@ limitations under the License.
             <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
           </li><!-- /end of help -->
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
-            <li class="">
+            <li>
               <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
               <ul class="nav">
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
@@ -96,7 +96,7 @@ limitations under the License.
             </li><!-- /end of exhibitions -->
           </g:if>
             <ddb:isLoggedIn>
-              <li class="">
+              <li>
                 <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
                   <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "favoritesview", action: "favorites"]]}">active</ddb:isMappingActive>">
@@ -111,7 +111,7 @@ limitations under the License.
                 </ul>
               </li>
             </ddb:isLoggedIn>
-            <li class=""><a>
+            <li><a>
               <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
             </a>
             <ul class="nav">
@@ -127,7 +127,7 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li class="">
+          <li>
             <ddb:isNotLoggedIn>
               <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbnext.Login" /></g:link>
             </ddb:isNotLoggedIn>
@@ -239,7 +239,7 @@ limitations under the License.
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbnext.Profile" /></g:link>
                       </li>
-                      <li class="">
+                      <li>
                         <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbnext.Logout" /></g:link>
                       </li>
                     </ul>
