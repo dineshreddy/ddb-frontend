@@ -125,10 +125,6 @@ hr {
   margin-top: 20px !important;
 }
 
-.favorites-results-container .page-filter,.sort-results-switch {
-  display: inline-block;
-}
-
 .favorites-results-container .page-filter label,.sort-results-switch label {
   display: inline;
 }

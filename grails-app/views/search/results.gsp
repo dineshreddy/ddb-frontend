@@ -156,10 +156,8 @@ limitations under the License.
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
-    
-      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
       
-      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}"/>
       
       <div class="row">
         <div class="span9">
