@@ -113,6 +113,7 @@ modules = {
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
         resource url:'/js/search/urlHelper.js'
+        resource url:'/js/search/facetHelper.js'
         resource url:'/js/search/roleHelper.js'
         resource url:'/js/search/timeFacet.js'
         resource url:'/js/search/facetsManager.js'
@@ -121,6 +122,7 @@ modules = {
         resource url:'/js/search/hovercardInfoItem.js'
         resource url:'/js/resultsFavorites.js'
         resource url:'/js/search/searchinstitution.js'
+        resource url:'/js/search/institutionFacetsManager.js'
     }
 
     item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }

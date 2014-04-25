@@ -22,10 +22,10 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.BadRequestException
-import de.ddb.common.constants.ProjectConstants
 
 class SearchController {
 
@@ -191,16 +191,34 @@ class SearchController {
         }else{
             urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
         }
-        
+
         def results = searchService.doInstitutionSearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
         def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
-        render(view: "searchInstitution", model: model)
+
+        if(params.reqType=="ajax"){
+            def resultsHTML = ""
+            resultsHTML = g.render(template:"/search/institutionentityResultsList",model:[entities: results, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
+            def jsonReturn = [results: resultsHTML,
+                resultsPaginatorOptions: "",
+                resultsOverallIndex:"",
+                page: 0,
+                totalPages: totalPagesFormatted,
+                paginationURL: "",//searchService.buildPagination(0, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                numberOfResults: 1,
+                offset: params[SearchParamEnum.OFFSET.getName()]
+            ]
+
+            render (contentType:"text/json"){jsonReturn}
+        } else {
+            def model = [title: title, facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+            render(view: "searchInstitution", model: model)
+        }
     }
-    
+
     def informationItem(){
         def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
         def jsonSubresp = new JsonSlurper().parseText(newInformationItem.toString())
@@ -222,7 +240,7 @@ class SearchController {
         render (contentType:"text/json"){properties}
     }
 
-    
+
     /**
      * Adds the value(s) of a facet-type to a Map
      *
