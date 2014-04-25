@@ -22,9 +22,10 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
   
   resultsOverallIndex: null,
   pagesOverallIndex: null,
-  toalPages: null,
+  totalPages: null,
   numberOfResults: null,
   pageNavigators: null,
+  pageInput: null,
   
   nextPage: null,
   prevPage: null,
@@ -35,26 +36,126 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
   prevPageMobile: null,
   
   extraControls: null,
+  goToPage: null,
   
   init: function(){
     this.resultsOverallIndex = $('.results-overall-index');
+    this.pagesOverallIndex = $('.page-nav .pages-overall-index');
     this.pageNavigators = $('.page-nav-result');
-    this.toalPages = $('.total-pages');
+    this.totalPages = $('.total-pages');
     this.nextPage = $('.page-nav .next-page');
     this.prevPage = $('.page-nav .prev-page');
     this.firstPage = $('.page-nav .first-page');
     this.lastPage = $('.page-nav .last-page');
+    this.pageInput = $('.page-input');
     
-    this.nextPage = $('.page-nav-mob .next-page');
-    this.prevPage = $('.page-nav-mob .prev-page');
+    this.nextPageMobile = $('.page-nav-mob .next-page');
+    this.prevPageMobile = $('.page-nav-mob .prev-page');
+    
+    this.extraControls = $('.extra-controls');
+    this.goToPage = $('.go-to-page');
+  },
+  
+  resetNavigationElements: function(JSONresponse){
+    this.totalPages.html(JSONresponse.totalPages);
+    
+    //Next/Last-page button
+    if (JSONresponse.paginationURL.nextPg) {
+      this.nextPage.removeClass('off');
+      this.lastPage.removeClass('off');
+      
+      this.nextPage.find('a').attr('href', JSONresponse.paginationURL.nextPg);
+      this.lastPage.find('a').attr('href', JSONresponse.paginationURL.lastPg);
+      
+      //Mobile
+      this.nextPageMobile.find('a').removeClass('off');
+      this.nextPageMobile.find('.disabled-arrow').addClass('off');
+      
+      this.nextPageMobile.find('a').attr('href', JSONresponse.paginationURL.nextPg);
+    }else{
+      this.nextPage.addClass('off');
+      this.lastPage.addClass('off');
+      
+      //Mobile
+      this.nextPageMobile.find('a').addClass('off');
+      this.nextPageMobile.find('.disabled-arrow').removeClass('off');
+    }
+    
+    //Prev/First-page button
+    if (JSONresponse.paginationURL.firstPg) {
+      this.prevPage.removeClass('off');
+      this.firstPage.removeClass('off');
+      
+      this.prevPage.find('a').attr('href', JSONresponse.paginationURL.prevPg);
+      this.firstPage.find('a').attr('href', JSONresponse.paginationURL.firstPg);
+      
+      //Mobile
+      this.prevPageMobile.find('a').removeClass('off');
+      this.prevPageMobile.find('.disabled-arrow').addClass('off');
+      
+      this.prevPageMobile.find('a').attr('href', JSONresponse.paginationURL.prevPg);
+    }else{
+      this.prevPage.addClass('off');
+      this.firstPage.addClass('off');
+      
+      //Mobile
+      this.prevPageMobile.find('a').addClass('off');
+      this.prevPageMobile.find('.disabled-arrow').removeClass('off');
+    }
+    
+    //Setting pages
+    if(JSONresponse.paginationURL.pages){
+      $.each(this.pagesOverallIndex, function(){
+        
+        var spanContainer = $(this).find('span')
+        
+        $(this).find('a').each(function(){
+          $(this).remove();
+        });
+        
+        $.each(JSONresponse.paginationURL.pages, function(){
+          var tmpAnchor = $(document.createElement('a'));
+          tmpAnchor.addClass('page-nav-result');
+          tmpAnchor.html(this.pageNumber);
+          if(this.active){
+            tmpAnchor.addClass('active');
+          }
+          else{
+            tmpAnchor.attr('href', this.url);
+          }
+          spanContainer.append(tmpAnchor);
+        });
+      });
+    }
+    
+    //Showing extra arrow
+    if(JSONresponse.totalPages > 5){
+      this.extraControls.removeClass('off');
+    }else{
+      this.extraControls.addClass('off');
+    }
     
   },
   
-  setPageNavigatorsClickHandler: function(clickHandler){
+  setNavigatorsClickHandler: function(clickHandler){
     this.pageNavigators.click(function(){
-      clickHandler();
+      clickHandler($(this));
       return false;
-    }
+    });
+  },
+  
+  setPageInputKeyupHandler: function(keyupHandler){
+    var currObjInstance = this;
+    this.pageInput.keyup(function(e){
+      keyupHandler(e, this);
+    });
+    
+    var enterButtonEvent = jQuery.Event("keyup");
+    enterButtonEvent.keyCode = 13;
+    this.goToPage.click(function(){
+      currObjInstance.pageInput.trigger(enterButtonEvent);
+    });
   }
+  
   
 });

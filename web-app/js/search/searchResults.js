@@ -141,83 +141,9 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
             $('.page-input').attr('value', JSONresponse.page);
             $('.page-nonjs').html(JSONresponse.page);
-            $('.total-pages').html(JSONresponse.totalPages);
-            //$('.result-pages-count').html(JSONresponse.totalPages);
-            //$('.results-total').html(JSONresponse.numberOfResults);
-            /*if (JSONresponse.numberOfResults === '1') {
-              $('.results-label').html(messages.ddbnext.Result_lowercase);
-            } else {
-              $('.results-label').html(messages.ddbnext.Results_lowercase);
-            }*/
-            if (JSONresponse.paginationURL.nextPg) {
-              // first selector for desktop view, the second one for mobile
-              // view
-              $('.page-nav .next-page, .page-nav-mob .next-page a').removeClass('off');
-              $('.page-nav .last-page').removeClass('off');
-              // hide disabledArrow in mobile view
-              $('.page-nav-mob .next-page .disabled-arrow').addClass('off');
-              $('.page-nav .next-page a, .page-nav-mob .next-page a').attr('href',
-                  JSONresponse.paginationURL.nextPg);
-              $('.page-nav .last-page a').attr('href', JSONresponse.paginationURL.lastPg);
-            } else {
-              // first selector for desktop view, the second one for mobile
-              // view
-              $('.page-nav .next-page, .page-nav-mob .next-page a').addClass('off');
-              // show disabledArrow in mobile view
-              $('.page-nav-mob .next-page .disabled-arrow').removeClass('off');
-              $('.page-nav .last-page').addClass('off');
-            }
-            if (JSONresponse.paginationURL.firstPg) {
-              // first selector for desktop view, the second one for mobile
-              // view
-              $('.page-nav .prev-page, .page-nav-mob .prev-page a').removeClass('off');
-              $('.page-nav .first-page').removeClass('off');
-              // hide disabledArrow in mobile view
-              $('.page-nav-mob .prev-page .disabled-arrow').addClass('off');
-              $('.page-nav .prev-page a, .page-nav-mob .prev-page a').attr('href',
-                  JSONresponse.paginationURL.prevPg);
-              $('.page-nav .first-page a').attr('href', JSONresponse.paginationURL.firstPg);
-            } else {
-              // first selector for desktop view, the second one for mobile
-              // view
-              $('.page-nav .prev-page, .page-nav-mob .prev-page a').addClass('off');
-              // show disabledArrow in mobile view
-              $('.page-nav-mob .prev-page .disabled-arrow').removeClass('off');
-              $('.page-nav .first-page').addClass('off');
-            }
             
-            if(JSONresponse.paginationURL.pages){
-              var indexes = $('.page-nav .pages-overall-index');
-              $.each(indexes, function(){
-                
-                var spanContainer = $(this).find('span')
-                
-                $(this).find('a').each(function(){
-                  $(this).remove();
-                });
-                
-                $.each(JSONresponse.paginationURL.pages, function(){
-                  var tmpAnchor = $(document.createElement('a'));
-                  tmpAnchor.addClass('page-nav-result');
-                  tmpAnchor.html(this.pageNumber);
-                  if(this.active){
-                    tmpAnchor.addClass('active');
-                  }
-                  else{
-                    tmpAnchor.attr('href', this.url);
-                  }
-                  spanContainer.append(tmpAnchor);
-                });
-              });
-            }
+            de.ddb.next.search.paginationWidget.resetNavigationElements(JSONresponse);
             
-            //Showing extra arrow
-            if(JSONresponse.totalPages > 5){
-              $('.extra-controls').removeClass('off');
-            }else{
-              $('.extra-controls').addClass('off');
-            }
-
             $('.search-results-list').fadeIn('fast');
 
             divSearchResultsOverlayImg.remove();
@@ -364,9 +290,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
         return false;
       });
   
-  de.ddb.next.search.paginationWidget.setPageNavigatorsClickHandler(
-      function() {
-        de.ddb.next.search.fetchResultsList(this.href);
+  de.ddb.next.search.paginationWidget.setNavigatorsClickHandler(
+      function(element) {
+        de.ddb.next.search.fetchResultsList(element.attr('href'));
         $('html, body').animate({
           scrollTop : 0
         }, 1000);
@@ -473,37 +399,34 @@ de.ddb.next.search.searchResultsInitializer = function() {
         de.ddb.next.search.historyManager(newUrl);
         de.ddb.next.search.setSearchCookieParameter(paramsArray);
       });
-  $('.page-input').keyup(function(e) {
-    if (e.keyCode === 13) {
-      if (/^[0-9]+$/.test(this.value)) {
-        var resultPagesCountText = $('.result-pages-count').text();
-        var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
+  
+  de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
+      function(e, element){
+        if (e.keyCode === 13) {
+          if (/^[0-9]+$/.test(element.value)) {
+            var resultPagesCountText = $('.result-pages-count').text();
+            var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
 
-        if (parseInt(this.value) <= 0) {
-          this.value = 1;
-        } else if (parseInt(this.value) > resultPagesCountInt) {
-          this.value = $('.result-pages-count').text();
+            if (parseInt(element.value) <= 0) {
+              element.value = 1;
+            } else if (parseInt(element.value) > resultPagesCountInt) {
+              element.value = $('.result-pages-count').text();
+            }
+          } else {
+            element.value = 1;
+          }
+
+          $('.page-input').attr('value', element.value);
+
+          var valueInteger = parseInt(element.value.replace(/[^0-9]/g, ''));
+          var filterInteger = parseInt($('.page-filter').find("select").val());
+          var offset = (valueInteger - 1) * filterInteger;
+          var paramsArray = [['offset', offset]];
+          var newUrl = $.addParamToCurrentUrl(paramsArray);
+          de.ddb.next.search.fetchResultsList(newUrl);
         }
-      } else {
-        this.value = 1;
       }
-
-      $('.page-input').attr('value', this.value);
-
-      var valueInteger = parseInt(this.value.replace(/[^0-9]/g, ''));
-      var filterInteger = parseInt($('.page-filter').find("select").val());
-      var offset = (valueInteger - 1) * filterInteger;
-      var paramsArray = [['offset', offset]];
-      var newUrl = $.addParamToCurrentUrl(paramsArray);
-      de.ddb.next.search.fetchResultsList(newUrl);
-    }
-  });
-  //Triggering the enter keyup on click over the fake submit button
-  var enterButtonEvent = jQuery.Event("keyup");
-  enterButtonEvent.keyCode = 13;
-  $('.go-to-page').click(function(){
-    $('.page-input').trigger(enterButtonEvent);
-  });
+  );
   
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
