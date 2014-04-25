@@ -50,7 +50,7 @@ limitations under the License.
                   <div class="viewer-icon">
                     <a class="show-lightbox" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}"></a>
                   </div>
-                  <a class="previews" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}">
+                  <a class="previews" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}">
                     <img src="${viewerContent}" alt="${(it.preview.title)}" />
                   </a>
                 </g:else>

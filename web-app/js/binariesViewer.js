@@ -290,13 +290,14 @@ $(document)
                                 'tpl' : {
                                   wrap : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'
                                       + $("div.binary-title span").text()
-                                      + '</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"></div><div class="fancybox-click-nav" style="right: 0;" onclick="$.fancybox.next();"></div><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
-                                  prev : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>',
-                                  next : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>'
+                                      + '</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span><br><div class="fancybox-pagination"><span></span></div></div>'
+                                      + '<div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"><div class="fancybox-nav"><span title="Previous" class="fancybox-prev" onclick="$.fancybox.prev();"></span></div></div><div class="fancybox-click-nav right" onclick="$.fancybox.next();"><div class="fancybox-nav"><span title="Next" class="fancybox-next" onclick="$.fancybox.next();"></span></div></div></div></div></div></div>',
+                                  prev : '',
+                                  next : ''
                                 },
                                 'afterLoad' : function() {
                                   var title = $(this.element).attr('data-caption');
-                                  var position = $(this.element).attr('data-pos') + '/'
+                                  var position = $(this.element).attr('data-pos') + ' '
                                       + $("#previews-list li").size();
                                   $("span.fancybox-toolbar-title").text(title);
                                   $("div.fancybox-pagination span").text(position);
