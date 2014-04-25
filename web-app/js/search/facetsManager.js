@@ -431,7 +431,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   initializeOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
-    console.log("Init on load")
     $('.clear-filters').removeClass('off');
     $(".js.facets-list").removeClass("off");
 
