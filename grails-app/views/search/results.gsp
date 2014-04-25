@@ -17,7 +17,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 
 <g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
-<g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
+<g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName(), FacetEnum.LICENSE_GROUP.getName()]}"></g:set>
 
 <html>
 <head>
