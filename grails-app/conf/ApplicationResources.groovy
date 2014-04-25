@@ -94,6 +94,7 @@ modules = {
         resource url:'/js/vendor/json2-2010.11.17/json2.js'
         resource url:'/js/globalVariables.js'
         resource url:'/js/globalScripts.js'
+        resource url:'/js/paginationWidget.js'
         resource url:'/js/institutionList.js'
         resource url:'/js/startPage.js'
         resource url:'/js/itemHierarchy.js'
