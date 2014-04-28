@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <!-- TODO: rewrite the class controls, disable back to results -->
 <div class="row item-detail">
-  <div class="span12 object-controls">
+  <div class="span12 object-controls bb">
     <!-- buttons -->
     <div class="span6 item-nav-left">
       <g:if test="${searchResultUri != null}">
