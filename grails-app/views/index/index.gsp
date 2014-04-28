@@ -27,7 +27,7 @@ limitations under the License.
     <div class="span12 search-widget">
       <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Search_Widget"/></h1>
       <div class="row">
-        <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description").encodeAsHTML()}" title="<g:message encodeAs="html" code="ddbnext.Logo_Title"/>" />
+        <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description")}"/>
       </div>
       <div class="row">
         <div class="span12">
