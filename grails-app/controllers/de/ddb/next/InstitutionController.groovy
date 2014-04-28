@@ -95,7 +95,7 @@ class InstitutionController {
                 organisationLogo = g.resource("dir": "binary", "file": id + "/list/1.jpg")
             }
             else {
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")
+                organisationLogo = g.resource("dir": "images", "file": "/placeholder/institution.png")
             }
 
             render(
