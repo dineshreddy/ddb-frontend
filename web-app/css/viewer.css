@@ -209,7 +209,20 @@ noscript .scroller, .pdf-scroller {
   display: block !important;
   overflow: auto !important;
 }
-
+.fancybox-skin {
+  border: 5px solid #efebe8;
+  border-radius: 0;
+}
+.fancybox-nav {
+  height: 70px;
+  width: 40px;
+  top: 40%;
+  background-color: #efebe8;
+  display: none;
+}
+.right .fancybox-nav {
+  right: 0;
+}
 .fancybox-toolbar {
   background-color: #efebe8;
   padding: 5px;
@@ -221,69 +234,47 @@ noscript .scroller, .pdf-scroller {
 .fancybox-toolbar-close {
   position: absolute;
   top: 5px;
-  right: 5px;
+  right: 0;
   cursor: pointer !important;
   float: right;
   width: 18px;
   height: 18px;
-  background: url("../images/icons/advSearchRowActions.png") no-repeat left -60px;
+  background: url("../images/icons/searchActions.png") no-repeat right -39px;
 }
 .fancybox-toolbar-close:hover {
-  background: url("../images/icons/advSearchRowActions.png") no-repeat left -80px;
+  background: url("../images/icons/searchActions.png") no-repeat right -59px;
 }
 .fancybox-prev, .fancybox-next {
-  width: 42px;
-  height: 42px;
-  top: 42%;
+  width: 40px !important;
+  height: 42px !important;
+  top: 48% !important;
+  visibility: visible !important;
 }
 .fancybox-prev {
-  left: -40px;
-  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -105px;
+  left: -2px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -4px;
 }
 
 .fancybox-prev:hover {
-  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -55px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -54px;
 }
 .fancybox-next {
-  right: -45px;
-  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -253px;
+  right: -5px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -154px;
 }
 .fancybox-next:hover {
-  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -203px;
+  background: url("../images/icons/homepageCarouselControls.png") no-repeat left -204px;
 }
-
-@media (max-width: 767px) {
-  .fancybox-prev {
-    left: 0px !important;
-  }
-  .fancybox-next {
-    right: -5px;
-  }
-}
-
-.fancybox-inner:hover .fancybox-pagination{
-  display: block !important;
-} 
-.fancybox-pagination {
-  display: none;
-  width: 100%;
-  bottom: 0;
-  position: absolute;
-  background-color: #e8eae9;
-  opacity: 0.8;
-  color: #3E3A37; 
-  font-size: 0.875em;
-}
-
 .fancybox-click-nav {
   position: absolute; 
   width: 50%;
   height: 100%;
 }
-.fancybox-pagination span {
-  font-size: 1.250em;
-  padding: 5px;
-  float: right;
+.fancybox-click-nav.right {
+  right: 0;
+}
+.fancybox-click-nav:hover .fancybox-nav {
+  display: block !important;
 }
 .binary-viewer-error, .binary-viewer-flash-upgrade {
   position:relative;
