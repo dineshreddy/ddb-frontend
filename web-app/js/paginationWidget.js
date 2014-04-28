@@ -49,7 +49,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.firstPage = $('.page-nav .first-page');
     this.lastPage = $('.page-nav .last-page');
     this.pageInput = $('.page-input');
-    this.paginatorOptionsButton = $('.painator-options-button');
+    this.paginatorOptionsButton = $('.paginator-options-button');
     
     this.nextPageMobile = $('.page-nav-mob .next-page');
     this.prevPageMobile = $('.page-nav-mob .prev-page');
