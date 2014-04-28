@@ -55,5 +55,6 @@ limitations under the License.
         </g:link>
       </div>
     </ddb:isLoggedIn>
+    <ddb:getSocialmediaBody />
   </div>
 </div>

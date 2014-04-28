@@ -44,7 +44,7 @@
 .socialmedia .social-locked .social-overlay-container {
   display: none;
   position: absolute;
-  left: 0px;
+  right: 0px;
   top: 0px;
   width: 100%;
   min-width: 400px;
