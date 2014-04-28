@@ -640,6 +640,7 @@ class SearchService {
                 }
             }
         }
+
         return res
     }
 
@@ -726,7 +727,7 @@ class SearchService {
 
         def res = ""
 
-        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()){
+        if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()|| facetName == FacetEnum.STATE.getName()){
             res = facetValue
         }
         else if(facetName == FacetEnum.TYPE.getName()){
