@@ -212,7 +212,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.results-paginator-options').removeClass('off');
   $('.results-paginator-view').removeClass('off');
   $('.page-input').removeClass('off');
-  $('.keep-filters').removeClass('off');
   $('.page-nonjs').addClass("off");
 
   $(window).trigger("searchChange");

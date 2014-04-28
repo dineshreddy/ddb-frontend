@@ -310,6 +310,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
 
     $('.clear-filters').removeClass('off');
+    $('.keep-filters').removeClass('off');
+    
   },
 
   /**
@@ -360,6 +362,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     if ($('.facets-list').find('li[data-fctvalue]').length === 0) {
       $('.clear-filters').addClass('off');
+      $('.keep-filters').addClass('off');
     }
   },
 
@@ -425,19 +428,23 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
   },
 
+  
   /**
    * Initialize the Flyout widget when the page is loaded in a asynchronic way.
    * It initialize all selected facets and role facets
    */
   initializeOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
-    $('.clear-filters').removeClass('off');
     $(".js.facets-list").removeClass("off");
-
+    
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (paramsFacetValues) {
+      
+      $('.clear-filters').removeClass('off');
+      $('.keep-filters').removeClass('off');
+      
       var selectedFacets = {};
       $.each(paramsFacetValues, function(key, value) {
         var decodedElement = decodeURIComponent(value.replace(/\+/g, '%20')).split('=');
@@ -498,7 +505,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     currObjInstance.connectedflyoutWidget.build($(this));
                   });
               });
-      $('.clear-filters').removeClass('off');
     }
 
     //init TimeFacet

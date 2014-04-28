@@ -458,6 +458,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   cleanNonJsStructures : function() {
     $('.facets-item >ul').remove();
     $('.clear-filters').addClass('off');
+    $('.keep-filters').addClass('off');
   },
 
   /**
