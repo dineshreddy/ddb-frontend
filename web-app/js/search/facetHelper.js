@@ -33,6 +33,9 @@ de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
   if (facetField === 'sector_fct') {
     return messages.ddbnext['sector_fct_' + facetValue];
   }
+  if (facetField === 'license_group') {
+    return messages.ddbnext['license_group_' + facetValue];
+  }
   return '';
 };
 

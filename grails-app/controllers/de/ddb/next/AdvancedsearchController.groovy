@@ -27,6 +27,21 @@ import de.ddb.common.constants.SearchParamEnum
  */
 class AdvancedsearchController {
 
+    //The factes for the advanced search
+    def allowedFacets = [
+        "search_all",
+        "title",
+        "description",
+        "place",
+        "affiliate",
+        "keywords",
+        "language",
+        "type",
+        "sector",
+        "provider",
+        "license_group"
+    ]
+
     private static final String enumSearchType = "ENUM"
     private static final String textSearchType = "TEXT"
     private static final String languageTagPrefix = "ddbnext.facet_"
@@ -37,6 +52,7 @@ class AdvancedsearchController {
 
     def messageSource
     def configurationService
+    def facetsService
 
 
     /**
@@ -48,7 +64,7 @@ class AdvancedsearchController {
         int searchGroupCount = configurationService.getSearchGroupCount()
         int searchFieldCount = configurationService.getSearchFieldCount()
         String url = configurationService.getBackendUrl()
-        List facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        List facetSearchfields = facetsService.getAllFacets()
         facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
         Map facetValuesMap = getFacetValues(facetSearchfields)
 
@@ -75,7 +91,8 @@ class AdvancedsearchController {
         int offset = configurationService.getSearchOffset()
         int rows = configurationService.getSearchRows()
         def url = configurationService.getBackendUrl()
-        def facetSearchfields = new FacetsService(url:url).getExtendedFacets()
+        def facetSearchfields = facetsService.getAllFacets()
+        facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
 
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
@@ -92,15 +109,27 @@ class AdvancedsearchController {
         def facetValuesMap = [:]
         def url = configurationService.getBackendUrl()
         def allFacetFilters = configurationService.getFacetsFilter()
-        def facetsRequester = new FacetsService(url:url)
+
         for ( facetSearchfield in facetSearchfields ) {
             if (facetSearchfield.searchType.equals(enumSearchType)) {
-                def facetValues = facetsRequester.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
+                def facetValues = null
                 def facetDisplayValuesMap = new TreeMap()
-                for (facetValue in facetValues) {
-                    //translate because of sorting
-                    facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
+
+                //Special handling for "license_group, as this facet has "
+                if (facetSearchfield.name == "license_group") {
+                    facetValues = facetsService.getFacet(facetSearchfield.name , allFacetFilters)
+                    for (facetValue in facetValues) {
+                        //translate because of sorting
+                        facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + "_" + facetValue)
+                    }
+                } else {
+                    facetValues = facetsService.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
+                    for (facetValue in facetValues) {
+                        //translate because of sorting
+                        facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
+                    }
                 }
+
                 if (facetSearchfield.sortType != null && facetSearchfield.sortType.equals(labelSortType)) {
                     facetDisplayValuesMap = facetDisplayValuesMap.sort {it.value}
                 }
@@ -122,21 +151,13 @@ class AdvancedsearchController {
 
     private List filterOnlyAdvancedSearchFacets(List allFacets){
         List filteredFacets = []
-        List allowedFacets = [
-            "search_all",
-            "title",
-            "description",
-            "place",
-            "affiliate",
-            "keywords",
-            "language",
-            "type",
-            "sector",
-            "provider"
-        ]
-        allFacets.each {
-            if(allowedFacets.contains(it.name)){
-                filteredFacets.add(it)
+
+        //To stay with the right order we have to iterate over both facet lists.
+        allowedFacets.each { itAllowedFacets ->
+            allFacets.each { itAllFacets ->
+                if(itAllFacets.name == itAllowedFacets){
+                    filteredFacets.add(itAllFacets)
+                }
             }
         }
         return filteredFacets

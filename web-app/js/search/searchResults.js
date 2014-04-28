@@ -53,7 +53,6 @@ $(function() {
   }
 });
 
-
 de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
   var divSearchResultsOverlayModal = $(document.createElement('div'));
   divSearchResultsOverlayModal.addClass('search-results-overlay-modal');

@@ -741,6 +741,9 @@ class SearchService {
         else if(facetName == FacetEnum.SECTOR.getName()){
             res = appCtx.getMessage(FacetEnum.SECTOR.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
+        else if(facetName == FacetEnum.LICENSE_GROUP.getName()){
+            res = appCtx.getMessage(FacetEnum.LICENSE_GROUP.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
+        }
         return res
     }
 
@@ -928,7 +931,7 @@ class SearchService {
         }
         return searchResult
     }
-    
+
     /**
      * Performs a search request on the backend.
      * Used in the EntityController in the /search/institute

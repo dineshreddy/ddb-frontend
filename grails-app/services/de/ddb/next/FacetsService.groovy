@@ -28,8 +28,6 @@ import de.ddb.common.ApiConsumer
  * @author mih
  */
 public class FacetsService {
-    //Backend URL
-    String url
 
     def transactional=false
 
@@ -47,7 +45,7 @@ public class FacetsService {
         def filtersForFacetName = getFiltersForFacetName(facetName, allFacetFilters)
         def res = []
         int i = 0
-        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/' + facetName)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search/facets/' + facetName)
 
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -59,37 +57,6 @@ public class FacetsService {
                 res[i] = it.value
                 i++
             }
-        }
-        return res
-    }
-
-    /**
-     * Get List of Searchfields(Facets) for advanced search.
-     * 
-     * @return List of Arrays.<br>
-     *     Array contains name, searchType(TEXT or ENUM), sortType(ALPHA_ID, ALPHA_LABEL).<br>
-     *     name: name of facet(Searchfield).<br>
-     *     searchType TEXT: display textfield for searchstring.<br>
-     *     searchType ENUM: display selectbox with possible values for searchstring.<br>
-     *     sortType (for searchType = ENUM): how to sort possible values.
-     *     ALPHA_ID: sort by id.<br>
-     *     ALPHA_LABEL: sort by value.<br>
-     */
-    public List getExtendedFacets() throws IOException {
-        def res = [];
-
-        def apiResponse = ApiConsumer.getJson(url ,'/search/facets/', false, [type:'EXTENDED'])
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        def json = apiResponse.getResponse()
-        json.each{
-            def part = [:]
-            part["name"] = it.name
-            part["searchType"] = it.searchType
-            part["sortType"] = it.sortType
-            res[it.position - 1] = part
         }
         return res
     }
