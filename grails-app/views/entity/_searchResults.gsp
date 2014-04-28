@@ -21,7 +21,7 @@ limitations under the License.
           <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
         </g:if>
         <g:else>
-          <img src="${request.getContextPath() + '/images/placeholder/text.png'} " title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
+          <img src="${request.getContextPath() + '/images/placeholder/searchResultMediaText.png'} " title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
         </g:else>
       </g:link>
       <div class="caption">
