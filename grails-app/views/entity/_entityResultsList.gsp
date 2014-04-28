@@ -40,7 +40,7 @@ limitations under the License.
           <div class="thumbnail" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}"
               class="no-external-link-icon">
-              <g:img dir="images/placeholder" file="searchResultEntity.png"
+              <g:img dir="images/placeholder" file="entity.png"
                 alt="${ entityItem.preferredName }" />
             </g:link>
           </div>

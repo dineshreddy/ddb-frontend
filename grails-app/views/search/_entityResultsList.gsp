@@ -48,7 +48,7 @@ limitations under the License.
               <%-- 
               <img src="${entityItem.thumbnail.link}" alt="${ entityItem.person.name }" />
               --%>
-              <g:img dir="images/placeholder" file="searchResultEntity.png" alt="${ entityItem.preferredName }"/>
+              <g:img dir="images/placeholder" file="entity.png" alt="${ entityItem.preferredName }"/>
             </g:link>
           </div>
           <%-- 
