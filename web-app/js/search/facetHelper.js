@@ -18,7 +18,7 @@
 de.ddb.next.search = de.ddb.next.search || {};
 
 de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
-  if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct') {
+  if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct' || facetField === 'state') {
     return facetValue.toString();
   }
   if (facetField === 'type_fct') {

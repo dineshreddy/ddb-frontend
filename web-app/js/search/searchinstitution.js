@@ -30,6 +30,9 @@ $(function() {
     //Initialize the history support
     de.ddb.next.search.initHistorySupport(stateManager);
 
+    //Initialize the pagination widget
+    de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
+    
     //Initialize the search page
     de.ddb.next.search.institution.searchResultsInitializer();
   }
