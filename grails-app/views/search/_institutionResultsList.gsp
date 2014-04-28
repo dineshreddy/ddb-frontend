@@ -39,9 +39,9 @@ limitations under the License.
           <div class="thumbnail-entity" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
               <g:if test="${entityItem.preview.thumbnail!="null"}">
-	              <img src="${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
+	              <img src="${request.contextPath}${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
               </g:if><g:else>
-                <g:img dir="images/icons" file="institution.png" width="140" height="90" />
+                <g:img dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
                </g:else>
             </g:link>
           </div>
