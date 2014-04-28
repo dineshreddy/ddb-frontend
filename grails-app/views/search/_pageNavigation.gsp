@@ -16,4 +16,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <div class="page-info-nav <g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>grid</g:if>">
   <ddb:renderPaginationControls navData="${navData}"></ddb:renderPaginationControls>
+  <g:if test="${paginatorOptions != null}">
+    <ddb:renderResultsPaginatorOptions paginatorData="${paginatorOptions}"></ddb:renderResultsPaginatorOptions>
+  </g:if>
 </div>

@@ -217,39 +217,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-nonjs').addClass("off");
 
   $(window).trigger("searchChange");
-
-  $('.page-filter select').change(
-      function() {
-        var paramsArray = [['rows', this.value], ['offset', 0]];
-        de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        if($('.clear-filters').attr('href')) {
-          $('.clear-filters').attr('href',
-              $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + this.value));
-          }
-        return false;
-      });
-
-  $('.sort-results-switch select').change(
-      function() {
-        var paramsArray = [['sort', this.value], ['offset', 0]];
-        de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        if($('.clear-filters').attr('href')) {
-          $('.clear-filters').attr(
-              'href',
-              $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i,
-                  'sort=' + this.value));
-        }
-        return false;
-      });
-  
-  de.ddb.next.search.paginationWidget.setNavigatorsClickHandler(
-      function(element) {
-        de.ddb.next.search.fetchResultsList(element.attr('href'));
-        $('html, body').animate({
-          scrollTop : 0
-        }, 1000);
-      }
-  );
   
   $('#form-search-header button').click(
       function() {
@@ -377,6 +344,29 @@ de.ddb.next.search.searchResultsInitializer = function() {
           var newUrl = $.addParamToCurrentUrl(paramsArray);
           de.ddb.next.search.fetchResultsList(newUrl);
         }
+      }
+  );
+  
+  de.ddb.next.search.paginationWidget.setNavigatorsClickHandler(
+      function(element) {
+        de.ddb.next.search.fetchResultsList(element.attr('href'));
+        $('html, body').animate({
+          scrollTop : 0
+        }, 1000);
+      }
+  );
+  
+  de.ddb.next.search.paginationWidget.setPaginatorOptionsHandlers(
+      function(sortSelect, rowsSelect, closeButton){
+        var paramsArray = [['rows', rowsSelect.val()], ['sort', sortSelect.val()], ['offset', 0]];
+        closeButton.trigger('click');
+        de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
+        
+        if($('.clear-filters').attr('href')) {
+          $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i, 'sort=' + sortSelect.val()));
+          $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + rowsSelect.val()));
+        }
+        return false;
       }
   );
   

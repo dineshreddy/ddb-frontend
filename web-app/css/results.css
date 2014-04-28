@@ -90,9 +90,13 @@
 }
 
 .search-results-container .page-filter,.sort-results-switch {
-  line-height: 42px;
-  display: inline-block;
+  line-height: 30px;
   margin-right: 20px;
+  text-align: right;
+}
+
+.search-results-container .page-filter select,.sort-results-switch select{
+  width: 90px;
 }
 
 .search-results-container .page-filter label,.sort-results-switch label {
@@ -242,13 +246,19 @@
   cursor: default;  
 }
 
+.open-paginator-options{
+  width: 30px;
+  height: 30px;
+  background: url("../images/icons/ddbIkonographie.png");
+}
+
 .view-type-switch #view-list {
   width: 30px;
   height: 30px;
   background: url("../images/icons/ddbIkonographie.png");
 }
 
-.view-type-switch #view-list,.view-type-switch #view-grid {
+.view-type-switch #view-list,.view-type-switch #view-grid, .open-paginator-options {
   width: 30px;
   height: 30px;
   box-shadow: none;
@@ -260,9 +270,25 @@
   display:inline-block;
 }
 
-.view-type-switch button:before {
+.view-type-switch button:before, .paginator-options-button button:before {
   display: inline-block;
   content: url("../images/icons/ddbIkonographie.png");
+}
+
+.paginator-options-button .open-paginator-options:before {
+  margin: -120px 0 0 -180px;
+}
+
+.paginator-options-button .open-paginator-options:hover:before {
+  margin: -120px 0 0 -210px;
+}
+
+.paginator-options-button .open-paginator-options.selected:before,.paginator-options-button .open-paginator-options.selected:hover:before,.paginator-options-button .open-paginator-options.selected:focus:before {
+  margin: -60px 0 0 -240px;
+}
+
+.paginator-options-button .ie8-version .open-paginator-options.selected:before,.view-type-switch .ie8-version .open-paginator-options.selected:hover:before,.paginator-options-button .ie8-version .open-paginator-options.selected:focus:before {
+  margin: -60px 0 0 -180px;
 }
 
 .view-type-switch #view-list:before {
@@ -1202,4 +1228,59 @@ color: #a5003b;
   text-decoration: none;
   cursor: default;
   box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.paginator-options-button {
+  float: right;
+  margin-top: 6px;
+}
+
+.paginator-options-overlay {
+  position: fixed;
+  z-index: 99999;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: none;
+}
+
+.paginator-options-overlay .paginator-options-container {
+  background: #fff;
+  padding: 15px;
+  position: absolute;
+  top: 15%;
+  left: 50%;
+  width: 280px;
+  margin-left: -140px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 3px 32px;
+}
+
+.paginator-options-overlay .paginator-options-header {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.paginator-options-overlay .paginator-options-header .close-overlay {
+  width:20px;
+  height:20px;
+  background: url("../images/icons/searchActions.png") no-repeat 5px -40px;
+  top: 4px;
+  right: 0;
+  cursor: pointer;
+}
+
+.paginator-options-overlay .paginator-options-body {
+  margin-top: 5px;
+  margin-bottom: 15px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.paginator-options-overlay .paginator-options-footer .button {
+  padding: 0;
+  width: 135px;
+  text-align: center;
+  margin-left: auto;
 }

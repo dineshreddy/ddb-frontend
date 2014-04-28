@@ -26,6 +26,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
   numberOfResults: null,
   pageNavigators: null,
   pageInput: null,
+  paginatorOptionsButton: null,
   
   nextPage: null,
   prevPage: null,
@@ -48,6 +49,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.firstPage = $('.page-nav .first-page');
     this.lastPage = $('.page-nav .last-page');
     this.pageInput = $('.page-input');
+    this.paginatorOptionsButton = $('.paginator-options-button');
     
     this.nextPageMobile = $('.page-nav-mob .next-page');
     this.prevPageMobile = $('.page-nav-mob .prev-page');
@@ -129,7 +131,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     }
     
     //Showing extra arrow
-    if(JSONresponse.totalPages > 5){
+    if(JSONresponse.totalPages.replace('.','') > 5){
       this.extraControls.removeClass('off');
     }else{
       this.extraControls.addClass('off');
@@ -154,6 +156,28 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     enterButtonEvent.keyCode = 13;
     this.goToPage.click(function(){
       currObjInstance.pageInput.trigger(enterButtonEvent);
+    });
+  },
+  
+  setPaginatorOptionsHandlers: function(applyButtonHandler){
+    var paginatorOptionsOverlay = this.paginatorOptionsButton.parent().find('.paginator-options-overlay');
+    var paginatorOptionsCloseButton = paginatorOptionsOverlay.find('.close-overlay');
+    var paginatorOptionsSortSelect = paginatorOptionsOverlay.find('.sort-results-switch select');
+    var paginatorOptionsRowsSelect = paginatorOptionsOverlay.find('.page-filter select');
+    var paginatorOptionsApplyButton = paginatorOptionsOverlay.find('.paginator-options-footer .button');
+    
+    this.paginatorOptionsButton.click(function(){
+      paginatorOptionsOverlay.fadeIn('fast');
+    });
+    
+    paginatorOptionsCloseButton.click(function(e){
+      e.preventDefault();
+      paginatorOptionsOverlay.fadeOut('fast');
+      return false;
+    });
+    
+    paginatorOptionsApplyButton.click(function(){
+      applyButtonHandler(paginatorOptionsSortSelect, paginatorOptionsRowsSelect, paginatorOptionsCloseButton);
     });
   }
   
