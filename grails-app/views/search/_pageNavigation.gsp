@@ -19,4 +19,22 @@ limitations under the License.
   <g:if test="${paginatorOptions != null}">
     <ddb:renderResultsPaginatorOptions paginatorData="${paginatorOptions}"></ddb:renderResultsPaginatorOptions>
   </g:if>
+  <div class="view-type-switch">
+    <!--[if lt IE 9]>
+    <div class="ie8-version">
+    <![endif]-->
+    <div>
+      <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_List" />"><g:message encodeAs="html" code="ddbnext.View_as_List" /></button>
+    </div>
+    <!--[if lt IE 9]>
+    </div>
+    <div class="ie8-version">
+    <![endif]-->
+    <div>
+      <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />"><g:message encodeAs="html" code="ddbnext.View_as_Grid" /></button>
+    </div>
+    <!--[if lt IE 9]>
+    </div>
+    <![endif]-->
+  </div>
 </div>

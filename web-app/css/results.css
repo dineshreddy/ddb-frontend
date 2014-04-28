@@ -220,6 +220,16 @@
   color: #a5003b;
 }
 
+.page-info-nav .view-type-switch {
+  background: transparent;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-right: 4px;
+  margin-top: 6px;
+  text-align: right;
+}
+
 .results-paginator-view .view-type-switch {
   float: right;
 }

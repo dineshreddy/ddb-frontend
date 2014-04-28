@@ -159,36 +159,6 @@ limitations under the License.
       
       <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}"/>
       
-      <div class="row">
-        <div class="span9">
-          <div class="results-paginator-view off">
-            <div class="group-actions">
-              <%-- HLA: deactivated until there is the possibility to cluster results (See DDBNEXT-328) 
-              <input class="disabled" id="toggle-cluster" type="checkbox" disabled="disabled">
-              <label class="disabled" for="toggle-cluster" title="<g:message encodeAs="html" code="ddbnext.View_as_Cluster" />"><g:message encodeAs="html" code="ddbnext.View_as_Cluster" /></label>
-              --%>
-            </div>
-            <div class="view-type-switch">
-              <!--[if lt IE 9]>
-              <div class="ie8-version">
-              <![endif]-->
-              <div>
-                <button id="view-list" type="button" class="<g:if test='${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_List" />"><g:message encodeAs="html" code="ddbnext.View_as_List" /></button>
-              </div>
-              <!--[if lt IE 9]>
-              </div>
-              <div class="ie8-version">
-              <![endif]-->
-              <div>
-                <button id="view-grid" type="button" class="<g:if test='${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}'>selected</g:if>" title="<g:message encodeAs="html" code="ddbnext.View_as_Grid" />"><g:message encodeAs="html" code="ddbnext.View_as_Grid" /></button>
-              </div>
-              <!--[if lt IE 9]>
-              </div>
-              <![endif]-->
-            </div>
-          </div>
-        </div>
-      </div>
       <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
