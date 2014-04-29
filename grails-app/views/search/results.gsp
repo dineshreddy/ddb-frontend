@@ -22,10 +22,8 @@ limitations under the License.
 <html>
 <head>
 <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
 <meta name="page" content="results" />
 <meta name="layout" content="main" />
-
 </head>
 
 <body>
@@ -156,9 +154,12 @@ limitations under the License.
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
+      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="items" />
+      <div style="clear:both;"> 
+
       
       <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}"/>
-      
+            
       <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
