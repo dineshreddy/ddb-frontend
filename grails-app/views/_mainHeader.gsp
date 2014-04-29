@@ -33,10 +33,10 @@ limitations under the License.
         <span class="icon-bar hidden"></span>
       </button>
       <g:link uri="/" class="brand"
-        title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
+        title="${message(code: 'ddbnext.Logo_Title')}"
         tabindex="-1">
         <r:img dir="images" file="mobileLogo.png"
-          alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" />
+          alt="${message(code: 'ddbnext.Logo_Description')}" />
       </g:link>
       <div class="nav-collapse collapse">
         <ul class="nav nav-list">
@@ -159,10 +159,10 @@ limitations under the License.
         <div class="row">
           <div class="span7">
             <g:link uri="/" class="navigation-header-logo"
-              title="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}"
+              title="${message(code: 'ddbnext.Logo_Title')}"
               tabindex="-1">
               <r:img dir="images" file="logoHeader.png"
-                alt="${message(code: 'ddbnext.Deutsche_Digitale_Bibliothek')}" />
+                alt="${message(code: 'ddbnext.Logo_Description')}" />
             </g:link>
             <div role="navigation">
               <ul class="navigation inline">
