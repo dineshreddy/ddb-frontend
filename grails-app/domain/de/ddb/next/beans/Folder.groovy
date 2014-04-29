@@ -19,7 +19,7 @@ import groovy.transform.ToString
 import de.ddb.common.constants.FolderConstants
 import de.ddb.next.JsonUtil
 
-@ToString(includeNames=true, excludes="count, creationDateFormatted, oldestBookmarkImage")
+@ToString(includeNames=true, excludes="count, creationDateFormatted, oldestBookmarkImage, newestItemCreationDate")
 class Folder {
 
     String folderId
@@ -37,6 +37,7 @@ class Folder {
     def count = null
     def creationDateFormatted = null
     def oldestItemMetaData = null
+    def newestItemCreationDate = null
 
 
     public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong) {

@@ -312,11 +312,14 @@ class ListsService {
      *
      * @return the public folders for the already logged in user
      */
-    List<Folder> getDdbAllFolders() {
+    List<Folder> getDdbAllPublicFolders() {
         def folders = null
 
         folders = bookmarksService.findAllPublicFolders()
         folders = enhanceFolderInformation(folders)
+
+        //Sort the folders by newestItemCreationDate descending
+        folders.sort{a,b-> b.newestItemCreationDate<=>a.newestItemCreationDate}
 
         return folders
     }
@@ -359,12 +362,14 @@ class ListsService {
             //Set the blocking token to ""
             it.blockingToken = ""
 
-            //Get the image path of the oldest item in the list
+            //TODO Get the image path of the oldest item in the list will be replaced by the first in the rank. see DDBNEXT-1426
             List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
             favoritesOfFolder.sort{it.creationDate}
             if (favoritesOfFolder.size() > 0) {
                 def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
                 it.oldestItemMetaData = itemMd.get(0)
+
+                it.newestItemCreationDate = favoritesOfFolder.get(favoritesOfFolder.size() - 1).creationDate
             }
 
             //Retrieve the number of favorites

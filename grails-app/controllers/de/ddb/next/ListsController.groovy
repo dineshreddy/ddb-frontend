@@ -103,7 +103,7 @@ class ListsController {
         if (listId == "UserList") {
             folders = listsService.getUserFolders()
         } else if (listId == "DdbAllList") {
-            folders = listsService.getDdbAllFolders()
+            folders = listsService.getDdbAllPublicFolders()
         }else if (listId == "DdbDailyList") {
             folders = listsService.getDdbDailyFolders()
         } else {
