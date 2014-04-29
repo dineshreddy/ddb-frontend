@@ -30,6 +30,7 @@ import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
+import de.ddb.common.exception.EntityNotFoundException
 import de.ddb.next.beans.Folder
 
 class FavoritesService {
@@ -152,30 +153,37 @@ class FavoritesService {
             def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/person.png").toString()
             def foundItemIds = allRes.collect{ it.id }
             items.each{
-                // item not found
-                if(it.type == Type.ENTITY){
-                    def entity = [:]
-                    def entityDetails = entityService.getEntityDetails(it.itemId)
-                    label = entityDetails?.preferredName
-                    def professions = entityDetails?.professionOrOccupation
-                    def subtitle = ""
-                    professions.each {
-                        subtitle += it
-                        if(it != professions.last())
-                            subtitle +=", "
+                try {
+                    if(it.type == Type.ENTITY){
+                        def entity = [:]
+                        def entityDetails = entityService.getEntityDetails(it.itemId)
+                        label = entityDetails?.preferredName
+                        def professions = entityDetails?.professionOrOccupation
+                        def subtitle = ""
+                        professions.each {
+                            subtitle += it
+                            if(it != professions.last())
+                                subtitle +=", "
+                        }
+                        entity["id"] = it.itemId
+                        entity["view"] = []
+                        entity["label"] = label
+                        entity["category"] = "Entity"
+                        entity["preview"] = [:]
+                        entity["preview"]["title"] = label
+                        entity["preview"]["subtitle"] = subtitle
+                        entity["preview"]["media"] = ["entity"]
+                        entity["preview"]["thumbnail"] = entityThumbnail
+                        allRes.add((net.sf.json.JSONObject) entity)
+
+                        foundItemIds.add(it.itemId)
                     }
-                    entity["id"] = it.itemId
-                    entity["view"] = []
-                    entity["label"] = label
-                    entity["category"] = "Entity"
-                    entity["preview"] = [:]
-                    entity["preview"]["title"] = label
-                    entity["preview"]["subtitle"] = subtitle
-                    entity["preview"]["media"] = ["entity"]
-                    entity["preview"]["thumbnail"] = entityThumbnail
-                    allRes.add((net.sf.json.JSONObject) entity)
+                } catch (EntityNotFoundException ee) {
+                    log.error ee.message + " cannot find entity details for bookmark"
                 }
-                else if(!(it.itemId in foundItemIds)){
+
+                // item not found
+                if(!(it.itemId in foundItemIds)){
                     def emptyDummyItem = [:]
                     emptyDummyItem["id"] = it.itemId
                     emptyDummyItem["view"] = []
