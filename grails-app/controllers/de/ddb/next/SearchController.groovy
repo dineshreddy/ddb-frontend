@@ -185,12 +185,15 @@ class SearchController {
     def institution() {
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
+
         if (urlQuery["query"]=="*"){
             urlQuery["query"]="category:Institution"
         }else{
             urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
         }
+
 
         def queryString = request.getQueryString()
 
@@ -223,7 +226,8 @@ class SearchController {
             page: page,
             resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
             paginationURL:searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
-            cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL
+            cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
+            clearFilters: clearFilters
         ]
         if(params.reqType=="ajax"){
             def resultsHTML = ""
