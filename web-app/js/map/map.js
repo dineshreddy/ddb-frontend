@@ -210,38 +210,53 @@ $(document).ready(function() {
       },
 
       _addMultiPolygonLayer : function() {
+        var self = this;
         var renderer = OpenLayers.Util.getParameters(window.location.href).renderer;
         renderer = (renderer) ? [renderer] : OpenLayers.Layer.Vector.prototype.renderers;
-
-        var wkt = new OpenLayers.Format.WKT();
 
         this.vectorLayer = new OpenLayers.Layer.Vector('My Vectors');
         this.osmMap.addLayer(this.vectorLayer);
 
-        var polygonFeature = wkt.read("MULTIPOLYGON(((8.68321180343628 50.59392260878307,8.68344783782959 50.59345947217545,8.684005737304688 50.59292822163223,8.68467092514038 50.59318703674835,8.684391975402832 50.593350498193814,8.683834075927734 50.59420866147027,8.68321180343628 50.59392260878307)))");
-        //var polygonFeature = wkt.read("MULTIPOLYGON(((5743353 3452343,62345234 62345234)))");
-        /*
-         * the coordinates should be retrieved from the backend (loadMultiPolygonWKT) and then transformed with the getLonLatFromGaussKrueger
-         * method, for every single point (lon, lat) 
-         * 
-         */
-        polygonFeature.geometry.transform(this.osmMap.displayProjection, this.osmMap.getProjectionObject());
-        this.vectorLayer.addFeatures([polygonFeature]);
+        this._loadMultiPolygonInput("FEGN7MRGZNDXU4VATES3T6LXOEZXYZCC");
+        //console.log("input"+input);
+
+        var points = []
+        var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
+        //var cortexInput = "MULTIPOLYGON(((3473622.049 5500688.022,3473620.968 5500691.862,3473618.442 5500691.154,3473616.782 5500697.161,3473619.291 5500697.86,3473618.234 5500701.646,3473628.544 5500704.52,3473629.993 5500699.324,3473631.424 5500699.723,3473632.311 5500696.55,3473632.316 5500696.53,3473630.878 5500696.128,3473632.31 5500691.036,3473632.345 5500690.911,3473622.049 5500688.022)))";
+        //var cortexInput = input;
+
+        cortexInput = cortexInput.replace("MULTIPOLYGON(((", "");
+        cortexInput = cortexInput.replace(")))", "");
+        var cortexPointList = cortexInput.split(",");
+        for(var i=0;i<cortexPointList.length;i++){
+          var cortexCoords = cortexPointList[i].split(" ");
+          var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
+          points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
+        }
+        
+        var linearRing = new OpenLayers.Geometry.LinearRing(points);
+        var polygon = new OpenLayers.Geometry.Polygon([linearRing]);
+        var feature = new OpenLayers.Feature.Vector(polygon, {});
+        this.vectorLayer.addFeatures([feature]);
+        
         this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
+
       },
 
-      _loadMultiPolygonWKT : function() {
-        $.ajax({
-          type : 'GET',
-          dataType : 'xml',
-          async : true,
-          cache: true,
-          url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/Q57RUQMSOXXKNFKZLOFXIENEUKYHS45W/source?client=DDB-NEXT&oauth_consumer_key",
-          success : function(dataText){
-            var dataXML = XML.parse(dataText);
-            this.polygon = dataXML.geometry;
-          }
-        });
+      _loadMultiPolygonInput : function(iid) {
+          var input;
+          $.ajax({
+            type: "GET",
+            url : 'http://api.deutsche-digitale-bibliothek.de/items/' + iid + '/source',
+            // url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/"+iid+"/source?client=DDB-NEXT&oauth_consumer_key",
+            dataType: "xml",
+            success: function(xml) {
+              input = $(xml).find('geometry').text();
+            },
+            error: function() {
+              //alert("An error occurred while processing XML file.");
+            }
+          });
       },
 
       _addMarkerLayer : function() {
@@ -343,18 +358,18 @@ $(document).ready(function() {
         var maxLat3 = 6104500.7393;
 
         //Select zone from bounds
-        var source  
+        var source
         if(lon >= minLon2 && lon <= maxLon2 && lat >= minLat2 && lat <= maxLat2) {
-          source = new proj4.Proj("EPSG:31466");  
+          source = new proj4.Proj("EPSG:31466");
         }else if(lon >= minLon3 && lon <= maxLon3 && lat >= minLat3 && lat <= maxLat3) {
-          source = new proj4.Proj("EPSG:31467");  
+          source = new proj4.Proj("EPSG:31467");
         }else{
-          console.log("Error: Gauss-Krueger coordinates out of bounds!");          
+          console.log("Error: Gauss-Krueger coordinates out of bounds!");
         }
 
-        var dest = new proj4.Proj("EPSG:900913");  
-        var p = new proj4.Point(lon,lat);  
-        proj4.transform(source, dest, p);     
+        var dest = new proj4.Proj("EPSG:900913");
+        var p = new proj4.Point(lon,lat);
+        proj4.transform(source, dest, p);
         return new OpenLayers.LonLat(p.x, p.y);
       },
 

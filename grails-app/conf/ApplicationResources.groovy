@@ -125,12 +125,11 @@ modules = {
         resource url:'/js/search/searchinstitution.js'
     }
 
-    item{ resource url:'/js/persistentSendPdfMailModalDialog.js' }
+    item { resource url:'/js/persistentSendPdfMailModalDialog.js' }
 
     multipolygone {
         dependsOn "ddbnext"
         resource url:'/css/multipolygone.css'
-        //        resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/vendor/proj4-2.1.2/proj4.js'
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/map/projections.js'
