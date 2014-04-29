@@ -88,7 +88,7 @@ class BookmarkServiceIntegrationTests {
         log.info "Created a bookmark folder with the ID: ${folderId}"
     }
 
-    @Test void shouldGetAllFolders() {
+    @Test void shouldGetAllUserFolders() {
 
         def folderId = createNewFolder()
         assert folderId
@@ -98,6 +98,24 @@ class BookmarkServiceIntegrationTests {
 
         if(folderList) {
             log.info "The user with the ID: ${userId} has: "
+            folderList.each { it ->
+                log.info "- ${it}"
+            }
+        } else {
+            log.info 'empty folder.'
+        }
+    }
+
+    @Test void shouldGetAllFolders() {
+
+        def folderId = createNewFolder()
+        assert folderId
+
+        def folderList = bookmarksService.findAllPublicFolders()
+        assertTrue folderList.size() >0
+
+        if(folderList) {
+            log.info ": "
             folderList.each { it ->
                 log.info "- ${it}"
             }

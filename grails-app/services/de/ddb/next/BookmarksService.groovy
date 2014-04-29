@@ -114,26 +114,95 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
+                try {
+                    def description = "null"
+                    if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                        description = it._source.description
+                    }
 
-                def folder = new Folder(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.isPublic,
-                        it._source.publishingName,
-                        it._source.isBlocked,
-                        it._source.blockingToken,
-                        it._source.createdAt
-                        )
-                if(folder.isValid()){
-                    folderList.add(folder)
-                }else{
-                    log.error "findAllFolders(): found corrupt folder: "+folder
+                    def createdAt = 0
+                    if(!(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
+                        createdAt = it._source.createdAt
+                    }
+
+                    def folder = new Folder(
+                            it._id,
+                            it._source.user,
+                            it._source.title,
+                            description,
+                            it._source.isPublic,
+                            it._source.publishingName,
+                            it._source.isBlocked,
+                            it._source.blockingToken,
+                            createdAt
+                            )
+                    if(folder.isValid()){
+                        folderList.add(folder)
+                    }else{
+                        log.error "findAllFolders(): found corrupt folder: "+folder
+                    }
+                } catch(Exception e) {
+                    log.error e.message + " findAllFolders(): found corrupt folder: " + it._source
+                }
+            }
+        }
+        return folderList
+    }
+
+    List<Folder> findAllPublicFolders() {
+        log.info "findAllPublicFolders()"
+
+        List<Folder> folders = findAllFolders()
+        List<Folder> publicFolders = []
+        folders?.each {
+            if(it.isPublic){
+                publicFolders.add(it)
+            }
+        }
+        return publicFolders
+    }
+
+    List<Folder> findAllFolders() {
+        log.info "findAllFolders()"
+
+        List<Folder> folderList = []
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
+                ["size":"${DEFAULT_SIZE}"])
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            def resultList = response.hits.hits
+            resultList.each { it ->
+                try {
+                    def description = "null"
+                    if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+                        description = it._source.description
+                    }
+
+                    def createdAt = 0
+                    if(it._source.createdAt && !(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
+                        createdAt = it._source.createdAt
+                    }
+
+                    def folder = new Folder(
+                            it._id,
+                            it._source.user,
+                            it._source.title,
+                            description,
+                            it._source.isPublic,
+                            it._source.publishingName,
+                            it._source.isBlocked,
+                            it._source.blockingToken,
+                            createdAt
+                            )
+                    if(folder.isValid()){
+                        folderList.add(folder)
+                    }else{
+                        log.error "findAllFolders(): found corrupt folder: "+folder
+                    }
+                } catch(Exception e) {
+                    log.error e.message + " findAllFolders(): found corrupt folder: " + it._source
                 }
             }
         }

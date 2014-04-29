@@ -67,6 +67,10 @@ class ListsController {
 
         def menu = []
 
+        //Initialize the daily favorite lists
+        def ddbAllList = listsService.getDdbAllList()
+        menu.add(ddbAllList)
+
         //If the user is logged in initialize his public favorite lists
         if (user != null) {
             // Get the public folder list of the user
@@ -98,7 +102,9 @@ class ListsController {
 
         if (listId == "UserList") {
             folders = listsService.getUserFolders()
-        } else if (listId == "DdbDailyList") {
+        } else if (listId == "DdbAllList") {
+            folders = listsService.getDdbAllFolders()
+        }else if (listId == "DdbDailyList") {
             folders = listsService.getDdbDailyFolders()
         } else {
             folders = listsService.getPublicFoldersForList(listId)
