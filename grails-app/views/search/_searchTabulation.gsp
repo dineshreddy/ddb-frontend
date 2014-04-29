@@ -34,8 +34,9 @@ limitations under the License.
 
     </ul>
   </div>
+  <g:if test="${(active=='items')}" >
   <div class="span3">
-    <%-- <ddb:isLoggedIn> --%>
+    <ddb:isLoggedIn> 
     <div id="addToSavedSearches">
       <div class="add-to-saved-searches"></div>
       <a id="addToSavedSearchesAnchor"> <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" />
@@ -73,6 +74,7 @@ limitations under the License.
         </button>
       </div>
     </div>
-    <%-- </ddb:isLoggedIn> --%>
+    </ddb:isLoggedIn>
   </div>
+  </g:if>
 </div>
