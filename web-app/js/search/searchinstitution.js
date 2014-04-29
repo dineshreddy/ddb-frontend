@@ -25,4 +25,4 @@ de.ddb.next.search = de.ddb.next.search || {};
 $(function() {
   if (jsPageName === "searchinstitution") {
   }
-}
+});
