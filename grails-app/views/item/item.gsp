@@ -51,7 +51,6 @@ limitations under the License.
       </div>
          Sending PDF per Mail End    
 --%>
-      <g:render template="share" />
     </div>
     <g:render template="binaries" />
   </div>

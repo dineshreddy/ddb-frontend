@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page defaultCodec="none" %>
 <g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 <html>
 <head>
@@ -260,7 +261,7 @@ origin .show-origin span {
 <body>
   <table border="0" cellpadding="0" cellspacing="0" summary="Print View for items on DDB" width="700px">
     <tr>
-      <td><rendering:inlinePng bytes="${logo}" alt="Deutsche Digitale Bibliothek" /></td>
+      <td><rendering:inlinePng bytes="${logo}" alt="Deutsche Digitale Bibliothek" width="270px" height="68px"/></td>
     </tr>
     <tr>
       <td><g:render template="pdfTableInstitution" /></td>
