@@ -17,7 +17,7 @@ limitations under the License.
   <g:if test="${folders?.size() > 0}">
   
     <%-- TODO Replace this dummy navigation with DDBNEXT-1383 --%>
-    <div class="results-paginator-options bb">
+    <div class="results-paginator-options">
       <strong>1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;Weiter</strong>
     </div>
     <div class="list-items">

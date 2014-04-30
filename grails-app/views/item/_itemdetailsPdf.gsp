@@ -14,11 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@ page import="net.sf.json.*" %>
+<%@page defaultCodec="none" %>
 <table border="0" cellpadding="8" cellspacing="0" width="100%">
   <g:each in="${fields}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong> ${it.name}:
-      </strong></td>
+      <td style="width: 35%" class="valign-top"><strong> 
+      ${it.name}:</strong>
+      </td>
       <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
@@ -26,13 +28,13 @@ limitations under the License.
               <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
-              <![CDATA[ ${value} ]]>
+              ${it.value} 
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-          <![CDATA[ ${value} ]]>
+           ${it.value} 
         </g:else>
       </td>
     </tr>

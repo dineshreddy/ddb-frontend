@@ -40,3 +40,8 @@ ul#tabulator   {
   list-style-type: none;
   padding-right: 20px;
 }
+#addToSavedSearches {
+  float:right;
+  line-height: 20px;
+  margin: 10px 0;
+}
