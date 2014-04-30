@@ -596,6 +596,11 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 5px;
 }
 
+.results-paginator-options {
+  border-bottom: solid 2px #efebe8;
+  padding-left: 30px;
+}
+
 .results-paginator-options label {
   cursor: default;
 }
@@ -939,6 +944,12 @@ input[type="checkbox"],input[type="radio"] {
 /*Flyout end*/
 
 /* responsive */
+@media (max-width: 1200px) {
+  .results-paginator-options {
+    padding-left: 20px;
+  }
+}
+
 @media (max-width: 979px) {
    .search-results-list .summary .thumbnail{
      margin-right: 40px;
