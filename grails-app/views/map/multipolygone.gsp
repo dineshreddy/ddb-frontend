@@ -33,7 +33,7 @@ Ut id scelerisque arcu. Vestibulum ante ipsum primis in faucibus orci luctus et 
 Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictum neque. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse rhoncus lacinia tellus, eget fringilla lacus faucibus quis. Duis eu lectus dapibus justo consectetur fermentum. Nulla magna lorem, sodales eleifend nibh et, vulputate scelerisque ipsum. Sed ut sapien ac metus hendrerit pellentesque. Pellentesque condimentum in quam at iaculis. Curabitur ligula ante, vestibulum quis facilisis sit amet, congue vel nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce eu tortor tristique, fringilla odio sed, interdum lacus. Curabitur id malesuada velit.
           </div>
           <div class="span6 slide-viewer item-detail">
-            <div id="ddb-map"></div>
+            <div id="ddb-map" data-geometry="${geometryInput}"></div>
             <div class="binary-title" title="**Some title**">
               <span>**Some title**</span>
             </div>

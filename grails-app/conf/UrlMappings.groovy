@@ -24,12 +24,12 @@ class UrlMappings {
             controller="search"
             action="institution"
         }
-        
+
         "/searchresults/$q?" {
             controller="search"
             action="results"
         }
-        
+
         "/facets/$q?" {
             controller="facets"
             action="facetsList"
@@ -229,7 +229,7 @@ class UrlMappings {
             controller="entity"
             action="personsearch"
         }
-        
+
         "/binary/$filename**" {
             controller="apis"
             action="binary"
@@ -320,7 +320,7 @@ class UrlMappings {
             action="index"
         }
 
-        "/multipolygone" {
+        "/multipolygone/$id" {
             controller="map"
             action="multipolygone"
         }

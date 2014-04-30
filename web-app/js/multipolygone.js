@@ -95,20 +95,6 @@ jQuery(document).ready(function($) {
 //        this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
 //      },
 //
-//      _loadMultiPolygonWKT : function() {
-//        $.ajax({
-//          type : 'GET',
-//          dataType : 'xml',
-//          async : true,
-//          cache: true,
-//          url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/Q57RUQMSOXXKNFKZLOFXIENEUKYHS45W/source?client=DDB-NEXT&oauth_consumer_key",
-//          success : function(dataText){
-//            var dataXML = XML.parse(dataText);
-//            this.polygon = dataXML.geometry;
-//          }
-//        });
-//      },
-//
 //      _applyConfiguration : function(config) {
 //        for (var key in config) {
 //          if (config.hasOwnProperty(key)) {

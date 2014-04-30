@@ -739,4 +739,18 @@ class ItemService {
         }
         return vResult
     }
+
+    def getItemXmlSource(itemId) {
+        def result = []
+        def apiResponse = ApiConsumer.getXml(configurationService.getBinaryUrl(), "/items/" + itemId + "/source")
+        if (apiResponse.isOk()) {
+            result = apiResponse.getResponse().toXmlString()
+        }
+        else if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+            log.error "XMLMetadata: XML file could not be fetched"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return result
+    }
+
 }

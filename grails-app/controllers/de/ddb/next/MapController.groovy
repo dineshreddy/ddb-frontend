@@ -16,9 +16,21 @@
 package de.ddb.next
 
 class MapController {
+    def itemService
 
     def multipolygone() {
-        //throw new ItemNotFoundException() // Deactivated multipolygone for 4.3.RC1, like for the maptest
-        render(view: "multipolygone", model: [])
+        def input = findGeometryById()
+        //throw new ItemNotFoundException() // Deactivated multipolygone for 4.3.RC1
+        render(view: "multipolygone", model: [geometryInput: input])
+    }
+
+    def findGeometryById() {
+
+        def id = params.id
+        def itemSource = itemService.getItemXmlSource(id)
+        def collection = new XmlSlurper().parseText(itemSource)
+        def geometry = collection.monument.georeference.geometry.text()
+
+        return geometry
     }
 }
