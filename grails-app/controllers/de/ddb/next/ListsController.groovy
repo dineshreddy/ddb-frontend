@@ -25,6 +25,7 @@ import de.ddb.common.constants.SupportedLocales
 
 
 
+
 /**
  * Controller class for list related views
  *  
@@ -43,9 +44,17 @@ class ListsController {
     def index() {
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+
+        def queryString = request.getQueryString() ? request.getQueryString() : ""
+
+        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+
         def model = [lists: [], folders: null, selectedListId : null]
 
         model.lists = createListMenu()
+
 
         //If a list of the menu has been selected take it
         if (params.id) {
@@ -64,11 +73,7 @@ class ListsController {
             model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
 
-        //Handling pagination
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-        // convertQueryParametersToSearchParameters modifies params
-        params.remove("query")
-        urlQuery["offset"] = 0
+
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         def folderNumbers = model.folders?.size()
@@ -82,18 +87,26 @@ class ListsController {
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(folderNumbers/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
         def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def paginationURL = searchService.buildPagination(folderNumbers, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
 
         model.resultsPaginatorOptions = resultsPaginatorOptions
         model.resultsOverallIndex = resultsOverallIndex
         model.page = page
         model.totalPages = totalPages
+        model.paginationURL = paginationURL
 
-        println model.resultsPaginatorOptions
-        println model.resultsOverallIndex
-        println model.page
-        println model.totalPages
+        println "OFFSET " + urlQuery[SearchParamEnum.OFFSET.getName()]
+        println "resultsPaginatorOptions " + model.resultsPaginatorOptions
+        println "resultsOverallIndex " + model.resultsOverallIndex
+        println "page " + model.page
+        println "totalPages " + model.totalPages
+        println "paginationURL " + model.paginationURL
 
         render(view: "lists", model: model)
+    }
+
+    private void createPagination(def model) {
+
     }
 
     /**

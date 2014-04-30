@@ -19,7 +19,7 @@ limitations under the License.
     <%-- TODO Replace this dummy navigation with DDBNEXT-1383 --%>
     <div class="results-paginator-options bb">
 <%--      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />--%>
-<%--      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />--%>
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
     </div>
     <div class="list-items">
       <ul class="unstyled">
