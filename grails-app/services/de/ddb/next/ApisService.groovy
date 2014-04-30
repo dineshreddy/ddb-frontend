@@ -57,7 +57,8 @@ class ApisService {
         if(queryParameters[SearchParamEnum.CALLBACK.getName()])
             query[SearchParamEnum.CALLBACK.getName()] = queryParameters[SearchParamEnum.CALLBACK.getName()]
 
-        if(queryParameters[SearchParamEnum.FACET.getName()]){
+        if(queryParameters[SearchParamEnum.FACET.getName()] &&
+           queryParameters[SearchParamEnum.FACET.getName()] != "null"){
             if(queryParameters[SearchParamEnum.FACET.getName()].getClass().isArray()){
                 query[SearchParamEnum.FACET.getName()] = []
                 queryParameters[SearchParamEnum.FACET.getName()].each {
