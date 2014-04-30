@@ -173,6 +173,9 @@ limitations under the License.
                 <li
                   class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "about"],[controller: "content", dir: "news"],[controller: "content", dir: "ddb"],[controller: "content", dir: "competence-network"],[controller: "institution"],[controller: "content", dir: "faq"]]}">active-default</ddb:isMappingActive>">
                   <g:link controller="content" params="[dir: 'about']"><g:message encodeAs="html" code="ddbnext.AboutUs" /></g:link>
+                  <div class="arrow-container">
+                    <div class="arrow-up"></div>
+                  </div>
                   <ul>
                     <li
                       class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</ddb:isMappingActive>">
@@ -205,6 +208,9 @@ limitations under the License.
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"],[controller: "lists"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+                    <div class="arrow-container">
+                      <div class="arrow-up"></div>
+                    </div>
                     <ul>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
@@ -226,6 +232,9 @@ limitations under the License.
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "favoritesview", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
+                    <div class="arrow-container">
+                      <div class="arrow-up"></div>
+                    </div>
                     <ul>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "favoritesview", action: "favorites"]]}">active-default</ddb:isMappingActive>">

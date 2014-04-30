@@ -17,16 +17,16 @@ $(document).ready(function() {
   $(".navigation").mouseenter(function() {
     $(".navigation > li").hover(function() {
       $(".navigation li").removeClass("active");
-      if (!$(this).hasClass('active-default')) {
-        $(".active-default ul").css('display', 'none');
-      } else {
-        $(".active-default ul").css('display', 'block');
-      }
+//      if (!$(this).hasClass('active-default')) {
+//        $(".active-default ul").css('display', 'none');
+//      } else {
+//        $(".active-default ul").css('display', 'block');
+//      }
       $(this).addClass("active");
     });
   }).mouseleave(function() {
     $(".navigation li").removeClass("active");
-    $(".active-default ul").css('display', 'block');
+//    $(".active-default ul").css('display', 'block');
   });
   //Accessibility: keyboard for language selection
   $('.language-wrapper >a').focus(function() {
