@@ -187,16 +187,15 @@ class SearchController {
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
-
-        if (urlQuery["query"]=="*"){
+        def queryString = request.getQueryString()
+        if ((!urlQuery["query"])||(urlQuery["query"]=="*")){
             urlQuery["query"]="category:Institution"
+            queryString="query=*"
         }else{
             urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
         }
 
-
-        def queryString = request.getQueryString()
-
+        
         if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
