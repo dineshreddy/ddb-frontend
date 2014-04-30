@@ -22,10 +22,8 @@ limitations under the License.
 <html>
 <head>
 <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
 <meta name="page" content="results" />
 <meta name="layout" content="main" />
-
 </head>
 
 <body>
@@ -74,39 +72,6 @@ limitations under the License.
             <g:message encodeAs="html" code="ddbnext.Clear_filters"/>
         </a>
       </div>
-
-      <ddb:isLoggedIn>
-        <div id="addToSavedSearches">
-          <div class="add-to-saved-searches"></div>
-          <a id="addToSavedSearchesAnchor"><g:message encodeAs="html" code="ddbnext.Save_Savedsearch"/></a>
-          <span id="addToSavedSearchesSpan" class="off"><g:message encodeAs="html" code="ddbnext.Saved_Savedsearch"/></span>
-        </div>
-      
-        <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
-           aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
-          <div class="modal-header">
-            <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-            <h3 id="addToSavedSearchesLabel">
-              <g:message encodeAs="html" code="ddbnext.Save_Savedsearch"/>
-            </h3>
-          </div>
-          <div class="modal-body">
-            <div><b><g:message encodeAs="html" code="ddbnext.Mandatory"/></b></div>
-            <br/>
-            <div><g:message encodeAs="html" code="ddbnext.Savedsearch_Title"/>*</div>
-            <div><input id="addToSavedSearchesTitle" type="text"></div>
-          </div>
-          <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbnext.Close"/>
-            </button>
-            <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
-              <g:message encodeAs="html" code="ddbnext.Save"/>
-            </button>
-          </div>
-        </div>
-      </ddb:isLoggedIn>
-      
       <div class="compare-objects bt br bb bl off">
         <div class="compare-header">
           <b><g:message encodeAs="html" code="ddbnext.SearchResultsCompareObjects"/></b>
@@ -156,9 +121,12 @@ limitations under the License.
     </div>
     <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
       <div class="off result-pages-count">${totalPages}</div>
+      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="items" />
+      <div style="clear:both;"> 
+
       
       <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}"/>
-      
+            
       <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
