@@ -145,9 +145,13 @@ div.sector-facet>label:hover {
   min-height: 0;
 }
 
+.institutioncount {
+   height: 28px;
+   margin-top: 12px;
+}
+
 .institutionlist #institution-map {
   border-top: 2px solid #EFEBE8;
-  margin-top: 40px;
 }
 
 .institutionlist .filter-title {
