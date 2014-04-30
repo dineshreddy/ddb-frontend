@@ -16,7 +16,13 @@
 package de.ddb.next
 
 import net.sf.json.JSON
+
+import org.springframework.web.servlet.support.RequestContextUtils
+
 import de.ddb.common.beans.User
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
+
 
 
 /**
@@ -27,6 +33,7 @@ import de.ddb.common.beans.User
 class ListsController {
     def favoritesService
     def listsService
+    def searchService
 
     /**
      * Build the model for the lists
@@ -34,6 +41,8 @@ class ListsController {
      * @return
      */
     def index() {
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
         def model = [lists: [], folders: null, selectedListId : null]
 
         model.lists = createListMenu()
@@ -54,6 +63,35 @@ class ListsController {
         if (model.folders?.size() == 0) {
             model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
+
+        //Handling pagination
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        // convertQueryParametersToSearchParameters modifies params
+        params.remove("query")
+        urlQuery["offset"] = 0
+        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+
+        def folderNumbers = model.folders?.size()
+
+        //Calculating results details info (number of results in page, total results number)
+        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
+                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
+                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>folderNumbers)? folderNumbers:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
+
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+        def totalPages = (Math.ceil(folderNumbers/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+
+        model.resultsPaginatorOptions = resultsPaginatorOptions
+        model.resultsOverallIndex = resultsOverallIndex
+        model.page = page
+        model.totalPages = totalPages
+
+        println model.resultsPaginatorOptions
+        println model.resultsOverallIndex
+        println model.page
+        println model.totalPages
 
         render(view: "lists", model: model)
     }
