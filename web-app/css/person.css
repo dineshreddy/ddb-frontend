@@ -22,11 +22,6 @@
   background: none;
 }
 
-.entities .results-paginator-options {
-  height: 40px;
-  line-height: 40px;
-}
-
 .entities .facets-list .facets-item:first-child {
   margin-top: 14px;
 }
