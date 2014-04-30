@@ -217,13 +217,12 @@ $(document).ready(function() {
         this.vectorLayer = new OpenLayers.Layer.Vector('My Vectors');
         this.osmMap.addLayer(this.vectorLayer);
 
-        this._loadMultiPolygonInput("FEGN7MRGZNDXU4VATES3T6LXOEZXYZCC");
+        //this._loadMultiPolygonInput("FEGN7MRGZNDXU4VATES3T6LXOEZXYZCC");
         //console.log("input"+input);
 
         var points = []
-        var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
-        //var cortexInput = "MULTIPOLYGON(((3473622.049 5500688.022,3473620.968 5500691.862,3473618.442 5500691.154,3473616.782 5500697.161,3473619.291 5500697.86,3473618.234 5500701.646,3473628.544 5500704.52,3473629.993 5500699.324,3473631.424 5500699.723,3473632.311 5500696.55,3473632.316 5500696.53,3473630.878 5500696.128,3473632.31 5500691.036,3473632.345 5500690.911,3473622.049 5500688.022)))";
-        //var cortexInput = input;
+        //var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
+        var cortexInput = $('#ddb-map').attr("data-geometry");
 
         cortexInput = cortexInput.replace("MULTIPOLYGON(((", "");
         cortexInput = cortexInput.replace(")))", "");
@@ -247,14 +246,13 @@ $(document).ready(function() {
           var input;
           $.ajax({
             type: "GET",
-            url : 'http://api.deutsche-digitale-bibliothek.de/items/' + iid + '/source',
-            // url : "http://backend-t3.deutsche-digitale-bibliothek.de:9998/items/"+iid+"/source?client=DDB-NEXT&oauth_consumer_key",
+            url : 'jsContextPath' + '/multipolygone/' + iid,
             dataType: "xml",
             success: function(xml) {
               input = $(xml).find('geometry').text();
             },
             error: function() {
-              //alert("An error occurred while processing XML file.");
+              alert("An error occurred while processing XML file.");
             }
           });
       },
