@@ -248,6 +248,11 @@ class BookmarksService {
             createdAt = it._source.createdAt
         }
 
+        def updatedAt = 0
+        if(it._source.updatedAt && !(it._source.updatedAt instanceof JSONNull) && (it._source.updatedAt != null)){
+            updatedAt = it._source.updatedAt
+        }
+
         def folder = new Folder(
                 it._id,
                 it._source.user,
@@ -257,8 +262,8 @@ class BookmarksService {
                 it._source.publishingName,
                 it._source.isBlocked,
                 it._source.blockingToken,
-                it._source.createdAt,
-                it._source.updatedAt
+                createdAt,
+                updatedAt
                 )
         return folder
     }
