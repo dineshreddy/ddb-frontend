@@ -283,16 +283,17 @@ class ListsService {
      *
      * @return the public folders for the already logged in user
      */
-    List<Folder> getUserFolders() {
+    def getUserFolders(int offset=0, int size=20) {
         def folders = null
 
         def User user = favoritesService.getUserFromSession()
         if (user != null) {
-            folders = bookmarksService.findAllPublicFolders(user.getId())
+            folders = bookmarksService.findAllPublicFolders(user.getId(), offset, size)
             folders = enhanceFolderInformation(folders)
         }
 
-        return folders
+        //TODO Fix count
+        return ["count":55, "folders":folders]
     }
 
     /**
@@ -300,11 +301,14 @@ class ListsService {
      *
      * @return the public folders for the already logged in user
      */
-    List<Folder> getDdbDailyFolders() {
+    def getDdbDailyFolders(int offset=0, int size=20) {
         def folders = null
 
         folders = bookmarksService.findAllPublicFoldersDaily(new Date())
-        return enhanceFolderInformation(folders)
+        enhanceFolderInformation(folders)
+
+        //TODO Fix count
+        return ["count":55, "folders":folders]
     }
 
     /**
@@ -312,16 +316,17 @@ class ListsService {
      *
      * @return the public folders for the already logged in user
      */
-    List<Folder> getDdbAllPublicFolders() {
+    def getDdbAllPublicFolders(int offset=0, int size=20) {
         def folders = null
 
-        folders = bookmarksService.findAllPublicFolders()
+        folders = bookmarksService.findAllPublicFolders(offset, size)
         folders = enhanceFolderInformation(folders)
 
         //Sort the folders by newestItemCreationDate descending
         folders.sort{a,b-> b.newestItemCreationDate<=>a.newestItemCreationDate}
 
-        return folders
+        //TODO Fix count
+        return ["count":55, "folders":folders]
     }
 
     /**
@@ -329,7 +334,7 @@ class ListsService {
      * @param userId
      * @return
      */
-    List<Folder> getPublicFoldersForList(String listId) {
+    def getPublicFoldersForList(String listId, int offset=0, int size=20) {
         List<Folder> folders = []
         FolderList folderList = findListById(listId)
 
@@ -344,7 +349,10 @@ class ListsService {
             }
         }
 
-        return enhanceFolderInformation(folders)
+        enhanceFolderInformation(folders)
+
+        //TODO Fix count
+        return ["count":55, "folders":folders]
     }
 
     /**
@@ -378,6 +386,12 @@ class ListsService {
         }
     }
 
+    /**
+     * 
+     * @param oldDate
+     * @param locale
+     * @return
+     */
     private String formatDate(Date oldDate, Locale locale) {
         SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))

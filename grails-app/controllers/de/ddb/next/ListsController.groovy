@@ -23,9 +23,6 @@ import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 
-
-
-
 /**
  * Controller class for list related views
  *  
@@ -42,31 +39,38 @@ class ListsController {
      * @return
      */
     def index() {
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-
-        def queryString = request.getQueryString() ? request.getQueryString() : ""
-
-        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
         def model = [lists: [], folders: null, selectedListId : null]
 
+        //Request parameter handling
+        //*********************************************************************
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def queryString = request.getQueryString() ? request.getQueryString() : ""
+        int offset = urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()
+        int rows = urlQuery[SearchParamEnum.ROWS.getName()].toInteger()
+
+        //Init menu
+        //*********************************************************************
         model.lists = createListMenu()
 
+        //Init folders
+        //*********************************************************************
+        def folders = null
 
-        //If a list of the menu has been selected take it
         if (params.id) {
             model.selectedListId = params.id
-            model.folders = getFoldersOfList(params.id)
+            folders = getFoldersOfList(params.id, offset, rows)
         }
         //If the page is loaded for the first time, take the first entry in the menu
         else if (model.lists.size() > 0) {
             def firstList = model.lists.get(0)
             model.selectedListId = firstList.folderListId
-            model.folders = getFoldersOfList(firstList.folderListId)
+            folders = getFoldersOfList(firstList.folderListId, offset, rows)
         }
+
+        model.folders = folders.folders  as JSON
+        model.folderCount = folders.count
 
         //If a list has no folder, show an error message
         if (model.folders?.size() == 0) {
@@ -74,20 +78,19 @@ class ListsController {
         }
 
 
+        //Pagination stuff
+        //*********************************************************************
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-
-        def folderNumbers = model.folders?.size()
+        def folderCount = model.folderCount
 
         //Calculating results details info (number of results in page, total results number)
-        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
-                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
-                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>folderNumbers)? folderNumbers:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
+        def resultsOverallIndex = (offset+1)+' - ' + ((offset + rows>folderCount)? folderCount:offset + rows)
 
         //Calculating results pagination (previous page, next page, first page, and last page)
-        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-        def totalPages = (Math.ceil(folderNumbers/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def page = ((int)Math.floor(offset/rows)+1).toString()
+        def totalPages = (Math.ceil(folderCount/rows).toInteger())
         def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def paginationURL = searchService.buildPagination(folderNumbers, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
+        def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
 
         model.resultsPaginatorOptions = resultsPaginatorOptions
         model.resultsOverallIndex = resultsOverallIndex
@@ -105,9 +108,6 @@ class ListsController {
         render(view: "lists", model: model)
     }
 
-    private void createPagination(def model) {
-
-    }
 
     /**
      * 
@@ -148,20 +148,20 @@ class ListsController {
      * @param listId the id of the list
      * @return the folders for a given list
      */
-    private getFoldersOfList(def listId) {
+    private getFoldersOfList(def listId, int offset=0, int size=20) {
         def folders = null
 
         if (listId == "UserList") {
             folders = listsService.getUserFolders()
         } else if (listId == "DdbAllList") {
-            folders = listsService.getDdbAllPublicFolders()
+            folders = listsService.getDdbAllPublicFolders(offset, size)
         }else if (listId == "DdbDailyList") {
             folders = listsService.getDdbDailyFolders()
         } else {
             folders = listsService.getPublicFoldersForList(listId)
         }
 
-        return folders as JSON
+        return folders
     }
 
 }
