@@ -143,7 +143,7 @@ class ListsController {
         if (listId == "DdbAllList") {
             folders = listsService.getDdbAllPublicFolders(offset, size)
         }else {
-            folders = listsService.getPublicFoldersForList(listId)
+            folders = listsService.getPublicFoldersForList(listId, offset, size)
         }
 
         return folders

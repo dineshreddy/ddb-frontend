@@ -87,26 +87,6 @@ class BookmarksService {
     }
 
     /**
-     * Returns the number of public folders in the index
-     * @return the number of public folders in the index
-     */
-    int getPublicFolderCount() {
-        log.info "getPublicFolderCount()"
-
-        int count = -1
-
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
-                ["q":"isPublic:true"])
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            count = response.hits.total
-        }
-
-        return count
-    }
-
-    /**
      * Returns the number of bookmarks in the index
      * @return the number of bookmarks in the index
      */
@@ -122,14 +102,16 @@ class BookmarksService {
      * 
      * @return all public folder for a given userId
      */
-    List<Folder> findAllPublicFolders(String userId) {
+    List<Folder> findAllPublicFolders(String userId, def mustBeUnblocked=false) {
         log.info "findAllPublicFolders(userId)"
 
         List<Folder> folders = findAllFolders(userId)
         List<Folder> publicFolders = []
         folders?.each {
             if(it.isPublic){
-                publicFolders.add(it)
+                if ((!mustBeUnblocked) || ( mustBeUnblocked && !it.isBlocked)) {
+                    publicFolders.add(it)
+                }
             }
         }
         return publicFolders
@@ -180,12 +162,13 @@ class BookmarksService {
      *
      * @return a lists of folders for a given userid
      */
-    List<Folder> findAllPublicFolders(int offset=0, int size=20) {
+    def findAllPublicUnblockedFolders(int offset=0, int size=20) {
         log.info "findAllFolders(${offset} ${size})"
 
         List<Folder> folderList = []
+        int count = -1
 
-        def sortQuery = '{"sort" : [{ "updatedAt" : {"order" : "desc"}}],"query": {"term" : {isPublic:true}}}'
+        def sortQuery = '{"sort" : [{ "updatedAt" : {"order" : "desc"}}],"query" : {"bool": {"must" : [{"term" : { "isPublic" : "true" }},{"term" : { "isBlocked" : "false" }}]}}}'
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
                 ["source":sortQuery, "size":"${size}", "from":"${offset}"])
@@ -205,8 +188,10 @@ class BookmarksService {
                     log.error e.message + " findAllFolders(): found corrupt folder: " + it._source
                 }
             }
+
+            count = response.hits.total
         }
-        return folderList
+        return ["folders":folderList, "count":count]
     }
 
     /**

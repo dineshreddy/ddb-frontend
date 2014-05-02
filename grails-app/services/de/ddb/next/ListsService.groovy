@@ -233,10 +233,10 @@ class ListsService {
      * @return the public folders for the already logged in user
      */
     def getDdbAllPublicFolders(int offset=0, int size=20) {
-        def folders = null
+        def result = bookmarksService.findAllPublicUnblockedFolders(offset, size)
 
-        folders = bookmarksService.findAllPublicFolders(offset, size)
-        def folderCount = bookmarksService.getPublicFolderCount()
+        def folders = result.folders
+        def folderCount = result.count
 
         //Enhance the folder object with additional information
         enhanceFolderInformation(folders)
@@ -250,23 +250,24 @@ class ListsService {
      * @return
      */
     def getPublicFoldersForList(String listId, int offset=0, int size=20) {
-        List<Folder> folders = []
+        //Use a Set to avoid duplicates
+        Set<Folder> folders = []
         FolderList folderList = findListById(listId)
 
         //Retrieve the folder by userId and by folderId
         folderList?.users?.each {
-            folders.addAll(bookmarksService.findAllPublicFolders(it))
+            folders.addAll(bookmarksService.findAllPublicFolders(it, true))
         }
 
         folderList?.folders?.each {
             def folder = bookmarksService.findFolderById(it)
-            if (folder.isPublic) {
+            if (folder && !folder.isBlocked) {
                 folders.add(folder)
             }
         }
 
         //Do the paging
-        def range = offset..(offset+size)
+        def range = offset..(offset+size-1)
         def foldersSorted = folders.sort{it.updatedDate}
         def foldersPaged = []
         range.each {
