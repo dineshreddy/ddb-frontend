@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
-import de.ddb.common.beans.User
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.FolderList
 
@@ -146,7 +145,7 @@ class ListsService {
      * @return a {@link FolderList}
      */
     FolderList findListById(String listId) {
-        log.info "findFolderById()"
+        log.info "findListById()"
         def retVal = null
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/${listId}", false, [:])
@@ -187,16 +186,8 @@ class ListsService {
      * @return the number of lists in the search index
      */
     int getListCount() {
-        int count = -1
-
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false)
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            count = response.hits.total
-        }
-
-        return count
+        log.info "getListCount()"
+        return elasticSearchService.getDocumentCountByType("folderList")
     }
 
     /**
@@ -220,47 +211,6 @@ class ListsService {
     }
 
     /**
-     * Return a {@link FolderList} containing all public folders for a given user
-     * 
-     * @return a {@link FolderList} containing all public folders for a given user
-     */
-    def getUserList(String userId) {
-        List<Folder> publicFolders = bookmarksService.findAllPublicFolders(userId)
-
-        def folderIds = []
-        publicFolders.each { it ->
-            folderIds.add(it.folderId)
-        }
-
-        def folderList = new FolderList(
-                "UserList",
-                "ddbnext.lists.userList",
-                null,
-                userId,
-                folderIds
-                )
-
-        return folderList
-    }
-
-    /**
-     * Return a {@link FolderList} containing the public folders for the current day
-     *
-     * @return  a {@link FolderList} containing the public folders for the current day
-     */
-    def getDdbDailyList() {
-
-        def folderList = new FolderList(
-                "DdbDailyList",
-                "ddbnext.lists.dailyList",
-                null,
-                "",
-                ""
-                )
-        return folderList
-    }
-
-    /**
      * Return a {@link FolderList} containing the public folders for the current day
      *
      * @return  a {@link FolderList} containing the public folders for the current day
@@ -277,38 +227,6 @@ class ListsService {
         return folderList
     }
 
-
-    /**
-     * Returns the public folders for the already logged in user
-     *
-     * @return the public folders for the already logged in user
-     */
-    def getUserFolders(int offset=0, int size=20) {
-        def folders = null
-
-        def User user = favoritesService.getUserFromSession()
-        if (user != null) {
-            folders = bookmarksService.findAllPublicFolders(user.getId(), offset, size)
-            folders = enhanceFolderInformation(folders)
-        }
-
-        //TODO Fix count
-        return ["count":55, "folders":folders]
-    }
-
-    /**
-     * Returns the public folders for the already logged in user
-     *
-     * @return the public folders for the already logged in user
-     */
-    def getDdbDailyFolders(int offset=0, int size=20) {
-        def folders = bookmarksService.findAllPublicFoldersDaily(new Date())
-        enhanceFolderInformation(folders)
-
-        //TODO Fix count
-        return ["count":33, "folders":folders]
-    }
-
     /**
      * Returns the public folders for the already logged in user
      *
@@ -318,9 +236,10 @@ class ListsService {
         def folders = null
 
         folders = bookmarksService.findAllPublicFolders(offset, size)
-        enhanceFolderInformation(folders)
-
         def folderCount = bookmarksService.getPublicFolderCount()
+
+        //Enhance the folder object with additional information
+        enhanceFolderInformation(folders)
 
         return ["count":folderCount, "folders":folders]
     }
@@ -334,6 +253,7 @@ class ListsService {
         List<Folder> folders = []
         FolderList folderList = findListById(listId)
 
+        //Retrieve the folder by userId and by folderId
         folderList?.users?.each {
             folders.addAll(bookmarksService.findAllPublicFolders(it))
         }
@@ -345,10 +265,20 @@ class ListsService {
             }
         }
 
+        //Do the paging
+        def range = offset..(offset+size)
+        def foldersSorted = folders.sort{it.updatedDate}
+        def foldersPaged = []
+        range.each {
+            if (it < foldersSorted.size()) {
+                foldersPaged.add(foldersSorted.get(it))
+            }
+        }
+
+        //Enhance the folder object with additional information
         enhanceFolderInformation(folders)
 
-        //TODO Fix count
-        return ["count":55, "folders":folders]
+        return ["count":folders.size(), "folders":foldersPaged]
     }
 
     /**

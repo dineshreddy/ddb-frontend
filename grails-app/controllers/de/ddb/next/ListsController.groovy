@@ -98,12 +98,12 @@ class ListsController {
         model.totalPages = totalPages
         model.paginationURL = paginationURL
 
-        println "OFFSET " + urlQuery[SearchParamEnum.OFFSET.getName()]
-        println "resultsPaginatorOptions " + model.resultsPaginatorOptions
-        println "resultsOverallIndex " + model.resultsOverallIndex
-        println "page " + model.page
-        println "totalPages " + model.totalPages
-        println "paginationURL " + model.paginationURL
+        //        println "OFFSET " + urlQuery[SearchParamEnum.OFFSET.getName()]
+        //        println "resultsPaginatorOptions " + model.resultsPaginatorOptions
+        //        println "resultsOverallIndex " + model.resultsOverallIndex
+        //        println "page " + model.page
+        //        println "totalPages " + model.totalPages
+        //        println "paginationURL " + model.paginationURL
 
         render(view: "lists", model: model)
     }
@@ -121,17 +121,6 @@ class ListsController {
         //Initialize the daily favorite lists
         def ddbAllList = listsService.getDdbAllList()
         menu.add(ddbAllList)
-
-        //If the user is logged in initialize his public favorite lists
-        if (user != null) {
-            // Get the public folder list of the user
-            def userList = listsService.getUserList(user.getId())
-            menu.add(userList)
-        }
-
-        //Initialize the daily favorite lists
-        def ddbDailyList = listsService.getDdbDailyList()
-        menu.add(ddbDailyList)
 
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
@@ -151,13 +140,9 @@ class ListsController {
     private getFoldersOfList(def listId, int offset=0, int size=20) {
         def folders = null
 
-        if (listId == "UserList") {
-            folders = listsService.getUserFolders()
-        } else if (listId == "DdbAllList") {
+        if (listId == "DdbAllList") {
             folders = listsService.getDdbAllPublicFolders(offset, size)
-        }else if (listId == "DdbDailyList") {
-            folders = listsService.getDdbDailyFolders()
-        } else {
+        }else {
             folders = listsService.getPublicFoldersForList(listId)
         }
 
