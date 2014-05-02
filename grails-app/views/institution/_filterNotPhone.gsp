@@ -17,5 +17,5 @@ limitations under the License.
   <g:render template="sectorFacet" />
 </div>
 <aside>
-  <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText" args="${ [ total ] }" />
+  <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
 </aside>

@@ -51,29 +51,32 @@ limitations under the License.
     <div class="span3">
       <g:render template="filterNotPhone" />
     </div>
-    <div class="span9">
-    <noscript>
-      <div class="off">
-    </noscript>
-    <div class="loader">
-      <img alt="" src="../images/icons/loaderSmall.gif">
-    </div>
-    <noscript>
+    <div class="span9 institutioncount">
+      <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
+      <noscript>
+        <div class="off">
+      </noscript>
+      |
+      <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selectedcount">${total}</span>
+      <div class="loader">
+        <img alt="" src="../images/icons/loaderSmall.gif">
       </div>
-    </noscript>
-    <g:render template="filterPhone" />
-    <g:render template="pagination" />
+      <noscript>
+        </div>
+      </noscript>
+      <g:render template="filterPhone" />
+      <g:render template="pagination" />
       <div id="no-match-message" class="off">
         <g:message encodeAs="html" code="ddbnext.InstitutionPage_NoMatches" />
       </div>
       <ol id="institution-list">
         <g:each in="${ all }">
-        <li class="institution-listitem" data-sector="${ it?.sector }" 
-          data-institution-id="${ it?.id }" data-first-char="${ it?.firstChar }">
-          <i class="icon-institution"></i>
-          <g:render template="listItem" model="['item': it]"/>
-          <g:render template="children" model="['children': it?.children]"/>
-        </li>
+          <li class="institution-listitem" data-sector="${ it?.sector }" 
+            data-institution-id="${ it?.id }" data-first-char="${ it?.firstChar }">
+            <i class="icon-institution"></i>
+            <g:render template="listItem" model="['item': it]"/>
+            <g:render template="children" model="['children': it?.children]"/>
+          </li>
         </g:each>
       </ol>
     </div>
