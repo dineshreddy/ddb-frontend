@@ -302,13 +302,11 @@ class ListsService {
      * @return the public folders for the already logged in user
      */
     def getDdbDailyFolders(int offset=0, int size=20) {
-        def folders = null
-
-        folders = bookmarksService.findAllPublicFoldersDaily(new Date())
+        def folders = bookmarksService.findAllPublicFoldersDaily(new Date())
         enhanceFolderInformation(folders)
 
         //TODO Fix count
-        return ["count":55, "folders":folders]
+        return ["count":33, "folders":folders]
     }
 
     /**
@@ -320,13 +318,11 @@ class ListsService {
         def folders = null
 
         folders = bookmarksService.findAllPublicFolders(offset, size)
-        folders = enhanceFolderInformation(folders)
+        enhanceFolderInformation(folders)
 
-        //Sort the folders by newestItemCreationDate descending
-        folders.sort{a,b-> b.newestItemCreationDate<=>a.newestItemCreationDate}
+        def folderCount = bookmarksService.getPublicFolderCount()
 
-        //TODO Fix count
-        return ["count":55, "folders":folders]
+        return ["count":folderCount, "folders":folders]
     }
 
     /**
@@ -364,7 +360,6 @@ class ListsService {
     private enhanceFolderInformation(def folders) {
         def request = RequestContextHolder.currentRequestAttributes().request
         Locale locale = RequestContextUtils.getLocale(request)
-        folders = favoritesService.sortFolders(folders)
 
         folders.each {
             //Set the blocking token to ""
@@ -376,8 +371,6 @@ class ListsService {
             if (favoritesOfFolder.size() > 0) {
                 def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
                 it.oldestItemMetaData = itemMd.get(0)
-
-                it.newestItemCreationDate = favoritesOfFolder.get(favoritesOfFolder.size() - 1).creationDate
             }
 
             //Retrieve the number of favorites

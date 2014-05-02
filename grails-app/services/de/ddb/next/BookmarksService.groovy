@@ -61,7 +61,8 @@ class BookmarksService {
             publishingName : newFolder.publishingName,
             isBlocked : false,
             blockingToken : "",
-            createdAt : newFolder.creationDate.getTime()
+            createdAt : newFolder.creationDate.getTime(),
+            updatedAt : newFolder.creationDate.getTime()
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -172,7 +173,7 @@ class BookmarksService {
 
 
     /**
-     * Find all folders for a given userid.
+     * Find all folders sorted by the field updatedAt
      *
      * @param offset How many initial results should be skipped
      * @param size How many results should be returned
@@ -184,7 +185,7 @@ class BookmarksService {
 
         List<Folder> folderList = []
 
-        def sortQuery = '{"sort" : [{ "createdAt" : {"order" : "asc"}}],"query": {"term" : {isPublic:true}}}'
+        def sortQuery = '{"sort" : [{ "updatedAt" : {"order" : "desc"}}],"query": {"term" : {isPublic:true}}}'
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
                 ["source":sortQuery, "size":"${size}", "from":"${offset}"])
@@ -396,6 +397,16 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             newBookmarkId = response._id
             elasticSearchService.refresh()
+        }
+
+        //Refresh the updateDate on each folder the bookmark has been added
+        bookmark.folders.each {
+            Folder folder = findFolderById(it)
+            if (folder) {
+                updateFolder(folder)
+            } else {
+                log.warn "Cannot find bookmark folder: " + it
+            }
         }
 
         return newBookmarkId
@@ -738,13 +749,15 @@ class BookmarksService {
     void updateFolder(Folder folder) {
         log.info "updateFolder()"
 
+        Date now = new Date()
+
         def postBody = ""
         if(folder.description) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken ]]
+            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken]]
+            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)

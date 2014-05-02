@@ -53,11 +53,11 @@ postData() {
 
 
 #Create some folders
-postData "folder" "folder1" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Erster%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712}'
-postData "folder" "folder2" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Zweiter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1297648865712}'
-postData "folder" "folder3" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Dritter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1297648865712}'
-postData "folder" "folder4" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Vierter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712}'
-postData "folder" "folder5" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Fuenfter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712}'
+postData "folder" "folder1" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Erster%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712,"updatedAt":1397648865712}'
+postData "folder" "folder2" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Zweiter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1297648865712,"updatedAt":1397648865712}'
+postData "folder" "folder3" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Dritter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1297648865712,"updatedAt":1397648865712}'
+postData "folder" "folder4" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Vierter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712,"updatedAt":1397648865712}'
+postData "folder" "folder5" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","title":"Fuenfter%20Folder","description":"Das%20ist%20ein%20neuer%20Folder","isPublic":true,"publishingName":"boz1","isBlocked":false,"blockingToken":"","createdAt":1397648865712,"updatedAt":1397648865712}'
 
 #Create some bookmarks
 postData "bookmark" "bookmark1" '{"user":"5e2d10109f9011b02ae381f2fc2731ef","folder":["folder1"],"item":"6L7UG35FLDGWZWZSE3F62FN4YNDYNQ3W","createdAt":1297651865531,"type":"CULTURAL_ITEM","description":"","updatedAt":1397651865538}'
