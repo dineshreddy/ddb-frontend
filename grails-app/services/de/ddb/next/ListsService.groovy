@@ -251,7 +251,7 @@ class ListsService {
      */
     def getPublicFoldersForList(String listId, int offset=0, int size=20) {
         //Use a Set to avoid duplicates
-        Set<Folder> folders = []
+        List<Folder> folders = []
         FolderList folderList = findListById(listId)
 
         //Retrieve the folder by userId and by folderId
@@ -266,13 +266,15 @@ class ListsService {
             }
         }
 
+        //Sort the folders by updatedDate
+        folders = folders.sort{a,b -> b.updatedDate <=> a.updatedDate }
+
         //Do the paging
         def range = offset..(offset+size-1)
-        def foldersSorted = folders.sort{it.updatedDate}
         def foldersPaged = []
         range.each {
-            if (it < foldersSorted.size()) {
-                foldersPaged.add(foldersSorted.get(it))
+            if (it < folders.size()) {
+                foldersPaged.add(folders.getAt(it))
             }
         }
 

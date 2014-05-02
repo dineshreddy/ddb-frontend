@@ -41,7 +41,9 @@ class Folder {
 
 
 
-    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong) {
+    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong, def updateDateAsLong) {
+        Date now = new Date()
+
         this.folderId = folderId
         this.userId = userId
         this.title = title
@@ -70,9 +72,15 @@ class Folder {
         }
 
         if(JsonUtil.isAnyNull(creationDateAsLong)){
-            this.creationDate = new Date()
+            this.creationDate = now
         }else{
             this.creationDate = new Date(creationDateAsLong)
+        }
+
+        if(JsonUtil.isAnyNull(updateDateAsLong)){
+            this.updatedDate = now
+        }else{
+            this.updatedDate = new Date(updateDateAsLong)
         }
     }
 

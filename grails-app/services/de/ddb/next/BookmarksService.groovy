@@ -257,7 +257,8 @@ class BookmarksService {
                 it._source.publishingName,
                 it._source.isBlocked,
                 it._source.blockingToken,
-                it._source.createdAt
+                it._source.createdAt,
+                it._source.updatedAt
                 )
         return folder
     }
@@ -480,22 +481,7 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
-                def folder = new Folder(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.isPublic,
-                        it._source.publishingName,
-                        it._source.isBlocked,
-                        it._source.blockingToken,
-                        it._source.createdAt
-                        )
-
+                Folder folder = mapSourceToFolder(it)
 
                 if(folder.isValid()){
                     all.add(folder)
@@ -700,17 +686,8 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
-            Folder folder = new Folder(
-                    it._id,
-                    it._source.user,
-                    it._source.title,
-                    it._source.description,
-                    it._source.isPublic,
-                    it._source.publishingName,
-                    it._source.isBlocked,
-                    it._source.blockingToken,
-                    it._source.createdAt
-                    )
+
+            Folder folder = mapSourceToFolder(it)
             if(folder.isValid()){
                 return folder
             }else{

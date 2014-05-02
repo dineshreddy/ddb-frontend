@@ -201,7 +201,7 @@ class FavoritesController {
         def User user = favoritesService.getUserFromSession()
         if (user != null) {
             def publishingName = user.getUsername()
-
+            def now = System.currentTimeMillis()
             Folder newFolder = new Folder(
                     null,
                     user.getId(),
@@ -211,7 +211,8 @@ class FavoritesController {
                     publishingName,
                     false,
                     "",
-                    System.currentTimeMillis())
+                    now,
+                    now)
             String newFolderId = bookmarksService.createFolder(newFolder)
             if(newFolderId){
                 result = response.SC_CREATED
