@@ -233,8 +233,12 @@ hr {
 }
 
 .favorites-results-controls .delete-btn {
-  float:left;
-  margin-right: 25px;
+  float:right;
+  margin-left: 25px;
+}
+
+.delete-container .page-info-nav, .delete-container .delete-btn{
+  display:inline-block;
 }
 
 .delete-container .delete-btn.span1 {
