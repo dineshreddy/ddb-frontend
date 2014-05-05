@@ -14,8 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
     <g:set var="pageHitCounter" value="0" />
+
 <ul class="results-list unstyled">
-  <g:each in="${entities.entity}" var="entityItem">
+  <g:each in="${entities.entity.docs}" var="entityItems">
+  <g:each in="${entityItems}" var="entityItem">
     <g:set var="entityId" value="${entityItem.id.substring(cultureGraphUrl.length())}" />
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="item bt">
@@ -64,5 +66,6 @@ limitations under the License.
         </div>
       </div>
     </li>
+    </g:each>
   </g:each>
 </ul>

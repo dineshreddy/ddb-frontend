@@ -93,7 +93,7 @@ class EntityService {
     def doEntitySearch(def query) {
         def searchPreview = [:]
 
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/entity', false, query)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/entities', false, query)
         if(!apiResponse.isOk()){
             def message = "doEntitySearch(): Search response contained error"
             log.error message
@@ -105,7 +105,7 @@ class EntityService {
         searchPreview["totalResults"] = jsonSearchResult.numberOfResults
         return searchPreview
     }
-    
+
 
     /**
      * Performs a search request on the backend. 
@@ -147,7 +147,7 @@ class EntityService {
      * @return detailed information about this entity
      */
     def Map getEntityDetails(String entityId) {
-        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entity", false,
+        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entities", false,
                 [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
 
         if (apiResponse.isOk()) {

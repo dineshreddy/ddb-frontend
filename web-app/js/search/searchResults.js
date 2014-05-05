@@ -23,7 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
-  if (jsPageName === "results" || jsPageName === "searchinstitution") {
+  if (jsPageName === "results" || jsPageName === "searchinstitution" || jsPageName === "searchperson") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function() {
@@ -195,6 +195,8 @@ de.ddb.next.search.initializeFacets = function() {
   }
   else if (jsPageName === "searchinstitution") {
     facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution");
+  } else if (jsPageName === "searchperson") {
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
   }
 
   var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget(facetsManager);

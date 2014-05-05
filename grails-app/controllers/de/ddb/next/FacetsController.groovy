@@ -40,6 +40,11 @@ class FacetsController {
     def configurationService
 
 
+    /**
+     * Returns the values for a specific search facet for the item search.
+     * 
+     * @return the values for a specific search facet for the item search.
+     */
     def facetsList() {
 
         def facetName = params.name
@@ -94,6 +99,48 @@ class FacetsController {
                 facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
             }
         }
+
+        render (contentType:"text/json"){facetValues}
+    }
+
+    /**
+     * Returns the values for a specific entity facet for the person search.
+     * 
+     * @return the values for a specific entity facet for the person search.
+     */
+    def entityFacetsList() {
+        def facetName = params.name
+        def facetQuery = params[SearchParamEnum.QUERY.getName()]
+
+        def facetValues
+        def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
+
+
+        def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+
+        urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
+        urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
+
+        //Use query filter if roles were selected
+        def filteredQuery = apisService.filterForRoleFacets(urlQuery)
+
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/entities/facets/'+facetName, false, filteredQuery)
+
+        if(!apiResponse.isOk()){
+            apiResponse.throwException(request)
+        }
+
+        def resultsItems = apiResponse.getResponse()
+
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+        //Filter the role values for mixed facets like affiliate_facet_role!
+        if (facetName.endsWith("role")) {
+            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
+        } else {
+            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+        }
+
 
         render (contentType:"text/json"){facetValues}
     }
