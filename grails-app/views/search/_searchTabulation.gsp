@@ -18,7 +18,7 @@ limitations under the License.
     <div class="span6 tabulator">
       <ul id="tabulator">
         <li>
-          ${totalResults} <g:message code="ddbnext.Multi_Page_Results" />:
+          <span class="total-results">${totalResults}</span> <g:message code="ddbnext.Multi_Page_Results" />:
         </li>
         <li>
           <g:link controller="search" action="results" params="[query:query]"

@@ -188,7 +188,15 @@ de.ddb.next.search.showError = function(errorHtml) {
 };
 
 de.ddb.next.search.initializeFacets = function() {
-  var facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+  var facetsManager = null;
+  
+  if (jsPageName === "results") {
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+  }
+  else if (jsPageName === "searchinstitution") {
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution");
+  }
+
   var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget(facetsManager);
   $('.facets-item a').each(function() {
     $(this).click(function(event) {

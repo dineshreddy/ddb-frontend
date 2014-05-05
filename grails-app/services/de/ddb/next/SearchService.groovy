@@ -834,10 +834,25 @@ class SearchService {
     def convertFacetQueryParametersToFacetSearchParameters(Map reqParameters) {
         def urlQuery = [:]
 
-        if (reqParameters.searchQuery == null)
+        //Search Query param
+        if (reqParameters.searchQuery == null) {
             urlQuery[SearchParamEnum.QUERY.getName()] = '*'
-        else urlQuery[SearchParamEnum.QUERY.getName()] = reqParameters.searchQuery
+        }
+        else {
+            urlQuery[SearchParamEnum.QUERY.getName()] = reqParameters.searchQuery
+        }
 
+        //Search category param
+        if (reqParameters.get("category")) {
+            //Category does not work with wildcard *
+            if (urlQuery[SearchParamEnum.QUERY.getName()] == "*") {
+                urlQuery[SearchParamEnum.QUERY.getName()] = "category:" + reqParameters.get("category")
+            } else {
+                urlQuery[SearchParamEnum.QUERY.getName()] = "(" + reqParameters.searchQuery + " AND category:" + reqParameters.get("category") + ")"
+            }
+        }
+
+        //Search row + offset
         if (reqParameters[SearchParamEnum.ROWS.getName()] == null || reqParameters[SearchParamEnum.ROWS.getName()] == -1)
             urlQuery[SearchParamEnum.ROWS.getName()] = 1
         else urlQuery[SearchParamEnum.ROWS.getName()] = reqParameters[SearchParamEnum.ROWS.getName()]
@@ -852,13 +867,14 @@ class SearchService {
             urlQuery = getFacets(reqParameters, urlQuery,SearchParamEnum.FACET.getName(), 0)
         }
 
+        //Facet name
         if(reqParameters.get("name")){
             urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
             if(!urlQuery[SearchParamEnum.FACET.getName()].contains(reqParameters.get("name")))
                 urlQuery[SearchParamEnum.FACET.getName()].add(reqParameters.get("name"))
         }
 
-
+        //Thumbnail filtered + grid preview
         if(reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]){
             urlQuery[SearchParamEnum.FACET.getName()] = (!urlQuery[SearchParamEnum.FACET.getName()])?[]:urlQuery[SearchParamEnum.FACET.getName()]
             if(!urlQuery[SearchParamEnum.FACET.getName()].contains("grid_preview") && reqParameters[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()] == "true"){
