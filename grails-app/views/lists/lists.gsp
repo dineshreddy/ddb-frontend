@@ -20,7 +20,7 @@ limitations under the License.
 <head>
 <title>
   ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-<meta name="lists" content="person" />
+<meta name="page" content="lists" />
 <meta name="layout" content="main" />
 </head>
 <body>

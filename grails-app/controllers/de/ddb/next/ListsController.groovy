@@ -16,8 +16,12 @@
 package de.ddb.next
 
 import net.sf.json.JSON
-import de.ddb.common.beans.User
 
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import de.ddb.common.beans.User
+import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedLocales
 
 /**
  * Controller class for list related views
@@ -27,6 +31,7 @@ import de.ddb.common.beans.User
 class ListsController {
     def favoritesService
     def listsService
+    def searchService
 
     /**
      * Build the model for the lists
@@ -34,29 +39,75 @@ class ListsController {
      * @return
      */
     def index() {
+
         def model = [lists: [], folders: null, selectedListId : null]
 
+        //Request parameter handling
+        //*********************************************************************
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def queryString = request.getQueryString() ? request.getQueryString() : ""
+        int offset = urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()
+        int rows = urlQuery[SearchParamEnum.ROWS.getName()].toInteger()
+
+        //Init menu
+        //*********************************************************************
         model.lists = createListMenu()
 
-        //If a list of the menu has been selected take it
+        //Init folders
+        //*********************************************************************
+        def folders = null
+
         if (params.id) {
             model.selectedListId = params.id
-            model.folders = getFoldersOfList(params.id)
+            folders = getFoldersOfList(params.id, offset, rows)
         }
         //If the page is loaded for the first time, take the first entry in the menu
         else if (model.lists.size() > 0) {
             def firstList = model.lists.get(0)
             model.selectedListId = firstList.folderListId
-            model.folders = getFoldersOfList(firstList.folderListId)
+            folders = getFoldersOfList(firstList.folderListId, offset, rows)
         }
+
+        model.folders = folders.folders  as JSON
+        model.folderCount = folders.count
 
         //If a list has no folder, show an error message
         if (model.folders?.size() == 0) {
             model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
 
+
+        //Pagination stuff
+        //*********************************************************************
+        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+        def folderCount = model.folderCount
+
+        //Calculating results details info (number of results in page, total results number)
+        def resultsOverallIndex = (offset+1)+' - ' + ((offset + rows>folderCount)? folderCount:offset + rows)
+
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def page = ((int)Math.floor(offset/rows)+1).toString()
+        def totalPages = (Math.ceil(folderCount/rows).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
+
+        model.resultsPaginatorOptions = resultsPaginatorOptions
+        model.resultsOverallIndex = resultsOverallIndex
+        model.page = page
+        model.totalPages = totalPages
+        model.paginationURL = paginationURL
+
+        //        println "OFFSET " + urlQuery[SearchParamEnum.OFFSET.getName()]
+        //        println "resultsPaginatorOptions " + model.resultsPaginatorOptions
+        //        println "resultsOverallIndex " + model.resultsOverallIndex
+        //        println "page " + model.page
+        //        println "totalPages " + model.totalPages
+        //        println "paginationURL " + model.paginationURL
+
         render(view: "lists", model: model)
     }
+
 
     /**
      * 
@@ -70,17 +121,6 @@ class ListsController {
         //Initialize the daily favorite lists
         def ddbAllList = listsService.getDdbAllList()
         menu.add(ddbAllList)
-
-        //If the user is logged in initialize his public favorite lists
-        if (user != null) {
-            // Get the public folder list of the user
-            def userList = listsService.getUserList(user.getId())
-            menu.add(userList)
-        }
-
-        //Initialize the daily favorite lists
-        def ddbDailyList = listsService.getDdbDailyList()
-        menu.add(ddbDailyList)
 
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
@@ -97,20 +137,16 @@ class ListsController {
      * @param listId the id of the list
      * @return the folders for a given list
      */
-    private getFoldersOfList(def listId) {
+    private getFoldersOfList(def listId, int offset=0, int size=20) {
         def folders = null
 
-        if (listId == "UserList") {
-            folders = listsService.getUserFolders()
-        } else if (listId == "DdbAllList") {
-            folders = listsService.getDdbAllPublicFolders()
-        }else if (listId == "DdbDailyList") {
-            folders = listsService.getDdbDailyFolders()
-        } else {
-            folders = listsService.getPublicFoldersForList(listId)
+        if (listId == "DdbAllList") {
+            folders = listsService.getDdbAllPublicFolders(offset, size)
+        }else {
+            folders = listsService.getPublicFoldersForList(listId, offset, size)
         }
 
-        return folders as JSON
+        return folders
     }
 
 }

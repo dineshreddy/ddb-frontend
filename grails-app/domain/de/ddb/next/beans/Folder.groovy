@@ -19,7 +19,7 @@ import groovy.transform.ToString
 import de.ddb.common.constants.FolderConstants
 import de.ddb.next.JsonUtil
 
-@ToString(includeNames=true, excludes="count, creationDateFormatted, oldestBookmarkImage, newestItemCreationDate")
+@ToString(includeNames=true, excludes="count, creationDateFormatted, oldestBookmarkImage")
 class Folder {
 
     String folderId
@@ -32,15 +32,18 @@ class Folder {
     String blockingToken
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
     Date creationDate
+    Date updatedDate
 
     // these fields are not stored in elastic search and filled via runtime. They are excluded from serialization!
     def count = null
     def creationDateFormatted = null
     def oldestItemMetaData = null
-    def newestItemCreationDate = null
 
 
-    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong) {
+
+    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong, def updateDateAsLong) {
+        Date now = new Date()
+
         this.folderId = folderId
         this.userId = userId
         this.title = title
@@ -69,9 +72,15 @@ class Folder {
         }
 
         if(JsonUtil.isAnyNull(creationDateAsLong)){
-            this.creationDate = new Date()
+            this.creationDate = now
         }else{
             this.creationDate = new Date(creationDateAsLong)
+        }
+
+        if(JsonUtil.isAnyNull(updateDateAsLong)){
+            this.updatedDate = now
+        }else{
+            this.updatedDate = new Date(updateDateAsLong)
         }
     }
 
@@ -86,6 +95,8 @@ class Folder {
         out["publishingName"] = publishingName
         out["isBlocked"] = isBlocked
         out["blockingToken"] = blockingToken
+        out["creationDate"] = creationDate
+        out["updatedDate"] = updatedDate
         return out
     }
 
