@@ -137,15 +137,16 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   /**
    * Makes an AJAX request to fetch the facet values for the currently selected facet field
    */
-  fetchFacetValues : function(flyoutWidget, query) {
+  fetchFacetValues : function(flyoutWidget, facetQuery) {
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }
     var oldParams = de.ddb.next.search.getUrlVars();
+    var searchQueryParam = ''
     var currObjInstance = this;
     var fctValues = '';
     var isThumbnailFiltered = '';
-    var queryParam = '';
+    var facetQueryParam = '';
 
     //Looking for existing facetvalues[] in the window url parameters
     if (oldParams['facetValues%5B%5D']) {
@@ -157,9 +158,14 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
       isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
-    if (query) {
-      query = encodeURIComponent(query);
-      queryParam = '&query=' + query;
+    
+    if (oldParams['query']) {
+      searchQueryParam = '&searchQuery=' + oldParams['query']
+    }
+    
+    if (facetQuery) {
+      facetQuery = encodeURIComponent(facetQuery);
+      facetQueryParam = '&query=' + facetQuery;
     }
 
     this.connectedflyoutWidget.renderFacetLoader();
@@ -167,8 +173,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       type : 'GET',
       dataType : 'json',
       async : true,
-      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + '&searchQuery='
-          + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
+      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + searchQueryParam + facetQueryParam + fctValues + isThumbnailFiltered
           + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);
