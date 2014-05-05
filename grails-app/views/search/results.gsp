@@ -125,7 +125,7 @@ limitations under the License.
       <div style="clear:both;"> 
 
       
-      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}"/>
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
             
       <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">

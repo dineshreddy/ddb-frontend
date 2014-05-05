@@ -27,6 +27,6 @@ class RenderPageInfoNavTagLib {
      */
 
     def renderPageInfoNav = { attrs, body ->
-        out << render(template:"/search/pageNavigation", model:[navData: attrs.navData, paginatorOptions: attrs.paginatorOptions])
+        out << render(template:"/search/pageNavigation", model:[navData: attrs.navData, paginatorOptions: attrs.paginatorOptions, paginatorViewSwitch: attrs.paginatorViewSwitch])
     }
 }
