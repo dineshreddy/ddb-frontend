@@ -173,7 +173,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     }
 
     if (this.category) {
-      console.log("category!!!");
       categoryParam = '&category=' + currObjInstance.category;
     }
     
