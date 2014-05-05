@@ -34,16 +34,16 @@
 
 .page-link, .sendmail-link, .viewer.dfg {
   padding-left: 22px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat;
 }
 .page-link {
-  background-position: 0 0;
+  background-position: -30px -149px;
 }
 .sendmail-link {
-  background-position: 0 -200px;
+  background-position: -30px -329px;
 }
 .viewer.dfg {
-  background-position: 0 -40px;
+  background-position: -30px -359px;
 }
 
 .item-detail .institution {
@@ -251,8 +251,8 @@
 }
 .xml-link {
   padding-left: 27px;
-  background: url(../images/icons/itemActionsSprite.png) no-repeat;
-  background-position: -3px -247px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat;
+  background-position: -23px -360px;
 }
 .xml-link span {
   background: white;
