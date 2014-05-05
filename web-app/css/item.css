@@ -17,16 +17,15 @@
 .back-to-list-greyed-out, .back-to-list {
   padding-left: 16px;
   margin-right: 10px;
-  background: url(../images/icons/listBackArrows.png) no-repeat;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -209px;
 }
  
  .back-to-list-greyed-out {
   color: #878380;
-  background-position: 0 -40px
 }
 
-.back-to-list {
-  background-position: 0 0;
+.back-to-list > span {
+  padding-left: 5px;
 }
 
 .item-detail .rights {
@@ -78,7 +77,7 @@
   font-size: 0.938em;
 }
 .object-controls .span6 {
-  margin-left: 10px;
+  margin-left: 0px;
 }
 .origin {
   margin-top: 20px;
