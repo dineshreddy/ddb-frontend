@@ -30,8 +30,11 @@ de.ddb.next.search = de.ddb.next.search || {};
  *
  * Do not make synchronous AJAX calls in this class. Otherwise the GUI might freeze!
  */
-de.ddb.next.search.FacetsManager = function(fetchResultsList) {
+de.ddb.next.search.FacetsManager = function(fetchResultsList, category) {
   this.fetchResultsList = fetchResultsList;
+  
+  //search or institution or entity facet?
+  this.category = category
   this.init();
 };
 
@@ -137,15 +140,17 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   /**
    * Makes an AJAX request to fetch the facet values for the currently selected facet field
    */
-  fetchFacetValues : function(flyoutWidget, query) {
+  fetchFacetValues : function(flyoutWidget, facetQuery) {
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }
     var oldParams = de.ddb.next.search.getUrlVars();
+    var searchQueryParam = ''
     var currObjInstance = this;
     var fctValues = '';
     var isThumbnailFiltered = '';
-    var queryParam = '';
+    var facetQueryParam = '';
+    var categoryParam = '';
 
     //Looking for existing facetvalues[] in the window url parameters
     if (oldParams['facetValues%5B%5D']) {
@@ -157,19 +162,27 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
       isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
-    if (query) {
-      query = encodeURIComponent(query);
-      queryParam = '&query=' + query;
+    
+    if (oldParams['query']) {
+      searchQueryParam = '&searchQuery=' + oldParams['query']
+    }
+    
+    if (facetQuery) {
+      facetQuery = encodeURIComponent(facetQuery);
+      facetQueryParam = '&query=' + facetQuery;
     }
 
+    if (this.category) {
+      categoryParam = '&category=' + currObjInstance.category;
+    }
+    
     this.connectedflyoutWidget.renderFacetLoader();
     $.ajax({
       type : 'GET',
       dataType : 'json',
       async : true,
-      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + '&searchQuery='
-          + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
-          + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
+      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + searchQueryParam + facetQueryParam + fctValues + isThumbnailFiltered
+          + '&offset=' + this.currentOffset + '&rows=' + this.currentRows + categoryParam,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);
         // Initialization of currentFacetValuesSelected /
