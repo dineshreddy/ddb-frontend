@@ -50,6 +50,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.lastPage = $('.page-nav .last-page');
     this.pageInput = $('.page-input');
     this.paginatorOptionsButton = $('.paginator-options-button');
+    this.numberOfResults = $('.total-results');
     
     this.nextPageMobile = $('.page-nav-mob .next-page');
     this.prevPageMobile = $('.page-nav-mob .prev-page');
@@ -59,7 +60,10 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
   },
   
   resetNavigationElements: function(JSONresponse){
+    
     this.totalPages.html(JSONresponse.totalPages);
+    
+    this.numberOfResults.html(JSONresponse.numberOfResults);
     
     //Next/Last-page button
     if (JSONresponse.paginationURL.nextPg) {
