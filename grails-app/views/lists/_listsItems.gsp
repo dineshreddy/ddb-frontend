@@ -15,10 +15,8 @@ limitations under the License.
 --%>
 <div class="span9 lists-content">
   <g:if test="${folders?.size() > 0}">
-  
-    <%-- TODO Replace this dummy navigation with DDBNEXT-1383 --%>
-    <div class="results-paginator-options">
-      <strong>1&nbsp;&nbsp;2&nbsp;&nbsp;3&nbsp;&nbsp;4&nbsp;&nbsp;5&nbsp;&nbsp;Weiter</strong>
+    <div class="results-paginator-options bb">
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
     </div>
     <div class="list-items">
       <ul class="unstyled">

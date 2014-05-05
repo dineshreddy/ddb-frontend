@@ -13,20 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.ddb.next
+$(document).ready(function() {
 
+  if (jsPageName === "lists") {
+    de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
+  }
 
-class RenderPageInfoNavTagLib {
-
-    static namespace = "ddb"
-
-    /**
-     * Renders the navigation bar for the results.
-     *
-     * @attrs navData REQUIRED data for page navigation
-     */
-
-    def renderPageInfoNav = { attrs, body ->
-        out << render(template:"/search/pageNavigation", model:[navData: attrs.navData, paginatorOptions: attrs.paginatorOptions, paginatorViewSwitch: attrs.paginatorViewSwitch])
-    }
-}
+});

@@ -46,7 +46,7 @@ class BookmarksService {
      * Create a new bookmark folder.
      *
      * @param newFolder Folder object to persist
-     * @return          the newly created folder ID.
+     * @return the newly created folder ID.
      */
     String createFolder(Folder newFolder) {
         log.info "createFolder(): creating a new folder: ${newFolder}"
@@ -61,7 +61,8 @@ class BookmarksService {
             publishingName : newFolder.publishingName,
             isBlocked : false,
             blockingToken : "",
-            createdAt : newFolder.creationDate.getTime()
+            createdAt : newFolder.creationDate.getTime(),
+            updatedAt : newFolder.creationDate.getTime()
         ]
         def postBodyAsJson = postBody as JSON
 
@@ -76,66 +77,69 @@ class BookmarksService {
         return newFolderId
     }
 
-
+    /**
+     * Returns the number of folders in the index
+     * @return the number of folders in the index
+     */
     int getFolderCount() {
         log.info "getFolderCount()"
         return elasticSearchService.getDocumentCountByType("folder")
     }
 
+    /**
+     * Returns the number of bookmarks in the index
+     * @return the number of bookmarks in the index
+     */
     int getBookmarkCount() {
         log.info "getBookmarkCount()"
         return elasticSearchService.getDocumentCountByType("bookmark")
     }
 
 
-
-    List<Folder> findAllPublicFolders(String userId) {
+    /**
+     * Find all public folder for a given userId
+     * @param userId the userId to search the folders
+     * 
+     * @return all public folder for a given userId
+     */
+    List<Folder> findAllPublicFolders(String userId, def mustBeUnblocked=false) {
         log.info "findAllPublicFolders(userId)"
 
         List<Folder> folders = findAllFolders(userId)
         List<Folder> publicFolders = []
         folders?.each {
             if(it.isPublic){
-                publicFolders.add(it)
+                if ((!mustBeUnblocked) || ( mustBeUnblocked && !it.isBlocked)) {
+                    publicFolders.add(it)
+                }
             }
         }
         return publicFolders
     }
 
-    List<Folder> findAllFolders(String userId) {
+    /**
+     * Find all folders for a given userid.
+     * 
+     * @param userId for which userid to search the folders
+     * @param offset How many initial results should be skipped
+     * @param size How many results should be returned
+     * 
+     * @return a lists of folders for a given userid
+     */
+    List<Folder> findAllFolders(String userId, int offset=0, int size=DEFAULT_SIZE) {
         log.info "findAllFolders()"
 
         List<Folder> folderList = []
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
-                ["q":userId, "size":"${DEFAULT_SIZE}"])
+                ["q":userId, "size":"${size}", "from":"${offset}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
                 try {
-                    def description = "null"
-                    if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                        description = it._source.description
-                    }
-
-                    def createdAt = 0
-                    if(!(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
-                        createdAt = it._source.createdAt
-                    }
-
-                    def folder = new Folder(
-                            it._id,
-                            it._source.user,
-                            it._source.title,
-                            description,
-                            it._source.isPublic,
-                            it._source.publishingName,
-                            it._source.isBlocked,
-                            it._source.blockingToken,
-                            createdAt
-                            )
+                    def folder = mapSourceToFolder(it)
                     if(folder.isValid()){
                         folderList.add(folder)
                     }else{
@@ -149,53 +153,32 @@ class BookmarksService {
         return folderList
     }
 
-    List<Folder> findAllPublicFolders() {
-        log.info "findAllPublicFolders()"
 
-        List<Folder> folders = findAllFolders()
-        List<Folder> publicFolders = []
-        folders?.each {
-            if(it.isPublic){
-                publicFolders.add(it)
-            }
-        }
-        return publicFolders
-    }
-
-    List<Folder> findAllFolders() {
-        log.info "findAllFolders()"
+    /**
+     * Find all folders sorted by the field updatedAt
+     *
+     * @param offset How many initial results should be skipped
+     * @param size How many results should be returned
+     *
+     * @return a lists of folders for a given userid
+     */
+    def findAllPublicUnblockedFolders(int offset=0, int size=20) {
+        log.info "findAllFolders(${offset} ${size})"
 
         List<Folder> folderList = []
+        int count = -1
+
+        def sortQuery = '{"sort" : [{ "updatedAt" : {"order" : "desc"}}],"query" : {"bool": {"must" : [{"term" : { "isPublic" : "true" }},{"term" : { "isBlocked" : "false" }}]}}}'
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folder/_search", false,
-                ["size":"${DEFAULT_SIZE}"])
+                ["source":sortQuery, "size":"${size}", "from":"${offset}"])
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
                 try {
-                    def description = "null"
-                    if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                        description = it._source.description
-                    }
-
-                    def createdAt = 0
-                    if(it._source.createdAt && !(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
-                        createdAt = it._source.createdAt
-                    }
-
-                    def folder = new Folder(
-                            it._id,
-                            it._source.user,
-                            it._source.title,
-                            description,
-                            it._source.isPublic,
-                            it._source.publishingName,
-                            it._source.isBlocked,
-                            it._source.blockingToken,
-                            createdAt
-                            )
+                    def folder = mapSourceToFolder(it)
                     if(folder.isValid()){
                         folderList.add(folder)
                     }else{
@@ -205,8 +188,10 @@ class BookmarksService {
                     log.error e.message + " findAllFolders(): found corrupt folder: " + it._source
                 }
             }
+
+            count = response.hits.total
         }
-        return folderList
+        return ["folders":folderList, "count":count]
     }
 
     /**
@@ -238,22 +223,7 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
-
-                def folder = new Folder(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.isPublic,
-                        it._source.publishingName,
-                        it._source.isBlocked,
-                        it._source.blockingToken,
-                        it._source.createdAt
-                        )
+                def folder = mapSourceToFolder(it)
                 if(folder.isValid()){
                     if (folder.isPublic) {
                         folderList.add(folder)
@@ -266,6 +236,37 @@ class BookmarksService {
         return folderList
     }
 
+
+    private Folder mapSourceToFolder(def it) {
+        def description = "null"
+        if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
+            description = it._source.description
+        }
+
+        def createdAt = 0
+        if(it._source.createdAt && !(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
+            createdAt = it._source.createdAt
+        }
+
+        def updatedAt = 0
+        if(it._source.updatedAt && !(it._source.updatedAt instanceof JSONNull) && (it._source.updatedAt != null)){
+            updatedAt = it._source.updatedAt
+        }
+
+        def folder = new Folder(
+                it._id,
+                it._source.user,
+                it._source.title,
+                description,
+                it._source.isPublic,
+                it._source.publishingName,
+                it._source.isBlocked,
+                it._source.blockingToken,
+                createdAt,
+                updatedAt
+                )
+        return folder
+    }
 
     /**
      * List all bookmarks in a folder that belongs to the user.
@@ -389,6 +390,16 @@ class BookmarksService {
             elasticSearchService.refresh()
         }
 
+        //Refresh the updateDate on each folder the bookmark has been added
+        bookmark.folders.each {
+            Folder folder = findFolderById(it)
+            if (folder) {
+                updateFolder(folder)
+            } else {
+                log.warn "Cannot find bookmark folder: " + it
+            }
+        }
+
         return newBookmarkId
     }
 
@@ -475,22 +486,7 @@ class BookmarksService {
             def response = apiResponse.getResponse()
             def resultList = response.hits.hits
             resultList.each { it ->
-                def description = "null"
-                if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
-                    description = it._source.description
-                }
-                def folder = new Folder(
-                        it._id,
-                        it._source.user,
-                        it._source.title,
-                        description,
-                        it._source.isPublic,
-                        it._source.publishingName,
-                        it._source.isBlocked,
-                        it._source.blockingToken,
-                        it._source.createdAt
-                        )
-
+                Folder folder = mapSourceToFolder(it)
 
                 if(folder.isValid()){
                     all.add(folder)
@@ -695,17 +691,8 @@ class BookmarksService {
 
         if(apiResponse.isOk()){
             def it = apiResponse.getResponse()
-            Folder folder = new Folder(
-                    it._id,
-                    it._source.user,
-                    it._source.title,
-                    it._source.description,
-                    it._source.isPublic,
-                    it._source.publishingName,
-                    it._source.isBlocked,
-                    it._source.blockingToken,
-                    it._source.createdAt
-                    )
+
+            Folder folder = mapSourceToFolder(it)
             if(folder.isValid()){
                 return folder
             }else{
@@ -729,13 +716,15 @@ class BookmarksService {
     void updateFolder(Folder folder) {
         log.info "updateFolder()"
 
+        Date now = new Date()
+
         def postBody = ""
         if(folder.description) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken ]]
+            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken]]
+            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)

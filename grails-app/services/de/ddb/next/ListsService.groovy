@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
-import de.ddb.common.beans.User
 import de.ddb.next.beans.Folder
 import de.ddb.next.beans.FolderList
 
@@ -146,7 +145,7 @@ class ListsService {
      * @return a {@link FolderList}
      */
     FolderList findListById(String listId) {
-        log.info "findFolderById()"
+        log.info "findListById()"
         def retVal = null
 
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/${listId}", false, [:])
@@ -187,16 +186,8 @@ class ListsService {
      * @return the number of lists in the search index
      */
     int getListCount() {
-        int count = -1
-
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/folderList/_search", false)
-
-        if(apiResponse.isOk()){
-            def response = apiResponse.getResponse()
-            count = response.hits.total
-        }
-
-        return count
+        log.info "getListCount()"
+        return elasticSearchService.getDocumentCountByType("folderList")
     }
 
     /**
@@ -220,47 +211,6 @@ class ListsService {
     }
 
     /**
-     * Return a {@link FolderList} containing all public folders for a given user
-     * 
-     * @return a {@link FolderList} containing all public folders for a given user
-     */
-    def getUserList(String userId) {
-        List<Folder> publicFolders = bookmarksService.findAllPublicFolders(userId)
-
-        def folderIds = []
-        publicFolders.each { it ->
-            folderIds.add(it.folderId)
-        }
-
-        def folderList = new FolderList(
-                "UserList",
-                "ddbnext.lists.userList",
-                null,
-                userId,
-                folderIds
-                )
-
-        return folderList
-    }
-
-    /**
-     * Return a {@link FolderList} containing the public folders for the current day
-     *
-     * @return  a {@link FolderList} containing the public folders for the current day
-     */
-    def getDdbDailyList() {
-
-        def folderList = new FolderList(
-                "DdbDailyList",
-                "ddbnext.lists.dailyList",
-                null,
-                "",
-                ""
-                )
-        return folderList
-    }
-
-    /**
      * Return a {@link FolderList} containing the public folders for the current day
      *
      * @return  a {@link FolderList} containing the public folders for the current day
@@ -277,51 +227,21 @@ class ListsService {
         return folderList
     }
 
-
     /**
      * Returns the public folders for the already logged in user
      *
      * @return the public folders for the already logged in user
      */
-    List<Folder> getUserFolders() {
-        def folders = null
+    def getDdbAllPublicFolders(int offset=0, int size=20) {
+        def result = bookmarksService.findAllPublicUnblockedFolders(offset, size)
 
-        def User user = favoritesService.getUserFromSession()
-        if (user != null) {
-            folders = bookmarksService.findAllPublicFolders(user.getId())
-            folders = enhanceFolderInformation(folders)
-        }
+        def folders = result.folders
+        def folderCount = result.count
 
-        return folders
-    }
+        //Enhance the folder object with additional information
+        enhanceFolderInformation(folders)
 
-    /**
-     * Returns the public folders for the already logged in user
-     *
-     * @return the public folders for the already logged in user
-     */
-    List<Folder> getDdbDailyFolders() {
-        def folders = null
-
-        folders = bookmarksService.findAllPublicFoldersDaily(new Date())
-        return enhanceFolderInformation(folders)
-    }
-
-    /**
-     * Returns the public folders for the already logged in user
-     *
-     * @return the public folders for the already logged in user
-     */
-    List<Folder> getDdbAllPublicFolders() {
-        def folders = null
-
-        folders = bookmarksService.findAllPublicFolders()
-        folders = enhanceFolderInformation(folders)
-
-        //Sort the folders by newestItemCreationDate descending
-        folders.sort{a,b-> b.newestItemCreationDate<=>a.newestItemCreationDate}
-
-        return folders
+        return ["count":folderCount, "folders":folders]
     }
 
     /**
@@ -329,22 +249,39 @@ class ListsService {
      * @param userId
      * @return
      */
-    List<Folder> getPublicFoldersForList(String listId) {
+    def getPublicFoldersForList(String listId, int offset=0, int size=20) {
+        //Use a Set to avoid duplicates
         List<Folder> folders = []
         FolderList folderList = findListById(listId)
 
+        //Retrieve the folder by userId and by folderId
         folderList?.users?.each {
-            folders.addAll(bookmarksService.findAllPublicFolders(it))
+            folders.addAll(bookmarksService.findAllPublicFolders(it, true))
         }
 
         folderList?.folders?.each {
             def folder = bookmarksService.findFolderById(it)
-            if (folder.isPublic) {
+            if (folder && !folder.isBlocked) {
                 folders.add(folder)
             }
         }
 
-        return enhanceFolderInformation(folders)
+        //Sort the folders by updatedDate
+        folders = folders.sort{a,b -> b.updatedDate <=> a.updatedDate }
+
+        //Do the paging
+        def range = offset..(offset+size-1)
+        def foldersPaged = []
+        range.each {
+            if (it < folders.size()) {
+                foldersPaged.add(folders.getAt(it))
+            }
+        }
+
+        //Enhance the folder object with additional information
+        enhanceFolderInformation(folders)
+
+        return ["count":folders.size(), "folders":foldersPaged]
     }
 
     /**
@@ -356,7 +293,6 @@ class ListsService {
     private enhanceFolderInformation(def folders) {
         def request = RequestContextHolder.currentRequestAttributes().request
         Locale locale = RequestContextUtils.getLocale(request)
-        folders = favoritesService.sortFolders(folders)
 
         folders.each {
             //Set the blocking token to ""
@@ -368,8 +304,6 @@ class ListsService {
             if (favoritesOfFolder.size() > 0) {
                 def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
                 it.oldestItemMetaData = itemMd.get(0)
-
-                it.newestItemCreationDate = favoritesOfFolder.get(favoritesOfFolder.size() - 1).creationDate
             }
 
             //Retrieve the number of favorites
@@ -378,6 +312,12 @@ class ListsService {
         }
     }
 
+    /**
+     * 
+     * @param oldDate
+     * @param locale
+     * @return
+     */
     private String formatDate(Date oldDate, Locale locale) {
         SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
