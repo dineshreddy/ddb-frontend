@@ -264,10 +264,18 @@ class FavoritesService {
         return all
     }
 
-    private String formatDate(Date oldDate, Locale locale) {
-        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyy HH:mm")
+    private String formatDate(Date date, Locale locale) {
+        String result
+        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyyy, ")
         newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-        return newFormat.format(oldDate)
+        result = newFormat.format(date)
+        // add the time separately to get something like "12:34 Uhr"
+        newFormat = new SimpleDateFormat("z", locale)
+        String timeZone = newFormat.format(date)
+        newFormat = SimpleDateFormat.getTimeInstance(SimpleDateFormat.FULL, locale)
+        String time = newFormat.format(date)
+        result += time.substring(0, time.length() - timeZone.length())
+        return result
     }
 
     boolean isUserLoggedIn() {

@@ -618,14 +618,26 @@ hr {
   font-size: 1em;
 }
 
+.favorites-results .results-list .comment .arrow-up {
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #efebe8;
+  height: 0;
+  margin-left: 120px;
+  margin-top: 5px;
+  width: 0;
+}
+
 .favorites-results .results-list .comment .comment-container {
-  margin: 10px 10px 0px 35px;
+  background-color: #efebe8;
+  margin: 0 10px 0px 10px;
 }
 
 .favorites-results .results-list .comment .comment-input {
-  width: 100%; 
+  margin: 10px;
+  width: 96%; 
   height: 20px; 
-  resize: vertical;
+  resize: none;
   padding: 2px;
   font-family: Calibri,Arial,sans-serif;
   font-size: 1.063em;
@@ -635,8 +647,6 @@ hr {
 
 .favorites-results .results-list .comment .comment-text {
   width: 100%;
-  padding: 2px;
-  border: 1px solid #EFEBE8;
   font-family: Calibri,Arial,sans-serif;
   font-size: 1.063em;
   line-height: 1em;
@@ -645,6 +655,17 @@ hr {
 
 .favorites-results .results-list .comment .comment-meta {
   font-style: italic;
+  margin-bottom: 10px;
+  padding: 10px 10px 0 10px;
+}
+
+.favorites-results .results-list .comment .comment-content {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.favorites-results .results-list .comment button {
+  margin: 0 10px 10px 10px;
 }
 
 .folder-information-container {
