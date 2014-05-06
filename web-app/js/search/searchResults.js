@@ -23,7 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
-  if (jsPageName === "results" || jsPageName === "searchinstitution") {
+  if (jsPageName === "results" || jsPageName === "searchinstitution" || jsPageName === "searchperson") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
     $("a.noclickfocus").live('mouseup', function() {
@@ -191,10 +191,12 @@ de.ddb.next.search.initializeFacets = function() {
   var facetsManager = null;
   
   if (jsPageName === "results") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, null, "/facets");
   }
   else if (jsPageName === "searchinstitution") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution");
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution", "/facets");
+  } else if (jsPageName === "searchperson") {
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, null, "/entityfacets");
   }
 
   var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget(facetsManager);

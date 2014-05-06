@@ -30,6 +30,7 @@ import org.springframework.context.i18n.LocaleContextHolder
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.constants.CortexConstants
+import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 
@@ -729,8 +730,9 @@ class SearchService {
 
         if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()|| facetName == FacetEnum.STATE.getName()){
             res = facetValue
-        }
-        else if(facetName == FacetEnum.TYPE.getName()){
+        } else if (facetName == EntityFacetEnum.PERSON_GENDER.getName() || facetName == EntityFacetEnum.PERSON_NAME.getName() || facetName == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetName == EntityFacetEnum.PERSON_PLACE.getName()){
+            res = facetValue
+        } else if(facetName == FacetEnum.TYPE.getName()){
             res = appCtx.getMessage(FacetEnum.TYPE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
         }
         else if(facetName == FacetEnum.TIME.getName()){

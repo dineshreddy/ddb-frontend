@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 package de.ddb.next
-import org.springframework.web.servlet.support.RequestContextUtils
 import net.sf.json.JSONArray
+
+import org.springframework.web.servlet.support.RequestContextUtils
+
 import de.ddb.common.ApiResponse
 import de.ddb.common.ApiResponse.HttpStatus
+import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
@@ -157,19 +159,47 @@ class EntityController {
      * @return
      */
     def personsearch() {
-
+        def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        //Calculating results pagination (previous page, next page, first page, and last page)
-        def totalPages = 0 //(Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-        def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], facets:[], viewType: "list", results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
 
-        render(view: "searchPerson", model: model)
+        //Calculating results pagination (previous page, next page, first page, and last page)
+        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
+        def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+
+        //Calculating results details info (number of results in page, total results number)
+        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
+                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
+                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
+        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
+        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+
+
+        if(params.reqType=="ajax"){
+            def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+            def resultsHTML = ""
+            resultsHTML = g.render(template:"/entity/entityResultsList",model:model)
+            def jsonReturn = [results: resultsHTML,
+                resultsPaginatorOptions: resultsPaginatorOptions,
+                resultsOverallIndex:resultsOverallIndex,
+                page: page,
+                totalPages: totalPagesFormatted,
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                numberOfResults: numberOfResultsFormatted,
+                offset: params[SearchParamEnum.OFFSET.getName()]
+            ]
+            render (contentType:"text/json"){jsonReturn}
+        }else {
+            def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+            render(view: "searchPerson", model: model)
+        }
+
+
     }
-    
+
     /**
      * Controller method for rendering AJAX calls for an entity based item search
      * 
