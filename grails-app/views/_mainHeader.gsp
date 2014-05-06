@@ -291,8 +291,8 @@ limitations under the License.
               </div>
             </div>
             <div class="search-header hidden-phone">
-              <g:form method="get" role="search" id="form-search-header"
-                url="[controller:'search', action:'results']">
+              <form method="get" role="search" id="form-search-header"
+                action="<ddb:getSearchUrl controllerName="${controllerName}" actionName="${actionName}"/>">
                 <label for="search-small"> <span><g:message encodeAs="html"
                       code="ddbnext.Search_text_field" /></span>
                 </label>
@@ -322,7 +322,7 @@ limitations under the License.
                     <g:message encodeAs="html" code="ddbnext.Advanced_search" />
                   </g:link>
                 </div>
-              </g:form>
+              </form>
             </div>
           </div>
         </div>
