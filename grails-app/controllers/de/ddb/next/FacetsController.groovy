@@ -134,13 +134,7 @@ class FacetsController {
 
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
-        //Filter the role values for mixed facets like affiliate_facet_role!
-        if (facetName.endsWith("role")) {
-            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
-        } else {
-            facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
-        }
-
+        facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
 
         render (contentType:"text/json"){facetValues}
     }

@@ -30,11 +30,15 @@ de.ddb.next.search = de.ddb.next.search || {};
  *
  * Do not make synchronous AJAX calls in this class. Otherwise the GUI might freeze!
  */
-de.ddb.next.search.FacetsManager = function(fetchResultsList, category) {
+de.ddb.next.search.FacetsManager = function(fetchResultsList, category, path) {
   this.fetchResultsList = fetchResultsList;
   
-  //search or institution or entity facet?
-  this.category = category
+  //institution facets needs a category set
+  this.category = category;
+  
+  //search and entity facets use different paths
+  this.path = path;
+  
   this.init();
 };
 
@@ -141,6 +145,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Makes an AJAX request to fetch the facet values for the currently selected facet field
    */
   fetchFacetValues : function(flyoutWidget, facetQuery) {
+    var currObjInstance = this;
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }
@@ -181,7 +186,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       type : 'GET',
       dataType : 'json',
       async : true,
-      url : jsContextPath + '/facets' + '?name=' + currObjInstance.currentFacetField + searchQueryParam + facetQueryParam + fctValues + isThumbnailFiltered
+      url : jsContextPath + currObjInstance.path + '?name=' + currObjInstance.currentFacetField + searchQueryParam + facetQueryParam + fctValues + isThumbnailFiltered
           + '&offset=' + this.currentOffset + '&rows=' + this.currentRows + categoryParam,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);

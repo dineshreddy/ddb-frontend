@@ -14,10 +14,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
+<%@page import="de.ddb.common.constants.EntityFacetEnum"%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 <g:set var="nonJsFacetsList" value="${[]}"></g:set>
-<g:set var="jsFacetsList" value="${["Name", "Beruf", FacetEnum.PLACE.getName()]}"></g:set>
+<g:set var="jsFacetsList" value="${[EntityFacetEnum.PERSON_GENDER.getName(),EntityFacetEnum.PERSON_NAME.getName(),EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName()]}"></g:set>
 <html>
 <head>
 <title>

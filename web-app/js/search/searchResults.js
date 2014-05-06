@@ -191,12 +191,12 @@ de.ddb.next.search.initializeFacets = function() {
   var facetsManager = null;
   
   if (jsPageName === "results") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, null, "/facets");
   }
   else if (jsPageName === "searchinstitution") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution");
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution", "/facets");
   } else if (jsPageName === "searchperson") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList);
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, null, "/entityfacets");
   }
 
   var fctWidget = new de.ddb.next.search.FlyoutFacetsWidget(facetsManager);

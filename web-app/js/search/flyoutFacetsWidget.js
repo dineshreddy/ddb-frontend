@@ -252,7 +252,6 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
             var facetValue = this.value;
             var localizedValue = this.localizedValue;
-
             facetValueContainer.click(function() {
               currObjInstance.fctManager.selectFacetValue(decodeURIComponent($(this).attr('data-fctvalue')),
                   localizedValue.replace('<strong>', '').replace('</strong>', ''));

@@ -50,6 +50,11 @@ class UrlMappings {
             action="getRolesForFacetValue"
         }
 
+        "/entityfacets/$q?" {
+            controller="facets"
+            action="entityFacetsList"
+        }
+
         "/search/facets/" {
             controller="facets"
             action="allFacetsList"
