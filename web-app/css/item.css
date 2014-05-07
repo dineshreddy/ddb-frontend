@@ -363,6 +363,7 @@
 }
 
 .similar-objects-header {
+  cursor: pointer;
   color: #3E3A37;
   font-size: 17px;
   font-weight: bold;
@@ -374,6 +375,7 @@
 }
 
 .similar-objects-header.active {
+  cursor: pointer;
   color: #3E3A37;
   font-size: 17px;
   font-weight: bold;
@@ -382,7 +384,7 @@
   display: inline-block;
   padding: 0 20px 0 0;
   z-index: 10;
-}
+} 
 
 .socialmedia {
   display: inline-block;
