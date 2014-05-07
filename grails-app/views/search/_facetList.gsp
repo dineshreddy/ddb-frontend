@@ -38,6 +38,9 @@ limitations under the License.
       <g:if test="${facetType == FacetEnum.LICENSE_GROUP.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.LICENSE_GROUP.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
+      <g:if test="${facetType == FacetEnum.LICENSE.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.LICENSE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      </g:if>
     </a>	
   </li>
 </g:each>

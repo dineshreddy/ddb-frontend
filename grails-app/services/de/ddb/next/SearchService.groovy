@@ -25,6 +25,7 @@ import net.sf.json.JSONObject
 import net.sf.json.groovy.JsonSlurper
 
 import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap
+import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.i18n.LocaleContextHolder
 
 import de.ddb.common.ApiConsumer
@@ -746,6 +747,13 @@ class SearchService {
         }
         else if(facetName == FacetEnum.LICENSE_GROUP.getName()){
             res = appCtx.getMessage(FacetEnum.LICENSE_GROUP.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
+        }
+        else if(facetName == FacetEnum.LICENSE.getName()){
+            //As the language keys for licenses are urls they must be also transformable to valid javascript variable names. So the license keys are url encoded
+            def encodedFacetValue = URLEncoder.encode(facetValue, 'UTF-8')
+            encodedFacetValue = encodedFacetValue.replace(".", "%2E") //the dot character must be manually URL encoded!
+
+            res = appCtx.getMessage(FacetEnum.LICENSE.getI18nPrefix() + encodedFacetValue, null, LocaleContextHolder.getLocale())
         }
         return res
     }
