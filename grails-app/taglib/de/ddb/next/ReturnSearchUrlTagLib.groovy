@@ -17,7 +17,6 @@ package de.ddb.next
 
 class ReturnSearchUrlTagLib {
     static namespace = "ddb"
-    static defaultEncodeAs = 'html'
 
     /**
      * Used to return the correct action-URL in the search form in the header of the page.
