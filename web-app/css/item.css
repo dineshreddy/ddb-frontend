@@ -32,18 +32,19 @@
   margin: 0 0 27px 0;
 }
 
-.page-link, .sendmail-link, .viewer.dfg {
-  padding-left: 22px;
+.page-link, .sendmail-link, .pdf-link, .viewer.dfg, .xml-link {
+  margin-right: 30px;
+  padding-left: 24px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat;
 }
 .page-link {
-  background-position: -30px -149px;
+  background-position: -27px -150px;
 }
 .sendmail-link {
-  background-position: -30px -329px;
+  background-position: -27px -329px;
 }
 .viewer.dfg {
-  background-position: -30px -359px;
+  background-position: -27px -359px;
 }
 
 .item-detail .institution {
@@ -94,7 +95,7 @@
 .show-origin {
   padding-left: 17px;
   background-position: -2px -80px;
-  margin-right: 10px;
+  margin-right: 30px;
 }
 
 .origin .show-origin span {
@@ -112,7 +113,7 @@
 
 .favorite {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 30px;
 }
 .favorite-actions {
   padding-left: 20px;
@@ -247,20 +248,15 @@
 }
 .item-links .link-block, .item-links .favorite .sendmail-block{
   display: inline-block;
-  margin-right: 10px;
 }
 .xml-link {
-  padding-left: 27px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat;
-  background-position: -23px -360px;
+  background-position: -27px -359px;
 }
 .xml-link span {
   background: white;
 }
 .pdf-link {
-  padding-left: 27px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat;
-  background-position: -23px -360px;
+  background-position: -27px -359px;
 }
 .pdf-link span {
   background: white;
