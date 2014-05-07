@@ -208,14 +208,14 @@ limitations under the License.
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
                   <div class="delete-btn">
                     <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
-                      <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
+                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
                         <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
                       </button>
                     </g:form>
                   </div>
                   <div class="delete-btn">
                     <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
-                      <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
+                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
                         <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
                       </button>
                     </g:form>
