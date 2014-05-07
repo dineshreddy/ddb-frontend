@@ -199,10 +199,7 @@ class ApisController {
     }
 
     def staticFiles() {
-        def apiResponse = ApiConsumer.getBinaryStreaming(
-                configurationService.getStaticUrl(),
-                '/static/' + getFileNamePath(),
-                response.outputStream)
+        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getStaticUrl(), getFileNamePath() , response.outputStream)
 
         if(!apiResponse.isOk()){
             log.error "binary(): binary content was not found"
