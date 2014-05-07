@@ -18,7 +18,7 @@ limitations under the License.
   <div class="span12 similar-objects bt">
 
     <div class="similar-objects-header active">
-      <h3><g:message encodeAs="html" code="ddbnext.item.similarObjects" /></h3>
+      <g:message encodeAs="html" code="ddbnext.item.similarObjects" />
     </div>
 
     <div class="similar-objects-items">
