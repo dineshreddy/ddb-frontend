@@ -1540,7 +1540,7 @@ select {
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
 .external-link-icon {
   padding-left: 20px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -390px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
 }
 
 /* Exception for links in the openstreetmap */
