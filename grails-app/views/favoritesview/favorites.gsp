@@ -204,22 +204,24 @@ limitations under the License.
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
               <div class="delete-container row">
-                <div class="span1 delete-btn">
-                  <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
-                    <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
-                      <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
-                    </button>
-                  </g:form>
+                <div class="span9">
+                  <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
+                  <div class="delete-btn">
+                    <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
+                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
+                        <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
+                      </button>
+                    </g:form>
+                  </div>
+                  <div class="delete-btn">
+                    <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
+                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
+                        <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
+                      </button>
+                    </g:form>
+                  </div>
                 </div>
-                <div class="span1 delete-btn">
-                  <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
-                    <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
-                      <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
-                    </button>
-                  </g:form>
-                </div>
-                <div class="span5 results-pagination fr">
-                  <ddb:renderPaginationControls navData="${navigationData}"></ddb:renderPaginationControls>
+                <div class="span3">
                 </div>
               </div>
               <div class="results-sorter">

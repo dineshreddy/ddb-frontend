@@ -42,7 +42,22 @@ $(function() {
         this.next().text(prefix + 'check all');
       }
     });
-
+    
+    //Managing "delete" and "copy" buttons
+    $('#slaves').change(function(){
+      if($(this).find(':checkbox:checked').length>0){
+        $('.delete-btn button').removeClass('disabled');
+      }else{
+        $('.delete-btn button').addClass('disabled');
+      }
+    })
+    
+    $('.delete-btn button').click(function(){
+      if($(this).hasClass('disabled')){
+        return false;
+      }
+    });
+    
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {

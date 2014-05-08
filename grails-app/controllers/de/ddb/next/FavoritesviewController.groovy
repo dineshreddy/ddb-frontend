@@ -285,11 +285,12 @@ class FavoritesviewController {
                 def allRes = favoritesService.retriveItemMD(items,locale)
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+                def queryString = request.getQueryString()
 
                 // convertQueryParametersToSearchParameters modifies params
                 params.remove("query")
 
-                urlQuery["offset"] = 0
+                //urlQuery["offset"] = 0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
                 def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
@@ -361,6 +362,7 @@ class FavoritesviewController {
                     allFolders: allFoldersInformation,
                     viewType: urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
+                    paginationURL: searchService.buildPagination(totalResults, urlQuery, request.forwardURI+'?'+queryString),
                     page: page,
                     resultsNumber: totalResults,
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(offset, rows, order, by, lastPgOffset,folderId),
