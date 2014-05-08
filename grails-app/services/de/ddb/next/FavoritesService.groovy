@@ -264,18 +264,29 @@ class FavoritesService {
         return all
     }
 
+    /**
+     * Format a date depending on the given locale.
+     *
+     * German: 08.05.2014, 19:34 Uhr
+     * English: 08.05.2014, 7:34 PM
+     *
+     * Java has a built-in date format "FULL" which returns nearly the needed format, only a few modifications are
+     * necessary.
+     *
+     * @param date date to be formatted
+     * @param locale locale
+     *
+     * @return formatted date string
+     */
     private String formatDate(Date date, Locale locale) {
-        String result
-        SimpleDateFormat newFormat = new SimpleDateFormat("dd.MM.yyyy, ")
-        newFormat.setTimeZone(TimeZone.getTimeZone("Europe/Berlin"))
-        result = newFormat.format(date)
-        // add the time separately to get something like "12:34 Uhr"
-        newFormat = new SimpleDateFormat("z", locale)
-        String timeZone = newFormat.format(date)
-        newFormat = SimpleDateFormat.getTimeInstance(SimpleDateFormat.FULL, locale)
-        String time = newFormat.format(date)
-        result += time.substring(0, time.length() - timeZone.length())
-        return result
+        String datePattern = "dd.MM.yyyy, " +
+                SimpleDateFormat.getTimeInstance(SimpleDateFormat.FULL, locale).toLocalizedPattern()
+        // remove time zone
+        datePattern = datePattern.substring(0, datePattern.length() - 1)
+        // remove seconds from English pattern
+        datePattern = datePattern.replace(":ss", "")
+        SimpleDateFormat dateFormat = new SimpleDateFormat(datePattern)
+        return dateFormat.format(date)
     }
 
     boolean isUserLoggedIn() {
