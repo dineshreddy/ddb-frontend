@@ -309,6 +309,29 @@ class BookmarksService {
         return all
     }
 
+    /**
+     * Returns the number of bookmarks in a folder that belongs to the user.
+     *
+     * @param userId    the ID whose the folders and bookmarks belongs to.
+     * @param folderId  the ID of a certain folder. Use {@link #findAllFolders} to find out the folder IDs.
+     * @return          the number of bookmarks in a folder that belongs to the user.
+     */
+    def countBookmarksInFolder(String userId, String folderId) {
+        log.info "countBookmarksInFolder(): count bookmarks for the user (${userId}) in the folder ${folderId}"
+
+        def count = -1
+
+        def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, query, [:], true)
+
+        if(apiResponse.isOk()){
+            def response = apiResponse.getResponse()
+            count = response.hits.total
+        }
+
+        return count
+    }
+
     List<Bookmark> findBookmarksByPublicFolderId(String folderId) {
         log.info "findBookmarksByPublicFolderId(): find bookmarks in the folder ${folderId}"
 

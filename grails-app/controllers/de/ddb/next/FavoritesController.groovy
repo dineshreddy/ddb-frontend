@@ -119,9 +119,8 @@ class FavoritesController {
                     //If the affectedFolders are public and has no items left -> set folder to private DDBNEXT-1517
                     affectedFolders.each { folder ->
                         if (folder.isPublic) {
-                            def bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
-
-                            if (bookmarks.size() == 0) {
+                            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
+                            if (bookmarkCount == 0) {
                                 folder.isPublic = false
                                 bookmarksService.updateFolder(folder);
                                 flash.message = "ddbnext.folder_empty_set_to_private"
@@ -485,9 +484,9 @@ class FavoritesController {
             }
 
             // Check if folder has at least one bookmark, empty folder cannot set public, see DDBNEXT-1517
-            List<Bookmark> bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
+            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
 
-            if (!isPublic || bookmarks.size() > 0) {
+            if (!isPublic || bookmarkCount > 0) {
                 if(isFolderOfUser && !isDefaultFavoritesFolder){
                     folder.title = title
                     folder.description = description
@@ -569,9 +568,9 @@ class FavoritesController {
             }
 
             // 2) Check if folder has at least one bookmark, empty folder cannot be published see DDBNEXT-1517
-            List<Bookmark> bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
+            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
 
-            if (folder.isPublic || bookmarks.size() > 0) {
+            if (folder.isPublic || bookmarkCount > 0) {
                 if(isFolderOfUser && !folder.isBlocked){
                     folder.isPublic = !folder.isPublic
                     bookmarksService.updateFolder(folder)
