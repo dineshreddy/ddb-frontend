@@ -33,10 +33,10 @@ limitations under the License.
   <div class="row item-detail item-content">
     <g:each in="${binaryList}">
       <g:if test="${it.full.uri != '' || it.preview.uri != ''}">
-        <g:set var="condition" value="${true}"/>
+        <g:set var="hasBinary" value="${true}"/>
       </g:if>
     </g:each>
-    <g:if test="${(condition || originUrl != '') && (item.media!='no media type' && item.media!='unknown')}">
+    <g:if test="${(hasBinary || originUrl != '') && (item.media!='no media type' && item.media!='unknown')}">
       <g:set var="display" value="${true}"/>
     </g:if>
     <div class="<g:if test="${display}">span6</g:if><g:else>span12</g:else> item-description">
