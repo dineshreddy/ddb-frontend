@@ -71,10 +71,11 @@ class FavoritesController {
 
             // Check if the items all belong to the current user
             boolean itemsAreOwnedByUser = true
-            def bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
-            def bookmarkIds = bookmarks.collect { it.itemId }
+            List<Bookmark> allBookmarksInFolder = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            def allItemIdsInFolder = allBookmarksInFolder.collect { it.itemId }
+
             itemIds.each {
-                if(!(it in bookmarkIds)){
+                if(!(it in allItemIdsInFolder)){
                     itemsAreOwnedByUser = false
                 }
             }
@@ -83,22 +84,55 @@ class FavoritesController {
                 if(itemIds == null || itemIds.size() == 0) {
                     result = response.SC_OK
                 }else{
+                    //The complete list of folders from where bookmarks has been removed
+                    Set<Folder> affectedFolders = []
+
+                    def bookmarksToDelete = []
+
                     // Special case: if bookmarks are deleted in the main favorites folder -> delete them everywhere
                     //def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
                     def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
+                    //MainFolder
                     if(folderId == mainFavoriteFolder.folderId) {
+                        bookmarksToDelete = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, null)
+                        bookmarksToDelete.each { b ->
+                            b.folders.each { f ->
+                                Folder folder = bookmarksService.findFolderById(f)
+                                affectedFolders.add(folder)
+                            }
+                        }
+
                         bookmarksService.deleteBookmarksByItemIds(user.getId(), itemIds)
-                    }else{
-                        def favorites = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
-                        def favoriteIds = favorites.collect { it.bookmarkId }
-                        bookmarksService.removeBookmarksFromFolder(favoriteIds, folderId)
                     }
-                    result = response.SC_OK
+                    //other folders
+                    else{
+                        bookmarksToDelete = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
+
+                        def favoriteIds = bookmarksToDelete.collect { it.bookmarkId }
+                        bookmarksService.removeBookmarksFromFolder(favoriteIds, folderId)
+
+                        affectedFolders.add(bookmarksService.findFolderById(folderId))
+                        result = response.SC_OK
+                    }
+
+                    //If the affectedFolders are public and has no items left -> set folder to private DDBNEXT-1517
+                    affectedFolders.each { folder ->
+                        if (folder.isPublic) {
+                            def bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
+
+                            if (bookmarks.size() == 0) {
+                                folder.isPublic = false
+                                bookmarksService.updateFolder(folder);
+                                flash.message = "ddbnext.folder_empty_set_to_private"
+                            }
+                        }
+                    }
                 }
             }else{
                 result = response.SC_UNAUTHORIZED
             }
+
         } else {
             result = response.SC_UNAUTHORIZED
         }
