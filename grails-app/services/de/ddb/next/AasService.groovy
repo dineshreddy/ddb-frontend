@@ -44,9 +44,9 @@ class AasService {
 
     private static final log = LogFactory.getLog(this)
 
-    private static final String PERSON_URI = "/aas/persons/"
+    private static final String PERSON_PATH = "persons/"
 
-    private static final String APIKEY_URI = "/aas/keys/"
+    private static final String APIKEY_PATH = "keys/"
 
     private static final String ID_FIELD = "id"
 
@@ -84,7 +84,7 @@ class AasService {
      */
     public User login(String id, String password) {
         String auth = id + ":" + password
-        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
+        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_PATH + id, false, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
         if(apiResponse.isOk()){
             def aasResponse = apiResponse.getResponse()
 
@@ -115,7 +115,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject getPerson(String id) {
-        return request(PERSON_URI + id)
+        return request(PERSON_PATH + id)
     }
 
     /**
@@ -127,7 +127,7 @@ class AasService {
     public User getPersonAsAdmin(String id) {
         User result
         String auth = configurationService.getAasAdminUserId() + ":" + configurationService.getAasAdminPassword()
-        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_URI + id, false, [:],
+        def apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), PERSON_PATH + id, false, [:],
         ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
         if (apiResponse.isOk()) {
             JSONObject jsonObject = apiResponse.getResponse()
@@ -153,7 +153,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject createPerson(JSONObject person) {
-        return request(PERSON_URI, Method.POST, person)
+        return request(PERSON_PATH, Method.POST, person)
     }
 
     /**
@@ -175,7 +175,7 @@ class AasService {
         if (aasUser.email) {
             // user exists - update it
             jsonObject.put(ID_FIELD, aasUser.id)
-            def apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), PERSON_URI + aasUser.id, false,
+            def apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), PERSON_PATH + aasUser.id, false,
                     jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
             if (!apiResponse.isOk()) {
                 log.error "AAS update request failed: " + apiResponse
@@ -187,7 +187,7 @@ class AasService {
         else {
             // user doesn't exist - create it
             jsonObject.put(PASSWORD_FIELD, RandomStringUtils.randomAlphanumeric(12))
-            def apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), PERSON_URI, false,
+            def apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), PERSON_PATH, false,
                     jsonObject, [:], ['Authorization':'Basic ' + auth.bytes.encodeBase64().toString()])
             if (!apiResponse.isOk()) {
                 log.error "AAS create request failed: " + apiResponse
@@ -206,7 +206,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject updatePerson(String id, JSONObject person) {
-        return request(PERSON_URI + id, Method.PUT, person)
+        return request(PERSON_PATH + id, Method.PUT, person)
     }
 
     /**
@@ -214,7 +214,7 @@ class AasService {
      * @param id id of person to delete
      */
     public void deletePerson(String id) {
-        request(PERSON_URI + id, Method.DELETE)
+        request(PERSON_PATH + id, Method.DELETE)
     }
 
     /**
@@ -223,7 +223,7 @@ class AasService {
      * @param password password-object
      */
     public void changePassword(String id, JSONObject password) {
-        request(PERSON_URI + id + "/password", Method.PUT, password)
+        request(PERSON_PATH + id + "/password", Method.PUT, password)
     }
 
     /**
@@ -233,7 +233,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject updateEmail(String id, JSONObject update) {
-        return request(PERSON_URI + id + "/email", Method.PUT, update)
+        return request(PERSON_PATH + id + "/email", Method.PUT, update)
     }
 
     /**
@@ -243,7 +243,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject resetPassword(String id, JSONObject reset) {
-        return request(PERSON_URI + id + "/resetpassword", Method.PUT, reset)
+        return request(PERSON_PATH + id + "/resetpassword", Method.PUT, reset)
     }
 
     /**
@@ -253,7 +253,7 @@ class AasService {
      * @return person as JSON object
      */
     public JSONObject confirm(String id, String token) {
-        return request(PERSON_URI + id + "/confirm/" + token, Method.GET)
+        return request(PERSON_PATH + id + "/confirm/" + token, Method.GET)
     }
 
     /**
@@ -422,19 +422,19 @@ class AasService {
      * @param url url of request
      * @return JSON-response
      */
-    private JSONObject request(String url, Method method = Method.GET, JSONObject postParameter = null) {
+    private JSONObject request(String path, Method method = Method.GET, JSONObject postParameter = null) {
         def apiResponse
         if (method.equals(Method.GET)) {
-            apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), url, true)
+            apiResponse = ApiConsumer.getJson(configurationService.getAasUrl(), path, true)
         }
         else if (method.equals(Method.POST)) {
-            apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), url, true, postParameter)
+            apiResponse = ApiConsumer.postJson(configurationService.getAasUrl(), path, true, postParameter)
         }
         else if (method.equals(Method.PUT)) {
-            apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), url, true, postParameter)
+            apiResponse = ApiConsumer.putJson(configurationService.getAasUrl(), path, true, postParameter)
         }
         else if (method.equals(Method.DELETE)) {
-            apiResponse = ApiConsumer.deleteJson(configurationService.getAasUrl(), url, true)
+            apiResponse = ApiConsumer.deleteJson(configurationService.getAasUrl(), path, true)
         }
         else {
             throw new BackendErrorException("No method for request defined")
@@ -452,7 +452,7 @@ class AasService {
      * @return The new API-Key as String
      */
     public String createApiKey() {
-        JSONObject newApiKey = request(APIKEY_URI + "generate", Method.GET)
+        JSONObject newApiKey = request(APIKEY_PATH + "generate", Method.GET)
         return newApiKey?.developerKey?.toString()
     }
 
