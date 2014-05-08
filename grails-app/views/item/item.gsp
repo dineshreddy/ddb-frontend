@@ -31,7 +31,15 @@ limitations under the License.
   <g:render template="institution" />
   <g:render template="itemLinks" />
   <div class="row item-detail item-content">
-    <div class="span6 item-description">
+    <g:each in="${binaryList}">
+      <g:if test="${it.full.uri != '' || it.preview.uri != ''}">
+        <g:set var="condition" value="${true}"/>
+      </g:if>
+    </g:each>
+    <g:if test="${(condition || originUrl != '') && (item.media!='no media type' && item.media!='unknown')}">
+      <g:set var="display" value="${true}"/>
+    </g:if>
+    <div class="<g:if test="${display}">span6</g:if><g:else>span12</g:else> item-description">
       <h2>
         ${itemTitle.encodeAsHTML()}
       </h2>
@@ -52,7 +60,9 @@ limitations under the License.
          Sending PDF per Mail End    
 --%>
     </div>
-    <g:render template="binaries" />
+    <g:if test="${display}">
+      <g:render template="binaries" />
+    </g:if>
   </div>
   <g:render template="similarObjects" />
   <g:render template="hierarchy" />

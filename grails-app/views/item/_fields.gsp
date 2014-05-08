@@ -20,7 +20,7 @@ limitations under the License.
       <div class="span2">
         <strong>${it.name}: </strong>
       </div>
-      <div class="value span4">
+      <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
