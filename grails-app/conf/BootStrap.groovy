@@ -22,6 +22,8 @@ class BootStrap {
     def configurationService
 
     def init = { servletContext ->
+        Locale.setDefault(Locale.GERMAN)
+
         try {
             configurationService.logConfigurationSettings()
         }
