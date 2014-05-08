@@ -113,7 +113,6 @@ class FavoritesController {
                         bookmarksService.removeBookmarksFromFolder(favoriteIds, folderId)
 
                         affectedFolders.add(bookmarksService.findFolderById(folderId))
-                        result = response.SC_OK
                     }
 
                     //If the affectedFolders are public and has no items left -> set folder to private DDBNEXT-1517
@@ -127,6 +126,8 @@ class FavoritesController {
                             }
                         }
                     }
+
+                    result = response.SC_OK
                 }
             }else{
                 result = response.SC_UNAUTHORIZED
