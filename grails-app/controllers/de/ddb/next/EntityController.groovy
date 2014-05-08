@@ -161,8 +161,6 @@ class EntityController {
      * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339 
      */
     def persons() {
-
-        
         def random_seed = getRandomSeed()
         def results = entityService.doEntitySearch([query:"*",rows:70,sort:"random_"+random_seed])
 
@@ -177,6 +175,12 @@ class EntityController {
         render(view: "persons", model: [title: "", results: resultsWithThumbnails.collate(total)])
     }
 
+    /**
+     * Gets a RandomSeedString Used in the search for persons 
+     * Seed is stored in a session (in a list) to guarantee that next try is for a unique string
+     * Retrieves only last element of the List which is turn used for the search
+     * @return Integer
+     */
     private getRandomSeed() {
         Random rand = new Random()
         def listRandomSeeds = []

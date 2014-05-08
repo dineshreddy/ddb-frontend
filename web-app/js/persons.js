@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 $(function() {
-  console.log("JS PAGE NAME "+jsPageName);
   if (jsPageName === "persons") {
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
