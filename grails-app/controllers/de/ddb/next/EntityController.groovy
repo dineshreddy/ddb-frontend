@@ -16,6 +16,7 @@
 package de.ddb.next
 import net.sf.json.JSONArray
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
@@ -33,7 +34,9 @@ import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
  * @author boz
  */
 class EntityController {
-
+    private final static int NR_COLUMNS_DESIRED = 5
+    private final static int RESULTS_DESIRED_IN_ONE_PERSONS_PAGE = 50
+    private final static int MAX_SEED_RANGE=999999999 // Backend accept as high as 2^64 -1
     def cultureGraphService
     def configurationService
     def entityService
@@ -158,18 +161,54 @@ class EntityController {
      * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339 
      */
     def persons() {
-        def results = entityService.doEntitySearch([query:"*",rows:70])
-        //There are entities with no thumbnail
+
+        
+        def random_seed = getRandomSeed()
+        def results = entityService.doEntitySearch([query:"*",rows:70,sort:"random_"+random_seed])
+
+        //There are entities with no thumbnail. We leave them out...
         def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
+        
         //Since the result after removing items with no thumnbails is is different from 50 (ex: 38)
         //let's make sure we have a list which will have full columns when nrColumnsDesired = x
-        def nrColumnsDesired = 5
-        def resultsDesiredOnPage =50 
-        
-        def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(nrColumnsDesired)
-        if (total>resultsDesiredOnPage) {total=resultsDesiredOnPage}
-        
+        def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
+        if (total>RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {total=RESULTS_DESIRED_IN_ONE_PERSONS_PAGE}
+
         render(view: "persons", model: [title: "", results: resultsWithThumbnails.collate(total)])
+    }
+
+    private getRandomSeed() {
+        Random rand = new Random()
+        def listRandomSeeds = []
+        //
+        def random_seed = rand.nextInt(MAX_SEED_RANGE)+1
+        if (!session?.data) {
+            // first request
+            listRandomSeeds.add(random_seed)
+            session.data = listRandomSeeds
+        } else {
+            // retrieve data from session
+            listRandomSeeds = session.data
+            addRandomToSession(listRandomSeeds,rand)
+            session.data = listRandomSeeds
+        }
+        return listRandomSeeds.pop()
+    }
+    
+    /**
+     * Populate a list of integers by taking care that values are not dublicated
+     * @param listRandomSeeds
+     * @param rand
+     * @return List<Integer>
+     */
+    def private addRandomToSession(listRandomSeeds,rand) {
+        def random_seed = rand.nextInt(MAX_SEED_RANGE)+1
+        if (listRandomSeeds.contains(random_seed)&&(listRandomSeeds.size()<MAX_SEED_RANGE)) {
+            addRandomToSession(listRandomSeeds,rand)
+        }else {
+            listRandomSeeds.add(random_seed)
+        }
+        return listRandomSeeds
     }
     /** 
      * Used to search for entities of Person
