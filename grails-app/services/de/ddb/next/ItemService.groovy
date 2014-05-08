@@ -466,8 +466,7 @@ class ItemService {
         def retVal = null
         def queryParams = ["query": query, "fields": "affiliate,label,description", "rows" : "5"]
 
-        //FIXME Replace test domain from IAIS
-        def apiResponse = ApiConsumer.getJson("http://ddb-fiz-frontend.iais.fraunhofer.de", "/cortex/api/search/mlt", false, queryParams)
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "search/mlt", false, queryParams)
 
         if(apiResponse.isOk()){
             retVal = apiResponse.getResponse()
