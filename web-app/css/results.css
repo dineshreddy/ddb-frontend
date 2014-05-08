@@ -447,6 +447,11 @@ input[type="checkbox"],input[type="radio"] {
   overflow: hidden;
 }
 
+.search-results .results-list .entity .thumbnail img {
+  max-height: 70px;
+  width: 55px;
+}
+
 .search-results .results-list .thumbnail img {
   max-width: 100%;
   max-height: 105px;
@@ -465,6 +470,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .thumbnail-wrapper .item-options {
+  background-color: White;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -580,10 +586,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .summary .add-to-favorites:hover {
   background-position: 0 -90px;
-}
-
-.search-results .results-list .entity .add-to-favorites, .search-results .results-list .entity .added-to-favorites {
-  margin: -30px 10px 0 0 !important;
 }
 
 .search-results .results-list .summary .added-to-favorites:hover {
