@@ -147,8 +147,9 @@ class EntityService {
      * @return detailed information about this entity
      */
     def Map getEntityDetails(String entityId) {
-        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/entities", false,
-                [(SearchParamEnum.ID.getName()) : CultureGraphService.GND_URI_PREFIX + entityId])
+        def ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "entities", false,
+                [(SearchParamEnum.QUERY.getName()) :
+                    SearchParamEnum.ID.getName() + ":\"" + CultureGraphService.GND_URI_PREFIX + entityId + "\""])
 
         if (apiResponse.isOk()) {
             def response = apiResponse.getResponse()
@@ -224,7 +225,7 @@ class EntityService {
     }
 
     def entityImageExists(imageUrl) {
-        def imageExists = false;
+        def imageExists = false
 
         try {
             if (imageUrl) {
@@ -232,7 +233,7 @@ class EntityService {
 
                 ApiResponse apiResponse = ApiConsumer.headAny(url.getProtocol() + "://" + url.getHost() ,url.getPath(), false, [])
                 if(apiResponse.isOk()){
-                    imageExists = true;
+                    imageExists = true
                 } else {
                     log.warn "Entity image response is " + apiResponse.status +  " . The image is not available under " + imageUrl
                 }
