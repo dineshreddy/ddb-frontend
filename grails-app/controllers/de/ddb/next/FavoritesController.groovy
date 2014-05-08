@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import java.util.List;
+
 import grails.converters.JSON
 
 import org.ccil.cowan.tagsoup.Parser
@@ -69,10 +71,11 @@ class FavoritesController {
 
             // Check if the items all belong to the current user
             boolean itemsAreOwnedByUser = true
-            def bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
-            def bookmarkIds = bookmarks.collect { it.itemId }
+            List<Bookmark> allBookmarksInFolder = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            def allItemIdsInFolder = allBookmarksInFolder.collect { it.itemId }
+
             itemIds.each {
-                if(!(it in bookmarkIds)){
+                if(!(it in allItemIdsInFolder)){
                     itemsAreOwnedByUser = false
                 }
             }
@@ -81,22 +84,55 @@ class FavoritesController {
                 if(itemIds == null || itemIds.size() == 0) {
                     result = response.SC_OK
                 }else{
+                    //The complete list of folders from where bookmarks has been removed
+                    Set<Folder> affectedFolders = []
+
+                    def bookmarksToDelete = []
+
                     // Special case: if bookmarks are deleted in the main favorites folder -> delete them everywhere
                     //def mainFavoriteFolder = favoritesPageService.getMainFavoritesFolder()
                     def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
+                    //MainFolder
                     if(folderId == mainFavoriteFolder.folderId) {
+                        bookmarksToDelete = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, null)
+                        bookmarksToDelete.each { b ->
+                            b.folders.each { f ->
+                                Folder folder = bookmarksService.findFolderById(f)
+                                affectedFolders.add(folder)
+                            }
+                        }
+
                         bookmarksService.deleteBookmarksByItemIds(user.getId(), itemIds)
-                    }else{
-                        def favorites = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
-                        def favoriteIds = favorites.collect { it.bookmarkId }
-                        bookmarksService.removeBookmarksFromFolder(favoriteIds, folderId)
                     }
+                    //other folders
+                    else{
+                        bookmarksToDelete = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, folderId)
+
+                        def favoriteIds = bookmarksToDelete.collect { it.bookmarkId }
+                        bookmarksService.removeBookmarksFromFolder(favoriteIds, folderId)
+
+                        affectedFolders.add(bookmarksService.findFolderById(folderId))
+                    }
+
+                    //If the affectedFolders are public and has no items left -> set folder to private DDBNEXT-1517
+                    affectedFolders.each { folder ->
+                        if (folder.isPublic) {
+                            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
+                            if (bookmarkCount == 0) {
+                                folder.isPublic = false
+                                bookmarksService.updateFolder(folder);
+                                flash.message = "ddbnext.folder_empty_set_to_private"
+                            }
+                        }
+                    }
+
                     result = response.SC_OK
                 }
             }else{
                 result = response.SC_UNAUTHORIZED
             }
+
         } else {
             result = response.SC_UNAUTHORIZED
         }
@@ -430,6 +466,7 @@ class FavoritesController {
 
             // 1) Check if the current user is really the owner of this folder, else deny
             // 2) Check if the folder is a default favorites folder -> if true, deny
+            // 3) If the user will publish an empty list -> deny
             boolean isFolderOfUser = false
             boolean isDefaultFavoritesFolder = false
             foldersOfUser.each {
@@ -446,16 +483,26 @@ class FavoritesController {
                     }
                 }
             }
-            if(isFolderOfUser && !isDefaultFavoritesFolder){
-                folder.title = title
-                folder.description = description
-                folder.isPublic = isPublic
-                folder.publishingName = publishingName
-                bookmarksService.updateFolder(folder)
-                result = response.SC_OK
-                flash.message = "ddbnext.folder_edit_succ"
+
+            // Check if folder has at least one bookmark, empty folder cannot set public, see DDBNEXT-1517
+            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
+
+            if (!isPublic || bookmarkCount > 0) {
+                if(isFolderOfUser && !isDefaultFavoritesFolder){
+                    folder.title = title
+                    folder.description = description
+                    folder.isPublic = isPublic
+                    folder.publishingName = publishingName
+                    bookmarksService.updateFolder(folder)
+                    result = response.SC_OK
+                    flash.message = "ddbnext.folder_edit_succ"
+                } else {
+                    result = response.SC_UNAUTHORIZED
+                }
             } else {
-                result = response.SC_UNAUTHORIZED
+                //To work with flash.error, the response code must be 200
+                result = response.SC_OK
+                flash.error = "ddbnext.folder_empty_cannot_publish"
             }
         } else {
             result = response.SC_UNAUTHORIZED
@@ -509,6 +556,7 @@ class FavoritesController {
         def id = request.JSON.id
 
         def result = response.SC_BAD_REQUEST
+        def errorMessage
 
         def User user = favoritesService.getUserFromSession()
         if (user != null) {
@@ -519,12 +567,22 @@ class FavoritesController {
             if(folder.userId == user.getId()){
                 isFolderOfUser = true
             }
-            if(isFolderOfUser && !folder.isBlocked){
-                folder.isPublic = !folder.isPublic
-                bookmarksService.updateFolder(folder)
-                result = response.SC_OK
+
+            // 2) Check if folder has at least one bookmark, empty folder cannot be published see DDBNEXT-1517
+            def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
+
+            if (folder.isPublic || bookmarkCount > 0) {
+                if(isFolderOfUser && !folder.isBlocked){
+                    folder.isPublic = !folder.isPublic
+                    bookmarksService.updateFolder(folder)
+                    result = response.SC_OK
+                } else {
+                    result = response.SC_UNAUTHORIZED
+                }
             } else {
-                result = response.SC_UNAUTHORIZED
+                //To work with flash.error, the response code must be 200
+                result = response.SC_OK
+                flash.error =  "ddbnext.folder_empty_cannot_publish"
             }
         } else {
             result = response.SC_UNAUTHORIZED
