@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import java.util.List;
+
 import grails.converters.JSON
 
 import org.ccil.cowan.tagsoup.Parser
@@ -430,6 +432,7 @@ class FavoritesController {
 
             // 1) Check if the current user is really the owner of this folder, else deny
             // 2) Check if the folder is a default favorites folder -> if true, deny
+            // 3) If the user will publish an empty list -> deny
             boolean isFolderOfUser = false
             boolean isDefaultFavoritesFolder = false
             foldersOfUser.each {
@@ -446,16 +449,26 @@ class FavoritesController {
                     }
                 }
             }
-            if(isFolderOfUser && !isDefaultFavoritesFolder){
-                folder.title = title
-                folder.description = description
-                folder.isPublic = isPublic
-                folder.publishingName = publishingName
-                bookmarksService.updateFolder(folder)
-                result = response.SC_OK
-                flash.message = "ddbnext.folder_edit_succ"
+
+            // Check if folder has at least one bookmark, empty folder cannot set public, see DDBNEXT-1517
+            List<Bookmark> bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
+
+            if (!isPublic || bookmarks.size() > 0) {
+                if(isFolderOfUser && !isDefaultFavoritesFolder){
+                    folder.title = title
+                    folder.description = description
+                    folder.isPublic = isPublic
+                    folder.publishingName = publishingName
+                    bookmarksService.updateFolder(folder)
+                    result = response.SC_OK
+                    flash.message = "ddbnext.folder_edit_succ"
+                } else {
+                    result = response.SC_UNAUTHORIZED
+                }
             } else {
-                result = response.SC_UNAUTHORIZED
+                //To work with flash.error, the response code must be 200
+                result = response.SC_OK
+                flash.error = "ddbnext.folder_empty_cannot_publish"
             }
         } else {
             result = response.SC_UNAUTHORIZED
@@ -509,6 +522,7 @@ class FavoritesController {
         def id = request.JSON.id
 
         def result = response.SC_BAD_REQUEST
+        def errorMessage
 
         def User user = favoritesService.getUserFromSession()
         if (user != null) {
@@ -519,12 +533,22 @@ class FavoritesController {
             if(folder.userId == user.getId()){
                 isFolderOfUser = true
             }
-            if(isFolderOfUser && !folder.isBlocked){
-                folder.isPublic = !folder.isPublic
-                bookmarksService.updateFolder(folder)
-                result = response.SC_OK
+
+            // 2) Check if folder has at least one bookmark, empty folder cannot be published see DDBNEXT-1517
+            List<Bookmark> bookmarks = bookmarksService.findBookmarksByFolderId(user.getId(), folder.folderId)
+
+            if (folder.isPublic || bookmarks.size() > 0) {
+                if(isFolderOfUser && !folder.isBlocked){
+                    folder.isPublic = !folder.isPublic
+                    bookmarksService.updateFolder(folder)
+                    result = response.SC_OK
+                } else {
+                    result = response.SC_UNAUTHORIZED
+                }
             } else {
-                result = response.SC_UNAUTHORIZED
+                //To work with flash.error, the response code must be 200
+                result = response.SC_OK
+                flash.error =  "ddbnext.folder_empty_cannot_publish"
             }
         } else {
             result = response.SC_UNAUTHORIZED
