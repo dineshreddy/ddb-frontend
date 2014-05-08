@@ -153,6 +153,24 @@ class EntityController {
         render(view: 'entity', model: model)
     }
 
+    /**
+     * Present a list of persons by their picture
+     * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339 
+     */
+    def persons() {
+        def results = entityService.doEntitySearch([query:"*",rows:70])
+        //There are entities with no thumbnail
+        def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
+        //Since the result after removing items with no thumnbails is is different from 50 (ex: 38)
+        //let's make sure we have a list which will have full columns when nrColumnsDesired = x
+        def nrColumnsDesired = 5
+        def resultsDesiredOnPage =50 
+        
+        def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(nrColumnsDesired)
+        if (total>resultsDesiredOnPage) {total=resultsDesiredOnPage}
+        
+        render(view: "persons", model: [title: "", results: resultsWithThumbnails.collate(total)])
+    }
     /** 
      * Used to search for entities of Person
      * Mapped to /entities/search/person
