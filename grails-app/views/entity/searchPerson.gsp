@@ -23,8 +23,7 @@ limitations under the License.
 <html>
 <head>
 <title>
-  ${title} - <g:message encodeAs="html"
-    code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="searchperson" />
 <meta name="layout" content="main" />
 </head>
@@ -33,8 +32,7 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3>
-          <g:message encodeAs="html"
-            code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
+          <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
         </h3>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
@@ -43,17 +41,11 @@ limitations under the License.
           <g:each in="${nonJsFacetsList}" var="mit">
             <g:each in="${(facets.selectedFacets)}">
               <g:if test="${mit == it.field}">
-                <div
-                  class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
-                  <a class="h3"
-                    href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}"
-                    data-fctName="${it.field}"><g:message
-                      encodeAs="html" code="ddbnext.facet_${it.field}" /></a>
+                <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
+                  <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>
                   <g:if test="${it.facetValues.size() > 0}">
                     <ul class="unstyled">
-                      <ddb:renderFacetList
-                        facetValues="${facets.subFacetsUrl[it.field]}"
-                        facetType="${it.field}"></ddb:renderFacetList>
+                      <ddb:renderFacetList facetValues="${facets.subFacetsUrl[it.field]}" facetType="${it.field}"></ddb:renderFacetList>
                     </ul>
                   </g:if>
                 </div>
@@ -67,8 +59,7 @@ limitations under the License.
         <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
       </div>
       <div class="clear-filters">
-        <a href="${clearFilters.encodeAsHTML()}"><g:message
-            encodeAs="html" code="ddbnext.Clear_filters" /></a>
+        <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters" /></a>
       </div>
     </div>
 
@@ -100,15 +91,14 @@ limitations under the License.
             <div class="search-results">
               <div class="search-results-list">
                 <g:if test="${results}">
-                  <g:render template="entityResultsList"
-                    model="${[entities: results]}" />
+                  <g:render template="entityResultsList" model="${[entities: results]}" />
                 </g:if>
               </div>
             </div>
           </div>
         </div>
       </div>
-      
+
       <%--   Search has NO results   --%>
       <div class="search-noresults-content <g:if test="${results.totalResults != 0}">off</g:if>">
         <g:if test="${correctedQuery!='null'}">
