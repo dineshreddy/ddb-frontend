@@ -44,7 +44,7 @@
 
 /* draw a text page symbol in front of the label */
 .item-hierarchy-result div.leaf-indicator {
-  background: url("../images/icons/hierarchyIcons.png") no-repeat 0 -82px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -337px -199px;
   float: left;
   height: 19px;
   margin: 2px 5px 2px 8px;
@@ -53,7 +53,7 @@
 
 /* highlight the current node */
 .item-hierarchy-result div.leaf-indicator.current-node {
-  background: transparent url("../images/icons/hierarchyIcons.png") no-repeat 0 -82px;
+  background: transparent url("../images/icons/ddbIkonographie.png") no-repeat -337px -199px;
 }
 
 .item-hierarchy-result i {
@@ -65,20 +65,20 @@
 /* draw a plus sign */
 .item-hierarchy-result i.collapsed {
   background: #a5003b
-    url("../images/icons/hierarchyIcons.png") no-repeat 0 -40px;
+    url("../images/icons/ddbIkonographie.png") no-repeat -337px -159px;
   cursor: pointer;
 }
 
 /* draw a minus sign */
 .item-hierarchy-result i.expanded {
   background: #a5003b
-    url("../images/icons/hierarchyIcons.png") no-repeat 0 -130px;
+    url("../images/icons/ddbIkonographie.png") no-repeat -337px -249px;
   cursor: pointer;
 }
 
 /* draw a home symbol */
 .item-hierarchy-result i.root {
-  background: url("../images/icons/hierarchyIcons.png") no-repeat;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -337px -119px;
   cursor: pointer;
 }
 
