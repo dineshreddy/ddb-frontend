@@ -42,9 +42,13 @@ class SearchController {
             if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
                 redirect(controller: "search", action: "results", params: params)
             }
+
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
+
+            //Search should only return documents, no institutions, see DDBNEXT-1504
+            setCategory(urlQuery, "Kultur");
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -187,17 +191,15 @@ class SearchController {
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
-        def queryString = request.getQueryString()
-        if ((!urlQuery["query"])||(urlQuery["query"]=="*")){
-            urlQuery["query"]="category:Institution"
-            queryString="query=*"
-        }else{
-            urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
-        }
 
-        
-        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+        def queryString = request.getQueryString()
+
+        //Only select institutions, no documents!
+        setCategory(urlQuery, "Institution");
+
+        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"]) {
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+        }
 
         def results = searchService.doInstitutionSearch(urlQuery)
         def correctedQuery = ""
@@ -298,6 +300,29 @@ class SearchController {
                 }
             }
         }
+    }
+
+    private setCategory(Map urlQuery, String category) {
+
+        //Check if other facets has been selected as filter
+        if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()] != "null"){
+            //MANY facets has been selected as filter
+            if(urlQuery[SearchParamEnum.FACET.getName()] instanceof Collection<?>){
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+            }
+            //ONE facet has been selected as filter
+            else {
+                def tempFacet = urlQuery[SearchParamEnum.FACET.getName()]
+                urlQuery[SearchParamEnum.FACET.getName()] = []
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+                urlQuery[SearchParamEnum.FACET.getName()].add(tempFacet)
+            }
+        }
+        //NO facet has been selected as filter
+        else {
+            urlQuery[SearchParamEnum.FACET.getName()] = FacetEnum.CATEGORY.getName()
+        }
+        urlQuery[FacetEnum.CATEGORY.getName()] = category
     }
 
 }

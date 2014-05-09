@@ -48,30 +48,36 @@ class ApisService {
 
         def query = [ (SearchParamEnum.QUERY.getName()): queryParameters.query ]
 
-        if(queryParameters[SearchParamEnum.OFFSET.getName()])
+        if(queryParameters[SearchParamEnum.OFFSET.getName()]) {
             query[SearchParamEnum.OFFSET.getName()]= queryParameters[SearchParamEnum.OFFSET.getName()]
+        }
 
-        if(queryParameters[SearchParamEnum.ROWS.getName()])
+        if(queryParameters[SearchParamEnum.ROWS.getName()]) {
             query[SearchParamEnum.ROWS.getName()] = queryParameters[SearchParamEnum.ROWS.getName()]
+        }
 
-        if(queryParameters[SearchParamEnum.CALLBACK.getName()])
+        if(queryParameters[SearchParamEnum.CALLBACK.getName()]) {
             query[SearchParamEnum.CALLBACK.getName()] = queryParameters[SearchParamEnum.CALLBACK.getName()]
+        }
 
-        if(queryParameters[SearchParamEnum.FACET.getName()] &&
-           queryParameters[SearchParamEnum.FACET.getName()] != "null"){
+        if(queryParameters[SearchParamEnum.FACET.getName()] && queryParameters[SearchParamEnum.FACET.getName()] != "null"){
             if(queryParameters[SearchParamEnum.FACET.getName()].getClass().isArray()){
                 query[SearchParamEnum.FACET.getName()] = []
                 queryParameters[SearchParamEnum.FACET.getName()].each {
                     query[SearchParamEnum.FACET.getName()].add(it)
                 }
-            }else query[SearchParamEnum.FACET.getName()]=queryParameters[SearchParamEnum.FACET.getName()]
+            }else {
+                query[SearchParamEnum.FACET.getName()]=queryParameters[SearchParamEnum.FACET.getName()]
+            }
         }
 
-        if(queryParameters[SearchParamEnum.MINDOCS.getName()])
+        if(queryParameters[SearchParamEnum.MINDOCS.getName()]) {
             query[SearchParamEnum.MINDOCS.getName()] = queryParameters[SearchParamEnum.MINDOCS.getName()]
+        }
 
-        if(queryParameters[SearchParamEnum.SORT.getName()])
+        if(queryParameters[SearchParamEnum.SORT.getName()]) {
             query[SearchParamEnum.SORT.getName()] = queryParameters[SearchParamEnum.SORT.getName()]
+        }
 
         //Evaluates the facetValues from the API request
         FacetEnum.values().each() {

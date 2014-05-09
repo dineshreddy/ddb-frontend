@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.FacetEnum;
 import de.ddb.common.constants.SupportedLocales
 
 class ApisController {
@@ -33,15 +34,6 @@ class ApisController {
         def resultList = [:]
         def docs = []
         def query = apisService.getQueryParameters(params)
-
-        //No institutions should be in the search result, see DDBNEXT-1504
-        def queryString = query["query"]
-
-        if ((!query["query"])||(query["query"]=="*")){
-            query["query"]="NOT(category:Institution)"
-        }else{
-            query["query"]="("+query["query"] + " AND NOT (category:Institution))"
-        }
 
         //Use query filter if roles were selected
         def filteredQuery = apisService.filterForRoleFacets(query)
