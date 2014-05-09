@@ -537,6 +537,10 @@ class ItemService {
             else {
                 urlQuery[SearchParamEnum.OFFSET.getName()] = 0
             }
+
+            //FIXME Sets the item category to objects! If we need the pagination also for institution details we need to build a switch!
+            searchService.setCategory(urlQuery, "Kultur");
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
