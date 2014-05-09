@@ -49,6 +49,7 @@ modules = {
         resource url:'/css/apiKey.css', bundle: 'screen'
         resource url:'/css/compare.css', bundle: 'screen'
         resource url:'/css/person.css', bundle: 'screen'
+        resource url:'/css/persons.css', bundle: 'screen'
         resource url:'/css/searchTabulator.css', bundle: 'screen'
         resource url:'/js/map/css/map.css', bundle: 'screen'
         //resource url:'/third-party/map/css/style.css', bundle: 'screen'
@@ -82,6 +83,7 @@ modules = {
         resource url:'/js/vendor/jquery.checkall-1.4/jquery.checkall.js'
         resource url:'/js/vendor/jquery.cookies-2.2.0/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/jquery.multiselect-1.1/jquery.multiselect-1.1.min.js'
+        resource url:'/js/vendor/jquery.resizecrop-1.0.3/jquery.resizecrop-1.0.3.min.js'
         // resource url:'/js/vendor/respond-1.1.0/respond.src.js'
         resource url:'/js/socialMediaManager.js'
         resource url:'/js/stringBuilder.js'
@@ -124,6 +126,7 @@ modules = {
         resource url:'/js/resultsFavorites.js'
         resource url:'/js/search/searchinstitution.js'
         resource url:'/js/lists.js'
+        resource url:'/js/persons.js'
     }
 
     item { resource url:'/js/persistentSendPdfMailModalDialog.js' }
