@@ -33,7 +33,7 @@ de.ddb.next.search = de.ddb.next.search || {};
 de.ddb.next.search.FacetsManager = function(fetchResultsList, category, path) {
   this.fetchResultsList = fetchResultsList;
   
-  //institution facets needs a category set
+  //Category is a special facet for defining a document as an Institution ("Institution") or document ("Kultur")
   this.category = category;
   
   //search and entity facets use different paths
@@ -123,6 +123,10 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
 
+    if (this.category) {
+      fctValues += '&facetValues%5B%5D=category%3D' + currObjInstance.category;
+    }
+    
     var url = jsContextPath + '/rolefacets' + '?name=' + facetField + '&facetValues%5B%5D=' + facetField + "%3D" + facetValue + '&searchQuery='
     + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows;
@@ -178,7 +182,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     }
 
     if (this.category) {
-      categoryParam = '&category=' + currObjInstance.category;
+      fctValues += '&facetValues%5B%5D=category%3D' + currObjInstance.category;
     }
     
     this.connectedflyoutWidget.renderFacetLoader();

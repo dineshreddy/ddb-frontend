@@ -191,7 +191,7 @@ de.ddb.next.search.initializeFacets = function() {
   var facetsManager = null;
   
   if (jsPageName === "results") {
-    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, null, "/facets");
+    facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Kultur", "/facets");
   }
   else if (jsPageName === "searchinstitution") {
     facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Institution", "/facets");
