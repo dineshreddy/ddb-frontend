@@ -62,45 +62,53 @@ limitations under the License.
         <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters" /></a>
       </div>
     </div>
-    <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
-      <g:if test="${correctedQuery!='null'}">
-        <g:if test="${correctedQuery}">
-          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
-        </g:if>
-      </g:if>
-      <div class="noresults">
-        <div>
-          <g:message encodeAs="none" code="ddbnext.No_results_found_for_the_search" />
-        </div>
-      </div>
-    </div>
-    <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
+    
+    <div class="span9">
       <div class="off result-pages-count">
         ${totalPages}
       </div>
       <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="institution" />
- 
-      <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
-
-      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
-
-      <g:if test="${correctedQuery!='null'}">
-        <g:if test="${correctedQuery}">
-          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+      
+      <%--   Search has results   --%>
+      <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
+        <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
+  
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+  
+        <g:if test="${correctedQuery!='null'}">
+          <g:if test="${correctedQuery}">
+            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+          </g:if>
         </g:if>
-      </g:if>
-      <div class="row">
-        <div class="span9">
-          <div class="search-results">
-            <div class="search-results-list">
-              <g:if test="${results}">
-                <g:render template="institutionResultsList" model="${[results: results]}" />
-              </g:if>
+        <div class="row">
+          <div class="span9">
+            <div class="search-results">
+              <div class="search-results-list">
+                <g:if test="${results}">
+                  <g:render template="institutionResultsList" model="${[results: results]}" />
+                </g:if>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+      <%--   Search has NO results   --%>      
+      <div class="search-noresults-content <g:if test="${results.totalResults != 0}">off</g:if>">
+        <g:if test="${correctedQuery!='null'}">
+          <g:if test="${correctedQuery}">
+            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+          </g:if>
+        </g:if>
+        <div class="noresults">
+          <div>
+            <g:message encodeAs="none" code="ddbnext.No_results_found_for_the_search" />
+          </div>
+        </div>
+      </div>
     </div>
+    
+    
   </div>
 </body>
 </html>
