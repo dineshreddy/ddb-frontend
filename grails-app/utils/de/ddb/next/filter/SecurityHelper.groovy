@@ -16,6 +16,7 @@
 
 package de.ddb.next.filter
 
+import javax.servlet.ServletRequestWrapper
 import javax.servlet.http.HttpServletResponse
 
 import org.apache.commons.logging.LogFactory
