@@ -144,6 +144,28 @@ limitations under the License.
           </div>
         </div>
       </div>
+
+      <%-- favorite confirmation dialog - only one per page --%>
+      <ddb:isLoggedIn>
+        <ddb:isPersonalFavoritesAvailable>
+          <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-body">
+              <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
+              <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
+              <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
+              <div class="modal-footer">
+                <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+                  <g:message encodeAs="html" code="ddbnext.Close"/>
+                </button>
+                <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+                  <g:message encodeAs="html" code="ddbnext.Save"/>
+                </button>
+              </div>
+            </div>
+          </div>
+        </ddb:isPersonalFavoritesAvailable>
+      </ddb:isLoggedIn>
+
       <div id="print-nav">
         <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
       </div>
