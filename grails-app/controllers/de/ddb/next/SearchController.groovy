@@ -48,7 +48,8 @@ class SearchController {
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
-            setCategory(urlQuery, "Kultur");
+            searchService.setCategory(urlQuery, "Kultur");
+            searchService.setCategory(firstLastQuery, "Kultur");
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -195,7 +196,7 @@ class SearchController {
         def queryString = request.getQueryString()
 
         //Only select institutions, no documents!
-        setCategory(urlQuery, "Institution");
+        searchService.setCategory(urlQuery, "Institution");
 
         if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"]) {
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
@@ -302,27 +303,6 @@ class SearchController {
         }
     }
 
-    private setCategory(Map urlQuery, String category) {
 
-        //Check if other facets has been selected as filter
-        if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()] != "null"){
-            //MANY facets has been selected as filter
-            if(urlQuery[SearchParamEnum.FACET.getName()] instanceof Collection<?>){
-                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
-            }
-            //ONE facet has been selected as filter
-            else {
-                def tempFacet = urlQuery[SearchParamEnum.FACET.getName()]
-                urlQuery[SearchParamEnum.FACET.getName()] = []
-                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
-                urlQuery[SearchParamEnum.FACET.getName()].add(tempFacet)
-            }
-        }
-        //NO facet has been selected as filter
-        else {
-            urlQuery[SearchParamEnum.FACET.getName()] = FacetEnum.CATEGORY.getName()
-        }
-        urlQuery[FacetEnum.CATEGORY.getName()] = category
-    }
 
 }

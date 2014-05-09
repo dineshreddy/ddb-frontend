@@ -975,4 +975,26 @@ class SearchService {
         return searchPreview
     }
 
+    def setCategory(Map urlQuery, String category) {
+
+        //Check if other facets has been selected as filter
+        if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()] != "null"){
+            //MANY facets has been selected as filter
+            if(urlQuery[SearchParamEnum.FACET.getName()] instanceof Collection<?>){
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+            }
+            //ONE facet has been selected as filter
+            else {
+                def tempFacet = urlQuery[SearchParamEnum.FACET.getName()]
+                urlQuery[SearchParamEnum.FACET.getName()] = []
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+                urlQuery[SearchParamEnum.FACET.getName()].add(tempFacet)
+            }
+        }
+        //NO facet has been selected as filter
+        else {
+            urlQuery[SearchParamEnum.FACET.getName()] = FacetEnum.CATEGORY.getName()
+        }
+        urlQuery[FacetEnum.CATEGORY.getName()] = category
+    }
 }
