@@ -26,6 +26,7 @@
 
 .back-to-list > span {
   padding-left: 5px;
+  background: #fff;
 }
 
 .item-detail .rights {
@@ -37,12 +38,19 @@
   padding-left: 24px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat;
 }
+
 .page-link {
   background-position: -27px -150px;
 }
+
+.page-link > span {
+  background: #fff;
+}
+
 .sendmail-link {
   background-position: -27px -329px;
 }
+
 .viewer.dfg {
   background-position: -27px -359px;
 }
@@ -73,6 +81,9 @@
 .institution-link {
   display: block;
 }
+.institution-link > span {
+  background: #fff;
+}
 .object-controls {
   line-height: 30px;
   font-size: 0.938em;
@@ -99,7 +110,7 @@
 }
 
 .origin .show-origin span {
-  background: none;
+  background: #fff;
   padding-left: 0;
 }
 .has-origin {
