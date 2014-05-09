@@ -32,53 +32,56 @@ function monkeyPatchAutocomplete() {
     return $("<li></li>").data("item.autocomplete", item).append("<a>" + autocompleteItem + "</a>").appendTo(ul);
   };
 }
+
 $(function() {
-  monkeyPatchAutocomplete();
-  $('input.query').autocomplete({
-    source : function(request, response) {
-      $.ajax({
-        url : jsContextPath + "/apis/autocomplete/",
-        dataType : "jsonp",
-        data : {
-          query : request.term
-        },
-        success : function(data) {
-          response($.map(data, function(n) {
-            return {
-              label : n,
-              value : n
-            };
-          }));
-        }
-      });
-    },
-    minLength : 1,
-    open : function() {
-      $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
-      $(this).autocomplete("widget").css('width', (parseInt($(this).outerWidth()) - 6) + 'px');
-    },
-    select : function(a, b) {
-      $(this).val(b.item.value);
-      $(this).parents('form').submit();
-    },
-    close : function() {
-      $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
-    }
-  });
-  $(window).resize(
-      function() {
-        var mainInputs = $('input[type="search"].query');
-        mainInputs.each(function(index, input) {
-          var mainInput = $(input);
-          var position = $(mainInput).offset();
-          $(mainInput).autocomplete("widget").css('left', position.left + 'px');
-          $(mainInput).autocomplete("widget").css('top',
-              (position.top + $(mainInput).outerHeight()) + 'px');
-          $(mainInput).autocomplete("widget").css('width',
-              (parseInt($(mainInput).outerWidth()) - 6) + 'px');
-          if ($(window).width() < 768 && $(mainInput).parents('#form-search').length < 1) {
-            $(mainInput).autocomplete("close");
+  if (jsPageName === "index" || jsPageName === "results") {
+    monkeyPatchAutocomplete();
+    $('input.query').autocomplete({
+      source : function(request, response) {
+        $.ajax({
+          url : jsContextPath + "/apis/autocomplete/",
+          dataType : "jsonp",
+          data : {
+            query : request.term
+          },
+          success : function(data) {
+            response($.map(data, function(n) {
+              return {
+                label : n,
+                value : n
+              };
+            }));
           }
         });
-      });
+      },
+      minLength : 1,
+      open : function() {
+        $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
+        $(this).autocomplete("widget").css('width', (parseInt($(this).outerWidth()) - 6) + 'px');
+      },
+      select : function(a, b) {
+        $(this).val(b.item.value);
+        $(this).parents('form').submit();
+      },
+      close : function() {
+        $(this).removeClass("ui-corner-top").addClass("ui-corner-all");
+      }
+    });
+    $(window).resize(
+        function() {
+          var mainInputs = $('input[type="search"].query');
+          mainInputs.each(function(index, input) {
+            var mainInput = $(input);
+            var position = $(mainInput).offset();
+            $(mainInput).autocomplete("widget").css('left', position.left + 'px');
+            $(mainInput).autocomplete("widget").css('top',
+                (position.top + $(mainInput).outerHeight()) + 'px');
+            $(mainInput).autocomplete("widget").css('width',
+                (parseInt($(mainInput).outerWidth()) - 6) + 'px');
+            if ($(window).width() < 768 && $(mainInput).parents('#form-search').length < 1) {
+              $(mainInput).autocomplete("close");
+            }
+          });
+        })
+  };
 });
