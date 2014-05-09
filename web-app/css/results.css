@@ -354,6 +354,7 @@ input[type="checkbox"],input[type="radio"] {
   background-color: #EFEBE8;
   margin: 5px 0;
   padding: 10px 0 0 0;
+  position: relative;
 }
 
 .search-results {
