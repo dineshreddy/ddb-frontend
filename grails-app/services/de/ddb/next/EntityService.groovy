@@ -155,7 +155,7 @@ class EntityService {
             def response = apiResponse.getResponse()
 
             if (response.numberOfResults == 1) {
-                return response.results[0]
+                return response.results[0].docs[0]
             }
             else if (response.numberOfResults == 0) {
                 throw new EntityNotFoundException()
