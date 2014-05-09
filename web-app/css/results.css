@@ -470,7 +470,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .thumbnail-wrapper .item-options {
-  background-color: White;
+  background-color: #fff;
   position: absolute;
   top: 0;
   bottom: 0;
