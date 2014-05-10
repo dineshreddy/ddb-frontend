@@ -107,16 +107,3 @@ function extractItemId(url) {
   }
   return result;
 }
-
-/**
- * Disable a favorite button.
- *
- * @param div DIV element which handles the favorite event
- */
-function disableFavorite(div) {
-  div.unbind("click");
-  div.removeAttr("title");
-  div.removeClass("add-to-favorites");
-  div.addClass("added-to-favorites");
-  div.attr('title', messages.ddbnext.favorites_already_saved);
-}

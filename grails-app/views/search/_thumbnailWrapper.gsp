@@ -25,7 +25,7 @@ limitations under the License.
     <ul class="item-options-ul">
       <ddb:isLoggedIn>
         <li>
-          <div id="favorite-${item.id}" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
+          <div data-itemid="${item.id}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
         </li>
       </ddb:isLoggedIn>
       <g:each var="mediaType" in="${item.preview.media}">

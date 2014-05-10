@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
-$("#idFavorite").parent().click(function(event) {
-  event.preventDefault();
-  changeFavoriteState();
-  return false;
+/**
+ * This function applies to the favorites in search result page, item detail view and institution detail view.
+ */
+$(".add-to-favorites, #idFavorite").each(function() {
+  var idFavorite = $(this);
+  idFavorite.parent().click(function(event) {
+    event.preventDefault();
+    changeFavoriteState(idFavorite);
+    return false;
+  });
 });
 
-function changeFavoriteState() {
-  var jElemFavorite = $("#idFavorite");
+function changeFavoriteState(jElemFavorite) {
   disableFavorite(jElemFavorite.parent());
   var vActn = jElemFavorite.attr("data-actn");
   if (vActn == "POST") { // Currently only allow to add favorites, not to delete them
@@ -34,15 +39,14 @@ function changeFavoriteState() {
       url : url + "&reqActn=add&reqObjectType=" + jElemFavorite.attr("data-objecttype"),
       complete : function(data) {
         if (vActn == "POST") {
-          addToFavorites(data);
+          addToFavorites(jElemFavorite, data);
         }
       }
     });
   }
 }
 
-function addToFavorites(data) {
-  var jElemFavorite = $("#idFavorite");
+function addToFavorites(jElemFavorite, data) {
   switch (data.status) {
   case 200:
   case 201:
@@ -95,14 +99,17 @@ function addToFavorites(data) {
   }
 }
 
-/**
- * Disable a favorite button.
- *
- * @param link LINK element which handles the favorite event
- */
-function disableFavorite(link) {
-  link.unbind("click");
-  link.removeClass("favorite-add");
-  link.addClass("favorite-selected");
-  link.attr('title', messages.ddbnext.favorites_already_saved);
-}
+  /**
+   * Disable a favorite button.
+   *
+   * @param div DIV element which handles the favorite event
+   */
+  function disableFavorite(div) {
+    div.unbind("click");
+    div.removeAttr("title");
+    div.removeClass("add-to-favorites");
+    div.removeClass("favorite-add");
+    div.addClass("added-to-favorites");
+    div.addClass("favorite-selected");
+    div.attr('title', messages.ddbnext.favorites_already_saved);
+  }

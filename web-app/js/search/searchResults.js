@@ -554,47 +554,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
         data : JSON.stringify(itemIds),
         success : function(favoriteItemIds) {
           $.each(itemIds, function(index, itemId) {
-            var div = $("#favorite-" + itemId);
+            var div = $("[data-itemid='" + itemId + "']");
 
             if ($.inArray(itemId, favoriteItemIds) >= 0) {
               disableFavorite(div);
-            } else {
-              $(div).click(
-                  function() {
-                    disableFavorite(div);
-                    // add a result hit to the list of favorites
-                    $.post(jsContextPath + "/apis/favorites/" + itemId, function() {
-                      $("#favorite-confirmation").modal("show");
-                      $.post(jsContextPath + "/apis/favorites/folders", function(folders) {
-                        if (folders.length > 1) {
-                          $("#favorite-folders").empty();
-                          $.each(folders, function(index, folder) {
-                            if (!folder.isMainFolder) {
-                              // show select box with all folder names
-                              var selectEntry = "<option value=" + folder.folderId + ">"
-                                  + folder.title.charAt(0).toUpperCase() + folder.title.slice(1)
-                                  + "</option>";
-
-                              $("#favorite-folders").append(selectEntry);
-                            }
-                          });
-                          $("#favoriteId").val(itemId);
-                          $("#addToFavoritesConfirm").click(
-                              function() {
-                                $("#favorite-confirmation").modal("hide");
-                                $.each($("#favorite-folders").val(), function(index, value) {
-                                  $.post(jsContextPath + "/apis/favorites/folders/" + value + "/"
-                                      + itemId);
-                                });
-                              });
-                        } else {
-                          window.setTimeout(function() {
-                            $("#favorite-confirmation").modal("hide");
-                          }, 1500);
-                        }
-                      });
-                    });
-                  });
             }
           });
         }
@@ -626,19 +589,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }
       });
     }
-  }
-
-  /**
-   * Disable a favorite button.
-   *
-   * @param div DIV element which handles the favorite event
-   */
-  function disableFavorite(div) {
-    div.unbind("click");
-    div.removeAttr("title");
-    div.removeClass("add-to-favorites");
-    div.addClass("added-to-favorites");
-    div.attr('title', messages.ddbnext.favorites_already_saved);
   }
 
   /**
