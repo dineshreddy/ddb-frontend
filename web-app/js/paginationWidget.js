@@ -51,6 +51,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.pageInput = $('.page-input');
     this.paginatorOptionsButton = $('.paginator-options-button');
     this.numberOfResults = $('.total-results');
+    this.numberOfResultsLabel = $('.total-results-label');
     
     this.nextPageMobile = $('.page-nav-mob .next-page');
     this.prevPageMobile = $('.page-nav-mob .prev-page');
@@ -64,6 +65,12 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.totalPages.html(JSONresponse.totalPages);
     
     this.numberOfResults.html(JSONresponse.numberOfResults);
+    
+    if (JSONresponse.numberOfResults == "1") {
+      this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
+    } else {
+      this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Results);
+    }
     
     //Next/Last-page button
     if (JSONresponse.paginationURL.nextPg) {

@@ -111,37 +111,35 @@ limitations under the License.
       </div>
     </div>
     
-    <div class="span9 search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
-      <g:if test="${correctedQuery!='null'}">
-        <g:if test="${correctedQuery}">
-          <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
-        </g:if>
-      </g:if>
-      <g:render template="noResults" />
-    </div>
-    <div class="span9 search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
+
+    <div class="span9">
       <div class="off result-pages-count">${totalPages}</div>
       <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="items" />
       <div style="clear:both;"> 
-
       
-      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
-            
-      <g:if test="${correctedQuery!='null'}">
-          <g:if test="${correctedQuery}">
-            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
-          </g:if>
-      </g:if>
-      
-      <div class="row">
-        <div class="span9">
-          <div class="search-results">
-            <div class="search-results-list">
-              <g:if test="${results}">
-                <ddb:renderSearchResultsList results="${results.results["docs"]}" entities="${entities}" />
-              </g:if>
+      <%--   Search has results   --%>
+      <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
+              
+        <g:if test="${correctedQuery!='null'}">
+            <g:if test="${correctedQuery}">
+              <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+            </g:if>
+        </g:if>
+        
+        <div class="row">
+          <div class="span9">
+            <div class="search-results">
+              <div class="search-results-list">
+                <g:if test="${results}">
+                  <ddb:renderSearchResultsList results="${results.results["docs"]}" entities="${entities}" />
+                </g:if>
+              </div>
             </div>
           </div>
+        </div>
+        <div id="print-nav">
+          <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
         </div>
       </div>
 
@@ -168,6 +166,15 @@ limitations under the License.
 
       <div id="print-nav">
         <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
+
+      <%--   Search has NO results   --%>
+      <div class="search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
+        <g:if test="${correctedQuery!='null'}">
+          <g:if test="${correctedQuery}">
+            <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
+          </g:if>
+        </g:if>
+        <g:render template="noResults" />
       </div>
     </div>
   </div>

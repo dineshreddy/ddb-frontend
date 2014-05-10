@@ -238,7 +238,7 @@ noscript .scroller, .pdf-scroller {
   float: right;
   width: 18px;
   height: 18px;
-  background: url("../images/icons/ddbIkonographie.png") no-repeat -176px -305px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -475px;
 }
 .fancybox-prev, .fancybox-next {
   width: 40px !important;
