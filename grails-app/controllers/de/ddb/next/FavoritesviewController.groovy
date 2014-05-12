@@ -23,6 +23,7 @@ class FavoritesviewController {
     def configurationService
     def searchService
     def sessionService
+    def userService
 
     def publicFavorites() {
         log.info "publicFavorites()"
@@ -207,7 +208,7 @@ class FavoritesviewController {
 
     def favorites(){
         log.info "favorites()"
-        if(favoritesService.isUserLoggedIn()){
+        if(userService.isUserLoggedIn()){
             def rows=20 //default
             if (params.rows){
                 rows = params.rows.toInteger()
@@ -216,7 +217,7 @@ class FavoritesviewController {
             if(params.offset){
                 offset = params.offset.toInteger()
             }
-            def user = favoritesService.getUserFromSession()
+            def user = userService.getUserFromSession()
             def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
 
             def folderId = mainFavoriteFolder.folderId
@@ -387,7 +388,7 @@ class FavoritesviewController {
     }
 
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
                 emails=paramEmails.tokenize(',')
@@ -398,16 +399,16 @@ class FavoritesviewController {
                 sendMail {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
-                    replyTo favoritesService.getUserFromSession().getEmail()
+                    replyTo userService.getUserFromSession().getEmail()
                     subject (g.message(code:"ddbnext.send_favorites_subject_mail", encodeAs: "none", args: [
                         selectedFolder.title,
-                        favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname()
+                        userService.getUserFromSession().getFirstnameAndLastnameOrNickname()
                     ]))
                     body( view:"_favoritesEmailBody",
                     model:[
                         results: allResultsOrdered,
                         dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                        userName:favoritesService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
+                        userName:userService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
                         folderDescription:selectedFolder.description,

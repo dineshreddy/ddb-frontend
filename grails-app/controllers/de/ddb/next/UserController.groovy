@@ -61,7 +61,7 @@ class UserController {
     def savedSearchesService
     def savedSearchService
     def bookmarksService
-    def favoritesService
+    def userService
 
     def index() {
         log.info "index()"
@@ -77,7 +77,7 @@ class UserController {
         if(!isCookiesActivated()){
             loginStatus = LoginStatus.NO_COOKIES
 
-        } else if(!favoritesService.isUserLoggedIn()){
+        } else if(!userService.isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -138,8 +138,8 @@ class UserController {
 
     def getSavedSearches() {
         log.info "getSavedSearches()"
-        if (favoritesService.isUserLoggedIn()) {
-            def user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            def user = userService.getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
             def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
             def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
@@ -202,8 +202,8 @@ class UserController {
 
     def sendSavedSearches() {
         log.info "sendSavedSearches()"
-        if (favoritesService.isUserLoggedIn()) {
-            def user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            def user = userService.getUserFromSession()
             def List emails = []
 
             if (params.email.contains(',')) {
@@ -215,7 +215,7 @@ class UserController {
                 sendMail {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
-                    replyTo favoritesService.getUserFromSession().getEmail()
+                    replyTo userService.getUserFromSession().getEmail()
                     subject g.message(code: "ddbnext.Savedsearches_Of", args: [
                         user.getFirstnameAndLastnameOrNickname()
                     ], encodeAs: "none")
@@ -333,8 +333,8 @@ class UserController {
 
     def profile() {
         log.info "profile()"
-        if(favoritesService.isUserLoggedIn()){
-            User user = favoritesService.getUserFromSession().clone()
+        if(userService.isUserLoggedIn()){
+            User user = userService.getUserFromSession().clone()
             if (params.username) {
                 user.setUsername(params.username)
                 user.setFirstname(params.fname)
@@ -379,13 +379,13 @@ class UserController {
 
     def saveProfile() {
         log.info "saveProfile()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
             boolean eMailDifference = false
             boolean profileDifference = false
             boolean newsletterDifference = false
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
 
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
@@ -492,8 +492,8 @@ class UserController {
 
     def passwordChangePage() {
         log.info "passwordChangePage()"
-        if(favoritesService.isUserLoggedIn()){
-            User user = favoritesService.getUserFromSession()
+        if(userService.isUserLoggedIn()){
+            User user = userService.getUserFromSession()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -526,10 +526,10 @@ class UserController {
 
     def passwordChange() {
         log.info "passwordChange()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -572,10 +572,10 @@ class UserController {
 
     def delete() {
         log.info "delete()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -643,8 +643,8 @@ class UserController {
                 messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
-            if (favoritesService.isUserLoggedIn()) {
-                User user = favoritesService.getUserFromSession().clone()
+            if (userService.isUserLoggedIn()) {
+                User user = userService.getUserFromSession().clone()
                 if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
                     throw new BackendErrorException("user-attributes are not consistent")
                 }
@@ -822,9 +822,9 @@ class UserController {
 
     def showApiKey() {
         log.info "showApiKey()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
 
-            User user = favoritesService.getUserFromSession()
+            User user = userService.getUserFromSession()
             def apiKey = user.apiKey
 
             String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
@@ -850,14 +850,14 @@ class UserController {
     def requestApiKey() {
         log.info "requestApiKey()"
 
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             def isConfirmed = false
             if(params.apiConfirmation){
                 isConfirmed = true
             }
 
             if(isConfirmed){
-                User user = favoritesService.getUserFromSession()
+                User user = userService.getUserFromSession()
                 String newApiKey = aasService.createApiKey()
 
                 JSONObject aasUser = aasService.getPerson(user.getId())
@@ -877,8 +877,8 @@ class UserController {
 
     def deleteApiKey() {
         log.info "deleteApiKey()"
-        if (favoritesService.isUserLoggedIn()) {
-            User user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            User user = userService.getUserFromSession()
 
             JSONObject aasUser = aasService.getPerson(user.getId())
             aasUser.put(AasService.APIKEY_FIELD, null)
