@@ -18,7 +18,7 @@ limitations under the License.
 
 <ddb:doRedirectIfNotLoggedIn />
 
-<title><g:message encodeAs="html" code="ddbnext.Profile" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message encodeAs="html" code="ddbcommon.Profile" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="userprofile" />
 <meta name="layout" content="main" />
@@ -38,58 +38,58 @@ limitations under the License.
             <g:set var="newsletterCheck">checked="checked"</g:set>
         </g:if>
         <g:if test="${errors != null && errors.size()>0}">
-          <ddb:renderErrors errors="${errors}" />
+          <ddb-common:renderErrors errors="${errors}" />
         </g:if>
         <g:if test="${messages != null && messages.size()>0}">
-          <ddb:renderMessages messages="${messages}" />
+          <ddb-common:renderMessages messages="${messages}" />
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div class="well">
             <div class="profile-nav bb-white">
-                <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/> <ddb:getUserLabel /></h1></div>
+                <div><h1><g:message encodeAs="html" code="ddbcommon.User_Profile"/> <ddb-common:getUserLabel /></h1></div>
             </div>
             <div class="row">
               <div class="span9 control-groups">
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username" /></label>
+                  <label class="control-label"><g:message encodeAs="html" code="ddbcommon.Username" /></label>
                   <div class="controls">
                     <div class="input-prepend">
                       <span class="add-on"><i class="icon-user"></i></span>
-                      <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbcommon.Username" />" value="${user.username}" ${disableForOpenId}>
                     </div>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.First_Name" /></label>
+                  <label class="control-label"><g:message encodeAs="html" code="ddbcommon.User.First_Name" /></label>
                   <div class="controls">
                     <div class="input-prepend">
                       <span class="add-on"><i class="icon-user"></i></span>
-                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbcommon.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
                     </div>
                   </div>
                 </div>
                 <div class="control-group ">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.Last_Name" /></label>
+                  <label class="control-label"><g:message encodeAs="html" code="ddbcommon.User.Last_Name" /></label>
                   <div class="controls">
                     <div class="input-prepend">
                       <span class="add-on"><i class="icon-user"></i></span>
-                      <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbcommon.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
                     </div>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.Email" /></label>
+                  <label class="control-label"><g:message encodeAs="html" code="ddbcommon.Email" /></label>
                   <div class="controls">
                     <div class="input-prepend">
                       <span class="add-on"><i class="icon-envelope"></i></span>
-                      <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbcommon.Email" />" value="${user.email}" ${disableForOpenId}>
                     </div>
                   </div>
                 </div>
                 <div class="control-group">
                   <label class="control-label"></label>
                   <div class="controls">
-                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save_Changes"/>"><g:message encodeAs="html" code="ddbnext.Save_Changes"/></button>
+                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbcommon.Save_Changes"/>"><g:message encodeAs="html" code="ddbcommon.Save_Changes"/></button>
                   </div>
                 </div>
               </div>
@@ -108,12 +108,12 @@ limitations under the License.
                   </a>
                   <br>
                 </g:if>
-                <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-                  <g:message encodeAs="html" code="ddbnext.Change_Password_Link" />
+                <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
+                  <g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />
                 </a>
                 <br>
-                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbnext.User.Delete_Account" />" class="persist" href="#">
-                  <g:message encodeAs="html" code="ddbnext.User.Delete_Account" />
+                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />" class="persist" href="#">
+                  <g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />
                 </a>
                 <br>
               </div>
@@ -132,24 +132,24 @@ limitations under the License.
 
         </div>
         <ul id="error-messages" class="off">
-          <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
-          <li><a><g:message encodeAs="html" code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
-          <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Name_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Enter_A_Valid_Email" /></a></li>
         </ul>
     </g:form>
     <div id="msDeleteAccount" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3>
-          <g:message encodeAs="html" code="ddbnext.delete_confirmation" />
+          <g:message encodeAs="html" code="ddbcommon.delete_confirmation" />
         </h3>
       </div>
       <div class="modal-body">
         <g:message encodeAs="html" code="ddbnext.User.Really_Delete_Account" />
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbnext.Ok" /></button>
-        <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbnext.Cancel" /></button>
+        <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbcommon.Ok" /></button>
+        <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
       </div>
     </div>
   </body>

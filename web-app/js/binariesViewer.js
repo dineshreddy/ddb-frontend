@@ -290,7 +290,7 @@ $(document)
                                 'tpl' : {
                                   wrap : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'
                                       + $("div.binary-title span").text()
-                                      + '</span><span title="' + messages.ddbnext.Close() + '" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span><br><div class="fancybox-pagination"><span></span></div></div>'
+                                      + '</span><span title="' + messages.ddbcommon.Close() + '" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span><br><div class="fancybox-pagination"><span></span></div></div>'
                                       + '<div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"><div class="fancybox-nav"><span title="Previous" class="fancybox-prev" onclick="$.fancybox.prev();"></span></div></div><div class="fancybox-click-nav right" onclick="$.fancybox.next();"><div class="fancybox-nav"><span title="Next" class="fancybox-next" onclick="$.fancybox.next();"></span></div></div></div></div></div></div>',
                                   prev : '',
                                   next : ''

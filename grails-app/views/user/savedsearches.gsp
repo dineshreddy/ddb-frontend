@@ -232,7 +232,7 @@ limitations under the License.
       <div class="modal-header">
         <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="deleteSavedSearchesLabel">
-          <g:message encodeAs="html" code="ddbnext.delete_confirmation"/>
+          <g:message encodeAs="html" code="ddbcommon.delete_confirmation"/>
         </h3>
       </div>
       <div class="modal-body">

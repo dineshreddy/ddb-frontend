@@ -38,11 +38,11 @@ limitations under the License.
             </div>
 
             <div class="control-group bt-white">
-              <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username_Or_Email" /></label>
+              <label class="control-label"><g:message encodeAs="html" code="ddbcommon.Username_Or_Email" /></label>
               <div class="controls">
                 <div class="input-prepend">
                   <span class="add-on"><i class="icon-user"></i></span>
-                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username_Or_Email" />" value="${params.username}">
+                  <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbcommon.Username_Or_Email" />" value="${params.username}">
                 </div>
               </div>
             </div>

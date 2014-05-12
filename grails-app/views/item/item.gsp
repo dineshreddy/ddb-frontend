@@ -43,7 +43,7 @@ limitations under the License.
          Sending PDF per Mail Start    
       <div class="sendmail-block">
         <div id="i18ntranslateSend" data-val="<g:message encodeAs="html" code="ddbnext.Send_Button" />"></div>
-        <div id="i18ntranslateValidEmail" data-val="<g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" />"></div>
+        <div id="i18ntranslateValidEmail" data-val="<g:message encodeAs="html" code="ddbcommon.Enter_A_Valid_Email" />"></div>
         <a class="sendmail-link sendmail-link-popup-anchor"
           href="${createLink(controller: 'item', action: 'sendpdf', params:[id:itemId])}"
           title="<g:message encodeAs="html" code="ddbnext.item.sendPdf" />"> <span style="margin-left: 10px"></span>

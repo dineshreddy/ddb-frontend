@@ -15,9 +15,9 @@ limitations under the License.
 --%>
 <html>
 <head>
-<ddb:doRedirectIfNotLoggedIn />
+<ddb-common:doRedirectIfNotLoggedIn />
 
-<title><g:message encodeAs="html" code="ddbnext.Password_Change" /> - <g:message encodeAs="html"
+<title><g:message encodeAs="html" code="ddbcommon.Password_Change" /> - <g:message encodeAs="html"
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="passwordchange" />
@@ -28,32 +28,32 @@ limitations under the License.
     <g:form method="post" id="password-change-form" name="password-change-form"
       class="form-horizontal" url="[controller:'user', action:'passwordChange']">
       <g:if test="${errors != null && errors.size()>0}">
-        <ddb:renderErrors errors="${errors}" />
+        <ddb-common:renderErrors errors="${errors}" />
       </g:if>
       <g:if test="${messages != null && messages.size()>0}">
-        <ddb:renderMessages messages="${messages}" />
+        <ddb-common:renderMessages messages="${messages}" />
       </g:if>
       <input type="hidden" name="id" value="${ user.id }" />
       <div class="well">
         <div class="profile-nav">
-          <g:set var="userLabel"><ddb:getUserLabel /></g:set>
+          <g:set var="userLabel"><ddb-common:getUserLabel /></g:set>
           <div>
             <h1>
-              <g:message encodeAs="html" code="ddbnext.Change_Password_Label"
-                args="${[userLabel]}" default="ddbnext.Change_Password_Label" />
+              <g:message encodeAs="html" code="ddbcommon.Change_Password_Label"
+                args="${[userLabel]}" default="ddbcommon.Change_Password_Label" />
             </h1>
           </div>
         </div>
 
         <div class="control-group bt-white">
           <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Your_Old_Password" /></label>
+              code="ddbcommon.Your_Old_Password" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span> <input
                 type="Password" id="oldpassword" class="profile-input"
                 name="oldpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Your_Old_Password" />"
+                placeholder="<g:message encodeAs="html" code="ddbcommon.Your_Old_Password" />"
                 value="${params.oldpassword}">
             </div>
           </div>
@@ -61,13 +61,13 @@ limitations under the License.
 
         <div class="control-group">
           <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Your_New_Password" /></label>
+              code="ddbcommon.Your_New_Password" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span> <input
                 type="Password" id="newpassword" class="profile-input"
                 name="newpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Your_New_Password" />"
+                placeholder="<g:message encodeAs="html" code="ddbcommon.Your_New_Password" />"
                 value="${params.newpassword}">
             </div>
           </div>
@@ -75,13 +75,13 @@ limitations under the License.
 
         <div class="control-group">
           <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Confirm_New_password" /></label>
+              code="ddbcommon.Confirm_New_password" /></label>
           <div class="controls">
             <div class="input-prepend">
               <span class="add-on"><i class="icon-lock"></i></span> <input
                 type="Password" id="confnewpassword" class="profile-input"
                 name="confnewpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Confirm_New_password" />"
+                placeholder="<g:message encodeAs="html" code="ddbcommon.Confirm_New_password" />"
                 value="${params.confnewpassword}">
             </div>
           </div>
@@ -91,17 +91,17 @@ limitations under the License.
           <label class="control-label"></label>
           <div class="controls">
             <button type="submit" class="btn-padding"
-              title="<g:message encodeAs="html" code="ddbnext.Save_Changes"/>">
-              <g:message encodeAs="html" code="ddbnext.Save_Changes" />
+              title="<g:message encodeAs="html" code="ddbcommon.Save_Changes"/>">
+              <g:message encodeAs="html" code="ddbcommon.Save_Changes" />
             </button>
           </div>
         </div>
       </div>
       <ul id="error-messages" class="off">
-        <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
+        <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>
         <li><a><g:message encodeAs="html"
-              code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
-        <li><a><g:message encodeAs="html" code="ddbnext.Insert_Again_The_Password" /></a></li>
+              code="ddbcommon.Password_Compulsory_Characters_Number" /></a></li>
+        <li><a><g:message encodeAs="html" code="ddbcommon.Insert_Again_The_Password" /></a></li>
       </ul>
     </g:form>
 </body>

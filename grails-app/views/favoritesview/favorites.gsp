@@ -309,7 +309,7 @@ limitations under the License.
     <g:if test="${resultsNumber > 0}">
       <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="favoritesLabel" aria-hidden="true">
         <div class="modal-header">
-          <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+          <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
           <h3 id="favoritesLabel">
             <g:message encodeAs="html" code="ddbnext.send_favorites" />
           </h3>
@@ -324,7 +324,7 @@ limitations under the License.
             </fieldset>
           </div>
           <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message encodeAs="html" code="ddbnext.Close" /></button>
+            <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message encodeAs="html" code="ddbcommon.Close" /></button>
             <button class="btn-padding" type="submit" id="btnSubmit"><g:message encodeAs="html" code="ddbnext.send_now" /></button>
           </div>
         </form>
@@ -335,9 +335,9 @@ limitations under the License.
     <%-- Modal "Confirm favorites delete" --%>
     <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="favoritesDeleteConfirmLabel">
-          <g:message encodeAs="html" code="ddbnext.delete_confirmation" />
+          <g:message encodeAs="html" code="ddbcommon.delete_confirmation" />
         </h3>
       </div>
       <div class="modal-body">
@@ -359,7 +359,7 @@ limitations under the License.
     <%-- Modal "Favorites copy" --%>
     <div class="modal hide fade" id="favoritesCopyDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesCopyLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="favoritesCopyLabel">
           <g:message encodeAs="html" code="ddbnext.Copy_Confirmation" />
         </h3>
@@ -376,7 +376,7 @@ limitations under the License.
         </select>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbnext.Close" /></button>
+        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
       </div>
     </div>
@@ -385,7 +385,7 @@ limitations under the License.
     <%-- Modal "Create folder" --%>
     <div class="modal hide fade" id="folderCreateConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderCreateConfirmLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="folderCreateConfirmLabel">
           <g:message encodeAs="html" code="ddbnext.Create_Folder_Title" />
         </h3>
@@ -403,7 +403,7 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbnext.Close" /></button>
+        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
       </div>
     </div>
@@ -412,7 +412,7 @@ limitations under the License.
     <%-- Modal "Delete folder" --%>
     <div class="modal hide fade" id="folderDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderDeleteConfirmLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="folderDeleteConfirmLabel">
           <g:message encodeAs="html" code="ddbnext.Delete_Folder_Title" />
         </h3>
@@ -429,7 +429,7 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbnext.Cancel" /></button>
+        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
         <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbnext.Confirm_Short" /> </button> 
       </div>
     </div>
@@ -438,7 +438,7 @@ limitations under the License.
     <%-- Modal "Edit folder" --%>
     <div class="modal hide fade" id="folderEditConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="folderEditConfirmLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="folderEditConfirmLabel">
           <g:message encodeAs="html" code="ddbnext.Edit_Folder" />
         </h3>
@@ -481,7 +481,7 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbnext.Close" /></button>
+        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
       </div>
     </div>

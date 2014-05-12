@@ -18,7 +18,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
-    <title><g:message encodeAs="html" code="ddbnext.Login" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message encodeAs="html" code="ddbcommon.Login" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="login" />
     <meta name="layout" content="main" />
@@ -29,7 +29,7 @@ limitations under the License.
       <div class="span12">
         <div class="row heading">
           <div class="span6">
-            <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.Login"/></h1></div>
+            <div class="fl"><h1><g:message encodeAs="html" code="ddbcommon.Login"/></h1></div>
           </div>
         </div>
         <div class="row">
@@ -43,34 +43,34 @@ limitations under the License.
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Email_Password_Combination" />
+                        <g:message encodeAs="html" code="ddbcommon.Error_Email_Password_Combination" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_DENIED}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Denied" />
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Denied" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_UNKNOWN}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Unknown" />
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Unknown" />
                       </div>  
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.NO_COOKIES}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_No_Cookies" />
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_No_Cookies" />
                       </div>  
                     </div>
                   </g:if>
                   <div class="row">
                     <div class="span4"> 
-                      <label for="login-username"><g:message encodeAs="html" code="ddbnext.Username_Or_Email" />:</label>
+                      <label for="login-username"><g:message encodeAs="html" code="ddbcommon.Username_Or_Email" />:</label>
                     </div>  
                   </div>
                   <div class="row">
@@ -80,7 +80,7 @@ limitations under the License.
                   </div>
                   <div class="row spacer-vertical">
                     <div class="span4">                 
-                      <label for="login-password"><g:message encodeAs="html" code="ddbnext.Your_Password" />:</label>
+                      <label for="login-password"><g:message encodeAs="html" code="ddbcommon.Your_Password" />:</label>
                     </div>
                   </div>
                   <div class="row">
@@ -91,7 +91,7 @@ limitations under the License.
                   <div class="row spacer-vertical">
                     <div class="span4">    
                       <button type="submit" class="login-button">       
-                        <g:message encodeAs="html" code="ddbnext.Login_Button" />
+                        <g:message encodeAs="html" code="ddbcommon.Login_Button" />
                       </button>       
                     </div>
                   </div>
@@ -111,7 +111,7 @@ limitations under the License.
               <div class="span4 openid" >
                 <div class="row">
                   <div class="span4">                  
-                    <g:message encodeAs="html" code="ddbnext.Login_OpenID" />
+                    <g:message encodeAs="html" code="ddbcommon.Login_OpenID" />
                   </div>
                 </div>
                 <div class="row spacer-vertical">
