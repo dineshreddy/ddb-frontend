@@ -15,17 +15,18 @@
  */
 
 .tabulator {
+  color: #56524F;
   margin: 10px 0;
   font-family: inherit;
-  font-size:14px;
-  font-weight: bold;
+  font-size:18px;
   line-height: 20px;
   color: inherit;
   text-rendering: optimizelegibility;
 }
 
 #tabulator li .active-link {
-  color: #a5003b;
+  color: #A5003B;
+  font-weight: bold;
   text-decoration: none;
   word-wrap: break-word;
 }
