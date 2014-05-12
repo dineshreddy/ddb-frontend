@@ -23,7 +23,7 @@ limitations under the License.
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
 
-<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${linkUri}"/>
+<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.lists.header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${linkUri}"/>
 </head>
 <body>
   <div class="row lists">
