@@ -18,7 +18,7 @@ $(function() {
     var randomSeed = $('#varToJs').attr('data-random-seed');
     var pgTitle = $('#varToJs').attr('data-pgTitle');
     console.log(randomSeed)
-    History.pushState({sort:randomSeed}, pgTitle, "?sort="+randomSeed);
+    History.pushState({sort:randomSeed}, pgTitle + " " +randomSeed, "?sort="+randomSeed);
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
     $('.persons-list img').resizecrop({
