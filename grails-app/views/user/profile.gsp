@@ -44,79 +44,51 @@ limitations under the License.
           <ddb:renderMessages messages="${messages}" />
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
-        <div class="well">
-            <div class="profile-nav bb-white">
-                <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/> <ddb:getUserLabel /></h1></div>
-            </div>
+        <div>
             <div class="row">
-              <div class="span9 control-groups">
+              <div class="span10 control-groups">
+                <div class="profile-nav bb">
+                  <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+                  <div class="bold"><g:message encodeAs="html" code="ddbnext.User.Data"/></div>
+                </div>
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.Username" /></label>
-                  <div class="controls">
-                    <div class="input-prepend">
-                      <span class="add-on"><i class="icon-user"></i></span>
-                      <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
-                    </div>
+                  <div>
+                    <label><g:message encodeAs="html" code="ddbnext.Username" /></label>
+                  </div>
+                  <div>
+                    <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
                   </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.First_Name" /></label>
-                  <div class="controls">
-                    <div class="input-prepend">
-                      <span class="add-on"><i class="icon-user"></i></span>
-                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
-                    </div>
+                  <div>
+                    <label><g:message encodeAs="html" code="ddbnext.Email" /></label>
                   </div>
+                  <div>
+                    <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <div>
+                    <label><g:message encodeAs="html" code="ddbnext.User.First_Name" /></label>
+                  </div>
+                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
                 </div>
                 <div class="control-group ">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.User.Last_Name" /></label>
-                  <div class="controls">
-                    <div class="input-prepend">
-                      <span class="add-on"><i class="icon-user"></i></span>
+                    <div>
+                      <label><g:message encodeAs="html" code="ddbnext.User.Last_Name" /></label>
+                    </div>
+                    <div>
                       <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
                     </div>
-                  </div>
                 </div>
                 <div class="control-group">
-                  <label class="control-label"><g:message encodeAs="html" code="ddbnext.Email" /></label>
-                  <div class="controls">
-                    <div class="input-prepend">
-                      <span class="add-on"><i class="icon-envelope"></i></span>
-                      <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
-                    </div>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label"></label>
-                  <div class="controls">
+                  <label></label>
                     <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save_Changes"/>"><g:message encodeAs="html" code="ddbnext.Save_Changes"/></button>
-                  </div>
                 </div>
               </div>
-              <div class="span1 profile-links">
-                <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favoritesview", action: 'favorites', params:[:])}">
-                  <g:message encodeAs="html" code="ddbnext.Favorites" /> (${favoritesCount})
-                </a>
-                <br>
-                <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
-                  <g:message encodeAs="html" code="ddbnext.Searches" /> (${savedSearchesCount})
-                </a>
-                <br>
-                <g:if test="${user.openIdUser != true}">
-                  <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
-                    <g:message encodeAs="html" code="ddbnext.Api_Access" /> 
-                  </a>
-                  <br>
-                </g:if>
-                <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-                  <g:message encodeAs="html" code="ddbnext.Change_Password_Link" />
-                </a>
-                <br>
-                <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbnext.User.Delete_Account" />" class="persist" href="#">
-                  <g:message encodeAs="html" code="ddbnext.User.Delete_Account" />
-                </a>
-                <br>
-              </div>
+  
+              <%-- Account menu --%>
+              <g:render template="accountMenu" />
             </div>
 
             <%-- Commented out temporarily by request from Gerke, see DDBNEXT-751
