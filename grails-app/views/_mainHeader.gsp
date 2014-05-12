@@ -129,7 +129,7 @@ limitations under the License.
           </li>
           <li>
             <ddb:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbnext.Login" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
             </ddb:isNotLoggedIn>
             <ddb:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbnext.Logout" /> (<ddb:getUserName />)</g:link>
@@ -261,7 +261,7 @@ limitations under the License.
             <div class="status-bar">
               <ddb:isNotLoggedIn>
                 <div class="login-wrapper">                
-                  <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbnext.Login" /></g:link>
+                  <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
                 </div>
               </ddb:isNotLoggedIn>
               <ddb:isLoggedIn>

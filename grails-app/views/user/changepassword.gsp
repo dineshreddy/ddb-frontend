@@ -36,7 +36,7 @@ limitations under the License.
       <input type="hidden" name="id" value="${ user.id }" />
       <div class="well">
         <div class="profile-nav">
-          <g:set var="userLabel"><ddb-common:getUserLabel /></g:set>
+          <g:set var="userLabel"><ddb:getUserLabel /></g:set>
           <div>
             <h1>
               <g:message encodeAs="html" code="ddbcommon.Change_Password_Label"

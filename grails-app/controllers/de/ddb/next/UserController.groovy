@@ -45,6 +45,7 @@ import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
+import de.ddb.common.Validations
 import de.ddb.next.beans.Folder
 
 class UserController {

@@ -18,7 +18,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
-    <title><g:message encodeAs="html" code="ddbcommon.Login" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message encodeAs="html" code="ddbcommon.Login_Button" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     
     <meta name="page" content="login" />
     <meta name="layout" content="main" />
@@ -29,7 +29,7 @@ limitations under the License.
       <div class="span12">
         <div class="row heading">
           <div class="span6">
-            <div class="fl"><h1><g:message encodeAs="html" code="ddbcommon.Login"/></h1></div>
+            <div class="fl"><h1><g:message encodeAs="html" code="ddbcommon.Login_Button"/></h1></div>
           </div>
         </div>
         <div class="row">
