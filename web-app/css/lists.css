@@ -78,10 +78,6 @@
   padding: 10px 10px 0 0;
 }
 
-.lists .lists-menu, .lists .lists-content {
- 
-}
-
 .lists .link-block {
   float: right;
   display: inline-block;
@@ -103,10 +99,7 @@
 }
 
 .lists .lists-header {
-  -moz-border-bottom-colors: none;
-  -moz-border-left-colors: none;
-  -moz-border-right-colors: none;
-  -moz-border-top-colors: none;
+  -moz-border-colors: none;
   border-color: #E9E5E2;
   border-image: none;
   border-style: solid;
