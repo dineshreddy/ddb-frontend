@@ -15,13 +15,13 @@ limitations under the License.
 --%>
 <div class="span9 lists-content">
   <g:if test="${folders?.size() > 0}">
-    <div class="results-paginator-options bb">
+    <div class="lists-paginator-options bb">
       <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
     </div>
     <div class="list-items">
       <ul class="unstyled">
         <g:each in="${folders}" var="folder">
-          <li class="item bt">
+          <li class="item bb">
             <div class="summary row">
               <div class="summary-main-wrapper span7">
                 <h2 class="title">

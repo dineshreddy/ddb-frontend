@@ -22,19 +22,31 @@ limitations under the License.
   ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
+
+<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
 </head>
 <body>
   <div class="row lists">
-    <div class="span12">
-      <h1>
+    <div class="span12 lists-header">
+      <span class="lists-header-header">
         <g:message encodeAs="html" code="ddbnext.lists.header" />
-      </h1>
+      </span>
+      <div class="share-block">
+        <ddb:getSocialmediaBody />
+      </div>
+      <div class="link-block">
+        <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+          <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+        </a>
+      </div>
     </div>
-    <%-- Lists menu on the left side  --%>
-    <g:render template="listsMenu" />
-
-    <%-- Lists content on the right side   --%>
-    <g:render template="listsItems" />
+    <div class="lists-main">
+      <%-- Lists menu on the left side  --%>
+      <g:render template="listsMenu" />
+  
+      <%-- Lists content on the right side   --%>
+      <g:render template="listsItems" />
+    </div>
   </div>
 </body>
 </html>
