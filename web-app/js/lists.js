@@ -17,6 +17,9 @@ $(document).ready(function() {
 
   if (jsPageName === "lists") {
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
+    
+    var socialMediaManager = new SocialMediaManager();
+    socialMediaManager.integrateSocialMedia();
   }
 
 });
