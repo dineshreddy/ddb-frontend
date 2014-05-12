@@ -103,7 +103,7 @@ limitations under the License.
         </div>
         <div class="compare-footer bt bb bl br">
             <a id="compare-button">
-                <div>
+                <div class="button">
                     <g:message encodeAs="html" code="ddbnext.SearchResultsStartComparison"/>
                 </div>
             </a>

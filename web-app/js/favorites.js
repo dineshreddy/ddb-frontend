@@ -40,6 +40,7 @@ $(function() {
       reportTo : function() {
         var prefix = this.prop('checked') ? 'un' : '';
         this.next().text(prefix + 'check all');
+        $('#slaves').trigger('change');
       }
     });
     

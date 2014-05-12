@@ -276,13 +276,13 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     var cookieVal = currObjInstance.getComparisonCookieVal();
 
     // The compare buton is disabled by default
-    var compareButton = $('#compare-button');
-    compareButton.addClass('compare-disabled');
+    var compareButton = $('#compare-button .button');
+    compareButton.addClass('disabled');
     compareButton.find('div').removeClass('button');
 
     // Enable the compare button only if two items are selected for comparison
     if ((cookieVal !== null) && (cookieVal.id1 !== null) && (cookieVal.id2 !== null)) {
-      compareButton.removeClass('compare-disabled');
+      compareButton.removeClass('disabled');
       compareButton.find('div').addClass('button');
 
       // be sure to get the latest compare items and url queries (facets etc.) for the anchor reference. So use an click event for this issue
