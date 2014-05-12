@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.FacetEnum;
 import de.ddb.common.constants.SupportedLocales
 
 class ApisController {

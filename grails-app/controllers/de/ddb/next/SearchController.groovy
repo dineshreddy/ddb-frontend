@@ -21,6 +21,7 @@ import net.sf.json.JSONNull
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.CategoryFacetEnum;
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
@@ -42,9 +43,14 @@ class SearchController {
             if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
                 redirect(controller: "search", action: "results", params: params)
             }
+
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
+
+            //Search should only return documents, no institutions, see DDBNEXT-1504
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
+            searchService.setCategory(firstLastQuery, CategoryFacetEnum.CULTURE.getName());
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -187,17 +193,15 @@ class SearchController {
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
-        def queryString = request.getQueryString()
-        if ((!urlQuery["query"])||(urlQuery["query"]=="*")){
-            urlQuery["query"]="category:Institution"
-            queryString="query=*"
-        }else{
-            urlQuery["query"]="("+urlQuery["query"] + " AND category:Institution)"
-        }
 
-        
-        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
+        def queryString = request.getQueryString()
+
+        //Only select institutions, no documents!
+        searchService.setCategory(urlQuery, CategoryFacetEnum.INSTITUTION.getName());
+
+        if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"]) {
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+        }
 
         def results = searchService.doInstitutionSearch(urlQuery)
         def correctedQuery = ""
@@ -299,5 +303,7 @@ class SearchController {
             }
         }
     }
+
+
 
 }

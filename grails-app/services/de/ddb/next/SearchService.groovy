@@ -852,16 +852,6 @@ class SearchService {
             urlQuery[SearchParamEnum.QUERY.getName()] = reqParameters.searchQuery
         }
 
-        //Search category param
-        if (reqParameters.get("category")) {
-            //Category does not work with wildcard *
-            if (urlQuery[SearchParamEnum.QUERY.getName()] == "*") {
-                urlQuery[SearchParamEnum.QUERY.getName()] = "category:" + reqParameters.get("category")
-            } else {
-                urlQuery[SearchParamEnum.QUERY.getName()] = "(" + reqParameters.searchQuery + " AND category:" + reqParameters.get("category") + ")"
-            }
-        }
-
         //Search row + offset
         if (reqParameters[SearchParamEnum.ROWS.getName()] == null || reqParameters[SearchParamEnum.ROWS.getName()] == -1)
             urlQuery[SearchParamEnum.ROWS.getName()] = 1
@@ -985,4 +975,26 @@ class SearchService {
         return searchPreview
     }
 
+    def setCategory(Map urlQuery, String category) {
+
+        //Check if other facets has been selected as filter
+        if(urlQuery[SearchParamEnum.FACET.getName()] && urlQuery[SearchParamEnum.FACET.getName()] != "null"){
+            //MANY facets has been selected as filter
+            if(urlQuery[SearchParamEnum.FACET.getName()] instanceof Collection<?>){
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+            }
+            //ONE facet has been selected as filter
+            else {
+                def tempFacet = urlQuery[SearchParamEnum.FACET.getName()]
+                urlQuery[SearchParamEnum.FACET.getName()] = []
+                urlQuery[SearchParamEnum.FACET.getName()].add(FacetEnum.CATEGORY.getName())
+                urlQuery[SearchParamEnum.FACET.getName()].add(tempFacet)
+            }
+        }
+        //NO facet has been selected as filter
+        else {
+            urlQuery[SearchParamEnum.FACET.getName()] = FacetEnum.CATEGORY.getName()
+        }
+        urlQuery[FacetEnum.CATEGORY.getName()] = category
+    }
 }

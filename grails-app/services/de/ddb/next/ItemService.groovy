@@ -37,6 +37,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.beans.User
+import de.ddb.common.constants.CategoryFacetEnum;
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
@@ -537,6 +538,10 @@ class ItemService {
             else {
                 urlQuery[SearchParamEnum.OFFSET.getName()] = 0
             }
+
+            //FIXME Sets the item category to objects! If we need the pagination also for institution details we need to build a switch!
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
+
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
