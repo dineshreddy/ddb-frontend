@@ -23,7 +23,7 @@ limitations under the License.
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
 
-<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + request.forwardURI}"/>
+<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.Compare_Header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${linkUri}"/>
 </head>
 <body>
   <div class="row lists">
@@ -35,7 +35,7 @@ limitations under the License.
         <ddb:getSocialmediaBody />
       </div>
       <div class="link-block">
-        <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+        <a class="page-link page-link-popup-anchor" href="${linkUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
           <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
         </a>
       </div>

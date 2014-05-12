@@ -97,13 +97,8 @@ class ListsController {
         model.page = page
         model.totalPages = totalPages
         model.paginationURL = paginationURL
+        model.linkUri = request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")
 
-        //        println "OFFSET " + urlQuery[SearchParamEnum.OFFSET.getName()]
-        //        println "resultsPaginatorOptions " + model.resultsPaginatorOptions
-        //        println "resultsOverallIndex " + model.resultsOverallIndex
-        //        println "page " + model.page
-        //        println "totalPages " + model.totalPages
-        //        println "paginationURL " + model.paginationURL
 
         render(view: "lists", model: model)
     }
