@@ -62,7 +62,6 @@ limitations under the License.
         <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters" /></a>
       </div>
     </div>
-
     <div class="span9">
       <div class="off result-pages-count">
         ${totalPages}
@@ -71,16 +70,12 @@ limitations under the License.
 
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
-        <div class="row">
-          <div class="span9">
-            <div class="results-paginator-view">
-              <div class="group-actions">
-                <strong>1</strong> <strong>2</strong> <strong>3</strong>
-                <strong>4</strong> <strong>5</strong> <strong>Weiter</strong>
-              </div>
-            </div>
-          </div>
-        </div>
+
+        <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
+
+        <ddb:renderPageInfoNav
+          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
@@ -112,7 +107,7 @@ limitations under the License.
           </div>
         </div>
       </div>
+
     </div>
-  </div>
 </body>
 </html>

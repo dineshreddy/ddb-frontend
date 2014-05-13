@@ -255,11 +255,19 @@ class EntityController {
                 totalPages: totalPagesFormatted,
                 paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                 numberOfResults: numberOfResultsFormatted,
+                resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 offset: params[SearchParamEnum.OFFSET.getName()]
             ]
             render (contentType:"text/json"){jsonReturn}
         }else {
-            def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], results: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+            def model = [
+                    title: urlQuery[SearchParamEnum.QUERY.getName()], 
+                    results: results, 
+                    correctedQuery: correctedQuery, 
+                    totalPages: totalPagesFormatted, 
+                    cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
+                    resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
+                    paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),]
             render(view: "searchPerson", model: model)
         }
 
