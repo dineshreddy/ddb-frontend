@@ -15,18 +15,10 @@
  */
 //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the search results page
 
-/* Search namespace  */
-de.ddb.next.search = de.ddb.next.search || {};
-
-/**
- * Is called after the DOM has been initialized, the new handler passed in will
- * be executed immediately
- */
+/* Search Person namespace! Some functionality is also found on searchResults.js  */
 $(function() {
-  if (jsPageName === "searchinstitution") {
+  if (jsPageName === "searchperson") {
     var queryString = decodeURIComponent(de.ddb.next.search.getParameterByName("query").replace(/\+/g, '%20'));
     $("#form-search-header .query").val(queryString);
-
   }
 });
-
