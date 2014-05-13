@@ -15,7 +15,8 @@
  */
 #user-profile-form .profile-input {
   height: 30px !important;
-  padding: 4px 6px !important;
+  padding: 0 6px !important;
+  font-size: 0.938em;
 }
 #user-profile-form .profile-checkbox {
   margin: 10px -20px !important;
@@ -26,13 +27,13 @@
 }
 
 #user-profile-form .profile-nav {
-  line-height: 40px;
   display: block;
-  padding-bottom: 15px;
+  padding-bottom: 3px;
+  margin-bottom: 10px;
 }
 
 #user-profile-form .profile-title, #user-profile-form .profile-links{
-  text-align: right;
+  text-align: left;
   margin-bottom: 10px;
 }
 
@@ -47,12 +48,10 @@
 }
 
 #user-profile-form .control-groups {
-  margin-top: 40px;
   position: relative;
 }
 
 #user-profile-form .profile-links {
-  width: 140px;
   padding-top: 10px;
   float: right;
 }
