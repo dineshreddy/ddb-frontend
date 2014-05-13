@@ -22,7 +22,7 @@ limitations under the License.
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span6">
+        <div class="summary-main-wrapper span7">
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}">
@@ -30,20 +30,21 @@ limitations under the License.
                     length="${ 100 }" /></strong>
               </g:link>
             </h2>
-            <div class="subtitle">
+            <div class="subtitle persons-font">
               <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
-                ${profession}<g:if test="${i != last}">, </g:if>
-              </g:each>
+                ${profession}<g:if test="${i != last}">, </g:if></g:each>
+                <br><g:if test="${entityItem.dateOfBirth}"><g:message code="ddbnext.Entity_Birth" />: ${entityItem.dateOfBirth},</g:if>
+                 <g:if test="${entityItem.dateOfDeath}"><g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}</g:if>
+              
             </div>
           </div>
         </div>
-        <div class="thumbnail-wrapper span3">
+        <div class="thumbnail-wrapper span1 persons-results">
           <div class="thumbnail" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}"
               class="no-external-link-icon">
-              <g:img dir="images/placeholder" file="entity.png"
-                alt="${ entityItem.preferredName }" />
+              <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55px" />" alt="${entityItem.preferredName }" width="55px"/>
             </g:link>
           </div>
           <div class="item-options bl">

@@ -21,12 +21,12 @@ class FixWikimediaWidthTagLib {
     /**
      * Wikimedia can have images delivered with a fixed width. 
      * This will change the width to a default with
+     * Takes 2 attributes: attrs.thumbnail and attrs.desiredWidth (ex: 130px)
      * Take a string like:  http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Karl_IV._(HRR).jpg/270px-Karl_IV._(HRR).jpg
      * Return it to: http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Karl_IV._(HRR).jpg/150px-Karl_IV._(HRR).jpg
      */
     def fixWikimediaImageWidth={attrs, body ->
-        def desiredWidth="130px"
         def thumbnail =attrs.thumbnail.toString()
-        out << thumbnail.replaceAll(/(\d+)px(.*)\.([a-zA-Z]{3,4})/,desiredWidth+'$2.$3')
+        out << thumbnail.replaceAll(/(\d+)px(.*)\.([a-zA-Z]{3,4})/,attrs.desiredWidth+'$2.$3')
     }
 }
