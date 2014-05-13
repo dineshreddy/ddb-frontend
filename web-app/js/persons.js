@@ -15,15 +15,10 @@
  */
 $(function() {
   if (jsPageName === "persons") {
-    var randomSeed = $('#varToJs').attr('data-random-seed');
-    var pgTitle = $('#varToJs').attr('data-pgTitle');
+    var randomSeed = $('#var-to-js').attr('data-random-seed');
+    var pgTitle = $('#var-to-js').attr('data-pgTitle');
     History.pushState({sort:randomSeed}, pgTitle + " " +randomSeed, "?sort="+randomSeed);
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
-    $('.persons-list img').resizecrop({
-      width:145,
-      height:200,
-      vertical:"top"
-    });  
   }
 });

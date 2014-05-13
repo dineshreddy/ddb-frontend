@@ -25,8 +25,8 @@ class FixWikimediaWidthTagLib {
      * Return it to: http://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Karl_IV._(HRR).jpg/150px-Karl_IV._(HRR).jpg
      */
     def fixWikimediaImageWidth={attrs, body ->
-        def desiredWidth="150px"
+        def desiredWidth="130px"
         def thumbnail =attrs.thumbnail.toString()
-        out << thumbnail.replaceAll(/(\d+)px(.*)\.([a-zA-Z]{3,4})/,'150px$2.$3')
+        out << thumbnail.replaceAll(/(\d+)px(.*)\.([a-zA-Z]{3,4})/,desiredWidth+'$2.$3')
     }
 }
