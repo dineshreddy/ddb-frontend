@@ -16,7 +16,7 @@ limitations under the License.
 
 <div class="row">
   <div class="span12 item-links bb">
-    <ddb:isLoggedIn>
+    <ddbcommon:isLoggedIn>
       <div class="favorite">
         <span
           class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>"
@@ -51,7 +51,7 @@ limitations under the License.
           </div>
         </div>
       </ddb:isPersonalFavoritesAvailable>
-    </ddb:isLoggedIn>
+    </ddbcommon:isLoggedIn>
 
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}"

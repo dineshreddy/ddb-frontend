@@ -52,14 +52,14 @@ limitations under the License.
             </g:link>
           </div>
           <%-- 
-          <ddb:isLoggedIn>
+          <ddbcommon:isLoggedIn>
             <div id="favorite-${entityItem.id}" class="add-to-favorites" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
             <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
               <div class="modal-body">
                 <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
               </div>
             </div>
-          </ddb:isLoggedIn>
+          </ddbcommon:isLoggedIn>
           --%>
         </div>
       </div>
