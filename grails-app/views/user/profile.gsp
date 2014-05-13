@@ -83,7 +83,7 @@ limitations under the License.
                 </div>
                 <div class="control-group">
                   <label></label>
-                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save"/>"><g:message encodeAs="html" code="ddbnext.Save_Changes"/></button>
+                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save"/>"><g:message encodeAs="html" code="ddbnext.Save"/></button>
                 </div>
               </div>
   
