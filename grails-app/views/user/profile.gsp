@@ -45,11 +45,11 @@ limitations under the License.
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div>
-            <div class="row">
-              <div class="span10 control-groups">
+            <div>
+              <div class="static_content control-groups">
                 <div class="profile-nav bb">
                   <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
-                  <div class="bold"><g:message encodeAs="html" code="ddbnext.User.Data"/></div>
+                  <div><h3><g:message encodeAs="html" code="ddbnext.User.Data"/></h3></div>
                 </div>
                 <div class="control-group">
                   <div>

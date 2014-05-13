@@ -14,8 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<div class="span2 profile-links">
-  <div class="bold"><g:message encodeAs="html" code="ddbnext.User_MyContent"/></div>
+<div class="static_marginal">
+  <div><h3><g:message encodeAs="html" code="ddbnext.User_MyContent"/></h3></div>
   <ul class="plum-arrow">
     <li>
       <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favoritesview", action: 'favorites', params:[:])}">
