@@ -125,6 +125,7 @@ modules = {
         resource url:'/js/search/hovercardInfoItem.js'
         resource url:'/js/resultsFavorites.js'
         resource url:'/js/search/searchinstitution.js'
+        resource url:'/js/searchPerson.js'
         resource url:'/js/lists.js'
         resource url:'/js/persons.js'
     }
