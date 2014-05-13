@@ -24,7 +24,7 @@ $(document).ready(function() {
 
       $("#delete-apikey-confirm").click(function() {
         $("#msDeleteApiKey").modal("hide");
-        $("#apikeyForm").submit();
+        $("#apikey-form").submit();
       });
 
       return false;

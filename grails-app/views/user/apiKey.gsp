@@ -30,7 +30,7 @@ limitations under the License.
     <div class="static_content">
       <div class="apikey" >
         <div>
-          <g:form method="post" name="apikeyForm" id="apikeyForm" class="form-horizontal" controller="user" action="deleteApiKey" >
+          <g:form method="post" name="apikey-form" id="apikey-form" class="form-horizontal" controller="user" action="deleteApiKey" >
             <div>
               <div class="profile-nav bb">
                 <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
