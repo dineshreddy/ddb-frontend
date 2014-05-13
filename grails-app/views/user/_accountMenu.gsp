@@ -28,6 +28,11 @@ limitations under the License.
       </a>
     </li>
     <li>
+      <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.User.Data" />" class="persist" href="${createLink(controller="user", action: 'account', params:[:])}">
+        <g:message encodeAs="html" code="ddbnext.User.Data" />
+      </a>
+    </li>    
+    <li>
       <g:if test="${user.openIdUser != true}">
         <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
           <g:message encodeAs="html" code="ddbnext.Api_Access" /> 
