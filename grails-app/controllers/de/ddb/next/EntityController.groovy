@@ -161,18 +161,23 @@ class EntityController {
      * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339 
      */
     def persons() {
-        def random_seed = getRandomSeed()
-        def results = entityService.doEntitySearch([query:"*",rows:70,sort:"random_"+random_seed])
+        def randomSeed
+        if (params.sort){
+            randomSeed=params.sort
+        }else {
+            randomSeed = getRandomSeed()
+        }
+        def results = entityService.doEntitySearch([query:"*",rows:70,sort:"random_"+randomSeed])
 
         //There are entities with no thumbnail. We leave them out...
         def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
-        
+
         //Since the result after removing items with no thumnbails is is different from 50 (ex: 38)
         //let's make sure we have a list which will have full columns when nrColumnsDesired = x
         def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
         if (total>RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {total=RESULTS_DESIRED_IN_ONE_PERSONS_PAGE}
 
-        render(view: "persons", model: [title: "", results: resultsWithThumbnails.collate(total)])
+        render(view: "persons", model: [title: g.message(code:"ddbnext.entities.personspage.personspageheader"), results: resultsWithThumbnails.collate(total), randomSeed:randomSeed])
     }
 
     /**
@@ -198,7 +203,7 @@ class EntityController {
         }
         return listRandomSeeds.pop()
     }
-    
+
     /**
      * Populate a list of integers by taking care that values are not dublicated
      * @param listRandomSeeds

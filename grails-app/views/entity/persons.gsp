@@ -23,6 +23,8 @@ limitations under the License.
 <meta name="layout" content="main" />
 </head>
 <body>
+<div id="varToJs" data-random-seed="${randomSeed}" data-pgTitle="${title}"/>
+
   <div class="span12 personEntities bb">
     <div class="row ">
       <div class="span3">

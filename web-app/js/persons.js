@@ -15,6 +15,9 @@
  */
 $(function() {
   if (jsPageName === "persons") {
+    var randomSeed = $('#varToJs').attr('data-random-seed');
+    var pgTitle = $('#varToJs').attr('data-pgTitle');
+    History.pushState({sort:randomSeed}, pgTitle + " " +randomSeed, "?sort="+randomSeed);
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
     $('.persons-list img').resizecrop({
