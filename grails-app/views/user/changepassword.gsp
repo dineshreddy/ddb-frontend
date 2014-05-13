@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<ddb-common:doRedirectIfNotLoggedIn />
+<ddbcommon:doRedirectIfNotLoggedIn />
 
 <title><g:message encodeAs="html" code="ddbcommon.Password_Change" /> - <g:message encodeAs="html"
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
@@ -28,15 +28,15 @@ limitations under the License.
     <g:form method="post" id="password-change-form" name="password-change-form"
       class="form-horizontal" url="[controller:'user', action:'passwordChange']">
       <g:if test="${errors != null && errors.size()>0}">
-        <ddb-common:renderErrors errors="${errors}" />
+        <ddbcommon:renderErrors errors="${errors}" />
       </g:if>
       <g:if test="${messages != null && messages.size()>0}">
-        <ddb-common:renderMessages messages="${messages}" />
+        <ddbcommon:renderMessages messages="${messages}" />
       </g:if>
       <input type="hidden" name="id" value="${ user.id }" />
       <div class="well">
         <div class="profile-nav">
-          <g:set var="userLabel"><ddb:getUserLabel /></g:set>
+          <g:set var="userLabel"><ddbcommon:getUserLabel /></g:set>
           <div>
             <h1>
               <g:message encodeAs="html" code="ddbcommon.Change_Password_Label"

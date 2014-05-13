@@ -86,22 +86,6 @@ class ConfigurationService {
         return result
     }
 
-    public String getConfirmBase(){
-        return getContextUrl() + "/user/confirm/|id|/|confirmationToken|"
-    }
-
-    public String getPasswordResetConfirmationLink(){
-        return getConfirmBase() + "?type=passwordreset"
-    }
-
-    public String getEmailUpdateConfirmationLink(){
-        return getConfirmBase() + "?type=emailupdate"
-    }
-
-    public String getCreateConfirmationLink(){
-        return getConfirmBase() + "?type=create"
-    }
-
     public String getFavoritesSendMailFrom(){
         return getConfigValue("ddb.favorites.sendmailfrom")
     }

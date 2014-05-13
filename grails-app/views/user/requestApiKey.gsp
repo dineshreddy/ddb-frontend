@@ -16,16 +16,16 @@ limitations under the License.
 
 <html>
   <head>
-  
-    <ddb:doRedirectIfNotLoggedIn />
-    
+
+    <ddbcommon:doRedirectIfNotLoggedIn />
+
     <title><g:message encodeAs="html" code="ddbnext.Api" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-    
+
     <meta name="page" content="apirequest" />
     <meta name="layout" content="main" />
-  
+
   </head>
-  
+
   <body>
     <div class="row apirequest" >
       <div class="span12">
@@ -33,7 +33,7 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
+                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddbcommon:getUserLabel /></h1>
               </div>
             </div>
             <div>
@@ -47,7 +47,6 @@ limitations under the License.
               </ul>
             </div>
 
-            
             <div class="control-group">
               <g:if test="${flash.error}">
                 <div class="errors-container">

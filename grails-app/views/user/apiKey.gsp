@@ -16,16 +16,16 @@ limitations under the License.
 
 <html>
   <head>
-  
-    <ddb:doRedirectIfNotLoggedIn />
-    
+
+    <ddbcommon:doRedirectIfNotLoggedIn />
+
     <title><g:message encodeAs="html" code="ddbnext.Api" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-    
+
     <meta name="page" content="apikey" />
     <meta name="layout" content="main" />
-  
+
   </head>
-  
+
   <body>
     <div class="row apikey" >
       <div class="span12">
@@ -33,10 +33,10 @@ limitations under the License.
           <div class="well">
             <div class="profile-nav">
               <div>
-                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
+                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddbcommon:getUserLabel /></h1>
               </div>
             </div>
-            
+
             <div class="control-group">
               <label class="control-label"><g:message encodeAs="html" code="ddbnext.Api_My_Key" /></label>
               <div class="controls">
@@ -52,8 +52,8 @@ limitations under the License.
               <g:message encodeAs="none" code="ddbnext.Api_Agreed" args="${[apiKeyTermsUrl]}" />
               <br />            
               <g:message encodeAs="none" code="ddbnext.Api_Dokumentation" args="${[apiKeyDocUrl]}" />
-            </div>            
-            
+            </div>
+
           </div>
         </g:form>
       </div>

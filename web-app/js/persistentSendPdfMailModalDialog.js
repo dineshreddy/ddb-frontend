@@ -45,7 +45,7 @@ $.extend(PopupManagerSendPdf.prototype, {
 
   registerPopupSendmail : function(anchorTag, title, content, offsetX, offsetY) {
 
-    var closeTitle = messages.ddbcommon.Close;
+    var closeTitle = messages.ddbnext.Close;
     var popupDialogWrapper = $(document.createElement('div'));
     var popupDialogTitle = $(document.createElement('div'));
     var popupDialogFooter = $(document.createElement('div'));

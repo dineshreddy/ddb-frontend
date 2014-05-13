@@ -197,7 +197,7 @@ class UserController {
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
         } else {
-            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -236,7 +236,7 @@ class UserController {
             }
             redirect(controller: "user", action: "getSavedSearches")
         } else {
-            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -310,7 +310,7 @@ class UserController {
         List<String> messages = []
         List<String> errors = []
         if (StringUtils.isBlank(params.username)) {
-            errors.add("ddbnext.Error_Username_Empty")
+            errors.add("ddbcommon.Error_Username_Empty")
         }
         if (errors == null || errors.isEmpty()) {
             try {
@@ -374,7 +374,7 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -393,13 +393,13 @@ class UserController {
             }
             if (!user.getOpenIdUser()) {
                 if (StringUtils.isBlank(params.username) || params.username.length() < 2) {
-                    errors.add("ddbnext.Error_Username_Empty")
+                    errors.add("ddbcommon.Error_Username_Empty")
                 }
                 if (StringUtils.isBlank(params.email)) {
-                    errors.add("ddbnext.Error_Email_Empty")
+                    errors.add("ddbcommon.Error_Email_Empty")
                 }
                 if (!Validations.validatorEmail(params.email)) {
-                    errors.add("ddbnext.Error_Valid_Email_Address")
+                    errors.add("ddbcommon.Error_Valid_Email_Address")
                 }
             }
             if (errors == null || errors.isEmpty()) {
@@ -419,7 +419,7 @@ class UserController {
                 }
 
                 if (!profileDifference && !eMailDifference && !newsletterDifference) {
-                    errors.add("ddbnext.User.Profile_NoValuesChanged")
+                    errors.add("ddbcommon.User.Profile_NoValuesChanged")
                 }
 
                 if (profileDifference) {
@@ -433,23 +433,23 @@ class UserController {
                         user.setFirstname(params.fname)
                         user.setLastname(params.lname)
                         aasService.updatePerson(user.getId(), aasUser)
-                        messages.add("ddbnext.User.Profile_Update_Success")
+                        messages.add("ddbcommon.User.Profile_Update_Success")
                     } catch (ConflictException e) {
                         log.error "Conflict: user with given data already exists. username:" + params.username, e
-                        errors.add("ddbnext.Conflict_User_Name")
+                        errors.add("ddbcommon.Conflict_User_Name")
                     }
                 }
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
                         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        def template = messageSource.getMessage("ddbcommon.User.Email_Update_Mailtext", null, locale)
                         aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
-                        messages.add("ddbnext.User.Email_Update_Success")
+                        messages.add("ddbcommon.User.Email_Update_Success")
                     } catch (ConflictException e) {
                         user.setEmail(params.email)
                         log.error "Conflict: user with given data already exists. email:" + params.email, e
-                        errors.add("ddbnext.Conflict_User_Email")
+                        errors.add("ddbcommon.Conflict_User_Email")
                     }
                 }
                 if (newsletterDifference && (errors == null || errors.isEmpty())) {
@@ -470,7 +470,7 @@ class UserController {
             redirect(controller:"user", action:"profile", params:params)
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
         }
     }
 
@@ -521,7 +521,7 @@ class UserController {
             render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -567,7 +567,7 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -843,7 +843,7 @@ class UserController {
                 ])
             }
         }else {
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
 
     }
@@ -872,7 +872,7 @@ class UserController {
             }
             redirect(controller: 'user', action: 'showApiKey')
         }else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -892,7 +892,7 @@ class UserController {
 
             redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
