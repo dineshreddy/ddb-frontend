@@ -32,7 +32,7 @@ limitations under the License.
           <g:message code="ddbnext.entities.personspage.personspageheader" />
         </h1>
       </div>
-      <div class="row featuresBar">
+      <div class="row features-bar">
         <div class="span2">
         <div class="link-block">
           <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"

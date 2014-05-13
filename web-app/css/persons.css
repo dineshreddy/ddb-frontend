@@ -21,13 +21,13 @@
   margin-left: 0px
 }
 
-.featuresBar {
+.features-bar {
   padding-top: 25px;
-  float:right
+  float:right;
 }
 
 .correctleftMargin30 {
-  margin-left: -30px
+  margin-left: -30px;
 }
 
 .persons-font {
@@ -86,7 +86,7 @@
   margin: 0;
 }
 
-@media ( min-width : 960px) {
+@media ( min-width : 980px) {
   #columns {
     -webkit-column-count: 4;
     -moz-column-count: 4;
@@ -94,7 +94,7 @@
   }
 }
 
-@media ( min-width : 1100px) {
+@media ( min-width : 1200px) {
   #columns {
     -webkit-column-count: 5;
     -moz-column-count: 5;
