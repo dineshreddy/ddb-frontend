@@ -350,7 +350,7 @@ header .navigation li.keep-in-front{
   margin-right: 15px;
 }
 
-header .navigation li.active ul,.header .navigation li.active ul {
+header .navigation li.active ul,.header .navigation li.active ul, header .navigation li:hover ul, .header .navigation li:hover ul {
   display: block;
 }
 

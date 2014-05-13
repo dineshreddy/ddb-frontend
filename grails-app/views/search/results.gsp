@@ -138,9 +138,6 @@ limitations under the License.
             </div>
           </div>
         </div>
-        <div id="print-nav">
-          <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
-        </div>
       </div>
 
       <%-- favorite confirmation dialog - only one per page --%>
