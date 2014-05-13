@@ -27,17 +27,19 @@ limitations under the License.
   </head>
   
   <body>
-    <div class="row apirequest" >
-      <div class="span12">
+    <div class="apirequest" >
+      <div class="static_content">
         <g:form method="post" name="user-api-form" class="form-horizontal" controller="user" action="requestApiKey" >
-          <div class="well">
-            <div class="profile-nav">
-              <div>
-                <h1><g:message encodeAs="html" code="ddbnext.Api_Access_Of"/> <ddb:getUserLabel /></h1>
-              </div>
+          <div>
+            <div class="profile-nav bb">
+              <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+              <div><h3><g:message encodeAs="html" code="ddbnext.Api_Access"/></h3></div>
             </div>
+            
             <div>
-              <g:message encodeAs="none" code="ddbnext.Api_Description_Text" />
+              <p>
+                <g:message encodeAs="none" code="ddbnext.Api_Description_Text" />
+              </p>
             </div>
             <div>
               <ul id="error-messages" class="off">
@@ -75,6 +77,8 @@ limitations under the License.
           </div>
         </g:form>
       </div>
+      <%-- Account menu --%>
+      <g:render template="accountMenu" />
     </div>
   </body>
 </html>
