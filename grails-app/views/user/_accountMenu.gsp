@@ -51,3 +51,6 @@ limitations under the License.
     </li>
   </ul>
 </div>
+
+<%-- Delete Account modal dialog --%>
+<g:render template="deleteAccount" />

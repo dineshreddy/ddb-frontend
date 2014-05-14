@@ -91,17 +91,6 @@ limitations under the License.
               <g:render template="accountMenu" />
             </div>
 
-            <%-- Commented out temporarily by request from Gerke, see DDBNEXT-751
-            <div class="control-group">
-              <div class="controls checkbox">
-                <div class="input-prepend">
-                  <input type="checkbox" id="newsletter" class="profile-checkbox" name="newsletter" ${newsletterCheck}>
-                </div>
-              </div>
-              <label class="checkbox-label control-label"><g:message encodeAs="none" code="ddbnext.Newsletter_Subscription" /></label>
-            </div>
-            --%>
-
         </div>
         <ul id="error-messages" class="off">
           <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
@@ -109,20 +98,5 @@ limitations under the License.
           <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
         </ul>
     </g:form>
-    <div id="msDeleteAccount" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3>
-          <g:message encodeAs="html" code="ddbnext.delete_confirmation" />
-        </h3>
-      </div>
-      <div class="modal-body">
-        <g:message encodeAs="html" code="ddbnext.User.Really_Delete_Account" />
-      </div>
-      <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbnext.Ok" /></button>
-        <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbnext.Cancel" /></button>
-      </div>
-    </div>
   </body>
 </html>
