@@ -220,6 +220,7 @@ class ConfigurationService {
         log.info "ddb.advancedSearch.searchFieldCount = " + getSearchFieldCount()
         log.info "ddb.advancedSearch.defaultOffset = " + getSearchOffset()
         log.info "ddb.advancedSearch.defaultRows = " + getSearchRows()
+        log.info "ddb.session.timeout = " + commonConfigurationService.getSessionTimeout()
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
