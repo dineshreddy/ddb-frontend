@@ -62,7 +62,7 @@ A list of some predefined variables is set below:
     ddb.apis.url="http://localhost:8080"
     ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
     ddb.backend.apikey= (put a valid API key here or leave it empty)
-    ddb.aas.url=http://aas-p1.deutsche-digitale-bibliothek.de:8081
+    ddb.aas.url=http://aas-p1.deutsche-digitale-bibliothek.de:8081/aas/
     ddb.culturegraph.url=http://hub.culturegraph.org
     ddb.elasticsearch.url=http://else-p1.deutsche-digitale-bibliothek.de:9200
 
