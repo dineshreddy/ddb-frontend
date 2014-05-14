@@ -23,17 +23,17 @@ limitations under the License.
       </a>
     </li>
     <li>
-      <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Searches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
-        <g:message encodeAs="html" code="ddbnext.Searches" /> (${savedSearchesCount})
+      <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.SavedSearches" />" class="persist" href="${createLink(controller="user", action: 'savedsearches', params:[:])}">
+        <g:message encodeAs="html" code="ddbnext.SavedSearches" /> (${savedSearchesCount})
       </a>
     </li>
     <li>
-      <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.User.Data" />" class="persist" href="${createLink(controller="user", action: 'account', params:[:])}">
+      <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.User.Data" />" class="persist" href="${createLink(controller="user", action: 'profile', params:[:])}">
         <g:message encodeAs="html" code="ddbnext.User.Data" />
       </a>
     </li>    
     <li>
-      <g:if test="${user.openIdUser != true}">
+      <g:if test="${user?.openIdUser != true}">
         <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
           <g:message encodeAs="html" code="ddbnext.Api_Access" /> 
         </a>

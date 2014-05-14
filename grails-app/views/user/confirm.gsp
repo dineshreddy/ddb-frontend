@@ -25,12 +25,19 @@ limitations under the License.
 
 <body>
   <div class="container confirmation">
-    <g:if test="${errors != null && errors.size()>0}">
-      <ddb:renderErrors errors="${errors}" />
-    </g:if>
-    <g:if test="${messages != null && messages.size()>0}">
-      <ddb:renderMessages messages="${messages}" />
-    </g:if>
+    <div class="static_content">
+      <div class="profile-nav bb">
+        <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+      </div>
+      <g:if test="${errors != null && errors.size()>0}">
+        <ddb:renderErrors errors="${errors}" />
+      </g:if>
+      <g:if test="${messages != null && messages.size()>0}">
+        <ddb:renderMessages messages="${messages}" />
+      </g:if>
+    </div>
+    <%-- Account menu --%>
+    <g:render template="accountMenu" />
   </div>
 </body>
 </html>
