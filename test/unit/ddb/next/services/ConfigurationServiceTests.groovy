@@ -151,7 +151,7 @@ class ConfigurationServiceTests {
     }
 
     void testSessionTimeout_Complete() {
-        integerConfigTest("ddb.session.timeout") { it.getSessionTimeout() }
+        integerConfigTest("ddbcommon.session.timeout") { it.getSessionTimeout() }
     }
 
     void testGrailsMailPort_Complete() {

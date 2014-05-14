@@ -18,59 +18,59 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
-    <title><g:message encodeAs="html" code="ddbnext.Login" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-    
+    <title><g:message encodeAs="html" code="ddbcommon.Login_Button" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+
     <meta name="page" content="login" />
     <meta name="layout" content="main" />
-  
+
   </head>
   <body>
     <div class="row login">
       <div class="span12">
         <div class="row heading">
           <div class="span6">
-            <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.Login"/></h1></div>
+            <div class="fl"><h1><g:message encodeAs="html" code="ddbcommon.Login_Button"/></h1></div>
           </div>
         </div>
         <div class="row">
           <div class="span12">
-          
-            <ddb:isNotLoggedIn>
-              
+
+            <ddbcommon:isNotLoggedIn>
+
               <div class="span4 dialog">
                 <g:form controller="user" action="doLogin">
                   <g:hiddenField name="referrer" value="${referrer}" />
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
                     <div class="row login-error">
                       <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Email_Password_Combination" />
-                      </div>  
+                        <g:message encodeAs="html" code="ddbcommon.Error_Email_Password_Combination" />
+                      </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_DENIED}">
                     <div class="row login-error">
-                      <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Denied" />
-                      </div>  
+                      <div class="span4">
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Denied" />
+                      </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_UNKNOWN}">
                     <div class="row login-error">
-                      <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_Provider_Unknown" />
-                      </div>  
+                      <div class="span4">
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Unknown" />
+                      </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.NO_COOKIES}">
                     <div class="row login-error">
-                      <div class="span4"> 
-                        <g:message encodeAs="html" code="ddbnext.Error_Authentication_No_Cookies" />
-                      </div>  
+                      <div class="span4">
+                        <g:message encodeAs="html" code="ddbcommon.Error_Authentication_No_Cookies" />
+                      </div>
                     </div>
                   </g:if>
                   <div class="row">
-                    <div class="span4"> 
-                      <label for="login-username"><g:message encodeAs="html" code="ddbnext.Username_Or_Email" />:</label>
+                    <div class="span4">
+                      <label for="login-username"><g:message encodeAs="html" code="ddbcommon.Username_Or_Email" />:</label>
                     </div>  
                   </div>
                   <div class="row">
@@ -79,56 +79,56 @@ limitations under the License.
                     </div>
                   </div>
                   <div class="row spacer-vertical">
-                    <div class="span4">                 
-                      <label for="login-password"><g:message encodeAs="html" code="ddbnext.Your_Password" />:</label>
+                    <div class="span4">
+                      <label for="login-password"><g:message encodeAs="html" code="ddbcommon.Your_Password" />:</label>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="span4"> 
+                    <div class="span4">
                       <input id="login-password" type="password" name="password" value=""/>
                     </div>
                   </div>
                   <div class="row spacer-vertical">
-                    <div class="span4">    
-                      <button type="submit" class="login-button">       
-                        <g:message encodeAs="html" code="ddbnext.Login_Button" />
-                      </button>       
+                    <div class="span4">
+                      <button type="submit" class="login-button">
+                        <g:message encodeAs="html" code="ddbcommon.Login_Button" />
+                      </button>
                     </div>
                   </div>
                   <div class="row spacer-vertical">
-                    <div class="span4">                  
-                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbnext.Register" /></g:link>  
+                    <div class="span4">
+                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbnext.Register" /></g:link>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="span4">                  
-                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message encodeAs="html" code="ddbnext.Forgot_Password" /></g:link>  
+                    <div class="span4">
+                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message encodeAs="html" code="ddbnext.Forgot_Password" /></g:link>
                     </div>
                   </div>
-                
+
                 </g:form>
               </div>
               <div class="span4 openid" >
                 <div class="row">
-                  <div class="span4">                  
-                    <g:message encodeAs="html" code="ddbnext.Login_OpenID" />
+                  <div class="span4">
+                    <g:message encodeAs="html" code="ddbcommon.Login_OpenID" />
                   </div>
                 </div>
                 <div class="row spacer-vertical">
-                  <div class="span4">                  
+                  <div class="span4">
                     <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE, "referrer": referrer]}"><div class="openid-google"></div></g:link>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="span4">                  
+                  <div class="span4">
                     <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}"><div class="openid-yahoo"></div></g:link>
                   </div>
                 </div>
               </div>
-              
-            </ddb:isNotLoggedIn>
-        
-            <ddb:isLoggedIn>
+
+            </ddbcommon:isNotLoggedIn>
+
+            <ddbcommon:isLoggedIn>
               <div class="span4 feedback">
                 <g:if test="${loginStatus == LoginStatus.SUCCESS}">
                   <g:message encodeAs="html" code="ddbnext.Login_Success" />
@@ -137,15 +137,14 @@ limitations under the License.
                   <g:message encodeAs="html" code="ddbnext.Already_Logged_In" />
                 </g:else>
               </div>
-            
-            </ddb:isLoggedIn>
-                
+
+            </ddbcommon:isLoggedIn>
+
           </div>
-        </div>           
+        </div>
       </div>
-    </div>  
-  
-  
+    </div>
+
   </body>
 </html>
 

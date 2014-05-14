@@ -45,6 +45,8 @@ import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
+import de.ddb.common.AasService
+import de.ddb.common.Validations
 import de.ddb.next.beans.Folder
 
 class UserController {
@@ -55,13 +57,14 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
+    def commonConfigurationService
     def messageSource
     def searchService
     def newsletterService
     def savedSearchesService
     def savedSearchService
     def bookmarksService
-    def favoritesService
+    def userService
 
     def index() {
         log.info "index()"
@@ -77,7 +80,7 @@ class UserController {
         if(!isCookiesActivated()){
             loginStatus = LoginStatus.NO_COOKIES
 
-        } else if(!favoritesService.isUserLoggedIn()){
+        } else if(!userService.isUserLoggedIn()){
             def email = params.email
             def password = params.password
 
@@ -138,8 +141,8 @@ class UserController {
 
     def getSavedSearches() {
         log.info "getSavedSearches()"
-        if (favoritesService.isUserLoggedIn()) {
-            def user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            def user = userService.getUserFromSession()
             def savedSearches = savedSearchesService.getSavedSearches(user.getId())
             def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
             def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
@@ -196,14 +199,14 @@ class UserController {
                 userName: user.getFirstnameAndLastnameOrNickname()
             ])
         } else {
-            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def sendSavedSearches() {
         log.info "sendSavedSearches()"
-        if (favoritesService.isUserLoggedIn()) {
-            def user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            def user = userService.getUserFromSession()
             def List emails = []
 
             if (params.email.contains(',')) {
@@ -215,12 +218,12 @@ class UserController {
                 sendMail {
                     to emails.toArray()
                     from configurationService.getFavoritesSendMailFrom()
-                    replyTo favoritesService.getUserFromSession().getEmail()
+                    replyTo userService.getUserFromSession().getEmail()
                     subject g.message(code: "ddbnext.Savedsearches_Of", args: [
                         user.getFirstnameAndLastnameOrNickname()
                     ], encodeAs: "none")
                     body(view: "_savedSearchesEmailBody", model: [
-                        contextUrl: configurationService.getContextUrl(),
+                        contextUrl: commonConfigurationService.getContextUrl(),
                         results:
                         savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
                             a.label.toLowerCase() <=> b.label.toLowerCase()
@@ -235,7 +238,7 @@ class UserController {
             }
             redirect(controller: "user", action: "getSavedSearches")
         } else {
-            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -243,9 +246,9 @@ class UserController {
 
     private def getRegistrationUrls() {
         return [
-            registrationInfoUrl: configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
-            accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
-            accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
+            registrationInfoUrl: commonConfigurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
+            accountTermsUrl: commonConfigurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: commonConfigurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
         ]
     }
     def registration() {
@@ -261,7 +264,7 @@ class UserController {
         if (errors == null || errors.isEmpty()) {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, commonConfigurationService.getCreateConfirmationLink(), template, null, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
@@ -309,7 +312,7 @@ class UserController {
         List<String> messages = []
         List<String> errors = []
         if (StringUtils.isBlank(params.username)) {
-            errors.add("ddbnext.Error_Username_Empty")
+            errors.add("ddbcommon.Error_Username_Empty")
         }
         if (errors == null || errors.isEmpty()) {
             try {
@@ -333,8 +336,8 @@ class UserController {
 
     def profile() {
         log.info "profile()"
-        if(favoritesService.isUserLoggedIn()){
-            User user = favoritesService.getUserFromSession().clone()
+        if(userService.isUserLoggedIn()){
+            User user = userService.getUserFromSession().clone()
             if (params.username) {
                 user.setUsername(params.username)
                 user.setFirstname(params.fname)
@@ -373,32 +376,32 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def saveProfile() {
         log.info "saveProfile()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
             boolean eMailDifference = false
             boolean profileDifference = false
             boolean newsletterDifference = false
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
 
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
             if (!user.getOpenIdUser()) {
                 if (StringUtils.isBlank(params.username) || params.username.length() < 2) {
-                    errors.add("ddbnext.Error_Username_Empty")
+                    errors.add("ddbcommon.Error_Username_Empty")
                 }
                 if (StringUtils.isBlank(params.email)) {
-                    errors.add("ddbnext.Error_Email_Empty")
+                    errors.add("ddbcommon.Error_Email_Empty")
                 }
                 if (!Validations.validatorEmail(params.email)) {
-                    errors.add("ddbnext.Error_Valid_Email_Address")
+                    errors.add("ddbcommon.Error_Valid_Email_Address")
                 }
             }
             if (errors == null || errors.isEmpty()) {
@@ -418,7 +421,7 @@ class UserController {
                 }
 
                 if (!profileDifference && !eMailDifference && !newsletterDifference) {
-                    errors.add("ddbnext.User.Profile_NoValuesChanged")
+                    errors.add("ddbcommon.User.Profile_NoValuesChanged")
                 }
 
                 if (profileDifference) {
@@ -432,23 +435,23 @@ class UserController {
                         user.setFirstname(params.fname)
                         user.setLastname(params.lname)
                         aasService.updatePerson(user.getId(), aasUser)
-                        messages.add("ddbnext.User.Profile_Update_Success")
+                        messages.add("ddbcommon.User.Profile_Update_Success")
                     } catch (ConflictException e) {
                         log.error "Conflict: user with given data already exists. username:" + params.username, e
-                        errors.add("ddbnext.Conflict_User_Name")
+                        errors.add("ddbcommon.Conflict_User_Name")
                     }
                 }
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
                         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        def template = messageSource.getMessage("ddbcommon.User.Email_Update_Mailtext", null, locale)
                         aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
-                        messages.add("ddbnext.User.Email_Update_Success")
+                        messages.add("ddbcommon.User.Email_Update_Success")
                     } catch (ConflictException e) {
                         user.setEmail(params.email)
                         log.error "Conflict: user with given data already exists. email:" + params.email, e
-                        errors.add("ddbnext.Conflict_User_Email")
+                        errors.add("ddbcommon.Conflict_User_Email")
                     }
                 }
                 if (newsletterDifference && (errors == null || errors.isEmpty())) {
@@ -469,7 +472,7 @@ class UserController {
             redirect(controller:"user", action:"profile", params:params)
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').createLink(controller:"user", action:"profile")])
         }
     }
 
@@ -492,8 +495,8 @@ class UserController {
 
     def passwordChangePage() {
         log.info "passwordChangePage()"
-        if(favoritesService.isUserLoggedIn()){
-            User user = favoritesService.getUserFromSession()
+        if(userService.isUserLoggedIn()){
+            User user = userService.getUserFromSession()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -520,16 +523,16 @@ class UserController {
             render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def passwordChange() {
         log.info "passwordChange()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
             if (user.isOpenIdUser()) {
                 //password-change is only for aas-users
                 redirect(controller:"index")
@@ -566,16 +569,16 @@ class UserController {
             render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def delete() {
         log.info "delete()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             List<String> errors = []
             List<String> messages = []
-            User user = favoritesService.getUserFromSession().clone()
+            User user = userService.getUserFromSession().clone()
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
@@ -643,8 +646,8 @@ class UserController {
                 messages.add("ddbnext.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
-            if (favoritesService.isUserLoggedIn()) {
-                User user = favoritesService.getUserFromSession().clone()
+            if (userService.isUserLoggedIn()) {
+                User user = userService.getUserFromSession().clone()
                 if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
                     throw new BackendErrorException("user-attributes are not consistent")
                 }
@@ -704,7 +707,7 @@ class UserController {
         // Delete problem with url page with # and manager.authenticate
         def referrerUrl = params.referrer.replaceAll("#.*", "")
 
-        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
+        String returnURL = commonConfigurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -730,7 +733,7 @@ class UserController {
             ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
             //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
-            String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
+            String returnURL = commonConfigurationService.getContextUrl() + "/login/doOpenIdLogin"
             String receivingURL =  returnURL + "?" + request.getQueryString()
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
             Identifier verified = verification.getVerifiedId()
@@ -822,12 +825,12 @@ class UserController {
 
     def showApiKey() {
         log.info "showApiKey()"
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
 
-            User user = favoritesService.getUserFromSession()
+            User user = userService.getUserFromSession()
             def apiKey = user.apiKey
 
-            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+            String apiKeyTermsUrl = commonConfigurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             if(apiKey) {
                 render(view: "apiKey", model: [
@@ -842,7 +845,7 @@ class UserController {
                 ])
             }
         }else {
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
 
     }
@@ -850,14 +853,14 @@ class UserController {
     def requestApiKey() {
         log.info "requestApiKey()"
 
-        if (favoritesService.isUserLoggedIn()) {
+        if (userService.isUserLoggedIn()) {
             def isConfirmed = false
             if(params.apiConfirmation){
                 isConfirmed = true
             }
 
             if(isConfirmed){
-                User user = favoritesService.getUserFromSession()
+                User user = userService.getUserFromSession()
                 String newApiKey = aasService.createApiKey()
 
                 JSONObject aasUser = aasService.getPerson(user.getId())
@@ -871,14 +874,14 @@ class UserController {
             }
             redirect(controller: 'user', action: 'showApiKey')
         }else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
     def deleteApiKey() {
         log.info "deleteApiKey()"
-        if (favoritesService.isUserLoggedIn()) {
-            User user = favoritesService.getUserFromSession()
+        if (userService.isUserLoggedIn()) {
+            User user = userService.getUserFromSession()
 
             JSONObject aasUser = aasService.getPerson(user.getId())
             aasUser.put(AasService.APIKEY_FIELD, null)
@@ -891,7 +894,7 @@ class UserController {
 
             redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
         }else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
     }
 
@@ -899,7 +902,7 @@ class UserController {
         log.info "sendApiKeyPerMail()"
         if (user != null) {
 
-            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+            String apiKeyTermsUrl = commonConfigurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             def List emails = []
             emails.add(user.email)

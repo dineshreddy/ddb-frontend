@@ -16,7 +16,7 @@ limitations under the License.
 
 <div class="row">
   <div class="span6 item-links bb">
-    <ddb:isLoggedIn>
+    <ddbcommon:isLoggedIn>
       <div class="favorite" >
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
@@ -43,18 +43,18 @@ limitations under the License.
           </div>
         </ddb:isPersonalFavoritesAvailable>
       </div>
-    </ddb:isLoggedIn>
+    </ddbcommon:isLoggedIn>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
-    <ddb:isLoggedIn>
+    <ddbcommon:isLoggedIn>
       <div class="link-block">
         <g:link class="xml-link" controller="item" action="showXml" params="[id: itemId]" target="_blank">
           <span><g:message encodeAs="html" code="ddbnext.View" /></span>
         </g:link>
       </div>
-    </ddb:isLoggedIn>
+    </ddbcommon:isLoggedIn>
   </div>
 </div>

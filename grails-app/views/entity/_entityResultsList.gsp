@@ -48,7 +48,7 @@ limitations under the License.
           </div>
           <div class="item-options bl">
             <ul class="item-options-ul">
-              <ddb:isLoggedIn>
+              <ddbcommon:isLoggedIn>
                 <li>
                   <div id="favorite-${entityItem.id.substring(cultureGraphUrl.length())}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
@@ -60,7 +60,7 @@ limitations under the License.
                     </p>
                   </div>
                 </div>
-              </ddb:isLoggedIn>
+              </ddbcommon:isLoggedIn>
             </ul>
           </div>
         </div>

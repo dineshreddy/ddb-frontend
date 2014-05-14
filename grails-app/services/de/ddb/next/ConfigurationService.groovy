@@ -29,149 +29,112 @@ class ConfigurationService {
 
     def grailsApplication
     def LinkGenerator grailsLinkGenerator
+    def commonConfigurationService
 
     def transactional=false
 
     public String getBinaryUrl() {
-        return getConfigValue("ddb.binary.url")
+        return commonConfigurationService.getConfigValue("ddb.binary.url")
     }
 
     public String getStaticUrl(){
-        return getConfigValue("ddb.static.url")
+        return commonConfigurationService.getConfigValue("ddb.static.url")
     }
 
     public String getApisUrl(){
-        return getConfigValue("ddb.apis.url")
+        return commonConfigurationService.getConfigValue("ddb.apis.url")
     }
 
     public String getBackendUrl(){
-        return getConfigValue("ddb.backend.url")
+        return commonConfigurationService.getConfigValue("ddb.backend.url")
     }
 
     public String getAasAdminUserId(){
-        return getConfigValue("ddb.aas.admin.userid")
+        return commonConfigurationService.getConfigValue("ddb.aas.admin.userid")
     }
 
     public String getAasAdminPassword(){
-        return getConfigValue("ddb.aas.admin.password")
-    }
-
-    public String getAasUrl(){
-        return getConfigValue("ddb.aas.url")
+        return commonConfigurationService.getConfigValue("ddb.aas.admin.password")
     }
 
     public String getCulturegraphUrl(){
-        return getConfigValue("ddb.culturegraph.url")
+        return commonConfigurationService.getConfigValue("ddb.culturegraph.url")
     }
 
     public String getElasticSearchUrl(){
-        return getConfigValue("ddb.elasticsearch.url")
-    }
-
-    /**
-     * Return the application base URL with context path and without trailing slash.
-     */
-    public String getContextUrl(){
-        return grailsLinkGenerator.serverBaseURL
-    }
-
-    /**
-     * Return the application base URL without context path and without trailing slash.
-     */
-    public String getSelfBaseUrl(){
-        def result = getContextUrl()
-        if (grailsLinkGenerator.contextPath?.length() > 0) {
-            result = result.substring(0, result.length() - grailsLinkGenerator.contextPath.length())
-        }
-        return result
-    }
-
-    public String getConfirmBase(){
-        return getContextUrl() + "/user/confirm/|id|/|confirmationToken|"
-    }
-
-    public String getPasswordResetConfirmationLink(){
-        return getConfirmBase() + "?type=passwordreset"
-    }
-
-    public String getEmailUpdateConfirmationLink(){
-        return getConfirmBase() + "?type=emailupdate"
-    }
-
-    public String getCreateConfirmationLink(){
-        return getConfirmBase() + "?type=create"
+        return commonConfigurationService.getConfigValue("ddb.elasticsearch.url")
     }
 
     public String getFavoritesSendMailFrom(){
-        return getConfigValue("ddb.favorites.sendmailfrom")
+        return commonConfigurationService.getConfigValue("ddb.favorites.sendmailfrom")
     }
 
     public String getFavoritesReportMailTo(){
-        return getConfigValue("ddb.favorites.reportMailTo")
+        return commonConfigurationService.getConfigValue("ddb.favorites.reportMailTo")
     }
 
     public List getFacetsFilter(){
-        return getConfigValue("ddb.backend.facets.filter", List)
+        return commonConfigurationService.getConfigValue("ddb.backend.facets.filter", List)
     }
 
     public String getPiwikTrackingFile(){
-        return getExistingConfigValue("ddb.tracking.piwikfile")
+        return commonConfigurationService.getExistingConfigValue("ddb.tracking.piwikfile")
     }
 
     public String getApiKeyDocUrl(){
-        return getConfigValue("ddb.apikey.doc.url")
+        return commonConfigurationService.getConfigValue("ddb.apikey.doc.url")
     }
 
     public String getApiKeyTermsUrl(){
-        return getConfigValue("ddb.apikey.terms.url")
+        return commonConfigurationService.getConfigValue("ddb.apikey.terms.url")
     }
 
     public String getRegistrationInfoUrl(){
-        return getConfigValue("ddb.registration.info.url")
+        return commonConfigurationService.getConfigValue("ddb.registration.info.url")
     }
 
     public String getAccountTermsUrl(){
-        return getConfigValue("ddb.account.terms.url")
+        return commonConfigurationService.getConfigValue("ddb.account.terms.url")
     }
 
     public String getAccountPrivacyUrl(){
-        return getConfigValue("ddb.account.privacy.url")
+        return commonConfigurationService.getConfigValue("ddb.account.privacy.url")
     }
 
     public String getEncoding(){
-        return getConfigValue("grails.views.gsp.encoding")
+        return commonConfigurationService.getConfigValue("grails.views.gsp.encoding")
     }
 
     public String getMimeTypeHtml(){
-        return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
+        return commonConfigurationService.getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
     }
 
     public String getLoggingFolder(){
-        return getConfigValue("ddb.logging.folder")
+        return commonConfigurationService.getConfigValue("ddb.logging.folder")
     }
 
     public String getLoadbalancerHeaderName(){
-        return getConfigValue("ddb.loadbalancer.header.name")
+        return commonConfigurationService.getConfigValue("ddb.loadbalancer.header.name")
     }
 
     public String getLoadbalancerHeaderValue(){
-        return getConfigValue("ddb.loadbalancer.header.value")
+        return commonConfigurationService.getConfigValue("ddb.loadbalancer.header.value")
     }
 
     public String getGrailsMailHost(){
-        return getConfigValue("grails.mail.host")
+        return commonConfigurationService.getConfigValue("grails.mail.host")
     }
 
     public String getProxyHost(){
-        return getSystemProperty("http.proxyHost")
+        return commonConfigurationService.getSystemProperty("http.proxyHost")
     }
 
     public String getProxyPort(){
-        return getSystemProperty("http.proxyPort")
+        return commonConfigurationService.getSystemProperty("http.proxyPort")
     }
 
     public String getNonProxyHosts(){
-        return getSystemProperty("http.nonProxyHosts")
+        return commonConfigurationService.getSystemProperty("http.nonProxyHosts")
     }
 
 
@@ -183,31 +146,27 @@ class ConfigurationService {
      * @return the authorization key
      */
     public String getBackendApikey(){
-        return getProperlyTypedConfigValue("ddb.backend.apikey")
+        return commonConfigurationService.getProperlyTypedConfigValue("ddb.backend.apikey")
     }
 
     public int getSearchGroupCount() {
-        return getIntegerConfigValue("ddb.advancedSearch.searchGroupCount")
+        return commonConfigurationService.getIntegerConfigValue("ddb.advancedSearch.searchGroupCount")
     }
 
     public int getSearchFieldCount() {
-        return getIntegerConfigValue("ddb.advancedSearch.searchFieldCount")
+        return commonConfigurationService.getIntegerConfigValue("ddb.advancedSearch.searchFieldCount")
     }
 
     public int getSearchOffset() {
-        return getIntegerConfigValue("ddb.advancedSearch.defaultOffset")
+        return commonConfigurationService.getIntegerConfigValue("ddb.advancedSearch.defaultOffset")
     }
 
     public int getSearchRows() {
-        return getIntegerConfigValue("ddb.advancedSearch.defaultRows")
-    }
-
-    public int getSessionTimeout() {
-        return getIntegerConfigValue("ddb.session.timeout")
+        return commonConfigurationService.getIntegerConfigValue("ddb.advancedSearch.defaultRows")
     }
 
     public int getGrailsMailPort() {
-        return getIntegerConfigValue("grails.mail.port")
+        return commonConfigurationService.getIntegerConfigValue("grails.mail.port")
     }
 
     public boolean isCulturegraphFeaturesEnabled() {
@@ -216,14 +175,14 @@ class ConfigurationService {
         //      we will return always true in this method of the develop branch.
         //      Later versions of develop might reactivate the code.
 
-        //        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
+        //        def value = commonConfigurationService.getExistingConfigValue("ddb.culturegraph.features.enabled")
         //        return Boolean.parseBoolean(value.toString())
 
         return true
     }
 
     public boolean isExhibitionsFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
+        def value = commonConfigurationService.getExistingConfigValue("ddb.exhibitions.features.enabled")
         return Boolean.parseBoolean(value.toString())
     }
 
@@ -241,13 +200,15 @@ class ConfigurationService {
         log.info "build.url = "+grailsApplication.metadata["build.url"]
         log.info "build.git.commit = "+grailsApplication.metadata["build.git.commit"]
         log.info "build.bit.branch = "+grailsApplication.metadata["build.bit.branch"]
+
+        //Call Common Configuration
+        commonConfigurationService.logConfigurationSettings()
+
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
-        log.info "ddb.apis.url = " + getApisUrl()
         log.info "ddb.backend.url = " + getBackendUrl()
         log.info "ddb.backend.apikey = " + getBackendApikey()
-        log.info "ddb.aas.url = " + getAasUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
         log.info "ddb.favorites.reportMailTo = " + getFavoritesReportMailTo()
@@ -259,7 +220,7 @@ class ConfigurationService {
         log.info "ddb.advancedSearch.searchFieldCount = " + getSearchFieldCount()
         log.info "ddb.advancedSearch.defaultOffset = " + getSearchOffset()
         log.info "ddb.advancedSearch.defaultRows = " + getSearchRows()
-        log.info "ddb.session.timeout = " + getSessionTimeout()
+        log.info "ddb.session.timeout = " + commonConfigurationService.getSessionTimeout()
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
@@ -273,68 +234,6 @@ class ConfigurationService {
         log.info "ddb.account.privacy.url = " + getAccountPrivacyUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
-        log.info "getContextUrl = " + getContextUrl()
-        log.info "getSelfBaseUrl = " + getSelfBaseUrl()
         log.info "-------------------------------------------------------"
-    }
-
-    private String getSystemProperty(String key) {
-        String propertyValue = System.getProperty(key)
-        if(!propertyValue){
-            log.warn "No " + key + " configured -> System.getProperty('" + key + "'). This will most likely lead to problems."
-        }
-        return propertyValue
-    }
-
-    private def getValueFromConfig(String key) {
-        def value = grailsApplication.config
-        for (String keyPart : key.split("\\.")) {
-            if (!(value instanceof ConfigObject)) {
-                value = null
-                break
-            }
-            value = value[keyPart]
-        }
-        try {
-            if (value?.isEmpty()) {
-                value = null
-            }
-        }
-        catch (MissingMethodException e) {
-        }
-        return value
-    }
-
-    private def getConfigValue(String key, Class expectedClass = String, def value = getValueFromConfig(key)) {
-        getExistingConfigValue(key, value)
-        return getProperlyTypedConfigValue(key, expectedClass, value)
-    }
-
-    private def getProperlyTypedConfigValue(String key, Class expectedClass = String, def value = getValueFromConfig(key)) {
-        if(!expectedClass.isAssignableFrom(value.getClass())){
-            throw new ConfigurationException(key + " is not a " + expectedClass.getSimpleName())
-        }
-        return value
-    }
-
-    private def getExistingConfigValue(String key, def value = getValueFromConfig(key)) {
-        if(value == null){
-            throw new ConfigurationException("Configuration entry does not exist -> " + key)
-        }
-        return value
-    }
-
-    private Integer getIntegerConfigValue(String key, def value = getValueFromConfig(key)) {
-        def searchGroupCount = getExistingConfigValue(key, value)
-        return parseIntegerValue(key, searchGroupCount)
-    }
-
-    private Integer parseIntegerValue(String key, def value) {
-        try {
-            return Integer.parseInt(value.toString())
-        }
-        catch (NumberFormatException e) {
-            throw new ConfigurationException(key + " is not an Integer")
-        }
     }
 }

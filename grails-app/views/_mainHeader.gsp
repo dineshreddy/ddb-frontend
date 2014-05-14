@@ -95,7 +95,7 @@ limitations under the License.
               </ul>
             </li><!-- /end of exhibitions -->
           </g:if>
-            <ddb:isLoggedIn>
+            <ddbcommon:isLoggedIn>
               <li>
                 <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
@@ -110,7 +110,7 @@ limitations under the License.
                   </li>
                 </ul>
               </li>
-            </ddb:isLoggedIn>
+            </ddbcommon:isLoggedIn>
             <li><a>
               <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
             </a>
@@ -128,12 +128,12 @@ limitations under the License.
             </ul>
           </li>
           <li>
-            <ddb:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbnext.Login" /></g:link>
-            </ddb:isNotLoggedIn>
-            <ddb:isLoggedIn>
-              <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbnext.Logout" /> (<ddb:getUserName />)</g:link>
-            </ddb:isLoggedIn>
+            <ddbcommon:isNotLoggedIn>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+            </ddbcommon:isNotLoggedIn>
+            <ddbcommon:isLoggedIn>
+              <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
+            </ddbcommon:isLoggedIn>
           </li>
         </ul>
       </div>
@@ -228,7 +228,7 @@ limitations under the License.
                     </ul>
                   </li>
                 </g:if>
-                <ddb:isLoggedIn>
+                <ddbcommon:isLoggedIn>
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "favoritesview", action: "favorites"],[controller: "user", action: "getSavedSearches"],[controller: "user", action: "profile"],[controller: "user", action: "passwordChangePage"],[controller: "user", action: "showApiKey"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
                     <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
@@ -249,31 +249,31 @@ limitations under the License.
                         <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbnext.Profile" /></g:link>
                       </li>
                       <li>
-                        <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbnext.Logout" /></g:link>
+                        <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link>
                       </li>
                     </ul>
                   </li>
-                </ddb:isLoggedIn>
+                </ddbcommon:isLoggedIn>
               </ul>
             </div>
           </div>
           <div class="span5 toolbar">
             <div class="status-bar">
-              <ddb:isNotLoggedIn>
-                <div class="login-wrapper">                
-                  <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.next.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbnext.Login" /></g:link>
-                </div>
-              </ddb:isNotLoggedIn>
-              <ddb:isLoggedIn>
+              <ddbcommon:isNotLoggedIn>
                 <div class="login-wrapper">
-                  <span style="vertical-align:top;"><g:message encodeAs="html" code="ddbnext.You_are_currently_logged_in_as" /></span>
-                  <g:link controller="user" action="profile" class="login-username"><ddb:getUserName /></g:link>
+                  <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+                </div>
+              </ddbcommon:isNotLoggedIn>
+              <ddbcommon:isLoggedIn>
+                <div class="login-wrapper">
+                  <span style="vertical-align:top;"><g:message encodeAs="html" code="ddbcommon.You_are_currently_logged_in_as" /></span>
+                  <g:link controller="user" action="profile" class="login-username"><ddbcommon:getUserName /></g:link>
                   <div class="login-dropdown"></div>
                   <ul class="selector logout">
-                    <li><g:link class="logout-link" controller="user" action="doLogout"><g:message encodeAs="html" code="ddbnext.Logout" /></g:link></li>
+                    <li><g:link class="logout-link" controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link></li>
                   </ul>
                 </div>
-              </ddb:isLoggedIn>
+              </ddbcommon:isLoggedIn>
               <div class="header-spacer"></div>
               <div class="language-wrapper">
                 <a href="#"> <ddb:getCurrentLanguage />

@@ -16,16 +16,16 @@ limitations under the License.
 
 <html>
   <head>
-  
-    <ddb:doRedirectIfNotLoggedIn />
-    
+
+    <ddbcommon:doRedirectIfNotLoggedIn />
+
     <title><g:message encodeAs="html" code="ddbnext.Api" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-    
+
     <meta name="page" content="apirequest" />
     <meta name="layout" content="main" />
-  
+
   </head>
-  
+
   <body>
     <div class="apirequest" >
       <div class="static_content">
@@ -43,13 +43,12 @@ limitations under the License.
             </div>
             <div>
               <ul id="error-messages" class="off">
-                <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
-                <li><a><g:message encodeAs="html" code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
-                <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbcommon.Name_Compulsory_Characters_Number" /></a></li>
+                <li><a><g:message encodeAs="html" code="ddbcommon.Enter_A_Valid_Email" /></a></li>
               </ul>
             </div>
 
-            
             <div class="control-group">
               <g:if test="${flash.error}">
                 <div class="errors-container">

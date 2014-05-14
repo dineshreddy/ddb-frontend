@@ -66,6 +66,7 @@ class ItemService {
     def transactional = false
     def grailsApplication
     def configurationService
+    def commonConfigurationService
     def searchService
     def messageSource
     def sessionService
@@ -133,12 +134,12 @@ class ItemService {
 
         def logoResource
         try {
-            logoResource = new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
+            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
             model.institutionImage = logoResource.bytes
         }
         catch (IOException e) {
             // use placeholder logo as fallback
-            logoResource = new UrlResource(configurationService.getSelfBaseUrl() +
+            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl() +
                     grailsLinkGenerator.resource(
                     "dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
             model.institutionImage = logoResource.bytes
@@ -147,9 +148,9 @@ class ItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
             }else {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
             }
         }
         model.put("binariesListViewerContent", viewerContent)
@@ -235,7 +236,7 @@ class ItemService {
             flashInformation: flashInformation,
             license: licenseInformation,
             isFavorite: isFavorite,
-            baseUrl: configurationService.getSelfBaseUrl(),
+            baseUrl: commonConfigurationService.getSelfBaseUrl(),
             similarItems : similarItems
         ]
 
