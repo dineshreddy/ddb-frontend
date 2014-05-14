@@ -25,6 +25,7 @@ limitations under the License.
 </head>
 
 <body>
+  <div class="static_content">
     <g:form method="post" id="password-change-form" name="password-change-form"
       class="form-horizontal" url="[controller:'user', action:'passwordChange']">
       <g:if test="${errors != null && errors.size()>0}">
@@ -34,75 +35,56 @@ limitations under the License.
         <ddb:renderMessages messages="${messages}" />
       </g:if>
       <input type="hidden" name="id" value="${ user.id }" />
-      <div class="well">
-        <div class="profile-nav">
-          <g:set var="userLabel"><ddb:getUserLabel /></g:set>
+      <div>
+        <div class="profile-nav bb">
+          <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+          <div><h3><g:message encodeAs="html" code="ddbnext.Change_Password_Link"/></h3></div>
+        </div>
+
+        <div class="control-group">
           <div>
-            <h1>
-              <g:message encodeAs="html" code="ddbnext.Change_Password_Label"
-                args="${[userLabel]}" default="ddbnext.Change_Password_Label" />
-            </h1>
+            <label><g:message encodeAs="html" code="ddbnext.Your_Old_Password" /></label>
+          </div>
+          <div>
+              <input type="Password" id="oldpassword" class="profile-input" name="oldpassword" placeholder="<g:message encodeAs="html" code="ddbnext.Your_Old_Password" />" value="${params.oldpassword}">
           </div>
         </div>
 
-        <div class="control-group bt-white">
-          <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Your_Old_Password" /></label>
-          <div class="controls">
+        <div class="control-group">
+          <label><g:message encodeAs="html" code="ddbnext.Your_New_Password" /></label>
+          <div>
             <div class="input-prepend">
-              <span class="add-on"><i class="icon-lock"></i></span> <input
-                type="Password" id="oldpassword" class="profile-input"
-                name="oldpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Your_Old_Password" />"
-                value="${params.oldpassword}">
+              <input type="Password" id="newpassword" class="profile-input" name="newpassword" placeholder="<g:message encodeAs="html" code="ddbnext.Your_New_Password" />" value="${params.newpassword}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Your_New_Password" /></label>
-          <div class="controls">
+          <label><g:message encodeAs="html" code="ddbnext.Confirm_New_password" /></label>
+          <div>
             <div class="input-prepend">
-              <span class="add-on"><i class="icon-lock"></i></span> <input
-                type="Password" id="newpassword" class="profile-input"
-                name="newpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Your_New_Password" />"
-                value="${params.newpassword}">
+              <input type="Password" id="confnewpassword" class="profile-input" name="confnewpassword" placeholder="<g:message encodeAs="html" code="ddbnext.Confirm_New_password" />" value="${params.confnewpassword}">
             </div>
           </div>
         </div>
 
         <div class="control-group">
-          <label class="control-label"><g:message encodeAs="html"
-              code="ddbnext.Confirm_New_password" /></label>
-          <div class="controls">
-            <div class="input-prepend">
-              <span class="add-on"><i class="icon-lock"></i></span> <input
-                type="Password" id="confnewpassword" class="profile-input"
-                name="confnewpassword"
-                placeholder="<g:message encodeAs="html" code="ddbnext.Confirm_New_password" />"
-                value="${params.confnewpassword}">
-            </div>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label class="control-label"></label>
-          <div class="controls">
-            <button type="submit" class="btn-padding"
-              title="<g:message encodeAs="html" code="ddbnext.Save_Changes"/>">
-              <g:message encodeAs="html" code="ddbnext.Save_Changes" />
+          <label></label>
+          <div>
+            <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save_Changes"/>">
+              <g:message encodeAs="html" code="ddbnext.Save" />
             </button>
           </div>
         </div>
       </div>
       <ul id="error-messages" class="off">
         <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
-        <li><a><g:message encodeAs="html"
-              code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
+        <li><a><g:message encodeAs="html" code="ddbnext.Password_Compulsory_Characters_Number" /></a></li>
         <li><a><g:message encodeAs="html" code="ddbnext.Insert_Again_The_Password" /></a></li>
       </ul>
     </g:form>
+  </div>
+  <%-- Account menu --%>
+  <g:render template="accountMenu" />
 </body>
 </html>

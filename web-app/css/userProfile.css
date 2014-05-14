@@ -26,7 +26,7 @@
   outline: none;
 }
 
-#user-profile-form .profile-nav {
+#user-profile-form .profile-nav, #password-change-form .profile-nav {
   display: block;
   padding-bottom: 3px;
   margin-bottom: 10px;
