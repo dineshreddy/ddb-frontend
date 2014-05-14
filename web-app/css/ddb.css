@@ -506,11 +506,11 @@ header .header-spacer,.header .header-spacer {
   display: inline-block;
   float: right;
   text-align: left;
+  height:23px;
 }
 
 .keep-filters {
   float: left;
-  margin-bottom: 12px;
   margin-top: 3px;
   margin-left: 3px;
 }
