@@ -86,7 +86,7 @@ A list of some predefined variables is set below:
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
-    ddb.session.timeout=3600
+    ddbcommon.session.timeout=3600
 
 	#Logging configuration
     ddb.logging.folder=/opt/ddb/logs

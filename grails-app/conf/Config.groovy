@@ -148,19 +148,22 @@ environments {
     development {
         grails.logging.jul.usebridge = true
         grails.config.locations = [
-            "file:${userHome}/.grails/${appName}.properties"
+            "file:${userHome}/.grails/${appName}.properties",
+            "file:../ddb-common/grails-app/conf/Config.groovy"
         ]
     }
     production {
         grails.logging.jul.usebridge = false
         grails.config.locations = [
-            "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties"
+            "file:"+ System.getProperty('catalina.base')+ "/grails/app-config/${appName}.properties",
+            "file:../ddb-common/grails-app/conf/Config.groovy"
         ]
     }
     test {
         grails.logging.jul.usebridge = true
         grails.config.locations = [
-            "file:${userHome}/.grails/${appName}.properties"
+            "file:${userHome}/.grails/${appName}.properties",
+            "file:../ddb-common/grails-app/conf/Config.groovy"
         ]
     }
     println "| Read properties from " + grails.config.locations[0]
@@ -184,7 +187,6 @@ ddb.advancedSearch.searchGroupCount=3
 ddb.advancedSearch.searchFieldCount=10
 ddb.advancedSearch.defaultOffset=0
 ddb.advancedSearch.defaultRows=20
-ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
