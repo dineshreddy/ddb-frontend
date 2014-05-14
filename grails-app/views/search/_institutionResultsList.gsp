@@ -76,3 +76,4 @@ limitations under the License.
     </li>
   </g:each>
 </ul>
+<div class="bb end-result-border"></div>
