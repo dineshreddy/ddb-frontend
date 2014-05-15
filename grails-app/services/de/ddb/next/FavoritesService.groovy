@@ -133,6 +133,7 @@ class FavoritesService {
             def entityThumbnail = g.resource("dir": "images", "file": "/placeholder/person.png").toString()
             def foundItemIds = allRes.collect{ it.id }
             items.each{
+                println "TYPE " + it.type + " ID " + it.itemId
                 try {
                     if(it.type == Type.ENTITY){
                         def entity = [:]
