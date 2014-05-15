@@ -448,8 +448,12 @@ input[type="checkbox"],input[type="radio"] {
   overflow: hidden;
 }
 
+.search-results .results-list .entity .thumbnail {
+  height: 70px;
+  overflow: hidden;
+}
+
 .search-results .results-list .entity .thumbnail img {
-  max-height: 70px;
   width: 55px;
 }
 
