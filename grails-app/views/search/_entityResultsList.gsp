@@ -45,7 +45,7 @@ limitations under the License.
         <div class="thumbnail-wrapper span3">
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
-              <g:if test="${entityItem.thumbnail != ''}">
+              <g:if test="${entityItem.thumbnail != null}">
                 <img src="${entityItem.thumbnail}" alt="${ entityItem.preferredName }" />
               </g:if>
               <g:else>
