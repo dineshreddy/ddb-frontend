@@ -115,7 +115,7 @@ class UrlMappings {
             action="getFavoriteFolders"
         }
 
-        "/apis/favorites/folders/$folderId/$itemId" {
+        "/apis/favorites/folders/$folderId/$itemId/$objectType" {
             controller="favorites"
             action=[POST: "addFavoriteToFolder"]
         }

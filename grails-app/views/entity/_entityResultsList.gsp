@@ -54,29 +54,9 @@ limitations under the License.
               <ul class="item-options-ul">
                 <ddbcommon:isLoggedIn>
                   <li>
-                    <div id="favorite-${entityItem.id.substring(cultureGraphUrl.length())}" class="add-to-favorites" title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
+                    <div data-itemid="${entityItem.id.substring(cultureGraphUrl.length())}" data-objecttype="entity" data-actn="POST" class="add-to-favorites"
+                      title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                   </li>
-                  <ddb:isPersonalFavoritesAvailable>
-                    <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-body">
-                        <p>
-                          <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
-                        </p>
-                        <p>
-                          <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
-                        </p>
-                        <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
-                        <div class="modal-footer">
-                          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                            <g:message encodeAs="html" code="ddbnext.Close" />
-                          </button>
-                          <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-                            <g:message encodeAs="html" code="ddbnext.Save" />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </ddb:isPersonalFavoritesAvailable>
                 </ddbcommon:isLoggedIn>
               </ul>
             </div>
@@ -87,3 +67,26 @@ limitations under the License.
   </g:each>
 </ul>
 <div class="bb end-result-border"></div>
+<ddbcommon:isLoggedIn>
+<ddb:isPersonalFavoritesAvailable>
+  <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-body">
+      <p>
+        <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
+      </p>
+      <p>
+        <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
+      </p>
+      <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
+      <div class="modal-footer">
+        <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+          <g:message encodeAs="html" code="ddbnext.Close" />
+        </button>
+        <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+          <g:message encodeAs="html" code="ddbnext.Save" />
+        </button>
+      </div>
+    </div>
+  </div>
+</ddb:isPersonalFavoritesAvailable>
+</ddbcommon:isLoggedIn>

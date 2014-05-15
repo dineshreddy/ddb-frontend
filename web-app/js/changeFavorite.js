@@ -29,6 +29,7 @@ $(".add-to-favorites, #idFavorite").each(function() {
 function changeFavoriteState(jElemFavorite) {
   disableFavorite(jElemFavorite.parent());
   var vActn = jElemFavorite.attr("data-actn");
+  var objectType=jElemFavorite.attr("data-objecttype");
   if (vActn == "POST") { // Currently only allow to add favorites, not to delete them
     var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid")
         + '/?reqType=ajax';
@@ -36,17 +37,17 @@ function changeFavoriteState(jElemFavorite) {
       type : vActn,
       dataType : 'json',
       async : true,
-      url : url + "&reqActn=add&reqObjectType=" + jElemFavorite.attr("data-objecttype"),
+      url : url + "&reqActn=add&reqObjectType=" + objectType,
       complete : function(data) {
         if (vActn == "POST") {
-          addToFavorites(jElemFavorite, data);
+          addToFavorites(jElemFavorite, data,objectType);
         }
       }
     });
   }
 }
 
-function addToFavorites(jElemFavorite, data) {
+function addToFavorites(jElemFavorite, data,objectType) {
   switch (data.status) {
   case 200:
   case 201:
@@ -70,8 +71,9 @@ function addToFavorites(jElemFavorite, data) {
         $("#addToFavoritesConfirm").click(
             function() {
               $("#favorite-confirmation").modal("hide");
+              console.log($("#favorite-folders").val());
               $.each($("#favorite-folders").val(), function(index, value) {
-                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId);
+                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId+"/"+objectType);
               });
 
               $("#idFavorite").parent().parent().attr('title',
@@ -81,6 +83,7 @@ function addToFavorites(jElemFavorite, data) {
         window.setTimeout(function() {
           $("#favorite-confirmation").modal("hide");
         }, 1500);
+        $("#favorite-folders").destroy();
       }
     });
     break;
