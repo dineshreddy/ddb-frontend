@@ -27,8 +27,8 @@ limitations under the License.
   </head>
   
   <body>
-    <div class="apirequest" >
-      <div class="static_content">
+    <div>
+      <div class="static_content apirequest">
         <g:form method="post" name="user-api-form" class="form-horizontal" controller="user" action="requestApiKey" >
           <div>
             <div class="profile-nav bb">
