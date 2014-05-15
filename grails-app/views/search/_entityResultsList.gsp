@@ -55,11 +55,11 @@ limitations under the License.
           </div>
           <div class="item-options bl">
             <ul class="item-options-ul">
-              <ddb:isLoggedIn>
+              <ddbcommon:isLoggedIn>
                 <li>
                   <div data-itemid="${entityId}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
                 </li>
-              </ddb:isLoggedIn>
+              </ddbcommon:isLoggedIn>
             </ul>
           </div>
         </div>

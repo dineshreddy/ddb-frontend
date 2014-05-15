@@ -26,10 +26,10 @@ limitations under the License.
 <body>
   <div class="container row">
     <g:if test="${errors != null && errors.size()>0}">
-      <ddb:renderErrors errors="${errors}" />
+      <ddbcommon:renderErrors errors="${errors}" />
     </g:if>
     <g:if test="${messages != null && messages.size()>0}">
-      <ddb:renderMessages messages="${messages}" />
+      <ddbcommon:renderMessages messages="${messages}" />
     </g:if>
   </div>
 </body>

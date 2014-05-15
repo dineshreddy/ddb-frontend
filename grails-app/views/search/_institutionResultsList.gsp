@@ -47,7 +47,7 @@ limitations under the License.
           </div>
           <div class="item-options bl">
             <ul class="item-options-ul">
-              <ddb:isLoggedIn>
+              <ddbcommon:isLoggedIn>
                 <li>
                   <div id="favorite-${entityItem.id}" class="add-to-favorites"title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
@@ -58,9 +58,9 @@ limitations under the License.
                     </p>
                   </div>
                 </div>
-              </ddb:isLoggedIn>
+              </ddbcommon:isLoggedIn>
             </ul>
-            <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
+            <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
               <div class="hovercard-info-item" data-iid="${entityItem.id}">
                 <h4><ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" /></h4>
                 <ul class="unstyled">
@@ -76,3 +76,4 @@ limitations under the License.
     </li>
   </g:each>
 </ul>
+<div class="bb end-result-border"></div>

@@ -243,7 +243,6 @@ class EntityController {
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
-
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
             def resultsHTML = ""

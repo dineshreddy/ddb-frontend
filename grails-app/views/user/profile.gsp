@@ -16,9 +16,9 @@ limitations under the License.
 <html>
 <head>
 
-<ddb:doRedirectIfNotLoggedIn />
+<ddbcommon:doRedirectIfNotLoggedIn />
 
-<title><g:message encodeAs="html" code="ddbnext.Profile" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message encodeAs="html" code="ddbcommon.Profile" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
 <meta name="page" content="userprofile" />
 <meta name="layout" content="main" />
@@ -38,10 +38,10 @@ limitations under the License.
             <g:set var="newsletterCheck">checked="checked"</g:set>
         </g:if>
         <g:if test="${errors != null && errors.size()>0}">
-          <ddb:renderErrors errors="${errors}" />
+          <ddbcommon:renderErrors errors="${errors}" />
         </g:if>
         <g:if test="${messages != null && messages.size()>0}">
-          <ddb:renderMessages messages="${messages}" />
+          <ddbcommon:renderMessages messages="${messages}" />
         </g:if>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div>
@@ -49,14 +49,14 @@ limitations under the License.
               <div class="static_content control-groups">
                 <div class="profile-nav bb">
                   <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
-                  <div><h3><g:message encodeAs="html" code="ddbnext.User.Data"/></h3></div>
+                  <div><h3><g:message encodeAs="html" code="ddbcommon.User.Data"/></h3></div>
                 </div>
                 <div class="control-group">
                   <div>
-                    <label><g:message encodeAs="html" code="ddbnext.Username" /></label>
+                    <label><g:message encodeAs="html" code="ddbcommon.Username" /></label>
                   </div>
                   <div>
-                    <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbnext.Username" />" value="${user.username}" ${disableForOpenId}>
+                    <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbcommon.Username" />" value="${user.username}" ${disableForOpenId}>
                   </div>
                 </div>
                 <div class="control-group">
@@ -64,38 +64,38 @@ limitations under the License.
                     <label><g:message encodeAs="html" code="ddbnext.Email" /></label>
                   </div>
                   <div>
-                    <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbnext.Email" />" value="${user.email}" ${disableForOpenId}>
+                    <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbcommon.Email" />" value="${user.email}" ${disableForOpenId}>
                   </div>
                 </div>
                 <div class="control-group">
                   <div>
-                    <label><g:message encodeAs="html" code="ddbnext.User.First_Name" /></label>
+                    <label><g:message encodeAs="html" code="ddbcommon.User.First_Name" /></label>
                   </div>
-                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbnext.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="fname" name="fname" placeholder="<g:message encodeAs="html" code="ddbcommon.User.First_Name" />" value="${user.firstname}" ${disableForOpenId}>
                 </div>
                 <div class="control-group ">
                     <div>
-                      <label><g:message encodeAs="html" code="ddbnext.User.Last_Name" /></label>
+                      <label><g:message encodeAs="html" code="ddbcommon.User.Last_Name" /></label>
                     </div>
                     <div>
-                      <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbnext.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
+                      <input type="text" class="profile-input" id="lname" name="lname" placeholder="<g:message encodeAs="html" code="ddbcommon.User.Last_Name" />" value="${user.lastname}" ${disableForOpenId}>
                     </div>
                 </div>
                 <div class="control-group">
                   <label></label>
-                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Save"/>"><g:message encodeAs="html" code="ddbnext.Save"/></button>
+                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbcommon.Save"/>"><g:message encodeAs="html" code="ddbcommon.Save"/></button>
                 </div>
               </div>
-  
+
               <%-- Account menu --%>
               <g:render template="accountMenu" />
             </div>
 
         </div>
         <ul id="error-messages" class="off">
-          <li><a><g:message encodeAs="html" code="ddbnext.Field_Required" /></a></li>
-          <li><a><g:message encodeAs="html" code="ddbnext.Name_Compulsory_Characters_Number" /></a></li>
-          <li><a><g:message encodeAs="html" code="ddbnext.Enter_A_Valid_Email" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Name_Compulsory_Characters_Number" /></a></li>
+          <li><a><g:message encodeAs="html" code="ddbcommon.Enter_A_Valid_Email" /></a></li>
         </ul>
     </g:form>
   </body>

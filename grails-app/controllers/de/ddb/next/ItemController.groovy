@@ -23,7 +23,7 @@ class ItemController {
     static defaultAction = "findById"
     def fileService
     def itemService
-    def configurationService
+    def commonConfigurationService
 
     /**
      * Handle the default show Item logic
@@ -77,7 +77,7 @@ class ItemController {
 
     def sendPdf() {
         def itemId = params.id
-        def url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
+        def url = commonConfigurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
         def message = g.message(code:'ddbnext.item.sendPdfMailSuccess')
         try {
             def fileBytes = fileService.downloadFile(url)

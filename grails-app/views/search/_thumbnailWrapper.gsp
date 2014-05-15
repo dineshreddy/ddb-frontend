@@ -23,11 +23,11 @@ limitations under the License.
   </div>
   <div class="item-options <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bl</g:if>">
     <ul class="item-options-ul">
-      <ddb:isLoggedIn>
+      <ddbcommon:isLoggedIn>
         <li>
           <div data-itemid="${item.id}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
         </li>
-      </ddb:isLoggedIn>
+      </ddbcommon:isLoggedIn>
       <g:each var="mediaType" in="${item.preview.media}">
         <g:if test="${mediaType == 'institution'}">
           <g:set var="mediaType" value="institution"></g:set>
@@ -39,7 +39,7 @@ limitations under the License.
         </li>
       </g:if>
       <li>
-        <div class="information<ddb:isLoggedIn> show-favorites</ddb:isLoggedIn> bb">
+        <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
           <div class="hovercard-info-item" data-iid="${item.id}">
             <h4><ddb:getTruncatedHovercardTitle title="${ item.preview.title }" length="${ 350 }" /></h4>
             <ul class="unstyled">
@@ -50,7 +50,7 @@ limitations under the License.
           </div>
         </div>
       </li>
-      
+
     </ul>
   </div>
 </div>

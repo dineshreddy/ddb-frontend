@@ -13,9 +13,9 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<ddb:isLoggedIn>
+<ddbcommon:isLoggedIn>
   <div class="static_marginal">
-    <div><h3><g:message encodeAs="html" code="ddbnext.User_MyContent"/></h3></div>
+    <div><h3><g:message encodeAs="html" code="ddbcommon.User_MyContent"/></h3></div>
     <ul class="plum-arrow">
       <li>
         <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favoritesview", action: 'favorites', params:[:])}">
@@ -28,8 +28,8 @@ limitations under the License.
         </a>
       </li>
       <li>
-        <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.User.Data" />" class="persist" href="${createLink(controller="user", action: 'profile', params:[:])}">
-          <g:message encodeAs="html" code="ddbnext.User.Data" />
+        <a class="profile-link" title="<g:message encodeAs="html" code="ddbcommon.User.Data" />" class="persist" href="${createLink(controller="user", action: 'profile', params:[:])}">
+          <g:message encodeAs="html" code="ddbcommon.User.Data" />
         </a>
       </li>    
       <li>
@@ -40,13 +40,13 @@ limitations under the License.
         </g:if>
       </li>
       <li>
-        <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbnext.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-          <g:message encodeAs="html" code="ddbnext.Change_Password_Link" />
+        <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
+          <g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />
         </a>
       </li>
       <li>
-        <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbnext.User.Delete_Account" />" class="persist" href="#">
-          <g:message encodeAs="html" code="ddbnext.User.Delete_Account" />
+        <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />" class="persist" href="#">
+          <g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />
         </a>
       </li>
     </ul>
@@ -54,4 +54,4 @@ limitations under the License.
   
   <%-- Delete Account modal dialog --%>
   <g:render template="deleteAccount" />
-</ddb:isLoggedIn>
+</ddbcommon:isLoggedIn>

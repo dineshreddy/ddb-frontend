@@ -16,7 +16,12 @@
 .personEntities {
   margin-left: -60px;
 }
-
+.persons-results{
+ float: right;
+ padding-right: 45px;
+ height:70px;
+ overflow:hidden;
+}
 .noleftMargin {
   margin-left: 0px
 }

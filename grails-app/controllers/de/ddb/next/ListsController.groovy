@@ -29,7 +29,7 @@ import de.ddb.common.constants.SupportedLocales
  * @author boz
  */
 class ListsController {
-    def favoritesService
+    def userService
     def listsService
     def searchService
 
@@ -109,7 +109,7 @@ class ListsController {
      * @param model
      */
     private createListMenu() {
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
 
         def menu = []
 

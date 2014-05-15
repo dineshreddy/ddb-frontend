@@ -47,7 +47,7 @@ limitations under the License.
       </ul>
     </div>
     <g:if test="${(active=='items')}" >
-      <ddb:isLoggedIn>
+      <ddbcommon:isLoggedIn>
         <div class="span3"> 
           <div id="addToSavedSearches">
             <div class="add-to-saved-searches"></div>
@@ -87,7 +87,7 @@ limitations under the License.
             </div>
           </div>
         </div>
-      </ddb:isLoggedIn>
+      </ddbcommon:isLoggedIn>
     </g:if>
   </div>
 </div>

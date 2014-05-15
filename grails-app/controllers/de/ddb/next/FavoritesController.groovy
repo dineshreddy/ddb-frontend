@@ -38,12 +38,13 @@ import de.ddb.next.exception.FavoritelistNotFoundException
 class FavoritesController {
     def bookmarksService
     def favoritesService
+    def userService
 
     def deleteFavorite() {
         log.info "deleteFavorite " + params.id
         def itemId = params.id
         def result = response.SC_NOT_FOUND
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             if (bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])) {
                 result = response.SC_NO_CONTENT
@@ -66,7 +67,7 @@ class FavoritesController {
         }
 
         def result = response.SC_NOT_FOUND
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
 
             // Check if the items all belong to the current user
@@ -145,7 +146,7 @@ class FavoritesController {
     def filterFavorites() {
         log.info "filterFavorites " + request.JSON
         def itemIdList = request.JSON
-        User user = favoritesService.getUserFromSession()
+        User user = userService.getUserFromSession()
         if (user != null) {
             Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
             def bookmarks = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIdList, mainFavoritesFolder.folderId)
@@ -161,7 +162,7 @@ class FavoritesController {
     def getFavorite() {
         log.info "getFavorite " + params.id
         def result = response.SC_NOT_FOUND
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             def bookmark = bookmarksService.findBookmarkedItemsInFolder(user.getId(), [params.id], null)
             log.info "getFavorite returns " + bookmark
@@ -175,7 +176,7 @@ class FavoritesController {
 
     def getFavorites() {
         log.info "getFavorites"
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             def result = bookmarksService.findBookmarksByUserId(user.getId())
             log.info "getFavorites returns " + result
@@ -189,7 +190,7 @@ class FavoritesController {
     def getFavoriteFolder() {
         log.info "getFavoriteFolder " + params.id
         def result = response.SC_NOT_FOUND
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             Folder folder = bookmarksService.findFolderById(params.id)
             log.info "getFavoriteFolder returns " + folder
@@ -209,7 +210,7 @@ class FavoritesController {
      */
     def getFavoriteFolders() {
         log.info "getFavoriteFolders"
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             def mainFolder = bookmarksService.findMainBookmarksFolder(user.getId())
             def folders = bookmarksService.findAllFolders(user.getId())
@@ -234,7 +235,7 @@ class FavoritesController {
         description = sanitizeTextInput(description)
 
         def result = response.SC_BAD_REQUEST
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             def publishingName = user.getUsername()
             def now = System.currentTimeMillis()
@@ -267,7 +268,7 @@ class FavoritesController {
         def folderId = request.JSON.folderId
         def result = response.SC_BAD_REQUEST
 
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             def foldersOfUser = bookmarksService.findAllFolders(user.getId())
 
@@ -332,7 +333,7 @@ class FavoritesController {
 
         def result = response.SC_BAD_REQUEST
 
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
 
             // Check if the folders to copy to are actually folders owned by this user (security)
@@ -384,7 +385,7 @@ class FavoritesController {
         long timestampStart = System.currentTimeMillis() // This is because of the slow request: See DDBNEXT-932
         def itemId = params.id
         def result = response.SC_BAD_REQUEST
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             Bookmark newBookmark = new Bookmark(
                     null,
@@ -413,7 +414,7 @@ class FavoritesController {
     def addFavoriteToFolder() {
         log.info "addFavoriteToFolder " + params.folderId + "," + params.itemId
         def result = response.SC_BAD_REQUEST
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
             Bookmark newBookmark = new Bookmark(
                     null,
@@ -450,7 +451,7 @@ class FavoritesController {
 
         def result = response.SC_BAD_REQUEST
 
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
 
             def publishingName = ""
@@ -525,7 +526,7 @@ class FavoritesController {
 
         def result = response.SC_BAD_REQUEST
 
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
 
             // 1) Check if the current user is really the owner of this bookmark, else deny
@@ -558,7 +559,7 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def errorMessage
 
-        def User user = favoritesService.getUserFromSession()
+        def User user = userService.getUserFromSession()
         if (user != null) {
 
             // 1) Check if the current user is really the owner of this folder, else deny

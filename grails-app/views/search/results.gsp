@@ -141,7 +141,7 @@ limitations under the License.
       </div>
 
       <%-- favorite confirmation dialog - only one per page --%>
-      <ddb:isLoggedIn>
+      <ddbcommon:isLoggedIn>
         <ddb:isPersonalFavoritesAvailable>
           <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
@@ -159,7 +159,7 @@ limitations under the License.
             </div>
           </div>
         </ddb:isPersonalFavoritesAvailable>
-      </ddb:isLoggedIn>
+      </ddbcommon:isLoggedIn>
 
       <div id="print-nav">
         <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />

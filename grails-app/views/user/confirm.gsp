@@ -17,10 +17,10 @@ limitations under the License.
   <head>
 
     <title><g:message encodeAs="html" code="ddbnext.Confirm" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-    
+
     <meta name="page" content="confirm" />
     <meta name="layout" content="main" />
-  
+
   </head>
 
 <body>
@@ -30,10 +30,10 @@ limitations under the License.
         <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
       </div>
       <g:if test="${errors != null && errors.size()>0}">
-        <ddb:renderErrors errors="${errors}" />
+        <ddbcommon:renderErrors errors="${errors}" />
       </g:if>
       <g:if test="${messages != null && messages.size()>0}">
-        <ddb:renderMessages messages="${messages}" />
+        <ddbcommon:renderMessages messages="${messages}" />
       </g:if>
     </div>
     <%-- Account menu --%>
