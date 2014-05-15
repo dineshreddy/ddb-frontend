@@ -32,6 +32,7 @@ class SearchController {
 
     static defaultAction = "results"
 
+    def entityService
     def searchService
     def configurationService
     def cultureGraphService
@@ -61,7 +62,12 @@ class SearchController {
             def entities = ""
             //Return a maximum of 2 entities as search result
             if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
-                entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities;
+                entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
+                entities.each() { entity ->
+                    if (! entityService.entityImageExists(entity["thumbnail"])) {
+                        entity["thumbnail"] = null
+                    }
+                }
             }
 
             if(resultsItems["randomSeed"]){
