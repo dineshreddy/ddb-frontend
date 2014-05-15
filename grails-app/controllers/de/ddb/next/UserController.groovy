@@ -318,7 +318,7 @@ class UserController {
             try {
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(commonConfigurationService.getPasswordResetConfirmationLink(), template, null))
                 messages.add("ddbnext.User.PasswordReset_Success")
             } catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e

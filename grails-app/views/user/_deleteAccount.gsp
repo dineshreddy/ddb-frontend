@@ -17,14 +17,14 @@ limitations under the License.
   <div class="modal-header">
     <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
     <h3>
-      <g:message encodeAs="html" code="ddbnext.delete_confirmation" />
+      <g:message encodeAs="html" code="ddbcommon.delete_confirmation" />
     </h3>
   </div>
   <div class="modal-body">
     <g:message encodeAs="html" code="ddbnext.User.Really_Delete_Account" />
   </div>
   <div class="modal-footer">
-    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbnext.Ok" /></button>
-    <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbnext.Cancel" /></button>
+    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbcommon.Ok" /></button>
+    <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
   </div>
 </div>

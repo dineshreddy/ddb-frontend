@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <ddbcommon:isLoggedIn>
   <div class="static_marginal">
-    <div><h3><g:message encodeAs="html" code="ddbnext.User_MyContent"/></h3></div>
+    <div><h3><g:message encodeAs="html" code="ddbcommon.User_MyContent"/></h3></div>
     <ul class="plum-arrow">
       <li>
         <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Favorites" />" class="persist" href="${createLink(controller="favoritesview", action: 'favorites', params:[:])}">
@@ -28,8 +28,8 @@ limitations under the License.
         </a>
       </li>
       <li>
-        <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.User.Data" />" class="persist" href="${createLink(controller="user", action: 'profile', params:[:])}">
-          <g:message encodeAs="html" code="ddbnext.User.Data" />
+        <a class="profile-link" title="<g:message encodeAs="html" code="ddbcommon.User.Data" />" class="persist" href="${createLink(controller="user", action: 'profile', params:[:])}">
+          <g:message encodeAs="html" code="ddbcommon.User.Data" />
         </a>
       </li>    
       <li>
