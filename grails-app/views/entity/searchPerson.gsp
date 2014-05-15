@@ -92,6 +92,9 @@ limitations under the License.
             </div>
           </div>
         </div>
+        <ddb:renderPageInfoNav
+          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+        
       </div>
 
       <%--   Search has NO results   --%>

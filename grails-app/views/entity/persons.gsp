@@ -66,7 +66,7 @@ limitations under the License.
         <g:each var="person" in="${results[0]}">
           <div class="pin">
             <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" title=" ${person.preferredName}"> <img
-              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" />"></a>
+              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="130px" />"></a>
             <p>
               <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" alt=" ${person.preferredName}"> ${person.preferredName}
               </a>
