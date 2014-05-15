@@ -47,36 +47,7 @@ limitations under the License.
           <h3>
             <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Favorites_List_Of" />
           </h3>
-          <%--
-            <div class="page-info">
-              <span class="results-overall-index">1-2 </span> 
-              <span><g:message encodeAs="html" code="ddbnext.Of" /> </span> 
-              <span><strong><span class="results-total">2 </span></strong> </span> 
-              <g:if test="${numberOfResultsFormatted == '1'}"> 
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Result_lowercase" /></span>
-              </g:if>
-              <g:else>
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Results_lowercase" /></span>
-              </g:else>
-            </div>
-            --%>
         </div>
-        <%--
-        <div class="span4 results-paginator-options">
-          <div class="page-filter">
-            <label><g:message encodeAs="html" code="ddbnext.Items_Per_Page" /></label> 
-            <span> 
-              <select class="select">
-                <g:each in="${resultsPaginatorOptions.pageFilter}">
-                  <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
-                    ${it}
-                  </option>
-                </g:each>
-              </select>
-            </span>
-          </div>
-        </div>
-        --%>
         <div class="span12">
           <hr>
         </div>

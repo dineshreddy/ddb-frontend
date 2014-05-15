@@ -305,7 +305,7 @@ class FavoritesviewController {
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-
+println "allRes " + allRes
                 def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
                 allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
@@ -353,7 +353,7 @@ class FavoritesviewController {
                 if (request.method=="POST"){
                     sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
-
+                println resultsItems;
                 render(view: "favorites", model: [
                     results: resultsItems,
                     selectedFolder: selectedFolder,

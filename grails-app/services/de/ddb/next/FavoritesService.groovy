@@ -122,28 +122,8 @@ class FavoritesService {
      * @return
      */
     def retriveItemMD(List items, Locale locale){
-        def step = 20
-        def orQuery=""
-        def allRes = []
 
-        items.eachWithIndex() { it, i ->
-            if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
-                orQuery=it.itemId
-            }else if (i%step==0){
-                orQuery=orQuery + " OR "+ it.itemId
-                queryBackend(orQuery, locale).each { item ->
-                    allRes.add(item)
-                }
-                orQuery=""
-            }else{
-                orQuery+=" OR "+ it.itemId
-            }
-        }
-        if (orQuery){
-            queryBackend(orQuery,locale).each { item ->
-                allRes.add(item)
-            }
-        }
+        def allRes = returnItemsMD(items, locale,"search")
 
         // Add empty items for all orphaned elasticsearch bookmarks
         if(items.size() > allRes.size()){
@@ -204,14 +184,46 @@ class FavoritesService {
         return allRes
     }
 
-    def private queryBackend(String query, Locale locale){
+    /**
+     * Creates an OR query to get all the Items MD in one query
+     * @param items
+     * @param locale
+     * @return
+     */
+    private List returnItemsMD(List items, Locale locale, String endpoint) {
+        def step = 20
+        def orQuery=""
+        def allRes = []
+
+        items.eachWithIndex() { it, i ->
+            if ( (i==0) || ( ((i>1)&&(i-1)%step==0)) ){
+                orQuery=it.itemId
+            }else if (i%step==0){
+                orQuery=orQuery + " OR "+ it.itemId
+                queryBackend(orQuery, locale,endpoint).each { item ->
+                    allRes.add(item)
+                }
+                orQuery=""
+            }else{
+                orQuery+=" OR "+ it.itemId
+            }
+        }
+        if (orQuery){
+            queryBackend(orQuery,locale,endpoint).each { item ->
+                allRes.add(item)
+            }
+        }
+        return allRes
+    }
+
+    def private queryBackend(String query, Locale locale, String endpoint){
         def params = RequestContextHolder.currentRequestAttributes().params
         params.query = "id:("+query+")"
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         urlQuery[SearchParamEnum.OFFSET.getName()]=0
         urlQuery[SearchParamEnum.ROWS.getName()]=21
-        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
+        def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/'+endpoint, false, urlQuery)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
