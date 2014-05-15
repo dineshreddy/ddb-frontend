@@ -51,9 +51,6 @@ class EntityController {
      * @return the content of an entity page
      */
     def index() {
-
-        log.info "index(): entityId=" + params.id + " / rows=" + params[SearchParamEnum.ROWS.getName()] + " / offset=" + params[SearchParamEnum.OFFSET.getName()]
-
         if(!configurationService.isCulturegraphFeaturesEnabled()){
             redirect(controller: 'index', action: 'index')
             return

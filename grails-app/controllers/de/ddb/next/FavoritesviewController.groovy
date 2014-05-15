@@ -351,7 +351,6 @@ class FavoritesviewController {
                 if (request.method=="POST"){
                     sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
-                println resultsItems;
                 render(view: "favorites", model: [
                     results: resultsItems,
                     selectedFolder: selectedFolder,
