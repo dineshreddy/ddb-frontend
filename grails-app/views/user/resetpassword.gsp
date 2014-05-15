@@ -16,7 +16,7 @@ limitations under the License.
 <html>
   <head>
 
-  <title><g:message encodeAs="html" code="ddbnext.Password_Reset" /> - <g:message encodeAs="html"
+  <title><g:message encodeAs="html" code="ddbcommon.Password_Reset" /> - <g:message encodeAs="html"
       code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 
   <meta name="page" content="passwordreset" />
@@ -34,7 +34,7 @@ limitations under the License.
           </g:if>
           <div class="well">
               <div class="profile-nav">
-                  <div><h1><g:message encodeAs="html" code="ddbnext.Reset_Password_Label"/></h1></div>
+                  <div><h1><g:message encodeAs="html" code="ddbcommon.Reset_Password_Label"/></h1></div>
               </div>
 
               <div class="control-group bt-white">
@@ -50,7 +50,7 @@ limitations under the License.
               <div class="control-group">
                 <label class="control-label"></label>
                 <div class="controls">
-                  <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbnext.Reset_Password_Commit"/>"><g:message encodeAs="html" code="ddbnext.Reset_Password_Commit"/></button>
+                  <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbcommon.Reset_Password_Commit"/>"><g:message encodeAs="html" code="ddbcommon.Reset_Password_Commit"/></button>
                 </div>
               </div>
           </div>
