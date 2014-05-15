@@ -39,30 +39,27 @@ limitations under the License.
           <div class="thumbnail-entity" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
               <g:if test="${entityItem.preview.thumbnail!="null"}">
-	              <img src="${request.contextPath}${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
-              </g:if><g:else>
+                <img src="${request.contextPath}${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
+              </g:if>
+              <g:else>
                 <g:img dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
-               </g:else>
+              </g:else>
             </g:link>
           </div>
           <div class="item-options bl">
             <ul class="item-options-ul">
               <ddbcommon:isLoggedIn>
                 <li>
-                  <div id="favorite-${entityItem.id}" class="add-to-favorites"title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
+                  <div data-itemid="${entityItem.id}" data-objecttype="institution" data-actn="POST" class="add-to-favorites"
+                    title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                 </li>
-                <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"aria-hidden="true">
-                  <div class="modal-body">
-                    <p>
-                      <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
-                    </p>
-                  </div>
-                </div>
               </ddbcommon:isLoggedIn>
             </ul>
             <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
               <div class="hovercard-info-item" data-iid="${entityItem.id}">
-                <h4><ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" /></h4>
+                <h4>
+                  <ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" />
+                </h4>
                 <ul class="unstyled">
                   <li>
                     <div class="small-loader"></div>
@@ -77,3 +74,26 @@ limitations under the License.
   </g:each>
 </ul>
 <div class="bb end-result-border"></div>
+<ddbcommon:isLoggedIn>
+  <ddb:isPersonalFavoritesAvailable>
+    <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-body">
+        <p>
+          <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
+        </p>
+        <p>
+          <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
+        </p>
+        <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
+        <div class="modal-footer">
+          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+            <g:message encodeAs="html" code="ddbnext.Close" />
+          </button>
+          <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+            <g:message encodeAs="html" code="ddbnext.Save" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </ddb:isPersonalFavoritesAvailable>
+</ddbcommon:isLoggedIn>
