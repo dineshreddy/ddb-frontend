@@ -62,7 +62,7 @@ limitations under the License.
           <li class="last-item <g:if test="${!displayRightPagination}">off</g:if>">
             <g:link controller="item" action="findById" params="${params + [id: navData.lastHit, hitNumber: navData.results['numberOfResults']]}"><g:message encodeAs="html" code="ddbnext.Last_Result_Label" /></g:link>
           </li>
-          <li>
+          <li class="off">
             <span>
                 <g:message encodeAs="html" code="ddbnext.Go_To_Result" /> 
                 <input type="text" class="page-input off" maxlength="10" value="${navData.hitNumber}"/>
