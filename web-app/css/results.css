@@ -454,6 +454,9 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .entity .thumbnail img {
+  display: inline;
+  float: right;
+  margin-right: 60px;
   width: 55px;
 }
 
@@ -963,6 +966,9 @@ input[type="checkbox"],input[type="radio"] {
    .search-results .results-list .thumbnail .persist {
      display: inline;
    }
+  .search-results .results-list .entity .thumbnail img {
+    margin-right: 20px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 979px) {
