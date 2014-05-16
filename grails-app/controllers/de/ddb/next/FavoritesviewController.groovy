@@ -27,8 +27,6 @@ class FavoritesviewController {
     def userService
 
     def publicFavorites() {
-        log.info "publicFavorites()"
-
         def rows=20 //default
         if (params.rows){
             rows = params.rows.toInteger()
@@ -208,7 +206,6 @@ class FavoritesviewController {
     }
 
     def favorites(){
-        log.info "favorites()"
         if(userService.isUserLoggedIn()){
             def rows=20 //default
             if (params.rows){
@@ -307,7 +304,6 @@ class FavoritesviewController {
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
                 def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-
                 def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
                 allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
                 allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
@@ -355,7 +351,6 @@ class FavoritesviewController {
                 if (request.method=="POST"){
                     sendBookmarkPerMail(params.email,allResultsOrdered, selectedFolder)
                 }
-
                 render(view: "favorites", model: [
                     results: resultsItems,
                     selectedFolder: selectedFolder,
@@ -428,7 +423,6 @@ class FavoritesviewController {
     }
 
     private def reportFavoritesList(String userId, String folderId){
-        log.info "reportFavoritesList()"
         Folder folder = bookmarksService.findFolderById(folderId)
         if(folder){
             try {

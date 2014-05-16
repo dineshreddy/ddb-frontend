@@ -413,6 +413,10 @@ class FavoritesController {
 
     def addFavoriteToFolder() {
         log.info "addFavoriteToFolder " + params.folderId + "," + params.itemId
+        def type = Type.CULTURAL_ITEM
+        if (params.objectType && params.objectType=="entity") {
+            type=Type.ENTITY
+        }
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
         if (user != null) {
@@ -421,7 +425,7 @@ class FavoritesController {
                     user.getId(),
                     params.itemId,
                     new Date().getTime(),
-                    Type.CULTURAL_ITEM,
+                    type,
                     [params.folderId],
                     "",
                     new Date().getTime())
