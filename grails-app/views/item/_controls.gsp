@@ -29,7 +29,7 @@ limitations under the License.
     </div>
     <!-- search results navigation -->
     <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">
-      <div class="span6 item-nav fr">
+      <div class="span6 item-nav page-nav fr">
         <ddb:renderItemDetailInfoNav navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}" />
       </div>
       <div class="span6 item-nav-mob fr bb">

@@ -36,19 +36,43 @@ limitations under the License.
 </g:else>
 
 <ul class="inline">
-  <li class="first-item ${displayLeftPagination}">
-    <g:link controller="item" action="findById" params="${params + [id: navData.firstHit, hitNumber: '1']}"><g:message encodeAs="html" code="ddbnext.First_Label" /></g:link>
-  </li>
-  <li class="prev-item br-white ${displayLeftPagination}">
-    <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></g:link>
-  </li>
   <li class="<g:if test="${!displayRightPagination}">last-item-noicon</g:if>">
     <span class="result-label"><g:message encodeAs="html" code="ddbnext.Hit" /> </span><span class="hit-number"><ddb:getLocalizedNumber>${navData.hitNumber}</ddb:getLocalizedNumber></span><span> <g:message encodeAs="html" code="ddbnext.Of" /> </span><span class="hit-count"><ddb:getLocalizedNumber>${navData.results["numberOfResults"]}</ddb:getLocalizedNumber></span>
   </li>
-  <li class="next-item bl-white <g:if test="${!displayRightPagination}">off</g:if>">
+  <li class="prev-item br-white">
+    <g:if test="${displayLeftPagination=='off'}">
+        <g:message encodeAs="html" code="ddbnext.Previous_Label" />
+    </g:if>
+    <g:else>
+        <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></g:link>
+    </g:else>
+  </li>
+  <li class="next-item bl <g:if test="${!displayRightPagination}">off</g:if>">
     <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}"><g:message encodeAs="html" code="ddbnext.Next_Label" /></g:link>
   </li>
-  <li class="last-item <g:if test="${!displayRightPagination}">off</g:if>">
-    <g:link controller="item" action="findById" params="${params + [id: navData.lastHit, hitNumber: navData.results['numberOfResults']]}"><g:message encodeAs="html" code="ddbnext.Last_Label" /></g:link>
+  <li class="extra-controls <g:if test="${navData.results['numberOfResults']<2}">off</g:if>">
+      <div>
+        <div class="arrow-container">
+            <div class="arrow-up"></div>
+        </div>
+        <ul>
+          <li class="first-item ${displayLeftPagination}">
+            <g:link controller="item" action="findById" params="${params + [id: navData.firstHit, hitNumber: '1']}"><g:message encodeAs="html" code="ddbnext.First_Result_Label" /></g:link>
+          </li>
+          <li class="last-item <g:if test="${!displayRightPagination}">off</g:if>">
+            <g:link controller="item" action="findById" params="${params + [id: navData.lastHit, hitNumber: navData.results['numberOfResults']]}"><g:message encodeAs="html" code="ddbnext.Last_Result_Label" /></g:link>
+          </li>
+          <li>
+            <span>
+                <g:message encodeAs="html" code="ddbnext.Go_To_Result" /> 
+                <input type="text" class="page-input off" maxlength="10" value="${navData.hitNumber}"/>
+                <span class="page-nonjs">${navData.hitNumber}</span> 
+                <g:message encodeAs="html" code="ddbnext.Of" /> 
+                <span class="total-pages"><ddb:getLocalizedNumber>${navData.results['numberOfResults']}</ddb:getLocalizedNumber></span>
+                <span class="go-to-page"></span>
+            </span>
+          </li>
+        </ul>
+      </div>
   </li>
 </ul>
