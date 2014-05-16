@@ -319,10 +319,10 @@ class UserController {
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
                 aasService.resetPassword(params.username, aasService.getResetPasswordJson(commonConfigurationService.getPasswordResetConfirmationLink(), template, null))
-                messages.add("ddbnext.User.PasswordReset_Success")
+                messages.add("ddbcommon.User.PasswordReset_Success")
             } catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e
-                errors.add("ddbnext.Error_Username_Notfound")
+                errors.add("ddbcommon.Error_Username_Notfound")
             }
         }
         if (!messages.isEmpty()) {
@@ -544,7 +544,7 @@ class UserController {
             if (errors == null || errors.isEmpty()) {
                 //change password in AAS
                 aasService.changePassword(user?.getId(), aasService.getChangePasswordJson(params.newpassword))
-                messages.add("ddbnext.User.Password_Change_Success")
+                messages.add("ddbcommon.User.Password_Change_Success")
                 //adapt user-attributes in session
                 user.setPassword(params.newpassword)
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
@@ -639,11 +639,11 @@ class UserController {
         try {
             jsonuser = aasService.confirm(params.id, params.token)
             if (params.type.equals("emailupdate")) {
-                messages.add("ddbnext.User.Email_Confirm_Success")
+                messages.add("ddbcommon.User.Email_Confirm_Success")
             } else if (params.type.equals("passwordreset")) {
-                messages.add("ddbnext.User.Pwreset_Confirm_Success")
+                messages.add("ddbcommon.User.Pwreset_Confirm_Success")
             } else if (params.type.equals("create")) {
-                messages.add("ddbnext.User.Create_Confirm_Success")
+                messages.add("ddbcommon.User.Create_Confirm_Success")
             }
             // set changed attributes in user-object in session
             if (userService.isUserLoggedIn()) {
@@ -660,7 +660,7 @@ class UserController {
         }
         catch (ItemNotFoundException e) {
             log.error "NotFound: confirmation does not exist. uid:" + params.id + ", token:" + params.token, e
-            errors.add("ddbnext.Error.Confirmation_Not_Found")
+            errors.add("ddbcommon.Error.Confirmation_Not_Found")
         }
         redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
     }

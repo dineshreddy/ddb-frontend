@@ -102,7 +102,7 @@ limitations under the License.
                   </div>
                   <div class="row">
                     <div class="span4">
-                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message encodeAs="html" code="ddbnext.Forgot_Password" /></g:link>
+                      <g:link controller="user" action="passwordResetPage" class="login-link"><g:message encodeAs="html" code="ddbcommon.Forgot_Password" /></g:link>
                     </div>
                   </div>
 
