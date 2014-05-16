@@ -167,6 +167,7 @@
 }
 .item-nav ul {
   margin-bottom: 0;
+  position: relative;
 }
 .item-nav ul li {
   padding: 0;
@@ -192,7 +193,7 @@
   margin-right: 10px;
 }
 .item-nav.page-nav .extra-controls>div{
-  margin-left: -258px;
+  right: 0;
 }
 .item-nav.page-nav .extra-controls .arrow-container{
   right: -10px;
