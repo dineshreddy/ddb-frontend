@@ -50,12 +50,12 @@ eventWebXmlEnd = {String tmpfile ->
     
     def root = new XmlSlurper().parse(webXmlFile)
     
-    log.info "Adding security filter (de.ddb.common.filter.SecurityFilter) to web.xml"
+    log.info "Adding security filter (de.ddb.next.filter.SecurityFilter) to web.xml"
     
     root.appendNode {
         'filter' {
             'filter-name' ('SecurityFilter')
-            'filter-class' ('de.ddb.common.filter.SecurityFilter')
+            'filter-class' ('de.ddb.next.filter.SecurityFilter')
         }
     }
     root.appendNode {
