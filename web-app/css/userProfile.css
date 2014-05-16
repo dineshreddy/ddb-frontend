@@ -32,7 +32,7 @@
   margin-bottom: 10px;
 }
 
-#user-profile-form .profile-title, #user-profile-form .profile-links{
+#user-profile-form .profile-title, #user-profile-form .profile-links {
   text-align: left;
   margin-bottom: 10px;
 }
@@ -95,10 +95,6 @@
     margin: 0 0 0;
   }
   #user-profile-form .profile-links {
-    text-align: left;
-    float: none;
-  }
-}ofile-form .profile-links {
     text-align: left;
     float: none;
   }
