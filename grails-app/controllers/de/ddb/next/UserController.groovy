@@ -17,8 +17,6 @@ package de.ddb.next
 
 import grails.converters.*
 
-import java.security.MessageDigest
-
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
@@ -724,14 +722,11 @@ class UserController {
 
         log.info "doOpenIdLogin(): got OpenID login request"
 
-        //ConsumerManager manager = getSessionObject(false)?.getAttribute(SESSION_CONSUMER_MANAGER)
         ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
         if(manager) {
-            //def provider = getSessionObject(false)?.getAttribute(SESSION_OPENID_PROVIDER)
             def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
 
             ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
-            //DiscoveryInformation discovered = (DiscoveryInformation) getSessionObject(false)?.getAttribute("discovered");
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
             String returnURL = commonConfigurationService.getContextUrl() + "/login/doOpenIdLogin"
             String receivingURL =  returnURL + "?" + request.getQueryString()
@@ -779,7 +774,7 @@ class UserController {
                 HttpSession newSession = sessionService.createNewSession()
 
                 User user = new User()
-                user.setId(encodeAsMD5(identifier))
+                user.setId(userService.encodeAsMD5(identifier))
                 user.setEmail(email)
                 user.setUsername(username)
                 user.setFirstname(firstName)
@@ -958,12 +953,5 @@ class UserController {
             String folderId = bookmarksService.createFolder(newFolder)
             log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
-    }
-
-    private def String encodeAsMD5(String decodedString) {
-        MessageDigest md5 = MessageDigest.getInstance("MD5")
-        md5.update(decodedString.getBytes())
-        BigInteger hash = new BigInteger(1, md5.digest())
-        return hash.toString(16)
     }
 }
