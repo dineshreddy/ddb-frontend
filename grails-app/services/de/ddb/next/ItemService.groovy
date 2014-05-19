@@ -346,7 +346,6 @@ class ItemService {
                 path = z.'@path'
                 type = z.'@mimetype'
                 category = z.'@category'
-                println(path+ " " + type+ " " + category)
                 //check against the parameter "category"
                 if (category == FULL) {
                     if(type.contains(IMAGE)) {
