@@ -18,10 +18,6 @@
   padding-right: 10px;
 }
 
-#registration-form .bt {
-  border-top: solid 1px #fff;
-}
-
 #registration-form label.error {
   vertical-align: middle;
 }

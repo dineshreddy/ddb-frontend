@@ -37,7 +37,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.beans.User
-import de.ddb.common.constants.CategoryFacetEnum;
+import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
@@ -322,6 +322,7 @@ class ItemService {
         String position
         String path
         String type
+        String category
         String htmlStrip
         //creation of a bi-dimensional list containing the binaries separated for position
         binaries.each { x ->
@@ -334,7 +335,8 @@ class ItemService {
         }
         //creation of a list of binary maps from the bi-dimensional list
         bidimensionalList.each { y ->
-            def binaryMap = ['orig' : ['title':'', 'uri': ['image':'','audio':'','video':''],'author':'', 'rights':''],
+            def binaryMap = [
+                'orig' : ['title':'', 'uri': ['image':'','audio':'','video':''],'author':'', 'rights':''],
                 'preview' : ['title':'', 'uri':'', 'author':'', 'rights':''],
                 'thumbnail' : ['title':'', 'uri':'','author':'', 'rights':''],
                 'full' : ['title':'', 'uri':'','author':'', 'rights':''],
@@ -343,9 +345,11 @@ class ItemService {
             y.each { z ->
                 path = z.'@path'
                 type = z.'@mimetype'
-
-                if(path.contains(ORIG)){
-                    if(type.contains(IMAGE)){
+                category = z.'@category'
+                println(path+ " " + type+ " " + category)
+                //check against the parameter "category"
+                if (category == FULL) {
+                    if(type.contains(IMAGE)) {
                         binaryMap.'orig'.'uri'.'image' = BINARY_SERVER_URI + z.'@path'
                         if(!binaryMap.'orig'.'title') {
                             htmlStrip = z.'@name'
@@ -362,32 +366,81 @@ class ItemService {
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
-
                     binaryMap.'orig'.'author'= z.'@name2'
                     binaryMap.'orig'.'rights'= z.'@name3'
+
+                    //filling the category "full" for back-compatibility
+                    htmlStrip = z.'@name'
+                    binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                    binaryMap.'full'.'author'= z.'@name2'
+                    binaryMap.'full'.'rights'= z.'@name3'
+
                     binaryMap.'checkValue' = "1"
                 }
-                else if(path.contains(PREVIEW)) {
+                else if (category == PREVIEW) {
                     htmlStrip = z.'@name'
                     binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
                     binaryMap.'preview'.'author'= z.'@name2'
                     binaryMap.'preview'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
-                } else if (path.contains(THUMBNAIL)) {
+                }
+                else if (category == THUMBNAIL) {
                     htmlStrip = z.'@name'
                     binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
                     binaryMap.'thumbnail'.'author'= z.'@name2'
                     binaryMap.'thumbnail'.'rights'= z.'@name3'
                     binaryMap.'checkValue' = "1"
-                } else if (path.contains(FULL)) {
-                    htmlStrip = z.'@name'
-                    binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
-                    binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
-                    binaryMap.'full'.'author'= z.'@name2'
-                    binaryMap.'full'.'rights'= z.'@name3'
-                    binaryMap.'checkValue' = "1"
+                }
+                //check against the binary path
+                else if (!category) {
+                    if(path.contains(ORIG)) {
+                        if(type.contains(IMAGE)) {
+                            binaryMap.'orig'.'uri'.'image' = BINARY_SERVER_URI + z.'@path'
+                            if(!binaryMap.'orig'.'title') {
+                                htmlStrip = z.'@name'
+                                binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                            }
+                        }
+                        else if(type.contains(AUDIO)){
+                            binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
+                            htmlStrip = z.'@name'
+                            binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        }
+                        else if(type.contains(VIDEOMP4)||type.contains(VIDEOFLV)){
+                            binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
+                            htmlStrip = z.'@name'
+                            binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        }
+
+                        binaryMap.'orig'.'author'= z.'@name2'
+                        binaryMap.'orig'.'rights'= z.'@name3'
+                        binaryMap.'checkValue' = "1"
+                    }
+                    else if(path.contains(PREVIEW)) {
+                        htmlStrip = z.'@name'
+                        binaryMap.'preview'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        binaryMap.'preview'.'uri' = BINARY_SERVER_URI + z.'@path'
+                        binaryMap.'preview'.'author'= z.'@name2'
+                        binaryMap.'preview'.'rights'= z.'@name3'
+                        binaryMap.'checkValue' = "1"
+                    } else if (path.contains(THUMBNAIL)) {
+                        htmlStrip = z.'@name'
+                        binaryMap.'thumbnail'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        binaryMap.'thumbnail'.'uri' = BINARY_SERVER_URI + z.'@path'
+                        binaryMap.'thumbnail'.'author'= z.'@name2'
+                        binaryMap.'thumbnail'.'rights'= z.'@name3'
+                        binaryMap.'checkValue' = "1"
+                    } else if (path.contains(FULL)) {
+                        htmlStrip = z.'@name'
+                        binaryMap.'full'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        binaryMap.'full'.'uri' = BINARY_SERVER_URI + z.'@path'
+                        binaryMap.'full'.'author'= z.'@name2'
+                        binaryMap.'full'.'rights'= z.'@name3'
+                        binaryMap.'checkValue' = "1"
+                    }
                 }
             }
             if(binaryMap.'checkValue'){
