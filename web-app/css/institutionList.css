@@ -14,10 +14,8 @@
  * limitations under the License.
  */
 .view-type-switch {
-  background: #efebe8;
+  margin-top: 8px;
   overflow: hidden;
-  padding-top: 12px;
-  padding-bottom: 12px;
   text-align: right;
 }
 @media (max-width: 767px) {
@@ -25,10 +23,6 @@
     display:none;
     visibility: hidden;
   }
-}
-
-#view-institution-list, #view-institution-map {
- margin-right: 10px;
 }
 
 .view-type-switch #view-institution-list {
@@ -45,41 +39,45 @@
   background: none;
 }
 
+.view-type-switch button.selected{
+  border: #a5003b 1px solid;
+}
+
 .view-type-switch button:before {
   display: inline-block;
   content: url("../images/icons/viewSelector.png");
 }
 
 .view-type-switch #view-institution-list:before {
-  margin: -24px 0 0 0;
+  margin: -62px 0 0 -213px;
 }
 
 .view-type-switch #view-institution-list:hover:before{
-  margin: -24px 0 0 -24px;
+  margin: -62px 0 0 -213px;
 }
 
 .view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before {
-  margin: -24px 0 0 -48px;
+  margin: -63px 0 0 -244px;
 }
 
 .view-type-switch .ie8-version #view-institution-list.selected:before,.view-type-switch .ie8-version #view-institution-list.selected:hover:before,.view-type-switch .ie8-version #view-institution-list.selected:focus:before {
-  margin: -24px 0 0 0;
+  margin: -63px 0 0 -244px;
 }
 
 .view-type-switch #view-institution-map:before {
-  margin: -48px 0 0 0;
+  margin: -32px 0 0 -212px;
 }
 
 .view-type-switch #view-institution-map:hover:before {
-  margin: -48px 0 0 -24px;
+  margin: -32px 0 0 -212px;
 }
 
 .view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before {
-  margin: -48px 0 0 -48px;
+  margin: -34px 0 0 -243px;
 }
 
 .view-type-switch .ie8-version #view-institution-map.selected:before, .view-type-switch .ie8-version #view-institution-map.selected:hover:before,.view-type-switch .ie8-version #view-institution-map.selected:focus:before {
-  margin: -48px 0 0 0;
+  margin: -34px 0 0 -243px;
 }
 
 .institution-listitem {
@@ -150,6 +148,10 @@ div.sector-facet>label:hover {
    margin-top: 12px;
 }
 
+.institutionlist{
+  margin-top:10px;
+}
+
 .institutionlist #institution-map {
   border-top: 2px solid #EFEBE8;
 }
@@ -179,7 +181,6 @@ div.sector-facet>label:hover {
 }
 
 .institutionlist .filter {
-  border-bottom: 2px solid #EFEBE8;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
