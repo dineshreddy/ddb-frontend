@@ -28,14 +28,14 @@ limitations under the License.
 
 <body>
   <div class="row search-results-container">
-  
+
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
         <ddb:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       
-	  <%-- Shows the facets supported in the NON JS version--%>
+	    <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
 	      <div class="facets-list bt bb">
 	        <g:each in="${nonJsFacetsList}" var="mit">
@@ -53,7 +53,7 @@ limitations under the License.
 	          </g:each>
 	        </g:each>
 	      </div>
-	</noscript>
+	    </noscript>
 
     <%-- Shows the facets supported in the JS version. --%>
     <div class="js facets-list bt bb off">
@@ -138,6 +138,8 @@ limitations under the License.
             </div>
           </div>
         </div>
+            
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
       </div>
 
       <%-- favorite confirmation dialog - only one per page --%>
@@ -160,10 +162,7 @@ limitations under the License.
           </div>
         </ddb:isPersonalFavoritesAvailable>
       </ddbcommon:isLoggedIn>
-
-      <div id="print-nav">
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
-
+    </div>
       <%--   Search has NO results   --%>
       <div class="search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
         <g:if test="${correctedQuery!='null'}">
