@@ -163,51 +163,41 @@
 
 .item-nav {
   line-height: 30px;
-}
-.item-nav {
   text-align: right;
 }
 .item-nav ul {
   margin-bottom: 0;
+  position: relative;
 }
 .item-nav ul li {
   padding: 0;
 }
-.item-nav .first-item a,.item-nav .prev-item a,.item-nav .next-item a,.item-nav .last-item a {
-  background: url("../images/icons/pagination.png") no-repeat;
-}
-.item-nav .first-item a {
-  padding-left: 14px;
-  background-position: left -21px;
+.item-nav .first-item, .item-nav .last-item {
+  text-align: left;
 }
 .item-nav .prev-item {
-  margin-right: 5px;
+  margin-left: 20px;
 }
-.item-nav .prev-item a {
-  padding-left: 14px;
-  padding-right: 5px;
-  background-position: left -61px;
-}
+
 .item-nav .next-item a {
-  padding-right: 14px;
   padding-left: 5px;
-  background-position: right -41px;
 }
 .item-nav .next-item {
   margin-left: 5px;
+  padding-left: 5px;
 }
-.item-nav .last-item  {
-  padding-right: 5px;
-}
-.item-nav .last-item-noicon {
-  padding-right: 8px;
-}
-.item-nav .last-item a {
-  padding-right: 14px;
-  background-position: right -1px;
+.item-nav .prev-item, .item-nav .next-item {
+  color: #e6e6e6;
 }
 .item-nav .items-overall-index {
   margin-right: 10px;
+}
+.item-nav.page-nav .extra-controls>div{
+  right: 0;
+}
+.item-nav.page-nav .extra-controls .arrow-container{
+  right: -10px;
+  left: auto;
 }
 .fields, .rights {
   font-size: 0.938em;

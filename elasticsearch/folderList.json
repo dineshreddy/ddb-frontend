@@ -1,1 +1,1 @@
-{"folderList":{"properties":{"createdAt":{"type":"long"},"title":{"type":"string"},"users":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"folders":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"}}}}
+{"folderList":{"properties":{"createdAt":{"type":"long"},"folders":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"title":{"type":"string"},"users":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"}}}}

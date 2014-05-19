@@ -30,9 +30,12 @@
 .apikey .apikey-delete {
   cursor: pointer;
   margin-left: 10px;
+  text-decoration: none;
 }
 
 .apikey .apikey-delete:hover {
   background-position: 0 -72px;
+  text-decoration: underline;
+  color: #A5003B;
 }
 

@@ -17,6 +17,8 @@ $(document).ready(function() {
 
   if (jsPageName === "item") {
     var socialMediaManager = new SocialMediaManager();
+    de.ddb.next.search.initHistorySupport(null);
+    de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     socialMediaManager.integrateSocialMedia();
     
     //Similar objects
@@ -30,6 +32,33 @@ $(document).ready(function() {
       
       $(".similar-objects-header").toggleClass("active");
     });
+    $('.page-input').removeClass('off');
+    $('.page-nonjs').addClass("off");
+    de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
+        function(e, element){
+          if (e.keyCode === 13) {
+            if (/^[0-9]+$/.test(element.value)) {
+              var resultPagesCountText = $('.result-pages-count').text();
+              var resultPagesCountInt = parseInt(resultPagesCountText.replace(/[^0-9]/g, ''));
+
+              if (parseInt(element.value) <= 0) {
+                element.value = 1;
+              } else if (parseInt(element.value) > resultPagesCountInt) {
+                element.value = $('.result-pages-count').text();
+              }
+            } else {
+              element.value = 1;
+            }
+
+            $('.page-input').attr('value', element.value);
+
+            var valueInteger = parseInt(element.value.replace(/[^0-9]/g, ''));
+            var paramsArray = [['hitNumber', valueInteger]];
+            var newUrl = $.addParamToCurrentUrl(paramsArray);
+            window.location = newUrl;
+          }
+        }
+    );
   }
 
 });

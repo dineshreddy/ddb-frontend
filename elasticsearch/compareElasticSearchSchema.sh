@@ -5,6 +5,7 @@
 ###############################
 
 elasticSearchServer=$1
+debug=$2
 
 if [ -z "$elasticSearchServer" ] 
 then
@@ -71,10 +72,13 @@ echo
 #################################
 
 compareSchemaFile() {
+  echo "$1:"
   response=`export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
   diff --brief <(echo "$2") <(echo "$response")
   if [ $? -ne 0 ]; then
-    diff --side-by-side <(echo "$2") <(echo "$response") | less
+    if [ -n "$debug" ]; then
+      diff --side-by-side <(echo "$2") <(echo "$response") | less
+    fi
   else
     echo "no difference found"
   fi

@@ -364,20 +364,27 @@ class UserController {
                     messages.addAll(params.messages)
                 }
             }
-            //get favorites-count
-            Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-            List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
-            def favoritesCount = favorites.size()
 
-            //get savedsearch-count
-            def savedSearchesResult = savedSearchesService.getSavedSearches()
-            def savedSearchesCount = savedSearchesResult.size()
-
-            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors:errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors:errors, messages: messages])
         }
         else{
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
         }
+    }
+
+    private getFavoriteCount(User user) {
+        Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
+        List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
+        def favoritesCount = favorites.size()
+
+        return favoritesCount
+    }
+
+    private getSavedSearchesCount() {
+        def savedSearchesResult = savedSearchesService.getSavedSearches()
+        def savedSearchesCount = savedSearchesResult.size()
+
+        return savedSearchesCount
     }
 
     def saveProfile() {
@@ -520,7 +527,7 @@ class UserController {
                     messages.addAll(params.messages)
                 }
             }
-            render(view: "changepassword", model: [user: user, errors: errors, messages: messages])
+            render(view: "changepassword", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
@@ -559,14 +566,7 @@ class UserController {
                 params.errors = errors
             }
 
-            List favorites = bookmarksService.findBookmarksByUserId(user.getId())
-            def favoritesCount = favorites.size()
-
-            //get savedsearch-count
-            def savedSearchesResult = savedSearchesService.getSavedSearches()
-            def savedSearchesCount = savedSearchesResult.size()
-
-            render(view: "profile", model: [favoritesCount: favoritesCount, savedSearchesCount: savedSearchesCount, user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors: errors, messages: messages])
         }
         else{
             redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
@@ -833,13 +833,13 @@ class UserController {
             String apiKeyTermsUrl = commonConfigurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             if(apiKey) {
-                render(view: "apiKey", model: [
+                render(view: "apiKey", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(),
                     user: user,
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }else {
-                render(view: "requestApiKey", model: [
+                render(view: "requestApiKey", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(),
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
