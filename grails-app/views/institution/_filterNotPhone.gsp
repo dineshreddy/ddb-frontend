@@ -16,6 +16,3 @@ limitations under the License.
 <div id="sector-facet-phone" class="filter hidden-phone">
   <g:render template="sectorFacet" />
 </div>
-<aside>
-  <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
-</aside>
