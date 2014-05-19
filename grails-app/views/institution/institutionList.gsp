@@ -26,32 +26,15 @@ limitations under the License.
 <body>
   <h1><g:message encodeAs="html" code="ddbnext.Institutions" /></h1>
   <div class="row">
-    <div class="view-type-switch span12 off">
-      <!--[if lt IE 9]>
-      <div class="ie8-version">
-      <![endif]-->
-        <button id="view-institution-map" class="selected"
-          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
-          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
-        </button>
-      <!--[if lt IE 9]>
-      </div>
-      <div class="ie8-version">
-      <![endif]-->
-        <button id="view-institution-list"
-          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
-          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
-        </button>
-      <!--[if lt IE 9]>
-      </div>
-      <![endif]-->
+    <div class="span12">
+      <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
     </div>
   </div>
   <div class="row institutionlist">
     <div class="span3">
       <g:render template="filterNotPhone" />
     </div>
-    <div class="span9 institutioncount">
+    <div class="span7 institutioncount">
       <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
       <noscript>
         <div class="off">
@@ -80,6 +63,28 @@ limitations under the License.
         </g:each>
       </ol>
     </div>
+    
+    <div class="view-type-switch off">
+      <!--[if lt IE 9]>
+      <div class="ie8-version">
+      <![endif]-->
+        <button id="view-institution-map" class="selected"
+          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
+          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
+        </button>
+      <!--[if lt IE 9]>
+      </div>
+      <div class="ie8-version">
+      <![endif]-->
+        <button id="view-institution-list"
+          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
+          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
+        </button>
+      <!--[if lt IE 9]>
+      </div>
+      <![endif]-->
+    </div>
+    
     <div id="institution-map" class="span9 off">
       <div id="mapview">
         <%--<div id="mapContainerDiv"></div>--%>
