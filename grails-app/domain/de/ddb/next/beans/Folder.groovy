@@ -30,6 +30,7 @@ class Folder {
     boolean isPublic = false
     boolean isBlocked = false
     String blockingToken
+    List bookmarks
     String publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.value
     Date creationDate
     Date updatedDate
@@ -41,7 +42,9 @@ class Folder {
 
 
 
-    public Folder(String folderId, String userId, String title, def description, def isPublic, def publishingName, def isBlocked, def blockingToken, def creationDateAsLong, def updateDateAsLong) {
+    public Folder(String folderId, String userId, String title, String description, boolean isPublic,
+    String publishingName, boolean isBlocked, String blockingToken, List bookmarks, long creationDateAsLong,
+    long updateDateAsLong) {
         Date now = new Date()
 
         this.folderId = folderId
@@ -70,17 +73,45 @@ class Folder {
         }else{
             this.blockingToken = blockingToken.toString()
         }
-
+        if (bookmarks) {
+            this.bookmarks = bookmarks
+        }
+        else {
+            this.bookmarks = []
+        }
         if(JsonUtil.isAnyNull(creationDateAsLong)){
             this.creationDate = now
         }else{
             this.creationDate = new Date(creationDateAsLong)
         }
-
         if(JsonUtil.isAnyNull(updateDateAsLong)){
             this.updatedDate = now
         }else{
             this.updatedDate = new Date(updateDateAsLong)
+        }
+    }
+
+    public void addBookmark(String bookmarkId) {
+        bookmarks.add(bookmarkId)
+    }
+
+    public void deleteBookmark(String bookmarkId) {
+        bookmarks.remove(bookmarkId)
+    }
+
+    public void moveBookmarkDown(String bookmarkId) {
+        int index = bookmarks.indexOf(bookmarkId)
+        if (bookmarks.size() > 1 && index < bookmarks.size() - 1) {
+            deleteBookmark(bookmarkId)
+            bookmarks.add(index + 1, bookmarkId)
+        }
+    }
+
+    public void moveBookmarkUp(String bookmarkId) {
+        int index = bookmarks.indexOf(bookmarkId)
+        if (bookmarks.size() > 1 && index > 0) {
+            deleteBookmark(bookmarkId)
+            bookmarks.add(index - 1, bookmarkId)
         }
     }
 
@@ -95,6 +126,7 @@ class Folder {
         out["publishingName"] = publishingName
         out["isBlocked"] = isBlocked
         out["blockingToken"] = blockingToken
+        out["bookmarks"] = bookmarks
         out["creationDate"] = creationDate
         out["updatedDate"] = updatedDate
         return out
