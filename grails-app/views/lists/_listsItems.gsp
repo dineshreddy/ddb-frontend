@@ -42,6 +42,9 @@ limitations under the License.
        </g:each>
       </ul>
     </div>
+    <div class="lists-paginator-options bb">
+      <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+    </div>    
   </g:if>
   <g:else>
     <g:message encodeAs="html" code="${errorMessage}" />
