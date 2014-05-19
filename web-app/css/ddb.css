@@ -399,7 +399,7 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   color: #000;
 }
 
-.navigation .active .arrow-container{
+.navigation .active .arrow-container, .navigation > li:hover .arrow-container {
   position: absolute;
   height: 20px;
   width: 40px;
@@ -408,7 +408,7 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   z-index: 1;
 }
 
-.navigation .active .arrow-up {
+.navigation .active .arrow-up, .navigation > li:hover .arrow-up {
   background: url("../images/icons/tooltip.png") -14px -10px no-repeat;
   width: 11px;
   height: 9px;
