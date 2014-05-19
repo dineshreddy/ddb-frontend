@@ -30,6 +30,12 @@ limitations under the License.
           <li><g:link controller="content" params="[dir: 'contact']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
         </ul>
         <div class="build"><ddb:getFrontendVersion /> / <ddb:getBackendVersion/></div>
+        <div class="twitter">
+          <g:message code="ddbnest.follow"/>:
+          <a href="https://twitter.com/ddbkultur" target="_blank">
+            Twitter
+          </a>
+        </div>
       </div>
     </div>
   </div>

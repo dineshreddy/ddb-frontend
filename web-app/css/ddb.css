@@ -1088,6 +1088,7 @@ footer .legal,.footer .legal {
 footer .legal .inner,.footer .legal .inner {
   border-top: 1px solid #e9e5e2;
   padding-top: 24px;
+  padding-bottom: 30px;
   overflow: hidden;
 }
 
@@ -1107,11 +1108,22 @@ footer .legal ul li+li,.footer .legal ul li+li {
   padding-left: 17px;
 }
 
-.build {
+footer .twitter, .footer .twitter {
   float: right;
+  z-index: 3;
+}
+
+footer .twitter a, .footer .twitter a {
+  background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent !important;
+}
+
+.build {
+  float: left;
   font-size: 0.75em;
   color: #c1c1c1;
   z-index: 3;
+  position: absolute;
+  margin-top: 25px;
 }
 /* footer - end */
 
