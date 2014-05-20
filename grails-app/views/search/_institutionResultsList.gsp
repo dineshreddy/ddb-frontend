@@ -30,7 +30,7 @@ limitations under the License.
             </h2>
             <div class="subtitle">
               <g:if test="${(entityItem.preview?.subtitle != null)}">
-                <ddb:stripTags text="${entityItem.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
+                <ddbcommon:stripTags text="${entityItem.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
               </g:if>
             </div>
           </div>
