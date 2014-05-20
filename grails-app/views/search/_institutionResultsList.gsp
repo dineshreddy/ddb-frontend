@@ -25,7 +25,7 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
-                <strong><ddb:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" /></strong>
+                <ddb:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" />
               </g:link>
             </h2>
             <div class="subtitle">
