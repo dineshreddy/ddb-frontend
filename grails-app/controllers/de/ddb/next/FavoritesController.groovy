@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import java.util.List;
+import java.util.List
 
 import grails.converters.JSON
 
@@ -124,7 +124,7 @@ class FavoritesController {
                             def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
                             if (bookmarkCount == 0) {
                                 folder.isPublic = false
-                                bookmarksService.updateFolder(folder);
+                                bookmarksService.updateFolder(folder)
                                 flash.message = "ddbnext.folder_empty_set_to_private"
                             }
                         }
@@ -388,13 +388,20 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
         if (user != null) {
+            Type bookmarkType = Type.CULTURAL_ITEM
+            if (params.reqObjectType?.equalsIgnoreCase("entity")) {
+                bookmarkType = Type.ENTITY
+            }
+            else if (params.reqObjectType?.equalsIgnoreCase("institution")) {
+                bookmarkType = Type.INSTITUTION
+            }
             Bookmark newBookmark = new Bookmark(
                     null,
                     user.getId(),
                     params.id,
                     new Date().getTime(),
-                    params.reqObjectType?.equalsIgnoreCase("entity") ? Type.ENTITY : Type.CULTURAL_ITEM,
-                    params.folderId ? [params.folderId] : null,
+                    bookmarkType,
+                    params.folderId ? [params.folderId]: null,
                     "",
                     new Date().getTime())
             String newBookmarkId = bookmarksService.createBookmark(newBookmark)
