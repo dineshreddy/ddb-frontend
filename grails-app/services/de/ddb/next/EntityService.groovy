@@ -21,6 +21,7 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.ApiResponse.HttpStatus
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
@@ -151,9 +152,8 @@ class EntityService {
                 [(SearchParamEnum.QUERY.getName()) :
                     SearchParamEnum.ID.getName() + ":\"" + CultureGraphService.GND_URI_PREFIX + entityId + "\""])
 
+        def response = apiResponse.getResponse()
         if (apiResponse.isOk()) {
-            def response = apiResponse.getResponse()
-
             if (response.numberOfResults == 1) {
                 return response.results[0].docs[0]
             }
@@ -163,6 +163,9 @@ class EntityService {
             else {
                 throw new RuntimeException("number of results should be 1 but is " + response.numberOfResults)
             }
+        }
+        else if (apiResponse.status == HttpStatus.HTTP_404) {
+            throw new EntityNotFoundException()
         }
         else {
             def message = "getEntityDetails(): Entitiy response contained error"
