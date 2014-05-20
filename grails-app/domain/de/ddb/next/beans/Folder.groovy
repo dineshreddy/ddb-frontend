@@ -105,6 +105,9 @@ class Folder {
             deleteBookmark(bookmarkId)
             bookmarks.add(index + 1, bookmarkId)
         }
+        else if (index == -1) {
+            addBookmark(bookmarkId)
+        }
     }
 
     public void moveBookmarkUp(String bookmarkId) {
@@ -112,6 +115,9 @@ class Folder {
         if (bookmarks.size() > 1 && index > 0) {
             deleteBookmark(bookmarkId)
             bookmarks.add(index - 1, bookmarkId)
+        }
+        else if (index == -1) {
+            addBookmark(bookmarkId)
         }
     }
 
