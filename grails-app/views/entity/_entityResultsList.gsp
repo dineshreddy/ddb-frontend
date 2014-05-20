@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <g:set var="pageHitCounter" value="0" />
-${entities.entity.docs}
 <ul class="results-list unstyled">
   <g:each in="${entities.entity.docs}" var="entityItems">
     <g:each in="${entityItems}" var="entityItem">
