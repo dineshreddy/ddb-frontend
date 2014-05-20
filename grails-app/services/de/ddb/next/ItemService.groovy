@@ -56,7 +56,8 @@ class ItemService {
     private static final def FULL = 'full'
     private static final def ORIG= 'orig'
     private static final def IMAGE= 'image/jpeg'
-    private static final def AUDIO = 'audio/mp3'
+    private static final def AUDIOMP3 = 'audio/mp3'
+    private static final def AUDIOMPEG = 'audio/mpeg'
     private static final def VIDEOMP4 = 'video/mp4'
     private static final def VIDEOFLV = 'video/flv'
 
@@ -346,6 +347,7 @@ class ItemService {
                 path = z.'@path'
                 type = z.'@mimetype'
                 category = z.'@category'
+                println(path+" "+type+" "+category)
                 //check against the parameter "category"
                 if (category == FULL) {
                     if(type.contains(IMAGE)) {
@@ -355,7 +357,7 @@ class ItemService {
                             binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                         }
                     }
-                    else if(type.contains(AUDIO)){
+                    else if(type.contains(AUDIOMP3)||type.contains(AUDIOMPEG)){
                         binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
@@ -403,7 +405,7 @@ class ItemService {
                                 binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                             }
                         }
-                        else if(type.contains(AUDIO)){
+                        else if(type.contains(AUDIOMP3)||type.contains(AUDIOMPEG)){
                             binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
                             htmlStrip = z.'@name'
                             binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
