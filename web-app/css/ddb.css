@@ -1604,6 +1604,9 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   padding-top: 10px;
   padding-bottom: 10px;
   display: none;
+  color: #3e3a37;
+  font-size: 15px;
+  line-height: 18px;
 }
 #cookie-notice .container{
   position: relative;
@@ -1628,6 +1631,8 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 @media (max-width: 767px){
   #cookie-notice {
     padding: 10px;
+    font-size: 13px;
+    line-height: 16px;
   }
 }
 /* cookie notice -end */
