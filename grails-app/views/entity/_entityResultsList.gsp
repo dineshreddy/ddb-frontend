@@ -41,7 +41,6 @@ limitations under the License.
                 <g:if test="${entityItem.dateOfDeath}">
                   <g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}
                 </g:if>
-
               </div>
             </div>
           </div>
