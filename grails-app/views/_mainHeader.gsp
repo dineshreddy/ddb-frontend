@@ -23,6 +23,18 @@ limitations under the License.
 
 <!--[if !IE]><!-->
 <g:set var="config" bean="configurationService"/>
+<div class="cookie-notice visible" id="cookie-notice">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <p>
+          <g:message code="ddbnext.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
+        </p>
+        <a class="close" aria-controls="cookie-notice"></a>
+      </div>
+    </div>
+  </div>
+</div>
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">

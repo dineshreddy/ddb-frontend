@@ -1597,3 +1597,37 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 /* Multiselect jquery plugin - end */
+
+/* cookie notice */
+#cookie-notice {
+  background: #efebe8;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display: none;
+}
+#cookie-notice .container{
+  position: relative;
+}
+#cookie-notice p{
+  padding-right: 50px;
+}
+#cookie-notice p a{
+  text-decoration:underline;
+}
+#cookie-notice .close{
+  width: 20px;
+  height: 20px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -27px -474px;
+  background-color: #e6e6e6;
+  border: #ddd 1px solid;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+@media (max-width: 767px){
+  #cookie-notice {
+    padding: 10px;
+  }
+}
+/* cookie notice -end */
