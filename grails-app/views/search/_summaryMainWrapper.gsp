@@ -23,14 +23,14 @@ limitations under the License.
     </h2>
     <div class="subtitle">
       <g:if test="${(item.preview?.subtitle != null) && (item.preview?.subtitle?.toString() != "null")}">
-        <ddb:stripTags text="${item.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
+        <ddbcommon:stripTags text="${item.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong" />
       </g:if>
     </div>
     <ul class="matches unstyled">
       <li class="matching-item">
         <span>
           <g:each var="match" in="${item.view}">
-            ...<ddb:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+            ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
           </g:each>
         </span>
       </li>
