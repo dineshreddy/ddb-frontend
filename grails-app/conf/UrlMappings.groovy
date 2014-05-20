@@ -110,6 +110,16 @@ class UrlMappings {
             action=[POST: "deleteFavoritesFromFolder"]
         }
 
+        "/apis/favorites/$id/_down" {
+            controller="favorites"
+            action=[POST: "moveFavoriteDown"]
+        }
+
+        "/apis/favorites/$id/_up" {
+            controller="favorites"
+            action=[POST: "moveFavoriteUp"]
+        }
+
         "/apis/favorites/folders" {
             controller="favorites"
             action="getFavoriteFolders"

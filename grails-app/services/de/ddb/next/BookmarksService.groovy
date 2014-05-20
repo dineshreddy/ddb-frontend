@@ -204,10 +204,10 @@ class BookmarksService {
 
         Calendar cal = Calendar.getInstance()
         cal.setTime(date)
-        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND));
-        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND));
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY))
+        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE))
+        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND))
+        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND))
 
         def timeFrom = cal.getTimeInMillis()
         def timeTo = timeFrom + 86400000
@@ -278,35 +278,59 @@ class BookmarksService {
     List<Bookmark> findBookmarksByFolderId(String userId, String folderId) {
         log.info "findBookmarksByFolderId(): find bookmarks for the user (${userId}) in the folder ${folderId}"
 
-        List<Bookmark> all = []
-
+        List<Bookmark> result = []
         def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
+            def bookmarks = response.hits.hits
 
-            def resultList = response.hits.hits
-            resultList.each { it ->
-                def bookmark = new Bookmark(
-                        it._id,
-                        it._source.user,
-                        it._source.item,
-                        it._source.createdAt,
-                        it._source.type as Type,
-                        it._source.folder as List,
-                        it._source.description,
-                        it._source.updatedAt
+            // first use bookmark list in folder to order the bookmarks
+            def bookmarkIdsInFolder = findFolderById(folderId)?.bookmarks
+
+            bookmarkIdsInFolder.each {bookmarkIdInFolder ->
+                def bookmark = bookmarks.find {it._id == bookmarkIdInFolder}
+                if (bookmark) {
+                    def newBookmark = new Bookmark(
+                            bookmark._id,
+                            bookmark._source.user,
+                            bookmark._source.item,
+                            bookmark._source.createdAt,
+                            bookmark._source.type as Type,
+                            bookmark._source.folder as List,
+                            bookmark._source.description,
+                            bookmark._source.updatedAt
+                            )
+                    bookmarks.remove(bookmark)
+                    if(newBookmark.isValid()){
+                        result.add(newBookmark)
+                    }else{
+                        log.error "findBookmarksByFolderId(): found corrupt bookmark: "+newBookmark
+                    }
+                }
+            }
+
+            // second add all bookmarks which are not present in bookmark list of the folder at the end
+            bookmarks.each {bookmark ->
+                def newBookmark = new Bookmark(
+                        bookmark._id,
+                        bookmark._source.user,
+                        bookmark._source.item,
+                        bookmark._source.createdAt,
+                        bookmark._source.type as Type,
+                        bookmark._source.folder as List,
+                        bookmark._source.description,
+                        bookmark._source.updatedAt
                         )
-
-                if(bookmark.isValid()){
-                    all.add(bookmark)
+                if(newBookmark.isValid()){
+                    result.add(newBookmark)
                 }else{
-                    log.error "findBookmarksByFolderId(): found corrupt bookmark: "+bookmark
+                    log.error "findBookmarksByFolderId(): found corrupt bookmark: "+newBookmark
                 }
             }
         }
-        return all
+        return result
     }
 
     /**
