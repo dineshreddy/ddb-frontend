@@ -97,7 +97,7 @@ limitations under the License.
                   </div>
                   <div class="row spacer-vertical">
                     <div class="span4">
-                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbnext.Register" /></g:link>
+                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbcommon.Register" /></g:link>
                     </div>
                   </div>
                   <div class="row">

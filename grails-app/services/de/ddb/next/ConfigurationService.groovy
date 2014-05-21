@@ -89,18 +89,6 @@ class ConfigurationService {
         return commonConfigurationService.getConfigValue("ddb.apikey.terms.url")
     }
 
-    public String getRegistrationInfoUrl(){
-        return commonConfigurationService.getConfigValue("ddb.registration.info.url")
-    }
-
-    public String getAccountTermsUrl(){
-        return commonConfigurationService.getConfigValue("ddb.account.terms.url")
-    }
-
-    public String getAccountPrivacyUrl(){
-        return commonConfigurationService.getConfigValue("ddb.account.privacy.url")
-    }
-
     public String getEncoding(){
         return commonConfigurationService.getConfigValue("grails.views.gsp.encoding")
     }
@@ -229,9 +217,9 @@ class ConfigurationService {
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
-        log.info "ddb.registration.info.url = " + getRegistrationInfoUrl()
-        log.info "ddb.account.terms.url = " + getAccountTermsUrl()
-        log.info "ddb.account.privacy.url = " + getAccountPrivacyUrl()
+        log.info "ddb.registration.info.url = " + commonConfigurationService.getRegistrationInfoUrl()
+        log.info "ddb.account.terms.url = " + commonConfigurationService.getAccountTermsUrl()
+        log.info "ddb.account.privacy.url = " + commonConfigurationService.getAccountPrivacyUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "-------------------------------------------------------"

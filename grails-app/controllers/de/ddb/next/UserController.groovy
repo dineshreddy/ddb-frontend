@@ -244,11 +244,12 @@ class UserController {
 
     private def getRegistrationUrls() {
         return [
-            registrationInfoUrl: commonConfigurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
-            accountTermsUrl: commonConfigurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
-            accountPrivacyUrl: commonConfigurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
+            registrationInfoUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getRegistrationInfoUrl(),
+            accountTermsUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getAccountPrivacyUrl()
         ]
     }
+
     def registration() {
         log.info "registration()"
         render(view: "registration", model: getRegistrationUrls())
@@ -271,11 +272,11 @@ class UserController {
                 log.error "Conflict: user with given data already exists. username:" + params.username + ",email:" + params.email, e
                 String conflictField = e.getMessage().replaceFirst(".*?'(.*?)'.*", "\$1")
                 if (params.username.equals(conflictField)) {
-                    errors.add("ddbnext.Conflict_User_Name")
+                    errors.add("ddbcommon.Conflict_User_Name")
                 } else if (params.email.equals(conflictField)) {
-                    errors.add("ddbnext.Conflict_User_Email")
+                    errors.add("ddbcommon.Conflict_User_Email")
                 } else {
-                    errors.add("ddbnext.Conflict_User_Common")
+                    errors.add("ddbcommon.Conflict_User_Common")
                 }
                 render(view: "registration" , model: [errors: errors, messages: messages, params: params] << getRegistrationUrls())
             }
@@ -450,8 +451,8 @@ class UserController {
                     try {
                         //update email in aas
                         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-                        def template = messageSource.getMessage("ddbcommon.User.Email_Update_Mailtext", null, locale)
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
+                        def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, commonConfigurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbcommon.User.Email_Update_Success")
                     } catch (ConflictException e) {
                         user.setEmail(params.email)

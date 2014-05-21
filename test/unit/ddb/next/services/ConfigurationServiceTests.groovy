@@ -82,12 +82,16 @@ class ConfigurationServiceTests {
         stringConfigTest("ddb.apikey.terms.url", { it.getApiKeyTermsUrl() })
     }
 
+    void testGetRegistrationInfoUrl_Complete() {
+        stringConfigTest("ddb.registration.info.url", { it.commonConfigurationService.getRegistrationInfoUrl() })
+    }
+
     void testGetAccountTermsUrl_Complete() {
-        stringConfigTest("ddb.account.terms.url", { it.getAccountTermsUrl() })
+        stringConfigTest("ddb.account.terms.url", { it.commonConfigurationService.getAccountTermsUrl() })
     }
 
     void testGetAccountPrivacyUrl_Complete() {
-        stringConfigTest("ddb.account.privacy.url", { it.getAccountPrivacyUrl() })
+        stringConfigTest("ddb.account.privacy.url", { it.commonConfigurationService.getAccountPrivacyUrl() })
     }
 
     void testGetEncoding_Complete() {
