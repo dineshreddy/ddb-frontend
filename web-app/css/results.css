@@ -1278,6 +1278,11 @@ color: #a5003b;
   display: none;
 }
 
+.paginator-options-overlay .results-paginator-options{
+  border-bottom:none;
+  padding-left:0;
+}
+
 .paginator-options-overlay .paginator-options-container {
   background: #fff;
   padding: 15px;
