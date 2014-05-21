@@ -242,6 +242,7 @@ class BookmarksService {
         if(!(it._source.description instanceof JSONNull) && (it._source.description != null)){
             description = it._source.description
         }
+
         def createdAt = 0
         if(it._source.createdAt && !(it._source.createdAt instanceof JSONNull) && (it._source.createdAt != null)){
             createdAt = it._source.createdAt
@@ -278,59 +279,35 @@ class BookmarksService {
     List<Bookmark> findBookmarksByFolderId(String userId, String folderId) {
         log.info "findBookmarksByFolderId(): find bookmarks for the user (${userId}) in the folder ${folderId}"
 
-        List<Bookmark> result = []
+        List<Bookmark> all = []
+
         def query = ["q":"\"${userId}\" AND folder:\"${folderId}\"".encodeAsURL(), "size":"${DEFAULT_SIZE}"]
         ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getElasticSearchUrl(), "/ddb/bookmark/_search", false, query, [:], true)
 
         if(apiResponse.isOk()){
             def response = apiResponse.getResponse()
-            def bookmarks = response.hits.hits
 
-            // first use bookmark list in folder to order the bookmarks
-            def bookmarkIdsInFolder = findFolderById(folderId)?.bookmarks
-
-            bookmarkIdsInFolder.each {bookmarkIdInFolder ->
-                def bookmark = bookmarks.find {it._id == bookmarkIdInFolder}
-                if (bookmark) {
-                    def newBookmark = new Bookmark(
-                            bookmark._id,
-                            bookmark._source.user,
-                            bookmark._source.item,
-                            bookmark._source.createdAt,
-                            bookmark._source.type as Type,
-                            bookmark._source.folder as List,
-                            bookmark._source.description,
-                            bookmark._source.updatedAt
-                            )
-                    bookmarks.remove(bookmark)
-                    if(newBookmark.isValid()){
-                        result.add(newBookmark)
-                    }else{
-                        log.error "findBookmarksByFolderId(): found corrupt bookmark: "+newBookmark
-                    }
-                }
-            }
-
-            // second add all bookmarks which are not present in bookmark list of the folder at the end
-            bookmarks.each {bookmark ->
-                def newBookmark = new Bookmark(
-                        bookmark._id,
-                        bookmark._source.user,
-                        bookmark._source.item,
-                        bookmark._source.createdAt,
-                        bookmark._source.type as Type,
-                        bookmark._source.folder as List,
-                        bookmark._source.description,
-                        bookmark._source.updatedAt
+            def resultList = response.hits.hits
+            resultList.each { it ->
+                def bookmark = new Bookmark(
+                        it._id,
+                        it._source.user,
+                        it._source.item,
+                        it._source.createdAt,
+                        it._source.type as Type,
+                        it._source.folder as List,
+                        it._source.description,
+                        it._source.updatedAt
                         )
-                if(newBookmark.isValid()){
-                    result.add(newBookmark)
+
+                if(bookmark.isValid()){
+                    all.add(bookmark)
                 }else{
-                    log.error "findBookmarksByFolderId(): found corrupt bookmark: "+newBookmark
+                    log.error "findBookmarksByFolderId(): found corrupt bookmark: "+bookmark
                 }
             }
         }
-        return result
+        return all
     }
 
     /**
