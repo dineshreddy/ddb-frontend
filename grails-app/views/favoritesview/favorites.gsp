@@ -222,7 +222,6 @@ limitations under the License.
                         <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
                       </span>
-                      
                     </a>
                   </g:else>
                 </span>
@@ -430,7 +429,7 @@ limitations under the License.
         <br />
         <div id="folder-edit-privacy-area">
           <div>
-            <fieldset>          
+            <fieldset>
               <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
               <label for="folder-edit-privacy-private"><g:message encodeAs="html" code="ddbnext.favorites_list_private"/></label>
               <br />
@@ -447,7 +446,7 @@ limitations under the License.
               <g:if test="${fullName}"> 
                 <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
               </g:if>
-            </select>      
+            </select>
           </div>
         </div>
       </div>

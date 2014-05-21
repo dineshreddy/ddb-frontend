@@ -60,6 +60,7 @@ class ItemService {
     private static final def AUDIOMPEG = 'audio/mpeg'
     private static final def VIDEOMP4 = 'video/mp4'
     private static final def VIDEOFLV = 'video/flv'
+    private static final def PDF= 'application/pdf'
 
     private static final def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
     private static final def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
@@ -337,7 +338,7 @@ class ItemService {
         //creation of a list of binary maps from the bi-dimensional list
         bidimensionalList.each { y ->
             def binaryMap = [
-                'orig' : ['title':'', 'uri': ['image':'','audio':'','video':''],'author':'', 'rights':''],
+                'orig' : ['title':'', 'uri': ['image':'','audio':'','video':'','pdf':''],'author':'', 'rights':''],
                 'preview' : ['title':'', 'uri':'', 'author':'', 'rights':''],
                 'thumbnail' : ['title':'', 'uri':'','author':'', 'rights':''],
                 'full' : ['title':'', 'uri':'','author':'', 'rights':''],
@@ -366,6 +367,12 @@ class ItemService {
                         binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                    }
+                    else if(type.contains(PDF)){
+                        binaryMap.'orig'.'uri'.'pdf' = BINARY_SERVER_URI + z.'@path'
+                        htmlStrip = z.'@name'
+                        binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                        println(binaryMap.'orig'.'uri'.'pdf')
                     }
                     binaryMap.'orig'.'author'= z.'@name2'
                     binaryMap.'orig'.'rights'= z.'@name3'

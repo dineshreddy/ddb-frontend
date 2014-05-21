@@ -48,9 +48,9 @@ limitations under the License.
                 </g:if>
                 <g:else>
                   <div class="viewer-icon">
-                    <a class="show-lightbox" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}"></a>
+                    <a class="<g:if test="${it.orig.uri.pdf == ''}">show-lightbox</g:if><g:else>show-pdf</g:else>" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}"></a>
                   </div>
-                  <a class="previews" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}">
+                  <a class="<g:if test="${it.orig.uri.pdf == ''}">previews</g:if><g:else>pdf-previews</g:else>" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}">
                     <img src="${viewerContent}" alt="${(it.preview.title)}" />
                   </a>
                 </g:else>
@@ -233,7 +233,7 @@ limitations under the License.
     <div role="tablist" class="${display}">
       <p class="tab audios ${display}" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
     </div>
-    <div class="scroller audios" role="tabpanel">
+    <div class="scroller audios ${display}" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
         <g:each in="${binaryList}">
           <g:if test="${it.orig.uri.audio != '' }">
