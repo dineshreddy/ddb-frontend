@@ -23,19 +23,21 @@
   margin: 0px;
   padding: 0px;
   display: block;
+  line-height: 22px;
+  text-align: right;
 }
 
 .socialmedia .social-locked ul li {
   margin: 0px;
-  width: 20px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   display: inline-block;
   cursor: pointer;
 }
 
 .socialmedia ul li i {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   line-height: 20px;
   background-repeat: no-repeat;
   display: inline-block;
@@ -67,15 +69,15 @@
 }
 
 .socialmedia .social-locked .icon-facebook {
-  background: url(../images/icons/socialMedia.png) no-repeat 0 0px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -240px;
 }
 
 .socialmedia .social-locked .icon-twitter {
-  background: url(../images/icons/socialMedia.png) no-repeat 0 -50px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -265px;
 }
 
 .socialmedia .social-locked .icon-googleplus {
-  background: url(../images/icons/socialMedia.png) no-repeat 0 -25px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -290px;
 }
 
 .socialmedia .social-open {
@@ -87,6 +89,7 @@
   margin: 0px;
   height: 25px;
   vertical-align: top;
+  margin-top: 5px;
 }
 
 @media (min-width: 767px) {
@@ -124,7 +127,7 @@
 
 .socialmedia .social-open .icon-lockagain {
   cursor: pointer;
-  background: url(../images/icons/socialMedia.png) no-repeat 0 -72px;
+  background: url(../images/icons/socialMedia.png) no-repeat 2px -74px;
 }
 
 
