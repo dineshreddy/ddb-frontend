@@ -351,36 +351,8 @@ class FavoritesviewController {
 
     private def orderFavorites(def parameters) {
         def favorites
-        def urlsForOrder = [
-            desc : "#",
-            asc : g.createLink(
-            controller : CONTROLLER_NAME,
-            action : parameters.action,
-            params : [
-                offset : parameters.offset,
-                rows : parameters.rows,
-                order : ORDER_ASC,
-                by : ORDER_BY_DATE,
-                userId : parameters.userId,
-                folderId: parameters.folderId
-            ]
-            )
-        ]
-        def urlsForOrderTitle = [
-            desc : "#",
-            asc : g.createLink(
-            controller : CONTROLLER_NAME,
-            action : parameters.action,
-            params : [
-                offset : parameters.offset,
-                rows : parameters.rows,
-                order : ORDER_ASC,
-                by : ORDER_BY_TITLE,
-                userId : parameters.userId,
-                folderId : parameters.folderId
-            ]
-            )
-        ]
+        def urlsForOrder = [:]
+        def urlsForOrderTitle = [:]
         if (parameters.order == ORDER_ASC) {
             if (parameters.by == ORDER_BY_DATE) {
                 favorites = parameters.favorites.sort{ a, b ->
@@ -449,7 +421,7 @@ class FavoritesviewController {
                         params : [
                             offset : parameters.offset,
                             rows : parameters.rows,
-                            order : ORDER_DESC,
+                            order : ORDER_ASC,
                             by : ORDER_BY_DATE,
                             userId : parameters.userId,
                             folderId : parameters.folderId
@@ -473,25 +445,25 @@ class FavoritesviewController {
                 favorites = parameters.favorites.sort{ a, b ->
                     b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
                 }
-                urlsForOrder["desc"] = g.createLink(
+                urlsForOrder["asc"] = g.createLink(
                         controller : CONTROLLER_NAME,
                         action : parameters.action,
                         params : [
                             offset : parameters.offset,
                             rows : parameters.rows,
-                            order : ORDER_DESC,
+                            order : ORDER_ASC,
                             by : ORDER_BY_DATE,
                             userId : parameters.userId,
                             folderId : parameters.folderId
                         ]
                         )
-                urlsForOrderTitle["desc"] = g.createLink(
+                urlsForOrderTitle["asc"] = g.createLink(
                         controller : CONTROLLER_NAME,
                         action : parameters.action,
                         params : [
                             offset : parameters.offset,
                             rows : parameters.rows,
-                            order : ORDER_DESC,
+                            order : ORDER_ASC,
                             by : ORDER_BY_TITLE,
                             userId : parameters.userId,
                             folderId : parameters.folderId
