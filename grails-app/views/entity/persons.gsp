@@ -49,7 +49,7 @@ limitations under the License.
     </div>
   </div>
   <div class="row">
-    <div class="span3 noleftMargin correctleftMargin30 persons-font">
+    <div class="span3 persons-font">
       <p>
         <g:message code="ddbnext.entities.personspage.description" />
       </p>
