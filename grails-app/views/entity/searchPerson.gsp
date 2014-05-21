@@ -19,7 +19,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 <g:set var="nonJsFacetsList" value="${[]}"></g:set>
 <g:set var="jsFacetsList"
-  value="${[EntityFacetEnum.PERSON_GENDER.getName(),EntityFacetEnum.PERSON_NAME.getName(),EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName()]}"></g:set>
+  value="${[EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]}"></g:set>
 <html>
 <head>
 <title>
