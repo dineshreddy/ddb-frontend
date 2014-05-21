@@ -48,9 +48,9 @@ limitations under the License.
                 </g:if>
                 <g:else>
                   <div class="viewer-icon">
-                    <a class="<g:if test="${it.orig.uri.pdf == ''}">show-lightbox</g:if><g:else>show-pdf</g:else>" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}"></a>
+                    <a class="<g:if test="${it.orig.uri.pdf == ''}">show-lightbox</g:if><g:else>show-pdf</g:else>" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>></a>
                   </div>
-                  <a class="<g:if test="${it.orig.uri.pdf == ''}">previews</g:if><g:else>pdf-previews</g:else>" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}">
+                  <a class="<g:if test="${it.orig.uri.pdf == ''}">previews</g:if><g:else>pdf-previews</g:else>" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>>
                     <img src="${viewerContent}" alt="${(it.preview.title)}" />
                   </a>
                 </g:else>
