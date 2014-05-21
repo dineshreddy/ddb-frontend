@@ -32,7 +32,7 @@ limitations under the License.
           <g:message code="ddbnext.entities.personspage.personspageheader" />
         </h1>
       </div>
-      <div class="row features-bar">
+      <div class="row features-bar span5">
         <div class="span2">
         <div class="link-block">
           <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"
@@ -41,7 +41,7 @@ limitations under the License.
           </a>
         </div>
         </div>
-        <div class="span1">
+        <div class="span2">
             <ddb:getSocialmediaBody />
         </div>
       </div>
@@ -60,13 +60,13 @@ limitations under the License.
         <g:message code="ddbnext.entities.personspage.licenceInfo" />
       </p>
     </div>
-    <div class="span-imgcontainer search-results-content">
+    <div class="span9 search-results-content">
 
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
             <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" title=" ${person.preferredName}"> <img
-              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="130px" />"></a>
+              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="150px" />"></a>
             <p>
               <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" alt=" ${person.preferredName}"> ${person.preferredName}
               </a>
