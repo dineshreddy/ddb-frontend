@@ -352,7 +352,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results-content .search-results .entity {
   background-color: #EFEBE8;
-  margin: 5px 0;
   padding: 10px 0 0 0;
   position: relative;
 }
@@ -386,10 +385,6 @@ input[type="checkbox"],input[type="radio"] {
   position: relative;
   top: 50px;
   left: 45%;
-}
-
-.search-results .entity-list {
-  margin: 15px 0 0 0;
 }
 
 .search-results .results-list .title {
