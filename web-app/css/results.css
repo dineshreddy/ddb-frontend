@@ -1097,7 +1097,7 @@ input[type="checkbox"],input[type="radio"] {
 /* responsive - end */
 
 .searchSuggestion{
- padding-top:25px;
+ padding-top:10px;
  padding-bottom:10px;
 }
 .searchSuggestion a {
