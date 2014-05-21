@@ -40,11 +40,9 @@ class Folder {
     def creationDateFormatted = null
     def oldestItemMetaData = null
 
-
-
-    public Folder(String folderId, String userId, String title, String description, boolean isPublic,
-    String publishingName, boolean isBlocked, String blockingToken, List bookmarks, long creationDateAsLong,
-    long updateDateAsLong) {
+    public Folder(String folderId, String userId, String title, String description, Boolean isPublic,
+    String publishingName, Boolean isBlocked, String blockingToken, List bookmarks, Long creationDateAsLong,
+    Long updateDateAsLong) {
         Date now = new Date()
 
         this.folderId = folderId
