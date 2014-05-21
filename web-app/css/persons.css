@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.personEntities {
-  margin-left:  0px;
+.person-entities {
+  margin-left: 0px;
 }
-.persons-results{
- float: right;
- padding-right: 45px;
- height:70px;
- overflow:hidden;
+
+.persons-results {
+  float: right;
+  padding-right: 45px;
+  height: 70px;
+  overflow: hidden;
 }
+
 .noleftMargin {
   margin-left: 0px
 }
 
 .features-bar {
   padding-top: 25px;
-  float:right;
+  float: right;
+  text-align: right;
 }
 
 .correctleftMargin30 {
@@ -40,12 +43,15 @@
   font-size: 13px;
   color: #3e3a37;
 }
+
 .pin {
   width: 150px;
 }
+
 .pin img {
-  margin-bottom:3px;
+  margin-bottom: 3px;
 }
+
 .pin p {
   font: 12px/18px Arial, sans-serif;
   color: #333;

@@ -25,25 +25,19 @@ limitations under the License.
 <body>
   <div id="var-to-js" data-random-seed="${randomSeed}" data-pgTitle="${title}" />
 
-  <div class="span12 personEntities bb">
+  <div class="span12 person-entities bb">
     <div class="row ">
       <div class="span3">
         <h1>
           <g:message code="ddbnext.entities.personspage.personspageheader" />
         </h1>
       </div>
-      <div class="row features-bar span5">
-        <div class="span2">
-        <div class="link-block">
+      <div class="row features-bar span9 link-block">
           <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"
             title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />"> <span><g:message encodeAs="html"
                 code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
           </a>
-        </div>
-        </div>
-        <div class="span2">
-            <ddb:getSocialmediaBody />
-        </div>
+          <ddb:getSocialmediaBody />
       </div>
 
     </div>
