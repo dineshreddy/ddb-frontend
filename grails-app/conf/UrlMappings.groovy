@@ -120,11 +120,6 @@ class UrlMappings {
             action="getFavoriteFolders"
         }
 
-        "/apis/favorites/folders/$folderId/$id/$reqObjectType" {
-            controller="favorites"
-            action=[POST: "addFavorite"]
-        }
-
         "/apis/favorites/folder/create" {
             controller="favorites"
             action="createFavoritesFolder"

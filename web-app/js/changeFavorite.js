@@ -71,9 +71,9 @@ function addToFavorites(jElemFavorite, data,objectType) {
         $("#addToFavoritesConfirm").click(
             function() {
               $("#favorite-confirmation").modal("hide");
-              console.log($("#favorite-folders").val());
               $.each($("#favorite-folders").val(), function(index, value) {
-                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId+"/"+objectType);
+                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
+                  objectType);
               });
 
               $("#idFavorite").parent().parent().attr('title',
