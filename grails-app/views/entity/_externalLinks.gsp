@@ -20,7 +20,7 @@ limitations under the License.
       <ddb:isValidUrl url="${link.'@id'}">
 	      <li class="external-link">
 	        <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
-            <g:if test="${!(link.publisher.icon instanceof net.sf.json.JSONNull)}">
+            <g:if test="${link.publisher.icon && !(link.publisher.icon instanceof net.sf.json.JSONNull)}">
               <i class="external-icon"><img src="${link.publisher.icon}" alt="" /></i>
               <span>${link.publisher.name}</span>
             </g:if>
