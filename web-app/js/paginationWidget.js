@@ -19,27 +19,27 @@ de.ddb.next.PaginationWidget = function() {
 };
 
 $.extend(de.ddb.next.PaginationWidget.prototype, {
-  
-  resultsOverallIndex: null,
-  pagesOverallIndex: null,
-  totalPages: null,
-  numberOfResults: null,
-  pageNavigators: null,
-  pageInput: null,
-  paginatorOptionsButton: null,
-  
-  nextPage: null,
-  prevPage: null,
-  firstPage: null,
-  lastPage: null,
-  
-  nextPageMobile: null,
-  prevPageMobile: null,
-  
-  extraControls: null,
-  goToPage: null,
-  
-  init: function(){
+
+  resultsOverallIndex : null,
+  pagesOverallIndex : null,
+  totalPages : null,
+  numberOfResults : null,
+  pageNavigators : null,
+  pageInput : null,
+  paginatorOptionsButton : null,
+
+  nextPage : null,
+  prevPage : null,
+  firstPage : null,
+  lastPage : null,
+
+  nextPageMobile : null,
+  prevPageMobile : null,
+
+  extraControls : null,
+  goToPage : null,
+
+  init : function() {
     this.resultsOverallIndex = $('.results-overall-index');
     this.pagesOverallIndex = $('.page-nav .pages-overall-index');
     this.pageNavigators = $('.page-nav-result');
@@ -52,145 +52,143 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.paginatorOptionsButton = $('.paginator-options-button');
     this.numberOfResults = $('.total-results');
     this.numberOfResultsLabel = $('.total-results-label');
-    
+
     this.nextPageMobile = $('.page-nav-mob .next-page');
     this.prevPageMobile = $('.page-nav-mob .prev-page');
-    
+
     this.extraControls = $('.extra-controls');
     this.goToPage = $('.go-to-page');
   },
-  
-  resetNavigationElements: function(JSONresponse){
-    
+
+  resetNavigationElements : function(JSONresponse) {
+
     this.totalPages.html(JSONresponse.totalPages);
-    
+
     this.numberOfResults.html(JSONresponse.numberOfResults);
-    
+
     if (JSONresponse.numberOfResults == "1") {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
     } else {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Results);
     }
-    
-    //Next/Last-page button
+
+    // Next/Last-page button
     if (JSONresponse.paginationURL.nextPg) {
       this.nextPage.removeClass('off');
       this.lastPage.removeClass('off');
-      
+
       this.nextPage.find('a').attr('href', JSONresponse.paginationURL.nextPg);
       this.lastPage.find('a').attr('href', JSONresponse.paginationURL.lastPg);
-      
-      //Mobile
+
+      // Mobile
       this.nextPageMobile.find('a').removeClass('off');
       this.nextPageMobile.find('.disabled-arrow').addClass('off');
-      
+
       this.nextPageMobile.find('a').attr('href', JSONresponse.paginationURL.nextPg);
-    }else{
+    } else {
       this.nextPage.addClass('off');
       this.lastPage.addClass('off');
-      
-      //Mobile
+
+      // Mobile
       this.nextPageMobile.find('a').addClass('off');
       this.nextPageMobile.find('.disabled-arrow').removeClass('off');
     }
-    
-    //Prev/First-page button
+
+    // Prev/First-page button
     if (JSONresponse.paginationURL.firstPg) {
       this.prevPage.removeClass('off');
       this.firstPage.removeClass('off');
-      
+
       this.prevPage.find('a').attr('href', JSONresponse.paginationURL.prevPg);
       this.firstPage.find('a').attr('href', JSONresponse.paginationURL.firstPg);
-      
-      //Mobile
+
+      // Mobile
       this.prevPageMobile.find('a').removeClass('off');
       this.prevPageMobile.find('.disabled-arrow').addClass('off');
-      
+
       this.prevPageMobile.find('a').attr('href', JSONresponse.paginationURL.prevPg);
-    }else{
+    } else {
       this.prevPage.addClass('off');
       this.firstPage.addClass('off');
-      
-      //Mobile
+
+      // Mobile
       this.prevPageMobile.find('a').addClass('off');
       this.prevPageMobile.find('.disabled-arrow').removeClass('off');
     }
-    
-    //Setting pages
-    if(JSONresponse.paginationURL.pages){
-      $.each(this.pagesOverallIndex, function(){
-        
+
+    // Setting pages
+    if (JSONresponse.paginationURL.pages) {
+      $.each(this.pagesOverallIndex, function() {
+
         var spanContainer = $(this).find('span')
-        
-        $(this).find('a').each(function(){
+
+        $(this).find('a').each(function() {
           $(this).remove();
         });
-        
-        $.each(JSONresponse.paginationURL.pages, function(){
+
+        $.each(JSONresponse.paginationURL.pages, function() {
           var tmpAnchor = $(document.createElement('a'));
           tmpAnchor.addClass('page-nav-result');
           tmpAnchor.html(this.pageNumber);
-          if(this.active){
+          if (this.active) {
             tmpAnchor.addClass('active');
-          }
-          else{
+          } else {
             tmpAnchor.attr('href', this.url);
           }
           spanContainer.append(tmpAnchor);
         });
       });
     }
-    
-    //Showing extra arrow
-    if(JSONresponse.totalPages.replace('.','') > 5){
+
+    // Showing extra arrow
+    if (JSONresponse.totalPages.replace('.', '') > 5) {
       this.extraControls.removeClass('off');
-    }else{
+    } else {
       this.extraControls.addClass('off');
     }
-    
+
   },
-  
-  setNavigatorsClickHandler: function(clickHandler){
-    this.pageNavigators.click(function(){
+
+  setNavigatorsClickHandler : function(clickHandler) {
+    this.pageNavigators.click(function() {
       clickHandler($(this));
       return false;
     });
   },
-  
-  setPageInputKeyupHandler: function(keyupHandler){
+
+  setPageInputKeyupHandler : function(keyupHandler) {
     var currObjInstance = this;
-    this.pageInput.keyup(function(e){
+    this.pageInput.keyup(function(e) {
       keyupHandler(e, this);
     });
-    
+
     var enterButtonEvent = jQuery.Event("keyup");
     enterButtonEvent.keyCode = 13;
-    this.goToPage.click(function(){
+    this.goToPage.click(function() {
       currObjInstance.pageInput.trigger(enterButtonEvent);
     });
   },
-  
-  setPaginatorOptionsHandlers: function(applyButtonHandler){
+
+  setPaginatorOptionsHandlers : function(applyButtonHandler) {
     var paginatorOptionsOverlay = this.paginatorOptionsButton.parent().find('.paginator-options-overlay');
     var paginatorOptionsCloseButton = paginatorOptionsOverlay.find('.close-overlay');
     var paginatorOptionsSortSelect = paginatorOptionsOverlay.find('.sort-results-switch select');
     var paginatorOptionsRowsSelect = paginatorOptionsOverlay.find('.page-filter select');
     var paginatorOptionsApplyButton = paginatorOptionsOverlay.find('.paginator-options-footer .button');
-    
-    this.paginatorOptionsButton.click(function(){
+
+    this.paginatorOptionsButton.click(function() {
       paginatorOptionsOverlay.fadeIn('fast');
     });
-    
-    paginatorOptionsCloseButton.click(function(e){
+
+    paginatorOptionsCloseButton.click(function(e) {
       e.preventDefault();
       paginatorOptionsOverlay.fadeOut('fast');
       return false;
     });
-    
-    paginatorOptionsApplyButton.click(function(){
+
+    paginatorOptionsApplyButton.click(function() {
       applyButtonHandler(paginatorOptionsSortSelect, paginatorOptionsRowsSelect, paginatorOptionsCloseButton);
     });
   }
-  
-  
+
 });
