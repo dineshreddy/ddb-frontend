@@ -146,7 +146,8 @@ de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
     searchParameters = searchParameters.replace(/\\"/g, '"');
     var json = $.parseJSON(searchParameters);
-    json[paramName] = null;
+    //deletes the attribute from the JSON
+    delete json[paramName];
     document.cookie = "searchParameters" + jsContextPath + "=\""
         + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
   }
