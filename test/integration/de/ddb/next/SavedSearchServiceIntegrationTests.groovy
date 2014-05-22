@@ -6,6 +6,8 @@ import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
+import de.ddb.common.constants.Type
+
 
 @TestMixin(IntegrationTestMixin)
 class SavedSearchServiceIntegrationTests {
@@ -54,7 +56,7 @@ class SavedSearchServiceIntegrationTests {
 
         def queryString = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
 
-        def savedSearchId = savedSearchService.saveSearch(userId, queryString)
+        def savedSearchId = savedSearchService.saveSearch(userId, queryString, Type.CULTURAL_ITEM)
         log.info "id: ${savedSearchId}"
         assert savedSearchId  != null
     }
@@ -65,7 +67,8 @@ class SavedSearchServiceIntegrationTests {
 
         def queryString = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
 
-        def savedSearchId = savedSearchService.saveSearch(userId, queryString, 'Goethe Related', 'All things related to Goethe')
+        def savedSearchId = savedSearchService.saveSearch(userId, queryString, 'Goethe Related',
+            'All things related to Goethe', Type.CULTURAL_ITEM)
         log.info "id: ${savedSearchId}"
         assert savedSearchId  != null
     }
@@ -75,11 +78,13 @@ class SavedSearchServiceIntegrationTests {
         log.info "should find all saved searches by user ID"
 
         def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
+        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related',
+            'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related')
+        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
+            Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
         def results = savedSearchService.findSavedSearchByUserId(userId)
@@ -91,11 +96,13 @@ class SavedSearchServiceIntegrationTests {
         log.info "should delete saved search by IDs"
 
         def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
+        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe ,
+            'Goethe Related', 'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related')
+        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
+            Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
 
@@ -114,11 +121,13 @@ class SavedSearchServiceIntegrationTests {
     @Test
     void shouldDeleteSavedSearchesByUserId() {
         def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related', 'All things related to Goethe')
+        def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related',
+            'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
-        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related')
+        def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
+            Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
 
