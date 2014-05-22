@@ -18,6 +18,7 @@ package de.ddb.next.beans
 import groovy.transform.ToString
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.Type
 
 @ToString(includeNames=true)
 
@@ -27,13 +28,15 @@ class SavedSearch {
     String id
     String label
     String queryString
+    Type type
     Date creationDate
     final Map<String, Collection<SearchQueryTerm>> queryMap
 
-    public SavedSearch(String id, String label, String queryString, Date creationDate) {
+    public SavedSearch(String id, String label, String queryString, Type type, Date creationDate) {
         this.id = id
         this.label = label
         this.queryString = queryString
+        this.type = type
         this.creationDate = creationDate
         queryMap = toMap(queryString)
     }

@@ -20,6 +20,7 @@ import groovy.json.*
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.constants.Type
 
 /**
  * @author chh
@@ -32,13 +33,14 @@ class SavedSearchService {
     def configurationService
     def transactional = false
 
-    def saveSearch(userId, queryString, title = null, description = null) {
+    def saveSearch(userId, queryString, title = null, description = null, Type type) {
         log.info "saveSearch()"
         def postBody = [
             user: userId,
             queryString: queryString,
             title: title,
             description: description,
+            type: type.getName(),
             createdAt: new Date().getTime()
         ]
 
@@ -92,6 +94,7 @@ class SavedSearchService {
                 savedSearch['title'] = it._source.title
                 savedSearch['description'] = it._source.description
                 savedSearch['queryString'] = it._source.queryString
+                savedSearch['type'] = it._source.type
                 savedSearch['createdAt'] = it._source.createdAt
 
                 all.add(savedSearch)
@@ -140,6 +143,7 @@ class SavedSearchService {
             queryString: oldValue._source.queryString.class != JSONNull ? oldValue._source.queryString : null,
             title: title,
             description: oldValue._source.description.class != JSONNull ? oldValue._source.description : null,
+            type: oldValue._source.type.class != JSONNull ? oldValue._source.type : null,
             createdAt: oldValue._source.createdAt.class != JSONNull ? oldValue._source.createdAt : null
         ]
         def ApiResponse apiResponse = ApiConsumer.putJson(configurationService.getElasticSearchUrl(), "/ddb/savedSearch/" +

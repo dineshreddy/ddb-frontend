@@ -21,6 +21,7 @@ import org.codehaus.groovy.grails.web.json.*
 
 import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.Type
 import de.ddb.next.beans.SavedSearch
 
 class SavedSearchesService {
@@ -29,8 +30,8 @@ class SavedSearchesService {
     def sessionService
     def grailsApplication
 
-    def boolean addSavedSearch(String userId, String title, String queryString) {
-        return savedSearchService.saveSearch(userId, reviseQueryString(queryString), title)
+    def boolean addSavedSearch(String userId, String title, String queryString, Type type) {
+        return savedSearchService.saveSearch(userId, reviseQueryString(queryString), title, null, type)
     }
 
     def boolean deleteSavedSearches(ids) {
@@ -65,6 +66,7 @@ class SavedSearchesService {
             result.add(new SavedSearch(savedSearch.id,
                     savedSearch.title.class != JSONNull ? savedSearch.title : "",
                     savedSearch.queryString,
+                    Type.valueOfName(savedSearch.type),
                     new Date(savedSearch.createdAt)))
         }
         return result
