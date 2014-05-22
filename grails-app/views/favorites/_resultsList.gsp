@@ -35,7 +35,7 @@ limitations under the License.
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
           </g:if>
           <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${folderId}">
-            <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" disabled="<g:if test="${!it.orderNumber}">disabled</g:if>">
+            <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${it.orderNumber == null}">disabled</g:if>>
             <div class="rank-arrows">
                 <div class="up bb">+</div>
                 <div class="down">-</div>
