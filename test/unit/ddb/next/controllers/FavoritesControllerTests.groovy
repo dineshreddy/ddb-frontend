@@ -54,6 +54,6 @@ class FavoritesControllerTests {
 
     private def createFolder(String title) {
         def now = System.currentTimeMillis()
-        return new Folder("folder id", "user", title, null, false, null, false, null, now, now)
+        return new Folder("folder id", "user", title, null, false, null, false, null, null, now, now)
     }
 }

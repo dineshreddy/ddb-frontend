@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import java.util.List;
+import java.util.List
 
 import grails.converters.JSON
 
@@ -99,8 +99,10 @@ class FavoritesController {
                         bookmarksToDelete = bookmarksService.findBookmarkedItemsInFolder(user.getId(), itemIds, null)
                         bookmarksToDelete.each { b ->
                             b.folders.each { f ->
-                                Folder folder = bookmarksService.findFolderById(f)
-                                affectedFolders.add(folder)
+                                if (!JsonUtil.isAnyNull(f)) {
+                                    Folder folder = bookmarksService.findFolderById(f)
+                                    affectedFolders.add(folder)
+                                }
                             }
                         }
 
@@ -122,7 +124,7 @@ class FavoritesController {
                             def bookmarkCount = bookmarksService.countBookmarksInFolder(user.getId(), folder.folderId)
                             if (bookmarkCount == 0) {
                                 folder.isPublic = false
-                                bookmarksService.updateFolder(folder);
+                                bookmarksService.updateFolder(folder)
                                 flash.message = "ddbnext.folder_empty_set_to_private"
                             }
                         }
@@ -248,6 +250,7 @@ class FavoritesController {
                     publishingName,
                     false,
                     "",
+                    null,
                     now,
                     now)
             String newFolderId = bookmarksService.createFolder(newFolder)
@@ -381,52 +384,24 @@ class FavoritesController {
     }
 
     def addFavorite() {
-        log.info "addFavorite " + params.id
-        long timestampStart = System.currentTimeMillis() // This is because of the slow request: See DDBNEXT-932
-        def itemId = params.id
+        log.info "addFavorite " + params.folderId + "," + params.id + "," + params.reqObjectType
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
         if (user != null) {
-            Bookmark newBookmark = new Bookmark(
-                    null,
-                    user.getId(),
-                    itemId,
-                    new Date().getTime(),
-                    (params.reqObjectType?.equalsIgnoreCase("entity") ? Type.ENTITY : Type.CULTURAL_ITEM),
-                    null,
-                    "",
-                    new Date().getTime())
-            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
-            if (newBookmarkId) {
-                result = response.SC_CREATED
+            Type bookmarkType = Type.CULTURAL_ITEM
+            if (params.reqObjectType?.equalsIgnoreCase("entity")) {
+                bookmarkType = Type.ENTITY
             }
-        } else {
-            result = response.SC_UNAUTHORIZED
-        }
-        log.info "addFavorite returns " + result
-        long timestampStop = System.currentTimeMillis()
-        log.info "addFavorite duration: "+(timestampStop-timestampStart)/1000 // This is because of the slow request: See DDBNEXT-932
-        render(status: result)
-    }
-
-
-
-    def addFavoriteToFolder() {
-        log.info "addFavoriteToFolder " + params.folderId + "," + params.itemId
-        def type = Type.CULTURAL_ITEM
-        if (params.objectType && params.objectType=="entity") {
-            type=Type.ENTITY
-        }
-        def result = response.SC_BAD_REQUEST
-        def User user = userService.getUserFromSession()
-        if (user != null) {
+            else if (params.reqObjectType?.equalsIgnoreCase("institution")) {
+                bookmarkType = Type.INSTITUTION
+            }
             Bookmark newBookmark = new Bookmark(
                     null,
                     user.getId(),
-                    params.itemId,
+                    params.id,
                     new Date().getTime(),
-                    type,
-                    [params.folderId],
+                    bookmarkType,
+                    params.folderId ? [params.folderId]: null,
                     "",
                     new Date().getTime())
             String newBookmarkId = bookmarksService.createBookmark(newBookmark)
@@ -436,10 +411,9 @@ class FavoritesController {
         } else {
             result = response.SC_UNAUTHORIZED
         }
-        log.info "addFavoriteToFolder returns " + result
+        log.info "addFavorite returns " + result
         render(status: result)
     }
-
 
     def editFavoritesFolder() {
         log.info "editFavoritesFolder " + request.JSON
@@ -515,6 +489,30 @@ class FavoritesController {
 
         log.info "editFavoritesFolder returns " + result
         render(status: result)
+    }
+
+    def moveFavorite() {
+        log.info "moveFavorite"
+        def User user = userService.getUserFromSession()
+        if (user != null) {
+            def folder
+            if (params.folderId) {
+                folder = bookmarksService.findFolderById(params.folderId)
+            } else {
+                folder = bookmarksService.findMainBookmarksFolder(user.id)
+            }
+            if (folder) {
+                folder.moveBookmark(params.id, params.position)
+                bookmarksService.updateFolder(folder)
+                render(status: response.SC_NO_CONTENT)
+            } else {
+                log.info "moveFavorite returns " + response.SC_NOT_FOUND
+                render(status: response.SC_NOT_FOUND)
+            }
+        } else {
+            log.info "moveFavorite returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
     }
 
     def setComment() {

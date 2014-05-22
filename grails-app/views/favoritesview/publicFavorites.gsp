@@ -172,7 +172,7 @@ limitations under the License.
                 </span>
                 <span class="favorite-dateheader"> 
                   <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
-                    <a href="${urlsForOrder["asc"].encodeAsHTML()}">
+                    <a href="${urlsForOrderDate["asc"].encodeAsHTML()}">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
@@ -185,7 +185,7 @@ limitations under the License.
                     </a>
                   </g:if> 
                   <g:else>
-                    <a href="${urlsForOrder["desc"].encodeAsHTML()}">
+                    <a href="${urlsForOrderDate["desc"].encodeAsHTML()}">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
                         <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">

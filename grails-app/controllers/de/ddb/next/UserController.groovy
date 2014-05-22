@@ -949,6 +949,7 @@ class UserController {
                     publishingName,
                     false,
                     "",
+                    null,
                     now,
                     now)
             String folderId = bookmarksService.createFolder(newFolder)

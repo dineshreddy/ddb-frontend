@@ -204,10 +204,10 @@ class BookmarksService {
 
         Calendar cal = Calendar.getInstance()
         cal.setTime(date)
-        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY));
-        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE));
-        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND));
-        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND));
+        cal.set(Calendar.HOUR_OF_DAY, cal.getActualMinimum(Calendar.HOUR_OF_DAY))
+        cal.set(Calendar.MINUTE,      cal.getActualMinimum(Calendar.MINUTE))
+        cal.set(Calendar.SECOND,      cal.getActualMinimum(Calendar.SECOND))
+        cal.set(Calendar.MILLISECOND, cal.getActualMinimum(Calendar.MILLISECOND))
 
         def timeFrom = cal.getTimeInMillis()
         def timeTo = timeFrom + 86400000
@@ -262,6 +262,7 @@ class BookmarksService {
                 it._source.publishingName,
                 it._source.isBlocked,
                 it._source.blockingToken,
+                it._source.bookmarks as List,
                 createdAt,
                 updatedAt
                 )
@@ -417,6 +418,7 @@ class BookmarksService {
         bookmark.folders.each {
             Folder folder = findFolderById(it)
             if (folder) {
+                folder.addBookmark(newBookmarkId)
                 updateFolder(folder)
             } else {
                 log.warn "Cannot find bookmark folder: " + it
@@ -481,9 +483,13 @@ class BookmarksService {
     private boolean deleteDocumentsByTypeAndIds(String userId, List<String> idList, String indexType) {
         log.info "deleteIndexTypeByIds()"
 
+        boolean isBookmark = indexType.equalsIgnoreCase("bookmark")
         def postBody = ''
         idList.each { id ->
             postBody = postBody + '{ "delete" : { "_index" : "ddb", "_type" : "' + indexType + '", "_id" : "' + id + '" } }\n'
+            if (isBookmark) {
+                deleteBookmarkFromFolder(userId, id)
+            }
         }
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/" + indexType + "/_bulk", false, postBody)
 
@@ -494,7 +500,6 @@ class BookmarksService {
             return false
         }
     }
-
 
     List<Folder> findFoldersByTitle(String userId, String title) {
         log.info "findFoldersByTitle(): finding a folder with the title ${title} for the user: ${userId}"
@@ -744,10 +749,15 @@ class BookmarksService {
         def postBody = ""
         if(folder.description) {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''", "description": "''' + newDescription + '''"}}'''
-            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
+            postBody = [doc: [title: folder.title, description: folder.description, isPublic: folder.isPublic,
+                    publishingName: folder.publishingName, isBlocked: folder.isBlocked,
+                    blockingToken: folder.blockingToken, bookmarks: folder.bookmarks,
+                    updatedAt: now.getTime()]]
         } else {
             //postBody = '''{"doc" : {"title": "''' + newTitle + '''"}}'''
-            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName, isBlocked: folder.isBlocked, blockingToken: folder.blockingToken, updatedAt: now.getTime()]]
+            postBody = [doc: [title: folder.title, isPublic: folder.isPublic, publishingName: folder.publishingName,
+                    isBlocked: folder.isBlocked, blockingToken: folder.blockingToken,
+                    bookmarks: folder.bookmarks, updatedAt: now.getTime()]]
         }
 
         ApiResponse apiResponse = ApiConsumer.postJson(configurationService.getElasticSearchUrl(), "/ddb/folder/${folder.folderId}/_update", false, postBody as JSON)
@@ -785,6 +795,39 @@ class BookmarksService {
         }
     }
 
+    /**
+     * Delete the bookmark id from the bookmark list of the folder.
+     *
+     * @param userId
+     * @param bookmarkId
+     */
+    private void deleteBookmarkFromFolder(String userId, String bookmarkId) {
+        log.info "deleteBookmarkFromFolder()"
+        Bookmark bookmark = findBookmarkById(bookmarkId)
+        if (bookmark?.folders) {
+            bookmark.folders.each {folderId ->
+                Folder folder
+                if (folderId) {
+                    folder = findFolderById(folderId)
+                }
+                else {
+                    folder = findMainBookmarksFolder(userId)
+                }
+                if (folder) {
+                    folder.deleteBookmark(bookmarkId)
+                    updateFolder(folder)
+                }
+            }
+        }
+        else {
+            Folder folder = findMainBookmarksFolder(userId)
+            if (folder) {
+                folder.deleteBookmark(bookmarkId)
+                updateFolder(folder)
+            }
+        }
+    }
+
     void deleteFolder(String folderId) {
         log.info "deleteFolder()"
 
@@ -796,6 +839,4 @@ class BookmarksService {
             elasticSearchService.refresh()
         }
     }
-
-
 }

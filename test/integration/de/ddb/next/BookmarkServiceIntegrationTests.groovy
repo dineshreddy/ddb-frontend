@@ -61,6 +61,18 @@ class BookmarkServiceIntegrationTests {
         println "Index has " + bookmarksService.getBookmarkCount() + " bookmarks"
     }
 
+    private String createBookmark(String itemId, String folderId) {
+        long now = new Date().getTime()
+        return bookmarksService.createBookmark(new Bookmark(
+        String.valueOf(now),
+        userId,
+        itemId,
+        new Date().getTime(),
+        Type.CULTURAL_ITEM,
+        [folderId],
+        "",
+        now))
+    }
 
     def createNewFolder() {
         def now = System.currentTimeMillis()
@@ -77,6 +89,7 @@ class BookmarkServiceIntegrationTests {
                 publishingName,
                 false,
                 "",
+                null,
                 now,
                 now)
         return bookmarksService.createFolder(newFolder)
@@ -138,8 +151,9 @@ class BookmarkServiceIntegrationTests {
                 "My old folder",
                 false,
                 "",
-                Calendar.getInstance().set(2000, 10, 10),
-                Calendar.getInstance().set(2000, 10, 10))
+                null,
+                0,
+                0)
         def folderId = bookmarksService.createFolder(newFolder)
         assertNotNull folderId
 
@@ -156,10 +170,7 @@ class BookmarkServiceIntegrationTests {
     @Test void shouldSaveBookmarkInFolder() {
         def folderId = createNewFolder()
         def itemId = 'foobar'
-
-        Bookmark newBookmark = new Bookmark(null, userId, itemId, new Date().getTime(), Type.CULTURAL_ITEM, [folderId], "", new Date().getTime())
-        def bookmarkId = bookmarksService.createBookmark(newBookmark)
-
+        def bookmarkId = createBookmark(itemId, folderId)
         assertNotNull bookmarkId
         log.info 'bookmark is saved, ID is: ' + bookmarkId
     }
@@ -167,8 +178,7 @@ class BookmarkServiceIntegrationTests {
     @Test void shouldFindBookmarksByFolderId() {
         def folderId = createNewFolder()
         def itemId = 'foobarbaz'
-        Bookmark newBookmark = new Bookmark(null, userId, itemId, new Date().getTime(), Type.CULTURAL_ITEM, [folderId], "", new Date().getTime())
-        def bookmarkId = bookmarksService.createBookmark(newBookmark)
+        def bookmarkId = createBookmark(itemId, folderId)
         def bookmarks = bookmarksService.findBookmarksByFolderId(userId, folderId)
         assert bookmarks.size() > 0
     }
@@ -176,9 +186,7 @@ class BookmarkServiceIntegrationTests {
     @Test void shouldFindBookmarkedItems() {
         def folderId = createNewFolder()
         def itemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
-        Bookmark newBookmark = new Bookmark(null, userId, itemId, new Date().getTime(), Type.CULTURAL_ITEM, [folderId], "", new Date().getTime())
-        def bookmarkId = bookmarksService.createBookmark(newBookmark)
-
+        def bookmarkId = createBookmark(itemId, folderId)
         def foundBookmarkedItems = bookmarksService.findBookmarksForItemIds(userId, [itemId])
         assert foundBookmarkedItems.size() > 0
     }
@@ -189,17 +197,7 @@ class BookmarkServiceIntegrationTests {
 
         def itemId = UUID.randomUUID() as String
         def folderId = 'foo'
-
-        Bookmark newBookmark = new Bookmark(
-                null,
-                userId,
-                itemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        String favoriteId = bookmarksService.createBookmark(newBookmark)
+        String favoriteId = createBookmark(itemId, folderId)
         assert favoriteId != null
 
         log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId"
@@ -217,6 +215,7 @@ class BookmarkServiceIntegrationTests {
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
                 "",
+                null,
                 now,
                 now)
         String folderId = bookmarksService.createFolder(newFolder)
@@ -240,17 +239,7 @@ class BookmarkServiceIntegrationTests {
         def folderId = 'foo'
 
         // if the user don't have a favorite list, then the service should create it.
-        Bookmark newBookmark = new Bookmark(
-                null,
-                userId,
-                firstItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def firstFav = bookmarksService.createBookmark(newBookmark)
-
+        def firstFav = createBookmark(firstItemId, folderId)
         def allFavs = bookmarksService.findBookmarksByUserId(userId)
         assert allFavs.size() > 0
     }
@@ -263,16 +252,7 @@ class BookmarkServiceIntegrationTests {
 
         log.info "adding item ${firstItemId} to the folder Favorite."
 
-        Bookmark newBookmark = new Bookmark(
-                null,
-                userId,
-                firstItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def firstFav = bookmarksService.createBookmark(newBookmark)
+        def firstFav = createBookmark(firstItemId, folderId)
         def allFavs = bookmarksService.findBookmarksByUserId(userId)
         assert allFavs.size() == 1
         assert allFavs[0].itemId == firstItemId
@@ -291,29 +271,11 @@ class BookmarkServiceIntegrationTests {
 
         def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YIn84O2mBlSiassU1aNYIysA'
         log.info "adding item ${firstItemId} to the folder Favorite."
-        Bookmark firstBookmark = new Bookmark(
-                null,
-                userId,
-                firstItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def firstFavId = bookmarksService.createBookmark(firstBookmark)
-
+        def firstFavId = createBookmark(firstItemId, folderId)
         def secondItemId = 'U3TWCZVFIHOC6A65ICIC3UIEYRCR2LKL'
         log.info "adding item ${secondItemId} to the folder Favorite."
-        Bookmark secondBookmark = new Bookmark(
-                null,
-                userId,
-                secondItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def secondFavId = bookmarksService.createBookmark(secondBookmark)
+
+        def secondFavId = createBookmark(secondItemId, folderId)
 
         def itemIds = [firstItemId, secondItemId]
 
@@ -328,29 +290,11 @@ class BookmarkServiceIntegrationTests {
 
         def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
         log.info "adding item ${firstItemId} to the folder Favorite."
-        Bookmark firstBookmark = new Bookmark(
-                null,
-                userId,
-                firstItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def firstFavId = bookmarksService.createBookmark(firstBookmark)
+        def firstFavId = createBookmark(firstItemId, folderId)
 
         def secondItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
         log.info "adding item ${secondItemId} _again_ to the folder Favorite."
-        Bookmark secondBookmark = new Bookmark(
-                null,
-                userId,
-                secondItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def secondFavId = bookmarksService.createBookmark(secondBookmark)
+        def secondFavId = createBookmark(secondItemId, folderId)
 
         assert secondFavId == null
     }
@@ -362,16 +306,7 @@ class BookmarkServiceIntegrationTests {
 
         def firstItemId = 'F2D23TGU7NMP5MGVF647Q63X3E32W4YI'
         log.info "adding item ${firstItemId} to the folder Favorite."
-        Bookmark newBookmark = new Bookmark(
-                null,
-                userId,
-                firstItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def firstFavId = bookmarksService.createBookmark(newBookmark)
+        def firstFavId = createBookmark(firstItemId, folderId)
 
         def favoritesForItem = bookmarksService.findBookmarkedItemsInFolder(userId, [firstItemId], null)
         assert favoritesForItem != null
@@ -386,17 +321,7 @@ class BookmarkServiceIntegrationTests {
         def folderId = 'foo'
 
         11.times {
-            def itemId = UUID.randomUUID() as String
-            Bookmark newBookmark = new Bookmark(
-                    null,
-                    userId,
-                    itemId,
-                    new Date().getTime(),
-                    Type.CULTURAL_ITEM,
-                    [folderId],
-                    "",
-                    new Date().getTime())
-            def favId = bookmarksService.createBookmark(newBookmark)
+            def favId = createBookmark(UUID.randomUUID() as String, folderId)
             log.info("Bookmark ${favId} is created." )
         }
 
@@ -409,14 +334,13 @@ class BookmarkServiceIntegrationTests {
         log.info "should save institution as user's Favorites"
         // should add a cultural item to user's favorite list.
 
-        def institutionId = UUID.randomUUID() as String
         def folderId = 'foo'
 
         // if the user don't have a favorite list, then the service should create it.
         Bookmark newBookmark = new Bookmark(
                 null,
                 userId,
-                institutionId,
+                UUID.randomUUID() as String,
                 new Date().getTime(),
                 Type.INSTITUTION,
                 [folderId],
@@ -424,12 +348,12 @@ class BookmarkServiceIntegrationTests {
                 new Date().getTime())
         def favoriteId = bookmarksService.createBookmark(newBookmark)
         assert favoriteId != null
-        log.info "The user ${userId} just added an institution ${institutionId} to their Favorites folder(favoriteId)"
+        log.info "The user ${userId} just added an institution ${newBookmark.itemId} to their Favorites folder(favoriteId)"
 
-        def favoritesForInstitution = bookmarksService.findBookmarkedItemsInFolder(userId, [institutionId], null)
+        def favoritesForInstitution = bookmarksService.findBookmarkedItemsInFolder(userId, [newBookmark.itemId], null)
         log.info("fav is: ${favoritesForInstitution }")
         assert favoritesForInstitution.size() == 1
-        assert favoritesForInstitution[0].itemId == institutionId
+        assert favoritesForInstitution[0].itemId == newBookmark.itemId
         assert favoritesForInstitution[0].type == Type.INSTITUTION
     }
 
@@ -454,6 +378,7 @@ class BookmarkServiceIntegrationTests {
                 publishingName,
                 false,
                 "",
+                null,
                 now,
                 now)
         String folderId = bookmarksService.createFolder(newFolder)
@@ -467,7 +392,6 @@ class BookmarkServiceIntegrationTests {
 
     @Test void shouldFindFavoriteById() {
 
-        def itemId = UUID.randomUUID() as String
         def now = System.currentTimeMillis()
         def folderTitle= 'Favorites-' + new Date().getTime().toString()
         def isPublic = true
@@ -481,19 +405,12 @@ class BookmarkServiceIntegrationTests {
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
                 "",
+                null,
                 now,
                 now)
+        String itemId = UUID.randomUUID() as String
         String folderId = bookmarksService.createFolder(newFolder)
-        Bookmark newBookmark = new Bookmark(
-                null,
-                userId,
-                itemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                now)
-        def favoriteId = bookmarksService.createBookmark(newBookmark)
+        def favoriteId = createBookmark(itemId, folderId)
 
         assert favoriteId != null
         log.info "The user ${userId} just added item ${itemId} to their Favorites folder favoriteId ${favoriteId}"
@@ -536,6 +453,7 @@ class BookmarkServiceIntegrationTests {
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
                 "",
+                null,
                 now,
                 now)
         String folderId = bookmarksService.createFolder(newFolder)
@@ -569,35 +487,15 @@ class BookmarkServiceIntegrationTests {
                 FolderConstants.PUBLISHING_NAME_USERNAME.getValue(),
                 false,
                 "",
+                null,
                 now,
                 now)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
-        def itemId = UUID.randomUUID() as String
-        def otherItemId = UUID.randomUUID() as String
-
         // create two favorites
-        Bookmark firstBookmark = new Bookmark(
-                null,
-                userId,
-                itemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def favoriteId = bookmarksService.createBookmark(firstBookmark)
-        Bookmark secondBookmark = new Bookmark(
-                null,
-                userId,
-                otherItemId,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def otherFavoriteId = bookmarksService.createBookmark(secondBookmark)
+        def favoriteId = createBookmark(UUID.randomUUID() as String, folderId)
+        def otherFavoriteId = createBookmark(UUID.randomUUID() as String, folderId)
 
         def favorites = bookmarksService.findBookmarksByUserId(userId)
 
@@ -629,26 +527,8 @@ class BookmarkServiceIntegrationTests {
     @Test void shouldDeleteAllUserFavorites() {
         def folderId = 'foo'
 
-        Bookmark firstBookmark = new Bookmark(
-                null,
-                userId,
-                UUID.randomUUID() as String,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def favoriteId = bookmarksService.createBookmark(firstBookmark)
-        Bookmark secondBookmark = new Bookmark(
-                null,
-                userId,
-                UUID.randomUUID() as String,
-                new Date().getTime(),
-                Type.CULTURAL_ITEM,
-                [folderId],
-                "",
-                new Date().getTime())
-        def otherFavId = bookmarksService.createBookmark(secondBookmark)
+        def favoriteId = createBookmark(UUID.randomUUID() as String, folderId)
+        def otherFavId = createBookmark(UUID.randomUUID() as String, folderId)
 
         bookmarksService.deleteAllUserBookmarks(userId)
 
@@ -668,5 +548,45 @@ class BookmarkServiceIntegrationTests {
 
         userFolder = bookmarksService.findAllFolders(userId)
         assert userFolder.size() == 0
+    }
+
+    @Test void shouldOrderBookmarks() {
+        String folderId = createNewFolder()
+        String firstBookmarkId = createBookmark(UUID.randomUUID() as String, folderId)
+        Folder folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([firstBookmarkId])
+        String secondBookmarkId = createBookmark(UUID.randomUUID() as String, folderId)
+        folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([
+            firstBookmarkId,
+            secondBookmarkId
+        ])
+        String thirdBookmarkId = createBookmark(UUID.randomUUID() as String, folderId)
+        folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([
+            firstBookmarkId,
+            secondBookmarkId,
+            thirdBookmarkId
+        ])
+        folder.moveBookmarkUp(thirdBookmarkId)
+        bookmarksService.updateFolder(folder)
+        folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([
+            firstBookmarkId,
+            thirdBookmarkId,
+            secondBookmarkId
+        ])
+        folder.moveBookmarkDown(firstBookmarkId)
+        bookmarksService.updateFolder(folder)
+        folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([
+            thirdBookmarkId,
+            firstBookmarkId,
+            secondBookmarkId
+        ])
+        bookmarksService.deleteAllUserBookmarks(userId)
+        folder = bookmarksService.findFolderById(folderId)
+        assert folder.bookmarks.equals([])
+        bookmarksService.deleteFolder(folderId)
     }
 }
