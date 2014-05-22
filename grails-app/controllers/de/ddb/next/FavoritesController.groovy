@@ -388,12 +388,9 @@ class FavoritesController {
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
         if (user != null) {
-            Type bookmarkType = Type.CULTURAL_ITEM
-            if (params.reqObjectType?.equalsIgnoreCase("entity")) {
-                bookmarkType = Type.ENTITY
-            }
-            else if (params.reqObjectType?.equalsIgnoreCase("institution")) {
-                bookmarkType = Type.INSTITUTION
+            Type bookmarkType = Type.valueOfName(params.reqObjectType)
+            if (!bookmarkType) {
+                bookmarkType = Type.CULTURAL_ITEM
             }
             Bookmark newBookmark = new Bookmark(
                     null,
