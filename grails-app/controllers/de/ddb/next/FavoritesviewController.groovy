@@ -13,8 +13,6 @@ import de.ddb.next.exception.FavoritelistNotFoundException
  * @author boz
  */
 class FavoritesviewController {
-    private static final String CONTROLLER_NAME = "favoritesview"
-
     private static final String ORDER_ASC = "asc"
     private static final String ORDER_DESC = "desc"
 
@@ -49,19 +47,19 @@ class FavoritesviewController {
         // A user want to report this list to DDB
         if(params.report){
             reportFavoritesList(user.id, folderId)
-            redirect(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.id, folderId: folderId])
+            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
             return
         }
 
         if(params.blockingToken) {
             blockFavoritesList(user.id, folderId, params.blockingToken)
-            redirect(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.id, folderId: folderId])
+            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
             return
         }
 
         if(params.unblockingToken) {
             unblockFavoritesList(user.id, folderId, params.unblockingToken)
-            redirect(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.id, folderId: folderId])
+            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
             return
         }
 
@@ -86,7 +84,7 @@ class FavoritesviewController {
 
         if (totalResults <1){
 
-            def fullPublicLink = g.createLink(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.getId(), folderId: folderId])
+            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
 
             render(view: ACTION, model: [
                 selectedFolder: selectedFolder,
@@ -150,7 +148,7 @@ class FavoritesviewController {
                 sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
             }
 
-            def fullPublicLink = g.createLink(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.getId(), folderId: folderId])
+            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
 
             render(view: ACTION, model: [
                 results: resultsItems,
@@ -206,7 +204,7 @@ class FavoritesviewController {
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
             if(selectedFolder == null){
-                redirect(controller: CONTROLLER_NAME, action: ACTION, id: mainFavoriteFolder.folderId)
+                redirect(action: ACTION, id: mainFavoriteFolder.folderId)
                 return
             }
 
@@ -231,7 +229,7 @@ class FavoritesviewController {
             }
             allFoldersInformation = favoritesService.sortFolders(allFoldersInformation) { o -> o.folder }
 
-            def fullPublicLink = g.createLink(controller: CONTROLLER_NAME, action: ACTION, params: [userId: user.getId(), folderId: folderId])
+            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
 
             if (totalResults <1){
                 render(view: ACTION, model: [
@@ -335,7 +333,6 @@ class FavoritesviewController {
         def urlsForOrderTitle = [:]
         for (order in [ORDER_ASC, ORDER_DESC]) {
             urlsForOrderDate[order] = g.createLink(
-                    controller : CONTROLLER_NAME,
                     action : parameters.action,
                     params : [
                         offset : parameters.offset,
@@ -347,7 +344,6 @@ class FavoritesviewController {
                     ]
                     )
             urlsForOrderNumber[order] = g.createLink(
-                    controller : CONTROLLER_NAME,
                     action : parameters.action,
                     params : [
                         offset : parameters.offset,
@@ -359,7 +355,6 @@ class FavoritesviewController {
                     ]
                     )
             urlsForOrderTitle[order] = g.createLink(
-                    controller : CONTROLLER_NAME,
                     action : parameters.action,
                     params : [
                         offset : parameters.offset,
@@ -502,9 +497,9 @@ class FavoritesviewController {
                     model:[
                         userId: userId,
                         folderId: folderId,
-                        publicLink: g.createLink(controller:CONTROLLER_NAME, action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-                        blockingLink: g.createLink(controller:CONTROLLER_NAME, action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-                        unblockingLink: g.createLink(controller:CONTROLLER_NAME, action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+                        publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                        blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                        unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
                         selfBaseUrl: commonConfigurationService.getSelfBaseUrl()
                     ])
                 }
