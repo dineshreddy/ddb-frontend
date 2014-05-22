@@ -354,6 +354,7 @@ input[type="checkbox"],input[type="radio"] {
   background-color: #EFEBE8;
   padding: 10px 0 0 0;
   position: relative;
+  margin-bottom:10px
 }
 
 .search-results {
@@ -422,9 +423,8 @@ input[type="checkbox"],input[type="radio"] {
   font-family: Calibri,Arial,sans-serif;
   font-size: 0.938em;
   line-height: 1em;
-  margin: 7px 0 7px 0;
+  margin: -2px 0 7px 0;
   color: #3e3a37;
-  margin-top: 3px;
   word-wrap: break-word;
 }
 
