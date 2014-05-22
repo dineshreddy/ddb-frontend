@@ -50,11 +50,10 @@ class InstitutionMapModel {
                 result.count ++
                 if (mapElement != null) {
                     result.list.push(mapElement)
-                } else {
-                }
-                def children = treeNode.children
-                if (children instanceof List) {
-                    flatten_r(children, mapElement.id, level+1, result)
+                    def children = treeNode.children
+                    if (children instanceof List) {
+                        flatten_r(children, mapElement.id, level+1, result)
+                    }
                 }
             }
         }
