@@ -319,7 +319,8 @@ class FavoritesviewController {
                     urlsForOrderNumber:orderLinks.urlsForOrderNumber,
                     urlsForOrderTitle:orderLinks.urlsForOrderTitle,
                     baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                    contextUrl: commonConfigurationService.getContextUrl()
+                    contextUrl: commonConfigurationService.getContextUrl(),
+                    folderId: folderId
                 ])
             }
         } else{

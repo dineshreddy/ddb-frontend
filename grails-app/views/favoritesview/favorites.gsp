@@ -256,7 +256,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <ddb:renderFavoritesResults results="${results}" />
+              <ddb:renderFavoritesResults results="${results}" folderId="${folderId}"/>
             </div>
           </g:if>
           <g:else>

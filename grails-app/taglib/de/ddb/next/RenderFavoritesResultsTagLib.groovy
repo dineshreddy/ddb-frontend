@@ -21,6 +21,6 @@ class RenderFavoritesResultsTagLib {
     static namespace = "ddb"
 
     def renderFavoritesResults = { attrs, body ->
-        out << render(template:"/favorites/resultsList", model:[results: attrs.results, confBinary: request.getContextPath(), publicView: false])
+        out << render(template:"/favorites/resultsList", model:[results: attrs.results, folderId: attrs.folderId, confBinary: request.getContextPath(), publicView: false])
     }
 }
