@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-function monkeyPatchAutocomplete() {
+var monkeyPatchAutocomplete = function() {
   $.ui.autocomplete.prototype._renderItem = function(ul, item) {
     var termLength = this.term.length;
 
@@ -31,29 +31,46 @@ function monkeyPatchAutocomplete() {
 
     return $("<li></li>").data("item.autocomplete", item).append("<a>" + autocompleteItem + "</a>").appendTo(ul);
   };
-}
+};
+
+/**
+ * Return a function performing an AJAX request to the given url.
+ */
+var getAjaxSuggest = function(url) {
+  return function (request, response) {
+    $.ajax({
+      url : url,
+      dataType : "jsonp",
+      data : {
+        query : request.term
+      },
+      success : function(data) {
+        response($.map(data, function(n) {
+          return {
+            label : n,
+            value : n
+          };
+        }));
+      }
+    });
+  };
+};
 
 $(function() {
+
+  //The AJAX endpoint depends on page
+  var ajaxCall = null;
+  
   if (jsPageName === "index" || jsPageName === "results") {
+    ajaxCall = getAjaxSuggest(jsContextPath + "/apis/autocomplete/");
+  } else if (jsPageName === "searchperson") {
+    ajaxCall = getAjaxSuggest(jsContextPath + "/apis/entitiesAutocomplete/");
+  }
+  
+  if (ajaxCall) {
     monkeyPatchAutocomplete();
     $('input.query').autocomplete({
-      source : function(request, response) {
-        $.ajax({
-          url : jsContextPath + "/apis/autocomplete/",
-          dataType : "jsonp",
-          data : {
-            query : request.term
-          },
-          success : function(data) {
-            response($.map(data, function(n) {
-              return {
-                label : n,
-                value : n
-              };
-            }));
-          }
-        });
-      },
+      source : ajaxCall,
       minLength : 1,
       open : function() {
         $(this).removeClass("ui-corner-all").addClass("ui-corner-top");
