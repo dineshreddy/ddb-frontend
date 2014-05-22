@@ -152,48 +152,30 @@ class ApisController {
         render (contentType:"text/json"){clusteredInstitutions}
     }
 
-
-
-    /**
-     * This function should be obsolete once the
-     * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
-     * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
-     * @return
-     */
     def autocomplete (){
-        def query = apisService.getQueryParameters(params)
-        def callback = apisService.getQueryParameters(params)
-
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
-        if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
-        }
-        def result = apiResponse.getResponse()
-        if (callback) {
-            render "${params.callback}(${result as JSON})"
-        } else {
-            render (contentType:"text/json"){result}
-        }
+        callSuggestEndpoint('/search/suggest')
     }
 
+    def entitiesAutocomplete (){
+        callSuggestEndpoint('/entities/suggest')
+    }
+    
     /**
      * This function should be obsolete once the
      * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
      * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
      * @return
      */
-    def entitiesAutocomplete (){
+    private callSuggestEndpoint(def path) {
         def query = apisService.getQueryParameters(params)
-        def callback = apisService.getQueryParameters(params)
-
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/entities/suggest', false, query)
+        
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),path, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
         def result = apiResponse.getResponse()
-        if (callback) {
+        if (query) {
             render "${params.callback}(${result as JSON})"
         } else {
             render (contentType:"text/json"){result}
