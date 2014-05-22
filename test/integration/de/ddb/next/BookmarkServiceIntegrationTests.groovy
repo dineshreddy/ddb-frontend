@@ -568,7 +568,7 @@ class BookmarkServiceIntegrationTests {
             secondBookmarkId,
             thirdBookmarkId
         ])
-        folder.moveBookmarkUp(thirdBookmarkId)
+        folder.moveBookmark(thirdBookmarkId, 1)
         bookmarksService.updateFolder(folder)
         folder = bookmarksService.findFolderById(folderId)
         assert folder.bookmarks.equals([
@@ -576,7 +576,7 @@ class BookmarkServiceIntegrationTests {
             thirdBookmarkId,
             secondBookmarkId
         ])
-        folder.moveBookmarkDown(firstBookmarkId)
+        folder.moveBookmark(firstBookmarkId, 1)
         bookmarksService.updateFolder(folder)
         folder = bookmarksService.findFolderById(folderId)
         assert folder.bookmarks.equals([
