@@ -97,25 +97,12 @@ class Folder {
         bookmarks.remove(bookmarkId)
     }
 
-    public void moveBookmarkDown(String bookmarkId) {
-        int index = bookmarks.indexOf(bookmarkId)
-        if (bookmarks.size() > 1 && index < bookmarks.size() - 1) {
+    public void moveBookmark(String bookmarkId, int newPosition) {
+        int oldPosition = bookmarks.indexOf(bookmarkId)
+        if (bookmarks.size() > 1 && newPosition >= 0 && newPosition < bookmarks.size() &&
+            oldPosition != newPosition) {
             deleteBookmark(bookmarkId)
-            bookmarks.add(index + 1, bookmarkId)
-        }
-        else if (index == -1) {
-            addBookmark(bookmarkId)
-        }
-    }
-
-    public void moveBookmarkUp(String bookmarkId) {
-        int index = bookmarks.indexOf(bookmarkId)
-        if (bookmarks.size() > 1 && index > 0) {
-            deleteBookmark(bookmarkId)
-            bookmarks.add(index - 1, bookmarkId)
-        }
-        else if (index == -1) {
-            addBookmark(bookmarkId)
+            bookmarks.add(newPosition, bookmarkId)
         }
     }
 

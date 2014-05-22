@@ -392,6 +392,11 @@ class FavoritesviewController {
         // second add all favorites which are not present in bookmark list of the folder at the end
         result.addAll(favorites)
 
+        // add orderNumber to all favorites
+        result.eachWithIndex {favorite, index ->
+            favorite.orderNumber = index
+        }
+
         // update bookmark list in folder with the current list
         if (folder) {
             bookmarkIdsInFolder = result*.bookmark.bookmarkId

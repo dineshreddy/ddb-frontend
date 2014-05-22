@@ -189,14 +189,6 @@ class FavoritesController {
         }
     }
 
-    def moveFavoriteDown() {
-        moveFavorite(false)
-    }
-
-    def moveFavoriteUp() {
-        moveFavorite(true)
-    }
-
     def getFavoriteFolder() {
         log.info "getFavoriteFolder " + params.id
         def result = response.SC_NOT_FOUND
@@ -499,6 +491,30 @@ class FavoritesController {
         render(status: result)
     }
 
+    def moveFavorite() {
+        log.info "moveFavorite"
+        def User user = userService.getUserFromSession()
+        if (user != null) {
+            def folder
+            if (params.folderId) {
+                folder = bookmarksService.findFolderById(params.folderId)
+            } else {
+                folder = bookmarksService.findMainBookmarksFolder(user.id)
+            }
+            if (folder) {
+                folder.moveBookmark(params.id, params.position)
+                bookmarksService.updateFolder(folder)
+                render(status: response.SC_NO_CONTENT)
+            } else {
+                log.info "moveFavorite returns " + response.SC_NOT_FOUND
+                render(status: response.SC_NOT_FOUND)
+            }
+        } else {
+            log.info "moveFavorite returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
+    }
+
     def setComment() {
         log.info "setComment " + request.JSON
 
@@ -578,36 +594,6 @@ class FavoritesController {
         log.info "togglePublish returns " + result
         render(status: result)
 
-    }
-
-    private void moveFavorite(boolean up) {
-        def methodName = "moveFavorite" + (up ? "Up" : "Down")
-        log.info methodName
-        def User user = userService.getUserFromSession()
-        if (user != null) {
-            def folder
-            if (params.folderId) {
-                folder = bookmarksService.findFolderById(params.folderId)
-            } else {
-                folder = bookmarksService.findMainBookmarksFolder(user.id)
-            }
-            if (folder) {
-                if (up) {
-                    folder.moveBookmarkUp(params.id)
-                }
-                else {
-                    folder.moveBookmarkDown(params.id)
-                }
-                bookmarksService.updateFolder(folder)
-                render(status: response.SC_OK)
-            } else {
-                log.info methodName + " returns " + response.SC_NOT_FOUND
-                render(status: response.SC_NOT_FOUND)
-            }
-        } else {
-            log.info methodName + " returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
-        }
     }
 
     private String sanitizeTextInput(String input){
