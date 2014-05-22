@@ -25,31 +25,25 @@ limitations under the License.
 <body>
   <div id="var-to-js" data-random-seed="${randomSeed}" data-pgTitle="${title}" />
 
-  <div class="span12 personEntities bb">
+  <div class="span12 person-entities bb">
     <div class="row ">
       <div class="span3">
         <h1>
           <g:message code="ddbnext.entities.personspage.personspageheader" />
         </h1>
       </div>
-      <div class="row features-bar">
-        <div class="span2">
-        <div class="link-block">
+      <div class="row features-bar span9 link-block">
           <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"
             title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />"> <span><g:message encodeAs="html"
                 code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
           </a>
-        </div>
-        </div>
-        <div class="span1">
-            <ddb:getSocialmediaBody />
-        </div>
+          <ddb:getSocialmediaBody />
       </div>
 
     </div>
   </div>
   <div class="row">
-    <div class="span3 noleftMargin correctleftMargin30 persons-font">
+    <div class="span3 persons-font">
       <p>
         <g:message code="ddbnext.entities.personspage.description" />
       </p>
@@ -60,13 +54,13 @@ limitations under the License.
         <g:message code="ddbnext.entities.personspage.licenceInfo" />
       </p>
     </div>
-    <div class="span-imgcontainer search-results-content">
+    <div class="span9 search-results-content">
 
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
             <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" title=" ${person.preferredName}"> <img
-              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="130px" />"></a>
+              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="150px" />"></a>
             <p>
               <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" alt=" ${person.preferredName}"> ${person.preferredName}
               </a>

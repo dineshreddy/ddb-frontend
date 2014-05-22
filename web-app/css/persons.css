@@ -13,22 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.personEntities {
-  margin-left: -60px;
+.person-entities {
+  margin-left: 0px;
 }
-.persons-results{
- float: right;
- padding-right: 45px;
- height:70px;
- overflow:hidden;
+
+.persons-results {
+  float: right;
+  padding-right: 45px;
+  height: 70px;
+  overflow: hidden;
 }
+
 .noleftMargin {
   margin-left: 0px
 }
 
 .features-bar {
   padding-top: 25px;
-  float:right;
+  float: right;
+  text-align: right;
 }
 
 .correctleftMargin30 {
@@ -41,72 +44,16 @@
   color: #3e3a37;
 }
 
-.span-imgcontainer {
-  width: 870px;
-  float: left;
-}
-
-#columns {
-  margin-top:15px;
-  -webkit-column-count: 3;
-  -webkit-column-gap: 10px;
-  -webkit-column-fill: auto;
-  -moz-column-count: 3;
-  -moz-column-gap: 10px;
-  -moz-column-fill: auto;
-  column-count: 3;
-  column-gap: 15px;
-  column-fill: auto;
-}
-
 .pin {
-  display: inline-block;
-  background: #FEFEFE;
-  border: 2px solid #FAFAFA;
-  box-shadow: 0 1px 2px rgba(34, 25, 25, 0.4);
-  margin: 0 2px 15px;
-  -webkit-column-break-inside: avoid;
-  -moz-column-break-inside: avoid;
-  column-break-inside: avoid;
-  padding: 15px;
-  padding-bottom: 5px;
-  background: -webkit-linear-gradient(45deg, #FFF, #F9F9F9);
-  opacity: 1;
-  -webkit-transition: all .2s ease;
-  -moz-transition: all .2s ease;
-  -o-transition: all .2s ease;
-  transition: all .2s ease;
+  width: 150px;
 }
 
 .pin img {
-  width: 100%;
-  border-bottom: 1px solid #ccc;
-  padding-bottom: 15px;
-  margin: 0 5px 0 0;
+  margin-bottom: 3px;
 }
 
 .pin p {
-  font: 12px/18px Arial, sans-serif;
+  font: 12px/18px Calibri, Arial, sans-serif;
   color: #333;
-  margin: 0;
-}
-
-@media ( min-width : 980px) {
-  #columns {
-    -webkit-column-count: 4;
-    -moz-column-count: 4;
-    column-count: 4;
-  }
-}
-
-@media ( min-width : 1200px) {
-  #columns {
-    -webkit-column-count: 5;
-    -moz-column-count: 5;
-    column-count: 5;
-  }
-}
-
-#columns:hover .pin:not (:hover ) {
-  opacity: 0.4;
+  padding: 0px 0px 0px 30px;
 }
