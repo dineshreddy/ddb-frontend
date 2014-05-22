@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <ul class="results-list unstyled entity-list">
-<g:set var="pageHitCounter" value="${0}"/>
+<g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
     <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
