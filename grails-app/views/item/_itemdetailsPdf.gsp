@@ -28,13 +28,13 @@ limitations under the License.
               <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
-              ${it.value} 
+              <ddb:stripOutInvalidXmlChars text="${it.value}"/> 
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-           ${it.value} 
+           <ddb:stripOutInvalidXmlChars text="${it.value}"/> 
         </g:else>
       </td>
     </tr>
@@ -45,7 +45,7 @@ limitations under the License.
       <td style="width: 35%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.stat_007" />:
       </strong></td>
       <td style="width: 65%" class="valign-top">
-        ${item.rights}
+        <ddb:stripOutInvalidXmlChars text="${item.rights}" />
       </td>
     </tr>
   </g:if>
@@ -55,7 +55,7 @@ limitations under the License.
       <td style="width: 30%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.License_Field" />:
       </strong></td>
       <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
-            <g:img file="${license.img}" alt="${license.text}" class="license-icon" />
+            <g:img file="${license.img}" class="license-icon" />
           </g:if><span> ${license.text}
         </span></a></td>
     </tr>
@@ -69,6 +69,6 @@ limitations under the License.
     </a>
   </g:if>
   <g:else>
-    <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
+    <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
   </g:else>
 </div>
