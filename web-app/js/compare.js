@@ -55,7 +55,6 @@ $(document)
               } else if (totAudiosSecond > 0) {
                 currentGallerySecond = "audios";
               }
-              console.log("currentGallerySecond "+currentGallerySecond);
               updatePreview($("div."+currentGalleryFirst+".first"), "first");
               updatePreview($("div."+currentGallerySecond+".second"), "second");
             });
