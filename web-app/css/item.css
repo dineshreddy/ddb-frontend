@@ -17,15 +17,18 @@
 .back-to-list-greyed-out, .back-to-list {
   padding-left: 16px;
   margin-right: 10px;
-  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -206px;
 }
- 
- .back-to-list-greyed-out {
+
+.back-to-list-greyed-out {
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -70px -207px;
   color: #878380;
 }
 
+.back-to-list {
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -207px;
+}
+
 .back-to-list > span {
-  padding-left: 5px;
   background: #fff;
 }
 
