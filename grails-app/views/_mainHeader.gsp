@@ -100,9 +100,8 @@ limitations under the License.
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
-                <!-- TODO change link to person pages -->
-                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
                 </li>
               </ul>
             </li><!-- /end of exhibitions -->
@@ -232,10 +231,9 @@ limitations under the License.
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
-                      <!-- TODO change link to person pages -->
                       <li
-                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
                       </li>
                     </ul>
                   </li>
