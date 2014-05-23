@@ -30,14 +30,44 @@ $(document)
               }
             }
 
+            $(function() {
+              var totImagesFirst = $(".first .gallery-images li").size();
+              var totImagesSecond = $(".second .gallery-images li").size();
+              var totVideosFirst = $(".first .gallery-videos li").size();
+              var totVideosSecond = $(".second .gallery-videos li").size();
+              var totAudiosFirst = $(".first .gallery-audios li").size();
+              var totAudiosSecond = $(".second .gallery-audios li").size();
+              var currentGalleryFirst = "";
+              var currentGallerySecond = "";
+
+              if (totImagesFirst > 0) {
+                currentGalleryFirst = "images";
+              } else if (totVideosFirst > 0) {
+                currentGalleryFirst = "videos";
+              } else if (totAudiosFirst > 0) {
+                currentGalleryFirst = "audios";
+              }
+
+              if (totImagesSecond > 0) {
+                currentGallerySecond = "images";
+              } else if (totVideosSecond > 0) {
+                currentGallerySecond = "videos";
+              } else if (totAudiosSecond > 0) {
+                currentGallerySecond = "audios";
+              }
+              console.log("currentGallerySecond "+currentGallerySecond);
+              updatePreview($("div."+currentGalleryFirst+".first"), "first");
+              updatePreview($("div."+currentGallerySecond+".second"), "second");
+            });
+
             var updatePreview = function(gallerydiv, position) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
               var previewUri = $(a).attr("href");
               var previewHref = $(a).attr("data-content");
               var type = $(a).attr("data-type");
-              var title = $(a).find("span").text();
-              var title_text = $(a).find("span").text();
-              var title_tooltip = $(a).find("span").text();
+              var title = $(a).attr("title");
+              var title_text = title;
+              var title_tooltip = title;
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
               var item_title = $(".item-title.first span").text();
@@ -48,7 +78,8 @@ $(document)
                 item_title = $(".item-title.second span").text();
                 offset = $(".first .previews-list li").size();
                 $(".second .previews").each(function() {
-                  $(this).attr("data-pos", parseInt($(this).attr("data-pos"))+offset);
+                  var secondPos = parseInt($(this).siblings().find("a.show-lightbox").attr("data-pos"))+offset;
+                  $(this).attr("data-pos", messages.ddbnext.BinaryViewer_ImageCount(secondPos));
                 });
               }
               // Title limited to 200 characters
@@ -119,13 +150,8 @@ $(document)
               }
             };
 
-            $(function() {
-              updatePreview($("div.all.first"), "first");
-              updatePreview($("div.all.second"), "second");
-            });
-
             var jwPlayerSetup = function(content, poster, firstElement) {
-              var w = 445;
+              var w = 440;
               var h = 320;
               var mediaQueryMatches = 1;
               if (firstElement) {
@@ -139,7 +165,7 @@ $(document)
                   mediaQueryMatches = mediaQuery;
                 }
                 if (!mediaQueryMatches) {
-                  w = 260;
+                  w = 278;
                   h = 200;
                 }
                 $.initializeJwPlayer("jwplayer-container-first", content, poster, w, h, function() {
@@ -171,7 +197,7 @@ $(document)
                   mediaQueryMatches = mediaQuery;
                 }
                 if (!mediaQueryMatches) {
-                  w = 260;
+                  w = 278;
                   h = 200;
                 }
 
@@ -196,12 +222,10 @@ $(document)
                 });
               }
             };
-            $(".previews")
-                .click(
+            $(".previews").click(
                     function(e) {
                       e.preventDefault();
-                      $
-                          .fancybox(
+                      $.fancybox(
                               $(".previews"),
                               {
                                 'padding' : 0,
@@ -212,15 +236,18 @@ $(document)
                                 'prevEffect' : 'fade',
                                 'nextEffect' : 'fade',
                                 'tpl' : {
-                                  wrap : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar"><span class="fancybox-toolbar-title">'
-                                      + $("div.binary-title span").text()
-                                      + '</span><span title="Close" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span></div><div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"></div><div class="fancybox-click-nav" style="right: 0;" onclick="$.fancybox.next();"></div><div class="fancybox-pagination"><span></span></div></div></div></div></div>',
-                                  prev : '<span title="Previous" class="fancybox-nav fancybox-prev" onclick="$.fancybox.prev();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>',
-                                  next : '<span title="Next" class="fancybox-nav fancybox-next" onclick="$.fancybox.next();" onmouseover="$(\'.fancybox-pagination\').show();" onmouseout="$(\'.fancybox-pagination\').hide();"></span>'
+                                    wrap : '<div class="fancybox-wrap" tabIndex="-1"><div class="fancybox-skin"><div class="fancybox-toolbar">'
+                                        + '<span title="' + messages.ddbnext.Close() + '" class="fancybox-toolbar-close" onclick="$.fancybox.close();"></span>'
+                                        +'<span class="fancybox-toolbar-title">'
+                                        + $("div.binary-title span").text()
+                                        + '</span><br><div class="fancybox-pagination"><span></span></div></div>'
+                                        + '<div class="fancybox-outer"><div class="fancybox-inner"><div class="fancybox-click-nav" onclick="$.fancybox.prev();"><div class="fancybox-nav"><span title="Previous" class="fancybox-prev" onclick="$.fancybox.prev();"></span></div></div><div class="fancybox-click-nav right" onclick="$.fancybox.next();"><div class="fancybox-nav"><span title="Next" class="fancybox-next" onclick="$.fancybox.next();"></span></div></div></div></div></div></div>',
+                                    prev : '',
+                                    next : ''
                                 },
                                 'afterLoad' : function() {
-                                  var title = $(this.element).attr('data-caption');
-                                  var position = $(this.element).attr('data-pos') + '/'
+                                  var title = $.cutoffStringAtSpace($(this.element).attr('data-caption'), 150);
+                                  var position = $(this.element).attr('data-pos') + ' '
                                       + $(".previews-list li").size();
                                   $("span.fancybox-toolbar-title").text(title);
                                   $("div.fancybox-pagination span").text(position);
@@ -228,8 +255,15 @@ $(document)
                               });
                       if ($(".previews-list li").size() === 1) {
                         $(".fancybox-pagination").addClass("off");
+                        $('.fancybox-click-nav').attr('onclick', "");
+                        $('.fancybox-nav').remove();
                       }
                       return false;
                     });
+            $(".show-lightbox").click(function(e) {
+              e.preventDefault();
+              $(".previews").trigger( "click" );
+              return false;
+            });
           }
         });
