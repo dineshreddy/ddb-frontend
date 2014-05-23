@@ -24,16 +24,16 @@ class ClusterCache {
     public ClusterCache(){
     }
 
-    def addCluster(List selectedSectors, def clusters, long cacheValidInMillis){
-        String key = this.generateKey(selectedSectors)
+    def addCluster(List selectedSectors, def clusters, long cacheValidInMillis, boolean onlyInstitutionWithData){
+        String key = this.generateKey(selectedSectors, onlyInstitutionWithData)
         def cacheEntry = [:]
         cacheEntry["data"] = clusters
         cacheEntry["validUntil"] = new Date().getTime() + cacheValidInMillis
         this.cache.put(key, cacheEntry)
     }
 
-    def getCluster(List selectedSectors){
-        String key = this.generateKey(selectedSectors)
+    def getCluster(List selectedSectors, boolean onlyInstitutionWithData){
+        String key = this.generateKey(selectedSectors, onlyInstitutionWithData)
         def cacheEntry = this.cache.get(key)
         if(cacheEntry != null && cacheEntry.validUntil > new Date().getTime()){
             return cacheEntry.data
@@ -42,9 +42,11 @@ class ClusterCache {
         }
     }
 
-    String generateKey(List selectedSectors){
+    String generateKey(List selectedSectors, boolean onlyInstitutionWithData){
         String key = "sectors:"
         selectedSectors.each { key += it }
+        
+        key +=";onlyInstitutionWithData:" + onlyInstitutionWithData
         return key
     }
 }
