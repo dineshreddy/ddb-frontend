@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <ul class="results-list unstyled" id="slaves">
   <g:set var="index" value="${0}" />
   <g:each var="search" in="${results}">
@@ -34,6 +35,17 @@ limitations under the License.
                    title="${message(code: 'ddbnext.Edit_Savedsearch')}"></i>
               </a>
             </h2>
+            <div class="subtitle">
+              <g:if test="${search.type == null || search.type == Type.CULTURAL_ITEM}">
+                <g:message code="ddbnext.Entity_Objects" />
+              </g:if>
+              <g:elseif test="${search.type == Type.ENTITY}">
+                <g:message code="ddbnext.entity.tabulator.persons" />
+              </g:elseif>
+              <g:elseif test="${search.type == Type.INSTITUTION}">
+                <g:message code="ddbnext.Institutions" />
+              </g:elseif>
+            </div>
             <div class="subtitle">
               <g:render template="savedSearchEntry"
                 model="['search':search]" />
