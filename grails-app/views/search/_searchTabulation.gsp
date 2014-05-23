@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <div class="results-paginator-options">
   <div class="row">
     <div class="span6 tabulator">
@@ -28,19 +29,19 @@ limitations under the License.
         </li>
         <li>
           <g:link controller="search" action="results" params="[query:query]"
-            class="${(active=='items') ? 'active-link' : '' }">
+            class="${(active==Type.CULTURAL_ITEM.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.Entity_Objects" />
           </g:link>
         </li>
         <li>
           <g:link controller="entity" action="personsearch" params="[query:query]"
-            class="${(active=='person') ? 'active-link' : '' }">
+            class="${(active==Type.ENTITY.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.entity.tabulator.persons" />
           </g:link>
         </li>
         <%--<li><g:message code="ddbnext.Locations" /></li>--%>
         <li>
-          <g:link controller="search" action="institution" params="[query:query]" class="${(active=='institution') ? 'active-link' : '' }">
+          <g:link controller="search" action="institution" params="[query:query]" class="${(active==Type.INSTITUTION.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.Institutions" />
           </g:link>
         </li>
