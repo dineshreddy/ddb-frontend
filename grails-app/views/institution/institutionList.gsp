@@ -42,7 +42,7 @@ limitations under the License.
             <div class="off">
           </noscript>
           |
-          <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selectedcount">${total}</span>
+          <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selected-count">${total}</span>
           <div class="loader">
             <img alt="" src="../images/icons/loaderSmall.gif">
           </div>

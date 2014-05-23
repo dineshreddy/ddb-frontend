@@ -174,12 +174,12 @@
       ddb.filter(institutionList, sectors, firstLetter);
       // count all currently highlighted institutions
       var count = $('.institution-listitem.highlight').length;
-      if (count == 0) {
+      if (count === 0) {
         // count all currently visible institutions
         count = $('.institution-listitem').length - $('.institution-listitem.off').length -
                 $('.institution-listitem.off').find('.institution-listitem:not(.off)').length;
       }
-      $('#selectedcount').text(count);
+      $('#selected-count').text(count);
     },
 
     getInstitutionAsList : function() {
