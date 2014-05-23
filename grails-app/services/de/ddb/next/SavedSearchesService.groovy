@@ -75,9 +75,9 @@ class SavedSearchesService {
     /**
      * Check if a query is a saved search for the user.
      */
-    def boolean isSavedSearch(String userId, String queryString) {
+    def boolean isSavedSearch(String userId, String queryString, Type type) {
         def revisedQueryString = reviseQueryString(queryString)
-        def result = savedSearchService.findSavedSearchByQueryString(userId, revisedQueryString)
+        def result = savedSearchService.findSavedSearchByQueryString(userId, revisedQueryString, type)
         boolean isSavedSearch = false
         result.each {
             if(it.queryString == revisedQueryString) {

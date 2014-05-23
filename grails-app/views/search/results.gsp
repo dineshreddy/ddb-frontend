@@ -15,6 +15,7 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.Type"%>
 
 <g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
 <g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName(), FacetEnum.LICENSE_GROUP.getName(), FacetEnum.LICENSE.getName()]}"></g:set>
@@ -114,7 +115,7 @@ limitations under the License.
 
     <div class="span9">
       <div class="off result-pages-count">${totalPages}</div>
-      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="items" />
+      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="${Type.CULTURAL_ITEM.getName()}" />
       <div style="clear:both;"> 
       
       <%--   Search has results   --%>

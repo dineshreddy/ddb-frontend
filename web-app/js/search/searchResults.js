@@ -520,7 +520,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
           url : jsContextPath + "/apis/savedsearches",
           data : JSON.stringify({
             query : window.location.search.substring(1),
-            title : title
+            title : title,
+            type : $("#addToSavedSearches").attr("data-type")
           })
         }).done(function() {
           disableSavedSearch($(".add-to-saved-searches"));
@@ -579,7 +580,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         dataType : "json",
         url : jsContextPath + "/apis/savedsearches/_get",
         data : JSON.stringify({
-          query : window.location.search.substring(1)
+          query : window.location.search.substring(1),
+          type : $("#addToSavedSearches").attr("data-type")
         })
       }).statusCode( {
         200: function() { //SC_OK
