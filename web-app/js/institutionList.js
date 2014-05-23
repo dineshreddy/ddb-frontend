@@ -172,9 +172,13 @@
       var sectors = ddb.getSelectedSectors();
       var firstLetter = ddb.getFirstLetter();
       ddb.filter(institutionList, sectors, firstLetter);
-      // count all currently visible institutions
-      var count = $('.institution-listitem').length - $('.institution-listitem.off').length -
-                  $('.institution-listitem.off').find('.institution-listitem:not(.off)').length;
+      // count all currently highlighted institutions
+      var count = $('.institution-listitem.highlight').length;
+      if (count == 0) {
+        // count all currently visible institutions
+        count = $('.institution-listitem').length - $('.institution-listitem.off').length -
+                $('.institution-listitem.off').find('.institution-listitem:not(.off)').length;
+      }
       $('#selectedcount').text(count);
     },
 
