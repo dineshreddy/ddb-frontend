@@ -348,7 +348,6 @@ class ItemService {
                 path = z.'@path'
                 type = z.'@mimetype'
                 category = z.'@category'
-                println(path+" "+type+" "+category)
                 //check against the parameter "category"
                 if (category == FULL) {
                     if(type.contains(IMAGE)) {
@@ -372,7 +371,6 @@ class ItemService {
                         binaryMap.'orig'.'uri'.'pdf' = BINARY_SERVER_URI + z.'@path'
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
-                        println(binaryMap.'orig'.'uri'.'pdf')
                     }
                     binaryMap.'orig'.'author'= z.'@name2'
                     binaryMap.'orig'.'rights'= z.'@name3'
