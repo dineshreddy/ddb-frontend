@@ -72,9 +72,17 @@ class SavedSearchService {
         return findSavedSearch(["q": "user:\"${userId}\"".encodeAsURL(), "size": DEFAULT_SIZE])
     }
 
-    def findSavedSearchByQueryString(userId, queryString) {
+    def findSavedSearchByQueryString(userId, queryString, Type type) {
         log.info "findSavedSearchByQueryString(): find saved searches for the user ${userId} and query ${queryString}"
-        return findSavedSearch(["q": "user:\"${userId}\" AND queryString:\"${queryString}\"".encodeAsURL(), "size": DEFAULT_SIZE])
+        def result =
+                findSavedSearch(["q": "user:\"${userId}\" AND queryString:\"${queryString}\" AND type:${type.getName()}"
+                    .encodeAsURL(), "size": DEFAULT_SIZE])
+        if (result.size() == 0 && type == Type.CULTURAL_ITEM) {
+            // fallback for saved searches without type
+            result = findSavedSearch(["q": "user:\"${userId}\" AND queryString:\"${queryString}\" AND -type:[* TO *]."
+                .encodeAsURL(), "size": DEFAULT_SIZE])
+        }
+        return result
     }
 
     private def findSavedSearch(def query) {

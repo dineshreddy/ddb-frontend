@@ -17,6 +17,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.EntityFacetEnum"%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.Type"%>
 <g:set var="nonJsFacetsList" value="${[]}"></g:set>
 <g:set var="jsFacetsList"
   value="${[EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]}"></g:set>
@@ -66,7 +67,7 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="person" />
+      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="${Type.ENTITY.getName()}" />
 
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">

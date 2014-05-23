@@ -82,7 +82,8 @@ class SavedsearchesController {
         log.info "isSavedSearch()"
         def User user = userService.getUserFromSession()
         if (user != null) {
-            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query)
+            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query,
+                Type.valueOfName(request.JSON.type))
             log.info "isSavedSearch returns " + result
             if (result) {
                 render(status: response.SC_OK)
