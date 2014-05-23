@@ -223,6 +223,11 @@ hr {
   text-align:right;
 }
 
+.results-sorter .favorite-numberheader{
+  margin-left:12px;
+  margin-right:28px;
+}
+
 .results-sorter .favorite-dateheader {
   float:right;
   margin-right:10px;

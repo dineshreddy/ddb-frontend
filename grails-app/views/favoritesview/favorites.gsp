@@ -197,6 +197,34 @@ limitations under the License.
               </div>
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span> 
+                <span class="favorite-numberheader">
+                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
+                    <a href="${urlsForOrderNumber["asc"].encodeAsHTML()}">
+                      #
+                      <span>
+                       <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
+                        <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
+                       </g:if>
+                       <g:else>
+                        <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                       </g:else>
+                      </span>
+                    </a>
+                  </g:if> 
+                  <g:else>
+                    <a href="${urlsForOrderNumber["desc"].encodeAsHTML()}">
+                      #
+                      <span>
+                       <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
+                        <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
+                       </g:if>
+                       <g:else>
+                        <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
+                       </g:else>
+                      </span>
+                    </a>
+                  </g:else>
+                </span>
                 <span>
                 <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
