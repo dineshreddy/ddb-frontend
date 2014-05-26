@@ -43,15 +43,15 @@ limitations under the License.
                     <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
                   </div>
                   <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
-                    <img src="${viewerContent}" alt="${(it.preview.title)}" />
+                    <img src="${viewerContent}" alt="${it.preview.title}" />
                   </a>
                 </g:if>
                 <g:else>
                   <div class="viewer-icon">
-                    <a class="<g:if test="${it.orig.uri.pdf == ''}">show-lightbox</g:if><g:else>show-pdf</g:else>" data-caption="${(it.preview.title)}" data-pos="${counter}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>></a>
+                    <a class="<g:if test="${it.orig.uri.pdf == ''}">show-lightbox</g:if><g:else>show-pdf</g:else>" data-caption="${it.preview.title}" data-pos="${counter}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>></a>
                   </div>
-                  <a class="<g:if test="${it.orig.uri.pdf == ''}">previews</g:if><g:else>pdf-previews</g:else>" data-caption="${(it.preview.title)}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>>
-                    <img src="${viewerContent}" alt="${(it.preview.title)}" />
+                  <a class="<g:if test="${it.orig.uri.pdf == ''}">previews</g:if><g:else>pdf-previews</g:else>" data-caption="${it.preview.title}" data-pos="${g.message(code: 'ddbnext.BinaryViewer_ImageCount', args: [counter])}" href="${content}" <g:if test="${it.orig.uri.pdf != ''}">target="_blank"</g:if>>
+                    <img src="${viewerContent}" alt="${it.preview.title}" />
                   </a>
                 </g:else>
               </li>
@@ -126,9 +126,9 @@ limitations under the License.
           </g:else>
           <g:if test="${(it.full.uri != '' || it.preview.uri != '') && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${(it.preview.title)}">
+              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${it.preview.title}">
                 <div class="thumbnail image">
-                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label off">${it.preview.title}</span>
               </a>
@@ -151,9 +151,9 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.full.uri != '' && it.orig.uri.video == '' && it.orig.uri.audio == ''}">
               <li>
-                <a class="group" href="${it.full.uri}" title="${(it.preview.title)}">
+                <a class="group" href="${it.full.uri}" title="${it.preview.title}">
                   <div class="thumbnail image">
-                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label off">
                     ${it.preview.title}
@@ -186,9 +186,9 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.video}"  data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="video" title="${(it.orig.title)}">
+                 data-content="${it.orig.uri.video}"  data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="video" title="${it.orig.title}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
               </a>
@@ -212,9 +212,9 @@ limitations under the License.
           <g:each in="${binaryList}">
             <g:if test="${it.orig.uri.video != '' }">
               <li>
-                <a class="group" href="${it.orig.uri.video}" title="${(it.orig.title)}">
+                <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
                   <div class="thumbnail video">
-                    <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                    <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label off">${it.orig.title}</span>
                 </a>
@@ -245,9 +245,9 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.audio}" data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="audio" title="${(it.orig.title)}">
+                 data-content="${it.orig.uri.audio}" data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="audio" title="${it.orig.title}">
                 <div class="thumbnail video">
-                  <img src="${it.thumbnail.uri}" alt="${(it.thumbnail.title)}" />
+                  <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
               </a>

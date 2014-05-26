@@ -96,8 +96,8 @@ $(document)
               var previewHref = $(a).attr("data-content");
               var type = $(a).attr("data-type");
               var title = $(a).attr("title");
-              var title_text = $(a).attr("title");
-              var title_tooltip = $(a).attr("title");
+              var title_text = title;
+              var title_tooltip = title;
               var author = $(a).attr("data-author");
               var rights = $(a).attr("data-rights");
 
@@ -273,8 +273,7 @@ $(document)
                   updatePreview(tab);
                   $("#binary-viewer").remove( ".img-binary" );
                 });
-            $(".previews")
-                .click(
+            $(".previews").click(
                     function(e) {
                       e.preventDefault();
                       $.fancybox(
