@@ -17,15 +17,18 @@
 .back-to-list-greyed-out, .back-to-list {
   padding-left: 16px;
   margin-right: 10px;
-  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -206px;
 }
- 
- .back-to-list-greyed-out {
+
+.back-to-list-greyed-out {
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -70px -207px;
   color: #878380;
 }
 
+.back-to-list {
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -207px;
+}
+
 .back-to-list > span {
-  padding-left: 5px;
   background: #fff;
 }
 
@@ -53,6 +56,10 @@
 
 .viewer.dfg {
   background-position: -27px -359px;
+}
+
+.viewer.dfg > span {
+  background: #fff;
 }
 
 .item-detail .institution {
@@ -86,6 +93,10 @@
   display: block;
 }
 
+.institution-link > span {
+  background: #fff;
+}
+
 .object-controls {
   line-height: 30px;
   font-size: 0.938em;
@@ -94,17 +105,13 @@
 .object-controls .span6 {
   margin-left: 0px;
 }
+
 .origin {
   margin-top: 20px;
 }
 
-.origin span, .show-origin {
-  background: url("../images/icons/objectViewerActions.png") no-repeat;
-}
-
-.origin span {
+.has-origin {
   padding-left: 23px;
-  line-height: 20px;
   background-position: -2px -120px;
 }
 
@@ -118,10 +125,6 @@
   padding-left: 0;
 }
 
-.has-origin {
-  font-size: 0.938em;
-}
-
 .share {
   margin-top: 30px;
   margin-bottom: 20px;
@@ -131,6 +134,7 @@
   display: inline-block;
   margin-right: 30px;
 }
+
 .favorite-actions {
   padding-left: 20px;
   background: url(../images/icons/itemActionsSprite.png) no-repeat ;

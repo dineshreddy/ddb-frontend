@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="print-logo off">
-  <r:img dir="images" file="logoHeader.png" alt="" />
+  <r:img dir="images" file="logoHeaderSmall.png" alt="" />
 </div>
 
 <!--[if lt IE 9]>
@@ -172,7 +172,7 @@ limitations under the License.
             <g:link uri="/" class="navigation-header-logo"
               title="${message(code: 'ddbnext.Logo_Title')}"
               tabindex="-1">
-              <r:img dir="images" file="logoHeader.png"
+              <r:img dir="images" file="logoHeaderSmall.png"
                 alt="${message(code: 'ddbnext.Logo_Description')}" />
             </g:link>
             <div role="navigation">

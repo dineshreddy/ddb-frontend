@@ -156,6 +156,7 @@ $(document).ready(function() {
       },
 
       _initializeMap : function(lon, lat, zoom) {
+        var self = this;
         //Set the base folder for images
         OpenLayers.ImgPath = this.imageFolder;
 
@@ -181,8 +182,24 @@ $(document).ready(function() {
         var position = this._getLonLat(lon, lat);
         this.osmMap.setCenter(position, zoom);
 
-        return tiles;
+        //Set tooltips for the map controls
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomin").attr("title", messages.ddbnext.InstitutionPage_MapZoomIn);
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomout").attr("title", messages.ddbnext.InstitutionPage_MapZoomOut);
+        $(".olControlDDBHome").attr("title", messages.ddbnext.InstitutionPage_MapHome);
 
+        //Reset institution map via the home button
+        $(".olControlDDBHome").click(function(){
+
+          //Reset institution map filters only on the institutionList page
+          if (jsPageName == "institutionList") {
+            $('input').prop('checked', false);
+            self.applyFilters();
+          }
+          
+          self.osmMap.setCenter(position, zoom);
+        });
+        
+        return tiles;
       },
 
       _addInstitutionsLayer : function() {

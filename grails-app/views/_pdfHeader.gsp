@@ -14,5 +14,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="container print-logo">
-  <r:img dir="images" file="logoHeader.png" alt="" />
+  <r:img dir="images" file="logoHeaderSmall.png" alt="" />
 </div>
