@@ -1117,6 +1117,11 @@ footer .twitter a, .footer .twitter a {
   background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent !important;
 }
 
+footer .twitter a:before{
+  background:none!important;
+  width:0!important;
+}
+
 .build {
   float: left;
   font-size: 0.75em;
@@ -1573,11 +1578,17 @@ select {
 
 /* external links */
 
-
+a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before, .external-link-icon:before{
+  content: '';
+  width:20px;
+  height:20px;
+  margin-left: -20px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
+  position:absolute;
+}
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
 .external-link-icon {
   padding-left: 20px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
 }
 
 /* Exception for links in the openstreetmap */

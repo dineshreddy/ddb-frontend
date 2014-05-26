@@ -95,9 +95,6 @@
   margin-top: 20px;
 }
 
-.origin span, .show-origin {
-  background: url("../images/icons/objectViewerActions.png") no-repeat;
-}
 .origin span {
   padding-left: 23px;
   line-height: 20px;
