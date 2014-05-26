@@ -25,6 +25,7 @@ $(document).ready(function() {
       clusters: null,
       waitingLayer: null,
       institutionList: null,
+      loadCounter: 0,
 
       /** Initialization * */
       init : function() {
@@ -134,7 +135,7 @@ $(document).ready(function() {
 
       applyFilters : function() {
         var self = this;
-
+        
         //Show the waiting layer
         self._showWaitingLayer();
 
@@ -151,7 +152,7 @@ $(document).ready(function() {
           self._hideWaitingLayer();
 
         });
-
+        
       },
 
       _initializeMap : function(lon, lat, zoom) {
@@ -523,6 +524,14 @@ $(document).ready(function() {
         var selectedSectorsText = JSON.stringify(selectedSectors);
         var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
 
+        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed. 
+        //Otherwise some checkbox choises might be overridden!
+        if (self.loadCounter == 0) {
+          $('input').prop('disabled', true);
+        }
+        
+        self.loadCounter++;
+        
         $.ajax({
           type : 'GET',
           dataType : 'text',
@@ -533,6 +542,13 @@ $(document).ready(function() {
             var dataJson = JSON.parse(dataText);
             self.clusters = dataJson.data;
             onCompleteCallbackFunction();
+          },
+          complete : function(){
+            self.loadCounter--;
+            
+            if (self.loadCounter == 0) {
+              $('input').prop('disabled', false);
+            }
           }
         });
       },
