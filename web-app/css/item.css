@@ -55,6 +55,10 @@
   background-position: -27px -359px;
 }
 
+.viewer.dfg > span {
+  background: #fff;
+}
+
 .item-detail .institution {
   margin-top: 1em;
   padding-bottom: 10px;
@@ -98,9 +102,8 @@
 .origin span, .show-origin {
   background: url("../images/icons/objectViewerActions.png") no-repeat;
 }
-.origin span {
+.has-origin {
   padding-left: 23px;
-  line-height: 20px;
   background-position: -2px -120px;
 }
 .show-origin {
@@ -112,9 +115,6 @@
 .origin .show-origin span {
   background: #fff;
   padding-left: 0;
-}
-.has-origin {
-  font-size: 0.938em;
 }
 
 .share {
