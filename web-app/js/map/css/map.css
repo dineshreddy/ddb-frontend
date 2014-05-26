@@ -161,4 +161,9 @@
 }
 
 
+.olMap .olControlAttribution a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before {
+  background: none !important;
+}
+
+
 /* Popup end */
