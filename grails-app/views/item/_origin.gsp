@@ -21,7 +21,7 @@ limitations under the License.
       </a>
     </g:if>
     <g:else>
-      <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
+      <span class="no-origin"><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
     </g:else>
   </div>
 </div>

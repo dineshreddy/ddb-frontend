@@ -36,7 +36,7 @@
   margin: 0 0 27px 0;
 }
 
-.page-link, .sendmail-link, .pdf-link, .viewer.dfg, .xml-link {
+.page-link, .sendmail-link, .pdf-link, .viewer.dfg, .xml-link, .no-origin {
   margin-right: 30px;
   padding-left: 24px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat;
@@ -116,6 +116,10 @@
 .origin .show-origin span {
   background: #fff;
   padding-left: 0;
+}
+
+.no-origin {
+  background-position: -70px -388px;
 }
 
 .share {
