@@ -547,7 +547,7 @@ function updateRanking (bookmarkId, folderId, newPosition){
     contentType : "application/json; charset=utf-8",
     traditional : true,
     url : jsContextPath + "/apis/favorites/"+bookmarkId+"/_move",
-    data : body,
+    data : JSON.stringify(body),
     dataType : "json",
     success: function(){
       window.location = window.location;
