@@ -199,7 +199,7 @@ limitations under the License.
                 <span><input type="checkbox" class="select-all" id="checkall"></span> 
                 <span class="favorite-numberheader">
                 <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
-                    <a href="${urlsForOrderNumber["asc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderNumber["asc"]}" />">
                       #
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
@@ -212,7 +212,7 @@ limitations under the License.
                     </a>
                   </g:if> 
                   <g:else>
-                    <a href="${urlsForOrderNumber["desc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderNumber["desc"]}" />">
                       #
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
@@ -227,7 +227,7 @@ limitations under the License.
                 </span>
                 <span>
                 <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
-                    <a href="${urlsForOrderTitle["asc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderTitle["asc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
@@ -240,7 +240,7 @@ limitations under the License.
                     </a>
                   </g:if> 
                   <g:else>
-                    <a href="${urlsForOrderTitle["desc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderTitle["desc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf"></g:message>
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
@@ -255,7 +255,7 @@ limitations under the License.
                 </span>
                 <span class="favorite-dateheader"> 
                   <g:if test="${params[SearchParamEnum.ORDER.getName()] == 'desc'}" >
-                    <a href="${urlsForOrderDate["asc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderDate["asc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
@@ -268,7 +268,7 @@ limitations under the License.
                     </a>
                   </g:if> 
                   <g:else>
-                    <a href="${urlsForOrderDate["desc"].encodeAsHTML()}">
+                    <a href="<ddb:doHtmlEncode url="${urlsForOrderDate["desc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
                        <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">

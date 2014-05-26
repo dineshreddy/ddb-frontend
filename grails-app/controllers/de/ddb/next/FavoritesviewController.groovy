@@ -147,7 +147,6 @@ class FavoritesviewController {
             if (request.method=="POST"){
                 sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
             }
-
             def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
 
             render(view: ACTION, model: [
@@ -319,8 +318,7 @@ class FavoritesviewController {
                     urlsForOrderNumber:orderLinks.urlsForOrderNumber,
                     urlsForOrderTitle:orderLinks.urlsForOrderTitle,
                     baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                    contextUrl: commonConfigurationService.getContextUrl(),
-                    folderId: folderId
+                    contextUrl: commonConfigurationService.getContextUrl()
                 ])
             }
         } else{
