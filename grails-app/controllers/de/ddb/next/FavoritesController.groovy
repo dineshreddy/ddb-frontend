@@ -493,13 +493,13 @@ class FavoritesController {
         def User user = userService.getUserFromSession()
         if (user != null) {
             def folder
-            if (params.folderId) {
-                folder = bookmarksService.findFolderById(params.folderId)
+            if (request.JSON.folderId) {
+                folder = bookmarksService.findFolderById(request.JSON.folderId)
             } else {
                 folder = bookmarksService.findMainBookmarksFolder(user.id)
             }
             if (folder) {
-                folder.moveBookmark(params.id, params.position)
+                folder.moveBookmark(params.id, request.JSON.position)
                 bookmarksService.updateFolder(folder)
                 render(status: response.SC_NO_CONTENT)
             } else {
