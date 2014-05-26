@@ -41,6 +41,7 @@
   border-right: 6px #e9e5e2;
   overflow: scroll;
   overflow-x: hidden;
+  position: relative;
 }
 
 .compare .slide-viewer {
@@ -80,6 +81,16 @@
 
 .compare .fields .value div {
   padding-right: 30px;
+}
+
+.compare .viewer.dfg{
+  margin-right: 30px;
+  padding-left: 24px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -27px -359px;
+}
+
+.compare .viewer.dfg >span{
+  background: #fff;
 }
 
 @media (max-width: 529px) {
