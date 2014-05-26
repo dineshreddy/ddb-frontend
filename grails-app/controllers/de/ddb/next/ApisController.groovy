@@ -120,6 +120,8 @@ class ApisController {
 
         int cacheValidInDays = 1
 
+        boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
+        
         // parse selected sector information from request
         def selectedSectors = params.selectedSectors
         def sectors = selectedSectors.tokenize(',[]')
@@ -128,7 +130,7 @@ class ApisController {
         }
 
         // get all available institutions from cortex
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1","hasItems":"${onlyInstitutionsWithData}"])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -136,8 +138,8 @@ class ApisController {
         def institutions = apiResponse.getResponse()
 
         // get the clustered institutions
-        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays)
-
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)
+        
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
         Calendar expiresDate = Calendar.getInstance()

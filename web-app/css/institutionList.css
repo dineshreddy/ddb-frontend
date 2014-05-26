@@ -108,7 +108,7 @@
   font-weight: bold;
 }
 
-.sector-facet {
+.sector-facet, .institution-with-data {
   margin: 2px 0;
   line-height: 28px;
   position: relative;
@@ -116,7 +116,7 @@
   background-color: #efebe8;
 }
 
-div.sector-facet>label:hover {
+div.sector-facet>label:hover, div.institution-with-data>label:hover {
   text-decoration: underline;
   color: #a5003b;
 }
@@ -133,13 +133,13 @@ div.sector-facet>label:hover {
   display: none;
 }
 
-.sector-facet .checkbox input[type="checkbox"] { 
+.sector-facet .checkbox input[type="checkbox"], .institution-with-data .checkbox input[type="checkbox"] { 
   float: none; 
   margin-top: -3px; 
   margin-left: -10px; 
 }
 
-.sector-facet .checkbox {
+.sector-facet .checkbox, .institution-with-data .checkbox {
   min-height: 0;
 }
 

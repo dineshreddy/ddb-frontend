@@ -521,13 +521,14 @@ $(document).ready(function() {
 
         var selectedSectors = this._getSelectedSectors();
         var selectedSectorsText = JSON.stringify(selectedSectors);
+        var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
 
         $.ajax({
           type : 'GET',
           dataType : 'text',
           async : true,
           cache: true,
-          url : jsContextPath + this.apiClusteredInstitutionsUrl+"?selectedSectors="+selectedSectorsText,
+          url : jsContextPath + this.apiClusteredInstitutionsUrl+"?selectedSectors="+selectedSectorsText+"&onlyInstitutionsWithData="+onlyInstitutionsWithData,
           success : function(dataText){
             var dataJson = JSON.parse(dataText);
             self.clusters = dataJson.data;

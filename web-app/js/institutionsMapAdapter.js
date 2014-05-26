@@ -171,7 +171,11 @@ var InstitutionsMapAdapter = (function($, undefined) {
       _enableMapView();
     });
 
-    $('input:checkbox').click(function() {
+    $('.sector-facet input:checkbox').click(function() {
+      Public.selectSectors();
+    });
+    
+    $('.institution-with-data input:checkbox').click(function() {
       Public.selectSectors();
     });
   };

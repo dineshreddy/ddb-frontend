@@ -79,7 +79,7 @@ class InstitutionService {
         return allInstitutions
     }
 
-    def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays){
+    def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays, boolean onlyInstitutionWithData){
         log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
 
         // Get the ClusterCache Object from the application context
@@ -89,7 +89,7 @@ class InstitutionService {
         ClusterCache cache = servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME)
 
         // If the cache does not yet contain cluster data for the selected sectors
-        if(cache.getCluster(selectedSectorList) == null){
+        if(cache.getCluster(selectedSectorList, onlyInstitutionWithData) == null){
             log.info "getClusteredInstitutions(): no cache available for selected sectors. Calculating...."
 
             // Start of the actual javascript logic from IAIS
@@ -132,7 +132,7 @@ class InstitutionService {
             def circleSets = binning.getSet().circleSets
 
 
-            // Transform the resulting data structure to a lot more bandwith friendly data structure (4MB -> 1MB)
+            // Transform the resulting data structure to a lot more bandwidth friendly data structure (4MB -> 1MB)
             def clusterContainer = [:]
 
             // Collect all institutions available for the given selection
@@ -208,12 +208,12 @@ class InstitutionService {
                 }
             }
 
-            cache.addCluster(selectedSectorList, clusterContainer, cacheValidInDays*24*60*60*1000)
+            cache.addCluster(selectedSectorList, clusterContainer, cacheValidInDays*24*60*60*1000, onlyInstitutionWithData)
         }else{
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
-
-        def result = ["data": cache.getCluster(selectedSectorList)]
+        
+        def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
         return result
     }
 
