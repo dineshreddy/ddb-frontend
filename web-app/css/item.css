@@ -18,9 +18,9 @@
   padding-left: 16px;
   margin-right: 10px;
 }
-
+ 
 .back-to-list-greyed-out {
-  background: url("../images/icons/ddbIkonographie.png") no-repeat -70px -207px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -206px;
   color: #878380;
 }
 
@@ -105,10 +105,12 @@
 .origin span, .show-origin {
   background: url("../images/icons/objectViewerActions.png") no-repeat;
 }
+
 .has-origin {
   padding-left: 23px;
   background-position: -2px -120px;
 }
+
 .show-origin {
   padding-left: 17px;
   background-position: -2px -80px;
