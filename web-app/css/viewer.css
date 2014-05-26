@@ -80,15 +80,15 @@
   width: 120px;
   height: 90px;
 }
-.scroller li .group .thumbnail.audio {
+.scroller li .group .placeholder.thumbnail.audio {
   background:#fff url("../images/icons/searchResultMediaAudio.png") no-repeat center center;
   background-size:90px auto;
 }
-.scroller li .group .thumbnail.video {
+.scroller li .group .placeholder.thumbnail.video {
   background:#fff url("../images/icons/searchResultMediaVideo.png") no-repeat center center;
   background-size:90px auto;
 }
-.scroller li .group .thumbnail.image {
+.scroller li .group .placeholder.thumbnail.image {
   background:#fff url("../images/icons/searchResultMediaImage.png") no-repeat center center;
   background-size:90px auto;
 }
@@ -352,7 +352,8 @@ noscript .scroller, .pdf-scroller {
   background-position: -210px -180px;
 }
 #binary-viewer .previews img,
-#binary-viewer .pdf-previews img {
+#binary-viewer .pdf-previews img,
+#binary-viewer .no-external-link-icon img {
   display: block;
   margin-left: auto;
   margin-right: auto;

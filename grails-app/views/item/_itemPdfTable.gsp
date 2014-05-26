@@ -114,13 +114,14 @@ a[href^="http"]:not (.no-external-link-icon ):not ([href^="http://localhost"]
 }
 
 .origin {
-	margin-top: 20px;
+  margin-top: 20px;
 }
 
-origin .show-origin span {
+origin .has-origin {
   background: none;
   padding-left: 0;
 }
+
 .show-origin {
   padding-left: 20px;
   background: url(../images/icons/objectViewerActions.png) no-repeat -2px -81px;

@@ -62,14 +62,17 @@
   border-width: 0 0 5px;
   font-size: 0.938em;
 }
+
 .item-detail .institution .span3 img {
   margin: 0 15px 0 0;
 }
+
 @media (min-width: 980px) {
   .item-detail .institution .span3 img {
     float: right;
   }
 }
+
 .institution-name {
   padding-left: 17px;
   height: 25px;
@@ -78,16 +81,16 @@
   font-weight: bold;
   font-size: 1.133em;
 }
+
 .institution-link {
   display: block;
 }
-.institution-link > span {
-  background: #fff;
-}
+
 .object-controls {
   line-height: 30px;
   font-size: 0.938em;
 }
+
 .object-controls .span6 {
   margin-left: 0px;
 }
@@ -98,21 +101,23 @@
 .origin span, .show-origin {
   background: url("../images/icons/objectViewerActions.png") no-repeat;
 }
+
 .origin span {
   padding-left: 23px;
   line-height: 20px;
   background-position: -2px -120px;
 }
+
 .show-origin {
   padding-left: 17px;
   background-position: -2px -80px;
   margin-right: 30px;
 }
 
-.origin .show-origin span {
-  background: #fff;
+.origin .has-origin {
   padding-left: 0;
 }
+
 .has-origin {
   font-size: 0.938em;
 }
@@ -165,16 +170,20 @@
   line-height: 30px;
   text-align: right;
 }
+
 .item-nav ul {
   margin-bottom: 0;
   position: relative;
 }
+
 .item-nav ul li {
   padding: 0;
 }
+
 .item-nav .first-item, .item-nav .last-item {
   text-align: left;
 }
+
 .item-nav .prev-item {
   margin-left: 20px;
 }
@@ -182,35 +191,45 @@
 .item-nav .next-item a {
   padding-left: 5px;
 }
+
 .item-nav .next-item {
   margin-left: 5px;
   padding-left: 5px;
 }
+
 .item-nav .prev-item, .item-nav .next-item {
   color: #e6e6e6;
 }
+
 .item-nav .items-overall-index {
   margin-right: 10px;
 }
+
 .item-nav.page-nav .extra-controls>div{
   right: 0;
 }
+
 .item-nav.page-nav .extra-controls .arrow-container{
   right: -10px;
   left: auto;
 }
+
 .fields, .rights {
   font-size: 0.938em;
 }
+
 .item-nav-mob {
   display:none;
 }
+
 .item-nav-mob ul {
   margin-top: 10px;
 }
+
 .item-nav-mob ul li{
   margin-top: 3px;
 }
+
 .item-nav-mob .prev-item a div, .item-nav-mob .next-item a div,
 .item-nav-mob .prev-item .disabled-arrow, .item-nav-mob .next-item .disabled-arrow {
   width: 40px;
@@ -218,21 +237,27 @@
   margin-left: 14px;
   background:url("../images/icons/objectViewerCarouselControls.png") no-repeat;
 }
+
 .item-nav-mob .prev-item a div {
   background-position: 3px -121px;
 }
+
 .item-nav-mob .next-item a div {
   background-position: 3px -32px;
 }
+
 .item-nav-mob .prev-item .disabled-arrow {
   background-position: 3px -151px;
 }
+
 .item-nav-mob .next-item .disabled-arrow {
   background-position: 3px -62px;
 }
+
 .item-nav-mob .prev-item span, .item-nav-mob .next-item span {
   display: none;
 }
+
 .license-icon {
   margin: -2px 10px 0 0;
   display: inline-block;
@@ -242,32 +267,40 @@
   padding-left: 20px;
   background: url(../images/icons/objectViewerActions.png) no-repeat -2px -140px;
 }
+
 .item-links {
   line-height: 30px;
   font-size: 0.938em;
   margin-bottom: 20px;
 }
+
 .item-links .link-block, .item-links .favorite .sendmail-block{
   display: inline-block;
 }
+
 .xml-link {
   background-position: -27px -359px;
 }
+
 .xml-link span {
   background: white;
 }
+
 .pdf-link {
   background-position: -27px -359px;
 }
+
 .pdf-link span {
   background: white;
 }
+
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
     display: none;
   }
 }
+
 @media (max-width: 767px) {
   .object-controls .item-nav-left,
   .item-links .link-block .sendmail-block,
@@ -290,11 +323,13 @@
     padding-left: 0;
   }
 }
+
 @media (min-width: 481px) {
   .item-nav-mob .prev-item {
     border-left: none;
   }
 }
+
 @media (max-width: 480px) {
   .item-nav .result-label {
     display: none;
@@ -324,6 +359,7 @@
     max-width: 724px;
   }
 }
+
 .popup-sendpdf-dialog-wrapper {
   width: 360px;
   height: 150px;

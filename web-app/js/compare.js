@@ -101,7 +101,7 @@ $(document)
               $.hideErrors();
               if (type === "image") {
                 if (first) {
-                  $(".first .previews").parent().addClass("off");
+                  $(".first .viewer-icon").parent().addClass("off");
                   $(".first .previews").each(function() {
                     if ($(this).attr("href") == previewHref) {
                       $(this).parent().removeClass("off");
@@ -111,7 +111,7 @@ $(document)
                     }
                   });
                 } else {
-                  $(".second .previews").parent().addClass("off");
+                  $(".second .viewer-icon").parent().addClass("off");
                   $(".second .previews").each(function() {
                     if ($(this).attr("href") == previewHref) {
                       $(this).parent().removeClass("off");
@@ -157,7 +157,7 @@ $(document)
                 if ($(".first .binary-viewer").length === 0) {
                   return;
                 }
-                $(".first .previews").parent().addClass("off");
+                $(".first .viewer-icon").parent().addClass("off");
                 $(".first .binary-viewer").append('<div id="jwplayer-container-first"></div>');
 
                 if (navigator.appName.indexOf("Internet Explorer") === -1) {
@@ -190,7 +190,7 @@ $(document)
                 if ($(".second .binary-viewer").length === 0) {
                   return;
                 }
-                $(".second .previews").parent().addClass("off");
+                $(".second .viewer-icon").parent().addClass("off");
                 $(".second .binary-viewer").append('<div id="jwplayer-container-second"></div>');
                 if (navigator.appName.indexOf("Internet Explorer") === -1) {
                   mediaQueryMatches = mediaQuery;
