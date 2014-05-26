@@ -156,6 +156,7 @@ $(document).ready(function() {
       },
 
       _initializeMap : function(lon, lat, zoom) {
+        var self = this;
         //Set the base folder for images
         OpenLayers.ImgPath = this.imageFolder;
 
@@ -186,6 +187,11 @@ $(document).ready(function() {
         $("#OpenLayers_Control_DDBPanZoomBar_28_zoomout").attr("title", messages.ddbnext.InstitutionPage_MapZoomOut);
         $(".olControlDDBHome").attr("title", messages.ddbnext.InstitutionPage_MapHome);
         
+        //Reset filters via the home button
+        $(".olControlDDBHome").click(function(){
+          $('input').prop('checked', false);
+          self.applyFilters();
+        });
         
         return tiles;
       },
