@@ -223,6 +223,11 @@ hr {
   text-align:right;
 }
 
+.results-sorter .favorite-numberheader{
+  margin-left:12px;
+  margin-right:28px;
+}
+
 .results-sorter .favorite-dateheader {
   float:right;
   margin-right:10px;
@@ -402,7 +407,7 @@ hr {
 
 .favorites-results .results-list .summary-main {
   min-height: 74px;
-  margin-left: 36px;
+  margin-left: 100px;
 }
 
 .favorites-results .remove-item-check {
@@ -708,3 +713,36 @@ hr {
 .icon-blocked {
   background-position: -3px -70px !important;
 }
+
+.rank-wrapper {
+  display: inline-block;
+  margin-left: 35px;
+  position: absolute;
+}
+
+.rank-wrapper .rank-input {
+  width: 30px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.rank-wrapper .rank-arrows {
+  display: inline-block;
+}
+
+.rank-arrows >div {
+  text-indent: -9999px;
+  width: 20px;
+  height: 10px;
+  background: url("../images/icons/arrows.png") no-repeat;
+  cursor: pointer;
+}
+
+.rank-arrows .up{
+  background-position: 5px -8px;
+}
+
+.rank-arrows .down{
+  background-position: 5px -107px;
+}
+

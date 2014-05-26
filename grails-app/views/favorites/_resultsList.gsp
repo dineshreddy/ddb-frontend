@@ -30,10 +30,17 @@ limitations under the License.
     </g:elseif>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span5">
+        <div class="summary-main-wrapper span6">
           <g:if test="${!publicView}">
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
           </g:if>
+          <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${it.folder.folderId}">
+            <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${it.orderNumber == null}">disabled</g:if>>
+            <div class="rank-arrows <g:if test="${it.orderNumber == null}">disabled</g:if>">
+                <div class="up bb">+</div>
+                <div class="down">-</div>
+            </div>
+          </div>
           <div class="summary-main">
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
@@ -52,9 +59,6 @@ limitations under the License.
                 ${it.preview.subtitle}
               </g:if>
             </div>
-          </div>
-          <div class="extra">
-            <ddb:renderMediaTypesList mediaTypesArray="${it.preview.media}"></ddb:renderMediaTypesList>
           </div>
         </div>
         <div class="span2 thumbnail">
@@ -75,7 +79,7 @@ limitations under the License.
             </g:link>
           </g:else>
         </div>
-        <div class="span2 created-at">
+        <div class="span1 created-at">
           <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
