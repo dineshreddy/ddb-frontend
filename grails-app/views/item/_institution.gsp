@@ -32,8 +32,8 @@ limitations under the License.
                   </g:if>
                   <!-- (DFG) viewer -->
                   <g:if test="${!viewerUri?.isEmpty()}">
-                      <a target="_blank" href="${viewerUri}" class="no-external-link-icon">
-                        <span class="viewer dfg"><g:message encodeAs="html" code="ddbnext.ObjectViewer_dfgKey" /></span>
+                      <a target="_blank" href="${viewerUri}" class="viewer dfg">
+                        <span><g:message encodeAs="html" code="ddbnext.ObjectViewer_dfgKey" /></span>
                       </a>
                   </g:if>
               </div>
