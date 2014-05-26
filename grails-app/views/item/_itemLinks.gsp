@@ -42,7 +42,7 @@ limitations under the License.
         </div>
       </ddb:isPersonalFavoritesAvailable>
     </ddbcommon:isLoggedIn>
-    <div class="link-block">
+    <div class="page-link-block">
       <a class="page-link page-link-popup-anchor hidden-phone hidden-tablet" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
