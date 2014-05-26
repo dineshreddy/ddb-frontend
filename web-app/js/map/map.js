@@ -181,8 +181,13 @@ $(document).ready(function() {
         var position = this._getLonLat(lon, lat);
         this.osmMap.setCenter(position, zoom);
 
+        //Set tooltips for the map controls
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomin").attr("title", messages.ddbnext.InstitutionPage_MapZoomIn);
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomout").attr("title", messages.ddbnext.InstitutionPage_MapZoomOut);
+        $(".olControlDDBHome").attr("title", messages.ddbnext.InstitutionPage_MapHome);
+        
+        
         return tiles;
-
       },
 
       _addInstitutionsLayer : function() {
