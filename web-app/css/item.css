@@ -102,10 +102,6 @@
   margin-top: 20px;
 }
 
-.origin span, .show-origin {
-  background: url("../images/icons/objectViewerActions.png") no-repeat;
-}
-
 .has-origin {
   padding-left: 23px;
   background-position: -2px -120px;
