@@ -282,7 +282,7 @@
   margin-bottom: 20px;
 }
 
-.item-links .link-block, .item-links .favorite .sendmail-block{
+.item-links .link-block, .item-links .page-link-block, .item-links .favorite .sendmail-block {
   display: inline-block;
 }
 
@@ -306,6 +306,9 @@
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
     display: none;
+  }
+  .page-link-block {
+    display: none !important;
   }
 }
 
