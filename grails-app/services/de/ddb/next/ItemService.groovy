@@ -130,7 +130,7 @@ class ItemService {
      */
     def prepareImagesForPdf(model) {
         def baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
-        def logoHeaderFile = '/logoHeader.png'
+        def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
