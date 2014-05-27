@@ -21,7 +21,7 @@ limitations under the License.
       <td style="width: 35%" class="valign-top"><strong> 
       ${it.name}:</strong>
       </td>
-      <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
+      <td class="valign-top value">
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 

@@ -6,6 +6,7 @@ class StripOutInvalidXmlCharsTagLib {
 
     def stripOutInvalidXmlChars = { attrs, body ->
         def text = attrs.text
+        println text 
         
         Pattern AMERSAND = Pattern.compile("&", Pattern.LITERAL)
         Pattern TAGOPEN = Pattern.compile("<", Pattern.LITERAL)

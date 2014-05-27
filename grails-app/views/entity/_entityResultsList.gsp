@@ -15,6 +15,7 @@ limitations under the License.
 --%>
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
+${entities.entity.docs}
   <g:each in="${entities.entity.docs}" var="entityItems">
     <g:each in="${entityItems}" var="entityItem">
       <g:set var="entityId" value="${entityItem.id.substring(cultureGraphUrl.length())}" />
