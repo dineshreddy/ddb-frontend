@@ -63,7 +63,7 @@ $(document)
               var totImages = $(".gallery-images li").size();
               var totVideos = $(".gallery-videos li").size();
               var totAudios = $(".gallery-audios li").size();
-              var currentGallery = "";
+              var currentGallery = "images";
               if (totImages > 0) {
                 currentGallery = "images";
                 if (totImages > 1) {
