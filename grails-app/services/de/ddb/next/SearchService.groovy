@@ -731,11 +731,15 @@ class SearchService {
 
         if(facetName == FacetEnum.AFFILIATE.getName() || facetName == FacetEnum.AFFILIATE_ROLE.getName() || facetName == FacetEnum.KEYWORDS.getName() || facetName == FacetEnum.PLACE.getName() || facetName == FacetEnum.PROVIDER.getName()|| facetName == FacetEnum.STATE.getName()){
             res = facetValue
-        } else if (facetName == EntityFacetEnum.PERSON_GENDER.getName() || facetName == EntityFacetEnum.PERSON_NAME.getName() || facetName == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetName == EntityFacetEnum.PERSON_PLACE.getName()){
+        } else if (facetName == EntityFacetEnum.PERSON_NAME.getName() || facetName == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetName == EntityFacetEnum.PERSON_PLACE.getName()){
             res = facetValue
-        } else if(facetName == FacetEnum.TYPE.getName()){
-            res = appCtx.getMessage(FacetEnum.TYPE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
+        } 
+        else if(facetName == EntityFacetEnum.PERSON_GENDER.getName()){
+            res = appCtx.getMessage(EntityFacetEnum.PERSON_GENDER.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
         }
+        else if(facetName == FacetEnum.TYPE.getName()){
+            res = appCtx.getMessage(FacetEnum.TYPE.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale() )
+        }        
         else if(facetName == FacetEnum.TIME.getName()){
             res = appCtx.getMessage(FacetEnum.TIME.getI18nPrefix()+facetValue, null, LocaleContextHolder.getLocale())
         }
