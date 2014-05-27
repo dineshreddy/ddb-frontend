@@ -34,7 +34,7 @@ limitations under the License.
               </div>
               <div class="span2">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
-                    <img src="<g:if test="${folder?.oldestItemMetaData?.preview?.thumbnail?.contains('binary')}">${request.getContextPath()}</g:if>${folder?.oldestItemMetaData?.preview?.thumbnail}" alt="<ddb:getWithoutTags>${folder?.oldestItemMetaData?.preview?.title}</ddb:getWithoutTags>" />
+                    <img src="<g:if test="${folder?.thumbnailItemMetaData?.preview?.thumbnail?.contains('binary')}">${request.getContextPath()}</g:if>${folder?.thumbnailItemMetaData?.preview?.thumbnail}" alt="<ddb:getWithoutTags>${folder?.thumbnailItemMetaData?.preview?.title}</ddb:getWithoutTags>" />
                   </a>
               </div>
             </div>

@@ -298,16 +298,27 @@ class ListsService {
             //Set the blocking token to ""
             it.blockingToken = ""
 
-            //TODO Get the image path of the oldest item in the list will be replaced by the first in the rank. see DDBNEXT-1426
-            List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
-            favoritesOfFolder.sort{it.creationDate}
-            if (favoritesOfFolder.size() > 0) {
-                def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
-                it.oldestItemMetaData = itemMd.get(0)
+            //Get the first item of the folder
+            if (it.bookmarks) {
+                def firstBookmark = bookmarksService.findBookmarkById(it.bookmarks.get(0))
+                def itemMd = favoritesService.retriveItemMD([firstBookmark], locale)
+                it.thumbnailItemMetaData = itemMd.get(0)
+                //Retrieve the number of favorites
+                it.count = it.bookmarks.size()
+            } 
+            //Fallback for old folder:if there is no bookmark list in the folder, get the image path of the oldest item
+            else {
+                List favoritesOfFolder = bookmarksService.findBookmarksByPublicFolderId(it.folderId)
+                favoritesOfFolder.sort{it.creationDate}
+                if (favoritesOfFolder.size() > 0) {
+                    def itemMd = favoritesService.retriveItemMD([favoritesOfFolder.get(0)], locale)
+                    it.thumbnailItemMetaData = itemMd.get(0)
+                }
+                //Retrieve the number of favorites
+                it.count = favoritesOfFolder.size()
             }
+            
 
-            //Retrieve the number of favorites
-            it.count = favoritesOfFolder.size()
             it.creationDateFormatted = formatDate(it.creationDate, locale)
         }
     }
