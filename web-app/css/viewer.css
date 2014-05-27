@@ -328,6 +328,11 @@ noscript .scroller, .pdf-scroller {
   position: absolute;
   right: 0;
 }
+#binary-viewer .show-origin:before {
+  background: none;
+  width: 0;
+  height: 0;
+}
 #binary-viewer .show-origin, #binary-viewer .show-lightbox,
 #binary-viewer .show-origin, #binary-viewer .show-pdf {
   background: url("../images/icons/ddbIkonographie.png") no-repeat;

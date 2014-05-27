@@ -298,12 +298,12 @@ $(document)
                                 'afterLoad' : function() {
                                   var title = $.cutoffStringAtSpace($(this.element).attr('data-caption'), 150);
                                   var position = $(this.element).attr('data-pos') + ' '
-                                      + $("#previews-list li").size();
+                                      + ($("#previews-list li").size() - $(".no-previews").length);
                                   $("span.fancybox-toolbar-title").text(title);
                                   $("div.fancybox-pagination span").text(position);
                                 }
                               });
-                      if ($('#previews-list li').size() === 1) {
+                      if (($('#previews-list li').size() - $(".no-previews").length) === 1) {
                         $('.fancybox-pagination').addClass("off");
                         $('.fancybox-click-nav').attr('onclick', "");
                         $('.fancybox-nav').remove();
@@ -334,6 +334,14 @@ $(document)
                 $(".viewer-icon").parent().addClass("off");
                 $(".previews").each(function() {
                   if ($(this).attr("href") == previewHref) {
+                    $(this).parent().removeClass("off");
+                    return false;
+                  } else {
+                    $(this).parent().appendTo($("#previews-list"));
+                  }
+                });
+                $(".no-previews").each(function() {
+                  if ($(this).find("img").attr("src") == previewUri) {
                     $(this).parent().removeClass("off");
                     return false;
                   } else {

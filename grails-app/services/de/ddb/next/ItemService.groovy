@@ -349,7 +349,6 @@ class ItemService {
                 type = z.'@mimetype'
                 category = z.'@category'
                 //check against the parameter "category"
-                println("path "+path+" type "+type+" category "+category)
                 if (category == FULL) {
                     if(type.contains(IMAGE)) {
                         binaryMap.'orig'.'uri'.'image' = BINARY_SERVER_URI + z.'@path'
