@@ -44,7 +44,6 @@ class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            log.info "doFilter"
             ServletRequestWrapper requestWrapper = new ServletRequestWrapper(request)
             HttpServletResponse httpResponse = (HttpServletResponse)response
 
