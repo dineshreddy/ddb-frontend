@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
+$(".add-to-favorites, #idFavorite").each(function() {
+  addFavoriteEvent($(this));
+});
+
 /**
  * This function applies to the favorites in search result page, item detail view and institution detail view.
  */
-$(".add-to-favorites, #idFavorite").each(function() {
-  var idFavorite = $(this);
-  idFavorite.parent().click(function(event) {
+function addFavoriteEvent(jElemFavorite) {
+  jElemFavorite.parent().click(function(event) {
     event.preventDefault();
-    changeFavoriteState(idFavorite);
+    changeFavoriteState(jElemFavorite);
     return false;
   });
-});
+}
 
 function changeFavoriteState(jElemFavorite) {
   disableFavorite(jElemFavorite.parent());
