@@ -333,6 +333,7 @@ class FavoritesviewController {
         for (order in [ORDER_ASC, ORDER_DESC]) {
             urlsForOrderDate[order] = g.createLink(
                     action : parameters.action,
+                    id : parameters.folderId,
                     params : [
                         offset : parameters.offset,
                         rows : parameters.rows,
@@ -344,6 +345,7 @@ class FavoritesviewController {
                     )
             urlsForOrderNumber[order] = g.createLink(
                     action : parameters.action,
+                    id : parameters.folderId,
                     params : [
                         offset : parameters.offset,
                         rows : parameters.rows,
@@ -355,6 +357,7 @@ class FavoritesviewController {
                     )
             urlsForOrderTitle[order] = g.createLink(
                     action : parameters.action,
+                    id : parameters.folderId,
                     params : [
                         offset : parameters.offset,
                         rows : parameters.rows,
