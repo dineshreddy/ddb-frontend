@@ -49,14 +49,6 @@ class ConfigurationService {
         return commonConfigurationService.getConfigValue("ddb.backend.url")
     }
 
-    public String getAasAdminUserId(){
-        return commonConfigurationService.getConfigValue("ddb.aas.admin.userid")
-    }
-
-    public String getAasAdminPassword(){
-        return commonConfigurationService.getConfigValue("ddb.aas.admin.password")
-    }
-
     public String getCulturegraphUrl(){
         return commonConfigurationService.getConfigValue("ddb.culturegraph.url")
     }
