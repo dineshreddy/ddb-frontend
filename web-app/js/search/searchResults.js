@@ -561,6 +561,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
             if ($.inArray(itemId, favoriteItemIds) >= 0) {
               disableFavorite(div);
             }
+            else {
+              addFavoriteEvent(div);
+            }
           });
         }
       });
