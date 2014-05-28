@@ -143,7 +143,7 @@ limitations under the License.
                       <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
                         <g:if test="${it.folder.isBlocked }">
                           <a class="bookmarks-list-publish" title="<g:message encodeAs="html" code="ddbnext.Blocked_Folder" />">
-                            <g:message encodeAs="html" code="ddbnest.pubblic"/>
+                            <g:message encodeAs="html" code="ddbnest.public"/>
                           </a>
                         </g:if>
                         <g:else>
