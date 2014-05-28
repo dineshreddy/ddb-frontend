@@ -34,10 +34,17 @@ hr {
 
 .bookmarks-lists .bookmarks-list {
   display: block;
-  padding: 0 100px 0 10px;
+  padding: 0 24px 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background: url("../images/icons/arrows.png") no-repeat;
+  background-position: 100% -48px;
+  background-color: #efebe8;
+}
+
+.fav-text a{
+  display: block;
 }
 
 .saved-searches .bookmarks-lists .bookmarks-list {
@@ -82,28 +89,42 @@ hr {
   white-space: nowrap;
 }
 
+.bookmarks-list-edit:before, .bookmarks-list-number:before, .bookmarks-list-delete:before, .bookmarks-list-publish:before {
+  content:'';
+  background: url("../images/icons/ddbIkonographie.png") no-repeat;
+  width:20px;
+  height:20px;
+  position: absolute;
+  left:0;
+}
+
 .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
-  position:absolute;
-  top:0;
-  right:0;
+  margin-left:15px;
+  padding-left: 20px;
+  position:relative;
+}
+
+.bookmarks-list-edit:before{
+  background-position: -29px -239px;
+}
+
+.bookmarks-list-delete:before{
+  background-position: -29px -269px;
+}
+
+.bookmarks-list-publish:before{
+  background-position: -29px -446px;
+}
+.bookmarks-list-publish.open-lock:before{
+  background-position: -29px -416px;
 }
 
 .bookmarks-list-edit > i, .bookmarks-list-delete > i, .bookmarks-list-publish > i {
   vertical-align: baseline;
 }
 
-.bookmarks-list-delete {
-  margin-top: 2px;
-  margin-right: 5px;
-}
-
-.bookmarks-list-edit {
-  margin-top: 1px;
-  margin-right: 25px;
-}
-
-.bookmarks-list-publish {
-  margin-right: 46px;
+.favorites-results-controls .controls-container .page-link.page-link-popup-anchor{
+  margin-right:0;
 }
 
 .bookmarks-lists .bookmarks-list a:hover {
@@ -151,7 +172,6 @@ hr {
 
 .favorites-results-container .link-block {
   display: inline-block;
-  margin-right: 10px;
 }
 
 .favorites-results-container .share-block {
@@ -183,6 +203,7 @@ hr {
 #favorites-copy .submit {
   margin-top:8px;
   margin-left: 0;
+  margin-right:0;
 }
 
 #folder-create .submit {
@@ -742,3 +763,25 @@ hr {
   background-position: 5px -107px;
 }
 
+.favorites-results-controls .header-row, .favorites-results-container .header-row {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: #efebe8 2px solid;
+}
+
+.favorites-results-container .header-row h3{
+  margin:0;
+  line-height: 20px;
+}
+
+.favorites-results-controls .list-name{
+  float:left;
+}
+
+.favorites-results-controls .controls-container {
+  float: right;
+}
+
+.favorites-results-controls .list-name span {
+  color: #A5003B;
+}
