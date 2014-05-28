@@ -83,9 +83,6 @@ class FavoritesviewController {
 
 
         if (totalResults <1){
-
-            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
-
             render(view: ACTION, model: [
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
@@ -93,7 +90,7 @@ class FavoritesviewController {
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
-                fullPublicLink: fullPublicLink,
+                fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: commonConfigurationService.getSelfBaseUrl(),
                 contextUrl: commonConfigurationService.getContextUrl()
             ])
@@ -147,8 +144,6 @@ class FavoritesviewController {
             if (request.method=="POST"){
                 sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
             }
-            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
-
             render(view: ACTION, model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -169,7 +164,7 @@ class FavoritesviewController {
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
                 urlsForOrderNumber: orderLinks.urlsForOrderNumber,
                 urlsForOrderTitle: orderLinks.urlsForOrderTitle,
-                fullPublicLink: fullPublicLink,
+                fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: commonConfigurationService.getSelfBaseUrl(),
                 contextUrl: commonConfigurationService.getContextUrl()
             ])
@@ -228,8 +223,6 @@ class FavoritesviewController {
             }
             allFoldersInformation = favoritesService.sortFolders(allFoldersInformation) { o -> o.folder }
 
-            def fullPublicLink = g.createLink(action: ACTION, params: [userId: user.getId(), folderId: folderId])
-
             if (totalResults <1){
                 render(view: ACTION, model: [
                     selectedFolder: selectedFolder,
@@ -239,7 +232,7 @@ class FavoritesviewController {
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,
-                    fullPublicLink: fullPublicLink,
+                    fullPublicLink: createPublicLink(user.getId(), folderId),
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     baseUrl: commonConfigurationService.getSelfBaseUrl(),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,ORDER_DESC,"title",0,folderId),
@@ -312,7 +305,7 @@ class FavoritesviewController {
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,
-                    fullPublicLink: fullPublicLink,
+                    fullPublicLink: createPublicLink(user.getId(), folderId),
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     urlsForOrderDate:orderLinks.urlsForOrderDate,
                     urlsForOrderNumber:orderLinks.urlsForOrderNumber,
@@ -372,6 +365,15 @@ class FavoritesviewController {
             urlsForOrderDate : urlsForOrderDate,
             urlsForOrderNumber : urlsForOrderNumber,
             urlsForOrderTitle : urlsForOrderTitle]
+    }
+
+    /**
+     * Create link to a public folder list
+     *
+     * @return
+     */
+    private def createPublicLink(String userId, String folderId) {
+        return g.createLink(controller: "user", action: userId) + "/favorites/" + folderId
     }
 
     private def orderFavoritesByNumber(def favorites, String folderId, String order) {
