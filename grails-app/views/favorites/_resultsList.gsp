@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.next.JsonUtil"%>
 <ul class="results-list unstyled" id="slaves">
   <g:set var="offset" value="${0}"/>
   <g:set var="index" value="${0}"/>
@@ -64,7 +65,7 @@ limitations under the License.
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
             <a>
-              <img src="<g:if test="${it.preview.thumbnail?.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </a>
           </g:if>
           <g:else>
@@ -75,7 +76,7 @@ limitations under the License.
               <g:set var="entityLink" value="persist" />
             </g:else>
             <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-              <img src="<g:if test="${it.preview.thumbnail?.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:link>
           </g:else>
         </div>
