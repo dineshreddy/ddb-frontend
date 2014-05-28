@@ -373,7 +373,7 @@ class FavoritesviewController {
      * @return
      */
     private def createPublicLink(String userId, String folderId) {
-        return g.createLink(controller: "user", action: userId) + "/favorites/" + folderId
+        return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
     private def orderFavoritesByNumber(def favorites, String folderId, String order) {
