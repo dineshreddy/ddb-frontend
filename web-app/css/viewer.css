@@ -328,7 +328,8 @@ noscript .scroller, .pdf-scroller {
   position: absolute;
   right: 0;
 }
-#binary-viewer .show-origin:before {
+#binary-viewer .show-origin:before,
+#binary-viewer .show-pdf:before {
   background: none;
   width: 0;
   height: 0;
