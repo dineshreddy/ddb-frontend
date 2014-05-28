@@ -35,7 +35,7 @@ import de.ddb.common.filter.ServletRequestWrapper
  */
 class SecurityFilter implements Filter {
 
-    private SecurityHelper ddbCommonSecurityHelper
+    private SecurityHelper ddbCommonSecurityHelper = new SecurityHelper()
 
     @Override
     public void destroy() {
@@ -81,6 +81,6 @@ class SecurityFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         log.info "Init SecurityFilter"
-        ddbCommonSecurityHelper = new SecurityHelper()
+        //ddbCommonSecurityHelper = new SecurityHelper()
     }
 }
