@@ -54,5 +54,4 @@ postData() {
 #Create some folderLists
 # Delete old test list: http://whvmescidev6.fiz-karlsruhe.de:9200/ddb/folderList/_query?q=title:*
 
-postData "folderList" "sectorList" '{"title":"ddbnext.lists.sectorList","createdAt":1401174102860,"users":["0edb4f2774e46b72959f9a79ee641746"],"folders":[]}'
-postData "folderList" "dailyList" '{"title":"ddbnext.lists.dailyList","createdAt":1401173343936,"users":["3fb89f5f12e1f6781b245a1f8db270ec"],"folders":[]}'
+postData "folderList" "dailyList" '{"title":"ddbnext.lists.dailyList","createdAt":1401173343936,"users":["3fb89f5f12e1f6781b245a1f8db270ec","0edb4f2774e46b72959f9a79ee641746"],"folders":[]}'
