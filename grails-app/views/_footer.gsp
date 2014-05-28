@@ -31,7 +31,7 @@ limitations under the License.
         </ul>
         <div class="build"><ddb:getFrontendVersion /> / <ddb:getBackendVersion/></div>
         <div class="twitter">
-          <g:message code="ddbnest.follow"/>:
+          <g:message code="ddbnext.follow"/>:
           <a href="https://twitter.com/ddbkultur" target="_blank">
             Twitter
           </a>

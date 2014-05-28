@@ -143,7 +143,7 @@ limitations under the License.
                       <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
                         <g:if test="${it.folder.isBlocked }">
                           <a class="bookmarks-list-publish" title="<g:message encodeAs="html" code="ddbnext.Blocked_Folder" />">
-                            <g:message encodeAs="html" code="ddbnest.public"/>
+                            <g:message encodeAs="html" code="ddbnext.public"/>
                           </a>
                         </g:if>
                         <g:else>
@@ -155,11 +155,11 @@ limitations under the License.
                               title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />"
                             </g:else>
                           >
-                            <g:message encodeAs="html" code="ddbnest.pubblic"/>
+                            <g:message encodeAs="html" code="ddbnext.public"/>
                           </a>
                         </g:else>
                         <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />">  
-                          <g:message encodeAs="html" code="ddbnest.properties"/>
+                          <g:message encodeAs="html" code="ddbnext.properties"/>
                         </a>
                         <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}" title="${message(code: 'ddbnext.delete_favorites')}">
                           <g:message encodeAs="html" code="ddbnext.Delete"/>
