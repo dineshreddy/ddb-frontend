@@ -435,7 +435,7 @@ $(function() {
       }
     });
     $('.rank-arrows .up, .rank-arrows .down').on('click', function(){
-      if(!$(this).hasClass('disabled')){
+      if(!$(this).parent().hasClass('disabled')){
         var parentElement = $(this).parents('.rank-wrapper');
         var currentPosition = parseInt(parentElement.find('.rank-input').val());
         if($(this).hasClass('up') && currentPosition > 0){

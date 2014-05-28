@@ -35,8 +35,8 @@ limitations under the License.
           <g:if test="${!publicView}">
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
             <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${it.folder.folderId}">
-              <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${it.orderNumber == null}">disabled</g:if>>
-              <div class="rank-arrows <g:if test="${it.orderNumber == null}">disabled</g:if>">
+              <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${!orderBy.equals("number")}">disabled</g:if>>
+              <div class="rank-arrows <g:if test="${!orderBy.equals("number")}">disabled</g:if>">
                 <div class="up bb">+</div>
                 <div class="down">-</div>
               </div>

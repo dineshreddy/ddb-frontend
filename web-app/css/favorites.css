@@ -785,3 +785,7 @@ hr {
 .favorites-results-controls .list-name span {
   color: #A5003B;
 }
+
+.rank-arrows.disabled >div {
+  cursor: default;
+ }
