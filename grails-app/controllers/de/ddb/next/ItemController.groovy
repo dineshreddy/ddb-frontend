@@ -45,7 +45,7 @@ class ItemController {
                     log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
                     forward controller: "error", action: "pdfNotFound"
                 }
-//                render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
+                //render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
             }
