@@ -284,7 +284,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <ddb:renderFavoritesResults results="${results}" folderId="${folderId}"/>
+              <ddb:renderFavoritesResults results="${results}" orderBy="${params[SearchParamEnum.BY.getName()]}"/>
             </div>
           </g:if>
           <g:else>

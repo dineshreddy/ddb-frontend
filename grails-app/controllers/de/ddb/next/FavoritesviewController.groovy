@@ -377,9 +377,6 @@ class FavoritesviewController {
         // first use bookmark list in folder to order the favorites
         Folder folder = bookmarksService.findFolderById(folderId)
         def bookmarkIdsInFolder = folder?.bookmarks
-        if (order == ORDER_DESC) {
-            bookmarkIdsInFolder = bookmarkIdsInFolder.reverse()
-        }
         bookmarkIdsInFolder.each {bookmarkIdInFolder ->
             def favorite = favorites.find {it.bookmark.bookmarkId == bookmarkIdInFolder}
             if (favorite) {
@@ -399,42 +396,38 @@ class FavoritesviewController {
         // update bookmark list in folder with the current list
         if (folder) {
             bookmarkIdsInFolder = result*.bookmark.bookmarkId
-            if (order == ORDER_DESC) {
-                bookmarkIdsInFolder = bookmarkIdsInFolder.reverse()
-            }
             folder.bookmarks = bookmarkIdsInFolder
             bookmarksService.updateFolder(folder)
+        }
+
+        if (order == ORDER_DESC) {
+            result = result.reverse()
         }
 
         return result
     }
 
     private def orderFavorites(def favorites, String folderId, String order, String by) {
-        def result
+        // order by number to get the "orderNumber" property filled out
+        def result = orderFavoritesByNumber(favorites, folderId, order)
         if (order == ORDER_ASC) {
             if (by == ORDER_BY_DATE) {
-                result = favorites.sort{ a, b ->
+                result = result.sort{ a, b ->
                     a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
                 }
             }
             else if (by == ORDER_BY_TITLE) {
-                result = favorites.sort{it.label.toLowerCase()}.reverse()
-            }
-            else { // by number
-                result = orderFavoritesByNumber(favorites, folderId, order)
+                result = result.sort{it.label.toLowerCase()}.reverse()
             }
         }
         else { // desc
             if (by == ORDER_BY_TITLE) {
-                result = favorites.sort{it.label.toLowerCase()}
+                result = result.sort{it.label.toLowerCase()}
             }
             else if (by == ORDER_BY_DATE) {
-                result = favorites.sort{ a, b ->
+                result = result.sort{ a, b ->
                     b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
                 }
-            }
-            else { // by number
-                result = orderFavoritesByNumber(favorites, folderId, order)
             }
         }
         return result
