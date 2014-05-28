@@ -742,3 +742,6 @@ hr {
   background-position: 5px -107px;
 }
 
+.rank-arrows.disabled >div {
+  cursor: default;
+ }
