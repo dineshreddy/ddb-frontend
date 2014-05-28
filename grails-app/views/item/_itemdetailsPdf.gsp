@@ -28,13 +28,13 @@ limitations under the License.
               <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
-              <ddb:wellFormedDocFromString text="${value}"/>  
+              <ddbcommon:wellFormedDocFromString text="${value}"/>  
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-           <ddb:wellFormedDocFromString text="${it.value}"/> 
+           <ddbcommon:wellFormedDocFromString text="${it.value}"/> 
         </g:else>
       </td>
     </tr>
@@ -45,7 +45,7 @@ limitations under the License.
       <td style="width: 35%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.stat_007" />:
       </strong></td>
       <td style="width: 65%" class="valign-top">
-        <ddb:wellFormedDocFromString text="${item.rights}"/>
+        <ddbcommon:wellFormedDocFromString text="${item.rights}"/>
       </td>
     </tr>
   </g:if>
