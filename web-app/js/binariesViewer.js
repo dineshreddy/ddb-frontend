@@ -133,7 +133,7 @@ $(document)
                     $(this).parent().appendTo($("#previews-list"));
                   }
                 });
-              } else {
+              } else if (type === "video" || type === "audio") {
                 jwPlayerSetup(previewHref, previewUri);
               }
               $("div.binary-title span").text(title_text);
