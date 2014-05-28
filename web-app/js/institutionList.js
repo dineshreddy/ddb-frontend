@@ -59,15 +59,20 @@
     },
 
     filterDescendants : function(institution, memory, selectedSector, parentList) {
+      var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
+      
       if (institution.children && institution.children.length > 0) {
         // when an institution has a least one child.
         _.reduce(institution.children, function(otherMemory, child) {
-          if (selectedSector.length === 0 || _.contains(selectedSector, child.sector)) {
-            otherMemory.push(child);
-            // the institution is the parent.
-            parentList.push(institution);
+
+          if (!onlyInstitutionsWithData || child.hasItems) {
+            if (selectedSector.length === 0 || _.contains(selectedSector, child.sector)) {
+              otherMemory.push(child);
+              // the institution is the parent.
+              parentList.push(institution);
+            }
           }
-          ddb.filterDescendants(child, otherMemory, selectedSector, parentList);
+          ddb.filterDescendants(child, otherMemory, selectedSector, parentList, onlyInstitutionsWithData);
           return otherMemory;
         }, memory);
       }
@@ -252,7 +257,6 @@
        * When at least one sector selected _and_ no first letter filter; e.g. sector = ['Media'], index = All
        */
       if (sectors.length > 0 && firstLetter === '') {
-        console.log("Case 1: Sector yes, Char no");
         var filteredBySector = ddb.filterBySectors(institutionsFilteredByData, sectors, parentList);
         var visible = _.union(_.uniq(parentList), filteredBySector);
 
@@ -279,8 +283,6 @@
        * the first step.
        */
       else if (sectors.length > 0 && firstLetter !== '') {
-        console.log("Case 2: Sector yes, Char yes");
-
         var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
         var filteredByData = ddb.filterOnlyInstitutionsWithData(filteredByFirstLetter, onlyInstitutionsWithData);
         
@@ -318,8 +320,6 @@
        * selected. e.g. sector = [], index = 'C'
        */
       else if (sectors.length === 0 && firstLetter !== '') {
-        console.log("Case 3: Sector no, Char yes");
-        
         var institutionsByLetter = ddb.institutionsByFirstChar[firstLetter];
         var institutionsByData = ddb.filterOnlyInstitutionsWithData(institutionsByLetter, onlyInstitutionsWithData);
         var institutionsBySector = ddb.filterBySectors(institutionsByData, sectors, parentList);
@@ -336,7 +336,6 @@
        * e.g. sector = [], index = All 
        */
       else {
-        console.log("Case 4: Sector no, Char no");
         ddb.styleIndex('All');
         
         if(onlyInstitutionsWithData) {
