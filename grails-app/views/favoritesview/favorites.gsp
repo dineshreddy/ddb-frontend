@@ -34,13 +34,8 @@ limitations under the License.
       <div class="row favorites-results-head">
         <div class="span8">
           <h1>
-            <g:message encodeAs="html" code="ddbnext.Favorites_Header" /> 
-            <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
-              <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
-            </g:if>
-            <g:else>
-              ${selectedFolder.title.capitalize()}
-            </g:else>
+            <g:message encodeAs="html" code="ddbnext.Favorites_Header" />
+            <g:message encodeAs="html" code="ddbnext.Favorites"/>
           </h1>
         </div>
         <div class="print-header">
@@ -48,43 +43,12 @@ limitations under the License.
             <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Favorites_List_Of" />
           </h3>
         </div>
-        <div class="span12">
-          <hr>
-        </div>
-        <div class="span12 link-row">
-          <div class="email-block">
-            <a href="#" class="sendbookmarks" title="<g:message encodeAs="html" code="ddbnext.send_favorites" />">
-              <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
-            </a>
-          </div>
-          <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-            <div class="link-block">
-              <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
-                <span><g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" /></span>
-              </a>
-            </div>
-          </g:if>
-          <div class="results-paginator-options">
-            <div class="page-filter">
-              <label><g:message encodeAs="html" code="ddbnext.Items_Per_Page" /></label> 
-              <span> 
-                <select class="select">
-                  <g:each in="${resultsPaginatorOptions.pageFilter}">
-                    <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
-                      ${it}
-                    </option>
-                  </g:each>
-                </select>
-              </span>
-            </div>
-          </div>
-        </div>
-        <div class="span12">
-          <hr>
-        </div>
       </div>
       <div class="row favorites-results-container">
         <div class="span3 bookmarks-container">
+          <div class="header-row">
+            <h3><g:message encodeAs="html" code="ddbnext.lists"/></h3>
+          </div>
           <ul class="bookmarks-lists unstyled" id="folder-list" data-folder-selected="${selectedFolder.folderId}">
             <g:each in="${allFolders}">
               <li class="bookmarks-list bt bb bl br <g:if test="${it.folder.folderId == selectedFolder.folderId }">selected-folder</g:if>">
@@ -120,30 +84,6 @@ limitations under the License.
                     </b>
                   </g:else>
                 </div> 
-                <div class="fav-number"> ${it.count}</div>
-                <g:if test="${it.folder.folderId != mainFavoriteFolder.folderId}">
-                  <g:if test="${it.folder.isBlocked }">
-                    <a class="bookmarks-list-publish">
-                      <i class="icon-not-publish icon-blocked" title="<g:message encodeAs="html" code="ddbnext.Blocked_Folder" />" ></i>
-                    </a>
-                  </g:if>
-                  <g:else>
-                    <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder" data-folder-id="${it.folder.folderId}">
-                      <g:if test="${it.folder.isPublic}">
-                        <i class="icon-not-publish icon-publish" title="<g:message encodeAs="html" code="ddbnext.Hide_Folder" />" ></i>
-                      </g:if>
-                      <g:else>
-                        <i class="icon-not-publish" title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />" ></i>
-                      </g:else>
-                    </a>
-                  </g:else>
-                  <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" >  
-                    <i class="icon-edit" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />" ></i>
-                  </a>
-                  <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}">
-                    <i class="icon-remove" title="<g:message encodeAs="html" code="ddbnext.delete_favorites" />" ></i>
-                  </g:link>
-                </g:if>
               </li>
             </g:each>
             <li class="">
@@ -174,6 +114,61 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
+              <div class="row hidden-phone">
+                <div class="span9 header-row">
+                  <div class="list-name">
+                    <span>
+                      <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                        <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
+                      </g:if>
+                      <g:else>
+                        ${selectedFolder.title.capitalize()}
+                      </g:else>
+                    </span>
+                    <g:each in="${allFolders}">
+                      <g:if test="${it.folder.folderId == selectedFolder.folderId }">
+                        (${it.count})
+                      </g:if>
+                    </g:each>
+                  </div>
+                  <div class="controls-container">
+                    <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
+                      <div class="link-block">
+                        <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
+                          <span><g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" /></span>
+                        </a>
+                      </div>
+                    </g:if>
+                    <g:each in="${allFolders}">
+                      <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
+                        <g:if test="${it.folder.isBlocked }">
+                          <a class="bookmarks-list-publish" title="<g:message encodeAs="html" code="ddbnext.Blocked_Folder" />">
+                            <g:message encodeAs="html" code="ddbnest.pubblic"/>
+                          </a>
+                        </g:if>
+                        <g:else>
+                          <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder <g:if test="${it.folder.isPublic}">open-lock</g:if>" data-folder-id="${it.folder.folderId}" 
+                            <g:if test="${it.folder.isPublic}">
+                              title="<g:message encodeAs="html" code="ddbnext.Hide_Folder" />"
+                            </g:if>
+                            <g:else>
+                              title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />"
+                            </g:else>
+                          >
+                            <g:message encodeAs="html" code="ddbnest.pubblic"/>
+                          </a>
+                        </g:else>
+                        <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />">  
+                          <g:message encodeAs="html" code="ddbnest.properties"/>
+                        </a>
+                        <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}" title="${message(code: 'ddbnext.delete_favorites')}">
+                          <g:message encodeAs="html" code="ddbnext.Delete"/>
+                        </g:link>
+                      </g:if>
+                    </g:each>
+                  </div>
+                </div>
+              </div>
               <div class="delete-container row">
                 <div class="span9">
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
