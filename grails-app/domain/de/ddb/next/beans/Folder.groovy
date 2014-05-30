@@ -17,7 +17,7 @@ package de.ddb.next.beans
 
 import groovy.transform.ToString
 import de.ddb.common.constants.FolderConstants
-import de.ddb.next.JsonUtil
+import de.ddb.common.JsonUtil
 
 @ToString(includeNames=true, excludes="count, creationDateFormatted, thumbnailItemMetaData")
 class Folder {

@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.JsonUtil"%>
+<%@page import="de.ddb.common.JsonUtil"%>
 <ul class="results-list unstyled" id="slaves">
   <g:set var="offset" value="${0}"/>
   <g:set var="index" value="${0}"/>

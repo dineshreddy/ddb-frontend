@@ -16,7 +16,7 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-import de.ddb.next.JsonUtil
+import de.ddb.common.JsonUtil
 
 /**
  * Class for the elastic search mapping of a "folderList" 
