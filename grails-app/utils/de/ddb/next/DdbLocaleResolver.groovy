@@ -21,6 +21,8 @@ import net.jawr.web.resource.bundle.locale.LocaleResolver
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.constants.SupportedLocales
+
 /**
  * Tell JAWR plugin the current locale.
  */
@@ -31,7 +33,7 @@ class DdbLocaleResolver implements LocaleResolver {
     public String resolveLocaleCode(HttpServletRequest request) {
         Locale result = RequestContextUtils.getLocale(request)
         if (result == null) {
-            result = Locale.GERMAN
+            result = SupportedLocales.getDefaultLocale()
         }
         return result
     }
