@@ -85,7 +85,7 @@ limitations under the License.
         <div class="binary-viewer-flash-upgrade off">
           <p class="error-header"><g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
           <p>
-            <g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
+            <g:message encodeAs="none" code="ddbcommon.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
           </p>
           <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
           <p>

@@ -154,3 +154,6 @@
   margin-top: 20px;
 }
 
+circle {
+  cursor: pointer;
+}

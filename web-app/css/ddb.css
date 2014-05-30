@@ -437,7 +437,7 @@ header .toolbar,.header .toolbar {
   font-size:0.813em;
   position: relative;
   text-align: right;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wrapper:hover .selector {
@@ -455,7 +455,8 @@ header .language-wrapper>a,.header .language-wrapper>a {
 }
 
 header .language-wrapper >a,.header .language-wrapper >a {
-  background: transparent url("../images/icons/auxNavIcons.png") no-repeat 46px -42px;
+  background: url("../images/icons/arrows.png") no-repeat;
+  background-position: 100.6% -130px;
 }
 
 

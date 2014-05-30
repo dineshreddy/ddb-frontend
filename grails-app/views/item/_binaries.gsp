@@ -42,7 +42,7 @@ limitations under the License.
                   <div class="viewer-icon">
                     <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
                   </div>
-                  <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+                  <a target="_blank" class="no-previews no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                     <img src="${viewerContent}" alt="${it.preview.title}" />
                   </a>
                 </g:if>
@@ -84,7 +84,7 @@ limitations under the License.
       <div class="binary-viewer-flash-upgrade off">
         <p class="error-header"><g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_HeadingText" /></p>
         <p>
-          <g:message encodeAs="html" code="ddbnext.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
+          <g:message encodeAs="none" code="ddbcommon.BinaryViewer_FlashUpgrade_DownloadLocationHtml" />
         </p>
         <p class="error-header"><g:message encodeAs="html" code="ddbnext.We_could_not_play_the_file" /></p>
         <p>

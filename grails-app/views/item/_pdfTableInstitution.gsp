@@ -27,9 +27,8 @@ limitations under the License.
               test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                 <g:if test="${!originUrl?.toString()?.isEmpty()}">
-                  <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
-                    <span ><g:message encodeAs="html"
-                        code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
+                  <a href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+                    <span ><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                   </a>
                 </g:if>
                 <!-- (DFG) viewer -->
@@ -40,7 +39,7 @@ limitations under the License.
                 </g:if>
               </div>
             </g:if></td>
-          <td class="institution"><rendering:inlinePng bytes="${institutionImage}" alt="Deutsche Digitale Bibliothek" /></td>
+          <td class="institution"><div style="float:right"><rendering:inlinePng bytes="${institutionImage}" alt="Deutsche Digitale Bibliothek" /></div></td>
         </tr>
       </table>
     </td>
