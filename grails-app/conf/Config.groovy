@@ -1,4 +1,5 @@
 import de.ddb.common.constants.FacetEnum
+import de.ddb.next.DdbLocaleResolver
 
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
@@ -273,8 +274,11 @@ jawr {
             }
         }
     }
-    locale { // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'de.ddb.next.DdbLocaleResolver' }
+    locale {
+        // Define resolver so ?lang= Grails functionality works with controllers.
+        //        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver'
+        resolver = 'de.ddb.next.DdbLocaleResolver'
+    }
 }
 
 development {
