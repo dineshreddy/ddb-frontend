@@ -31,8 +31,11 @@ class DdbLocaleResolver implements LocaleResolver {
      * Ensure that there is always a locale value != null returned.
      */
     public String resolveLocaleCode(HttpServletRequest request) {
-        Locale result = RequestContextUtils.getLocale(request)
-        if (result == null) {
+        Locale result = null
+        if (request) {
+            result = RequestContextUtils.getLocale(request)
+        }
+        if (!result) {
             result = SupportedLocales.getDefaultLocale()
         }
         return result
