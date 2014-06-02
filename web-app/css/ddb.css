@@ -354,7 +354,6 @@ header .navigation li.active ul,.header .navigation li.active ul, header .naviga
   display: block;
 }
 
-
 header ul li.active-default>a,.header ul li.active-default>a {
   color: #a5003b !important;
   font-weight: bold !important;
@@ -399,7 +398,9 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   color: #000;
 }
 
-.navigation .active .arrow-container, .navigation > li:hover .arrow-container {
+.navigation .active .arrow-container, 
+.navigation > li:hover .arrow-container,
+.status-bar .language-wrapper:hover .arrow-container {
   position: absolute;
   height: 20px;
   width: 40px;
@@ -408,13 +409,21 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   z-index: 1;
 }
 
-.navigation .active .arrow-up, .navigation > li:hover .arrow-up {
+.navigation .active .arrow-up, .navigation > li:hover .arrow-up,
+.status-bar .arrow-container:hover .arrow-up,
+.status-bar .language-wrapper:hover .arrow-up {
   background: url("../images/icons/tooltip.png") -14px -10px no-repeat;
   width: 11px;
   height: 9px;
   margin-top: 11px;
   background-color: #fff;
   margin-left: 14px;
+}
+
+.status-bar .arrow-container:hover .arrow-up,
+.status-bar .language-wrapper:hover .arrow-up {
+  background-position: -14px -12px;
+  margin-left: 21px;
 }
 
 header .navigation ul li.active a,.header .navigation ul li.active a {
@@ -455,8 +464,7 @@ header .language-wrapper>a,.header .language-wrapper>a {
 }
 
 header .language-wrapper >a,.header .language-wrapper >a {
-  background: url("../images/icons/arrows.png") no-repeat;
-  background-position: 100.6% -130px;
+  background: transparent url("../images/icons/auxNavIcons.png") no-repeat 46px -42px;
 }
 
 
@@ -658,17 +666,16 @@ header .header-spacer,.header .header-spacer {
 
 header .selector,.header .selector {
   display: none;
-  background-color: #fff;
   padding: 7px 12px 5px;
-  border: 1px solid #e9e5e2;
-  z-index: 1;
+  border: #bbb 1px solid;
   width: 50px;
   position: absolute;
-  right: 0;
   top: 20px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: #999 0px 11px 25px -4px;
+  -moz-box-shadow: #999 0px 11px 25px -4px;
+  -webkit-box-shadow: #999 0px 11px 25px -4px;
+  text-transform: none;
+  background: #fff;
 }
 
 header .selector.logout,.header .selector.logout {

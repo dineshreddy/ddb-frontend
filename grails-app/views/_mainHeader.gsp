@@ -286,8 +286,10 @@ limitations under the License.
               </ddbcommon:isLoggedIn>
               <div class="header-spacer"></div>
               <div class="language-wrapper">
-                <a href="#"> <ddb:getCurrentLanguage />
-                </a>
+                <a href="#"><ddb:getCurrentLanguage /></a>
+                <div class="arrow-container">
+                  <div class="arrow-up"></div>
+                </div>
                 <ul class="selector language">
                   <li><ddb:getLanguageLink params="${params}" locale="de"
                       islocaleclass="nopointer">
