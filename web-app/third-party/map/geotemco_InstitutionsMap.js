@@ -10290,14 +10290,14 @@ if ( typeof InstitutionsMapModel == 'undefined' ) {
                         result.count++;
                         if (mapElement !== null) {
                             result.list.push(mapElement);
+                            var children = treeNode.children;
+                            if (children instanceof Array) {
+                                flatten_r(children, mapElement.id, level+1, result);
+                            }
                         } else {
 //                            if (typeof console !== "undefined") {
 //                                console.log("out of germanys bounding box:");
 //                            }
-                        }
-                        var children = treeNode.children;
-                        if (children instanceof Array) {
-                            flatten_r(children, mapElement.id, level+1, result);
                         }
                     }
                 }
