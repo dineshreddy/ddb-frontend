@@ -247,6 +247,10 @@
       $listItems.addClass('off');
       $listItems.removeClass('highlight');
 
+      //reset the index
+      var $currentIndex = $('#first-letter-index');
+      $currentIndex.html(ddb.$index.html());
+      
       //Check for institutions that provide data filter
       var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
       var institutionsFilteredByData = ddb.filterOnlyInstitutionsWithData(institutionList, onlyInstitutionsWithData);
@@ -347,8 +351,6 @@
           ddb.updateIndex(hasNoMember);
         } else {
           $('#institution-list').empty().html(ddb.$institutionList.html());
-          var $currentIndex = $('#first-letter-index');
-          $currentIndex.html(ddb.$index.html());
         }
       }
     },
