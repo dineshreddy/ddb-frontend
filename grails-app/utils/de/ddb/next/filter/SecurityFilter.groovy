@@ -35,7 +35,7 @@ import de.ddb.common.filter.ServletRequestWrapper
  */
 class SecurityFilter implements Filter {
 
-    private SecurityHelper ddbCommonSecurityHelper = new SecurityHelper()
+    private SecurityHelper ddbCommonSecurityHelper
 
     @Override
     public void destroy() {
@@ -44,7 +44,6 @@ class SecurityFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         try {
-            log.info "doFilter"
             ServletRequestWrapper requestWrapper = new ServletRequestWrapper(request)
             HttpServletResponse httpResponse = (HttpServletResponse)response
 
@@ -81,6 +80,6 @@ class SecurityFilter implements Filter {
     @Override
     public void init(FilterConfig config) throws ServletException {
         log.info "Init SecurityFilter"
-        //ddbCommonSecurityHelper = new SecurityHelper()
+        ddbCommonSecurityHelper = new SecurityHelper()
     }
 }
