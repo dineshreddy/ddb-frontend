@@ -174,6 +174,12 @@ modules = {
         resource url:'/js/institutionsMapAdapter.js'
     }
 
+    items3d {
+        dependsOn "ddbnext"
+        resource url:'/js/3d/x3dom.js'
+        resource url:'/css/3d/x3dom.css', bundle: 'screen'
+    }
+
     pdf {
         // This is the only working variant found! You must exclude 'zip,bundle' from the mappers list and
         // the CSS attributed with the exclude statement must NOT be used anywhere else in normal pages
