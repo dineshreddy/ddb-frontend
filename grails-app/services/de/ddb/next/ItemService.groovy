@@ -42,7 +42,7 @@ import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.next.beans.Bookmark
+import de.ddb.common.beans.Bookmark
 
 class ItemService {
     private static final log = LogFactory.getLog(this)

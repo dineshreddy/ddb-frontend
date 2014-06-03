@@ -22,7 +22,7 @@ import org.codehaus.groovy.grails.web.json.*
 import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
-import de.ddb.next.beans.SavedSearch
+import de.ddb.common.beans.SavedSearch
 
 class SavedSearchesService {
     def transactional = false

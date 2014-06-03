@@ -31,7 +31,7 @@ import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.EntityNotFoundException
-import de.ddb.next.beans.Folder
+import de.ddb.common.beans.Folder
 
 class FavoritesService {
 
