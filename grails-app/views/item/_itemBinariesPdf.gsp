@@ -1,7 +1,7 @@
 <%@page defaultCodec="none" %>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="slide-viewer item-detail">
   <tr>
-    <td id="binary-viewer"><rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/></td>
+    <td class="binary-viewer"><rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/></td>
   </tr>
   <tr>
     <td class="slice-viewer-tabsection">
