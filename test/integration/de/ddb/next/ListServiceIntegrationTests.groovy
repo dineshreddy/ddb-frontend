@@ -6,7 +6,7 @@ import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
-import de.ddb.next.beans.FolderList
+import de.ddb.common.beans.FolderList
 
 
 @TestMixin(IntegrationTestMixin)

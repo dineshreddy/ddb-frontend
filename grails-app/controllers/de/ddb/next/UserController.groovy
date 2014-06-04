@@ -45,7 +45,7 @@ import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 import de.ddb.common.AasService
 import de.ddb.common.Validations
-import de.ddb.next.beans.Folder
+import de.ddb.common.beans.Folder
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"

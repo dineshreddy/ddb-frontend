@@ -53,9 +53,6 @@ class ConfigurationService {
         return commonConfigurationService.getConfigValue("ddb.culturegraph.url")
     }
 
-    public String getElasticSearchUrl(){
-        return commonConfigurationService.getConfigValue("ddb.elasticsearch.url")
-    }
 
     public String getFavoritesSendMailFrom(){
         return commonConfigurationService.getConfigValue("ddb.favorites.sendmailfrom")
@@ -204,7 +201,6 @@ class ConfigurationService {
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
-        log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()

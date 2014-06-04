@@ -8,8 +8,8 @@ import org.junit.*
 
 import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.Type
-import de.ddb.next.beans.Bookmark
-import de.ddb.next.beans.Folder
+import de.ddb.common.beans.Bookmark
+import de.ddb.common.beans.Folder
 
 
 @TestMixin(IntegrationTestMixin)

@@ -63,7 +63,7 @@ class ConfigurationServiceTests {
     }
 
     void testGetElasticSearchUrl_Complete() {
-        stringConfigTest("ddb.elasticsearch.url", { it.getElasticSearchUrl() })
+        stringConfigTest("ddb.elasticsearch.url", { it.commonConfigurationService.getElasticSearchUrl() })
     }
 
     void testGetFavoritesSendMailFrom_Complete() {

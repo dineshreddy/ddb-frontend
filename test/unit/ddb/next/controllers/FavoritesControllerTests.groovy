@@ -4,7 +4,7 @@ import grails.test.mixin.TestFor
 import de.ddb.common.constants.FolderConstants
 import de.ddb.next.FavoritesController
 import de.ddb.next.FavoritesService
-import de.ddb.next.beans.Folder
+import de.ddb.common.beans.Folder
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
