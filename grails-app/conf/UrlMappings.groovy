@@ -335,7 +335,7 @@ class UrlMappings {
             action="multipolygone"
         }
 
-        "/items3d" {
+        "/items3d/$id" {
             controller="items3d"
             action="index"
         }

@@ -177,7 +177,8 @@ modules = {
     items3d {
         dependsOn "ddbnext"
         resource url:'/js/3d/x3dom.js'
-        resource url:'/css/3d/x3dom.css', bundle: 'screen'
+        resource url:'/css/3d/x3dom.css'
+        resource url:'/css/items3d.css'
     }
 
     pdf {
