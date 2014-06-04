@@ -1,0 +1,40 @@
+RewriteEngine on
+Redirect /x3domCatalog/LoavesandFishes2009.wrl http://www.publicsculpturesofsussex.co.uk/3dmodel?id=182
+
+RewriteCond %{REQUEST_URI} /3dmodel$
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/182
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=182 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/13
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=13 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/184
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=184 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/71
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=71 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/146
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=146 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/56
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=56 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/55
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=55 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/317
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=317 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/36
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=36 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/127
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=127 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/60
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=60 [L,R=301]
+
+RewriteCond %{QUERY_STRING} ^uuid=http://donbot.itri.brighton.ac.uk:2020/resource/sculpture/71
+RewriteRule ^.*$ http://www.publicsculpturesofsussex.co.uk/3dmodel?id=71 [L,R=301]
+
