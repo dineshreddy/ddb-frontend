@@ -25,3 +25,8 @@ limitations under the License.
     </g:else>
   </div>
 </div>
+<div class="row item-detail mobile-socialmedia">
+  <div class="span6 share">
+    <ddb:getSocialmediaBody />
+  </div>
+</div>

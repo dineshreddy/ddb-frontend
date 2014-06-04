@@ -132,6 +132,8 @@
 .share {
   margin-top: 30px;
   margin-bottom: 20px;
+  display:inline-block;
+  position:relative;
 }
 
 .favorite {
@@ -437,4 +439,35 @@
 .socialmedia {
   display: inline-block;
   float: right;
+}
+
+.mobile-socialmedia .socialmedia {
+  display:none;
+}
+
+@media (max-width: 767px){
+  .item-links .socialmedia {
+    display:none;
+  }
+  .mobile-socialmedia .socialmedia {
+    display:block;
+    float: left;
+  }
+  
+  .mobile-socialmedia .socialmedia .social-locked{
+    position: inherit;
+  }
+  
+  .mobile-socialmedia .socialmedia .social-locked .social-overlay-container{
+    left:0;
+    min-width:0;
+  }
+  
+  .mobile-socialmedia .socialmedia .social-locked .social-overlay{
+    min-width:0;
+  }
+  
+  .mobile-socialmedia .socialmedia .social-open ul{
+    text-align:left;
+  }
 }
