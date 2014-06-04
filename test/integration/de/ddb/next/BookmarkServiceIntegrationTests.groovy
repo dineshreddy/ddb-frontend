@@ -6,6 +6,8 @@ import grails.test.mixin.integration.IntegrationTestMixin
 
 import org.junit.*
 
+import de.ddb.common.BookmarksService
+
 import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.Type
 import de.ddb.common.beans.Bookmark
