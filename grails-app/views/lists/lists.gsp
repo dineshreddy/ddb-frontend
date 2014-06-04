@@ -23,7 +23,6 @@ limitations under the License.
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
 
-<ddb:getSocialmediaBody/>
 </head>
 <body>
   <div class="row lists">
