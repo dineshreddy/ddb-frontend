@@ -26,13 +26,13 @@ limitations under the License.
             <h2 class="saved-search-title">
               <a class="persist"
                 <g:if test="${search.type == null || search.type == Type.CULTURAL_ITEM}">
-                  href="${request.contextPath + '/searchresults?' + (search.queryString).encodeAsHTML()}"
+                  href="${request.contextPath + '/searchresults?' + search.queryString}"
                 </g:if>
                 <g:elseif test="${search.type == Type.ENTITY}">
-                  href="${request.contextPath + '/entity/search/person?' + (search.queryString).encodeAsHTML()}"
+                  href="${request.contextPath + '/entity/search/person?' + search.queryString}"
                 </g:elseif>
                 <g:elseif test="${search.type == Type.INSTITUTION}">
-                  href="${request.contextPath + '/searchresults/institution?' + (search.queryString).encodeAsHTML()}"
+                  href="${request.contextPath + '/searchresults/institution?' + search.queryString}"
                 </g:elseif>
                 title="${ddb.getTruncatedHovercardTitle(title: search.label, length: 350)}">
                 <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
