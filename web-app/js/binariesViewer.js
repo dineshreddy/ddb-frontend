@@ -141,6 +141,14 @@ $(document)
                     $(this).parent().appendTo($("#previews-list"));
                   }
                 });
+                $(".pdf-previews").each(function() {
+                  if ($(this).attr("href") === previewHref) {
+                    $(this).parent().removeClass("off");
+                    return false;
+                  } else {
+                    $(this).parent().appendTo($("#previews-list"));
+                  }
+                });
               } else if (type === "video" || type === "audio") {
                 jwPlayerSetup(previewHref, previewUri);
               }
