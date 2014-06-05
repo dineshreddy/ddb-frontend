@@ -266,7 +266,7 @@ class UrlMappings {
             action="profile"
         }
 
-        "/user/getSavedSearches" {
+        "/user/savedsearches" {
             controller="user"
             action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
         }

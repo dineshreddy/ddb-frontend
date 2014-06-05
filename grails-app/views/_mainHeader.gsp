@@ -252,7 +252,7 @@ limitations under the License.
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
+                        <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
