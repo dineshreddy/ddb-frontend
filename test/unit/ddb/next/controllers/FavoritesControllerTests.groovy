@@ -2,7 +2,7 @@ package ddb.next.controllers
 
 import grails.test.mixin.TestFor
 import de.ddb.common.constants.FolderConstants
-import de.ddb.next.FavoritesController
+import de.ddb.common.FavoritesController
 import de.ddb.next.FavoritesService
 import de.ddb.common.beans.Folder
 

@@ -116,28 +116,28 @@ class UrlMappings {
         }
 
         "/apis/favorites/folders" {
-            controller="favorites"
-            action="getFavoriteFolders"
+            controller="favoritesfolder"
+            action="getFavoritesFolders"
         }
 
         "/apis/favorites/folder/create" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="createFavoritesFolder"
         }
 
         "/apis/favorites/folder/delete" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="deleteFavoritesFolder"
         }
 
         "/apis/favorites/folder/edit" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="editFavoritesFolder"
         }
 
         "/apis/favorites/folder/get/$id" {
-            controller="favorites"
-            action="getFavoriteFolder"
+            controller="favoritesfolder"
+            action="getFavoritesFolder"
         }
 
         "/apis/favorites/_get" {
@@ -347,7 +347,7 @@ class UrlMappings {
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
         "500"(controller: "error", action: "itemNotFound", exception: de.ddb.common.exception.ItemNotFoundException)
         "500"(controller: "error", action: "entityNotFound", exception: de.ddb.common.exception.EntityNotFoundException)
-        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
+        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.common.exception.FavoritelistNotFoundException)
         "500"(controller: "error", action: "conflict", exception: de.ddb.common.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.BackendErrorException)
