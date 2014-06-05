@@ -36,7 +36,7 @@ limitations under the License.
   <h3>
   	<g:message encodeAs="html" code="ddbnext.Entity_Objects" />: 
   </h3>
-  <ddb:renderInfoTooltip messageCode="ddbnext.Entity_Objects_Tooltip" hasArrow="true"/>
+  <ddbcommon:renderInfoTooltip messageCode="ddbnext.Entity_Objects_Tooltip" hasArrow="true"/>
   
   <div class="carousel">
     <div id="items">

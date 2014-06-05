@@ -48,7 +48,7 @@ limitations under the License.
         </div>
       </div>
       <div class="paginator-options-footer">
-        <div class="button"><g:message encodeAs="html" code="ddbnext.facet_time_apply" /></div>
+        <div class="button"><g:message encodeAs="html" code="ddbcommon.facet_time_apply" /></div>
       </div>
     </div>
     
