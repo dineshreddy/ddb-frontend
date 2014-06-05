@@ -74,7 +74,7 @@ limitations under the License.
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
         <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
   
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.INSTITUTION.getName()]}" />
   
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">

@@ -104,8 +104,10 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
     $.updateLanguageSwitch(tmp);
   }
 
-  if (path == null) {
+  if (path == null && urlString == null) {
     return window.location.pathname + '?' + tmp;
+  } else if(urlString != null){
+    return urlString + '?' +tmp;
   } else {
     return path + '?' + tmp;
   }
@@ -136,6 +138,8 @@ $.removeParamFromUrl = function(arrayParamVal, path, urlString) {
   $.updateLanguageSwitch(tmp);
   if (path == null) {
     return window.location.pathname + '?' + tmp;
+  } else if(urlString != null){
+    return urlString + '?' +tmp;
   } else {
     return path + '?' + tmp;
   }

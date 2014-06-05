@@ -16,7 +16,7 @@
 package de.ddb.next
 import net.sf.json.JSONArray
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang.RandomStringUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
@@ -257,13 +257,15 @@ class EntityController {
             render (contentType:"text/json"){jsonReturn}
         }else {
             def model = [
-                    title: urlQuery[SearchParamEnum.QUERY.getName()], 
-                    results: results, 
-                    correctedQuery: correctedQuery, 
-                    totalPages: totalPagesFormatted, 
-                    cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
-                    resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
-                    paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),]
+                title: urlQuery[SearchParamEnum.QUERY.getName()],
+                results: results,
+                correctedQuery: correctedQuery,
+                page: page,
+                resultsOverallIndex:resultsOverallIndex,
+                totalPages: totalPagesFormatted,
+                cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
+                resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),]
             render(view: "searchPerson", model: model)
         }
 

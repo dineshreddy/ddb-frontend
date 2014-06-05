@@ -120,7 +120,7 @@ limitations under the License.
       
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.CULTURAL_ITEM.getName()]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
               
         <g:if test="${correctedQuery!='null'}">
             <g:if test="${correctedQuery}">
