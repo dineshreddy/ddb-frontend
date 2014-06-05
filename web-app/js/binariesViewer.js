@@ -124,8 +124,24 @@ $(document)
                 if ($("#jwplayer-container_wrapper")) {
                   $("#jwplayer-container_wrapper").remove();
                 }
-                $(".previews").parent().addClass("off");
+                $(".viewer-icon").parent().addClass("off");
                 $(".previews").each(function() {
+                  if ($(this).attr("href") === previewHref) {
+                    $(this).parent().removeClass("off");
+                    return false;
+                  } else {
+                    $(this).parent().appendTo($("#previews-list"));
+                  }
+                });
+                $(".no-previews").each(function() {
+                  if ($(this).find("img").attr("src") == previewUri) {
+                    $(this).parent().removeClass("off");
+                    return false;
+                  } else {
+                    $(this).parent().appendTo($("#previews-list"));
+                  }
+                });
+                $(".pdf-previews").each(function() {
                   if ($(this).attr("href") === previewHref) {
                     $(this).parent().removeClass("off");
                     return false;

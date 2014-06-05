@@ -234,7 +234,7 @@ class UrlMappings {
             controller="entity"
             action="personsearch"
         }
-        
+
         "/persons"{
             controller="entity"
             action="persons"
@@ -335,12 +335,17 @@ class UrlMappings {
             action="multipolygone"
         }
 
+        "/items3d/$id" {
+            controller="items3d"
+            action="index"
+        }
+
         "/lists/$q?" {
             controller="lists"
             action="index"
         }
-        
-        //Google Webmaster Tools 
+
+        //Google Webmaster Tools
         name googleWebmaster: "/google7731f5060584ff3c.html"(view:"google/webmaster")
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
