@@ -269,24 +269,32 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     // Click handler for adding a new TimeSpan
     $("#add-timespan").click(function(event) {
       event.preventDefault();
-      currObjInstance.assignTimeSpan(true);
+      if(!$(this).hasClass('disabled')){
+        currObjInstance.assignTimeSpan(true);
+      }
     });
 
     // Click handler for reseting the time facet
     $("#reset-timefacet").click(function(event) {
       event.preventDefault();
-      currObjInstance.reset();
+      if(!$(this).hasClass('disabled')){
+        currObjInstance.reset();
+      }
     });
 
     $("#fromYear").change(function(){
       if ($("#fromYear").val()) {
-        $("#add-timespan").removeClass('without-date');
+        $("#add-timespan").removeClass('disabled');
+        $('#reset-timefacet').removeClass('disabled');
+        $('#reset-timefacet').addClass('grey');
       }
     });
 
     $("#tillYear").change(function(){
       if ($("#tillYear").val()) {
-        $("#add-timespan").removeClass('without-date');
+        $("#add-timespan").removeClass('disabled');
+        $('#reset-timefacet').removeClass('disabled');
+        $('#reset-timefacet').addClass('grey');
       }
     });
   },
@@ -362,7 +370,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     if (beginDate || endDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
-      $("#add-timespan").removeClass('without-date');
+      $("#add-timespan").removeClass('');
     } else {
       //Close the form if no values has been found.
       currObjInstance.closeForm();
@@ -531,7 +539,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.updateTimeSpanForm();
 
     //reset buton Apply
-    $("#add-timespan").addClass('without-date');
+    $("#add-timespan").addClass('disabled');
+    $('#reset-timefacet').removeClass('grey');
+    $('#reset-timefacet').addClass('disabled');
 
     //asign the timeSpan to reset also the window url etc!
     currObjInstance.assignTimeSpan(false);
