@@ -25,7 +25,7 @@ limitations under the License.
     <hr>
     <div><g:message encodeAs="html" code="ddbcommon.facet_time_from" /></div>
       <div>
-        <select id="fromDay" class="day">
+        <select id="from-day" class="day">
           <option value="" disabled selected><g:message encodeAs="html" code="ddbcommon.facet_time_day"/></option>
           <g:set var="i" value="${1}"/>
           <g:while test="${i < 32}">
@@ -33,7 +33,7 @@ limitations under the License.
             <g:set var="i" value="${i + 1}" />
           </g:while>
         </select>
-        <select id="fromMonth" class="month">
+        <select id="from-month" class="month">
           <option value="" disabled selected><g:message encodeAs="html" code="ddbcommon.facet_time_month"/></option>
           <g:set var="i" value="${0}"/>
           <g:while test="${i < 12}">
@@ -41,11 +41,11 @@ limitations under the License.
             <g:set var="i" value="${i + 1}" />
           </g:while>
         </select>
-        <input type="text" pattern="-?[0-9]+" id="fromYear" class="year" placeholder="<g:message encodeAs="html" code="ddbcommon.facet_time_year"/>"/>
+        <input type="text" pattern="-?[0-9]+" id="from-year" class="year" placeholder="<g:message encodeAs="html" code="ddbcommon.facet_time_year"/>"/>
       </div>
       <div><g:message encodeAs="html" code="ddbcommon.facet_time_to"/></div>
       <div>
-        <select id="tillDay" class="day">
+        <select id="till-day" class="day">
           <option value="" disabled selected><g:message encodeAs="html" code="ddbcommon.facet_time_day"/></option>
           <g:set var="i" value="${1}"/>
           <g:while test="${i < 32}">
@@ -53,7 +53,7 @@ limitations under the License.
             <g:set var="i" value="${i + 1}" />
           </g:while>
         </select>
-        <select id="tillMonth" class="month">
+        <select id="till-month" class="month">
           <option value="" disabled selected><g:message encodeAs="html" code="ddbcommon.facet_time_month"/></option>
           <g:set var="i" value="${0}"/>
           <g:while test="${i < 12}">
@@ -61,16 +61,16 @@ limitations under the License.
             <g:set var="i" value="${i+1}" />
           </g:while>
         </select> 
-        <input type="text" pattern="-?[0-9]+" id="tillYear" class="year" placeholder="<g:message encodeAs="html" code="ddbcommon.facet_time_year"/>"/>
+        <input type="text" pattern="-?[0-9]+" id="till-year" class="year" placeholder="<g:message encodeAs="html" code="ddbcommon.facet_time_year"/>"/>
       </div>
       <div class="time-restriction">
         <g:message encodeAs="html" code="ddbcommon.facet_time_restrict_to"/>
         <ddbcommon:renderInfoTooltip messageCode="ddbcommon.Time_Restriction_Tooltip" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <div>
-        <input type="radio" name="limitation" id="limitationFuzzy" value="fuzzy" /> <label for="limitationFuzzy"><g:message encodeAs="html" code="ddbcommon.facet_time_fuzzy"/></label>
+        <input type="radio" name="limitation" id="limitation-fuzzy" value="fuzzy" /> <label for="limitation-fuzzy"><g:message encodeAs="html" code="ddbcommon.facet_time_fuzzy"/></label>
         <span class="limitation"></span>
-        <input type="radio" name="limitation" id="limitationExact" value="exact" /> <label for="limitationExact"><g:message encodeAs="html" code="ddbcommon.facet_time_exactly"/></label>
+        <input type="radio" name="limitation" id="limitation-exact" value="exact" /> <label for="limitation-exact"><g:message encodeAs="html" code="ddbcommon.facet_time_exactly"/></label>
       </div>
       <div>
         <button class="without-date" id="add-timespan"><g:message encodeAs="html" code="ddbcommon.facet_time_apply"/></button>
