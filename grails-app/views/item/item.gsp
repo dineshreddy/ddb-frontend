@@ -64,7 +64,7 @@ limitations under the License.
       <g:render template="binaries" />
     </g:if>
   </div>
-  <g:render template="similarObjects" />
+<%-- https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1627 <g:render template="similarObjects" /> --%>
   <g:render template="hierarchy" />
   <g:render template="linkurl" />
 </body>
