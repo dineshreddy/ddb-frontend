@@ -21,6 +21,7 @@ import grails.converters.JSON
 
 import org.ccil.cowan.tagsoup.Parser
 
+import de.ddb.common.JsonUtil
 import de.ddb.common.beans.User
 import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.Type
