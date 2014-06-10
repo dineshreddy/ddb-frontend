@@ -14,3 +14,4 @@ ddb-next.iml
 bin
 *.tmp
 
+/tracking.txt

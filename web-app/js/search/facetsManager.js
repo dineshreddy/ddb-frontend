@@ -372,13 +372,12 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
 
     var newUrl = $.removeParamFromUrl(facetsToRemove);
-
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
-      currObjInstance.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
-          .substr(newUrl.indexOf("?") + 1)));
+      $.addParamToCurrentUrl([['offset', 0]], newUrl)
+      currObjInstance.fetchResultsList(newUrl);
     }
     element.remove();
 
