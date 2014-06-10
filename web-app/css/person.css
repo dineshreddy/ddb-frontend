@@ -21,8 +21,3 @@
 .entities .results-paginator-view {
   background: none;
 }
-
-.entities .clear-filters a {
-  font-weight: bold;
-  float: right;
-}

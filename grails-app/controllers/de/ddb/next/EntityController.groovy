@@ -265,6 +265,7 @@ class EntityController {
                 totalPages: totalPagesFormatted,
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
+                clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                 paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),]
             render(view: "searchPerson", model: model)
         }
