@@ -181,7 +181,7 @@ limitations under the License.
             <li>
               <a class="group"
                  <g:if test="${it.preview.uri.isEmpty()}">
-                   href="../images/bg/videoPoster.png"
+                   href="../images/placeholder/video.png"
                  </g:if>
                  <g:else>
                    href="${it.preview.uri}"
@@ -240,7 +240,7 @@ limitations under the License.
             <li>
               <a class="group"
                  <g:if test="${it.preview.uri.isEmpty()}">
-                   href="../images/bg/audioPoster.png"
+                   href="../images/placeholder/audio.png"
                  </g:if>
                  <g:else>
                    href="${it.preview.uri}"
