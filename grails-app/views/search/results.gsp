@@ -33,7 +33,7 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <ddb:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
+        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       
 	    <%-- Shows the facets supported in the NON JS version--%>
@@ -76,7 +76,7 @@ limitations under the License.
       <div class="compare-objects bt br bb bl off">
         <div class="compare-header">
           <b><g:message encodeAs="html" code="ddbnext.SearchResultsCompareObjects"/></b>
-          <ddb:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
+          <ddbcommon:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
         </div>
         <div class="compare-main">
           <div id="compare-object1" class="compare-object bt br bb bl">

@@ -22,7 +22,7 @@ import de.ddb.common.constants.CortexConstants
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
-
+import de.ddb.common.TimeFacetHelper
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
@@ -195,16 +195,16 @@ class FacetsController {
 
         try {
             if(dateFromString) {
-                def dateFrom = TimeFacetHelper.getDatefromFormattedString(dateFromString)
+                def dateFrom = TimeFacetHelper.parseDateString(dateFromString)
                 daysFrom = TimeFacetHelper.calculateDaysForTimeFacet(dateFrom)
             }
             if(dateTillString) {
-                def dateTill = TimeFacetHelper.getDatefromFormattedString(dateTillString)
+                def dateTill = TimeFacetHelper.parseDateString(dateTillString)
                 daysTill = TimeFacetHelper.calculateDaysForTimeFacet(dateTill)
             }
         }
         catch (Exception e){
-            flash.error = "ddbnext.facet_time_right"
+            flash.error = "ddbcommon.facet_time_right"
         }
         render (contentType:"text/json"){[daysFrom: daysFrom.toString(),daysTill: daysTill.toString()]}
     }
