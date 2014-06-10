@@ -75,7 +75,7 @@ limitations under the License.
         <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
         <ddb:renderPageInfoNav
-          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.ENTITY.getName()]}" />
+          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.totalResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.ENTITY.getName()]}" />
 
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
