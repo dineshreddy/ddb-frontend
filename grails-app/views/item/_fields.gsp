@@ -25,7 +25,9 @@ limitations under the License.
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}">
-              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
+              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
+                ${value."\$"}
+              </g:link>
             </g:if>
             <g:else>
               ${raw(ddb.encodeInvalidHtml(text:value))}
@@ -40,7 +42,7 @@ limitations under the License.
               action="index" 
               params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
               class="entity-link">
-            ${ddb.encodeInvalidHtml(text:it.value."\$")}
+              ${it.value."\$"}
             </g:link>
           </g:if>
           <g:else>
