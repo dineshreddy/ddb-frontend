@@ -4,7 +4,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.beans.Folder
-import de.ddb.next.exception.FavoritelistNotFoundException
+import de.ddb.common.exception.FavoritelistNotFoundException
 
 
 /**

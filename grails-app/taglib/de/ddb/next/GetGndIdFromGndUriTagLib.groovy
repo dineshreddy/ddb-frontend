@@ -17,7 +17,7 @@ package de.ddb.next
 
 class GetGndIdFromGndUriTagLib {
     static namespace = "ddb"
-    CultureGraphService cultureGraphService
+    def cultureGraphService
     def getGndIdFromGndUri = {attrs, body ->
         out << cultureGraphService.getGndIdFromGndUri(attrs.id.toString())
     }
