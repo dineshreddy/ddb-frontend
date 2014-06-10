@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.next.CultureGraphService"%>
+<%@page import="de.ddb.common.CultureGraphService"%>
 <%@ page import="net.sf.json.*" %>
 <div class="fields">
   <g:each in="${fields}">
