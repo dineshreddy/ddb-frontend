@@ -400,7 +400,8 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
 
 .navigation .active .arrow-container, 
 .navigation > li:hover .arrow-container,
-.status-bar .language-wrapper:hover .arrow-container {
+.status-bar .language-wrapper:hover .arrow-container,
+.status-bar .login-wrapper:hover .arrow-container {
   position: absolute;
   height: 20px;
   width: 40px;
@@ -411,7 +412,8 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
 
 .navigation .active .arrow-up, .navigation > li:hover .arrow-up,
 .status-bar .arrow-container:hover .arrow-up,
-.status-bar .language-wrapper:hover .arrow-up {
+.status-bar .language-wrapper:hover .arrow-up,
+.status-bar .login-wrapper:hover .arrow-up {
   background: url("../images/icons/tooltip.png") -14px -10px no-repeat;
   width: 11px;
   height: 9px;
@@ -423,7 +425,12 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
 .status-bar .arrow-container:hover .arrow-up,
 .status-bar .language-wrapper:hover .arrow-up {
   background-position: -14px -12px;
-  margin-left: 21px;
+  margin-left: 16px;
+}
+
+.status-bar .login-wrapper:hover .arrow-up {
+  background-position: -14px -12px;
+  margin-left: 9px;
 }
 
 header .navigation ul li.active a,.header .navigation ul li.active a {
@@ -458,7 +465,7 @@ header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wra
   width: auto;
 }
 
-header .language-wrapper>a,.header .language-wrapper>a {
+header .language-wrapper>a, .header .language-wrapper>a {
   background-position: right -42px;
   padding-right: 20px;
 }
@@ -466,7 +473,6 @@ header .language-wrapper>a,.header .language-wrapper>a {
 header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/auxNavIcons.png") no-repeat 46px -42px;
 }
-
 
 header .login-wrapper:hover .selector,.header .login-wrapper:hover .selector {
   display: block;

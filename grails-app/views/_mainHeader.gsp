@@ -279,6 +279,9 @@ limitations under the License.
                   <span style="vertical-align:top;"><g:message encodeAs="html" code="ddbcommon.You_are_currently_logged_in_as" /></span>
                   <g:link controller="user" action="profile" class="login-username"><ddbcommon:getUserName /></g:link>
                   <div class="login-dropdown"></div>
+                  <div class="arrow-container">
+                    <div class="arrow-up"></div>
+                  </div>
                   <ul class="selector logout">
                     <li><g:link class="logout-link" controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link></li>
                   </ul>
