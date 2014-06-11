@@ -1513,6 +1513,10 @@ select {
   z-index: 99;
 }
 
+#jwplayer-container {
+  background-color: #fff !important;
+}
+
 /* responsive genaral rules */
 @media (max-width: 767px) {
   body {
