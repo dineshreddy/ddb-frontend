@@ -9,7 +9,6 @@
       <div class="binary-title">
         <span>
           <g:if test="${!binaryList.first().preview.title.isEmpty()}">${binaryList.first().preview.title}</g:if>
-          <g:else>${itemTitle}</g:else>
         </span>
       </div>
       <div class="binary-author">
