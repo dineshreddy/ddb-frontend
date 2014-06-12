@@ -85,7 +85,20 @@
         return _.contains(idList, $(this).data('institution-id'));
       });
     },
-
+    
+    skipUmlaut : function(firstChar) {
+        if (firstChar == "Ä") {
+            firstChar = firstChar.replace(/Ä/g, 'A');
+        }
+        else if (firstChar == "Ö") {
+            firstChar = firstChar.replace(/Ö/g, 'O');
+        }
+        else if (firstChar == "Ü") {
+            firstChar = firstChar.replace(/Ü/g, 'U');
+        }
+        return firstChar;
+      },
+      
     getInstitutionsByFirstChar : function(onFilterSelect, onIndexClick, onPageLoad) {
       if (ddb.institutionsByFirstChar === null) {
         $.getJSON(jsContextPath + ddb.Config.ddbBackendUrl, function(response) {
@@ -176,7 +189,6 @@
       var institutionList = ddb.getInstitutionAsList();
       var sectors = ddb.getSelectedSectors();
       var firstLetter = ddb.getFirstLetter();
-      
       
       ddb.filter(institutionList, sectors, firstLetter);
       // count all currently highlighted institutions
@@ -289,9 +301,12 @@
       else if (sectors.length > 0 && firstLetter !== '') {
         var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
         var filteredByData = ddb.filterOnlyInstitutionsWithData(filteredByFirstLetter, onlyInstitutionsWithData);
-        
         var filteredBySector = _.reduce(filteredByData, function(memory, institution) {
-          if (institution.firstChar === firstLetter) {
+           var firstChar = institution.firstChar;
+           if(firstChar === "A" || firstChar === "Ü" || firstChar === "Ö")
+               firstChar = ddb.skipUmlaut(firstChar)
+           
+          if (firstChar === firstLetter) {
             if (_.contains(sectors, institution.sector)) {
               memory.push(institution);
             }
@@ -431,14 +446,12 @@
       var $firstCharLinks = $('#first-letter-index a');
       $firstCharLinks.click(function(event) {
         event.preventDefault();
-
         var $this = $(this);
         var $li = $this.parent();
 
         if ($li.hasClass('disabled')) {
           return false;
         }
-
         // style the selected index.
         $li.addClass('active');
         $this.addClass('selected');
