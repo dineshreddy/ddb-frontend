@@ -4,7 +4,7 @@
     <td class="binary-viewer"><rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/></td>
   </tr>
   <tr>
-    <td class="slice-viewer-tabsection">
+    <td>
       <!--  This section should contain info on the first viewed Item -->
       <div class="binary-title">
         <span> ${binaryList.first().full.title}</span>

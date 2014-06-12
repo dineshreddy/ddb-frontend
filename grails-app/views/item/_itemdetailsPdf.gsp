@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@ page import="net.sf.json.*" %>
 <%@page defaultCodec="none" %>
-<table border="0" cellpadding="8" cellspacing="0" width="100%">
+<table border="0" cellpadding="2" cellspacing="0" width="100%" class="fields-table">
   <g:each in="${fields}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> 
@@ -61,14 +61,3 @@ limitations under the License.
     </tr>
   </g:if>
 </table>
-<!-- Original Object View -->
-<div class="origin">
-  <g:if test="${!originUrl?.toString()?.isEmpty()}">
-    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
-      <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
-    </a>
-  </g:if>
-  <g:else>
-    <span><g:message code="ddbnext.Link_to_data_supplier_not_available" /></span>
-  </g:else>
-</div>

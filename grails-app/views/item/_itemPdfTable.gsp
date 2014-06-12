@@ -34,14 +34,14 @@ limitations under the License.
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
   h1,h2,h3,h4 {
-    font-family: Arial Unicode MS ", Arial, sans-serif;
+    font-family: KarbidWeb, Calibri, Arial, sans-serif;
     font-size: 1.75em;
     font-weight: normal;
     color: rgb(62, 58, 55);
     line-height: 1.5em;
   }
   h2,h2 a {
-    font-family: Arial Unicode MS ", Arial, sans-serif;
+    font-family: KarbidWeb, Calibri, Arial, sans-serif;
     font-weight: bold;
     font-size: 1.375em;
     color: #a5003b;
@@ -53,14 +53,13 @@ limitations under the License.
   th,td {
     vertical-align: top; ! important;
     margin-top: 0;
-    font-family: "Arial Unicode MS", Arial, sans-serif;
+    font-family: KarbidWeb, Calibri, Arial, sans-serif;
     font-size: 9pt;
   }
   a {
     color: #3e3a37;
     text-decoration: none;
   }
-
   .instititution-logo {
     float:right
     
@@ -75,7 +74,7 @@ limitations under the License.
     margin-top: 1em;
     padding-bottom: 10px;
     border: 1px solid #e9e5e2;
-    border-width: 0 0 5px;
+    border-width: 0 0 2px;
     font-size: 0.938em;
   }
   .item-detail .institution .span3 img {
@@ -87,14 +86,8 @@ limitations under the License.
   .valign-top {
     vertical-align: text-top;
   }
-
   .slide-viewer {
     width: 445px;
-    border: 3px solid #efebe8;
-  }
-  .slice-viewer-tabsection {
-    padding: 5px;
-    background: #efebe8;
   }
   .slide-viewer ul {
     list-style: none;
@@ -166,6 +159,24 @@ limitations under the License.
     padding-right: 5px;
     margin-right: 5px;
   }
+  .bb {
+    border-bottom: solid 2px #efebe8;
+    margin: 10px 0 5px 0;
+  }
+  .bt {
+    border-top: solid 2px #efebe8;
+    margin: 5px 0 5px 0;
+    padding-top: 2px;
+  }
+  .origin {
+    margin-top: 10px;
+  }
+  .item-title {
+    font-size: 16px;
+  }
+  .fields-table {
+    margin-top: 10px;
+  }
 }
 </style>
 </head>
@@ -175,14 +186,19 @@ limitations under the License.
       <td><rendering:inlinePng bytes="${logo}" alt="Deutsche Digitale Bibliothek" width="270px" height="68px" /></td>
     </tr>
     <tr>
+      <td><div class="bb"></div></td>
+    </tr>
+    <tr>
       <td><g:render template="pdfTableInstitution" /></td>
     </tr>
     <tr>
       <td>
-        <h2>${itemTitle}</h2>
+        <div class="item-title">
+          <h2>${itemTitle}</h2>
+        </div>
         <g:if test="${binaryList}"> <g:render template="itemBinariesPdf" /></g:if>
      </td>
-    </tr>    
+    </tr>
   </table>
   <g:render template="itemdetailsPdf" />
   <g:render template="linkurlPdf" />

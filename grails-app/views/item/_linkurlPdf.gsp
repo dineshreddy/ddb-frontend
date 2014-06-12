@@ -13,7 +13,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="container item-detail bt linkurl">
-  <div><strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink" />: </strong></div>
-  <div class="value">http://${request.serverName}${itemUri}</div>
-</div>
+<table border="0" width="100%">
+  <tr>
+    <td>
+      <div class="container item-detail bt linkurl">
+        <div>
+          <strong><g:message encodeAs="html"code="ddbnext.CulturalItem_Deeplink" />: </strong>
+        </div>
+        <div class="value">
+          http://${request.forwardURI}${itemUri}
+        </div>
+      </div>
+    </td>
+  </tr>
+</table>
