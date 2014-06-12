@@ -98,7 +98,7 @@ limitations under the License.
   <div class="binary-title">
     <span>${itemTitle}</span>
   </div>
-  
+
   <div class="binary-author">
     <span></span>
   </div>
