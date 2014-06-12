@@ -168,14 +168,11 @@ limitations under the License.
     margin: 5px 0 5px 0;
     padding-top: 2px;
   }
-  .origin {
+  .origin, .fields-table {
     margin-top: 10px;
   }
   .item-title {
     font-size: 16px;
-  }
-  .fields-table {
-    margin-top: 10px;
   }
 }
 </style>
