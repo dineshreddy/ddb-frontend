@@ -16,6 +16,6 @@ limitations under the License.
 <div class="name fields">
   <h2>
 
-  <ddb:getTruncatedItemTitle title="${ entity.person.preferredName}" length="${ 200 }" />
+  <ddbcommon:getTruncatedItemTitle title="${ entity.person.preferredName}" length="${ 200 }" />
   </h2>
 </div>

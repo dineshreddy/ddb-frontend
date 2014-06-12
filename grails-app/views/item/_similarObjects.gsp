@@ -26,8 +26,8 @@ limitations under the License.
         <g:each var="resultDocs" in="${similarItems.results.docs}">
           <g:each var="doc" in="${resultDocs}">
               <li class="similar-objects-item">
-                <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}" title="${ddb.getTruncatedHovercardTitle(title: doc.title, length: 350)}">
-                  <ddb:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
+                <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}" title="${ddbcommon.getTruncatedHovercardTitle(title: doc.title, length: 350)}">
+                  <ddbcommon:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
                 </g:link>
               </li>
           </g:each>

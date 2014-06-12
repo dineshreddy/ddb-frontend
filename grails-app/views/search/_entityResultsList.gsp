@@ -27,7 +27,7 @@ limitations under the License.
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
-                <strong><ddb:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
+                <strong><ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">

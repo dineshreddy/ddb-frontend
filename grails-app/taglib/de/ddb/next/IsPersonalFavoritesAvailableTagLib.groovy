@@ -27,7 +27,7 @@ class IsPersonalFavoritesAvailableTagLib {
     def isPersonalFavoritesAvailable = {attrs, body ->
         def user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
 
-        if (favoritesService.getAllFoldersPerUser(user).size() > 1) {
+        if (favoritesService.getAllFoldersPerUser(user.id).size() > 1) {
             out << body()
         }
         else {

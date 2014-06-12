@@ -26,7 +26,7 @@ limitations under the License.
       </g:link>
       <div class="caption">
         <g:link controller="item" action="findById" params="${["id": item?.id]}">
-          <ddb:getTruncatedItemTitle title="${item?.preview?.title}" length="${ 40 }" />
+          <ddbcommon:getTruncatedItemTitle title="${item?.preview?.title}" length="${ 40 }" />
         </g:link>
       </div>
     </div>

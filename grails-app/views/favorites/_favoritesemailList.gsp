@@ -48,8 +48,8 @@ limitations under the License.
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
               action="${ action }" params="[id: it.id]"
-              title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
-              <ddb:getTruncatedItemTitle title="${ it.preview.title }"
+              title="${ddbcommon.getTruncatedHovercardTitle(title: it.label, length: 350)}">
+              <ddbcommon:getTruncatedItemTitle title="${ it.preview.title }"
                 length="${ 100 }" />
             </g:link>
           </h2>
