@@ -33,6 +33,7 @@ limitations under the License.
         <h3>
           <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
         </h3>
+        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchInstitutionsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
