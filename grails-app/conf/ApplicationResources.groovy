@@ -114,6 +114,7 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
+        resource url:'/js/search/searchCookie.js'
         resource url:'/js/search/urlHelper.js'
         resource url:'/js/search/facetHelper.js'
         resource url:'/js/search/roleHelper.js'

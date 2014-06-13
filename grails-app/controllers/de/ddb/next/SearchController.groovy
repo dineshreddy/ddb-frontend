@@ -39,14 +39,14 @@ class SearchController {
 
     def results() {
         try {
-            def searchParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+            def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
-            if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
+            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams)) {
                 redirect(controller: "search", action: "results", params: params)
             }
 
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
@@ -150,7 +150,7 @@ class SearchController {
                 }
 
                 def keepFiltersChecked = ""
-                if (searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
                 }
                 def subFacetsUrl = [:]
@@ -195,8 +195,9 @@ class SearchController {
      * @return
      */
     def institution() {
-
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+        
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
 
@@ -223,6 +224,9 @@ class SearchController {
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
+        //create cookie with search parameters
+        response.addCookie(searchService.createSearchCookie(request, params, null))
+        
         def model = [
             title: title,
             facets:[],
