@@ -13,8 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.person-entities {
-  margin-left: 0px;
+
+.persons-head .span12{
+  border-bottom: solid 2px #efebe8;
+}
+
+.persons-head .span12>div{
+   display: inline-block;
+}
+ 
+.persons-head .right-container{
+  line-height: 62px;
+  float: right;
+}
+
+.persons-head .page-link:before {
+  margin-top: 22px;
+}
+
+.persons-head .socialmedia{
+  padding-top:12px;
+}
+
+.persons-body{
+  padding-top: 20px;
+}
+
+.persons-body img{
+  margin:0;
 }
 
 .persons-results {
