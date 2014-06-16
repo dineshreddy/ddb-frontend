@@ -16,7 +16,6 @@
 package de.ddb.next
 import net.sf.json.JSONArray
 
-import org.apache.commons.lang.RandomStringUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
