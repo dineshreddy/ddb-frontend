@@ -18,7 +18,6 @@
 de.ddb.next.search = de.ddb.next.search || {};
 
 de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
-  console.log("de.ddb.next.search.setSearchCookieParameter");
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
@@ -42,7 +41,6 @@ de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
 };
 
 de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
-  console.log("de.ddb.next.search.removeSearchCookieParameter");
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
@@ -56,7 +54,6 @@ de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
 };
 
 de.ddb.next.search.readCookie = function(name) {
-  console.log("de.ddb.next.search.readCookie");
   var nameEQ = name + "=";
   var ca = document.cookie.split(';');
   for ( var i = 0; i < ca.length; i++) {
