@@ -222,8 +222,15 @@ class EntityController {
      * @return
      */
     def personsearch() {
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+        
         def queryString = request.getQueryString()
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        
+        //TODO for DDBNEXT-1630 : because the backend returns an error using the sort param for entities endpoint we have to remove it from the urlQuery 
+        urlQuery.remove("sort")
+        
+        
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
@@ -240,6 +247,9 @@ class EntityController {
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
+        //create cookie with search parameters
+        response.addCookie(searchService.createSearchCookie(request, params, null))
+        
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
             def resultsHTML = ""
@@ -262,7 +272,7 @@ class EntityController {
                 correctedQuery: correctedQuery,
                 page: page,
                 resultsOverallIndex:resultsOverallIndex,
-                totalPages: totalPagesFormatted,
+                totalPages: totalPages,
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
