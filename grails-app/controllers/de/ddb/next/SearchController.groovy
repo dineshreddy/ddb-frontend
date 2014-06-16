@@ -295,6 +295,7 @@ class SearchController {
             }
 
             model["facets"] = [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl]
+            model["keepFiltersChecked"] = keepFiltersChecked
 
             render(view: "searchInstitution", model: model)
         }
