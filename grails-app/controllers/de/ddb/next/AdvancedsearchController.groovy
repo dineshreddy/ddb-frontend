@@ -63,7 +63,6 @@ class AdvancedsearchController {
     def fillValues() {
         int searchGroupCount = configurationService.getSearchGroupCount()
         int searchFieldCount = configurationService.getSearchFieldCount()
-        String url = configurationService.getBackendUrl()
         List facetSearchfields = facetsService.getAllFacets()
         facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
         Map facetValuesMap = getFacetValues(facetSearchfields)
@@ -90,7 +89,6 @@ class AdvancedsearchController {
         int searchFieldCount = configurationService.getSearchFieldCount()
         int offset = configurationService.getSearchOffset()
         int rows = configurationService.getSearchRows()
-        def url = configurationService.getBackendUrl()
         def facetSearchfields = facetsService.getAllFacets()
         facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
 
@@ -107,7 +105,6 @@ class AdvancedsearchController {
      */
     private Map getFacetValues(facetSearchfields) {
         def facetValuesMap = [:]
-        def url = configurationService.getBackendUrl()
         def allFacetFilters = configurationService.getFacetsFilter()
 
         for ( facetSearchfield in facetSearchfields ) {
