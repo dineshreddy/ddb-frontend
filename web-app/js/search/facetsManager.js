@@ -32,13 +32,13 @@ de.ddb.next.search = de.ddb.next.search || {};
  */
 de.ddb.next.search.FacetsManager = function(fetchResultsList, category, path) {
   this.fetchResultsList = fetchResultsList;
-  
+
   //Category is a special facet for defining a document as an Institution ("Institution") or document ("Kultur")
   this.category = category;
-  
+
   //search and entity facets use different paths
   this.path = path;
-  
+
   this.init();
 };
 
@@ -126,7 +126,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (this.category) {
       fctValues += '&facetValues%5B%5D=category%3D' + currObjInstance.category;
     }
-    
+
     var url = jsContextPath + '/rolefacets' + '?name=' + facetField + '&facetValues%5B%5D=' + facetField + "%3D" + facetValue + '&searchQuery='
     + oldParams['query'] + queryParam + fctValues + isThumbnailFiltered
     + '&offset=' + this.currentOffset + '&rows=' + this.currentRows;
@@ -154,7 +154,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       this.connectedflyoutWidget = flyoutWidget;
     }
     var oldParams = de.ddb.next.search.getUrlVars();
-    var searchQueryParam = ''
+    var searchQueryParam = '';
     var currObjInstance = this;
     var fctValues = '';
     var isThumbnailFiltered = '';
@@ -171,11 +171,11 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
       isThumbnailFiltered = '&isThumbnailFiltered=true';
     }
-    
+
     if (oldParams['query']) {
-      searchQueryParam = '&searchQuery=' + oldParams['query']
+      searchQueryParam = '&searchQuery=' + oldParams['query'];
     }
-    
+
     if (facetQuery) {
       facetQuery = encodeURIComponent(facetQuery);
       facetQueryParam = '&query=' + facetQuery;
@@ -333,7 +333,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     $('.clear-filters').removeClass('off');
     $('.keep-filters').removeClass('off');
-    
+
   },
 
   /**
@@ -342,7 +342,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   unselectFacetValue : function(element, unselectWithoutFetch) {
     var currObjInstance = this;
-    
+
     var facetFieldFilter = element.parents('.facets-item');
     var facetValue = decodeURIComponent(element.attr('data-fctvalue'));
 
@@ -376,7 +376,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
-      $.addParamToCurrentUrl([['offset', 0]], newUrl)
+      $.addParamToCurrentUrl([['offset', 0]], newUrl);
       currObjInstance.fetchResultsList(newUrl);
     }
     element.remove();
@@ -449,7 +449,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     });
   },
 
-  
+
   /**
    * Initialize the Flyout widget when the page is loaded in a asynchronic way.
    * It initialize all selected facets and role facets
@@ -457,15 +457,15 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   initializeOnLoad : function(connectedflyoutWidget) {
     var currObjInstance = this;
     $(".js.facets-list").removeClass("off");
-    
+
     this.connectedflyoutWidget = connectedflyoutWidget;
     var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
 
     if (paramsFacetValues) {
-      
+
       $('.clear-filters').removeClass('off');
       $('.keep-filters').removeClass('off');
-      
+
       var selectedFacets = {};
       $.each(paramsFacetValues, function(key, value) {
         var decodedElement = decodeURIComponent(value.replace(/\+/g, '%20')).split('=');
@@ -492,7 +492,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
                   //set field as active
                   currObjInstance.connectedflyoutWidget.parentMainElement.addClass('active');
-                  
+
                   $.each(fctValues, function() {
                     //Check if the value is a role. They need special handling!
                     var facetValue = this;
@@ -526,7 +526,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     currObjInstance.connectedflyoutWidget.build($(this));
                   });
               });
-    }
+    } 
 
     //init TimeFacet
     currObjInstance.timeFacet.initOnLoad();

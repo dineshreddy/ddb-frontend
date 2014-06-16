@@ -43,7 +43,7 @@ $(function() {
         $('#slaves').trigger('change');
       }
     });
-    
+
     //Managing "delete" and "copy" buttons
     $('#slaves').change(function(){
       if($(this).find(':checkbox:checked').length>0){
@@ -51,14 +51,14 @@ $(function() {
       }else{
         $('.delete-btn button').addClass('disabled');
       }
-    })
-    
+    });
+
     $('.delete-btn button').click(function(){
       if($(this).hasClass('disabled')){
         return false;
       }
     });
-    
+
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -425,7 +425,7 @@ $(function() {
 
       return false;
     });
-    
+
     /* Ranking manager*/
     $('.rank-input').on('change', function(){
       var newPosition = parseInt($(this).val());
@@ -553,5 +553,5 @@ function updateRanking (bookmarkId, folderId, newPosition){
       window.location = window.location;
     },
     error: function(){return false;}
-  })
+  });
 }

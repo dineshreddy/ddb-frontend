@@ -179,16 +179,16 @@ $(window).on('load', function () {
       var cookieBar = $(this),
           p = cookieBar.find('p'),
           closeButton = cookieBar.find('.close');
-      
+
       var cookie = de.ddb.next.search.readCookie("cb_cookie_notice");
-      
+
       window.setTimeout(function(){
         if(cookie!=1){
           cookieBar.fadeIn('fast');
           document.cookie = 'cb_cookie_notice=1';
         }
       },300);
-      
+
 
       closeButton.on('click', function (evt) {
           evt.preventDefault();

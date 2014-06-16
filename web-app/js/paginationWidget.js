@@ -120,7 +120,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     if (JSONresponse.paginationURL.pages) {
       $.each(this.pagesOverallIndex, function() {
 
-        var spanContainer = $(this).find('span')
+        var spanContainer = $(this).find('span');
 
         $(this).find('a').each(function() {
           $(this).remove();

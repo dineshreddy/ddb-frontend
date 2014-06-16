@@ -93,7 +93,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.page-nonjs').html(JSONresponse.page);
             
             de.ddb.next.search.paginationWidget.resetNavigationElements(JSONresponse);
-            
+
             $('.search-results-list').fadeIn('fast');
 
             divSearchResultsOverlayImg.remove();
@@ -190,7 +190,7 @@ de.ddb.next.search.showError = function(errorHtml) {
 
 de.ddb.next.search.initializeFacets = function() {
   var facetsManager = null;
-  
+
   if (jsPageName === "results") {
     facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Kultur", "/facets");
   }
@@ -226,7 +226,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-nonjs').addClass("off");
 
   $(window).trigger("searchChange");
-  
+
   $('#form-search-header button').click(
       function() {
         var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
@@ -327,7 +327,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         de.ddb.next.search.historyManager(newUrl);
         de.ddb.next.search.setSearchCookieParameter(paramsArray);
       });
-  
+
   de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
       function(e, element){
         if (e.keyCode === 13) {
@@ -355,7 +355,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }
       }
   );
-  
+
   de.ddb.next.search.paginationWidget.setNavigatorsClickHandler(
       function(element) {
         de.ddb.next.search.fetchResultsList(element.attr('href'));
@@ -364,13 +364,13 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }, 1000);
       }
   );
-  
+
   de.ddb.next.search.paginationWidget.setPaginatorOptionsHandlers(
       function(sortSelect, rowsSelect, closeButton){
         var paramsArray = [['rows', rowsSelect.val()], ['sort', sortSelect.val()], ['offset', 0]];
         closeButton.trigger('click');
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        
+
         if($('.clear-filters').attr('href')) {
           $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i, 'sort=' + sortSelect.val()));
           $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + rowsSelect.val()));
@@ -378,7 +378,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         return false;
       }
   );
-  
+
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
     var paramsArray = [['isThumbnailFiltered', 'false']];
@@ -474,7 +474,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.clear-filters').click(function() {
     de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
   });
-  
+
   $('.type-selection').change(function(){
     var currentQuery = de.ddb.next.search.getUrlVar('query');
     var optionSelected = $('option:selected', this);
@@ -485,7 +485,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
 
   function setHovercardEvents() {
     $('.information').each(function() {
-      var infoItem = new de.ddb.next.search.HovercardInfoItem($(this));
+      new de.ddb.next.search.HovercardInfoItem($(this));
     });
   }
 

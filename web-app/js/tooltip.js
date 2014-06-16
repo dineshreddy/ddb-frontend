@@ -35,13 +35,13 @@ $(function() {
       this.tooltip = element.siblings("div.tooltip");
       element.removeAttr("title");
       this.tooltip.html(this.hint).text();
-      
+
       if (this.tooltip.hasClass('hasArrow')) {
         this.arrow = $(document.createElement('div'));
         this.arrow.addClass('arrow');
         this.arrow.appendTo(this.tooltip);
       }
-      
+
       this.tooltip.hide();
       this.tooltip.removeClass("off");
       element.hover(function() {
@@ -71,12 +71,12 @@ $(function() {
       if (!this.opened) {
         this.opened = true;
         this.tooltip.fadeIn('fast');
-        
+
         var positionInfoIcon = currObjInstance.container.offset();
 
         //set position of arrow under the info icon
         if (this.tooltip.hasClass('hasArrow')) {
-          this.arrow.offset({ left: positionInfoIcon.left})
+          this.arrow.offset({ left: positionInfoIcon.left});
         }
       }
     },
@@ -88,6 +88,6 @@ $(function() {
   });
 
   $("span.contextual-help").each(function() {
-    var tooltip = new Tooltip($(this));
+    new Tooltip($(this));
   });
 });

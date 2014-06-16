@@ -60,13 +60,13 @@ $(function() {
 
   //The AJAX endpoint depends on page
   var ajaxCall = null;
-  
+
   if (jsPageName === "index" || jsPageName === "results") {
     ajaxCall = getAjaxSuggest(jsContextPath + "/apis/autocomplete/");
   } else if (jsPageName === "searchperson") {
     ajaxCall = getAjaxSuggest(jsContextPath + "/apis/entitiesAutocomplete/");
   }
-  
+
   if (ajaxCall) {
     monkeyPatchAutocomplete();
     $('input.query').autocomplete({
@@ -99,6 +99,6 @@ $(function() {
               $(mainInput).autocomplete("close");
             }
           });
-        })
+        });
   };
 });

@@ -24,7 +24,7 @@ $(function() {
 
     var container = document.querySelector('#columns');
     imagesLoaded( container, function() {
-      var msnry = new Masonry( container, {
+      new Masonry( container, {
         // options
         columnWidth: 170,
         itemSelector: '.pin'
