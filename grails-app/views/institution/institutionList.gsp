@@ -31,7 +31,7 @@ limitations under the License.
       <%-- Non Javascript version of the header --%>
     </div>
     <noscript>
-      <div class="span12">
+      <div class="span12 nonjs-registered-institutions bb">
           <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
       </div>
     </noscript>
