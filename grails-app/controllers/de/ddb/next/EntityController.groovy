@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
 import de.ddb.common.ApiResponse.HttpStatus
+import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
@@ -29,7 +30,7 @@ import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
- *  
+ *
  * @author boz
  */
 class EntityController {
@@ -46,7 +47,7 @@ class EntityController {
 
     /**
      * Initialize the entity page with content from the Culturegraph service and the cortex backend.
-     * 
+     *
      * @return the content of an entity page
      */
     def index() {
@@ -154,7 +155,7 @@ class EntityController {
 
     /**
      * Present a list of persons by their picture
-     * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339 
+     * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339
      */
     def persons() {
         def randomSeed
@@ -177,7 +178,7 @@ class EntityController {
     }
 
     /**
-     * Gets a RandomSeedString Used in the search for persons 
+     * Gets a RandomSeedString Used in the search for persons
      * Seed is stored in a session (in a list) to guarantee that next try is for a unique string
      * Retrieves only last element of the List which is turn used for the search
      * @return Integer
@@ -215,21 +216,24 @@ class EntityController {
         }
         return listRandomSeeds
     }
-    /** 
+    /**
      * Used to search for entities of Person
      * Mapped to /entities/search/person
      * @return
      */
     def personsearch() {
+        //The list of the NON JS supported facets for institutions
+        def nonJsFacetsList = [EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]
+
         def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
-        
+
         def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-        
-        //TODO for DDBNEXT-1630 : because the backend returns an error using the sort param for entities endpoint we have to remove it from the urlQuery 
+
+        //TODO for DDBNEXT-1630 : because the backend returns an error using the sort param for entities endpoint we have to remove it from the urlQuery
         urlQuery.remove("sort")
-        
-        
+
+
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
@@ -248,7 +252,7 @@ class EntityController {
 
         //create cookie with search parameters
         response.addCookie(searchService.createSearchCookie(request, params, null))
-        
+
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
             def resultsHTML = ""
@@ -265,8 +269,27 @@ class EntityController {
             ]
             render (contentType:"text/json"){jsonReturn}
         }else {
+            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
+
+            def mainFacets = []
+            EntityFacetEnum.values().each {
+                if (it.isSearchFacet()) {
+                    mainFacets.add(it)
+                }
+            }
+
+            def keepFiltersChecked = ""
+            if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                keepFiltersChecked = "checked=\"checked\""
+            }
+            def subFacetsUrl = [:]
+            def selectedFacets = entityService.buildSubFacets(urlQuery, nonJsFacetsList)
+            if(urlQuery[SearchParamEnum.FACET.getName()]){
+                subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
+            }
             def model = [
                 title: urlQuery[SearchParamEnum.QUERY.getName()],
+                facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
                 results: results,
                 correctedQuery: correctedQuery,
                 page: page,
@@ -275,7 +298,8 @@ class EntityController {
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),]
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                keepFiltersChecked: keepFiltersChecked]
             render(view: "searchPerson", model: model)
         }
 
@@ -284,7 +308,7 @@ class EntityController {
 
     /**
      * Controller method for rendering AJAX calls for an entity based item search
-     * 
+     *
      * @return the content of the backend search
      */
     public def getAjaxSearchResultsAsJson() {
