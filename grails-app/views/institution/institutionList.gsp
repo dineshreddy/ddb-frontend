@@ -28,7 +28,6 @@ limitations under the License.
   <div class="row">
     <div class="span12">
       <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
-      <%-- Non Javascript version of the header --%>
     </div>
     <noscript>
       <div class="span12 nonjs-registered-institutions bb">
