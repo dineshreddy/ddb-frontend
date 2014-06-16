@@ -43,7 +43,7 @@ $(document).ready(function() {
           var tiles = this._initializeMap(lon, lat, zoom);
 
           this._addMarkerLayer();
-          
+
           this._addMarkerToMap(lon, lat);
 
         }
@@ -135,7 +135,7 @@ $(document).ready(function() {
 
       applyFilters : function() {
         var self = this;
-        
+
         //Show the waiting layer
         self._showWaitingLayer();
 
@@ -152,7 +152,7 @@ $(document).ready(function() {
           self._hideWaitingLayer();
 
         });
-        
+
       },
 
       _initializeMap : function(lon, lat, zoom) {
@@ -195,10 +195,10 @@ $(document).ready(function() {
             $('input').prop('checked', false);
             self.applyFilters();
           }
-          
+
           self.osmMap.setCenter(position, zoom);
         });
-        
+
         return tiles;
       },
 
@@ -238,7 +238,7 @@ $(document).ready(function() {
         //this._loadMultiPolygonInput("FEGN7MRGZNDXU4VATES3T6LXOEZXYZCC");
         //console.log("input"+input);
 
-        var points = []
+        var points = [];
         //var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
         var cortexInput = $('#ddb-map').attr("data-geometry");
 
@@ -250,12 +250,12 @@ $(document).ready(function() {
           var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
           points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
         }
-        
+
         var linearRing = new OpenLayers.Geometry.LinearRing(points);
         var polygon = new OpenLayers.Geometry.Polygon([linearRing]);
         var feature = new OpenLayers.Feature.Vector(polygon, {});
         this.vectorLayer.addFeatures([feature]);
-        
+
         this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
 
       },
@@ -285,7 +285,7 @@ $(document).ready(function() {
         var position = this._getLonLat(lon, lat);
         var size = new OpenLayers.Size(38,45);
         var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-        var icon = new OpenLayers.Icon(this.imageFolder+"ddb_marker_final.png", size, offset);   
+        var icon = new OpenLayers.Icon(this.imageFolder+"ddb_marker_final.png", size, offset);
         var markersLayer = this.osmMap.getLayer('Markers');
         markersLayer.addMarker(new OpenLayers.Marker(position,icon));
       },
@@ -374,7 +374,7 @@ $(document).ready(function() {
         var maxLat3 = 6104500.7393;
 
         //Select zone from bounds
-        var source
+        var source;
         if(lon >= minLon2 && lon <= maxLon2 && lat >= minLat2 && lat <= maxLat2) {
           source = new proj4.Proj("EPSG:31466");
         }else if(lon >= minLon3 && lon <= maxLon3 && lat >= minLat3 && lat <= maxLat3) {
@@ -546,9 +546,9 @@ $(document).ready(function() {
         if (self.loadCounter == 0) {
           $('input').prop('disabled', true);
         }
-        
+
         self.loadCounter++;
-        
+
         $.ajax({
           type : 'GET',
           dataType : 'text',
@@ -562,7 +562,7 @@ $(document).ready(function() {
           },
           complete : function(){
             self.loadCounter--;
-            
+
             if (self.loadCounter == 0) {
               $('input').prop('disabled', false);
             }

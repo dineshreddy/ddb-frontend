@@ -100,7 +100,7 @@ function checkFavorites() {
 function extractItemId(url) {
   var result = null;
   var parts = url.split("/");
-  result = parts[parts.length - 1];    
+  result = parts[parts.length - 1];
   var queryParameters = result.indexOf("?");
   if (queryParameters >= 0) {
     result = result.substring(0, queryParameters);

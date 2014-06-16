@@ -20,16 +20,15 @@ $(document).ready(function() {
     de.ddb.next.search.initHistorySupport(null);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     socialMediaManager.integrateSocialMedia();
-    
+
     //Similar objects
-    var similarObjects
     $(".similar-objects-items").hide();
     $(".similar-objects-header").removeClass("active");
-    
+
     $(".similar-objects-header").click(function() {
       $(".similar-objects-items").toggle( "slow", function() {
       });
-      
+
       $(".similar-objects-header").toggleClass("active");
     });
     $('.page-input').removeClass('off');
