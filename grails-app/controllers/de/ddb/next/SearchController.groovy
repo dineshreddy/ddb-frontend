@@ -39,6 +39,17 @@ class SearchController {
 
     def results() {
         try {
+            //The list of the NON JS supported facets for items
+            def nonJsFacetsList = [
+                FacetEnum.PLACE.getName(),
+                FacetEnum.AFFILIATE.getName(),
+                FacetEnum.KEYWORDS.getName(),
+                FacetEnum.LANGUAGE.getName(),
+                FacetEnum.TYPE.getName(),
+                FacetEnum.SECTOR.getName(),
+                FacetEnum.PROVIDER.getName()
+            ]
+
             def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
             if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams)) {
@@ -47,7 +58,6 @@ class SearchController {
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
             searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
@@ -141,6 +151,8 @@ class SearchController {
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }else{
+                def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
+
                 //We want to build the subfacets urls only if a main facet has been selected
                 def mainFacets = []
                 FacetEnum.values().each {
@@ -154,7 +166,7 @@ class SearchController {
                     keepFiltersChecked = "checked=\"checked\""
                 }
                 def subFacetsUrl = [:]
-                def selectedFacets = searchService.buildSubFacets(urlQuery)
+                def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
@@ -195,9 +207,13 @@ class SearchController {
      * @return
      */
     def institution() {
+        //The list of the NON JS supported facets for institutions
+        def nonJsFacetsList = [FacetEnum.SECTOR.getName(), FacetEnum.STATE.getName()]
+
         def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
-        
+
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
 
@@ -226,7 +242,7 @@ class SearchController {
 
         //create cookie with search parameters
         response.addCookie(searchService.createSearchCookie(request, params, null))
-        
+
         def model = [
             title: title,
             facets:[],
@@ -240,7 +256,8 @@ class SearchController {
             resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
             paginationURL:searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
             cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
-            clearFilters: clearFilters
+            clearFilters: clearFilters,
+
         ]
         if(params.reqType=="ajax"){
             def resultsHTML = ""
@@ -257,6 +274,28 @@ class SearchController {
             ]
             render (contentType:"text/json"){jsonReturn}
         }else {
+
+            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
+
+            def mainFacets = []
+            FacetEnum.values().each {
+                if (it.isSearchFacet()) {
+                    mainFacets.add(it)
+                }
+            }
+
+            def keepFiltersChecked = ""
+            if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                keepFiltersChecked = "checked=\"checked\""
+            }
+            def subFacetsUrl = [:]
+            def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
+            if(urlQuery[SearchParamEnum.FACET.getName()]){
+                subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
+            }
+
+            model["facets"] = [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl]
+
             render(view: "searchInstitution", model: model)
         }
 
