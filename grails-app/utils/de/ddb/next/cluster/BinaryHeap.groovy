@@ -46,10 +46,11 @@ class BinaryHeap {
                 def end = this.content.pop()
                 if (i != len - 1) {
                     this.content[i] = end
-                    if (end.weight < node.weight)
-                        this.bubbleUp(i)
-                    else
-                        this.sinkDown(i)
+                    if (end.weight < node.weight) {
+                      this.bubbleUp(i)
+                    } else {
+                      this.sinkDown(i)
+                    }
                 }
                 return
             }

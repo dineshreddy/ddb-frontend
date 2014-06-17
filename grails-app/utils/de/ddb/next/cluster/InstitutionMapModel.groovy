@@ -179,13 +179,8 @@ class InstitutionMapModel {
     def selectSectors(aSectorSelection) {
         def sectorSelection = aSectorSelection // save the published state
 
-        def time0 = (new Date()).getTime()
-
         def selectedSectors = makeSectorsObject(sectorSelection.selected)
         def deselectedSectors = makeSectorsObject(sectorSelection.deselected)
-        def allSectors = []
-        //        $.extend(_allSectors, _selectedSectors)
-        //        $.extend(_allSectors, deselectedSectors)
 
         def filterSectors = (sectorSelection.selected.size() == 0) ? deselectedSectors: selectedSectors
         def sectorsMapData = []

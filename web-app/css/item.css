@@ -19,13 +19,24 @@
   margin-right: 10px;
 }
 
-.back-to-list-greyed-out {
+.back-to-list-greyed-out:before{
+  content: '';
+  width:20px;
+  height:20px;
+  margin-top:11px;
+  margin-left: -27px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat -67px -207px;
-  color: #878380;
+  position:absolute;
 }
 
-.back-to-list {
+.back-to-list:before {
+  content: '';
+  width:20px;
+  height:20px;
+  margin-top:11px;
+  margin-left: -27px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat -27px -207px;
+  position:absolute;
 }
 
 .back-to-list > span {
@@ -36,25 +47,30 @@
   margin: 0 0 27px 0;
 }
 
+.page-link:before, .sendmail-link:before, .pdf-link:before, .viewer.dfg:before, .xml-link:before, .no-origin:before {
+  content: '';
+  width:20px;
+  height:20px;
+  margin-top: 5px;
+  margin-left: -23px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat;
+  position:absolute;
+}
+
 .page-link, .sendmail-link, .pdf-link, .viewer.dfg, .xml-link, .no-origin {
   margin-right: 30px;
   padding-left: 24px;
-  background: url("../images/icons/ddbIkonographie.png") no-repeat;
 }
 
-.page-link {
+.page-link:before {
   background-position: -27px -150px;
 }
 
-.page-link > span {
-  background: #fff;
-}
-
-.sendmail-link {
+.sendmail-link:before {
   background-position: -27px -329px;
 }
 
-.viewer.dfg {
+.viewer.dfg:before {
   background-position: -27px -359px;
 }
 
@@ -125,7 +141,8 @@
   padding-left: 0;
 }
 
-.no-origin {
+.no-origin:before {
+  margin-top: 0;
   background-position: -70px -388px;
 }
 
@@ -288,7 +305,7 @@
   display: inline-block;
 }
 
-.xml-link {
+.xml-link:before {
   background-position: -27px -359px;
 }
 
@@ -296,7 +313,7 @@
   background: white;
 }
 
-.pdf-link {
+.pdf-link:before {
   background-position: -27px -359px;
 }
 

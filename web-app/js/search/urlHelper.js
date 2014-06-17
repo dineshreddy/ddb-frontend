@@ -19,7 +19,7 @@ de.ddb.next.search = de.ddb.next.search || {};
 
 /**
  * Initialize the history support for the search page(s)
- * 
+ *
  * @param stateManager callback triggered on history state changes
  */
 de.ddb.next.search.initHistorySupport = function(stateManager) {
@@ -37,11 +37,11 @@ de.ddb.next.search.initHistorySupport = function(stateManager) {
     // It will be used as reference URL for all the ajax actions
     globalUrl = location.search.substring(1);
   }
-}
+};
 
 /**
  * Adds new paths to the history
- * 
+ *
  * @param path the path to add to the history
  */
 de.ddb.next.search.historyManager = function(path) {

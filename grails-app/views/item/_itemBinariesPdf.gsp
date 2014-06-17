@@ -4,16 +4,18 @@
     <td class="binary-viewer"><rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/></td>
   </tr>
   <tr>
-    <td class="slice-viewer-tabsection">
+    <td>
       <!--  This section should contain info on the first viewed Item -->
       <div class="binary-title">
-        <span> ${binaryList.first().full.title}</span>
+        <span>
+          <g:if test="${!binaryList.first().preview.title.isEmpty()}">${binaryList.first().preview.title}</g:if>
+        </span>
       </div>
       <div class="binary-author">
-        <span>${binaryList.first().full.author} </span>
+        <span>${binaryList.first().preview.author}</span>
       </div>
       <div class="binary-rights">
-        <span> ${binaryList.first().full.rights}</span>
+        <span> ${binaryList.first().preview.rights}</span>
       </div>
     </td>
   </tr>

@@ -14,13 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.EntityFacetEnum"%>
+
 <g:set var="upperBound" value="${(facetValues.size()<10)?facetValues.size():10}"></g:set>
 <g:set var="i" value="0"></g:set>
 <g:each var="i" in="${ (0..<upperBound) }">
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
       <span class="count"><ddb:getLocalizedNumber>${facetValues[i]['cnt']}</ddb:getLocalizedNumber></span>
-      <g:if test="${facetType == FacetEnum.AFFILIATE.getName() || facetType == FacetEnum.KEYWORDS.getName() || facetType == FacetEnum.PLACE.getName() || facetType == FacetEnum.PROVIDER.getName()}">        
+      <g:if test="${facetType == FacetEnum.AFFILIATE.getName() || facetType == FacetEnum.KEYWORDS.getName() || facetType == FacetEnum.PLACE.getName() || facetType == FacetEnum.PROVIDER.getName() || facetType == FacetEnum.STATE.getName()}">        
+        <span class="label">${facetValues[i]['fctValue']}</span>
+      </g:if>
+      <g:if test="${facetType == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetType == EntityFacetEnum.PERSON_PLACE.getName() }">
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == FacetEnum.TYPE.getName() }">
@@ -40,6 +45,9 @@ limitations under the License.
       </g:if>
       <g:if test="${facetType == FacetEnum.LICENSE.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.LICENSE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      </g:if>
+      <g:if test="${facetType == EntityFacetEnum.PERSON_GENDER.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${EntityFacetEnum.PERSON_GENDER.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
     </a>	
   </li>

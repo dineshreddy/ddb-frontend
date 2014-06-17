@@ -265,3 +265,8 @@ div.sector-facet>label:hover, div.institution-with-data>label:hover {
     border-bottom: 2px solid #EFEBE8;
   }
 }
+
+.nonjs-registered-institutions {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}

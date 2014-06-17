@@ -109,8 +109,9 @@ class ApisService {
                 queryParameter.each {
                     query[facetName].add(it)
                 }
-            }else
+            } else {
                 query[facetName]= queryParameter
+            }
         }
     }
 

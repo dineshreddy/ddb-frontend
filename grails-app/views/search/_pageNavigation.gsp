@@ -19,6 +19,10 @@ limitations under the License.
   <g:if test="${paginatorOptions != null }">
     <ddb:renderResultsPaginatorOptions paginatorData="${paginatorOptions}"></ddb:renderResultsPaginatorOptions>
   </g:if>
+  
+  <noscript>
+    <div class="off">
+  </noscript>
   <g:if test="${paginatorViewSwitch != null && paginatorViewSwitch != false}">
     <div class="view-type-switch">
       <!--[if lt IE 9]>
@@ -39,4 +43,7 @@ limitations under the License.
       <![endif]-->
     </div>
   </g:if>
+  <noscript>
+    </div>
+  </noscript>
 </div>

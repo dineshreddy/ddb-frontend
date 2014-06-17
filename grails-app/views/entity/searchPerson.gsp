@@ -21,6 +21,8 @@ limitations under the License.
 <g:set var="nonJsFacetsList" value="${[]}"></g:set>
 <g:set var="jsFacetsList"
   value="${[EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]}"></g:set>
+<g:set var="nonJsFacetsList"
+  value="${[EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]}"></g:set>
 <html>
 <head>
 <title>
@@ -40,7 +42,7 @@ limitations under the License.
       <noscript>
         <div class="facets-list bt">
           <g:each in="${nonJsFacetsList}" var="mit">
-            <g:each in="${(facets.selectedFacets)}">
+            <g:each in="${(facets?.selectedFacets)}">
               <g:if test="${mit == it.field}">
                 <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
                   <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>

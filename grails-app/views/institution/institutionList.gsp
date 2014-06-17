@@ -29,8 +29,16 @@ limitations under the License.
     <div class="span12">
       <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
     </div>
+    <noscript>
+      <div class="span12 nonjs-registered-institutions bb">
+          <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
+      </div>
+    </noscript>
   </div>
   <div class="row institutionlist">
+    <noscript>
+      <div class="off">
+    </noscript>
     <div class="span3">
       <g:render template="filterNotPhone" />
     </div>
@@ -38,17 +46,11 @@ limitations under the License.
       <div class="row">
         <div class="span7 institutioncount">
           <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
-          <noscript>
-            <div class="off">
-          </noscript>
           |
           <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selected-count">${total}</span>
           <div class="loader">
             <img alt="" src="../images/icons/loaderSmall.gif">
           </div>
-          <noscript>
-            </div>
-          </noscript>
         </div>
         
         <div class="span2 view-type-switch off">
@@ -73,6 +75,10 @@ limitations under the License.
         </div>
       </div>
     </div>
+    <noscript>
+      </div>
+    </noscript>
+    
     
     <div class="span9">
       <g:render template="filterPhone" />

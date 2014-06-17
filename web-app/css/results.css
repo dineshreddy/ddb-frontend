@@ -413,7 +413,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .title {
-  padding: 4px 10px 0 0;
+  padding: 0 10px 0 0;
   margin: 0;
   line-height: 1.1em;
   overflow: hidden;
@@ -578,7 +578,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary .information {
-  background-position: 0 -180px;
+  background: url("../images/icons/ddbIkonographie.png") -24px -84px no-repeat;
   position: relative;
 }
 
@@ -600,7 +600,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results .results-list .summary .information:hover {
-  background-position: 0 -210px;
+  background-position: -24px -84px;
 }
 
 .search-results .results-list .summary .compare:hover :not(.disabled) {

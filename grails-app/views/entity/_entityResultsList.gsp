@@ -37,9 +37,9 @@ limitations under the License.
                   <br />
                 </g:if>
                 <g:if test="${entityItem.dateOfBirth}">
-                  <g:message code="ddbnext.Entity_Birth" />: ${entityItem.dateOfBirth},</g:if>
+                  <g:message code="ddbnext.Entity_Birth" />: ${entityItem.dateOfBirth}, ${entityItem.placeOfBirth?.getAt(0)} -</g:if>
                 <g:if test="${entityItem.dateOfDeath}">
-                  <g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}
+                  <g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}, ${entityItem.placeOfDeath?.getAt(0)}
                 </g:if>
               </div>
             </div>

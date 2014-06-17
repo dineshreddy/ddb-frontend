@@ -23,26 +23,26 @@ limitations under the License.
 <meta name="layout" content="main" />
 </head>
 <body>
-  <div id="var-to-js" data-random-seed="${randomSeed}" data-pgTitle="${title}" />
+  <div id="var-to-js" data-random-seed="${randomSeed}" data-pgTitle="${title}"></div>
 
-  <div class="span12 person-entities bb">
-    <div class="row ">
-      <div class="span3">
+  <div class="row persons-head">
+    <div class="span12">
+      <div>
         <h1>
           <g:message code="ddbnext.entities.personspage.personspageheader" />
         </h1>
       </div>
-      <div class="row features-bar span9 link-block">
+      <div class="right-container">
           <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"
             title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />"> <span><g:message encodeAs="html"
                 code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
           </a>
           <ddb:getSocialmediaBody />
       </div>
-
     </div>
   </div>
-  <div class="row">
+  
+  <div class="row persons-body">
     <div class="span3 persons-font">
       <p>
         <g:message code="ddbnext.entities.personspage.description" />
@@ -55,7 +55,7 @@ limitations under the License.
       </p>
     </div>
     <div class="span9 search-results-content">
-
+        <div>
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
@@ -68,6 +68,7 @@ limitations under the License.
           </div>
         </g:each>
       </div>
+      <div>
     </div>
   </div>
 </body>
