@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-.persons-head .span12{
+.persons-head .span12 {
   border-bottom: solid 2px #efebe8;
 }
 
-.persons-head .span12>div{
+.persons-head .span12>div {
    display: inline-block;
 }
  
-.persons-head .right-container{
+.persons-head .right-container {
   line-height: 62px;
   float: right;
 }
@@ -31,15 +31,15 @@
   margin-top: 22px;
 }
 
-.persons-head .socialmedia{
+.persons-head .socialmedia {
   padding-top:12px;
 }
 
-.persons-body{
+.persons-body {
   padding-top: 20px;
 }
 
-.persons-body img{
+.persons-body img {
   margin:0;
 }
 
@@ -68,7 +68,6 @@
   font-family: Calibri,Arial,sans-serif;
   font-size: 1.063em;
   line-height: 1em;
-  margin: 7px 0 0;
   color: #3e3a37;
   margin-top: 3px;
   word-wrap: break-word;
