@@ -97,7 +97,7 @@ class FavoritesviewController {
             return
         }else{
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-            def allRes = favoritesService.retriveItemMD(items,locale)
+            def allRes = favoritesService.retrieveItemMD(items,locale)
             def resultsItems
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
@@ -213,7 +213,7 @@ class FavoritesviewController {
             def lastPgOffset=0
 
             def allFoldersInformation = []
-            def allFolders = favoritesService.getAllFoldersPerUser(user)
+            def allFolders = favoritesService.getAllFoldersPerUser(user.id)
             allFolders.each {
                 def container = [:]
                 List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
@@ -240,7 +240,7 @@ class FavoritesviewController {
                 return
             }else{
                 def locale = favoritesService.getLocale()
-                def allRes = favoritesService.retriveItemMD(items,locale)
+                def allRes = favoritesService.retrieveItemMD(items,locale)
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 def queryString = request.getQueryString()
