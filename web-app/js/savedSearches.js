@@ -40,13 +40,36 @@ $(function() {
       window.location.href = url;
       return false;
     });
-
+    
     $('#checkall').checkAll('#slaves input:checkbox', {
-      reportTo : function() {
-        var prefix = this.prop('checked') ? 'un' : '';
-        this.next().text(prefix + 'check all');
+        reportTo : function() {
+          var prefix = this.prop('checked') ? 'un' : '';
+          this.next().text(prefix + 'check all');
+          $('#slaves').trigger('change');
+        }
+      });
+    
+    console.log("HELLO ");
+    //Managing "delete" and "copy" buttons
+    $('.delete-btn button').addClass('disabled');
+    $('#slaves').change(function(){
+    	console.log("changed");
+      if($(this).find(':checkbox:checked').length>0){
+        $('.delete-btn button').removeClass('disabled');
+      }else{
+        $('.delete-btn button').addClass('disabled');
       }
     });
+
+    $('.delete-btn button').click(function(){
+      if($(this).hasClass('disabled')){
+        return false;
+      }
+    });
+    
+
+    
+
 
     $('.page-input').keyup(function(e) {
           if (e.keyCode === 13) {
