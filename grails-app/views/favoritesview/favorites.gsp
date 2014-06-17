@@ -193,7 +193,7 @@ limitations under the License.
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span> 
                 <span class="favorite-numberheader">
-                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderNumber["asc"]}" />">
                       #
                       <span>
@@ -220,8 +220,8 @@ limitations under the License.
                     </a>
                   </g:else>
                 </span>
-                <span>
-                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
+                <span class="favorite-title-header">
+                  <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderTitle["asc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Savedsearch_Title"></g:message>
                       <span>

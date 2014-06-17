@@ -789,3 +789,32 @@ hr {
 .rank-arrows.disabled >div {
   cursor: default;
  }
+
+ @media (max-width: 767px) {
+  .favorites-results-controls .page-info,
+  .favorites-results-controls .favorite-numberheader,
+  .favorites-results .rank-wrapper,
+  .delete-btn .disabled {
+    display: none;
+  }
+  .favorites-results .summary-main {
+    margin-left: 30px !important;
+  }
+
+  .favorites-results-controls .favorite-title-header {
+    margin-left: -5px;
+  }
+
+  .favorites-results-controls .page-nav-mob {
+    margin-top: 0;
+  }
+  .favorites-results-controls .page-nav-mob ul li {
+    margin-top: 10px;
+  }
+  .favorites-results-controls .page-info-nav {
+    width: 100%;
+    border-top: solid 2px #efebe8;
+    border-bottom: none;
+  }
+  
+}
