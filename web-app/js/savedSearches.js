@@ -49,11 +49,9 @@ $(function() {
         }
       });
     
-    console.log("HELLO ");
     //Managing "delete" and "copy" buttons
     $('.delete-btn button').addClass('disabled');
     $('#slaves').change(function(){
-    	console.log("changed");
       if($(this).find(':checkbox:checked').length>0){
         $('.delete-btn button').removeClass('disabled');
       }else{
