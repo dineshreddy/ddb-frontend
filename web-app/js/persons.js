@@ -26,6 +26,7 @@ $(function() {
     imagesLoaded( container, function() {
       new Masonry( container, {
         // options
+        isOriginLeft: false,
         columnWidth: 170,
         itemSelector: '.pin'
       });
