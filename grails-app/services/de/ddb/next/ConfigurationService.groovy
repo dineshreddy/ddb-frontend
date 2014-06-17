@@ -182,7 +182,6 @@ class ConfigurationService {
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
-        log.info "ddb.backend.url = " + getBackendUrl()
         log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
