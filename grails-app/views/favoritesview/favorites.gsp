@@ -335,16 +335,16 @@ limitations under the License.
       </div>
       <div class="modal-body">
         <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
-          <g:message encodeAs="html" code="ddbnext.delete_favorites_from_all_dialog" />
+          <g:message encodeAs="html" code="ddbcommon.delete_favorites_from_all_dialog" />
         </g:if>
         <g:else>
-          <g:message encodeAs="html" code="ddbnext.delete_favorites_dialog" />
+          <g:message encodeAs="html" code="ddbcommon.delete_favorites_dialog" />
         </g:else>
         <span class="totalNrSelectedObjects"></span>
       </div>
       <div class="modal-footer">
-        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbnext.Yes" /></button> 
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbnext.No" /></button>
+        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button> 
+        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
       </div>
     </div>
   
