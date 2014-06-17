@@ -34,8 +34,8 @@ limitations under the License.
                 <g:elseif test="${search.type == Type.INSTITUTION}">
                   href="${request.contextPath + '/searchresults/institution?' + search.queryString}"
                 </g:elseif>
-                title="${ddb.getTruncatedHovercardTitle(title: search.label, length: 350)}">
-                <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
+                title="${ddbcommon.getTruncatedHovercardTitle(title: search.label, length: 350)}">
+                <ddbcommon:getTruncatedItemTitle title="${search.label}" length="${100}" />
               </a>
               <a id="${search.id}" class="edit-saved-search" data-label="${search.label}"
                  data-querystring="${search.queryString}">

@@ -37,8 +37,8 @@ limitations under the License.
       <tr>
         <td style="height: 130px; padding: 10px;">
           <h2>
-            <a style="color: #a5003b" href="${contextUrl + '/search?' + search.queryString}" title="${ddb.getTruncatedHovercardTitle(title: search.label, length: 350)}">
-              <ddb:getTruncatedItemTitle title="${search.label}" length="${100}" />
+            <a style="color: #a5003b" href="${contextUrl + '/search?' + search.queryString}" title="${ddbcommon.getTruncatedHovercardTitle(title: search.label, length: 350)}">
+              <ddbcommon:getTruncatedItemTitle title="${search.label}" length="${100}" />
             </a>
           </h2>
           <div>

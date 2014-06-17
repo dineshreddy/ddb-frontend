@@ -18,7 +18,7 @@ limitations under the License.
     <li class="theme">
        <g:link controller="item" action="findById" params="${["id": item.id]}">
          <i class="icon-theme"></i>
-         <span class="item-title"><ddb:getTruncatedItemTitle title="${item.preview.title}" length="${ 200 }" /></span><br>
+         <span class="item-title"><ddbcommon:getTruncatedItemTitle title="${item.preview.title}" length="${ 200 }" /></span><br>
        </g:link>
        <span class="item-subtitle">${item.preview.subtitle}</span><br>
     </li>  	

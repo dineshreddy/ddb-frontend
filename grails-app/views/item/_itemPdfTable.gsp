@@ -18,7 +18,7 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml" lang="${ddb.getCurrentLocale()}">
 <head>
 
-<g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 <title>
   ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">

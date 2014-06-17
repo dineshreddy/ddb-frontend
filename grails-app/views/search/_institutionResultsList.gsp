@@ -25,7 +25,7 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
-                <ddb:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" />
+                <ddbcommon:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" />
               </g:link>
             </h2>
             <div class="subtitle">
@@ -58,7 +58,7 @@ limitations under the License.
             <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
               <div class="hovercard-info-item" data-iid="${entityItem.id}">
                 <h4>
-                  <ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" />
+                  <ddbcommon:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" />
                 </h4>
                 <ul class="unstyled">
                   <li>
