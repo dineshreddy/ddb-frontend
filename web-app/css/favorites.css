@@ -789,3 +789,83 @@ hr {
 .rank-arrows.disabled >div {
   cursor: default;
  }
+
+@media (max-width: 767px) {
+
+  .favorites-results-controls .page-info,
+  .favorites-results-controls .favorite-numberheader,
+  .favorites-results .rank-wrapper,
+  .favorites-results-controls .mobile-off {
+    display: none;
+  }
+
+  .favorites-results .summary-main {
+    margin-left: 30px !important;
+  }
+
+  .favorites-results-controls .favorite-title-header {
+    margin-left: -5px;
+  }
+
+  .favorites-results-controls .page-nav-mob {
+    margin-top: 0;
+  }
+
+  .favorites-results-controls .page-nav-mob ul li {
+    margin-top: 10px;
+  }
+
+  .favorites-results-controls .page-info-nav {
+    width: 28%;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .favorites-results-controls .span9 {
+    border-top: solid 2px #efebe8;
+  }
+
+  .favorites-results-controls .mobile-list-actions {
+    width: 70%;
+    display: inline-block !important;
+    line-height: 44px;
+    vertical-align: top;
+  }
+
+  .favorites-results-controls .mobile-gear-icon {
+    width: 26px;
+    height: 26px;
+    display: inline-block !important;
+    float: right;
+    background: url("../images/icons/ddbIkonographie.png") -241px -121px no-repeat;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .favorites-results-controls .delete-container {
+    margin-bottom: -5px;
+  }
+
+  .favorites-results-controls .options-buttons-container {
+    border: solid 2px #efebe8;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background: #fff;
+    bottom: 0;
+  }
+
+  .favorites-results-controls .options-buttons-container .delete-btn {
+    margin: 0 35px 0 0;
+  }
+}
+@media (max-width: 480px) {
+
+  .favorites-results-controls .page-info-nav {
+    width: 42%;
+  }
+
+  .favorites-results-controls .mobile-list-actions {
+    width: 56%;
+  }
+}
