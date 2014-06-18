@@ -35,10 +35,10 @@ limitations under the License.
         <ddb:isPersonalFavoritesAvailable>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbnext.Close"/>
+              <g:message encodeAs="html" code="ddbcommon.Close"/>
             </button>
             <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-              <g:message encodeAs="html" code="ddbnext.Save"/>
+              <g:message encodeAs="html" code="ddbcommon.Save"/>
             </button>
           </div>
         </ddb:isPersonalFavoritesAvailable>

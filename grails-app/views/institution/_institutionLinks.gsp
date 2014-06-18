@@ -46,7 +46,7 @@ limitations under the License.
             </button>
             <button class="btn-padding" type="submit"
               id="addToFavoritesConfirm">
-              <g:message encodeAs="html" code="ddbnext.Save" />
+              <g:message encodeAs="html" code="ddbcommon.Save" />
             </button>
           </div>
         </div>
