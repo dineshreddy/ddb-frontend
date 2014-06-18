@@ -175,23 +175,16 @@ class FavoritesviewController {
     def favorites(){
         if(userService.isUserLoggedIn()){
             final def ACTION = "favorites"
-            def rows=20 //default
-            if (params.rows){
-                rows = params.rows.toInteger()
-            }
-            def offset = 0 // default
-            if(params.offset){
-                offset = params.offset.toInteger()
-            }
+            int rows = params.rows ? params.rows.toInteger() : 20
+            int offset = params.offset ? params.offset.toInteger() : 0
+            String order = params.order ? params.order : favoritesService.ORDER_ASC
+            String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
             def user = userService.getUserFromSession()
             def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-
             def folderId = mainFavoriteFolder.folderId
             if(params.id){
                 folderId = params.id
             }
-            def by = params.by
-            def order = params.order
 
             Folder selectedFolder = bookmarksService.findFolderById(folderId)
             List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
@@ -302,6 +295,8 @@ class FavoritesviewController {
                     numberOfResultsFormatted: numberOfResultsFormatted,
                     offset: offset,
                     rows: rows,
+                    order: order,
+                    by: by,
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,

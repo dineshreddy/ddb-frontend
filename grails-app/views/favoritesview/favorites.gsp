@@ -13,9 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FolderConstants"%>
-<%@page import="org.h2.command.ddl.CreateLinkedTable"%>
 
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"></g:set>
@@ -193,11 +191,11 @@ limitations under the License.
               <div class="results-sorter">
                 <span><input type="checkbox" class="select-all" id="checkall"></span> 
                 <span class="favorite-numberheader">
-                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
+                <g:if test="${order == "desc"}" >
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderNumber["asc"]}" />">
                       #
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
+                       <g:if test="${by == "number"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                        </g:if>
                        <g:else>
@@ -210,7 +208,7 @@ limitations under the License.
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderNumber["desc"]}" />">
                       #
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "number"}">
+                       <g:if test="${by == "number"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
                        </g:if>
                        <g:else>
@@ -221,11 +219,11 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span>
-                <g:if test="${params[SearchParamEnum.ORDER.getName()]== 'desc'}" >
+                <g:if test="${order == "desc"}" >
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderTitle["asc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Savedsearch_Title"></g:message>
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
+                       <g:if test="${by == "title"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                        </g:if>
                        <g:else>
@@ -238,7 +236,7 @@ limitations under the License.
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderTitle["desc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Savedsearch_Title"></g:message>
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "title"}">
+                       <g:if test="${by == "title"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/>
                        </g:if>
                        <g:else>
@@ -249,11 +247,11 @@ limitations under the License.
                   </g:else>
                 </span>
                 <span class="favorite-dateheader"> 
-                  <g:if test="${params[SearchParamEnum.ORDER.getName()] == 'desc'}" >
+                  <g:if test="${order == "desc"}" >
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderDate["asc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
+                       <g:if test="${by == "date"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}"/>
                        </g:if>
                        <g:else>
@@ -266,7 +264,7 @@ limitations under the License.
                     <a href="<ddb:doHtmlEncode url="${urlsForOrderDate["desc"]}" />">
                       <g:message encodeAs="html" code="ddbnext.Added_On" />
                       <span>
-                       <g:if test="${params[SearchParamEnum.BY.getName()] == "date"}">
+                       <g:if test="${by == "date"}">
                         <span><g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}"/></span>
                        </g:if>
                        <g:else>
@@ -279,7 +277,7 @@ limitations under the License.
               </div>
             </div>
             <div class="favorites-results">
-              <ddb:renderFavoritesResults results="${results}" orderBy="${params[SearchParamEnum.BY.getName()]}"/>
+              <ddb:renderFavoritesResults results="${results}" orderBy="${by}"/>
             </div>
           </g:if>
           <g:else>
