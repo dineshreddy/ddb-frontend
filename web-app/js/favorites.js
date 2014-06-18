@@ -48,8 +48,10 @@ $(function() {
     $('#slaves').change(function(){
       if($(this).find(':checkbox:checked').length>0){
         $('.delete-btn button').removeClass('disabled');
+        $('.options-buttons-container').removeClass('mobile-off');
       }else{
         $('.delete-btn button').addClass('disabled');
+        $('.options-buttons-container').addClass('mobile-off');
       }
     });
 
@@ -451,6 +453,8 @@ $(function() {
 
 });
 
+//init the toggle for the mobile accordion
+$.toggleElement();
 
 function updateNavigationUrl() {
   $.urlParam = function(name) {

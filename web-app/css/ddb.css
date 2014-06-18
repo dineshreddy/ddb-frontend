@@ -1482,6 +1482,10 @@ select {
   display: none !important;
 }
 
+.element-collapsed {
+  display: none;
+}
+
 .on {
   display: block !important;
 }
