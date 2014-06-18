@@ -21,7 +21,7 @@ class GetCookieFieldValueTagLib {
 
     static namespace = "ddb"
 
-    def searchService
+    def ddbSearchService
     def AMP = "&amp;"
     def LT = "&lt;"
     def GT = "&gt;"
@@ -31,20 +31,20 @@ class GetCookieFieldValueTagLib {
         def map = [:]
         if (params && params.controller == "search" && params.action == "results") {
             def cookies = new Cookie[1]
-            cookies[0] = searchService.createSearchCookie(request, params, null)
-            map = searchService.getSearchCookieAsMap(request, cookies)
+            cookies[0] = ddbSearchService.createSearchCookie(request, params, null, SearchTypeEnum.ITEM)
+            map = ddbSearchService.getSearchCookieAsMap(request, cookies)
         }
         else {
-            map = searchService.getSearchCookieAsMap(request, request.cookies)
+            map = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
         }
         out << escapeEntities(map[attrs.fieldname])
     }
 
-    /** Return the given string with all HTML entities escaped into their 
-     * HTML equivalent. 
-     * @param text String containing unsafe characters. 
-     * @return <var>text</var> with characters turned into HTML entities. 
-     */ 
+    /** Return the given string with all HTML entities escaped into their
+     * HTML equivalent.
+     * @param text String containing unsafe characters.
+     * @return <var>text</var> with characters turned into HTML entities.
+     */
     private String escapeEntities(String text) {
         if (text == null) {
             text = ""

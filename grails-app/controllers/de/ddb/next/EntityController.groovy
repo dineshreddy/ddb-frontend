@@ -42,6 +42,7 @@ class EntityController {
     def entityService
     def itemService
     def searchService
+    def ddbSearchService
 
     int PREVIEW_COUNT = 4
 
@@ -98,7 +99,7 @@ class EntityController {
         }
 
         def entityUri = request.forwardURI
-        def title = jsonGraph.person.preferredName
+        def title = jsonGraph?.person?.preferredName
 
         //------------------------- Object Search -------------------------------
 
@@ -225,7 +226,13 @@ class EntityController {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = [EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]
 
-        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+
+        def additionalParams = [:]
+
+        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ENTITY)) {
+            redirect(controller: "entity", action: "personsearch", params: params)
+        }
 
         def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
@@ -251,7 +258,7 @@ class EntityController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, null))
+        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ENTITY))
 
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]

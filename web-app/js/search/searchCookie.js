@@ -19,6 +19,8 @@ de.ddb.next.search = de.ddb.next.search || {};
 
 de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
+  var path = '/';
+  
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
     searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -35,13 +37,13 @@ de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
       }
       json[value[0]] = value[1];
     });
-    document.cookie = "searchParameters" + jsContextPath + "=\""
-        + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
+    document.cookie = "searchParameters" + jsContextPath + "=\"" + JSON.stringify(json).replace(/"/g, '\\"') + "\"" + ';path=' + path;
   }
 };
 
 de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
   var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
+  var path = '/';
   if (searchParameters != null && searchParameters.length > 0) {
     searchParameters = searchParameters.substring(1, searchParameters.length - 1);
     searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -49,7 +51,7 @@ de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
     //deletes the attribute from the JSON
     delete json[paramName];
     document.cookie = "searchParameters" + jsContextPath + "=\""
-        + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
+        + JSON.stringify(json).replace(/"/g, '\\"') + "\"" + ';path=' + path;
   }
 };
 
