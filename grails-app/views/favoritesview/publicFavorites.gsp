@@ -81,7 +81,7 @@ limitations under the License.
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
               <br />          
-              <g:message encodeAs="html" code="ddbnext.Create_Folder_Description"/>:
+              <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
               <br />
               ${selectedFolder.description}
             </g:if>

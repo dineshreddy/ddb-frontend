@@ -20,7 +20,7 @@ limitations under the License.
 <g:message encodeAs="html" code="ddbnext.send_favorites_email_body_pre" 
              args="${[folderTitle, userName]}" encodeAs="none" /><br />
 </div>
-<g:message encodeAs="html" code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
+<g:message encodeAs="html" code="ddbcommon.Create_Folder_Description" />: ${folderDescription}<br /><br />
 
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
