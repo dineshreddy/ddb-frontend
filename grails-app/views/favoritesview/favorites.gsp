@@ -423,7 +423,7 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbnext.Confirm_Short" /> </button> 
+        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbcommon.Confirm_Short" /> </button> 
       </div>
     </div>
   
