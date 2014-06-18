@@ -75,7 +75,7 @@ limitations under the License.
 </ul>
 <div class="bb end-result-border"></div>
 <ddbcommon:isLoggedIn>
-  <ddb:isPersonalFavoritesAvailable>
+  <ddbcommon:isPersonalFavoritesAvailable>
     <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-body">
         <p>
@@ -95,5 +95,5 @@ limitations under the License.
         </div>
       </div>
     </div>
-  </ddb:isPersonalFavoritesAvailable>
+  </ddbcommon:isPersonalFavoritesAvailable>
 </ddbcommon:isLoggedIn>

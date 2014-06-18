@@ -24,7 +24,7 @@ limitations under the License.
           </span>
         </span>
       </div>
-      <ddb:isPersonalFavoritesAvailable>
+      <ddbcommon:isPersonalFavoritesAvailable>
         <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-body">
             <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
@@ -40,7 +40,7 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </ddb:isPersonalFavoritesAvailable>
+      </ddbcommon:isPersonalFavoritesAvailable>
     </ddbcommon:isLoggedIn>
     <div class="page-link-block">
       <a class="page-link page-link-popup-anchor hidden-phone hidden-tablet" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">

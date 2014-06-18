@@ -27,12 +27,12 @@ limitations under the License.
       <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-body">
           <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
-          <ddb:isPersonalFavoritesAvailable>
+          <ddbcommon:isPersonalFavoritesAvailable>
             <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
             <g:select name="favorite-folders" from="" multiple="true"/>
-          </ddb:isPersonalFavoritesAvailable>
+          </ddbcommon:isPersonalFavoritesAvailable>
         </div>
-        <ddb:isPersonalFavoritesAvailable>
+        <ddbcommon:isPersonalFavoritesAvailable>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
               <g:message encodeAs="html" code="ddbcommon.Close"/>
@@ -41,7 +41,7 @@ limitations under the License.
               <g:message encodeAs="html" code="ddbcommon.Save"/>
             </button>
           </div>
-        </ddb:isPersonalFavoritesAvailable>
+        </ddbcommon:isPersonalFavoritesAvailable>
       </div>
     </ddbcommon:isLoggedIn>
     <div class="link-block">

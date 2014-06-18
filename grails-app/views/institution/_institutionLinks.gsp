@@ -28,7 +28,7 @@ limitations under the License.
         </span>
       </div>
 
-      <ddb:isPersonalFavoritesAvailable>
+      <ddbcommon:isPersonalFavoritesAvailable>
         <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
           <div class="modal-body">
             <p>
@@ -50,7 +50,7 @@ limitations under the License.
             </button>
           </div>
         </div>
-      </ddb:isPersonalFavoritesAvailable>
+      </ddbcommon:isPersonalFavoritesAvailable>
     </ddbcommon:isLoggedIn>
 
     <div class="link-block">

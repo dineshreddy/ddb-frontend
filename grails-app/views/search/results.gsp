@@ -162,7 +162,7 @@ limitations under the License.
 
       <%-- favorite confirmation dialog - only one per page --%>
       <ddbcommon:isLoggedIn>
-        <ddb:isPersonalFavoritesAvailable>
+        <ddbcommon:isPersonalFavoritesAvailable>
           <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
               <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
@@ -178,7 +178,7 @@ limitations under the License.
               </div>
             </div>
           </div>
-        </ddb:isPersonalFavoritesAvailable>
+        </ddbcommon:isPersonalFavoritesAvailable>
       </ddbcommon:isLoggedIn>
     </div>
       <%--   Search has NO results   --%>
