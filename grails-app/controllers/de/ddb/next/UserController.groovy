@@ -146,6 +146,8 @@ class UserController {
             def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
             def urlsForOrder
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def queryString = request.getQueryString()
 
             if (!params.criteria) {
                 params.criteria = "creationDate"
@@ -185,13 +187,16 @@ class UserController {
                     params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "asc"])
                 ]
             }
+            def totalResults= savedSearches.size()
             render(view: "savedsearches", model: [
                 dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
                 paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params[SearchParamEnum.ORDER.getName()], totalPages),
+                paginationURL: searchService.buildPagination(totalResults, urlQuery, request.forwardURI+'?'+queryString),
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 rows: rows,
+                totalResults:totalResults,
                 totalPages: totalPages,
                 urlsForOrder: urlsForOrder,
                 userName: user.getFirstnameAndLastnameOrNickname()

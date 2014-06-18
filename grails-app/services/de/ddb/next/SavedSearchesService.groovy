@@ -105,6 +105,14 @@ class SavedSearchesService {
         return result
     }
 
+    /** 
+     * This function is same as createAllFavoritesLink in FavoritesService. Some refactoring would be nice
+     * @param offset
+     * @param rows
+     * @param order
+     * @param totalPages
+     * @return
+     */
     def getPaginationUrls(int offset, int rows, String order, int totalPages) {
         def lastPageOffset = (totalPages - 1) * rows
         def first = getPaginationUrl(0, rows, order)
@@ -115,6 +123,7 @@ class SavedSearchesService {
         if (offset >= lastPageOffset) {
             last = null
         }
+        
         return [
             firstPg: first,
             prevPg: getPaginationUrl(offset - rows, rows, order),
