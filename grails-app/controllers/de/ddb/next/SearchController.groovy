@@ -34,25 +34,19 @@ class SearchController {
 
     def entityService
     def searchService
+    def ddbSearchService
     def configurationService
     def cultureGraphService
 
     def results() {
         try {
             //The list of the NON JS supported facets for items
-            def nonJsFacetsList = [
-                FacetEnum.PLACE.getName(),
-                FacetEnum.AFFILIATE.getName(),
-                FacetEnum.KEYWORDS.getName(),
-                FacetEnum.LANGUAGE.getName(),
-                FacetEnum.TYPE.getName(),
-                FacetEnum.SECTOR.getName(),
-                FacetEnum.PROVIDER.getName()
-            ]
+            def nonJsFacetsList = SearchFacetLists.itemSearchNonJavascriptFacetList
 
-            def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+            def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
-            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams)) {
+
+            if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
             }
 
@@ -114,7 +108,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
+            response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -165,6 +159,14 @@ class SearchController {
                 if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
                 }
+
+                def isThumbnailFiltered = ""
+                if (params.isThumbnailFiltered) {
+                    isThumbnailFiltered = params.isThumbnailFiltered
+                } else if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                    isThumbnailFiltered = cookieParametersMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]
+                }
+
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
@@ -176,7 +178,7 @@ class SearchController {
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     entities: entities,
-                    isThumbnailFiltered: params.isThumbnailFiltered,
+                    isThumbnailFiltered: isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
@@ -208,9 +210,16 @@ class SearchController {
      */
     def institution() {
         //The list of the NON JS supported facets for institutions
-        def nonJsFacetsList = [FacetEnum.SECTOR.getName(), FacetEnum.STATE.getName()]
+        def nonJsFacetsList = SearchFacetLists.institutionSearchNonJavascriptFacetList
 
-        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+
+        def additionalParams = [:]
+
+
+        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
+            redirect(controller: "search", action: "institution", params: params)
+        }
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
 
@@ -227,6 +236,7 @@ class SearchController {
         }
 
         def results = searchService.doInstitutionSearch(urlQuery)
+
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
@@ -241,7 +251,7 @@ class SearchController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, null))
+        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
 
         def model = [
             title: title,

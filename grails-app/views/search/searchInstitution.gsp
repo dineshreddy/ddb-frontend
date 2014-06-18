@@ -17,8 +17,10 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 <%@page import="de.ddb.common.constants.Type"%>
-<g:set var="nonJsFacetsList" value="${[FacetEnum.SECTOR.getName(), FacetEnum.STATE.getName()]}"></g:set>
-<g:set var="jsFacetsList" value="${[FacetEnum.SECTOR.getName(), FacetEnum.STATE.getName()]}"></g:set>
+<%@page import="de.ddb.next.SearchFacetLists"%>
+
+<g:set var="nonJsFacetsList" value="${SearchFacetLists.institutionSearchNonJavascriptFacetList}"></g:set>
+<g:set var="jsFacetsList" value="${SearchFacetLists.institutionSearchJavascriptFacetList}"></g:set>
 <html>
 <head>
 <title>
