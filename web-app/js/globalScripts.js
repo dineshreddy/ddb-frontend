@@ -163,6 +163,17 @@ $.updateLanguageSwitch = function(params) {
   });
 };
 
+/**
+ * Toggle the element specified in the attribute data-toggle
+ */
+$.toggleElement = function() {
+  $( "a[data-toggle-elem]" ).click(function(event) {
+    event.preventDefault();
+    var elementToToggle = $(this).attr("data-toggle-elem");
+    $(elementToToggle).slideToggle(400);
+  });
+};
+
 $(document)
     .ready(
         function() {

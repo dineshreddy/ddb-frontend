@@ -171,23 +171,79 @@ limitations under the License.
               </div>
               <div class="delete-container row">
                 <div class="span9">
+                  <div class="mobile-list-actions visible-phone">
+                    <strong>
+                      <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                        <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
+                      </g:if>
+                      <g:else>
+                        ${selectedFolder.title.capitalize()}
+                      </g:else>
+                    </strong>
+                    <g:each in="${allFolders}">
+                      <g:if test="${it.folder.folderId == selectedFolder.folderId }">
+                        (${it.count})
+                      </g:if>
+                    </g:each>
+                    <a href="#" data-toggle-elem="#collapsing-options">
+                      <i class="mobile-gear-icon visible-phone"></i>
+                    </a>
+                  </div>
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
-                  <div class="delete-btn">
-                    <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
-                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
-                        <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
-                      </button>
-                    </g:form>
+                  <div id="collapsing-options" class="element-collapsed">
+                    <div class="controls-container">
+                      <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
+                        <div class="link-block">
+                          <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" />" data-title="${selectedFolder.title}" >
+                            <span><g:message encodeAs="html" code="ddbnext.favorites_list_publiclink" /></span>
+                          </a>
+                        </div>
+                      </g:if>
+                      <g:each in="${allFolders}">
+                        <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
+                          <g:if test="${it.folder.isBlocked }">
+                            <a class="bookmarks-list-publish" title="<g:message encodeAs="html" code="ddbnext.Blocked_Folder" />">
+                              <g:message encodeAs="html" code="ddbnext.public"/>
+                            </a>
+                          </g:if>
+                          <g:else>
+                            <a href="#" class="bookmarks-list-publish cursor-pointer publishfolder <g:if test="${it.folder.isPublic}">open-lock</g:if>" data-folder-id="${it.folder.folderId}" 
+                              <g:if test="${it.folder.isPublic}">
+                                title="<g:message encodeAs="html" code="ddbnext.Hide_Folder" />"
+                              </g:if>
+                              <g:else>
+                                title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />"
+                              </g:else>
+                            >
+                              <g:message encodeAs="html" code="ddbnext.public"/>
+                            </a>
+                          </g:else>
+                          <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />">  
+                            <g:message encodeAs="html" code="ddbnext.properties"/>
+                          </a>
+                          <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}" title="${message(code: 'ddbnext.delete_favorites')}">
+                            <g:message encodeAs="html" code="ddbnext.Delete"/>
+                          </g:link>
+                        </g:if>
+                      </g:each>
+                    </div>
                   </div>
-                  <div class="delete-btn">
-                    <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
-                      <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
-                        <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
-                      </button>
-                    </g:form>
+                  <div class="options-buttons-container mobile-off">
+                    <div class="delete-btn">
+                      <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
+                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
+                          <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
+                        </button>
+                      </g:form>
+                    </div>
+                    <div class="delete-btn">
+                      <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
+                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
+                          <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
+                        </button>
+                      </g:form>
+                    </div>
                   </div>
-                </div>
-                <div class="span3">
                 </div>
               </div>
               <div class="results-sorter">
