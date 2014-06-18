@@ -21,16 +21,3 @@
 .entities .results-paginator-view {
   background: none;
 }
-
-.entities .facets-list .facets-item:first-child {
-  margin-top: 14px;
-}
-
-.entities .clear-filters a {
-  font-weight: bold;
-  float: right;
-}
-
-.entities .add-to-saved-searches {
-  margin-top: 10px;
-}

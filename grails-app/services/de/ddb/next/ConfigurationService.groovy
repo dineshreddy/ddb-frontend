@@ -18,8 +18,6 @@ package de.ddb.next
 
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
-import de.ddb.common.exception.ConfigurationException
-
 /**
  * Service for accessing the configuration.
  *
@@ -49,21 +47,10 @@ class ConfigurationService {
         return commonConfigurationService.getConfigValue("ddb.backend.url")
     }
 
-    public String getAasAdminUserId(){
-        return commonConfigurationService.getConfigValue("ddb.aas.admin.userid")
-    }
-
-    public String getAasAdminPassword(){
-        return commonConfigurationService.getConfigValue("ddb.aas.admin.password")
-    }
-
     public String getCulturegraphUrl(){
         return commonConfigurationService.getConfigValue("ddb.culturegraph.url")
     }
 
-    public String getElasticSearchUrl(){
-        return commonConfigurationService.getConfigValue("ddb.elasticsearch.url")
-    }
 
     public String getFavoritesSendMailFrom(){
         return commonConfigurationService.getConfigValue("ddb.favorites.sendmailfrom")
@@ -195,7 +182,6 @@ class ConfigurationService {
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.binary.url = " + getBinaryUrl()
         log.info "ddb.static.url = " + getStaticUrl()
-        log.info "ddb.backend.url = " + getBackendUrl()
         log.info "ddb.backend.apikey = " + getBackendApikey()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.favorites.sendmailfrom = " + getFavoritesSendMailFrom()
@@ -212,7 +198,6 @@ class ConfigurationService {
         log.info "ddb.logging.folder = " + getLoggingFolder()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
-        log.info "ddb.elasticsearch.url = " + getElasticSearchUrl()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()

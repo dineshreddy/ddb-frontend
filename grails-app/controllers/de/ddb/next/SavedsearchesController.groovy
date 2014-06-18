@@ -17,6 +17,7 @@ package de.ddb.next
 
 import grails.converters.JSON
 import de.ddb.common.beans.User
+import de.ddb.common.constants.Type
 
 class SavedsearchesController {
 
@@ -25,11 +26,15 @@ class SavedsearchesController {
     def userService
 
     def addSavedSearch() {
-        log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title
+        log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title + ", " + request?.JSON?.type
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
         if (user != null) {
-            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.title, request?.JSON?.query)) {
+            Type type = Type.valueOfName(request?.JSON?.type)
+            if (!type) {
+                type = Type.CULTURAL_ITEM
+            }
+            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.title, request?.JSON?.query, type)) {
                 result = response.SC_CREATED
             }
         }
@@ -77,7 +82,8 @@ class SavedsearchesController {
         log.info "isSavedSearch()"
         def User user = userService.getUserFromSession()
         if (user != null) {
-            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query)
+            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query,
+                Type.valueOfName(request.JSON.type))
             log.info "isSavedSearch returns " + result
             if (result) {
                 render(status: response.SC_OK)

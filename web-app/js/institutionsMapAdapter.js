@@ -46,7 +46,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 //    osmTileset : osmTileset
 //  };
 //
-  
+
   //for public properties. avoid the reserved keyword "public"
   var Public = {};
 //
@@ -97,7 +97,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 //    _fetchDataAjax(INSTITUTIONS_MAP_REF + '?clusterid=-1', successFn);
 //  };
 //
-  
+
   var _initializeMap = function() {
     if (!mapInitialized && !$('#institution-map').hasClass('off')) {
 //      InstitutionsMapController.startup(INSTITUTIONLIST_DIV, jsLanguage, institutionsMapOptions);
@@ -171,7 +171,11 @@ var InstitutionsMapAdapter = (function($, undefined) {
       _enableMapView();
     });
 
-    $('input:checkbox').click(function() {
+    $('.sector-facet input:checkbox').click(function() {
+      Public.selectSectors();
+    });
+
+    $('.institution-with-data input:checkbox').click(function() {
       Public.selectSectors();
     });
   };

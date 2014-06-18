@@ -43,22 +43,24 @@ $(function() {
         $('#slaves').trigger('change');
       }
     });
-    
+
     //Managing "delete" and "copy" buttons
     $('#slaves').change(function(){
       if($(this).find(':checkbox:checked').length>0){
         $('.delete-btn button').removeClass('disabled');
+        $('.options-buttons-container').removeClass('mobile-off');
       }else{
         $('.delete-btn button').addClass('disabled');
+        $('.options-buttons-container').addClass('mobile-off');
       }
-    })
-    
+    });
+
     $('.delete-btn button').click(function(){
       if($(this).hasClass('disabled')){
         return false;
       }
     });
-    
+
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -426,10 +428,33 @@ $(function() {
       return false;
     });
 
+    /* Ranking manager*/
+    $('.rank-input').on('change', function(){
+      var newPosition = parseInt($(this).val());
+      if(newPosition !== "NaN"){
+        var parentElement = $(this).parents('.rank-wrapper');
+        updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+      }
+    });
+    $('.rank-arrows .up, .rank-arrows .down').on('click', function(){
+      if(!$(this).parent().hasClass('disabled')){
+        var parentElement = $(this).parents('.rank-wrapper');
+        var currentPosition = parseInt(parentElement.find('.rank-input').val());
+        if($(this).hasClass('up') && currentPosition > 0){
+          var newPosition = currentPosition-1;
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+        }else if($(this).hasClass('down')){
+          var newPosition = currentPosition+1;
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+        }
+      }
+    });
   }
 
 });
 
+//init the toggle for the mobile accordion
+$.toggleElement();
 
 function updateNavigationUrl() {
   $.urlParam = function(name) {
@@ -514,4 +539,23 @@ function showError(errorHtml) {
 function clean() {
   $('#folder-create-name').val("");
   $('#folder-create-description').val("");
+}
+
+function updateRanking (bookmarkId, folderId, newPosition){
+  var body = {
+    folderId : folderId,
+    position : newPosition
+  };
+  $.ajax({
+    type: "POST",
+    contentType : "application/json; charset=utf-8",
+    traditional : true,
+    url : jsContextPath + "/apis/favorites/"+bookmarkId+"/_move",
+    data : JSON.stringify(body),
+    dataType : "json",
+    success: function(){
+      window.location = window.location;
+    },
+    error: function(){return false;}
+  });
 }

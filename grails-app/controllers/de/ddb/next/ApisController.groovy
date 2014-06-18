@@ -21,7 +21,6 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.FacetEnum;
 import de.ddb.common.constants.SupportedLocales
 
 class ApisController {
@@ -120,6 +119,8 @@ class ApisController {
 
         int cacheValidInDays = 1
 
+        boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
+        
         // parse selected sector information from request
         def selectedSectors = params.selectedSectors
         def sectors = selectedSectors.tokenize(',[]')
@@ -128,7 +129,7 @@ class ApisController {
         }
 
         // get all available institutions from cortex
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1"])
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/institutions/map', false, ["clusterid":"-1","hasItems":"${onlyInstitutionsWithData}"])
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
@@ -136,8 +137,8 @@ class ApisController {
         def institutions = apiResponse.getResponse()
 
         // get the clustered institutions
-        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays)
-
+        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)
+        
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
         Calendar expiresDate = Calendar.getInstance()
@@ -152,31 +153,36 @@ class ApisController {
         render (contentType:"text/json"){clusteredInstitutions}
     }
 
+    def autocomplete (){
+        callSuggestEndpoint('/search/suggest')
+    }
 
-
+    def entitiesAutocomplete (){
+        callSuggestEndpoint('/entities/suggest')
+    }
+    
     /**
      * This function should be obsolete once the
      * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
      * If that happens, the "myautocomplete.js" script should refer to the backend URL and not to this URL.
      * @return
      */
-    def autocomplete (){
+    private callSuggestEndpoint(def path) {
         def query = apisService.getQueryParameters(params)
-        def callback = apisService.getQueryParameters(params)
-
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/suggest', false, query)
+        
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),path, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
         def result = apiResponse.getResponse()
-        if (callback) {
+        if (query) {
             render "${params.callback}(${result as JSON})"
         } else {
             render (contentType:"text/json"){result}
         }
     }
-
+    
     /**
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream

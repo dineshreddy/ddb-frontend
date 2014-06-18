@@ -19,25 +19,24 @@ limitations under the License.
 <html>
 <head>
 <title>
-  ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  <g:message encodeAs="html" code="ddbnext.lists.page" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
 
-<ddb:getSocialmediaMeta likeTitle="${g.message(code: "ddbnext.lists.header") + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${linkUri}"/>
 </head>
 <body>
   <div class="row lists">
     <div class="span12 lists-header">
-      <span class="lists-header-header">
-        <g:message encodeAs="html" code="ddbnext.lists.header" />
-      </span>
-      <div class="share-block">
-        <ddb:getSocialmediaBody />
+      <div>
+        <h1>
+          <g:message encodeAs="html" code="ddbnext.lists.page" />
+        </h1>
       </div>
-      <div class="link-block">
+      <div class="right-container">
         <a class="page-link page-link-popup-anchor" href="${linkUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
           <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
         </a>
+        <ddb:getSocialmediaBody />
       </div>
     </div>
     <div class="lists-main">

@@ -32,8 +32,8 @@
 }
 
 .view-type-switch #view-institution-list,.view-type-switch #view-institution-map {
-  width: 24px;
-  height: 24px;
+  width: 29px;
+  height: 29px;
   box-shadow: none;
   overflow: hidden;
   background: none;
@@ -49,35 +49,35 @@
 }
 
 .view-type-switch #view-institution-list:before {
-  margin: -62px 0 0 -213px;
+  margin: -60px 0 0 -210px;
 }
 
 .view-type-switch #view-institution-list:hover:before{
-  margin: -62px 0 0 -213px;
+  margin: -60px 0 0 -210px;
 }
 
 .view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before {
-  margin: -63px 0 0 -244px;
+  margin: -60px 0 0 -241px;
 }
 
 .view-type-switch .ie8-version #view-institution-list.selected:before,.view-type-switch .ie8-version #view-institution-list.selected:hover:before,.view-type-switch .ie8-version #view-institution-list.selected:focus:before {
-  margin: -63px 0 0 -244px;
+  margin: -60px 0 0 -241px;
 }
 
 .view-type-switch #view-institution-map:before {
-  margin: -32px 0 0 -212px;
+  margin: -30px 0 0 -210px;
 }
 
 .view-type-switch #view-institution-map:hover:before {
-  margin: -32px 0 0 -212px;
+  margin: -30px 0 0 -210px;
 }
 
 .view-type-switch #view-institution-map.selected:before,.view-type-switch #view-institution-map.selected:hover:before,.view-type-switch #view-institution-map.selected:focus:before {
-  margin: -34px 0 0 -243px;
+  margin: -30px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-institution-map.selected:before, .view-type-switch .ie8-version #view-institution-map.selected:hover:before,.view-type-switch .ie8-version #view-institution-map.selected:focus:before {
-  margin: -34px 0 0 -243px;
+  margin: -30px 0 0 -240px;
 }
 
 .institution-listitem {
@@ -108,7 +108,7 @@
   font-weight: bold;
 }
 
-.sector-facet {
+.sector-facet, .institution-with-data {
   margin: 2px 0;
   line-height: 28px;
   position: relative;
@@ -116,7 +116,7 @@
   background-color: #efebe8;
 }
 
-div.sector-facet>label:hover {
+div.sector-facet>label:hover, div.institution-with-data>label:hover {
   text-decoration: underline;
   color: #a5003b;
 }
@@ -133,13 +133,13 @@ div.sector-facet>label:hover {
   display: none;
 }
 
-.sector-facet .checkbox input[type="checkbox"] { 
+.sector-facet .checkbox input[type="checkbox"], .institution-with-data .checkbox input[type="checkbox"] { 
   float: none; 
   margin-top: -3px; 
   margin-left: -10px; 
 }
 
-.sector-facet .checkbox {
+.sector-facet .checkbox, .institution-with-data .checkbox {
   min-height: 0;
 }
 
@@ -152,8 +152,9 @@ div.sector-facet>label:hover {
   margin-top:10px;
 }
 
-.institutionlist #institution-map {
-  border-top: 2px solid #EFEBE8;
+.institutionlist .institution-right-header{
+  border-bottom: 2px solid #EFEBE8;
+  padding-bottom: 4px;
 }
 
 .institutionlist .filter-title {
@@ -162,7 +163,7 @@ div.sector-facet>label:hover {
   height: 30px;
 }
 
-.list .institutionlist .filter-title {
+.institutionlist .filter-title {
   padding-top: 8px;
   padding-bottom: 6px;
   margin-top: 0;
@@ -263,4 +264,9 @@ div.sector-facet>label:hover {
     padding-bottom: 10px;
     border-bottom: 2px solid #EFEBE8;
   }
+}
+
+.nonjs-registered-institutions {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }

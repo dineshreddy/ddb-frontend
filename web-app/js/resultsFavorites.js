@@ -72,8 +72,8 @@ function checkFavorites() {
                             function() {
                               $("#favorite-confirmation").modal("hide");
                               $.each($("#favorite-folders").val(), function(index, value) {
-                                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/"
-                                    + itemId);
+                                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value +
+                                  "&reqObjectType=" + objectType);
                               });
                             });
                       } else {
@@ -100,7 +100,7 @@ function checkFavorites() {
 function extractItemId(url) {
   var result = null;
   var parts = url.split("/");
-  result = parts[parts.length - 1];    
+  result = parts[parts.length - 1];
   var queryParameters = result.indexOf("?");
   if (queryParameters >= 0) {
     result = result.substring(0, queryParameters);

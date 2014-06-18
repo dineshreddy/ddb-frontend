@@ -34,10 +34,17 @@ hr {
 
 .bookmarks-lists .bookmarks-list {
   display: block;
-  padding: 0 100px 0 10px;
+  padding: 0 24px 0 10px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  background: url("../images/icons/arrows.png") no-repeat;
+  background-position: 100% -48px;
+  background-color: #efebe8;
+}
+
+.fav-text a{
+  display: block;
 }
 
 .saved-searches .bookmarks-lists .bookmarks-list {
@@ -82,28 +89,42 @@ hr {
   white-space: nowrap;
 }
 
+.bookmarks-list-edit:before, .bookmarks-list-number:before, .bookmarks-list-delete:before, .bookmarks-list-publish:before {
+  content:'';
+  background: url("../images/icons/ddbIkonographie.png") no-repeat;
+  width:20px;
+  height:20px;
+  position: absolute;
+  left:0;
+}
+
 .bookmarks-list-edit, .bookmarks-list-number, .bookmarks-list-delete, .bookmarks-list-publish {
-  position:absolute;
-  top:0;
-  right:0;
+  margin-left:15px;
+  padding-left: 20px;
+  position:relative;
+}
+
+.bookmarks-list-edit:before{
+  background-position: -29px -239px;
+}
+
+.bookmarks-list-delete:before{
+  background-position: -29px -269px;
+}
+
+.bookmarks-list-publish:before{
+  background-position: -29px -446px;
+}
+.bookmarks-list-publish.open-lock:before{
+  background-position: -29px -416px;
 }
 
 .bookmarks-list-edit > i, .bookmarks-list-delete > i, .bookmarks-list-publish > i {
   vertical-align: baseline;
 }
 
-.bookmarks-list-delete {
-  margin-top: 2px;
-  margin-right: 5px;
-}
-
-.bookmarks-list-edit {
-  margin-top: 1px;
-  margin-right: 25px;
-}
-
-.bookmarks-list-publish {
-  margin-right: 46px;
+.favorites-results-controls .controls-container .page-link.page-link-popup-anchor{
+  margin-right:0;
 }
 
 .bookmarks-lists .bookmarks-list a:hover {
@@ -151,7 +172,6 @@ hr {
 
 .favorites-results-container .link-block {
   display: inline-block;
-  margin-right: 10px;
 }
 
 .favorites-results-container .share-block {
@@ -183,6 +203,7 @@ hr {
 #favorites-copy .submit {
   margin-top:8px;
   margin-left: 0;
+  margin-right:0;
 }
 
 #folder-create .submit {
@@ -221,6 +242,11 @@ hr {
 
 .results-sorter .added-on {
   text-align:right;
+}
+
+.results-sorter .favorite-numberheader{
+  margin-left:12px;
+  margin-right:28px;
 }
 
 .results-sorter .favorite-dateheader {
@@ -352,10 +378,6 @@ hr {
   font-size: 0.938em;
 }
 
-.favorites-results .results-list .created-at div {
-  margin-right: 10px;
-}
-
 .favorites-results .results-list .matches {
   font-size: 0.875em;
   line-height: 1.2em;
@@ -402,7 +424,7 @@ hr {
 
 .favorites-results .results-list .summary-main {
   min-height: 74px;
-  margin-left: 36px;
+  margin-left: 100px;
 }
 
 .favorites-results .remove-item-check {
@@ -707,4 +729,152 @@ hr {
 
 .icon-blocked {
   background-position: -3px -70px !important;
+}
+
+.rank-wrapper {
+  display: inline-block;
+  margin-left: 35px;
+  position: absolute;
+}
+
+.rank-wrapper .rank-input {
+  width: 30px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.rank-wrapper .rank-arrows {
+  display: inline-block;
+}
+
+.rank-arrows >div {
+  text-indent: -9999px;
+  width: 20px;
+  height: 10px;
+  background: url("../images/icons/arrows.png") no-repeat;
+  cursor: pointer;
+}
+
+.rank-arrows .up{
+  background-position: 5px -8px;
+}
+
+.rank-arrows .down{
+  background-position: 5px -107px;
+}
+
+.favorites-results-controls .header-row, .favorites-results-container .header-row {
+  margin-bottom: 5px;
+  padding-bottom: 10px;
+  border-bottom: #efebe8 2px solid;
+}
+
+.favorites-results-container .header-row h3{
+  margin:0;
+  line-height: 20px;
+}
+
+.favorites-results-controls .list-name{
+  float:left;
+}
+
+.favorites-results-controls .controls-container {
+  float: right;
+}
+
+.favorites-results-controls .list-name span {
+  color: #A5003B;
+}
+
+.rank-arrows.disabled >div {
+  cursor: default;
+ }
+ 
+.favorites-results-controls .options-buttons-container {
+  display: inline-block;
+  float: right;
+}
+
+@media (max-width: 767px) {
+
+  .favorites-results-controls .page-info,
+  .favorites-results-controls .favorite-numberheader,
+  .favorites-results .rank-wrapper,
+  .favorites-results-controls .mobile-off {
+    display: none;
+  }
+
+  .favorites-results .summary-main {
+    margin-left: 30px !important;
+  }
+
+  .favorites-results-controls .favorite-title-header {
+    margin-left: -5px;
+  }
+
+  .favorites-results-controls .page-nav-mob {
+    margin-top: 0;
+  }
+
+  .favorites-results-controls .page-nav-mob ul li {
+    margin-top: 10px;
+  }
+
+  .favorites-results-controls .page-info-nav {
+    width: 28%;
+    border-top: none;
+    border-bottom: none;
+  }
+
+  .favorites-results-controls .span9 {
+    border-top: solid 2px #efebe8;
+  }
+
+  .favorites-results-controls .mobile-list-actions {
+    width: 70%;
+    display: inline-block !important;
+    line-height: 44px;
+    vertical-align: top;
+  }
+
+  .favorites-results-controls .mobile-gear-icon {
+    width: 26px;
+    height: 26px;
+    display: inline-block !important;
+    float: right;
+    background: url("../images/icons/ddbIkonographie.png") -241px -121px no-repeat;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+
+  .favorites-results-controls .delete-container {
+    margin-bottom: -5px;
+  }
+
+  .favorites-results-controls .options-buttons-container {
+    border: solid 2px #efebe8;
+    position: fixed;
+    z-index: 100;
+    width: 100%;
+    background: #fff;
+    bottom: 0;
+  }
+
+  .favorites-results-controls .options-buttons-container .delete-btn {
+    margin: 0 35px 0 0;
+  }
+
+  .favorites-results-controls .controls-container {
+    margin-bottom: 10px;
+  }
+}
+@media (max-width: 480px) {
+
+  .favorites-results-controls .page-info-nav {
+    width: 42%;
+  }
+
+  .favorites-results-controls .mobile-list-actions {
+    width: 56%;
+  }
 }

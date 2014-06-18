@@ -54,14 +54,6 @@
   line-height: 0;
   margin-right: 3px;
 }
-.time-facet button.without-date,
-.time-facet button#reset-timefacet {
-  background-color: initial !important;
-  background: initial !important;
-  border: #d3d3d3 1px solid !important;
-  text-shadow: none;
-  color: #d3d3d3;
-}
 
 .time-facet input[type="radio"] {
   margin: 0;

@@ -14,17 +14,20 @@
  * limitations under the License.
  */
 
+$(".add-to-favorites, #idFavorite").each(function() {
+  addFavoriteEvent($(this));
+});
+
 /**
  * This function applies to the favorites in search result page, item detail view and institution detail view.
  */
-$(".add-to-favorites, #idFavorite").each(function() {
-  var idFavorite = $(this);
-  idFavorite.parent().click(function(event) {
+function addFavoriteEvent(jElemFavorite) {
+  jElemFavorite.parent().click(function(event) {
     event.preventDefault();
-    changeFavoriteState(idFavorite);
+    changeFavoriteState(jElemFavorite);
     return false;
   });
-});
+}
 
 function changeFavoriteState(jElemFavorite) {
   disableFavorite(jElemFavorite.parent());
@@ -71,9 +74,9 @@ function addToFavorites(jElemFavorite, data,objectType) {
         $("#addToFavoritesConfirm").click(
             function() {
               $("#favorite-confirmation").modal("hide");
-              console.log($("#favorite-folders").val());
               $.each($("#favorite-folders").val(), function(index, value) {
-                $.post(jsContextPath + "/apis/favorites/folders/" + value + "/" + itemId+"/"+objectType);
+                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
+                  objectType);
               });
 
               $("#idFavorite").parent().parent().attr('title',

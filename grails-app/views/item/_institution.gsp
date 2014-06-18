@@ -22,7 +22,7 @@ limitations under the License.
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
-            <a class="institution-link" href="${institution.url}"><span>${institution.url}</span></a>
+            <a class="institution-link" href="${institution.url}">${institution.url}</a>
             <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                   <g:if test="${!originUrl?.toString()?.isEmpty()}">
@@ -32,8 +32,8 @@ limitations under the License.
                   </g:if>
                   <!-- (DFG) viewer -->
                   <g:if test="${!viewerUri?.isEmpty()}">
-                      <a target="_blank" href="${viewerUri}" class="no-external-link-icon">
-                        <span class="viewer dfg"><g:message encodeAs="html" code="ddbnext.ObjectViewer_dfgKey" /></span>
+                      <a target="_blank" href="${viewerUri}" class="viewer dfg">
+                        <span><g:message encodeAs="html" code="ddbnext.ObjectViewer_dfgKey" /></span>
                       </a>
                   </g:if>
               </div>

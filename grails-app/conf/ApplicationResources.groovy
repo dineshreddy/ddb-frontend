@@ -80,9 +80,9 @@ modules = {
         resource url:'/js/vendor/bootstrap-2.2.2/bootstrap-multiselect.js'
         resource url:'/js/vendor/jquery.validate-1.11.1/jquery.validate.min.js'
         resource url:'/js/vendor/jquery.fancybox-2.1.4/jquery.fancybox.pack.js'
-        resource url:'/js/vendor/jquery.checkall-1.4/jquery.checkall.js'
         resource url:'/js/vendor/jquery.cookies-2.2.0/jquery.cookies.2.2.0.min.js'
         resource url:'/js/vendor/jquery.multiselect-1.1/jquery.multiselect-1.1.min.js'
+        resource url:'/js/vendor/jquery.checkall-1.4/jquery.checkall.js'
         // resource url:'/js/vendor/respond-1.1.0/respond.src.js'
         resource url:'/js/socialMediaManager.js'
         resource url:'/js/stringBuilder.js'
@@ -114,6 +114,7 @@ modules = {
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
+        resource url:'/js/search/searchCookie.js'
         resource url:'/js/search/urlHelper.js'
         resource url:'/js/search/facetHelper.js'
         resource url:'/js/search/roleHelper.js'
@@ -127,6 +128,8 @@ modules = {
         resource url:'/js/searchPerson.js'
         resource url:'/js/lists.js'
         resource url:'/js/persons.js'
+        resource url:'/js/vendor/masonry/masonry.pkgd.js'
+        resource url:'/js/vendor/masonry/imagesloaded.pkgd.min.js'
     }
 
     item { resource url:'/js/persistentSendPdfMailModalDialog.js' }
@@ -170,6 +173,13 @@ modules = {
         resource url:'/js/map/projections.js'
         resource url:'/js/map/map.js'
         resource url:'/js/institutionsMapAdapter.js'
+    }
+
+    items3d {
+        dependsOn "ddbnext"
+        resource url:'/js/3d/x3dom.js'
+        resource url:'/css/3d/x3dom.css'
+        resource url:'/css/items3d.css'
     }
 
     pdf {

@@ -110,34 +110,34 @@ class UrlMappings {
             action=[POST: "deleteFavoritesFromFolder"]
         }
 
-        "/apis/favorites/folders" {
+        "/apis/favorites/$id/_move" {
             controller="favorites"
-            action="getFavoriteFolders"
+            action=[POST: "moveFavorite"]
         }
 
-        "/apis/favorites/folders/$folderId/$itemId/$objectType" {
-            controller="favorites"
-            action=[POST: "addFavoriteToFolder"]
+        "/apis/favorites/folders" {
+            controller="favoritesfolder"
+            action="getFavoritesFolders"
         }
 
         "/apis/favorites/folder/create" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="createFavoritesFolder"
         }
 
         "/apis/favorites/folder/delete" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="deleteFavoritesFolder"
         }
 
         "/apis/favorites/folder/edit" {
-            controller="favorites"
+            controller="favoritesfolder"
             action="editFavoritesFolder"
         }
 
         "/apis/favorites/folder/get/$id" {
-            controller="favorites"
-            action="getFavoriteFolder"
+            controller="favoritesfolder"
+            action="getFavoritesFolder"
         }
 
         "/apis/favorites/_get" {
@@ -234,7 +234,7 @@ class UrlMappings {
             controller="entity"
             action="personsearch"
         }
-        
+
         "/persons"{
             controller="entity"
             action="persons"
@@ -335,16 +335,24 @@ class UrlMappings {
             action="multipolygone"
         }
 
+        "/items3d/$id" {
+            controller="items3d"
+            action="index"
+        }
+
         "/lists/$q?" {
             controller="lists"
             action="index"
         }
 
+        //Google Webmaster Tools
+        name googleWebmaster: "/google7731f5060584ff3c.html"(view:"google/webmaster")
+
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
         "500"(controller: "error", action: "itemNotFound", exception: de.ddb.common.exception.ItemNotFoundException)
         "500"(controller: "error", action: "entityNotFound", exception: de.ddb.common.exception.EntityNotFoundException)
-        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.next.exception.FavoritelistNotFoundException)
+        "500"(controller: "error", action: "favoritelistNotFound", exception: de.ddb.common.exception.FavoritelistNotFoundException)
         "500"(controller: "error", action: "conflict", exception: de.ddb.common.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.BackendErrorException)

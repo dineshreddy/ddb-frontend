@@ -291,7 +291,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
         var urlQuery = window.location.search;
         var url = jsContextPath + '/compare/' + cookieVal.id1 + '/with/'
             + cookieVal.id2 + urlQuery;
-        compareButton.attr("href", url);
+        window.location = url;
       });
     }
   },

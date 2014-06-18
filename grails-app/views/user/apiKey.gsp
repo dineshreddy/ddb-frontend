@@ -59,7 +59,7 @@ limitations under the License.
       </div>
       <div id="msDeleteApiKey" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-header">
-          <span title="<g:message encodeAs="html" code="ddbnext.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+          <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
           <h3>
             <g:message encodeAs="html" code="ddbcommon.delete_confirmation" />
           </h3>

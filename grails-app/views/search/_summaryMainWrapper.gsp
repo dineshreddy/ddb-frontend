@@ -17,8 +17,8 @@ limitations under the License.
 <div class="summary-main-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span6</g:if>">
   <div class="summary-main">
     <h2 class="title">
-      <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${ddb.getTruncatedHovercardTitle(title: item.label, length: 350)}">
-      <ddb:getTruncatedItemTitle title="${ item.preview.title }" length="${ 100 }" />
+      <g:link class="persist" controller="${ controller }" action="${ action }" params="${params + [id:item.id, hitNumber:hitNumber]}" title="${ddbcommon.getTruncatedHovercardTitle(title: item.label, length: 350)}">
+      <ddbcommon:getTruncatedItemTitle title="${ item.preview.title }" length="${ 100 }" />
       </g:link>
     </h2>
     <div class="subtitle">

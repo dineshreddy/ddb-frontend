@@ -104,8 +104,10 @@ $.addParamToUrl = function(currentUrl, arrayParamVal, path, urlString, updateLan
     $.updateLanguageSwitch(tmp);
   }
 
-  if (path == null) {
+  if (path == null && urlString == null) {
     return window.location.pathname + '?' + tmp;
+  } else if(urlString != null){
+    return urlString + '?' +tmp;
   } else {
     return path + '?' + tmp;
   }
@@ -136,6 +138,8 @@ $.removeParamFromUrl = function(arrayParamVal, path, urlString) {
   $.updateLanguageSwitch(tmp);
   if (path == null) {
     return window.location.pathname + '?' + tmp;
+  } else if(urlString != null){
+    return urlString + '?' +tmp;
   } else {
     return path + '?' + tmp;
   }
@@ -159,6 +163,17 @@ $.updateLanguageSwitch = function(params) {
   });
 };
 
+/**
+ * Toggle the element specified in the attribute data-toggle
+ */
+$.toggleElement = function() {
+  $( "a[data-toggle-elem]" ).click(function(event) {
+    event.preventDefault();
+    var elementToToggle = $(this).attr("data-toggle-elem");
+    $(elementToToggle).slideToggle(400);
+  });
+};
+
 $(document)
     .ready(
         function() {
@@ -169,3 +184,31 @@ $(document)
               .attr('target', '_blank');
 
         });
+
+$(window).on('load', function () {
+  $('#cookie-notice').each(function () {
+      var cookieBar = $(this),
+          p = cookieBar.find('p'),
+          closeButton = cookieBar.find('.close');
+
+      var cookie = de.ddb.next.search.readCookie("cb_cookie_notice");
+
+      window.setTimeout(function(){
+        if(cookie!=1){
+          cookieBar.fadeIn('fast');
+          document.cookie = 'cb_cookie_notice=1';
+        }
+      },300);
+
+
+      closeButton.on('click', function (evt) {
+          evt.preventDefault();
+
+          cookieBar.removeClass('visible');
+          cookieBar.fadeOut('fast');
+
+          return false;
+      });
+
+  });
+});

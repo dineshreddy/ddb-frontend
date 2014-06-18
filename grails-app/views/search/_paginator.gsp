@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<noscript>
+  <div class="off">
+</noscript>
 <div class="paginator-options-button hidden-phone">
     <button class="open-paginator-options" type="button" title="<g:message encodeAs="html" code="ddbnext.Search_Results_Display"/>"><g:message encodeAs="html" code="ddbnext.Search_Results_Display"/></button>
 </div>
@@ -48,9 +51,12 @@ limitations under the License.
         </div>
       </div>
       <div class="paginator-options-footer">
-        <div class="button"><g:message encodeAs="html" code="ddbnext.facet_time_apply" /></div>
+        <div class="button"><g:message encodeAs="html" code="ddbcommon.facet_time_apply" /></div>
       </div>
     </div>
     
   </div>
 </div>
+<noscript>
+  </div>
+</noscript>

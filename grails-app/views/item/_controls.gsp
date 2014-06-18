@@ -17,7 +17,7 @@ limitations under the License.
 <div class="row item-detail">
   <div class="span12 object-controls bb">
     <!-- buttons -->
-    <div class="span6 item-nav-left">
+    <div class="span6 item-nav-left page-nav">
       <g:if test="${searchResultUri != null}">
           <a class="back-to-list" href="${searchResultUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>

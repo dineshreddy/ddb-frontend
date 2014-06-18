@@ -34,20 +34,24 @@ class SearchController {
 
     def entityService
     def searchService
+    def ddbSearchService
     def configurationService
     def cultureGraphService
 
     def results() {
         try {
-            def searchParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
+            //The list of the NON JS supported facets for items
+            def nonJsFacetsList = SearchFacetLists.itemSearchNonJavascriptFacetList
+
+            def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
-            if (searchService.checkPersistentFacets(searchParametersMap, params, additionalParams)) {
+
+            if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
             }
 
-            def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params)
-            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request)
+            def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
             searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
@@ -104,7 +108,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(searchService.createSearchCookie(request, params, additionalParams))
+            response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -141,6 +145,8 @@ class SearchController {
                 ]
                 render (contentType:"text/json"){jsonReturn}
             }else{
+                def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
+
                 //We want to build the subfacets urls only if a main facet has been selected
                 def mainFacets = []
                 FacetEnum.values().each {
@@ -150,11 +156,19 @@ class SearchController {
                 }
 
                 def keepFiltersChecked = ""
-                if (searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && searchParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
                     keepFiltersChecked = "checked=\"checked\""
                 }
+
+                def isThumbnailFiltered = ""
+                if (params.isThumbnailFiltered) {
+                    isThumbnailFiltered = params.isThumbnailFiltered
+                } else if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                    isThumbnailFiltered = cookieParametersMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]
+                }
+
                 def subFacetsUrl = [:]
-                def selectedFacets = searchService.buildSubFacets(urlQuery)
+                def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
@@ -164,7 +178,7 @@ class SearchController {
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     entities: entities,
-                    isThumbnailFiltered: params.isThumbnailFiltered,
+                    isThumbnailFiltered: isThumbnailFiltered,
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
@@ -195,8 +209,20 @@ class SearchController {
      * @return
      */
     def institution() {
+        //The list of the NON JS supported facets for institutions
+        def nonJsFacetsList = SearchFacetLists.institutionSearchNonJavascriptFacetList
 
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+
+        def additionalParams = [:]
+
+
+        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
+            redirect(controller: "search", action: "institution", params: params)
+        }
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
 
@@ -210,6 +236,7 @@ class SearchController {
         }
 
         def results = searchService.doInstitutionSearch(urlQuery)
+
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
@@ -222,6 +249,9 @@ class SearchController {
                 urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+
+        //create cookie with search parameters
+        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
 
         def model = [
             title: title,
@@ -236,7 +266,8 @@ class SearchController {
             resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
             paginationURL:searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
             cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
-            clearFilters: clearFilters
+            clearFilters: clearFilters,
+
         ]
         if(params.reqType=="ajax"){
             def resultsHTML = ""
@@ -253,6 +284,29 @@ class SearchController {
             ]
             render (contentType:"text/json"){jsonReturn}
         }else {
+
+            def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
+
+            def mainFacets = []
+            FacetEnum.values().each {
+                if (it.isSearchFacet()) {
+                    mainFacets.add(it)
+                }
+            }
+
+            def keepFiltersChecked = ""
+            if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
+                keepFiltersChecked = "checked=\"checked\""
+            }
+            def subFacetsUrl = [:]
+            def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
+            if(urlQuery[SearchParamEnum.FACET.getName()]){
+                subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
+            }
+
+            model["facets"] = [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl]
+            model["keepFiltersChecked"] = keepFiltersChecked
+
             render(view: "searchInstitution", model: model)
         }
 

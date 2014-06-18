@@ -29,24 +29,58 @@ limitations under the License.
     <div class="span12">
       <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
     </div>
+    <noscript>
+      <div class="span12 nonjs-registered-institutions bb">
+          <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
+      </div>
+    </noscript>
   </div>
   <div class="row institutionlist">
+    <noscript>
+      <div class="off">
+    </noscript>
     <div class="span3">
       <g:render template="filterNotPhone" />
     </div>
-    <div class="span7 institutioncount">
-      <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
-      <noscript>
-        <div class="off">
-      </noscript>
-      |
-      <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selectedcount">${total}</span>
-      <div class="loader">
-        <img alt="" src="../images/icons/loaderSmall.gif">
-      </div>
-      <noscript>
+    <div class="span9 institution-right-header">
+      <div class="row">
+        <div class="span7 institutioncount">
+          <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
+          |
+          <g:message code="ddbnext.InstitutionsPage_SelectedInstitutions"/>: <span id="selected-count">${total}</span>
+          <div class="loader">
+            <img alt="" src="../images/icons/loaderSmall.gif">
+          </div>
         </div>
-      </noscript>
+        
+        <div class="span2 view-type-switch off">
+          <!--[if lt IE 9]>
+          <div class="ie8-version">
+          <![endif]-->
+            <button id="view-institution-map" class="selected"
+              type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
+              <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
+            </button>
+          <!--[if lt IE 9]>
+          </div>
+          <div class="ie8-version">
+          <![endif]-->
+            <button id="view-institution-list"
+              type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
+              <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
+            </button>
+          <!--[if lt IE 9]>
+          </div>
+          <![endif]-->
+        </div>
+      </div>
+    </div>
+    <noscript>
+      </div>
+    </noscript>
+    
+    
+    <div class="span9">
       <g:render template="filterPhone" />
       <g:render template="pagination" />
       <div id="no-match-message" class="off">
@@ -62,27 +96,6 @@ limitations under the License.
           </li>
         </g:each>
       </ol>
-    </div>
-    
-    <div class="view-type-switch off">
-      <!--[if lt IE 9]>
-      <div class="ie8-version">
-      <![endif]-->
-        <button id="view-institution-map" class="selected"
-          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Title" />">
-          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsMapButton_Label" />
-        </button>
-      <!--[if lt IE 9]>
-      </div>
-      <div class="ie8-version">
-      <![endif]-->
-        <button id="view-institution-list"
-          type="button" title="<g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Title" />">
-          <g:message encodeAs="html" code="ddbnext.InstitutionsList_ViewAsListButton_Label" />
-        </button>
-      <!--[if lt IE 9]>
-      </div>
-      <![endif]-->
     </div>
     
     <div id="institution-map" class="span9 off">

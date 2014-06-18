@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div id="first-letter-index" class="pagination pagination-small">
+<div id="first-letter-index" class="pagination pagination-small off">
   <ul>
     <li><a href="#All"><g:message encodeAs="html" code="ddbnext.InstitutionsList_all" /></a></li>
   <g:each in="${index}">

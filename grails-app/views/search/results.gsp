@@ -15,9 +15,11 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
+<%@page import="de.ddb.common.constants.Type"%>
+<%@page import="de.ddb.next.SearchFacetLists"%>
 
-<g:set var="nonJsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName()]}"></g:set>
-<g:set var="jsFacetsList" value="${[FacetEnum.PLACE.getName(), FacetEnum.AFFILIATE_ROLE.getName(), FacetEnum.KEYWORDS.getName(), FacetEnum.LANGUAGE.getName(), FacetEnum.TYPE.getName(), FacetEnum.SECTOR.getName(), FacetEnum.PROVIDER.getName(), FacetEnum.LICENSE_GROUP.getName(), FacetEnum.LICENSE.getName()]}"></g:set>
+<g:set var="nonJsFacetsList" value="${SearchFacetLists.itemSearchNonJavascriptFacetList}"></g:set>
+<g:set var="jsFacetsList" value="${SearchFacetLists.itemSearchJavascriptFacetList}"></g:set>
 
 <html>
 <head>
@@ -32,7 +34,7 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <ddb:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
+        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       
 	    <%-- Shows the facets supported in the NON JS version--%>
@@ -75,7 +77,7 @@ limitations under the License.
       <div class="compare-objects bt br bb bl off">
         <div class="compare-header">
           <b><g:message encodeAs="html" code="ddbnext.SearchResultsCompareObjects"/></b>
-          <ddb:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
+          <ddbcommon:renderInfoTooltip messageCode="ddbnext.Compare_Tooltip" hasArrow="true"/>
         </div>
         <div class="compare-main">
           <div id="compare-object1" class="compare-object bt br bb bl">
@@ -114,12 +116,12 @@ limitations under the License.
 
     <div class="span9">
       <div class="off result-pages-count">${totalPages}</div>
-      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="items" />
+      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="${Type.CULTURAL_ITEM.getName()}" />
       <div style="clear:both;"> 
       
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.CULTURAL_ITEM.getName()]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
               
         <g:if test="${correctedQuery!='null'}">
             <g:if test="${correctedQuery}">
@@ -144,7 +146,7 @@ limitations under the License.
 
       <%-- favorite confirmation dialog - only one per page --%>
       <ddbcommon:isLoggedIn>
-        <ddb:isPersonalFavoritesAvailable>
+        <ddbcommon:isPersonalFavoritesAvailable>
           <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
               <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
@@ -152,15 +154,15 @@ limitations under the License.
               <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
               <div class="modal-footer">
                 <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                  <g:message encodeAs="html" code="ddbnext.Close"/>
+                  <g:message encodeAs="html" code="ddbcommon.Close"/>
                 </button>
                 <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-                  <g:message encodeAs="html" code="ddbnext.Save"/>
+                  <g:message encodeAs="html" code="ddbcommon.Save"/>
                 </button>
               </div>
             </div>
           </div>
-        </ddb:isPersonalFavoritesAvailable>
+        </ddbcommon:isPersonalFavoritesAvailable>
       </ddbcommon:isLoggedIn>
     </div>
       <%--   Search has NO results   --%>

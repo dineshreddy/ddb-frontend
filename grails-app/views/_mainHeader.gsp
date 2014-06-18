@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="print-logo off">
-  <r:img dir="images" file="logoHeader.png" alt="" />
+  <r:img dir="images" file="logoHeaderSmall.png" alt="" />
 </div>
 
 <!--[if lt IE 9]>
@@ -23,6 +23,18 @@ limitations under the License.
 
 <!--[if !IE]><!-->
 <g:set var="config" bean="configurationService"/>
+<div class="cookie-notice visible" id="cookie-notice">
+  <div class="container">
+    <div class="row">
+      <div class="span12">
+        <p>
+          <g:message code="ddbnext.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
+        </p>
+        <a class="close" aria-controls="cookie-notice"></a>
+      </div>
+    </div>
+  </div>
+</div>
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
@@ -88,9 +100,8 @@ limitations under the License.
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
-                <!-- TODO change link to person pages -->
-                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
                 </li>
               </ul>
             </li><!-- /end of exhibitions -->
@@ -106,7 +117,7 @@ limitations under the License.
                     <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                   </li>
                   <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active</ddb:isMappingActive>">
-                    <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbnext.Profile" /></g:link>
+                    <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbcommon.Profile" /></g:link>
                   </li>
                 </ul>
               </li>
@@ -161,7 +172,7 @@ limitations under the License.
             <g:link uri="/" class="navigation-header-logo"
               title="${message(code: 'ddbnext.Logo_Title')}"
               tabindex="-1">
-              <r:img dir="images" file="logoHeader.png"
+              <r:img dir="images" file="logoHeaderSmall.png"
                 alt="${message(code: 'ddbnext.Logo_Description')}" />
             </g:link>
             <div role="navigation">
@@ -220,10 +231,9 @@ limitations under the License.
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
-                      <!-- TODO change link to person pages -->
                       <li
-                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
                       </li>
                     </ul>
                   </li>
@@ -242,11 +252,11 @@ limitations under the License.
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "getSavedSearches"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
+                        <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "user", action: "profile"],[controller: "user", action: "confirmationPage"],[controller: "user", action: "showApiKey"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbnext.Profile" /></g:link>
+                        <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbcommon.Profile" /></g:link>
                       </li>
                       <li>
                         <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link>
@@ -269,6 +279,9 @@ limitations under the License.
                   <span style="vertical-align:top;"><g:message encodeAs="html" code="ddbcommon.You_are_currently_logged_in_as" /></span>
                   <g:link controller="user" action="profile" class="login-username"><ddbcommon:getUserName /></g:link>
                   <div class="login-dropdown"></div>
+                  <div class="arrow-container">
+                    <div class="arrow-up"></div>
+                  </div>
                   <ul class="selector logout">
                     <li><g:link class="logout-link" controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link></li>
                   </ul>
@@ -276,8 +289,10 @@ limitations under the License.
               </ddbcommon:isLoggedIn>
               <div class="header-spacer"></div>
               <div class="language-wrapper">
-                <a href="#"> <ddb:getCurrentLanguage />
-                </a>
+                <a href="#"><ddb:getCurrentLanguage /></a>
+                <div class="arrow-container">
+                  <div class="arrow-up"></div>
+                </div>
                 <ul class="selector language">
                   <li><ddb:getLanguageLink params="${params}" locale="de"
                       islocaleclass="nopointer">

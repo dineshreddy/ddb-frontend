@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
+<%@page import="de.ddb.common.constants.Type"%>
 <g:if test="${navData.paginationURL.firstPg == null}">
   <g:set var="displayLeftPagination" value="off"></g:set>
   <g:set var="enableLeftPagination" value="${false}"></g:set>
@@ -72,6 +74,20 @@ limitations under the License.
   </ul>
 </div>
 <div class="page-nav-mob">
+  <g:if test="${navData.tabulatorActive!=null}">
+    <div>
+      <select class="type-selection">
+        <option value="${createLink(controller: 'search', action: 'results')}" <g:if test="${navData.tabulatorActive==Type.CULTURAL_ITEM.getName()}">selected</g:if>><g:message code="ddbnext.Entity_Objects" /></option>
+        <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>><g:message code="ddbnext.entity.tabulator.persons" /></option>
+        <option value="${createLink(controller: 'search', action: 'institution')}" <g:if test="${navData.tabulatorActive==Type.INSTITUTION.getName()}">selected</g:if>><g:message code="ddbnext.Institutions" /></option>
+      </select>
+    </div>
+  </g:if>
+  <div class="page-info">
+    <span class="results-overall-index">${navData.resultsOverallIndex}</span> 
+    <span> / </span> 
+    <span><strong><span class="results-total">${navData.numberOfResults}</span></strong> </span> 
+  </div>
   <ul class="inline">
     <li class="prev-page bl">
       <g:if test="${enableLeftPagination}">

@@ -19,7 +19,7 @@ limitations under the License.
   </div>
   <g:each in="${lists}">
     <div class="lists-menu-item ${selectedListId == it.folderListId ? "active" : "" }">
-      <a class="h3" data-listid="${it.folderListId }" href="<g:createLink controller="lists" action="index" params="${[id:it.folderListId]}"/>" title="<g:message encodeAs="html" code="${it.title}Description" />">
+      <a class="h3 bt br bb bl" data-listid="${it.folderListId }" href="<g:createLink controller="lists" action="index" params="${[id:it.folderListId]}"/>" title="<g:message encodeAs="html" code="${it.title}Description" />">
         <g:message encodeAs="html" code="${it.title}" />
       </a>
     </div>

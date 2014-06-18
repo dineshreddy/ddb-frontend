@@ -42,7 +42,7 @@ import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.next.beans.Bookmark
+import de.ddb.common.beans.Bookmark
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -56,9 +56,11 @@ class ItemService {
     private static final def FULL = 'full'
     private static final def ORIG= 'orig'
     private static final def IMAGE= 'image/jpeg'
-    private static final def AUDIO = 'audio/mp3'
+    private static final def AUDIOMP3 = 'audio/mp3'
+    private static final def AUDIOMPEG = 'audio/mpeg'
     private static final def VIDEOMP4 = 'video/mp4'
     private static final def VIDEOFLV = 'video/flv'
+    private static final def PDF= 'application/pdf'
 
     private static final def MAX_LENGTH_FOR_ITEM_WITH_BINARY = 270
     private static final def MAX_LENGTH_FOR_ITEM_WITH_NO_BINARY = 350
@@ -128,7 +130,7 @@ class ItemService {
      */
     def prepareImagesForPdf(model) {
         def baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
-        def logoHeaderFile = '/logoHeader.png'
+        def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
@@ -336,7 +338,7 @@ class ItemService {
         //creation of a list of binary maps from the bi-dimensional list
         bidimensionalList.each { y ->
             def binaryMap = [
-                'orig' : ['title':'', 'uri': ['image':'','audio':'','video':''],'author':'', 'rights':''],
+                'orig' : ['title':'', 'uri': ['image':'','audio':'','video':'','pdf':''],'author':'', 'rights':''],
                 'preview' : ['title':'', 'uri':'', 'author':'', 'rights':''],
                 'thumbnail' : ['title':'', 'uri':'','author':'', 'rights':''],
                 'full' : ['title':'', 'uri':'','author':'', 'rights':''],
@@ -355,13 +357,18 @@ class ItemService {
                             binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                         }
                     }
-                    else if(type.contains(AUDIO)){
+                    else if(type.contains(AUDIOMP3)||type.contains(AUDIOMPEG)){
                         binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
                     else if(type.contains(VIDEOMP4)||type.contains(VIDEOFLV)){
                         binaryMap.'orig'.'uri'.'video' = BINARY_SERVER_URI + z.'@path'
+                        htmlStrip = z.'@name'
+                        binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
+                    }
+                    else if(type.contains(PDF)){
+                        binaryMap.'orig'.'uri'.'pdf' = BINARY_SERVER_URI + z.'@path'
                         htmlStrip = z.'@name'
                         binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                     }
@@ -403,7 +410,7 @@ class ItemService {
                                 binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')
                             }
                         }
-                        else if(type.contains(AUDIO)){
+                        else if(type.contains(AUDIOMP3)||type.contains(AUDIOMPEG)){
                             binaryMap.'orig'.'uri'.'audio' = BINARY_SERVER_URI + z.'@path'
                             htmlStrip = z.'@name'
                             binaryMap.'orig'.'title' = htmlStrip.replaceAll("<(.|\n)*?>", '')

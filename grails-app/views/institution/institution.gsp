@@ -106,12 +106,15 @@ limitations under the License.
                 </div>
               </g:if>
             </div>
-
-<%--            <div id="divOSM" class="span5"></div>--%>
+            <noscript>
+              <div class="off">
+            </noscript>
             <div id="divOSM" class="span5">
               <div id="ddb-map"></div>
             </div>
-
+            <noscript>
+              </div>
+            </noscript>
         </div>
       </div>
   </div> 

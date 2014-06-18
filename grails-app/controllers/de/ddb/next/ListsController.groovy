@@ -89,7 +89,6 @@ class ListsController {
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(offset/rows)+1).toString()
         def totalPages = (Math.ceil(folderCount/rows).toInteger())
-        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
         def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
 
         model.resultsPaginatorOptions = resultsPaginatorOptions
@@ -109,8 +108,6 @@ class ListsController {
      * @param model
      */
     private createListMenu() {
-        def User user = userService.getUserFromSession()
-
         def menu = []
 
         //Initialize the daily favorite lists

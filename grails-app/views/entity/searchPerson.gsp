@@ -17,9 +17,13 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.EntityFacetEnum"%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
-<g:set var="nonJsFacetsList" value="${[]}"></g:set>
-<g:set var="jsFacetsList"
-  value="${[EntityFacetEnum.PERSON_GENDER.getName(),EntityFacetEnum.PERSON_NAME.getName(),EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName()]}"></g:set>
+<%@page import="de.ddb.common.constants.Type"%>
+<%@page import="de.ddb.next.SearchFacetLists"%>
+
+
+<g:set var="nonJsFacetsList" value="${SearchFacetLists.entitySearchNonJavascriptFacetList}"></g:set>
+<g:set var="jsFacetsList" value="${SearchFacetLists.entitySearchJavascriptFacetList}"></g:set>
+
 <html>
 <head>
 <title>
@@ -39,7 +43,7 @@ limitations under the License.
       <noscript>
         <div class="facets-list bt">
           <g:each in="${nonJsFacetsList}" var="mit">
-            <g:each in="${(facets.selectedFacets)}">
+            <g:each in="${(facets?.selectedFacets)}">
               <g:if test="${mit == it.field}">
                 <div class="facets-item ${(it.facetValues.size() > 0)?'active':'' } bt bb bl br">
                   <a class="h3" href="${facets.mainFacetsUrl[it.field].encodeAsHTML()}" data-fctName="${it.field}"><g:message encodeAs="html" code="ddbnext.facet_${it.field}" /></a>
@@ -66,7 +70,7 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="person" />
+      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="${Type.ENTITY.getName()}" />
 
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
@@ -74,7 +78,7 @@ limitations under the License.
         <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
         <ddb:renderPageInfoNav
-          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.totalResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.ENTITY.getName()]}" />
 
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
@@ -106,7 +110,7 @@ limitations under the License.
         </g:if>
         <div class="noresults">
           <div>
-            <g:message encodeAs="none" code="ddbnext.No_results_found_for_the_search" />
+            <g:message encodeAs="none" code="ddbcommon.No_results_found_for_the_search" />
           </div>
         </div>
       </div>

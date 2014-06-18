@@ -14,9 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <ul class="results-list unstyled entity-list">
-
-  <g:set var="pageHitCounter" value="${0}"/>
-
+<g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
     <g:set var="entityId" value="${entityItem.id.substring("http://d-nb.info/gnd/".length())}"/>
     <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />
@@ -29,7 +27,7 @@ limitations under the License.
             </div>
             <h2 class="title">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
-                <strong><ddb:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
+                <strong><ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
             <div class="subtitle">
@@ -46,10 +44,10 @@ limitations under the License.
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
               <g:if test="${entityItem.thumbnail != null}">
-                <img src="${entityItem.thumbnail}" alt="${ entityItem.preferredName }" />
+                <img src="${entityItem.thumbnail}" alt="${ entityItem.preferredName }" width="55px" />
               </g:if>
               <g:else>
-                <g:img dir="images/placeholder" file="entity.png" alt="${ entityItem.preferredName }"/>
+                <g:img dir="images/placeholder" file="entity.png" alt="${ entityItem.preferredName }" width="55px"/>
               </g:else>
             </g:link>
           </div>

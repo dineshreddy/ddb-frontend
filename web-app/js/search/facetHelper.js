@@ -21,8 +21,11 @@ de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
   if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct' || facetField === 'state_fct') {
     return facetValue.toString();
   }
-  else if (facetField === 'person_name_fct' || facetField === 'person_place_fct' || facetField === 'person_occupation_fct' || facetField === 'person_gender_fct') {
+  else if (facetField === 'person_name_fct' || facetField === 'person_place_fct' || facetField === 'person_occupation_fct') {
     return facetValue.toString();
+  }
+  else if (facetField === 'person_gender_fct') {
+    return messages.ddbnext['person_gender_fct_' + facetValue];
   }
   else if (facetField === 'type_fct') {
     return messages.ddbnext['type_fct_' + facetValue];
@@ -40,7 +43,7 @@ de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
     return messages.ddbnext['license_group_' + facetValue];
   }
   else if (facetField === 'license') {
-    //As the language keys for licenses are urls they must be also transformable to valid javascript variable names. So the license keys are url encoded 
+    //As the language keys for licenses are urls they must be also transformable to valid javascript variable names. So the license keys are url encoded
     var encodedFacetValue = encodeURIComponent(facetValue);
     encodedFacetValue = encodedFacetValue.replace(/\./g,'%2E');//the dot character must be manually URL encoded!
     return messages.ddbnext['license_' + encodedFacetValue];

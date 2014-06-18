@@ -174,7 +174,7 @@ ddb.apis.url="http://localhost:8080/"
 ddb.backend.url="http://localhost/backend:9998/"
 ddb.backend.apikey=""
 ddb.aas.admin.userid="userid"
-ddb.aas.admin.password=""
+ddb.aas.admin.password=" "
 ddb.aas.url="http://localhost/aas:8081/aas/"
 ddb.culturegraph.url="http://hub.culturegraph.org"
 ddb.elasticsearch.url="http://localhost:9200"
@@ -274,7 +274,7 @@ jawr {
         }
     }
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'net.jawr.web.resource.bundle.locale.SpringLocaleResolver' }
+        resolver = 'de.ddb.next.DdbLocaleResolver' }
 }
 
 development {

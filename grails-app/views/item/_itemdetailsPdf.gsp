@@ -15,26 +15,26 @@ limitations under the License.
 --%>
 <%@ page import="net.sf.json.*" %>
 <%@page defaultCodec="none" %>
-<table border="0" cellpadding="8" cellspacing="0" width="100%">
+<table border="0" cellpadding="2" cellspacing="0" width="100%" class="fields-table">
   <g:each in="${fields}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> 
       ${it.name}:</strong>
       </td>
-      <td class="valign-top value <g:if test="${binaryList}">span4</g:if><g:else>span10</g:else>">
+      <td class="valign-top value">
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
               <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
-              ${it.value} 
+              <ddbcommon:wellFormedDocFromString text="${value}"/>  
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-           ${it.value} 
+           <ddbcommon:wellFormedDocFromString text="${it.value}"/> 
         </g:else>
       </td>
     </tr>
@@ -45,7 +45,7 @@ limitations under the License.
       <td style="width: 35%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.stat_007" />:
       </strong></td>
       <td style="width: 65%" class="valign-top">
-        ${item.rights}
+        <ddbcommon:wellFormedDocFromString text="${item.rights}"/>
       </td>
     </tr>
   </g:if>
@@ -55,20 +55,9 @@ limitations under the License.
       <td style="width: 30%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.License_Field" />:
       </strong></td>
       <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
-            <g:img file="${license.img}" alt="${license.text}" class="license-icon" />
+            <g:img file="${license.img}" class="license-icon" alt="" />
           </g:if><span> ${license.text}
         </span></a></td>
     </tr>
   </g:if>
 </table>
-<!-- Original Object View -->
-<div class="origin">
-  <g:if test="${!originUrl?.toString()?.isEmpty()}">
-    <a class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
-      <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
-    </a>
-  </g:if>
-  <g:else>
-    <span><g:message encodeAs="html" code="ddbnext.Link_to_data_supplier_not_available" /></span>
-  </g:else>
-</div>

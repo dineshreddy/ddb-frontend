@@ -37,10 +37,17 @@ ul#tabulator   {
 }
 
 #tabulator li {
-  display: inline;
+  display: inline-block;
   list-style-type: none;
-  padding-right: 20px;
+  margin-right: 20px;
 }
+
+@media (max-width: 978px){
+  #tabulator li:first-child {
+    display: block;
+  }
+}
+
 #addToSavedSearches {
   float:right;
   line-height: 20px;

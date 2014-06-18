@@ -39,10 +39,10 @@ limitations under the License.
       <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ><g:if test="${!item.bookmark.description.isEmpty()}">${item.bookmark.description.trim()}</g:if></textarea>
       <div class="comment-button off" id="comment-button-${item.bookmark.bookmarkId}">
         <g:form id="comment-save" method="POST" name="comment-save">
-          <button type="submit" class="submit comment-save" title="<g:message encodeAs="html" code="ddbnext.Save" />" data-bookmark-id="${item.bookmark.bookmarkId}">
-            <span><g:message encodeAs="html" code="ddbnext.Save"></g:message></span>
+          <button type="submit" class="submit comment-save" title="<g:message encodeAs="html" code="ddbcommon.Save" />" data-bookmark-id="${item.bookmark.bookmarkId}">
+            <span><g:message encodeAs="html" code="ddbcommon.Save"></g:message></span>
           </button>
-          <button type="submit" class="submit comment-cancel" title="<g:message encodeAs="html" code="ddbcommon.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
+          <button type="submit" class="submit comment-cancel grey" title="<g:message encodeAs="html" code="ddbcommon.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
             <span><g:message encodeAs="html" code="ddbnext.Discard"></g:message></span>
           </button>
         </g:form>

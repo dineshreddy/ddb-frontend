@@ -25,7 +25,7 @@ limitations under the License.
           <div class="summary-main">
             <h2 class="title">
               <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
-                <strong><ddb:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" /></strong>
+                <ddbcommon:getTruncatedItemTitle title="${entityItem.preview.title}" length="${ 100 }" />
               </g:link>
             </h2>
             <div class="subtitle">
@@ -39,7 +39,7 @@ limitations under the License.
           <div class="thumbnail-entity" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
               <g:if test="${entityItem.preview.thumbnail!="null"}">
-                <img src="${request.contextPath}${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="140" height="90" />
+                <img src="${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="<ddb:scaleImage side="width">${entityItem.preview.thumbnail}</ddb:scaleImage>" height="<ddb:scaleImage side="height">${entityItem.preview.thumbnail}</ddb:scaleImage>" />
               </g:if>
               <g:else>
                 <g:img dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
@@ -58,7 +58,7 @@ limitations under the License.
             <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
               <div class="hovercard-info-item" data-iid="${entityItem.id}">
                 <h4>
-                  <ddb:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" />
+                  <ddbcommon:getTruncatedHovercardTitle title="${entityItem.preview.title }" length="${ 350 }" />
                 </h4>
                 <ul class="unstyled">
                   <li>
@@ -75,7 +75,7 @@ limitations under the License.
 </ul>
 <div class="bb end-result-border"></div>
 <ddbcommon:isLoggedIn>
-  <ddb:isPersonalFavoritesAvailable>
+  <ddbcommon:isPersonalFavoritesAvailable>
     <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-body">
         <p>
@@ -87,13 +87,13 @@ limitations under the License.
         <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
         <div class="modal-footer">
           <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message encodeAs="html" code="ddbnext.Close" />
+            <g:message encodeAs="html" code="ddbcommon.Close" />
           </button>
           <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-            <g:message encodeAs="html" code="ddbnext.Save" />
+            <g:message encodeAs="html" code="ddbcommon.Save" />
           </button>
         </div>
       </div>
     </div>
-  </ddb:isPersonalFavoritesAvailable>
+  </ddbcommon:isPersonalFavoritesAvailable>
 </ddbcommon:isLoggedIn>

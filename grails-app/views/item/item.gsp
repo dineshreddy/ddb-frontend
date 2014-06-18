@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="itemTitle" value="${ddb.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 <html>
 <head>
 <title>
@@ -32,11 +32,11 @@ limitations under the License.
   <g:render template="itemLinks" />
   <div class="row item-detail item-content">
     <g:each in="${binaryList}">
-      <g:if test="${it.full.uri != '' || it.preview.uri != ''}">
+      <g:if test="${!it.full.uri.isEmpty() || !it.preview.uri.isEmpty()}">
         <g:set var="hasBinary" value="${true}"/>
       </g:if>
     </g:each>
-    <g:if test="${(hasBinary || originUrl != '') && (item.media!='no media type' && item.media!='unknown')}">
+    <g:if test="${(hasBinary || !originUrl.isEmpty()) && (item.media!='no media type' && item.media!='unknown')}">
       <g:set var="display" value="${true}"/>
     </g:if>
     <div class="<g:if test="${display}">span6</g:if><g:else>span12</g:else> item-description">
@@ -64,7 +64,7 @@ limitations under the License.
       <g:render template="binaries" />
     </g:if>
   </div>
-  <g:render template="similarObjects" />
+<%-- https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1627 <g:render template="similarObjects" /> --%>
   <g:render template="hierarchy" />
   <g:render template="linkurl" />
 </body>

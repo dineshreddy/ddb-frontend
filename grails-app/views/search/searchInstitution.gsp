@@ -16,8 +16,11 @@ limitations under the License.
 
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
-<g:set var="nonJsFacetsList" value="${[]}"></g:set>
-<g:set var="jsFacetsList" value="${[FacetEnum.SECTOR.getName(), FacetEnum.STATE.getName()]}"></g:set>
+<%@page import="de.ddb.common.constants.Type"%>
+<%@page import="de.ddb.next.SearchFacetLists"%>
+
+<g:set var="nonJsFacetsList" value="${SearchFacetLists.institutionSearchNonJavascriptFacetList}"></g:set>
+<g:set var="jsFacetsList" value="${SearchFacetLists.institutionSearchJavascriptFacetList}"></g:set>
 <html>
 <head>
 <title>
@@ -32,6 +35,7 @@ limitations under the License.
         <h3>
           <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
         </h3>
+        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchInstitutionsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
       <noscript>
@@ -67,13 +71,13 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="institution" />
+      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="${Type.INSTITUTION.getName()}" />
       
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
         <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
   
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL]}" />
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.INSTITUTION.getName()]}" />
   
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
@@ -104,7 +108,7 @@ limitations under the License.
         </g:if>
         <div class="noresults">
           <div>
-            <g:message encodeAs="none" code="ddbnext.No_results_found_for_the_search" />
+            <g:message encodeAs="none" code="ddbcommon.No_results_found_for_the_search" />
           </div>
         </div>
       </div>

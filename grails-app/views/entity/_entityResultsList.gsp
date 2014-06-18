@@ -14,7 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <g:set var="pageHitCounter" value="0" />
-
 <ul class="results-list unstyled">
   <g:each in="${entities.entity.docs}" var="entityItems">
     <g:each in="${entityItems}" var="entityItem">
@@ -26,7 +25,7 @@ limitations under the License.
             <div class="summary-main">
               <h2 class="title">
                 <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}">
-                  <ddb:getTruncatedItemTitle title="${entityItem.preferredName}" length="${ 100 }" />
+                  <ddbcommon:getTruncatedItemTitle title="${entityItem.preferredName}" length="${ 100 }" />
                 </g:link>
               </h2>
               <div class="persons-font">
@@ -34,20 +33,26 @@ limitations under the License.
                 <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                   ${profession}<g:if test="${i != last}">, </g:if>
                 </g:each>
-                <br>
-                <g:if test="${entityItem.dateOfBirth}">
-                  <g:message code="ddbnext.Entity_Birth" />: ${entityItem.dateOfBirth},</g:if>
-                <g:if test="${entityItem.dateOfDeath}">
-                  <g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}
+                <g:if test="${entityItem.professionOrOccupation}">
+                  <br />
                 </g:if>
-
+                <g:if test="${entityItem.dateOfBirth}">
+                  <g:message code="ddbnext.Entity_Birth" />: ${entityItem.dateOfBirth}, ${entityItem.placeOfBirth?.getAt(0)} -</g:if>
+                <g:if test="${entityItem.dateOfDeath}">
+                  <g:message code="ddbnext.Entity_Death" />: ${entityItem.dateOfDeath}, ${entityItem.placeOfDeath?.getAt(0)}
+                </g:if>
               </div>
             </div>
           </div>
           <div class="thumbnail-wrapper span1 persons-results">
             <div class="thumbnail" id="thumbnail-${entityItem.id}">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
-                <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55px" />" alt="${entityItem.preferredName }" width="55px" />
+                <g:if test="${entityItem.thumbnail}">
+                    <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55px" />" alt="${entityItem.preferredName }" width="55px" />
+                </g:if>
+                <g:else>
+                <g:img dir="images/placeholder" file="entity.png" width="55px" height="90" />
+              </g:else>
               </g:link>
             </div>
             <div class="item-options bl">
@@ -68,25 +73,25 @@ limitations under the License.
 </ul>
 <div class="bb end-result-border"></div>
 <ddbcommon:isLoggedIn>
-<ddb:isPersonalFavoritesAvailable>
-  <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
-      <p>
-        <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
-      </p>
-      <p>
-        <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
-      </p>
-      <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
-      <div class="modal-footer">
-        <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-          <g:message encodeAs="html" code="ddbnext.Close" />
-        </button>
-        <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-          <g:message encodeAs="html" code="ddbnext.Save" />
-        </button>
+  <ddbcommon:isPersonalFavoritesAvailable>
+    <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-body">
+        <p>
+          <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
+        </p>
+        <p>
+          <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
+        </p>
+        <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
+        <div class="modal-footer">
+          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+            <g:message encodeAs="html" code="ddbcommon.Close" />
+          </button>
+          <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
+            <g:message encodeAs="html" code="ddbcommon.Save" />
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-</ddb:isPersonalFavoritesAvailable>
+  </ddbcommon:isPersonalFavoritesAvailable>
 </ddbcommon:isLoggedIn>

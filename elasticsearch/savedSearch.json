@@ -1,1 +1,1 @@
-{"savedSearch":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"queryString":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"title":{"type":"string"},"user":{"type":"string"}}}}
+{"savedSearch":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"queryString":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"title":{"type":"string"},"type":{"type":"string"},"user":{"type":"string"}}}}

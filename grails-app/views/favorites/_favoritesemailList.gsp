@@ -20,7 +20,7 @@ limitations under the License.
 <g:message encodeAs="html" code="ddbnext.send_favorites_email_body_pre" 
              args="${[folderTitle, userName]}" encodeAs="none" /><br />
 </div>
-<g:message encodeAs="html" code="ddbnext.Create_Folder_Description" />: ${folderDescription}<br /><br />
+<g:message encodeAs="html" code="ddbcommon.Create_Folder_Description" />: ${folderDescription}<br /><br />
 
 <table border="1" style="margin-bottom:20px; border-spacing:0">
   <thead>
@@ -48,8 +48,8 @@ limitations under the License.
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
               action="${ action }" params="[id: it.id]"
-              title="${ddb.getTruncatedHovercardTitle(title: it.label, length: 350)}">
-              <ddb:getTruncatedItemTitle title="${ it.preview.title }"
+              title="${ddbcommon.getTruncatedHovercardTitle(title: it.label, length: 350)}">
+              <ddbcommon:getTruncatedItemTitle title="${ it.preview.title }"
                 length="${ 100 }" />
             </g:link>
           </h2>

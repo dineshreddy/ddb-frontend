@@ -25,6 +25,7 @@ $(document).ready(function() {
       clusters: null,
       waitingLayer: null,
       institutionList: null,
+      loadCounter: 0,
 
       /** Initialization * */
       init : function() {
@@ -42,7 +43,7 @@ $(document).ready(function() {
           var tiles = this._initializeMap(lon, lat, zoom);
 
           this._addMarkerLayer();
-          
+
           this._addMarkerToMap(lon, lat);
 
         }
@@ -155,6 +156,7 @@ $(document).ready(function() {
       },
 
       _initializeMap : function(lon, lat, zoom) {
+        var self = this;
         //Set the base folder for images
         OpenLayers.ImgPath = this.imageFolder;
 
@@ -180,8 +182,24 @@ $(document).ready(function() {
         var position = this._getLonLat(lon, lat);
         this.osmMap.setCenter(position, zoom);
 
-        return tiles;
+        //Set tooltips for the map controls
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomin").attr("title", messages.ddbnext.InstitutionPage_MapZoomIn);
+        $("#OpenLayers_Control_DDBPanZoomBar_28_zoomout").attr("title", messages.ddbnext.InstitutionPage_MapZoomOut);
+        $(".olControlDDBHome").attr("title", messages.ddbnext.InstitutionPage_MapHome);
 
+        //Reset institution map via the home button
+        $(".olControlDDBHome").click(function(){
+
+          //Reset institution map filters only on the institutionList page
+          if (jsPageName == "institutionList") {
+            $('input').prop('checked', false);
+            self.applyFilters();
+          }
+
+          self.osmMap.setCenter(position, zoom);
+        });
+
+        return tiles;
       },
 
       _addInstitutionsLayer : function() {
@@ -220,7 +238,7 @@ $(document).ready(function() {
         //this._loadMultiPolygonInput("FEGN7MRGZNDXU4VATES3T6LXOEZXYZCC");
         //console.log("input"+input);
 
-        var points = []
+        var points = [];
         //var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
         var cortexInput = $('#ddb-map').attr("data-geometry");
 
@@ -232,12 +250,12 @@ $(document).ready(function() {
           var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
           points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
         }
-        
+
         var linearRing = new OpenLayers.Geometry.LinearRing(points);
         var polygon = new OpenLayers.Geometry.Polygon([linearRing]);
         var feature = new OpenLayers.Feature.Vector(polygon, {});
         this.vectorLayer.addFeatures([feature]);
-        
+
         this.osmMap.zoomToExtent(this.vectorLayer.getDataExtent());
 
       },
@@ -267,7 +285,7 @@ $(document).ready(function() {
         var position = this._getLonLat(lon, lat);
         var size = new OpenLayers.Size(38,45);
         var offset = new OpenLayers.Pixel(-(size.w/2), -size.h);
-        var icon = new OpenLayers.Icon(this.imageFolder+"ddb_marker_final.png", size, offset);   
+        var icon = new OpenLayers.Icon(this.imageFolder+"ddb_marker_final.png", size, offset);
         var markersLayer = this.osmMap.getLayer('Markers');
         markersLayer.addMarker(new OpenLayers.Marker(position,icon));
       },
@@ -356,7 +374,7 @@ $(document).ready(function() {
         var maxLat3 = 6104500.7393;
 
         //Select zone from bounds
-        var source
+        var source;
         if(lon >= minLon2 && lon <= maxLon2 && lat >= minLat2 && lat <= maxLat2) {
           source = new proj4.Proj("EPSG:31466");
         }else if(lon >= minLon3 && lon <= maxLon3 && lat >= minLat3 && lat <= maxLat3) {
@@ -521,17 +539,33 @@ $(document).ready(function() {
 
         var selectedSectors = this._getSelectedSectors();
         var selectedSectorsText = JSON.stringify(selectedSectors);
+        var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
+
+        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed. 
+        //Otherwise some checkbox choises might be overridden!
+        if (self.loadCounter == 0) {
+          $('input').prop('disabled', true);
+        }
+
+        self.loadCounter++;
 
         $.ajax({
           type : 'GET',
           dataType : 'text',
           async : true,
           cache: true,
-          url : jsContextPath + this.apiClusteredInstitutionsUrl+"?selectedSectors="+selectedSectorsText,
+          url : jsContextPath + this.apiClusteredInstitutionsUrl+"?selectedSectors="+selectedSectorsText+"&onlyInstitutionsWithData="+onlyInstitutionsWithData,
           success : function(dataText){
             var dataJson = JSON.parse(dataText);
             self.clusters = dataJson.data;
             onCompleteCallbackFunction();
+          },
+          complete : function(){
+            self.loadCounter--;
+
+            if (self.loadCounter == 0) {
+              $('input').prop('disabled', false);
+            }
           }
         });
       },

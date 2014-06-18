@@ -20,5 +20,16 @@ $(function() {
     History.pushState({sort:randomSeed}, pgTitle + " " +randomSeed, "?sort="+randomSeed);
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
+
+
+    var container = document.querySelector('#columns');
+    imagesLoaded( container, function() {
+      new Masonry( container, {
+        // options
+        isOriginLeft: false,
+        columnWidth: 170,
+        itemSelector: '.pin'
+      });
+    });
   }
 });

@@ -36,3 +36,6 @@ limitations under the License.
 <div class="sector-facet">
   <label class="checkbox"> <input data-sector="sec_07" value="sec_07" type="checkbox"><g:message encodeAs="html" code="ddbnext.sec_07" /></label>
 </div>
+<div class="institution-with-data">
+  <label class="checkbox"> <input type="checkbox"><g:message encodeAs="html" code="ddbnext.InstitutionPage_OnlyInstitutionsWithData" /></label>
+</div>

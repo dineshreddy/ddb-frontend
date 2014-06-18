@@ -33,13 +33,12 @@ de.ddb.next.search.TimeSpan = function(fromDay,fromMonth, fromYear, tillDay, til
   this.tillYear = tillYear;
 };
 
-
 $.extend(de.ddb.next.search.TimeSpan.prototype, {
   print : function() {
     var currObjInstance = this;
 
     console.log("fromDay: " + currObjInstance.fromDay);
-    console.log("fromMonth: " + currObjInstance.fromMonth);
+    console.log("from-month: " + currObjInstance.fromMonth);
     console.log("fromYear: " + currObjInstance.fromYear);
     console.log("tillDay: " + currObjInstance.tillDay);
     console.log("tillMonth: " + currObjInstance.tillMonth);
@@ -269,24 +268,32 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     // Click handler for adding a new TimeSpan
     $("#add-timespan").click(function(event) {
       event.preventDefault();
-      currObjInstance.assignTimeSpan(true);
+      if(!$(this).hasClass('disabled')){
+        currObjInstance.assignTimeSpan(true);
+      }
     });
 
     // Click handler for reseting the time facet
     $("#reset-timefacet").click(function(event) {
       event.preventDefault();
-      currObjInstance.reset();
-    });
-
-    $("#fromYear").change(function(){
-      if ($("#fromYear").val()) {
-        $("#add-timespan").removeClass('without-date');
+      if(!$(this).hasClass('disabled')){
+        currObjInstance.reset();
       }
     });
 
-    $("#tillYear").change(function(){
-      if ($("#tillYear").val()) {
-        $("#add-timespan").removeClass('without-date');
+    $("#from-year").change(function(){
+      if ($("#from-year").val()) {
+        $("#add-timespan").removeClass('disabled');
+        $('#reset-timefacet').removeClass('disabled');
+        $('#reset-timefacet').addClass('grey');
+      }
+    });
+
+    $("#till-year").change(function(){
+      if ($("#till-year").val()) {
+        $("#add-timespan").removeClass('disabled');
+        $('#reset-timefacet').removeClass('disabled');
+        $('#reset-timefacet').addClass('grey');
       }
     });
   },
@@ -340,10 +347,10 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     $(".time-facet").removeClass("off");
 
     if(exact) {
-      $("#limitationExact").prop("checked", true);
+      $("#limitation-exact").prop("checked", true);
     }
     else {
-      $("#limitationFuzzy").prop("checked", true);
+      $("#limitation-fuzzy").prop("checked", true);
     }
 
     if (beginDate) {
@@ -362,7 +369,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     if (beginDate || endDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
-      $("#add-timespan").removeClass('without-date');
+      $("#add-timespan").removeClass('');
     } else {
       //Close the form if no values has been found.
       currObjInstance.closeForm();
@@ -451,7 +458,6 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.opened = true;
     timespanFormDiv.fadeIn('fast');
     timeFacetDiv.addClass('active');
-    //currObjInstance.manageOutsideClicks(currObjInstance);
   },
 
   /**
@@ -488,13 +494,13 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     de.ddb.next.search.hideError();
 
     //Retrieve the values from the timespan form
-    var fromDayValue = $("#fromDay").val() !== "" ? $("#fromDay").val() : null;
-    var fromMonthValue = $("#fromMonth").val() !== "" ? $("#fromMonth").val() : null;
-    var fromYearValue = $("#fromYear").val() !== "" ? $("#fromYear").val() : null;
+    var fromDayValue = $("#from-day").val() !== "" ? $("#from-day").val() : null;
+    var fromMonthValue = $("#from-month").val() !== "" ? $("#from-month").val() : null;
+    var fromYearValue = $("#from-year").val() !== "" ? $("#from-year").val() : null;
 
-    var tillDayValue = $("#tillDay").val() !== "" ? $("#tillDay").val() : null;
-    var tillMonthValue = $("#tillMonth").val() !== "" ? $("#tillMonth").val() : null;
-    var tillYearValue = $("#tillYear").val() !== "" ? $("#tillYear").val() : null;
+    var tillDayValue = $("#till-day").val() !== "" ? $("#till-day").val() : null;
+    var tillMonthValue = $("#till-month").val() !== "" ? $("#till-month").val() : null;
+    var tillYearValue = $("#till-year").val() !== "" ? $("#till-year").val() : null;
 
     if (checkYears && fromYearValue === null && tillYearValue === null) {
       de.ddb.next.search.showError("Bitte geben Sie in eines der Zeit-Eingabefelder 'Von' oder 'Bis' eine Jahreszahl ein.");
@@ -531,7 +537,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     currObjInstance.updateTimeSpanForm();
 
     //reset buton Apply
-    $("#add-timespan").addClass('without-date');
+    $("#add-timespan").addClass('disabled');
+    $('#reset-timefacet').removeClass('grey');
+    $('#reset-timefacet').addClass('disabled');
 
     //asign the timeSpan to reset also the window url etc!
     currObjInstance.assignTimeSpan(false);
@@ -545,22 +553,22 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
   updateTimeSpanForm: function() {
     var currObjInstance = this;
 
-    $("#fromYear").val(currObjInstance.selectedTimeSpan.fromYear);
-    if($("#fromYear").val()) {
-      $("#fromDay").val(currObjInstance.selectedTimeSpan.fromDay);
-      $("#fromMonth").val(currObjInstance.selectedTimeSpan.fromMonth);
+    $("#from-year").val(currObjInstance.selectedTimeSpan.fromYear);
+    if($("#from-year").val()) {
+      $("#from-day").val(currObjInstance.selectedTimeSpan.fromDay);
+      $("#from-month").val(currObjInstance.selectedTimeSpan.fromMonth);
     } else {
-      $("#fromDay").val(null);
-      $("#fromMonth").val(null);
+      $("#from-day").val(null);
+      $("#from-month").val(null);
     }
 
-    $("#tillYear").val(currObjInstance.selectedTimeSpan.tillYear);
-    if($("#tillYear").val()) {
-      $("#tillDay").val(currObjInstance.selectedTimeSpan.tillDay);
-      $("#tillMonth").val(currObjInstance.selectedTimeSpan.tillMonth);
+    $("#till-year").val(currObjInstance.selectedTimeSpan.tillYear);
+    if($("#till-year").val()) {
+      $("#till-day").val(currObjInstance.selectedTimeSpan.tillDay);
+      $("#till-month").val(currObjInstance.selectedTimeSpan.tillMonth);
     } else {
-      $("#tillDay").val(null);
-      $("#tillMonth").val(null);
+      $("#till-day").val(null);
+      $("#till-month").val(null);
     }
   },
 
@@ -587,7 +595,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     }
 
     //Genau
-    if($("#limitationExact").is(":checked")) {
+    if($("#limitation-exact").is(":checked")) {
       if(daysFrom !== '*') {
         selectedFacetValues.push('begin_time=[' + daysFrom + ' TO ' + daysTill + ']');
       }

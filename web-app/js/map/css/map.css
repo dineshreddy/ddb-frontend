@@ -105,9 +105,9 @@
 }
 
 .olMap .olPopupCloseBox {
-  background: url("../img/ddb_PopupCancel.png") no-repeat scroll 0 0 !important;
-  width: 20px !important;
-  height: 20px !important;
+  background: url("../img/ddbIkonographie.png") no-repeat -30px -475px !important;
+  width: 18px !important;
+  height: 18px !important;
   right: 35px !important;
   top: 17px !important;
 }
@@ -158,6 +158,11 @@
 .olMap .olPopupDDBContent li ul li {
   background: url("../img/list_arrow_grey.png") no-repeat scroll 0 0 !important;
   padding-left: 17px;
+}
+
+
+.olMap .olControlAttribution a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before {
+  background: none !important;
 }
 
 

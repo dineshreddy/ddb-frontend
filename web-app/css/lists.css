@@ -78,31 +78,32 @@
   padding: 10px 10px 0 0;
 }
 
-.lists .link-block {
-  float: right;
-  display: inline-block;
-  margin-right: -10px;
-  padding-top: 2px;
-}
-
-.lists .share-block {
-  float: right;
-  display: inline-block;
-}
-
-.lists .lists-header-header {
-  padding-left: 3px;
-  color: #3E3A37;
-  font-family: KarbidWeb,Calibri,Arial,sans-serif;
-  font-size: 1.75em;
-  font-weight: normal;
-}
-
 .lists .lists-header {
-  -moz-border-colors: none;
-  border-color: #E9E5E2;
-  border-image: none;
-  border-style: solid;
-  border-width: 0 0 2px;
-  padding-bottom: 10px;
+  border-bottom: solid 2px #efebe8;
+}
+
+.lists .span12>div {
+  display: inline-block;
+}
+
+.lists .right-container {
+  line-height: 62px;
+  float: right;
+}
+
+.lists .socialmedia {
+  padding-top:12px;
+}
+
+.lists .page-link:before {
+  margin-top: 22px;
+}
+
+.lists .summary img {
+  max-width: 100%;
+  max-height: 105px;
+  display: block;
+  float: none;
+  border: 0;
+  margin: auto;
 }

@@ -354,7 +354,6 @@ header .navigation li.active ul,.header .navigation li.active ul, header .naviga
   display: block;
 }
 
-
 header ul li.active-default>a,.header ul li.active-default>a {
   color: #a5003b !important;
   font-weight: bold !important;
@@ -399,7 +398,10 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   color: #000;
 }
 
-.navigation .active .arrow-container, .navigation > li:hover .arrow-container {
+.navigation .active .arrow-container, 
+.navigation > li:hover .arrow-container,
+.status-bar .language-wrapper:hover .arrow-container,
+.status-bar .login-wrapper:hover .arrow-container {
   position: absolute;
   height: 20px;
   width: 40px;
@@ -408,13 +410,27 @@ header .navigation ul li a:hover ,.header .navigation ul a:hover {
   z-index: 1;
 }
 
-.navigation .active .arrow-up, .navigation > li:hover .arrow-up {
+.navigation .active .arrow-up, .navigation > li:hover .arrow-up,
+.status-bar .arrow-container:hover .arrow-up,
+.status-bar .language-wrapper:hover .arrow-up,
+.status-bar .login-wrapper:hover .arrow-up {
   background: url("../images/icons/tooltip.png") -14px -10px no-repeat;
   width: 11px;
   height: 9px;
   margin-top: 11px;
   background-color: #fff;
   margin-left: 14px;
+}
+
+.status-bar .arrow-container:hover .arrow-up,
+.status-bar .language-wrapper:hover .arrow-up {
+  background-position: -14px -12px;
+  margin-left: 16px;
+}
+
+.status-bar .login-wrapper:hover .arrow-up {
+  background-position: -14px -12px;
+  margin-left: 9px;
 }
 
 header .navigation ul li.active a,.header .navigation ul li.active a {
@@ -437,7 +453,7 @@ header .toolbar,.header .toolbar {
   font-size:0.813em;
   position: relative;
   text-align: right;
-  padding-top: 15px;
+  padding-top: 10px;
 }
 
 header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wrapper:hover .selector {
@@ -449,7 +465,7 @@ header .toolbar .language-wrapper:hover .selector,.header .toolbar .language-wra
   width: auto;
 }
 
-header .language-wrapper>a,.header .language-wrapper>a {
+header .language-wrapper>a, .header .language-wrapper>a {
   background-position: right -42px;
   padding-right: 20px;
 }
@@ -457,7 +473,6 @@ header .language-wrapper>a,.header .language-wrapper>a {
 header .language-wrapper >a,.header .language-wrapper >a {
   background: transparent url("../images/icons/auxNavIcons.png") no-repeat 46px -42px;
 }
-
 
 header .login-wrapper:hover .selector,.header .login-wrapper:hover .selector {
   display: block;
@@ -657,17 +672,16 @@ header .header-spacer,.header .header-spacer {
 
 header .selector,.header .selector {
   display: none;
-  background-color: #fff;
   padding: 7px 12px 5px;
-  border: 1px solid #e9e5e2;
-  z-index: 1;
+  border: #bbb 1px solid;
   width: 50px;
   position: absolute;
-  right: 0;
   top: 20px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: #999 0px 11px 25px -4px;
+  -moz-box-shadow: #999 0px 11px 25px -4px;
+  -webkit-box-shadow: #999 0px 11px 25px -4px;
+  text-transform: none;
+  background: #fff;
 }
 
 header .selector.logout,.header .selector.logout {
@@ -1117,6 +1131,11 @@ footer .twitter a, .footer .twitter a {
   background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent !important;
 }
 
+footer .twitter a:before{
+  background:none!important;
+  width:0!important;
+}
+
 .build {
   float: left;
   font-size: 0.75em;
@@ -1463,6 +1482,10 @@ select {
   display: none !important;
 }
 
+.element-collapsed {
+  display: none;
+}
+
 .on {
   display: block !important;
 }
@@ -1498,6 +1521,10 @@ select {
 
 .keep-in-front {
   z-index: 99;
+}
+
+#jwplayer-container {
+  background-color: #fff !important;
 }
 
 /* responsive genaral rules */
@@ -1573,11 +1600,17 @@ select {
 
 /* external links */
 
-
+a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before, .external-link-icon:before{
+  content: '';
+  width:20px;
+  height:20px;
+  margin-left: -20px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
+  position:absolute;
+}
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
 .external-link-icon {
   padding-left: 20px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
 }
 
 /* Exception for links in the openstreetmap */
@@ -1597,3 +1630,43 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 /* Multiselect jquery plugin - end */
+
+/* cookie notice */
+#cookie-notice {
+  background: #efebe8;
+  padding-top: 5px;
+  padding-bottom: 0;
+  display: none;
+  color: #3e3a37;
+  font-size: 15px;
+  line-height: 18px;
+}
+#cookie-notice .container{
+  position: relative;
+}
+#cookie-notice p{
+  padding-right: 50px;
+  padding-left: 5px;
+}
+#cookie-notice p a{
+  text-decoration:underline;
+}
+#cookie-notice .close{
+  width: 20px;
+  height: 20px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -27px -474px;
+  background-color: #e6e6e6;
+  border: #ddd 1px solid;
+  opacity: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+@media (max-width: 767px){
+  #cookie-notice {
+    padding: 10px;
+    font-size: 13px;
+    line-height: 16px;
+  }
+}
+/* cookie notice -end */

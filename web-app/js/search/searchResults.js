@@ -93,7 +93,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.page-nonjs').html(JSONresponse.page);
             
             de.ddb.next.search.paginationWidget.resetNavigationElements(JSONresponse);
-            
+
             $('.search-results-list').fadeIn('fast');
 
             divSearchResultsOverlayImg.remove();
@@ -115,56 +115,6 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
       }
     }
   });
-};
-
-de.ddb.next.search.setSearchCookieParameter = function(arrayParamVal) {
-  var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
-  if (searchParameters != null && searchParameters.length > 0) {
-    searchParameters = searchParameters.substring(1, searchParameters.length - 1);
-    searchParameters = searchParameters.replace(/\\"/g, '"');
-    var json = $.parseJSON(searchParameters);
-    $.each(arrayParamVal, function(key, value) {
-      if (value[1].constructor === Array) {
-        for ( var i = 0; i < value[1].length; i++) {
-          if (value[1][i].constructor === String) {
-            value[1][i] = encodeURIComponent(value[1][i]).replace(/%20/g, '\+');
-          }
-        }
-      } else if (value[1].constructor === String) {
-        value[1] = encodeURIComponent(value[1]).replace(/%20/g, '\+');
-      }
-      json[value[0]] = value[1];
-    });
-    document.cookie = "searchParameters" + jsContextPath + "=\""
-        + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
-  }
-};
-
-de.ddb.next.search.removeSearchCookieParameter = function(paramName) {
-  var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
-  if (searchParameters != null && searchParameters.length > 0) {
-    searchParameters = searchParameters.substring(1, searchParameters.length - 1);
-    searchParameters = searchParameters.replace(/\\"/g, '"');
-    var json = $.parseJSON(searchParameters);
-    json[paramName] = null;
-    document.cookie = "searchParameters" + jsContextPath + "=\""
-        + JSON.stringify(json).replace(/"/g, '\\"') + "\"";
-  }
-};
-
-de.ddb.next.search.readCookie = function(name) {
-  var nameEQ = name + "=";
-  var ca = document.cookie.split(';');
-  for ( var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) === ' ') {
-      c = c.substring(1, c.length);
-    }
-    if (c.indexOf(nameEQ) === 0) {
-      return c.substring(nameEQ.length, c.length);
-    }
-  }
-  return null;
 };
 
 de.ddb.next.search.hideError = function() {
@@ -189,7 +139,7 @@ de.ddb.next.search.showError = function(errorHtml) {
 
 de.ddb.next.search.initializeFacets = function() {
   var facetsManager = null;
-  
+
   if (jsPageName === "results") {
     facetsManager = new de.ddb.next.search.FacetsManager(de.ddb.next.search.fetchResultsList, "Kultur", "/facets");
   }
@@ -210,7 +160,6 @@ de.ddb.next.search.initializeFacets = function() {
 };
 
 de.ddb.next.search.searchResultsInitializer = function() {
-
   $(window).on("searchChange", function() {
     setHovercardEvents();
     var compareManager = new de.ddb.next.search.CompareManager();
@@ -225,7 +174,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.page-nonjs').addClass("off");
 
   $(window).trigger("searchChange");
-  
+
   $('#form-search-header button').click(
       function() {
         var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
@@ -326,7 +275,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         de.ddb.next.search.historyManager(newUrl);
         de.ddb.next.search.setSearchCookieParameter(paramsArray);
       });
-  
+
   de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
       function(e, element){
         if (e.keyCode === 13) {
@@ -354,7 +303,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }
       }
   );
-  
+
   de.ddb.next.search.paginationWidget.setNavigatorsClickHandler(
       function(element) {
         de.ddb.next.search.fetchResultsList(element.attr('href'));
@@ -363,13 +312,13 @@ de.ddb.next.search.searchResultsInitializer = function() {
         }, 1000);
       }
   );
-  
+
   de.ddb.next.search.paginationWidget.setPaginatorOptionsHandlers(
       function(sortSelect, rowsSelect, closeButton){
         var paramsArray = [['rows', rowsSelect.val()], ['sort', sortSelect.val()], ['offset', 0]];
         closeButton.trigger('click');
         de.ddb.next.search.fetchResultsList($.addParamToCurrentUrl(paramsArray));
-        
+
         if($('.clear-filters').attr('href')) {
           $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/sort=(RELEVANCE|ALPHA_DESC|ALPHA_ASC)/i, 'sort=' + sortSelect.val()));
           $('.clear-filters').attr('href', $('.clear-filters').attr('href').replace(/rows=\d+/g, 'rows=' + rowsSelect.val()));
@@ -377,7 +326,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         return false;
       }
   );
-  
+
   $('#thumbnail-filter').click(function() {
     var valueCheck = $(this);
     var paramsArray = [['isThumbnailFiltered', 'false']];
@@ -474,11 +423,17 @@ de.ddb.next.search.searchResultsInitializer = function() {
     de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
   });
 
+  $('.type-selection').change(function(){
+    var currentQuery = de.ddb.next.search.getUrlVar('query');
+    var optionSelected = $('option:selected', this);
+    window.location = $.addParamToCurrentUrl([['query', currentQuery]], optionSelected.val());
+  });
+
   de.ddb.next.search.initializeFacets();
 
   function setHovercardEvents() {
     $('.information').each(function() {
-      var infoItem = new de.ddb.next.search.HovercardInfoItem($(this));
+      new de.ddb.next.search.HovercardInfoItem($(this));
     });
   }
 
@@ -519,7 +474,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
           url : jsContextPath + "/apis/savedsearches",
           data : JSON.stringify({
             query : window.location.search.substring(1),
-            title : title
+            title : title,
+            type : $("#addToSavedSearches").attr("data-type")
           })
         }).done(function() {
           disableSavedSearch($(".add-to-saved-searches"));
@@ -559,6 +515,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
             if ($.inArray(itemId, favoriteItemIds) >= 0) {
               disableFavorite(div);
             }
+            else {
+              addFavoriteEvent(div);
+            }
           });
         }
       });
@@ -578,7 +537,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         dataType : "json",
         url : jsContextPath + "/apis/savedsearches/_get",
         data : JSON.stringify({
-          query : window.location.search.substring(1)
+          query : window.location.search.substring(1),
+          type : $("#addToSavedSearches").attr("data-type")
         })
       }).statusCode( {
         200: function() { //SC_OK
