@@ -201,7 +201,7 @@ limitations under the License.
       <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
            aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
         <div class="modal-header">
-          <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+          <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
           <h3 id="sendSavedSearchesLabel">
             <g:message encodeAs="html" code="ddbnext.Send_Savedsearches"/>
           </h3>
@@ -217,7 +217,7 @@ limitations under the License.
           </div>
           <div class="modal-footer">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbnext.Close"/>
+              <g:message encodeAs="html" code="ddbcommon.Close"/>
             </button>
             <button class="btn-padding" type="submit" id="btnSubmit">
               <g:message encodeAs="html" code="ddbnext.send_now"/>
@@ -230,7 +230,7 @@ limitations under the License.
     <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
          aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="deleteSavedSearchesLabel">
           <g:message encodeAs="html" code="ddbcommon.delete_confirmation"/>
         </h3>
@@ -252,7 +252,7 @@ limitations under the License.
     <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog"
        aria-labelledby="editSavedSearchLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="editSavedSearchLabel">
           <g:message encodeAs="html" code="ddbnext.Edit_Savedsearch"/>
         </h3>
@@ -268,10 +268,10 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-          <g:message encodeAs="html" code="ddbnext.Close"/>
+          <g:message encodeAs="html" code="ddbcommon.Close"/>
         </button>
         <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
-          <g:message encodeAs="html" code="ddbnext.Save"/>
+          <g:message encodeAs="html" code="ddbcommon.Save"/>
         </button>
       </div>
     </div>

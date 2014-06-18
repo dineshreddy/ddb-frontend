@@ -370,7 +370,7 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
-        <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
+        <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
     
@@ -385,19 +385,19 @@ limitations under the License.
       </div>
       <div class="modal-body">
         <div>
-          <g:message encodeAs="html" code="ddbnext.Create_Folder_Name" />*
+          <g:message encodeAs="html" code="ddbcommon.Create_Folder_Name" />*
           <br />
           <input type="text" class="folder-create-name" id="folder-create-name"  required="required" />
         </div>
         <div>
-          <g:message encodeAs="html" code="ddbnext.Create_Folder_Description" />
+          <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description" />
           <br />
           <textarea rows="10" cols="20" class="folder-create-description" id="folder-create-description"></textarea>
         </div>
       </div>
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
-        <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
+        <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
     
@@ -438,14 +438,14 @@ limitations under the License.
       </div>
       <div class="modal-body">
         <div>
-          <g:message encodeAs="html" code="ddbnext.Create_Folder_Name" />*
+          <g:message encodeAs="html" code="ddbcommon.Create_Folder_Name" />*
           <br />
           <input type="hidden" id="folder-edit-id" required="required" value="" />
           <input type="text" class="folder-edit-name" id="folder-edit-name" required="required" value="" />
         </div>
         <br />
         <div>
-          <g:message encodeAs="html" code="ddbnext.Create_Folder_Description" />
+          <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description" />
           <br />
           <textarea rows="8" cols="20" class="folder-edit-description" id="folder-edit-description"></textarea>
         </div>
@@ -475,7 +475,7 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
-        <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbnext.Save" /> </button> 
+        <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
   
