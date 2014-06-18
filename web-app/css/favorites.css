@@ -858,6 +858,10 @@ hr {
   .favorites-results-controls .options-buttons-container .delete-btn {
     margin: 0 35px 0 0;
   }
+
+  .favorites-results-controls .controls-container {
+    margin-bottom: 10px;
+  }
 }
 @media (max-width: 480px) {
 
