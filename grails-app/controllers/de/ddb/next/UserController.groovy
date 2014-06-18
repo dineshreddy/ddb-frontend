@@ -193,10 +193,9 @@ class UserController {
                 numberOfResults: savedSearches.size(),
                 page: offset / rows + 1,
                 paginationUrls: savedSearchesService.getPaginationUrls(offset, rows, params[SearchParamEnum.ORDER.getName()], totalPages),
-                paginationURL: searchService.buildPagination(totalResults, urlQuery, request.forwardURI+'?'+queryString),
+                paginationURL: searchService.buildPagination(savedSearches.size(), urlQuery, request.forwardURI+'?'+queryString),
                 results: savedSearchesService.pageSavedSearches(savedSearches, offset, rows),
                 rows: rows,
-                totalResults:totalResults,
                 totalPages: totalPages,
                 urlsForOrder: urlsForOrder,
                 userName: user.getFirstnameAndLastnameOrNickname()

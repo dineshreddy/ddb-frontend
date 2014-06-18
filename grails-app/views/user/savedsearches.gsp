@@ -79,7 +79,7 @@ limitations under the License.
             <div class="row hidden-phone">
               <div class="span9 header-row">
                 <div class="list-name">
-                  <span><g:message code="ddbnext.Searches" /></span> (${totalResults })
+                  <span><g:message code="ddbnext.Searches" /></span> (${numberOfResults })
                   
                 </div>
                 <div id="saved-search-sendmail"><a class="saved-searches-list-envelope" id="sendSavedSearches"> </a></div>
