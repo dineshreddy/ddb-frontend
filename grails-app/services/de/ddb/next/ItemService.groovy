@@ -92,7 +92,8 @@ class ItemService {
         def institution= json.item.institution
 
         // institution logo
-        String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
+        String institutionLogoUrl = grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+        "file": "/placeholder/searchResultMediaInstitution.png").toString()
         String institutionId = json.item.institution."logo-institution-ddbid"
 
         if(!institutionId && !json.item.institution.logo?.toString().trim().isEmpty()){
@@ -142,8 +143,8 @@ class ItemService {
         catch (IOException e) {
             // use placeholder logo as fallback
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl() +
-                    grailsLinkGenerator.resource(
-                    "dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
+                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+                    "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
             model.institutionImage = logoResource.bytes
         }
 

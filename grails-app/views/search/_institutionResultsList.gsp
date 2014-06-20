@@ -42,7 +42,7 @@ limitations under the License.
                 <img src="${entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="<ddb:scaleImage side="width">${entityItem.preview.thumbnail}</ddb:scaleImage>" height="<ddb:scaleImage side="height">${entityItem.preview.thumbnail}</ddb:scaleImage>" />
               </g:if>
               <g:else>
-                <g:img dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
+                <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
               </g:else>
             </g:link>
           </div>

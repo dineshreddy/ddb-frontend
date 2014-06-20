@@ -96,7 +96,8 @@ class InstitutionController {
                 organisationLogo = g.resource("dir": "binary", "file": id + "/list/1.jpg")
             }
             else {
-                organisationLogo = g.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")
+                organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
+                "file": "/placeholder/searchResultMediaInstitution.png")
             }
 
             render(
