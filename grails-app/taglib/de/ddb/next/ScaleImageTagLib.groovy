@@ -16,7 +16,7 @@ class ScaleImageTagLib {
             String[] parts = inputString.split("_")
             if(parts) {
                 String part1 = parts[parts.size()-1]
-                if(part1) {
+                if(part1 && part1.indexOf("x") > 0) {
                     String[] heightWidth = part1.split("x")
                     if(heightWidth) {
                         if(heightWidth && heightWidth[0] && attrs.side.equalsIgnoreCase("width")) {
