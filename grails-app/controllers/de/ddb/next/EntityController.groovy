@@ -165,7 +165,7 @@ class EntityController {
         }else {
             randomSeed = getRandomSeed()
         }
-        def results = entityService.doEntitySearch([query:"*",rows:70,sort:"random_"+randomSeed])
+        def results = entityService.doEntitySearch([query:"thumbnail:*",rows:70,sort:"random_"+randomSeed])
 
         //There are entities with no thumbnail. We leave them out...
         def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
