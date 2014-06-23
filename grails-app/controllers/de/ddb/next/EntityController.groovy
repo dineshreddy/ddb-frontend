@@ -165,12 +165,13 @@ class EntityController {
         }else {
             randomSeed = getRandomSeed()
         }
-        def results = entityService.doEntitySearch([query:"thumbnail:*",rows:70,sort:"random_"+randomSeed])
+        def entitiesOnPage=40
+        def results = entityService.doEntitySearch([query:"thumbnail:*",rows:entitiesOnPage,sort:"random_"+randomSeed])
 
         //There are entities with no thumbnail. We leave them out...
         def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
 
-        //Since the result after removing items with no thumnbails is is different from 50 (ex: 38)
+        //Since the result after removing items with no thumnbails is is different from entitiesOnPage (ex: 38)
         //let's make sure we have a list which will have full columns when nrColumnsDesired = x
         def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
         if (total>RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {total=RESULTS_DESIRED_IN_ONE_PERSONS_PAGE}
