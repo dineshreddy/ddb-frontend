@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.Type"%>
 <%@page import="java.awt.event.ItemEvent"%>
 <div class="thumbnail-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span3</g:if>">
   <div class="thumbnail" id="thumbnail-${item.id}">
@@ -25,7 +26,7 @@ limitations under the License.
     <ul class="item-options-ul">
       <ddbcommon:isLoggedIn>
         <li>
-          <div data-itemid="${item.id}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
+          <div data-itemid="${item.id}" data-actn="POST" data-objecttype="${Type.CULTURAL_ITEM.name}" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
         </li>
       </ddbcommon:isLoggedIn>
       <g:each var="mediaType" in="${item.preview.media}">
