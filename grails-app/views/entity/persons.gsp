@@ -45,7 +45,7 @@ limitations under the License.
   <div class="row persons-body">
     <div class="span3 persons-font">
       <p>
-        <g:message code="ddbnext.entities.personspage.description" args="${g.link(controller:"entity",action:"personsearch") }"/>
+        <g:message code="ddbnext.entities.personspage.description"/> <g:link controller="entity" action="persons"><g:message code="ddbnext.entities.personspage.descriptionLink" /></g:link> 
       </p>
       <p>
         <g:message code="ddbnext.entities.personspage.sourceInfo" />
