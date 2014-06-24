@@ -21,7 +21,7 @@ limitations under the License.
           <strong><g:message encodeAs="html"code="ddbnext.CulturalItem_Deeplink" />: </strong>
         </div>
         <div class="value">
-          http://${request.serverName}${itemUri}
+          ${publicUrl+itemUri}
         </div>
       </div>
     </td>
