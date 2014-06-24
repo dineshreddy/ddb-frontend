@@ -99,6 +99,10 @@
   margin-top: 22px;
 }
 
+.lists .popup-dialog-title .page-link:before {
+  margin-top: 5px;
+}
+
 .lists .summary img {
   max-width: 100%;
   max-height: 105px;
