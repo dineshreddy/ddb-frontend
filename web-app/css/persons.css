@@ -66,11 +66,15 @@
 
 .persons-font {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 0.938empersons-font;
   line-height: 1em;
   color: #3e3a37;
   margin-top: 3px;
   word-wrap: break-word;
+}
+
+.persons-font p:first-child a {
+  text-decoration: underline;
 }
 
 .pin {
