@@ -110,10 +110,42 @@ $(document)
                       $(this).parent().appendTo($(".first .previews-list"));
                     }
                   });
+                  $(".first .no-previews").each(function() {
+                    if ($(this).find("img").attr("src") == previewUri) {
+                      $(this).parent().removeClass("off");
+                      return false;
+                    } else {
+                      $(this).parent().appendTo($(".first .previews-list"));
+                    }
+                  });
+                  $(".first .pdf-previews").each(function() {
+                    if ($(this).attr("href") === previewHref) {
+                      $(this).parent().removeClass("off");
+                      return false;
+                    } else {
+                      $(this).parent().appendTo($(".first .previews-list"));
+                    }
+                  });
                 } else {
                   $(".second .viewer-icon").parent().addClass("off");
                   $(".second .previews").each(function() {
                     if ($(this).attr("href") == previewHref) {
+                      $(this).parent().removeClass("off");
+                      return false;
+                    } else {
+                      $(this).parent().appendTo($(".second .previews-list"));
+                    }
+                  });
+                  $(".second .no-previews").each(function() {
+                    if ($(this).find("img").attr("src") == previewUri) {
+                      $(this).parent().removeClass("off");
+                      return false;
+                    } else {
+                      $(this).parent().appendTo($(".second .previews-list"));
+                    }
+                  });
+                  $(".second .pdf-previews").each(function() {
+                    if ($(this).attr("href") === previewHref) {
                       $(this).parent().removeClass("off");
                       return false;
                     } else {

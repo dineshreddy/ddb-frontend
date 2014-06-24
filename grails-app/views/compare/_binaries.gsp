@@ -17,7 +17,7 @@ limitations under the License.
   <div class="span6 slide-viewer item-detail ${position}">
     <div class="binary-viewer-container">
       <div id="binary-viewer" <g:if test="${flashInformation.images[0] > 0 || !binaryList}">class="img-binary"</g:if>>
-        <ul id="previews-list">
+        <ul class="previews-list">
           <g:set var="counter" value="${0}" />
           <g:if test="${binaryList}">
             <g:each in="${binaryList}">
