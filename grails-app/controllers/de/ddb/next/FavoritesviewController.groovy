@@ -24,18 +24,12 @@ class FavoritesviewController {
 
     def publicFavorites() {
         final def ACTION = "publicFavorites"
-        def rows=20 //default
-        if (params.rows){
-            rows = params.rows.toInteger()
-        }
-        def offset = 0 // default
-        if(params.offset){
-            offset = params.offset.toInteger()
-        }
-        def folderId = params.folderId
-        def by = params.by
-        def order = params.order
+        int rows = params.rows ? params.rows.toInteger() : 20
+        int offset = params.offset ? params.offset.toInteger() : 0
+        String order = params.order ? params.order : favoritesService.ORDER_ASC
+        String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
         def user = aasService.getPersonAsAdmin(params.userId)
+        def folderId = params.folderId
 
         // A user want to report this list to DDB
         if(params.report){
@@ -151,6 +145,8 @@ class FavoritesviewController {
                 numberOfResultsFormatted: numberOfResultsFormatted,
                 offset: offset,
                 rows: rows,
+                order: order,
+                by: by,
                 selectedUser: user,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
