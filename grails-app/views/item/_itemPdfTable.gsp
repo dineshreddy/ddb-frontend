@@ -18,7 +18,7 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml" lang="${ddb.getCurrentLocale()}">
 <head>
 
-<g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddbcommon.wellFormedDocFromString(text:ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351))) }" />
 <title>
   ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">
@@ -191,7 +191,7 @@ limitations under the License.
     <tr>
       <td>
         <div class="item-title">
-          <h2>${itemTitle}</h2>
+          <h2>${ddbcommon.wellFormedDocFromString(text:itemTitle)}</h2>
         </div>
         <g:if test="${binaryList}"> <g:render template="itemBinariesPdf" /></g:if>
      </td>

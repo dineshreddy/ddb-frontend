@@ -63,6 +63,7 @@ class UserController {
     def savedSearchService
     def bookmarksService
     def userService
+    def favoritesService
 
     def index() {
         log.info "index()"
@@ -98,7 +99,7 @@ class UserController {
 
         if(loginStatus == LoginStatus.SUCCESS){
 
-            createFavoritesFolderIfNotExisting(user)
+            favoritesService.createFavoritesFolderIfNotExisting(user)
 
             if (user.getStatus().equals(UserStatus.PW_RESET_REQUESTED.toString())) {
                 List<String> messages = []
@@ -793,7 +794,7 @@ class UserController {
 
                 loginStatus = LoginStatus.SUCCESS
 
-                createFavoritesFolderIfNotExisting(user)
+                favoritesService.createFavoritesFolderIfNotExisting(user)
 
                 // deactivated until we have unique id for both OpenId and AAS
                 // aasService.createOrUpdatePersonAsAdmin(user)
@@ -934,30 +935,6 @@ class UserController {
             return true
         }else{
             return false
-        }
-    }
-
-    private def createFavoritesFolderIfNotExisting(User user){
-        log.info "createFavoritesFolderIfNotExisting()"
-        def mainFavoriteFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-
-        if(mainFavoriteFolder == null){
-            def publishingName = user.getUsername()
-            def now = System.currentTimeMillis()
-            Folder newFolder = new Folder(
-                    null,
-                    user.getId(),
-                    FolderConstants.MAIN_BOOKMARKS_FOLDER.getValue(),
-                    "",
-                    false,
-                    publishingName,
-                    false,
-                    "",
-                    null,
-                    now,
-                    now)
-            String folderId = bookmarksService.createFolder(newFolder)
-            log.info "createFavoritesFolderIfNotExisting(): no favorites folder yet -> created it: "+folderId
         }
     }
 }

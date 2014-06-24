@@ -240,6 +240,7 @@ class ItemService {
             license: licenseInformation,
             isFavorite: isFavorite,
             baseUrl: commonConfigurationService.getSelfBaseUrl(),
+            publicUrl: commonConfigurationService.getConfigValue("ddb.public.url"),
             similarItems : similarItems
         ]
 

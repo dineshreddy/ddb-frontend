@@ -2,8 +2,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.beans.Folder
+import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.FavoritelistNotFoundException
 
 
@@ -13,13 +13,6 @@ import de.ddb.common.exception.FavoritelistNotFoundException
  * @author boz
  */
 class FavoritesviewController {
-    private static final String ORDER_ASC = "asc"
-    private static final String ORDER_DESC = "desc"
-
-    private static final String ORDER_BY_DATE = "date"
-    private static final String ORDER_BY_NUMBER = "number"
-    private static final String ORDER_BY_TITLE = "title"
-
     def aasService
     def bookmarksService
     def favoritesService
@@ -89,7 +82,7 @@ class FavoritesviewController {
                 selectedUser: user,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
+                createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: commonConfigurationService.getSelfBaseUrl(),
                 contextUrl: commonConfigurationService.getContextUrl()
@@ -187,7 +180,7 @@ class FavoritesviewController {
             }
 
             Folder selectedFolder = bookmarksService.findFolderById(folderId)
-            List items = bookmarksService.findBookmarksByFolderId(user.getId(), folderId)
+            List favorites = favoritesService.getFavoriteList(user, selectedFolder, order, by)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
             if(selectedFolder == null){
@@ -195,7 +188,7 @@ class FavoritesviewController {
                 return
             }
 
-            def totalResults= items.size()
+            def totalResults= favorites.size()
 
             def userName = user.getFirstnameAndLastnameOrNickname()
             def nickName = user.getUsername()
@@ -205,35 +198,23 @@ class FavoritesviewController {
             }
             def lastPgOffset=0
 
-            def allFoldersInformation = []
-            def allFolders = favoritesService.getAllFoldersPerUser(user.id)
-            allFolders.each {
-                def container = [:]
-                List favoritesOfFolder = bookmarksService.findBookmarksByFolderId(user.getId(), it.folderId)
-                container["folder"] = it
-                container["count"] = favoritesOfFolder.size()
-                allFoldersInformation.add(container)
-            }
-            allFoldersInformation = favoritesService.sortFolders(allFoldersInformation) { o -> o.folder }
-
             if (totalResults <1){
                 render(view: ACTION, model: [
                     selectedFolder: selectedFolder,
                     mainFavoriteFolder: mainFavoriteFolder,
                     resultsNumber: totalResults,
-                    allFolders: allFoldersInformation,
+                    allFolders: favoritesService.getFolderList(user.id),
                     userName: userName,
                     fullName: fullName,
                     nickName: nickName,
                     fullPublicLink: createPublicLink(user.getId(), folderId),
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                     baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,ORDER_DESC,"title",0,folderId),
+                    createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0,folderId),
                 ])
                 return
             }else{
                 def locale = favoritesService.getLocale()
-                def allRes = favoritesService.retrieveItemMD(items,locale)
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
                 def queryString = request.getQueryString()
@@ -244,22 +225,18 @@ class FavoritesviewController {
                 //urlQuery["offset"] = 0
                 //Calculating results pagination (previous page, next page, first page, and last page)
                 def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
-                def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-                lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
+                def totalPages = (Math.ceil(favorites.size()/urlQuery["rows"].toInteger()).toInteger())
+                lastPgOffset=((Math.ceil(favorites.size()/rows)*rows)-rows).toInteger()
 
                 if (totalPages.toFloat()<page.toFloat()){
-                    offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                    if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                    offset= (Math.ceil((favorites.size()-rows)/10)*10).toInteger()
+                    if ((Math.ceil((favorites.size()-rows)/10)*10).toInteger()<0){
                         lastPgOffset=20
                     }
                     page=totalPages
                 }
                 def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-                def numberOfResultsFormatted = String.format(locale, "%,d", allRes.size().toInteger())
-                def allResultsWithAdditionalInfo = favoritesService.addBookmarkToFavResults(allRes, items, locale)
-                allResultsWithAdditionalInfo = favoritesService.addFolderToFavResults(allResultsWithAdditionalInfo, selectedFolder)
-                allResultsWithAdditionalInfo = favoritesService.addCurrentUserToFavResults(allResultsWithAdditionalInfo, user)
-
+                def numberOfResultsFormatted = String.format(locale, "%,d", favorites.size().toInteger())
                 def orderLinks = createOrderLinks([
                     action : ACTION,
                     userId : user.id,
@@ -268,12 +245,11 @@ class FavoritesviewController {
                     offset : offset
                 ])
 
-                def orderedFavorites = orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
                 if (offset != 0){
-                    resultsItems=orderedFavorites.drop(offset)
-                    resultsItems=resultsItems.take( rows)
+                    resultsItems = favorites.drop(offset)
+                    resultsItems = resultsItems.take( rows)
                 }else{
-                    resultsItems=orderedFavorites.take( rows)
+                    resultsItems = favorites.take( rows)
                 }
 
                 if (request.method=="POST"){
@@ -283,8 +259,8 @@ class FavoritesviewController {
                     results: resultsItems,
                     selectedFolder: selectedFolder,
                     mainFavoriteFolder: mainFavoriteFolder,
-                    allResultsOrdered: allResultsWithAdditionalInfo,
-                    allFolders: allFoldersInformation,
+                    allResultsOrdered: favorites,
+                    allFolders: favoritesService.getFolderList(user.id),
                     viewType: urlQuery["viewType"],
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     paginationURL: searchService.buildPagination(totalResults, urlQuery, request.forwardURI+'?'+queryString),
@@ -318,7 +294,10 @@ class FavoritesviewController {
         def urlsForOrderDate = [:]
         def urlsForOrderNumber = [:]
         def urlsForOrderTitle = [:]
-        for (order in [ORDER_ASC, ORDER_DESC]) {
+        for (order in [
+            favoritesService.ORDER_ASC,
+            favoritesService.ORDER_DESC
+        ]) {
             urlsForOrderDate[order] = g.createLink(
                     action : parameters.action,
                     id : parameters.folderId,
@@ -326,7 +305,7 @@ class FavoritesviewController {
                         offset : parameters.offset,
                         rows : parameters.rows,
                         order : order,
-                        by : ORDER_BY_DATE,
+                        by : favoritesService.ORDER_BY_DATE,
                         userId : parameters.userId,
                         folderId : parameters.folderId
                     ]
@@ -338,7 +317,7 @@ class FavoritesviewController {
                         offset : parameters.offset,
                         rows : parameters.rows,
                         order : order,
-                        by : ORDER_BY_NUMBER,
+                        by : favoritesService.ORDER_BY_NUMBER,
                         userId : parameters.userId,
                         folderId : parameters.folderId
                     ]
@@ -350,7 +329,7 @@ class FavoritesviewController {
                         offset : parameters.offset,
                         rows : parameters.rows,
                         order : order,
-                        by : ORDER_BY_TITLE,
+                        by : favoritesService.ORDER_BY_TITLE,
                         userId : parameters.userId,
                         folderId : parameters.folderId
                     ]
@@ -400,7 +379,7 @@ class FavoritesviewController {
             bookmarksService.updateFolder(folder)
         }
 
-        if (order == ORDER_DESC) {
+        if (order == favoritesService.ORDER_DESC) {
             result = result.reverse()
         }
 
@@ -410,21 +389,21 @@ class FavoritesviewController {
     private def orderFavorites(def favorites, String folderId, String order, String by) {
         // order by number to get the "orderNumber" property filled out
         def result = orderFavoritesByNumber(favorites, folderId, order)
-        if (order == ORDER_ASC) {
-            if (by == ORDER_BY_DATE) {
+        if (order == favoritesService.ORDER_ASC) {
+            if (by == favoritesService.ORDER_BY_DATE) {
                 result = result.sort{ a, b ->
                     a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
                 }
             }
-            else if (by == ORDER_BY_TITLE) {
+            else if (by == favoritesService.ORDER_BY_TITLE) {
                 result = result.sort{it.label.toLowerCase()}.reverse()
             }
         }
         else { // desc
-            if (by == ORDER_BY_TITLE) {
+            if (by == favoritesService.ORDER_BY_TITLE) {
                 result = result.sort{it.label.toLowerCase()}
             }
-            else if (by == ORDER_BY_DATE) {
+            else if (by == favoritesService.ORDER_BY_DATE) {
                 result = result.sort{ a, b ->
                     b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
                 }
