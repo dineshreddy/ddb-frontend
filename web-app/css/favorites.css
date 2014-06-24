@@ -127,6 +127,10 @@ hr {
   margin-right:0;
 }
 
+.favorites-results-controls .page-link.page-link-popup-anchor:before {
+  margin-top:0;
+}
+
 .bookmarks-lists .bookmarks-list a:hover {
   text-decoration: underline;
   color: #a5003b;
