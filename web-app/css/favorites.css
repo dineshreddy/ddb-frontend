@@ -248,7 +248,7 @@ hr {
   text-align:right;
 }
 
-.results-sorter .favorite-numberheader{
+.results-sorter .favorite-numberheader {
   margin-left:12px;
   margin-right:28px;
 }
@@ -267,7 +267,7 @@ hr {
   margin-left: 25px;
 }
 
-.delete-container .page-info-nav, .delete-container .delete-btn{
+.delete-container .page-info-nav, .delete-container .delete-btn {
   display:inline-block;
 }
 
@@ -334,11 +334,16 @@ hr {
   font-size: 1.063em;
 }
 
-.favorites-results .results-list .summary-main-wrapper .title{
+.favorites-results .results-list .rank {
+  margin-left: 55px;
+  width: 26px;
+}
+
+.favorites-results .results-list .summary-main-wrapper .title {
   max-height: 3.2em;
 }
 
-.favorites-results .results-list .summary-main-wrapper .title a{
+.favorites-results .results-list .summary-main-wrapper .title a {
   font-weight: normal;
   word-wrap: break-word;
 }
@@ -759,11 +764,11 @@ hr {
   cursor: pointer;
 }
 
-.rank-arrows .up{
+.rank-arrows .up {
   background-position: 5px -8px;
 }
 
-.rank-arrows .down{
+.rank-arrows .down {
   background-position: 5px -107px;
 }
 

@@ -31,7 +31,10 @@ limitations under the License.
     </g:elseif>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span6">
+        <g:if test="${publicView}">
+          <div class="rank span1">${it.orderNumber}</div>
+        </g:if>
+        <div class="summary-main-wrapper span5">
           <g:if test="${!publicView}">
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
             <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${it.folder.folderId}">
