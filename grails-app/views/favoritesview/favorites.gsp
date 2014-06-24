@@ -153,7 +153,12 @@ limitations under the License.
                               title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />"
                             </g:else>
                           >
-                            <g:message encodeAs="html" code="ddbnext.public"/>
+                            <g:if test="${it.folder.isPublic}">
+                              <g:message encodeAs="html" code="ddbnext.public"/>
+                            </g:if>
+                            <g:else>
+                              <g:message encodeAs="html" code="ddbnext.private"/>
+                            </g:else>
                           </a>
                         </g:else>
                         <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />">  
