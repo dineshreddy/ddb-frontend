@@ -13,32 +13,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="i" value="0" />
-<g:if test="${hierarchy}">
-  <g:each var="${item}" in="${hierarchy}">
-    <g:if test="${item.children}">
-      <ul>
-        <g:each var="${child}" in="${item.children}">
-          <li><g:if test="${child.id==itemId}">
-              <strong>
+<div class="bt">
+  <g:set var="i" value="0" />
+  <g:if test="${hierarchy}">
+  <h3><g:message code="ddbnext.View_related_objects" /></h3>
+    <g:each var="${item}" in="${hierarchy}">
+      <g:if test="${item.children}">
+        <ul>
+          <g:each var="${child}" in="${item.children}">
+            <li><g:if test="${child.id==itemId}">
+                <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
+                </strong>
+              </g:if> <g:else>
                 ${ddbcommon.wellFormedDocFromString(text:child.label)}
-              </strong>
-            </g:if>
-            <g:else>
-              ${ddbcommon.wellFormedDocFromString(text:child.label)}
-            </g:else></li>
-        </g:each>
-      </ul>
-    </g:if>
-    <g:else>
-      ${ddbcommon.wellFormedDocFromString(text:item.label)}
-    </g:else>
-    <ul>
-      <li><g:set var="i" value="${++i}" />
-  </g:each>
-  <g:while test="${i.toInteger() > 0}">
-    <%i--%>
+              </g:else></li>
+          </g:each>
+        </ul>
+      </g:if>
+      <g:else>
+        ${ddbcommon.wellFormedDocFromString(text:item.label)}
+      </g:else>
+      <ul>
+        <li><g:set var="i" value="${++i}" />
+    </g:each>
+    <g:while test="${i.toInteger() > 0}">
+      <%i--%>
+    
     </li>
     </ul>
-  </g:while>
-</g:if>
+    </g:while>
+  </g:if>
+</div>

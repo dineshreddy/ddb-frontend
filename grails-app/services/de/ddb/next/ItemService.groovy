@@ -130,6 +130,9 @@ class ItemService {
      * @return
      */
     def prepareImagesForPdf(model) {
+        //ADD Hierarchy
+        model.hierarchy=getHierarchyItem(model.itemId)
+        
         def baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
         def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
@@ -148,6 +151,10 @@ class ItemService {
             model.institutionImage = logoResource.bytes
         }
 
+        //FONT for PDF
+        model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
+        model.fontCalibri=grailsApplication.mainContext.getResourceByPath('/css/fonts/Calibri.ttf').file.bytes
+        
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
@@ -157,7 +164,6 @@ class ItemService {
             }
         }
         model.put("binariesListViewerContent", viewerContent)
-        model.put(hierarchy:getHierarchyItem(model.itemId))
         return model
     }
 
@@ -170,6 +176,9 @@ class ItemService {
      */
     def getHierarchyItem(String id) {
         def bottomUpHierarchy = this.getParent(id)
+        if (bottomUpHierarchy.size()<=1) {
+            return []
+        }
         def directParent=bottomUpHierarchy[1]
         def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
         directParent["children"]=this.getChildren(directParent.id)
