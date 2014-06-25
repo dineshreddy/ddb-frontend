@@ -36,7 +36,7 @@ limitations under the License.
           </div>
         </div>
         <div class="thumbnail-wrapper span3">
-          <div class="thumbnail-entity" id="thumbnail-${entityItem.id}">
+          <div class="thumbnail" id="thumbnail-${entityItem.id}">
             <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:entityId]}">
               <g:if test="${entityItem.preview.thumbnail!="null"}">
                 <img src="${request.getContextPath() + entityItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${entityItem.preview.title}</ddb:getWithoutTags>" width="<ddb:scaleImage side="width">${entityItem.preview.thumbnail}</ddb:scaleImage>" height="<ddb:scaleImage side="height">${entityItem.preview.thumbnail}</ddb:scaleImage>" />
