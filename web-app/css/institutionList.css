@@ -39,10 +39,6 @@
   background: none;
 }
 
-.view-type-switch button.selected{
-  border: #a5003b 1px solid;
-}
-
 .view-type-switch button:before {
   display: inline-block;
   content: url("../images/icons/viewSelector.png");
