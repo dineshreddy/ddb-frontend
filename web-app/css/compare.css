@@ -94,6 +94,10 @@
   margin-top: 0;
 }
 
+.compare .popup-dialog-wrapper .page-link:before {
+  margin-top: 5px;
+}
+
 @media (max-width: 529px) {
   .compare .binary-viewer {
     width: 300px;

@@ -39,6 +39,10 @@
   padding-top:12px;
 }
 
+.persons-head .popup-dialog-wrapper {
+  margin-top: -48px !important;
+}
+
 .persons-body {
   padding-top: 20px;
 }
@@ -98,3 +102,4 @@
 .pin p a {
   font-size: 15px;
 }
+
