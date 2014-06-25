@@ -134,7 +134,7 @@ class ItemService {
         def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
-
+        
         def logoResource
         try {
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
@@ -161,6 +161,21 @@ class ItemService {
         return model
     }
 
+    /** 
+     * Gets the hierarchy up to the parent & then adds all siblings to the direct partners
+     * Used in the PDF generation of an Item View. The normal Item View uses a JS version
+     * Returns a flat list of the parents & all the siblings as "children" of the direct parent
+     * @param id
+     * @return List
+     */
+    def getHierarchyItem(String id) {
+        def bottomUpHierarchy = this.getParent(id)
+        def directParent=bottomUpHierarchy[1]
+        def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
+        directParent["children"]=this.getChildren(directParent.id)
+        flatHierarchy.add(directParent)
+        return flatHierarchy
+    }
 
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
@@ -241,7 +256,8 @@ class ItemService {
             isFavorite: isFavorite,
             baseUrl: commonConfigurationService.getSelfBaseUrl(),
             publicUrl: commonConfigurationService.getConfigValue("ddb.public.url"),
-            similarItems : similarItems
+            similarItems : similarItems,
+            hierarchy:getHierarchyItem(itemId)
         ]
 
         return model

@@ -22,7 +22,7 @@ limitations under the License.
 <title>
   ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">
-@media print {
+ @media print { 
   @page {
     margin: 1in;
     width: 21cm;
@@ -174,6 +174,11 @@ limitations under the License.
   .item-title {
     font-size: 16px;
   }
+  ul li {
+    list-style-type: square;
+    padding-left:1px;
+    margin-left: 1px;
+  }​
 }
 </style>
 </head>
@@ -198,6 +203,7 @@ limitations under the License.
     </tr>
   </table>
   <g:render template="itemdetailsPdf" />
+  <g:render template="itemHierarchyPdf" model="[hierarchy:hierarchy]" />
   <g:render template="linkurlPdf" />
 </body>
 </html>
