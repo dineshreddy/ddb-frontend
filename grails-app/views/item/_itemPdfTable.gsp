@@ -22,7 +22,7 @@ limitations under the License.
 <title>
   ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">
- @media print { 
+@media print {
   @page {
     margin: 1in;
     width: 21cm;
@@ -33,15 +33,31 @@ limitations under the License.
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
+  @font-face{
+   font-family:KarbidWeb;
+   src: url(<ddbcommon:renderBase64File mimeType="application/font-woff" bytes="${fontKarbidWeb}" />) format('woff');
+   -fs-pdf-font-embed: embed;
+   -fs-pdf-font-encoding: Identity-H;   
+  }
+  @font-face {
+     font-family:Calibri;
+     src: url(<ddbcommon:renderBase64File mimeType="font/ttf" bytes="${fontCalibri}" />) format('truetype');
+     -fs-pdf-font-embed: embed;
+     -fs-pdf-font-encoding: Identity-H;
+  }  
+  body{
+    font-family:'Calibri';
+    font-size: 9pt;  
+  }
   h1,h2,h3,h4 {
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
+    font-family:'KarbidWeb';
     font-size: 1.75em;
     font-weight: normal;
     color: rgb(62, 58, 55);
     line-height: 1.5em;
   }
   h2,h2 a {
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
+    font-family:'KarbidWeb';
     font-weight: bold;
     font-size: 1.375em;
     color: #a5003b;
@@ -53,7 +69,7 @@ limitations under the License.
   th,td {
     vertical-align: top; ! important;
     margin-top: 0;
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
+    font-family:KarbidWeb;
     font-size: 9pt;
   }
   a {
@@ -174,11 +190,6 @@ limitations under the License.
   .item-title {
     font-size: 16px;
   }
-  ul li {
-    list-style-type: square;
-    padding-left:1px;
-    margin-left: 1px;
-  }​
 }
 </style>
 </head>
@@ -203,7 +214,7 @@ limitations under the License.
     </tr>
   </table>
   <g:render template="itemdetailsPdf" />
-  <g:render template="itemHierarchyPdf" model="[hierarchy:hierarchy]" />
+  <g:render template="itemHierarchyPdf" model="[hierarchy:hierarchy]" />  
   <g:render template="linkurlPdf" />
 </body>
 </html>
