@@ -157,7 +157,7 @@ class ItemService {
             }
         }
         model.put("binariesListViewerContent", viewerContent)
-
+        model.put(hierarchy:getHierarchyItem(model.itemId))
         return model
     }
 
@@ -256,8 +256,7 @@ class ItemService {
             isFavorite: isFavorite,
             baseUrl: commonConfigurationService.getSelfBaseUrl(),
             publicUrl: commonConfigurationService.getConfigValue("ddb.public.url"),
-            similarItems : similarItems,
-            hierarchy:getHierarchyItem(itemId)
+            similarItems : similarItems
         ]
 
         return model
