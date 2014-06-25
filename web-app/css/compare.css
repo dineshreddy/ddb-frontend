@@ -83,6 +83,7 @@
   padding-right: 30px;
 }
 
+.compare .back-to-list:before,
 .compare .back-to-list-greyed-out:before,
 .compare .page-link:before,
 .compare .sendmail-link:before,
