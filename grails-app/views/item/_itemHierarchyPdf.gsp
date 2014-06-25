@@ -25,7 +25,7 @@ limitations under the License.
                 <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
                 </strong>
               </g:if> <g:else>
-                ${ddbcommon.wellFormedDocFromString(text:child.label)}
+                <g:link controller="item" action="findById" id="${child.id}">${ddbcommon.wellFormedDocFromString(text:child.label)}</g:link>
               </g:else></li>
           </g:each>
         </ul>
