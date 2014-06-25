@@ -809,7 +809,8 @@ hr {
   .favorites-results-controls .page-info,
   .favorites-results-controls .favorite-numberheader,
   .favorites-results .rank-wrapper,
-  .favorites-results-controls .mobile-off {
+  .favorites-results-controls .mobile-off,
+  .favorites-results-controls .link-block {
     display: none;
   }
 
@@ -867,6 +868,7 @@ hr {
     width: 100%;
     background: #fff;
     bottom: 0;
+    left: 0;
   }
 
   .favorites-results-controls .options-buttons-container .delete-btn {
