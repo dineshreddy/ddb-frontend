@@ -135,10 +135,6 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
         
-        
-        getHierarchyItem(model.itemId)
-        
-        
         def logoResource
         try {
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
