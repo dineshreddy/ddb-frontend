@@ -404,12 +404,13 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   unselectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
+    
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
       de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    currObjInstance.fetchResultsList($.addParamToCurrentUrl([['offset', 0]], newUrl
-        .substr(newUrl.indexOf("?") + 1)));
+    $.addParamToCurrentUrl([['offset', 0]], newUrl)
+    currObjInstance.fetchResultsList(newUrl);
   },
 
   /**
