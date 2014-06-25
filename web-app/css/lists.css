@@ -111,3 +111,7 @@
   border: 0;
   margin: auto;
 }
+
+.lists .popup-dialog-wrapper {
+  margin-top: -48px !important;
+}
