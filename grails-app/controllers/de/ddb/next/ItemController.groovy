@@ -51,7 +51,6 @@ class ItemController {
             }
 
         } catch(ItemNotFoundException infe) {
-
             forward controller: "error", action: "itemNotFound"
         }
     }
