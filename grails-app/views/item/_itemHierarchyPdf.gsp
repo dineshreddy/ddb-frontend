@@ -21,17 +21,17 @@ limitations under the License.
         <g:each var="${child}" in="${item.children}">
           <li><g:if test="${child.id==itemId}">
               <strong>
-                ${child.label}
+                ${ddbcommon.wellFormedDocFromString(text:child.label)}
               </strong>
             </g:if>
             <g:else>
-              ${child.label}
+              ${ddbcommon.wellFormedDocFromString(text:child.label)}
             </g:else></li>
         </g:each>
       </ul>
     </g:if>
     <g:else>
-      ${item.label}
+      ${ddbcommon.wellFormedDocFromString(text:item.label)}
     </g:else>
     <ul>
       <li><g:set var="i" value="${++i}" />
