@@ -169,9 +169,9 @@ class ItemService {
      * @return List
      */
     def getHierarchyItem(String id) {
-        def downTopHierarchy = this.getParent(id)
-        def directParent=downTopHierarchy[1]
-        def flatHierarchy=downTopHierarchy.subList(2, downTopHierarchy.size()).reverse()
+        def bottomUpHierarchy = this.getParent(id)
+        def directParent=bottomUpHierarchy[1]
+        def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
         directParent["children"]=this.getChildren(directParent.id)
         flatHierarchy.add(directParent)
         return flatHierarchy
