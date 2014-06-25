@@ -47,7 +47,7 @@ limitations under the License.
   }  
   body{
     font-family:'Calibri';
-    font-size: 9pt;  
+    font-size: 10pt;  
   }
   h1,h2,h3,h4 {
     font-family:'KarbidWeb';
