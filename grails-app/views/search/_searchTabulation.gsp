@@ -19,7 +19,7 @@ limitations under the License.
     <div class="span6 tabulator">
       <ul id="tabulator">
         <li>
-          <span class="total-results">${totalResults}</span> 
+          <span class="total-results"><ddb:getLocalizedNumber>${totalResults}</ddb:getLocalizedNumber></span> 
           <g:if test="${totalResults == 1 || totalResults == "1"}">
             <span class="total-results-label"><g:message code="ddbnext.Multi_Page_Result" /></span>:
           </g:if>
