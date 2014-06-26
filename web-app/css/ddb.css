@@ -1527,6 +1527,11 @@ select {
   background-color: #EFEBE8 !important;
 }
 
+.modal-header h3 {
+  font-size: 1em !important;
+  text-transform: uppercase;
+}
+
 /* responsive genaral rules */
 @media (max-width: 767px) {
   body {

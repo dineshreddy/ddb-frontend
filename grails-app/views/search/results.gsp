@@ -149,13 +149,11 @@ limitations under the License.
         <ddbcommon:isPersonalFavoritesAvailable>
           <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
+              <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
               <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
               <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
               <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
               <div class="modal-footer">
-                <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                  <g:message encodeAs="html" code="ddbcommon.Close"/>
-                </button>
                 <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
                   <g:message encodeAs="html" code="ddbcommon.Save"/>
                 </button>

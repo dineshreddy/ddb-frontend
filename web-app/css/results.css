@@ -1345,6 +1345,11 @@ color: #a5003b;
   text-align: center;
   margin-left: auto;
 }
-.end-result-border{
+
+.end-result-border {
   margin-top:-10px;
+}
+
+.search-results-container .fancybox-toolbar-close {
+  right: 10px;
 }
