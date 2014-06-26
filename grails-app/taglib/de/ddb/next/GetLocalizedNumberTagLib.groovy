@@ -33,7 +33,11 @@ class GetLocalizedNumberTagLib {
         def inputString = body()
         def outputString = ""
         if(inputString){
-            outputString = String.format(locale, "%,d", inputString.toInteger())
+            try{
+                outputString = String.format(locale, "%,d", inputString.toInteger())
+            }catch(NumberFormatException ex){
+                outputString = inputString
+            }
         }
         out << outputString
     }

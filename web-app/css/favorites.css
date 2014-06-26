@@ -147,6 +147,7 @@ hr {
 }
 
 .public-favorites .results-paginator-options {
+  border-bottom: 0;
   margin-top: 20px !important;
 }
 
@@ -231,7 +232,15 @@ hr {
   padding-left: 10px;
 }
 
-.public-favorites .summary-main-wrapper .summary-main, .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
+.public-favorites .social-open {
+  margin: 0 0 0 -23px !important;
+}
+
+.public-favorites .socialmedia {
+  float: left;
+}
+
+.public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
   margin-left: 0px !important;
 }
 
@@ -335,7 +344,9 @@ hr {
 }
 
 .favorites-results .results-list .rank {
-  margin-left: 55px;
+  display: inline-block;
+  margin-left: 30px;
+  position: absolute;
   width: 26px;
 }
 
