@@ -73,10 +73,10 @@ limitations under the License.
           </g:if>
           <g:else>
             <g:if test="${it.preview.media[0] == "entity"}">
-              <g:set var="entityLink" value="persist entity-link" />
+              <g:set var="entityLink" value="entity-link" />
             </g:if>
             <g:else>
-              <g:set var="entityLink" value="persist" />
+              <g:set var="entityLink" value="" />
             </g:else>
             <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
               <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
