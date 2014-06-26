@@ -31,7 +31,7 @@ limitations under the License.
     </g:elseif>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span5">
+        <div class="summary-main-wrapper span6">
           <g:if test="${publicView}">
             <div class="rank">${it.orderNumber}</div>
           </g:if>
