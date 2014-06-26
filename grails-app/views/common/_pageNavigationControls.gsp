@@ -86,7 +86,7 @@ limitations under the License.
   <div class="page-info">
     <span class="results-overall-index">${navData.resultsOverallIndex}</span> 
     <span> / </span> 
-    <span><strong><span class="results-total">${navData.numberOfResults}</span></strong> </span> 
+    <span><strong><span class="results-total"><ddb:getLocalizedNumber>${navData.numberOfResults}</ddb:getLocalizedNumber></span></strong> </span> 
   </div>
   <ul class="inline">
     <li class="prev-page bl">
