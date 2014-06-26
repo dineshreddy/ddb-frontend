@@ -24,6 +24,7 @@
 
 .edit-saved-search-icon {
   background: url("../images/icons/ddbIkonographie.png") -30px -240px no-repeat;
+  cursor: pointer;
   position: relative;
   margin-top: 7px;
   height: 20px;
@@ -81,4 +82,8 @@
   position: absolute;
   right: 0;
   bottom: -38px;
+}
+
+.saved-searches .favorites-results .results-list .summary-main {
+  margin-left: 36px;
 }
