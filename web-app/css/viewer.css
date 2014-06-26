@@ -92,6 +92,10 @@
   background:#fff url("../images/icons/searchResultMediaImage.png") no-repeat center center;
   background-size:90px auto;
 }
+.scroller li .group .placeholder.thumbnail.text {
+  background:#fff url("../images/icons/searchResultMediaText.png") no-repeat center center;
+  background-size:90px auto;
+}
 .scroller li .group .thumbnail img {
   margin:0;
   max-width:120px;
