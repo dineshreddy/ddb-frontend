@@ -18,6 +18,7 @@ $(function() {
     var randomSeed = $('#var-to-js').attr('data-random-seed');
     var pgTitle = $('#var-to-js').attr('data-pgTitle');
     History.pushState({sort:randomSeed}, pgTitle + " " +randomSeed, "?sort="+randomSeed);
+    document.title = pgTitle + " - " + messages.ddbnext.Deutsche_Digitale_Bibliothek();
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
 
