@@ -13,15 +13,16 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="java.net.URL"%>
 <table border="0" width="100%">
   <tr>
     <td>
       <div class="container item-detail bt linkurl">
         <div>
-          <strong><g:message encodeAs="html"code="ddbnext.CulturalItem_Deeplink" />: </strong>
+          <strong><g:message code="ddbnext.CulturalItem_Deeplink" />: </strong>
         </div>
         <div class="value">
-          ${publicUrl+itemUri}
+          ${new URL(new URL(publicUrl), itemUri)}
         </div>
       </div>
     </td>
