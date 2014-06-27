@@ -83,7 +83,10 @@ limitations under the License.
 
                 </div>
                 <div id="saved-search-sendmail">
-                  <a class="saved-searches-list-envelope" id="send-saved-searches"> </a>
+                  <a class="saved-searches-list-envelope" id="send-saved-searches"
+                     title="<g:message code="ddbnext.favorites_list_send"/>">
+                    <g:message code="ddbnext.favorites_list_send"/>
+                  </a>
                 </div>
               </div>
 
