@@ -1524,7 +1524,12 @@ select {
 }
 
 #jwplayer-container {
-  background-color: #fff !important;
+  background-color: #EFEBE8 !important;
+}
+
+.modal-header h3 {
+  font-size: 1em !important;
+  text-transform: uppercase;
 }
 
 /* responsive genaral rules */

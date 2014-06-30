@@ -32,15 +32,16 @@ limitations under the License.
   <body>
     <div class="favorites-results-container public-favorites">
       <div class="row favorites-results-head">
-        <div class="span8">
-          <h1>
-            ${selectedFolder.title.capitalize()}
-          </h1>
-        </div>
-        <div class="print-header">
-          <h3>
-            <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
-          </h3>
+        <div class="span12 public-favorites-header">
+          <div class="title">
+            <h1>
+              ${selectedFolder.title.capitalize()}
+            </h1>
+          </div>
+          <div class="print-header">
+            <h3>
+              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
+            </h3>
           <%--
             <div class="page-info">
               <span class="results-overall-index">1-2 </span> 
@@ -54,21 +55,15 @@ limitations under the License.
               </g:else>
             </div>
             --%>
-        </div>
-        <div class="span4 results-paginator-options">
-          <div class="page-filter">
-            <label><g:message encodeAs="html" code="ddbnext.Items_Per_Page" /></label> <span> <select class="select">
-                <g:each in="${resultsPaginatorOptions.pageFilter}">
-                  <option value="${it}" <g:if test="${rows == it}">selected</g:if>>
-                    ${it}
-                  </option>
-                </g:each>
-            </select>
-            </span>
           </div>
-        </div>
-        <div class="span12">
-          <hr>
+          <div class="right-container">
+            <a class="page-link page-link-popup-anchor" href="${linkUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+              <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+            </a>
+            <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
+              <ddb:getSocialmediaBody/>
+            </g:if>
+          </div>
         </div>
       </div>
       <div class="row favorites-results-container">
@@ -127,16 +122,6 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
-              <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-                <div class="share-block">
-                  <ddb:getSocialmediaBody />
-                </div>
-              </g:if>
-              <div class="delete-container">
-                <div class="results-pagination">
-                  <ddb:renderPaginationControls navData="${navigationData}" />
-                </div>
-              </div>
               <div class="results-sorter">
                 <span class="favorite-numberheader">
                   <g:if test="${order == "desc"}">

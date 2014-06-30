@@ -358,7 +358,7 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
+
     <%-- Modal "Send email" --%>
     <g:if test="${resultsNumber > 0}">
       <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="favoritesLabel" aria-hidden="true">
@@ -384,8 +384,7 @@ limitations under the License.
         </form>
       </div>
     </g:if>
-    
-    
+
     <%-- Modal "Confirm favorites delete" --%>
     <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
       <div class="modal-header">
@@ -405,7 +404,7 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button> 
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
+        <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
       </div>
     </div>
   
@@ -430,7 +429,6 @@ limitations under the License.
         </select>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -457,7 +455,6 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -483,8 +480,8 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbcommon.Confirm_Short" /> </button> 
+        <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
+        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbnext.Delete" /> </button> 
       </div>
     </div>
   
@@ -535,11 +532,9 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
-  
-    
+
   </body>
 </html>

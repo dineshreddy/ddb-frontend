@@ -28,7 +28,7 @@ limitations under the License.
 
 <html>
 <head>
-<title><g:message encodeAs="html" code="ddbnext.Savedsearches_Of" args="${[userName]}" default="ddbnext.Savedsearches_Of" /> - <g:message encodeAs="html"
+<title><g:message code="ddbnext.Savedsearches_Of" args="${[userName]}" default="ddbnext.Savedsearches_Of" /> - <g:message
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="savedsearches">
 <meta name="layout" content="main">
@@ -38,12 +38,12 @@ limitations under the License.
     <div class="row favorites-results-head">
       <div class="span8">
         <h1>
-          <g:message encodeAs="html" code="ddbnext.Savedsearches_Header" />
+          <g:message code="ddbnext.Savedsearches_Header" />
         </h1>
       </div>
       <div class="print-header">
         <h3>
-          <g:message encodeAs="html" code="ddbnext.Savedsearches_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Savedsearches_Of" />
+          <g:message code="ddbnext.Savedsearches_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Savedsearches_Of" />
         </h3>
       </div>
     </div>
@@ -55,21 +55,21 @@ limitations under the License.
         <g:if test="${flash.message}">
           <div class="messages-container">
             <ul class="unstyled">
-              <li><i class="icon-ok-circle"></i><span><g:message encodeAs="html" code="${flash.message}" /></span></li>
+              <li><i class="icon-ok-circle"></i><span><g:message code="${flash.message}" /></span></li>
             </ul>
           </div>
         </g:if>
         <g:elseif test="${flash.email_error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.email_error}" /></span></li>
+              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span></li>
             </ul>
           </div>
         </g:elseif>
         <g:if test="${flash.error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
+              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
             </ul>
           </div>
         </g:if>
@@ -83,7 +83,10 @@ limitations under the License.
 
                 </div>
                 <div id="saved-search-sendmail">
-                  <a class="saved-searches-list-envelope" id="send-saved-searches"> </a>
+                  <a class="saved-searches-list-envelope" id="send-saved-searches"
+                     title="<g:message code="ddbnext.favorites_list_send"/>">
+                    <g:message code="ddbnext.favorites_list_send"/>
+                  </a>
                 </div>
               </div>
 
@@ -95,8 +98,8 @@ limitations under the License.
 
                 <div class="span1 delete-btn">
                   <g:form id="deleteSavedSearches" method="POST" name="deleteSavedSearches" mapping="delSavedSearches">
-                    <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbnext.Delete_Savedsearches"/>">
-                      <span><g:message encodeAs="html" code="ddbnext.Delete" /></span>
+                    <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Savedsearches"/>">
+                      <span><g:message code="ddbnext.Delete" /></span>
                     </button>
                   </g:form>
                 </div>
@@ -106,7 +109,7 @@ limitations under the License.
             <!-- End Working here -->
             <div class="results-sorter">
               <span><input type="checkbox" class="select-all" id="checkall"></span> <span> <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
-                  <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}"> <g:message encodeAs="html" code="ddbnext.Saved_Search" /> <span> <g:if
+                  <a href="${(urlsForOrder["asc"] + "&criteria=label").encodeAsHTML()}"> <g:message code="ddbnext.Savedsearch_Title" /> <span> <g:if
                         test="${params.criteria == "label"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}" />
                       </g:if> <g:else>
@@ -115,7 +118,7 @@ limitations under the License.
                   </span>
                   </a>
                 </g:if> <g:else>
-                  <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}"> <g:message encodeAs="html" code="ddbnext.Saved_Search" /> <span> <g:if
+                  <a href="${(urlsForOrder["desc"] + "&criteria=label").encodeAsHTML()}"> <g:message code="ddbnext.Savedsearch_Title" /> <span> <g:if
                         test="${params.criteria == "label"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}" />
                       </g:if> <g:else>
@@ -125,7 +128,7 @@ limitations under the License.
                   </a>
                 </g:else>
               </span> <span class="favorite-dateheader"> <g:if test="${params[SearchParamEnum.ORDER.getName()] == "desc"}">
-                  <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}"> <g:message encodeAs="html" code="ddbnext.Added_On" /> <span> <g:if
+                  <a href="${(urlsForOrder["asc"] + "&criteria=creationDate").encodeAsHTML()}"> <g:message code="ddbnext.Added_On" /> <span> <g:if
                         test="${params.criteria == "creationDate"}">
                         <g:img dir="images/icons" file="asc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Ascending')}" />
                       </g:if> <g:else>
@@ -134,7 +137,7 @@ limitations under the License.
                   </span>
                   </a>
                 </g:if> <g:else>
-                  <a href="${(urlsForOrder["desc"] + "&criteria=creationDate").encodeAsHTML()}"> <g:message encodeAs="html" code="ddbnext.Added_On" /> <span> <g:if
+                  <a href="${(urlsForOrder["desc"] + "&criteria=creationDate").encodeAsHTML()}"> <g:message code="ddbnext.Added_On" /> <span> <g:if
                         test="${params.criteria == "creationDate"}">
                         <g:img dir="images/icons" file="desc.gif" class="orderList" alt="${message(code: 'ddbnext.Order_Descending')}" />
                       </g:if> <g:else>
@@ -153,7 +156,7 @@ limitations under the License.
         <g:else>
           <div class="messages-container">
             <ul class="unstyled">
-              <li><span><g:message encodeAs="html" code="ddbnext.No_Savedsearches" /></span></li>
+              <li><span><g:message code="ddbnext.No_Savedsearches" /></span></li>
             </ul>
           </div>
         </g:else>
@@ -164,24 +167,24 @@ limitations under the License.
   <g:if test="${numberOfResults > 0}">
     <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
-        <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="sendSavedSearchesLabel">
-          <g:message encodeAs="html" code="ddbnext.Send_Savedsearches" />
+          <g:message code="ddbnext.Send_Savedsearches" />
         </h3>
       </div>
       <form method="POST">
         <div class="modal-body">
           <fieldset>
-            <input placeholder="<g:message encodeAs="html" code="ddbnext.send_favorites_email"/>" name="email" required="required"> <br /> <small class="muted"><g:message
-                encodeAs="html" code="ddbnext.send_favorites_more_recipients" /></small> <br />
+            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required"> <br /> <small class="muted"><g:message
+                code="ddbnext.send_favorites_more_recipients" /></small> <br />
           </fieldset>
         </div>
         <div class="modal-footer">
           <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message encodeAs="html" code="ddbnext.Close" />
+            <g:message code="ddbcommon.Close" />
           </button>
           <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message encodeAs="html" code="ddbnext.send_now" />
+            <g:message code="ddbnext.send_now" />
           </button>
         </div>
       </form>
@@ -190,39 +193,39 @@ limitations under the License.
 
   <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">
     <div class="modal-header">
-      <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="deleteSavedSearchesLabel">
-        <g:message encodeAs="html" code="ddbcommon.delete_confirmation" />
+        <g:message code="ddbcommon.delete_confirmation" />
       </h3>
     </div>
     <div class="modal-body">
-      <g:message encodeAs="html" code="ddbnext.Delete_Savedsearches_Dialog" />
+      <g:message code="ddbnext.Delete_Savedsearches_Dialog" />
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
       <button class="submit" id="id-confirm">
-        <g:message encodeAs="html" code="ddbcommon.Yes" />
+        <g:message code="ddbcommon.Yes" />
       </button>
       <button class="submit" data-dismiss="modal">
-        <g:message encodeAs="html" code="ddbcommon.No" />
+        <g:message code="ddbcommon.No" />
       </button>
     </div>
   </div>
 
   <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
     <div class="modal-header">
-      <span title="<g:message encodeAs="html" code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
-        <g:message encodeAs="html" code="ddbnext.Edit_Savedsearch" />
+        <g:message code="ddbnext.Edit_Savedsearch" />
       </h3>
     </div>
     <div class="modal-body">
       <div>
-        <b><g:message encodeAs="html" code="ddbnext.Mandatory" /></b>
+        <b><g:message code="ddbnext.Mandatory" /></b>
       </div>
       <br />
       <div>
-        <g:message encodeAs="html" code="ddbnext.Savedsearch_Title" />
+        <g:message code="ddbnext.Savedsearch_Title" />
         *
       </div>
       <div>
@@ -231,10 +234,10 @@ limitations under the License.
     </div>
     <div class="modal-footer">
       <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message encodeAs="html" code="ddbnext.Close" />
+        <g:message code="ddbcommon.Close" />
       </button>
       <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
-        <g:message encodeAs="html" code="ddbnext.Save" />
+        <g:message code="ddbcommon.Save" />
       </button>
     </div>
   </div>
