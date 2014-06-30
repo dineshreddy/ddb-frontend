@@ -13,9 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="bt">
-  <g:set var="i" value="0" />
-  <g:if test="${hierarchy}">
+<g:if test="${hierarchy}">
+  <div class="bt">
+    <g:set var="i" value="0" />
+
     <h3>
       <g:message code="ddbnext.View_related_objects" />
     </h3>
@@ -46,5 +47,5 @@ limitations under the License.
       </li>
       </ul>
     </g:while>
-  </g:if>
-</div>
+  </div>
+</g:if>
