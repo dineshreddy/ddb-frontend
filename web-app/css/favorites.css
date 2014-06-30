@@ -140,7 +140,15 @@ hr {
   background-color: #efebe8;
 }
 
-.favorites-results-container .results-paginator-options {
+.public-favorites .row.favorites-results-container {
+  margin-top: 10px;
+}
+
+.public-favorites .favorites-results-content {
+  margin-top: 2px;
+}
+
+.public-favorites .favorites-results-container .results-paginator-options {
   text-align: right;
   display: inline-block;
   float: right;
@@ -236,8 +244,35 @@ hr {
   margin: 0 0 0 -23px !important;
 }
 
+.public-favorites .public-favorites-header {
+  border-bottom: solid 2px #efebe8;
+}
+
+.public-favorites .span12 > .title {
+  display: inline-block;
+}
+
+.public-favorites .right-container {
+  display: inline-block;
+  float: right;
+  line-height: 62px;
+}
+
 .public-favorites .socialmedia {
-  float: left;
+  float: right;
+  padding-top:12px;
+}
+
+.public-favorites .page-link:before {
+  margin-top: 22px;
+}
+
+.public-favorites .popup-dialog-title .page-link:before {
+  margin-top: 5px;
+}
+
+.public-favorites .popup-dialog-wrapper {
+  margin-top: -48px !important;
 }
 
 .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
@@ -622,11 +657,6 @@ hr {
   display: block;
   margin-bottom: -10px;
   min-width: 260px;
-}
-
-.public-favorites .delete-container {
-  display: inline;
-  margin-bottom: 0px !important;
 }
 
 .public-favorites .folder-siblings {
