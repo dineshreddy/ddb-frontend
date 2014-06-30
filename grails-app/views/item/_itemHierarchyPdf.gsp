@@ -16,7 +16,9 @@ limitations under the License.
 <div class="bt">
   <g:set var="i" value="0" />
   <g:if test="${hierarchy}">
-  <h3><g:message code="ddbnext.View_related_objects" /></h3>
+    <h3>
+      <g:message code="ddbnext.View_related_objects" />
+    </h3>
     <g:each var="${item}" in="${hierarchy}">
       <g:if test="${item.children}">
         <ul>
@@ -25,7 +27,9 @@ limitations under the License.
                 <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
                 </strong>
               </g:if> <g:else>
-                <g:link controller="item" action="findById" id="${child.id}">${ddbcommon.wellFormedDocFromString(text:child.label)}</g:link>
+                <g:link controller="item" action="findById" id="${child.id}">
+                  ${child.label}
+                </g:link>
               </g:else></li>
           </g:each>
         </ul>
@@ -38,9 +42,9 @@ limitations under the License.
     </g:each>
     <g:while test="${i.toInteger() > 0}">
       <%i--%>
-    
-    </li>
-    </ul>
+
+      </li>
+      </ul>
     </g:while>
   </g:if>
 </div>
