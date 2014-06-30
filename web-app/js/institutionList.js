@@ -46,6 +46,9 @@
 
     institutionsByFirstChar : null,
 
+    //global variable storing the filter state onlyInstitutionsWithData
+    onlyInstitutionsWithData : false,
+    
     // find index[All| A | B |...| Z | 0-9] with no members after filtered
     // by sectors.
     findNoMember : function(visible) {
@@ -59,7 +62,7 @@
     },
 
     filterDescendants : function(institution, memory, selectedSector, parentList) {
-      var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
+      var onlyInstitutionsWithData = ddb.onlyInstitutionsWithData;
 
       if (institution.children && institution.children.length > 0) {
         // when an institution has a least one child.
@@ -139,8 +142,17 @@
       }
     },
 
+    /**
+     * Filter selection only for the desktop view!
+     * 
+     * Filter selction for mobile view is handled in the multiselect callback onChange
+     */
     onFilterSelect : function() {
-      $('input:checkbox').click(function() {
+      $('.sector-facet input:checkbox').click(function() {
+        ddb.applyFilter();
+      });
+      
+      $('.institution-with-data input:checkbox').click(function() {
         ddb.applyFilter();
       });
     },
@@ -186,6 +198,8 @@
       var sectors = ddb.getSelectedSectors();
       var firstLetter = ddb.getFirstLetter();
 
+      ddb.retrieveFilterOnlyInstitutionsWithData();
+      
       ddb.filter(institutionList, sectors, firstLetter);
       // count all currently highlighted institutions
       var count = $('.institution-listitem.highlight').length;
@@ -238,11 +252,33 @@
       }
 
       return _.reduce(allSelectedSectors, function(sectors, el) {
-        sectors.push($(el).val());
+        //Do not add "onlyInstitutionsWithData" which comes from the multiselect!
+        if ($(el).val() != "onlyInstitutionsWithData") {
+          sectors.push($(el).val());
+        }
+        
         return sectors;
       }, []);
     },
 
+    /**
+     * 
+     */
+    retrieveFilterOnlyInstitutionsWithData : function() {
+      var institutionWithData = false;
+      
+      //Mobile view
+      if ($('.multiselect').is(':visible')) {
+        institutionWithData = $('.multiselect option[value="onlyInstitutionsWithData"]').prop("selected");
+      } 
+      //Desktop view
+      else {
+        institutionWithData = $('.institution-with-data input:checkbox').prop('checked');
+      }
+      
+      ddb.onlyInstitutionsWithData = institutionWithData;
+    },
+    
     /**
      * Applies the selected filters (sector, data, letter) to the institution list.
      */
@@ -259,7 +295,7 @@
       $currentIndex.html(ddb.$index.html());
 
       // Check for institutions that provide data filter
-      var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
+      var onlyInstitutionsWithData = ddb.onlyInstitutionsWithData;
       var institutionsFilteredByData = ddb.filterOnlyInstitutionsWithData(institutionList, onlyInstitutionsWithData);
 
       /*
@@ -345,7 +381,6 @@
        */
       else {
         ddb.styleIndex('All');
-
         if (onlyInstitutionsWithData) {
           var filteredBySector = ddb.filterBySectors(institutionsFilteredByData, sectors, parentList);
           var visible = _.union(_.uniq(parentList), filteredBySector);
@@ -473,6 +508,9 @@
       buttonWidth : 'auto',
       maxHeight : false,
       field_NoneSelected : messages.ddbnext.None_Selected,
+      onChange : function(element) {
+        ddb.applyFilter();
+      },
       buttonText : function(options) {
         if (options.length === 0) {
           var textNode = $(document.createElement('span')).html(this.field_NoneSelected);
