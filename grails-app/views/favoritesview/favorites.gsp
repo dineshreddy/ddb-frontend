@@ -187,12 +187,12 @@ limitations under the License.
                       <g:if test="${it.folder.folderId == selectedFolder.folderId }">
                         (${it.count})
                       </g:if>
+                      <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
+                        <a href="#" data-toggle-elem="#collapsing-options">
+                          <i class="mobile-gear-icon visible-phone"></i>
+                        </a>
+                      </g:if>
                     </g:each>
-                    <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
-                      <a href="#" data-toggle-elem="#collapsing-options">
-                        <i class="mobile-gear-icon visible-phone"></i>
-                      </a>
-                    </g:if>
                   </div>
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
                   <div id="collapsing-options" class="element-collapsed">
