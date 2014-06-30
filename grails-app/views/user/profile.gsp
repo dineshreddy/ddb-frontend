@@ -82,7 +82,6 @@ limitations under the License.
                     </div>
                 </div>
                 <div class="control-group">
-                  <label></label>
                     <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbcommon.Save"/>"><g:message encodeAs="html" code="ddbcommon.Save"/></button>
                 </div>
               </div>

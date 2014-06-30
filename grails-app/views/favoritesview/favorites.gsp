@@ -403,8 +403,8 @@ limitations under the License.
         <span class="totalNrSelectedObjects"></span>
       </div>
       <div class="modal-footer">
-        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button> 
         <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
+        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button>
       </div>
     </div>
   
