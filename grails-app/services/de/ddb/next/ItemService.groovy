@@ -183,6 +183,7 @@ class ItemService {
         def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
         directParent["children"]=this.getChildren(directParent.id)
         flatHierarchy.add(directParent)
+        println "HIERARCHY " + flatHierarchy
         return flatHierarchy
     }
 

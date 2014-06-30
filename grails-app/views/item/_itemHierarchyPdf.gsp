@@ -16,11 +16,15 @@ limitations under the License.
 <g:if test="${hierarchy}">
   <div class="bt">
     <g:set var="i" value="0" />
-
-    <h3>
+    <div class="hierarchy-header">
       <g:message code="ddbnext.View_related_objects" />
-    </h3>
+    </div>
     <g:each var="${item}" in="${hierarchy}">
+      <g:if test="${message(code: 'ddbnext.HierarchyType_'+item.type, default:'')}">
+        <span class="group-name"><g:message code="${'ddbnext.HierarchyType_'+item.type}" default="" /></span>
+        <br />
+      </g:if>
+      ${item.label}
       <g:if test="${item.children}">
         <ul>
           <g:each var="${child}" in="${item.children}">
@@ -35,15 +39,11 @@ limitations under the License.
           </g:each>
         </ul>
       </g:if>
-      <g:else>
-        ${ddbcommon.wellFormedDocFromString(text:item.label)}
-      </g:else>
       <ul>
         <li><g:set var="i" value="${++i}" />
     </g:each>
     <g:while test="${i.toInteger() > 0}">
       <%i--%>
-
       </li>
       </ul>
     </g:while>
