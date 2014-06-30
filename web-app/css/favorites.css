@@ -844,10 +844,17 @@ hr {
 .rank-arrows.disabled >div {
   cursor: default;
  }
- 
+
 .favorites-results-controls .options-buttons-container {
   display: inline-block;
   float: right;
+}
+
+.favorites-results-container .bookmarks-list .fav-text a,
+.favorites-results-container .mobile-list-actions {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 @media (max-width: 767px) {
