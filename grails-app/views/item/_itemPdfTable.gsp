@@ -47,7 +47,7 @@ limitations under the License.
   }  
   body{
     font-family:'Calibri';
-    font-size: 10pt;  
+    font-size: 12pt;  
   }
   h1,h2,h3,h4 {
     font-family:'KarbidWeb';
@@ -70,7 +70,7 @@ limitations under the License.
     vertical-align: top; ! important;
     margin-top: 0;
     font-family:KarbidWeb;
-    font-size: 9pt;
+    font-size: 12pt;
   }
   a {
     color: #3e3a37;
