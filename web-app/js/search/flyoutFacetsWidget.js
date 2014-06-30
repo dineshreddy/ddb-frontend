@@ -445,7 +445,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
   manageOutsideClicks : function(thisInstance) {
     $(document).mouseup(function(e) {
       var container = $(".facets-item");
-      if ((!$(e.target).parents(container).is(container) || $(e.target).attr("id") === "thumbnail-filter") &&
+      if ((!$(e.target).parents(container).is(container) || $(e.target).parent().attr("id") === "thumbnail-filter-container") &&
         thisInstance.opened) {
         thisInstance.close();
       }
