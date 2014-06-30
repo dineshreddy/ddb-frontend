@@ -33,21 +33,10 @@ limitations under the License.
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
-  @font-face{
-   font-family:KarbidWeb;
-   src: url(<ddbcommon:renderBase64File mimeType="application/font-woff" bytes="${fontKarbidWeb}" />) format('woff');
-   -fs-pdf-font-embed: embed;
-   -fs-pdf-font-encoding: Identity-H;   
-  }
-  @font-face {
-     font-family:Calibri;
-     src: url(<ddbcommon:renderBase64File mimeType="font/ttf" bytes="${fontCalibri}" />) format('truetype');
-     -fs-pdf-font-embed: embed;
-     -fs-pdf-font-encoding: Identity-H;
-  }  
+ 
   body{
     font-family:'Calibri';
-    font-size: 10pt;  
+    font-size: 12pt;  
   }
   h1,h2,h3,h4 {
     font-family:'KarbidWeb';
@@ -70,7 +59,7 @@ limitations under the License.
     vertical-align: top; ! important;
     margin-top: 0;
     font-family:KarbidWeb;
-    font-size: 9pt;
+    font-size: 12pt;
   }
   a {
     color: #3e3a37;
@@ -102,78 +91,9 @@ limitations under the License.
   .valign-top {
     vertical-align: text-top;
   }
-  .slide-viewer {
-    width: 445px;
-  }
-  .slide-viewer ul {
-    list-style: none;
-    margin: 0;
-  }
-  .scroller ul {
-    padding: 0;
-    white-space: nowrap;
-    letter-spacing: -4px;
-    left: 15px !important;
-  }
-  .scroller li {
-    letter-spacing: normal;
-    display: inline-block;
-    width: 140px;
-  }
-  .scroller li .group {
-    height: 131px;
-    width: 120px;
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .scroller li .group .thumbnail {
-    display: block;
-    text-align: center;
-    width: 120px;
-    height: 90px;
-  }
   .previews img {
     max-width: 445px;
     max-height: 323px;
-  }
-  .slide-viewer button {
-    position: absolute;
-    top: 0;
-    width: 24px;
-    height: 131px;
-    text-indent: -999em;
-    display: block;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-  }
-  .slide-viewer .btn-prev,.slide-viewer .btn-next {
-    background: white;
-    overflow: hidden;
-    outline: none;
-  }
-  .slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
-    cursor: default;
-  }
-  .slide-viewer .tabs {
-    position: relative;
-    height: auto
-  }
-  .slide-viewer .fix {
-    height: 175px;
-  }
-  .slide-viewer .tab {
-    cursor: pointer;
-    float: left;
-    color: #3e3a37;
-    font-size: 1em;
-    margin-top: 16px;
-    line-height: 1em;
-  }
-  .slide-viewer .show-divider {
-    border-right: #a5003b 2px solid;
-    padding-right: 5px;
-    margin-right: 5px;
   }
   .bb {
     border-bottom: solid 2px #efebe8;
@@ -186,6 +106,17 @@ limitations under the License.
   }
   .origin, .fields-table {
     margin-top: 10px;
+  }
+  .hierarchy-header {
+    font-size: 17px;
+    font-weight: bold;
+    color: #3e3a37;
+    padding-top: 10px;
+    margin: 20px 0 15px 0;
+  }
+  .group-name {
+    font-style: italic;
+    font-size: 15px;
   }
   .item-title {
     font-size: 16px;

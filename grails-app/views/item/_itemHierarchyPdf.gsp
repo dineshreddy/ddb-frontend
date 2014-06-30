@@ -13,11 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="bt">
-  <g:set var="i" value="0" />
-  <g:if test="${hierarchy}">
-  <h3><g:message code="ddbnext.View_related_objects" /></h3>
+<g:if test="${hierarchy}">
+  <div class="bt">
+    <g:set var="i" value="0" />
+    <div class="hierarchy-header">
+      <g:message code="ddbnext.View_related_objects" />
+    </div>
     <g:each var="${item}" in="${hierarchy}">
+      <g:if test="${message(code: 'ddbnext.HierarchyType_'+item.type, default:'')}">
+        <span class="group-name"><g:message code="${'ddbnext.HierarchyType_'+item.type}" default="" /></span>
+        <br />
+      </g:if>
+      ${item.label}
       <g:if test="${item.children}">
         <ul>
           <g:each var="${child}" in="${item.children}">
@@ -25,22 +32,20 @@ limitations under the License.
                 <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
                 </strong>
               </g:if> <g:else>
-                <g:link controller="item" action="findById" id="${child.id}">${ddbcommon.wellFormedDocFromString(text:child.label)}</g:link>
+                <g:link controller="item" action="findById" id="${child.id}">
+                  ${child.label}
+                </g:link>
               </g:else></li>
           </g:each>
         </ul>
       </g:if>
-      <g:else>
-        ${ddbcommon.wellFormedDocFromString(text:item.label)}
-      </g:else>
       <ul>
         <li><g:set var="i" value="${++i}" />
     </g:each>
     <g:while test="${i.toInteger() > 0}">
       <%i--%>
-    
-    </li>
-    </ul>
+      </li>
+      </ul>
     </g:while>
-  </g:if>
-</div>
+  </div>
+</g:if>
