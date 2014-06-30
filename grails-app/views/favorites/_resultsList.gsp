@@ -68,23 +68,23 @@ limitations under the License.
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
             <a>
-              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" width="55px" />
             </a>
           </g:if>
           <g:else>
             <g:if test="${it.preview.media[0] == "entity"}">
-              <g:set var="entityLink" value="entity-link" />
+              <g:set var="entityLink" value="persist entity-link" />
             </g:if>
             <g:else>
-              <g:set var="entityLink" value="" />
+              <g:set var="entityLink" value="persist" />
             </g:else>
             <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="<g:if test="${!JsonUtil.isAnyNull(it.preview.thumbnail) && it.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" width="55px"/>
             </g:link>
           </g:else>
         </div>
         <div class="span1 created-at">
-          <div>${it.bookmark.creationDateFormatted}</div>
+         <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
       <g:if test="${it.category != "orphaned" }">
