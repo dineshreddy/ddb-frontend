@@ -175,24 +175,28 @@ limitations under the License.
               <div class="delete-container row">
                 <div class="span9">
                   <div class="mobile-list-actions visible-phone">
-                    <strong>
-                      <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
-                        <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
-                      </g:if>
-                      <g:else>
-                        ${selectedFolder.title.capitalize()}
-                      </g:else>
-                    </strong>
-                    <g:each in="${allFolders}">
-                      <g:if test="${it.folder.folderId == selectedFolder.folderId }">
-                        (${it.count})
-                      </g:if>
-                      <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
-                        <a href="#" data-toggle-elem="#collapsing-options">
-                          <i class="mobile-gear-icon visible-phone"></i>
-                        </a>
-                      </g:if>
-                    </g:each>
+                    <div class="mobile-list-title">
+                      <strong>
+                        <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                          <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
+                        </g:if>
+                        <g:else>
+                          ${selectedFolder.title.capitalize()}
+                        </g:else>
+                      </strong>
+                    </div>
+                    <div class="mobile-list-otions">
+                      <g:each in="${allFolders}">
+                        <g:if test="${it.folder.folderId == selectedFolder.folderId }">
+                          (${it.count})
+                        </g:if>
+                        <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
+                          <a href="#" data-toggle-elem="#collapsing-options">
+                            <i class="mobile-gear-icon visible-phone"></i>
+                          </a>
+                        </g:if>
+                      </g:each>
+                    </div>
                   </div>
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
                   <div id="collapsing-options" class="element-collapsed">
