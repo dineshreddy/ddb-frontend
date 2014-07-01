@@ -54,5 +54,17 @@ postData() {
 #Create some folderLists
 # Delete old test list: http://whvmescidev6.fiz-karlsruhe.de:9200/ddb/folderList/_query?q=title:*
 
-#Search ids for users ddb-daily ddb-domain and add them to field users 
+# Search ids for users ddb-daily ddb-domain and add them to field users 
+# whvmescidoc6:
+#   ddb-daily: 3fb89f5f12e1f6781b245a1f8db270ec
+#   ddb-domain: 0edb4f2774e46b72959f9a79ee641746
+#
+# ddbelse-t1:
+#   ddb-daily: 
+#   ddb-domain: 
+#
+# ddbelse-p1:
+#   ddb-daily: 56bf18c366c89d1915887decda83c0ab
+#   ddb-domain: c06a4d66bc3acedc00aa4da230eca90e
+
 postData "folderList" "dailyList" "{\"title\":\"ddbnext.lists.dailyList\",\"createdAt\":`date +%s`,\"users\":[\"3fb89f5f12e1f6781b245a1f8db270ec\",\"0edb4f2774e46b72959f9a79ee641746\"],\"folders\":[]}"
