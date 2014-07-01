@@ -83,14 +83,19 @@
   padding-right: 30px;
 }
 
-.compare .viewer.dfg{
-  margin-right: 30px;
-  padding-left: 24px;
-  background: url("../images/icons/ddbIkonographie.png") no-repeat -27px -359px;
+.compare .back-to-list:before,
+.compare .back-to-list-greyed-out:before,
+.compare .page-link:before,
+.compare .sendmail-link:before,
+.compare .pdf-link:before,
+.compare .viewer.dfg:before,
+.compare .xml-link:before,
+.compare .no-origin:before {
+  margin-top: 0;
 }
 
-.compare .viewer.dfg >span{
-  background: #fff;
+.compare .popup-dialog-wrapper .page-link:before {
+  margin-top: 5px;
 }
 
 @media (max-width: 529px) {

@@ -19,7 +19,7 @@
   margin-right: 10px;
 }
 
-.back-to-list-greyed-out:before{
+.back-to-list-greyed-out:before {
   content: '';
   width:20px;
   height:20px;

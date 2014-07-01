@@ -16,9 +16,17 @@ limitations under the License.
 
 <g:render template="institution" />
 <div class="row item-detail item-content">
+  <g:each in="${binaryList}">
+    <g:if test="${!it.full.uri.isEmpty() || !it.preview.uri.isEmpty()}">
+      <g:set var="hasBinary" value="${true}"/>
+    </g:if>
+  </g:each>
+  <g:if test="${(hasBinary || !originUrl.isEmpty()) && (item.media!='no media type' && item.media!='unknown')}">
+    <g:set var="display" value="${true}"/>
+  </g:if>
   <div class="span6 item-description">
     <h2 class="item-title ${position}"><span>${title.encodeAsHTML()}</span></h2>
-    <g:if test="${binaryList}">
+    <g:if test="${display}">
       <g:render template="binaries" />
     </g:if>
     <g:render template="fields" />

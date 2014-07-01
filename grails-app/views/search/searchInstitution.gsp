@@ -29,7 +29,7 @@ limitations under the License.
 <meta name="layout" content="main" />
 </head>
 <body>
-  <div class="row search-results-container entities">
+  <div class="row search-results-container institutions">
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3>

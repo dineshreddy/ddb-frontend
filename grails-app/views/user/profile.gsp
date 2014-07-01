@@ -61,7 +61,7 @@ limitations under the License.
                 </div>
                 <div class="control-group">
                   <div>
-                    <label><g:message encodeAs="html" code="ddbnext.Email" /></label>
+                    <label><g:message encodeAs="html" code="ddbcommon.Email" /></label>
                   </div>
                   <div>
                     <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbcommon.Email" />" value="${user.email}" ${disableForOpenId}>
@@ -82,8 +82,7 @@ limitations under the License.
                     </div>
                 </div>
                 <div class="control-group">
-                  <label></label>
-                    <button type="submit" class="btn-padding" title="<g:message encodeAs="html" code="ddbcommon.Save"/>"><g:message encodeAs="html" code="ddbcommon.Save"/></button>
+                    <button type="submit" class="submit" title="<g:message encodeAs="html" code="ddbcommon.Save"/>"><g:message encodeAs="html" code="ddbcommon.Save"/></button>
                 </div>
               </div>
 

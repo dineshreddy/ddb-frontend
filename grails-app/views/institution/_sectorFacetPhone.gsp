@@ -23,4 +23,5 @@ limitations under the License.
   <option value="sec_05"><g:message encodeAs="html" code="ddbnext.sec_05" /></option>
   <option value="sec_06"><g:message encodeAs="html" code="ddbnext.sec_06" /></option>
   <option value="sec_07"><g:message encodeAs="html" code="ddbnext.sec_07" /></option>
+  <option value="onlyInstitutionsWithData"><g:message encodeAs="html" code="ddbnext.InstitutionPage_OnlyInstitutionsWithData" /></option>
 </select>

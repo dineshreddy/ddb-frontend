@@ -18,7 +18,7 @@ limitations under the License.
 <html xmlns="http://www.w3.org/1999/xhtml" lang="${ddb.getCurrentLocale()}">
 <head>
 
-<g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
+<g:set var="itemTitle" value="${ddbcommon.wellFormedDocFromString(text:ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351))) }" />
 <title>
   ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">
@@ -33,15 +33,20 @@ limitations under the License.
     background: white;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
+ 
+  body{
+    font-family:'Calibri';
+    font-size: 12pt;  
+  }
   h1,h2,h3,h4 {
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
+    font-family:'KarbidWeb';
     font-size: 1.75em;
     font-weight: normal;
     color: rgb(62, 58, 55);
     line-height: 1.5em;
   }
   h2,h2 a {
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
+    font-family:'KarbidWeb';
     font-weight: bold;
     font-size: 1.375em;
     color: #a5003b;
@@ -53,8 +58,8 @@ limitations under the License.
   th,td {
     vertical-align: top; ! important;
     margin-top: 0;
-    font-family: KarbidWeb, Calibri, Arial, sans-serif;
-    font-size: 9pt;
+    font-family:KarbidWeb;
+    font-size: 12pt;
   }
   a {
     color: #3e3a37;
@@ -86,78 +91,9 @@ limitations under the License.
   .valign-top {
     vertical-align: text-top;
   }
-  .slide-viewer {
-    width: 445px;
-  }
-  .slide-viewer ul {
-    list-style: none;
-    margin: 0;
-  }
-  .scroller ul {
-    padding: 0;
-    white-space: nowrap;
-    letter-spacing: -4px;
-    left: 15px !important;
-  }
-  .scroller li {
-    letter-spacing: normal;
-    display: inline-block;
-    width: 140px;
-  }
-  .scroller li .group {
-    height: 131px;
-    width: 120px;
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .scroller li .group .thumbnail {
-    display: block;
-    text-align: center;
-    width: 120px;
-    height: 90px;
-  }
   .previews img {
     max-width: 445px;
     max-height: 323px;
-  }
-  .slide-viewer button {
-    position: absolute;
-    top: 0;
-    width: 24px;
-    height: 131px;
-    text-indent: -999em;
-    display: block;
-    box-shadow: none;
-    -moz-box-shadow: none;
-    -webkit-box-shadow: none;
-  }
-  .slide-viewer .btn-prev,.slide-viewer .btn-next {
-    background: white;
-    overflow: hidden;
-    outline: none;
-  }
-  .slide-viewer .btn-prev.disabled,.slide-viewer .btn-next.disabled {
-    cursor: default;
-  }
-  .slide-viewer .tabs {
-    position: relative;
-    height: auto
-  }
-  .slide-viewer .fix {
-    height: 175px;
-  }
-  .slide-viewer .tab {
-    cursor: pointer;
-    float: left;
-    color: #3e3a37;
-    font-size: 1em;
-    margin-top: 16px;
-    line-height: 1em;
-  }
-  .slide-viewer .show-divider {
-    border-right: #a5003b 2px solid;
-    padding-right: 5px;
-    margin-right: 5px;
   }
   .bb {
     border-bottom: solid 2px #efebe8;
@@ -170,6 +106,17 @@ limitations under the License.
   }
   .origin, .fields-table {
     margin-top: 10px;
+  }
+  .hierarchy-header {
+    font-size: 17px;
+    font-weight: bold;
+    color: #3e3a37;
+    padding-top: 10px;
+    margin: 20px 0 15px 0;
+  }
+  .group-name {
+    font-style: italic;
+    font-size: 15px;
   }
   .item-title {
     font-size: 16px;
@@ -191,13 +138,14 @@ limitations under the License.
     <tr>
       <td>
         <div class="item-title">
-          <h2>${itemTitle}</h2>
+          <h2>${ddbcommon.wellFormedDocFromString(text:itemTitle)}</h2>
         </div>
         <g:if test="${binaryList}"> <g:render template="itemBinariesPdf" /></g:if>
      </td>
     </tr>
   </table>
   <g:render template="itemdetailsPdf" />
+  <g:render template="itemHierarchyPdf" model="[hierarchy:hierarchy]" />  
   <g:render template="linkurlPdf" />
 </body>
 </html>

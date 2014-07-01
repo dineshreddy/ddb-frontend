@@ -24,7 +24,7 @@ $(function() {
       $(this).blur();
     });
 
-    $("#sendSavedSearches").click(function(event) {
+    $("#send-saved-searches").click(function(event) {
       event.preventDefault();
       $('#sendSavedSearchesModal').modal({
         remote : $(this).attr("href")

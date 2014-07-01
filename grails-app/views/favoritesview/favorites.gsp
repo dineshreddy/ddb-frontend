@@ -153,7 +153,12 @@ limitations under the License.
                               title="<g:message encodeAs="html" code="ddbnext.Publish_Folder" />"
                             </g:else>
                           >
-                            <g:message encodeAs="html" code="ddbnext.public"/>
+                            <g:if test="${it.folder.isPublic}">
+                              <g:message encodeAs="html" code="ddbnext.public"/>
+                            </g:if>
+                            <g:else>
+                              <g:message encodeAs="html" code="ddbnext.private"/>
+                            </g:else>
                           </a>
                         </g:else>
                         <a href="#" class="bookmarks-list-edit cursor-pointer editfolder" data-folder-id="${it.folder.folderId}" title="<g:message encodeAs="html" code="ddbnext.Edit_Folder" />">  
@@ -170,22 +175,28 @@ limitations under the License.
               <div class="delete-container row">
                 <div class="span9">
                   <div class="mobile-list-actions visible-phone">
-                    <strong>
-                      <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
-                        <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
-                      </g:if>
-                      <g:else>
-                        ${selectedFolder.title.capitalize()}
-                      </g:else>
-                    </strong>
-                    <g:each in="${allFolders}">
-                      <g:if test="${it.folder.folderId == selectedFolder.folderId }">
-                        (${it.count})
-                      </g:if>
-                    </g:each>
-                    <a href="#" data-toggle-elem="#collapsing-options">
-                      <i class="mobile-gear-icon visible-phone"></i>
-                    </a>
+                    <div class="mobile-list-title">
+                      <strong>
+                        <g:if test="${selectedFolder.folderId == mainFavoriteFolder.folderId}">
+                          <g:message encodeAs="html" code="ddbnext.All_Favorites" /> 
+                        </g:if>
+                        <g:else>
+                          ${selectedFolder.title.capitalize()}
+                        </g:else>
+                      </strong>
+                    </div>
+                    <div class="mobile-list-otions">
+                      <g:each in="${allFolders}">
+                        <g:if test="${it.folder.folderId == selectedFolder.folderId }">
+                          (${it.count})
+                        </g:if>
+                        <g:if test="${it.folder.folderId == selectedFolder.folderId && it.folder.folderId != mainFavoriteFolder.folderId}">
+                          <a href="#" data-toggle-elem="#collapsing-options">
+                            <i class="mobile-gear-icon visible-phone"></i>
+                          </a>
+                        </g:if>
+                      </g:each>
+                    </div>
                   </div>
                   <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL]}"/>
                   <div id="collapsing-options" class="element-collapsed">
@@ -351,7 +362,7 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
+
     <%-- Modal "Send email" --%>
     <g:if test="${resultsNumber > 0}">
       <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="favoritesLabel" aria-hidden="true">
@@ -377,8 +388,7 @@ limitations under the License.
         </form>
       </div>
     </g:if>
-    
-    
+
     <%-- Modal "Confirm favorites delete" --%>
     <div class="modal hide fade" id="favoritesDeleteConfirmDialog" tabindex="-1" role="dialog" aria-labelledby="favoritesDeleteConfirmLabel" aria-hidden="true">
       <div class="modal-header">
@@ -397,8 +407,8 @@ limitations under the License.
         <span class="totalNrSelectedObjects"></span>
       </div>
       <div class="modal-footer">
-        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button> 
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
+        <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
+        <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button>
       </div>
     </div>
   
@@ -423,7 +433,6 @@ limitations under the License.
         </select>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -450,7 +459,6 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -476,8 +484,8 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbcommon.Confirm_Short" /> </button> 
+        <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
+        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbnext.Delete" /> </button> 
       </div>
     </div>
   
@@ -528,11 +536,9 @@ limitations under the License.
         </div>
       </div>
       <div class="modal-footer">
-        <button class="submit" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Close" /></button>
         <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
-  
-    
+
   </body>
 </html>

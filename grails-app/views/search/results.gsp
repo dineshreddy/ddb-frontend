@@ -63,7 +63,7 @@ limitations under the License.
       <g:render template="timeFacet" />
       <%-- All other facets are handled in the same way --%>          
       <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
-      <div class="facets-item bt bb bl br">
+      <div class="facets-item bt bb bl br" id="thumbnail-filter-container">
         <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
         <label for="thumbnail-filter" title="<g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" />"><g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" /></label>
       </div>
@@ -149,13 +149,11 @@ limitations under the License.
         <ddbcommon:isPersonalFavoritesAvailable>
           <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-body">
+              <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
               <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
               <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
               <g:select name="favorite-folders" from="" size="10" multiple="multiple"/>
               <div class="modal-footer">
-                <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-                  <g:message encodeAs="html" code="ddbcommon.Close"/>
-                </button>
                 <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
                   <g:message encodeAs="html" code="ddbcommon.Save"/>
                 </button>

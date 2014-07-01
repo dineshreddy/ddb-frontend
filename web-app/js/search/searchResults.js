@@ -426,7 +426,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   $('.type-selection').change(function(){
     var currentQuery = de.ddb.next.search.getUrlVar('query');
     var optionSelected = $('option:selected', this);
-    window.location = $.addParamToCurrentUrl([['query', currentQuery]], optionSelected.val());
+    window.location = optionSelected.val()+'?query='+currentQuery;
   });
 
   de.ddb.next.search.initializeFacets();

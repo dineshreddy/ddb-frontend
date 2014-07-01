@@ -31,8 +31,16 @@
   margin-top: 22px;
 }
 
+.persons-head .popup-dialog-title .page-link:before {
+  margin-top: 5px;
+}
+
 .persons-head .socialmedia {
   padding-top:12px;
+}
+
+.persons-head .popup-dialog-wrapper {
+  margin-top: -48px !important;
 }
 
 .persons-body {
@@ -66,11 +74,15 @@
 
 .persons-font {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 0.938empersons-font;
   line-height: 1em;
   color: #3e3a37;
   margin-top: 3px;
   word-wrap: break-word;
+}
+
+.persons-font p:first-child a {
+  text-decoration: underline;
 }
 
 .pin {
@@ -84,5 +96,10 @@
 .pin p {
   font: 12px/18px Calibri, Arial, sans-serif;
   color: #333;
-  padding: 0px 0px 0px 30px;
+  padding: 0 0 0 0;
 }
+
+.pin p a {
+  font-size: 15px;
+}
+

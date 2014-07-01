@@ -99,11 +99,19 @@
   margin-top: 22px;
 }
 
+.lists .popup-dialog-title .page-link:before {
+  margin-top: 5px;
+}
+
 .lists .summary img {
-  max-width: 100%;
+  max-width: 140px;
   max-height: 105px;
   display: block;
   float: none;
   border: 0;
   margin: auto;
+}
+
+.lists .popup-dialog-wrapper {
+  margin-top: -48px !important;
 }

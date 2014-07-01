@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@ page import="net.sf.json.*" %>
 <%@page defaultCodec="none" %>
-<table border="0" cellpadding="2" cellspacing="0" width="100%" class="fields-table">
+<table border="0" cellpadding="2" cellspacing="3" width="100%" class="fields-table">
   <g:each in="${fields}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> 

@@ -92,7 +92,8 @@ class ItemService {
         def institution= json.item.institution
 
         // institution logo
-        String institutionLogoUrl = grailsLinkGenerator.resource("dir": "images", "file": "/placeholder/searchResultMediaInstitution.png").toString()
+        String institutionLogoUrl = grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+        "file": "/placeholder/searchResultMediaInstitution.png").toString()
         String institutionId = json.item.institution."logo-institution-ddbid"
 
         if(!institutionId && !json.item.institution.logo?.toString().trim().isEmpty()){
@@ -129,11 +130,14 @@ class ItemService {
      * @return
      */
     def prepareImagesForPdf(model) {
+        //ADD Hierarchy
+        model.hierarchy=getHierarchyItem(model.itemId)
+        
         def baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
         def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
-
+        
         def logoResource
         try {
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
@@ -142,11 +146,15 @@ class ItemService {
         catch (IOException e) {
             // use placeholder logo as fallback
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl() +
-                    grailsLinkGenerator.resource(
-                    "dir": "images", "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
+                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+                    "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
             model.institutionImage = logoResource.bytes
         }
 
+        //FONT for PDF
+        model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
+        model.fontCalibri=grailsApplication.mainContext.getResourceByPath('/css/fonts/Calibri.ttf').file.bytes
+        
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
@@ -156,10 +164,28 @@ class ItemService {
             }
         }
         model.put("binariesListViewerContent", viewerContent)
-
         return model
     }
 
+    /** 
+     * Gets the hierarchy up to the parent & then adds all siblings to the direct partners
+     * Used in the PDF generation of an Item View. The normal Item View uses a JS version
+     * Returns a flat list of the parents & all the siblings as "children" of the direct parent
+     * @param id
+     * @return List
+     */
+    def getHierarchyItem(String id) {
+        def bottomUpHierarchy = this.getParent(id)
+        if (bottomUpHierarchy.size()<=1) {
+            return []
+        }
+        def directParent=bottomUpHierarchy[1]
+        def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
+        directParent["children"]=this.getChildren(directParent.id)
+        flatHierarchy.add(directParent)
+        println "HIERARCHY " + flatHierarchy
+        return flatHierarchy
+    }
 
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
@@ -239,6 +265,7 @@ class ItemService {
             license: licenseInformation,
             isFavorite: isFavorite,
             baseUrl: commonConfigurationService.getSelfBaseUrl(),
+            publicUrl: commonConfigurationService.getConfigValue("ddb.public.url"),
             similarItems : similarItems
         ]
 

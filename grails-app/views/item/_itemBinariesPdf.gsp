@@ -8,14 +8,14 @@
       <!--  This section should contain info on the first viewed Item -->
       <div class="binary-title">
         <span>
-          <g:if test="${!binaryList.first().preview.title.isEmpty()}">${binaryList.first().preview.title}</g:if>
+          <g:if test="${!binaryList.first().preview.title.isEmpty()}">${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.title)}</g:if>
         </span>
       </div>
       <div class="binary-author">
-        <span>${binaryList.first().preview.author}</span>
+        <span>${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.author)}</span>
       </div>
       <div class="binary-rights">
-        <span> ${binaryList.first().preview.rights}</span>
+        <span> ${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.rights)}</span>
       </div>
     </td>
   </tr>

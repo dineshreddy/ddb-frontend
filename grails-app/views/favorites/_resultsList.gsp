@@ -32,7 +32,10 @@ limitations under the License.
     <li class="item bt">
       <div class="summary row">
         <div class="summary-main-wrapper span6">
-          <g:if test="${!publicView}">
+          <g:if test="${publicView}">
+            <div class="rank">${it.orderNumber}</div>
+          </g:if>
+          <g:else>
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
             <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${it.folder.folderId}">
               <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${!orderBy.equals("number")}">disabled</g:if>>
@@ -41,7 +44,7 @@ limitations under the License.
                 <div class="down">-</div>
               </div>
             </div>
-          </g:if>
+          </g:else>
           <div class="summary-main">
             <h2 class="title">
               <g:if test="${it.category == "orphaned"}">
@@ -81,7 +84,7 @@ limitations under the License.
           </g:else>
         </div>
         <div class="span1 created-at">
-          <div>${it.bookmark.creationDateFormatted}</div>
+         <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
       <g:if test="${it.category != "orphaned" }">
