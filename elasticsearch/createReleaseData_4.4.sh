@@ -60,7 +60,7 @@ postData() {
 #   ddb-domain: 0edb4f2774e46b72959f9a79ee641746
 #
 # ddbelse-t1:
-#   ddb-daily: 
+#   ddb-daily: ebb86eb13054046f9b14f72189b0205b
 #   ddb-domain: 
 #
 # ddbelse-p1:
