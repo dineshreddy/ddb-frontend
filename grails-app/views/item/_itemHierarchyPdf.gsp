@@ -20,32 +20,33 @@ limitations under the License.
       <g:message code="ddbnext.View_related_objects" />
     </div>
     <g:each var="${item}" in="${hierarchy}">
-      <g:if test="${message(code: 'ddbnext.HierarchyType_'+item.type, default:'')}">
-        <span class="group-name"><g:message code="${'ddbnext.HierarchyType_'+item.type}" default="" /></span>
-        <br />
-      </g:if>
-      ${item.label}
-      <g:if test="${item.children}">
-        <ul>
-          <g:each var="${child}" in="${item.children}">
-            <li><g:if test="${child.id==itemId}">
-                <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
-                </strong>
-              </g:if> <g:else>
-                <g:link controller="item" action="findById" id="${child.id}">
-                  ${child.label}
-                </g:link>
-              </g:else></li>
-          </g:each>
-        </ul>
-      </g:if>
-      <ul>
-        <li><g:set var="i" value="${++i}" />
+      <div class="element">
+        <g:if test="${message(code: 'ddbnext.HierarchyType_'+item.type, default:'')}">
+          <span class="group-name"><g:message code="${'ddbnext.HierarchyType_'+item.type}" default="" /></span>
+          <br />
+        </g:if>
+        <div class="bullet-item">${item.label}</div>
+        <g:if test="${item.children}">
+            <ul>
+              <g:each var="${child}" in="${item.children}">
+                <li><g:if test="${child.id==itemId}">
+                    <strong> ${ddbcommon.wellFormedDocFromString(text:child.label)}
+                    </strong>
+                  </g:if> <g:else>
+                    <g:link controller="item" action="findById" id="${child.id}">
+                      ${child.label}
+                    </g:link>
+                  </g:else></li>
+              </g:each>
+            </ul>
+          </g:if>
+        <div>
+          <g:set var="i" value="${++i}" />
+        </div>
     </g:each>
     <g:while test="${i.toInteger() > 0}">
       <%i--%>
-      </li>
-      </ul>
-    </g:while>
+  </div>
+  </g:while>
   </div>
 </g:if>

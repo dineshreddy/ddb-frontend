@@ -117,6 +117,20 @@ limitations under the License.
   .group-name {
     font-style: italic;
     font-size: 15px;
+    list-type:none;
+  }
+  .element{
+    position: relative;
+    padding-left:10px;
+  }
+  .element ul {
+    margin-top: 0px;
+  }
+  .element .bullet-item{
+    display: list-item;
+    list-style-type: square;
+    margin-left: 1.1em;
+  
   }
   .item-title {
     font-size: 16px;
