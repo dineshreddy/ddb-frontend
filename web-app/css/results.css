@@ -431,6 +431,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .summary-main-wrapper .title{
   max-height: 8em;
+  text-align: center;
 }
 
 .search-results .results-list .summary-main-wrapper .title a{
