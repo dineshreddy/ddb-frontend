@@ -27,6 +27,7 @@ import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.BadRequestException
+import de.ddb.common.SearchTypeEnum
 
 class SearchController {
 
@@ -34,7 +35,6 @@ class SearchController {
 
     def entityService
     def searchService
-    def ddbSearchService
     def configurationService
     def cultureGraphService
 
@@ -43,10 +43,10 @@ class SearchController {
             //The list of the NON JS supported facets for items
             def nonJsFacetsList = SearchFacetLists.itemSearchNonJavascriptFacetList
 
-            def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+            def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
 
-            if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
+            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
             }
 
@@ -108,7 +108,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
+            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -212,12 +212,12 @@ class SearchController {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = SearchFacetLists.institutionSearchNonJavascriptFacetList
 
-        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
 
         def additionalParams = [:]
 
 
-        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
             redirect(controller: "search", action: "institution", params: params)
         }
 
@@ -251,7 +251,7 @@ class SearchController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
 
         def model = [
             title: title,
