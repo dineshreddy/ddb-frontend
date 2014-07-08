@@ -57,7 +57,7 @@ limitations under the License.
             --%>
           </div>
           <div class="right-container">
-            <a class="page-link page-link-popup-anchor" href="${linkUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
             <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
