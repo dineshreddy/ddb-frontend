@@ -164,7 +164,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     //Looking for existing facetvalues[] in the window url parameters
     if (oldParams['facetValues%5B%5D']) {
       $.each(oldParams['facetValues%5B%5D'], function(key, value) {
-        fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues
+        var eachFacetName = value.split('%3D')[0];
+        fctValues = (eachFacetName === currObjInstance.currentFacetField) ? fctValues
             : fctValues + '&facetValues%5B%5D=' + value;
       });
     }
