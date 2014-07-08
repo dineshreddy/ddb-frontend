@@ -165,7 +165,7 @@ class EntityController {
         }else {
             randomSeed = getRandomSeed()
         }
-        def entitiesOnPage=120
+        def entitiesOnPage=400
         def results = entityService.doEntitySearch([rows:entitiesOnPage,sort:"random_"+randomSeed])
 
         //There are entities with no thumbnail. We leave them out...
