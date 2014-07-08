@@ -24,7 +24,7 @@ class FavoritesviewController {
 
     def publicFavorites() {
         final def ACTION = "publicFavorites"
-        int rows = params.rows ? params.rows.toInteger() : 20
+        int rows = params.rows ? params.rows.toInteger() : 9999
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
