@@ -9,7 +9,7 @@ import de.ddb.common.exception.FavoritelistNotFoundException
 
 /**
  * AJAX requests should be handled by FavoritesController
- * 
+ *
  * @author boz
  */
 class FavoritesviewController {
@@ -176,7 +176,6 @@ class FavoritesviewController {
             }
 
             Folder selectedFolder = bookmarksService.findFolderById(folderId)
-            List favorites = favoritesService.getFavoriteList(user, selectedFolder, order, by)
 
             // If the folder does not exist (maybe deleted) -> redirect to main favorites folder
             if(selectedFolder == null){
@@ -184,6 +183,7 @@ class FavoritesviewController {
                 return
             }
 
+            List favorites = favoritesService.getFavoriteList(user, selectedFolder, order, by)
             def totalResults= favorites.size()
 
             def userName = user.getFirstnameAndLastnameOrNickname()

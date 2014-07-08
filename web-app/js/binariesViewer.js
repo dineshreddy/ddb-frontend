@@ -364,6 +364,14 @@ $(document)
                     $(this).parent().appendTo($("#previews-list"));
                   }
                 });
+                $(".no-external-link-icon").each(function() {
+                  if ($(this).find("img").attr("src") == previewUri) {
+                    $(this).parent().removeClass("off");
+                    return false;
+                  } else {
+                    $(this).parent().appendTo($("#previews-list"));
+                  }
+                });
               } else {
                 jwPlayerSetup(previewHref, previewUri);
               }

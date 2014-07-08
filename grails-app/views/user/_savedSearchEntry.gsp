@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 
-<g:set var="facetValues" value="" />
+<g:set var="facetValues" value="${new HashMap()}" />
 <g:each var="mapEntry" in="${search.queryMap}">
   <g:if test="${mapEntry.key == SearchParamEnum.FACETVALUES.getName()}">
     <g:each var="searchQueryTerm" in="${mapEntry.value}">
@@ -32,12 +32,17 @@ limitations under the License.
                                   (translatedFacetValue != translatedFacetKey ? translatedFacetValue :
                                   rawFacetValue)}" />
         </g:each>
-        <g:set var="facetValues"
-          value="${facetValues + '; <span style=\"font-weight: bold\">' +
-                                message(code: 'ddbnext.facet_' + facetName) + ':</span> ' + facetValue}" />
+        ${facetValues.put(facetName, facetValue)}
       </g:if>
     </g:each>
   </g:if>
 </g:each>
 <span style="font-weight: bold"><g:message encodeAs="html" code="ddbnext.Search_term" />:</span>
-${(search.query != null ? search.query : "*") + facetValues}
+${(search.query != null ? search.query : "*")}
+<g:each var="facetValue" in="${facetValues}">
+  ;
+  <span style="font-weight: bold">
+    ${message(code: 'ddbnext.facet_' + facetValue.key)}:
+  </span>
+  ${facetValue.value}
+</g:each>
