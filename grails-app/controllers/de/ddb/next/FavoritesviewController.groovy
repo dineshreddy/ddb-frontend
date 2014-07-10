@@ -120,7 +120,7 @@ class FavoritesviewController {
                 offset : offset
             ])
 
-            def orderedFavorites = orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
+            def orderedFavorites = favoritesService.orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
             if (offset != 0){
                 resultsItems=orderedFavorites.drop(offset)
                 resultsItems=resultsItems.take(rows)
@@ -344,68 +344,6 @@ class FavoritesviewController {
      */
     private def createPublicLink(String userId, String folderId) {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
-    }
-
-    private def orderFavoritesByNumber(def favorites, String folderId, String order) {
-        def result = []
-
-        // first use bookmark list in folder to order the favorites
-        Folder folder = bookmarksService.findFolderById(folderId)
-        def bookmarkIdsInFolder = folder?.bookmarks
-        bookmarkIdsInFolder.each {bookmarkIdInFolder ->
-            def favorite = favorites.find {it.bookmark.bookmarkId == bookmarkIdInFolder}
-            if (favorite) {
-                favorites.remove(favorite)
-                result.add(favorite)
-            }
-        }
-
-        // second add all favorites which are not present in bookmark list of the folder at the end
-        result.addAll(favorites)
-
-        // add orderNumber to all favorites
-        result.eachWithIndex {favorite, index ->
-            favorite.orderNumber = index
-        }
-
-        // update bookmark list in folder with the current list
-        if (folder) {
-            bookmarkIdsInFolder = result*.bookmark.bookmarkId
-            folder.bookmarks = bookmarkIdsInFolder
-            bookmarksService.updateFolder(folder)
-        }
-
-        if (order == favoritesService.ORDER_DESC) {
-            result = result.reverse()
-        }
-
-        return result
-    }
-
-    private def orderFavorites(def favorites, String folderId, String order, String by) {
-        // order by number to get the "orderNumber" property filled out
-        def result = orderFavoritesByNumber(favorites, folderId, order)
-        if (order == favoritesService.ORDER_ASC) {
-            if (by == favoritesService.ORDER_BY_DATE) {
-                result = result.sort{ a, b ->
-                    a.bookmark.creationDate.time <=> b.bookmark.creationDate.time
-                }
-            }
-            else if (by == favoritesService.ORDER_BY_TITLE) {
-                result = result.sort{it.label.toLowerCase()}.reverse()
-            }
-        }
-        else { // desc
-            if (by == favoritesService.ORDER_BY_TITLE) {
-                result = result.sort{it.label.toLowerCase()}
-            }
-            else if (by == favoritesService.ORDER_BY_DATE) {
-                result = result.sort{ a, b ->
-                    b.bookmark.creationDate.time <=> a.bookmark.creationDate.time
-                }
-            }
-        }
-        return result
     }
 
     private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
