@@ -27,6 +27,7 @@ import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
+import de.ddb.common.SearchTypeEnum
 
 /**
  * Controller class for all entity related views
@@ -42,7 +43,6 @@ class EntityController {
     def entityService
     def itemService
     def searchService
-    def ddbSearchService
 
     int PREVIEW_COUNT = 4
 
@@ -227,11 +227,11 @@ class EntityController {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = [EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]
 
-        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
 
         def additionalParams = [:]
 
-        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ENTITY)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ENTITY)) {
             redirect(controller: "entity", action: "personsearch", params: params)
         }
 
@@ -259,7 +259,7 @@ class EntityController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ENTITY))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ENTITY))
 
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
