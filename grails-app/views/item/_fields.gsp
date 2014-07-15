@@ -32,10 +32,10 @@ limitations under the License.
             </g:if>
             <g:else>
               <g:if test="${value instanceof JSONObject}">
-                ${raw(ddb.encodeInvalidHtml(text:value."\$"))}
+                ${raw(ddbcommon.encodeInvalidHtml(text:value."\$"))}
               </g:if>
               <g:else>
-                ${raw(ddb.encodeInvalidHtml(text:value))}
+                ${raw(ddbcommon.encodeInvalidHtml(text:value))}
               </g:else>
             </g:else>
             <br />
@@ -52,7 +52,7 @@ limitations under the License.
             </g:link>
           </g:if>
           <g:else>
-            ${raw(ddb.encodeInvalidHtml(text:it.value))}
+            ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
           </g:else>
         </g:else>
       </div>
