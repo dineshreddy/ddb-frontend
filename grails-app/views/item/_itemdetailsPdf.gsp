@@ -25,7 +25,7 @@ limitations under the License.
         <g:if test="${it.value instanceof JSONArray}"> 
           <g:each var="value" in="${it.value }">
             <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
-              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
+              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddbcommon.encodeInvalidHtml(text:value."\$")}</g:link>
             </g:if>
             <g:else>
               <ddbcommon:wellFormedDocFromString text="${value}"/>  
