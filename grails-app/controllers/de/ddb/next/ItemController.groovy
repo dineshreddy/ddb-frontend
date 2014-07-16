@@ -22,8 +22,9 @@ import de.ddb.common.exception.ItemNotFoundException
 class ItemController {
     static defaultAction = "findById"
     def fileService
-    def itemService
+    def ddbItemService
     def commonConfigurationService
+    def itemService
 
     /**
      * Handle the default show Item logic
@@ -33,11 +34,11 @@ class ItemController {
     def findById() {
         try {
             def id = params.id
-            def model = itemService.getFullItemModel(id)
+            def model = ddbItemService.getFullItemModel(id)
 
             if(params.pdf){
                 // inline images via data uris
-                model = itemService.prepareImagesForPdf(model)
+                model = ddbItemService.prepareImagesForPdf(model)
 
                 try {
                     renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
