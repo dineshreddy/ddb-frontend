@@ -19,7 +19,7 @@ limitations under the License.
     <div class="row">
       <div class="span2"><strong><g:message encodeAs="html" code="ddbnext.License_Field" />: </strong><ddbcommon:renderInfoTooltip messageCode="ddbnext.Licence_TooltipContent" controllerAction="lizenzen" hasArrow="true" /></div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
-        <a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><g:img file="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span>${license.text}</span></a>
+        <a href="${license.url}" target="_blank" class="no-external-link-icon"><g:if test="${license.img}"><img src="${license.img}" alt="${license.text}" class="license-icon" /></g:if><span>${license.text}</span></a>
       </div>
     </div>
   </div>
