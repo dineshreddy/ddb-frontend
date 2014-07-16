@@ -21,13 +21,13 @@ import net.sf.json.JSONNull
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.CategoryFacetEnum;
+import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.common.exception.BadRequestException
-import de.ddb.common.SearchTypeEnum
 
 class SearchController {
 
@@ -46,7 +46,7 @@ class SearchController {
             def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
 
-            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
+            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.CULTURAL_ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
             }
 
@@ -54,8 +54,8 @@ class SearchController {
             def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
-            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
-            searchService.setCategory(firstLastQuery, CategoryFacetEnum.CULTURE.getName());
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName())
+            searchService.setCategory(firstLastQuery, CategoryFacetEnum.CULTURE.getName())
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -108,7 +108,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
+            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.CULTURAL_ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -217,7 +217,7 @@ class SearchController {
         def additionalParams = [:]
 
 
-        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.INSTITUTION)) {
             redirect(controller: "search", action: "institution", params: params)
         }
 
@@ -229,7 +229,7 @@ class SearchController {
         def queryString = request.getQueryString()
 
         //Only select institutions, no documents!
-        searchService.setCategory(urlQuery, CategoryFacetEnum.INSTITUTION.getName());
+        searchService.setCategory(urlQuery, CategoryFacetEnum.INSTITUTION.getName())
 
         if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"]) {
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
@@ -251,7 +251,7 @@ class SearchController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, Type.INSTITUTION))
 
         def model = [
             title: title,
