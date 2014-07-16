@@ -12,7 +12,7 @@ class EncodeInvalidHtmlTagLibTests {
     @Test
     void textShouldBeEncoded() {
         String text = "before<br /><Izchak><br />after"
-        String result = applyTemplate('<ddb:encodeInvalidHtml text="${text}"/>', [text : text]).trim()
+        String result = applyTemplate('<ddbcommon:encodeInvalidHtml text="${text}"/>', [text : text]).trim()
 
         assert result.equals(text.encodeAsHTML())
     }
