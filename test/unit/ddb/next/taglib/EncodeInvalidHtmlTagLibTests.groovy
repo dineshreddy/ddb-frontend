@@ -4,7 +4,7 @@ import grails.test.mixin.TestFor
 
 import org.junit.Test
 
-import de.ddb.next.EncodeInvalidHtmlTagLib
+import de.ddb.common.EncodeInvalidHtmlTagLib
 
 @TestFor(EncodeInvalidHtmlTagLib)
 class EncodeInvalidHtmlTagLibTests {
