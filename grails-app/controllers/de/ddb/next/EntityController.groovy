@@ -41,7 +41,7 @@ class EntityController {
     def cultureGraphService
     def configurationService
     def entityService
-    def itemService
+    def ddbItemService
     def searchService
 
     int PREVIEW_COUNT = 4
@@ -143,7 +143,7 @@ class EntityController {
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
-            "isFavorite": itemService.isFavorite(entityId),
+            "isFavorite": ddbItemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
