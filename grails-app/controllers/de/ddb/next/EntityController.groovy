@@ -25,9 +25,9 @@ import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
-import de.ddb.common.SearchTypeEnum
 
 /**
  * Controller class for all entity related views
@@ -225,13 +225,17 @@ class EntityController {
      */
     def personsearch() {
         //The list of the NON JS supported facets for institutions
-        def nonJsFacetsList = [EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]
+        def nonJsFacetsList = [
+            EntityFacetEnum.PERSON_OCCUPATION.getName(),
+            EntityFacetEnum.PERSON_PLACE.getName(),
+            EntityFacetEnum.PERSON_GENDER.getName()
+        ]
 
         def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
 
         def additionalParams = [:]
 
-        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ENTITY)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.ENTITY)) {
             redirect(controller: "entity", action: "personsearch", params: params)
         }
 
@@ -259,7 +263,7 @@ class EntityController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ENTITY))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.ENTITY))
 
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
