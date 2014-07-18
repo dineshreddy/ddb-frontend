@@ -13,7 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="jsonHierarchyChildrenOfOrg" value="${vApiInst.getChildrenOfInstitutionByItemId(itemId, grailsApplication.config.ddb.backend.url.toString())}" />
+<g:set var="config" bean="commonConfigurationService"/>
+<g:set var="jsonHierarchyChildrenOfOrg" value="${vApiInst.getChildrenOfInstitutionByItemId(itemId, commonConfigurationService.getBackendUrl())}" />
 <g:if test="${((jsonHierarchyChildrenOfOrg)&&(jsonHierarchyChildrenOfOrg.size() > 0))}">
     <ol class="institution-list">
        
