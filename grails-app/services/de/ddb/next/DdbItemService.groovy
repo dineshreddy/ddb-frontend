@@ -52,7 +52,6 @@ class DdbItemService {
     def transactional = false
     def grailsApplication
     def configurationService
-    def commonConfigurationService
     def searchService
     def messageSource
     def sessionService
@@ -78,12 +77,12 @@ class DdbItemService {
 
         def logoResource
         try {
-            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
+            logoResource = new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
             model.institutionImage = logoResource.bytes
         }
         catch (IOException e) {
             // use placeholder logo as fallback
-            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl() +
+            logoResource = new UrlResource(configurationService.getSelfBaseUrl() +
                     grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
                     "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
             model.institutionImage = logoResource.bytes
@@ -96,9 +95,9 @@ class DdbItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
             }else {
-                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
             }
         }
         model.put("binariesListViewerContent", viewerContent)
@@ -201,8 +200,8 @@ class DdbItemService {
             flashInformation: flashInformation,
             license: licenseInformation,
             isFavorite: isFavorite,
-            baseUrl: commonConfigurationService.getSelfBaseUrl(),
-            publicUrl: commonConfigurationService.getConfigValue("ddb.public.url"),
+            baseUrl: configurationService.getSelfBaseUrl(),
+            publicUrl: configurationService.getPublicUrl(),
             similarItems : similarItems
         ]
 

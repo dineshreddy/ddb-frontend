@@ -55,7 +55,6 @@ class UserController {
     def aasService
     def sessionService
     def configurationService
-    def commonConfigurationService
     def messageSource
     def searchService
     def newsletterService
@@ -226,7 +225,7 @@ class UserController {
                         user.getFirstnameAndLastnameOrNickname()
                     ], encodeAs: "none")
                     body(view: "_savedSearchesEmailBody", model: [
-                        contextUrl: commonConfigurationService.getContextUrl(),
+                        contextUrl: configurationService.getContextUrl(),
                         results:
                         savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
                             a.label.toLowerCase() <=> b.label.toLowerCase()
@@ -249,9 +248,9 @@ class UserController {
 
     private def getRegistrationUrls() {
         return [
-            registrationInfoUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getRegistrationInfoUrl(),
-            accountTermsUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getAccountTermsUrl(),
-            accountPrivacyUrl: commonConfigurationService.getContextUrl() + commonConfigurationService.getAccountPrivacyUrl()
+            registrationInfoUrl: configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
+            accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
+            accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
         ]
     }
 
@@ -268,7 +267,7 @@ class UserController {
         if (errors == null || errors.isEmpty()) {
             def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
-            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, commonConfigurationService.getCreateConfirmationLink(), template, null, null)
+            JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
             try {
                 aasService.createPerson(userjson)
                 messages.add("ddbnext.User.Create_Success")
@@ -322,7 +321,7 @@ class UserController {
             try {
                 def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
-                aasService.resetPassword(params.username, aasService.getResetPasswordJson(commonConfigurationService.getPasswordResetConfirmationLink(), template, null))
+                aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
                 messages.add("ddbcommon.User.PasswordReset_Success")
             } catch (ItemNotFoundException e) {
                 log.error "NotFound: a user with given name " + params.username + " was not found", e
@@ -457,7 +456,7 @@ class UserController {
                         //update email in aas
                         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                         def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
-                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, commonConfigurationService.getEmailUpdateConfirmationLink(), template, null))
+                        aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbcommon.User.Email_Update_Success")
                     } catch (ConflictException e) {
                         user.setEmail(params.email)
@@ -711,7 +710,7 @@ class UserController {
         // Delete problem with url page with # and manager.authenticate
         def referrerUrl = params.referrer.replaceAll("#.*", "")
 
-        String returnURL = commonConfigurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
         List discoveries = manager.discover(discoveryUrl)
         DiscoveryInformation discovered = manager.associate(discoveries)
         AuthRequest authReq = manager.authenticate(discovered, returnURL)
@@ -734,7 +733,7 @@ class UserController {
 
             ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
             DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
-            String returnURL = commonConfigurationService.getContextUrl() + "/login/doOpenIdLogin"
+            String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
             String receivingURL =  returnURL + "?" + request.getQueryString()
             VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
             Identifier verified = verification.getVerifiedId()
@@ -831,7 +830,7 @@ class UserController {
             User user = userService.getUserFromSession()
             def apiKey = user.apiKey
 
-            String apiKeyTermsUrl = commonConfigurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             if(apiKey) {
                 render(view: "apiKey", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(),
@@ -903,7 +902,7 @@ class UserController {
         log.info "sendApiKeyPerMail()"
         if (user != null) {
 
-            String apiKeyTermsUrl = commonConfigurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
+            String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             def List emails = []
             emails.add(user.email)

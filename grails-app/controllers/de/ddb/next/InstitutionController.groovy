@@ -24,7 +24,6 @@ class InstitutionController {
 
     def institutionService
     def configurationService
-    def commonConfigurationService
     def bookmarksService
     def sessionService
 
@@ -72,7 +71,7 @@ class InstitutionController {
         def vApiInstitution = new ApiInstitution()
         log.debug("read insitution by item id: ${id}")
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
-        def pageUrl = commonConfigurationService.getSelfBaseUrl() + request.forwardURI
+        def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
         if (selectedOrgXML) {
             selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
             def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())

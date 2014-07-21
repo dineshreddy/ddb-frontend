@@ -8,7 +8,6 @@ import org.apache.commons.logging.Log
 import org.codehaus.groovy.grails.commons.DefaultGrailsApplication
 import org.codehaus.groovy.grails.commons.GrailsApplication
 
-import de.ddb.common.CommonConfigurationService;
 import de.ddb.common.exception.ConfigurationException
 import de.ddb.next.ConfigurationService
 
@@ -55,7 +54,7 @@ class ConfigurationServiceTests {
     }
 
     void testGetAasUrl_Complete() {
-        stringConfigTest("ddb.aas.url", { it.commonConfigurationService.getAasUrl() })
+        stringConfigTest("ddb.aas.url", { it.getAasUrl() })
     }
 
     void testGetCulturegraphUrl_Complete() {
@@ -63,7 +62,7 @@ class ConfigurationServiceTests {
     }
 
     void testGetElasticSearchUrl_Complete() {
-        stringConfigTest("ddb.elasticsearch.url", { it.commonConfigurationService.getElasticSearchUrl() })
+        stringConfigTest("ddb.elasticsearch.url", { it.getElasticSearchUrl() })
     }
 
     void testGetFavoritesSendMailFrom_Complete() {
@@ -83,15 +82,15 @@ class ConfigurationServiceTests {
     }
 
     void testGetRegistrationInfoUrl_Complete() {
-        stringConfigTest("ddb.registration.info.url", { it.commonConfigurationService.getRegistrationInfoUrl() })
+        stringConfigTest("ddb.registration.info.url", { it.getRegistrationInfoUrl() })
     }
 
     void testGetAccountTermsUrl_Complete() {
-        stringConfigTest("ddb.account.terms.url", { it.commonConfigurationService.getAccountTermsUrl() })
+        stringConfigTest("ddb.account.terms.url", { it.getAccountTermsUrl() })
     }
 
     void testGetAccountPrivacyUrl_Complete() {
-        stringConfigTest("ddb.account.privacy.url", { it.commonConfigurationService.getAccountPrivacyUrl() })
+        stringConfigTest("ddb.account.privacy.url", { it.getAccountPrivacyUrl() })
     }
 
     void testGetEncoding_Complete() {
@@ -158,7 +157,7 @@ class ConfigurationServiceTests {
 
     //TODO boz: This test makes trouble after a bigger refactoring of the configurationService to ddb-common
 //    void testSessionTimeout_Complete() {
-//        integerConfigTest("ddbcommon.session.timeout") { it.commonConfigurationService.getSessionTimeout() }
+//        integerConfigTest("ddbcommon.session.timeout") { it.getSessionTimeout() }
 //    }
 
     void testGrailsMailPort_Complete() {
@@ -337,36 +336,19 @@ class ConfigurationServiceTests {
     private ConfigurationService setupService(Object value, String key = this.key) {
         service = new ConfigurationService()
         service.grailsApplication = createGrailsApplication(key, value)
-
-        CommonConfigurationService commonService = new CommonConfigurationService()
-        commonService.grailsApplication = createGrailsApplication(key, value)
-
-        service.commonConfigurationService = commonService
         return service
     }
 
     private ConfigurationService setupServiceWithoutConfigValues() {
         service = new ConfigurationService()
         service.grailsApplication = createGrailsApplication("empty", "undefined")
-
-        CommonConfigurationService commonService = new CommonConfigurationService()
-        commonService.grailsApplication = createGrailsApplication("empty", "undefined")
-
-        service.commonConfigurationService = commonService
         return service
     }
 
     private ConfigurationService setupServiceWithLogMock() {
         service = new ConfigurationService()
         service.log = createLogMock()
-
         service.grailsApplication = createGrailsApplication("empty", "undefined")
-
-        CommonConfigurationService commonService = new CommonConfigurationService()
-        commonService.grailsApplication = createGrailsApplication("empty", "undefined")
-
-        service.commonConfigurationService = commonService
-
         return service
     }
 
