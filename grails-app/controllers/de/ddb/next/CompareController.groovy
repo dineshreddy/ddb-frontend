@@ -21,7 +21,7 @@ import de.ddb.common.constants.SearchParamEnum
 
 class CompareController {
     def searchService
-    def commonConfigurationService
+    def configurationService
     def ddbItemService
     def LinkGenerator grailsLinkGenerator
 
@@ -45,7 +45,7 @@ class CompareController {
             modelItem1: modelItem1,
             modelItem2: modelItem2,
             searchResultUri: searchResultParameters["searchResultUri"],
-            baseUrl: commonConfigurationService.getSelfBaseUrl()
+            baseUrl: configurationService.getSelfBaseUrl()
         ])
     }
 

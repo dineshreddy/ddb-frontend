@@ -17,7 +17,6 @@ class FavoritesviewController {
     def bookmarksService
     def favoritesService
     def configurationService
-    def commonConfigurationService
     def searchService
     def sessionService
     def userService
@@ -78,8 +77,8 @@ class FavoritesviewController {
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
-                baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                contextUrl: commonConfigurationService.getContextUrl()
+                baseUrl: configurationService.getSelfBaseUrl(),
+                contextUrl: configurationService.getContextUrl()
             ])
             return
         }else{
@@ -154,8 +153,8 @@ class FavoritesviewController {
                 urlsForOrderNumber: orderLinks.urlsForOrderNumber,
                 urlsForOrderTitle: orderLinks.urlsForOrderTitle,
                 fullPublicLink: createPublicLink(user.getId(), folderId),
-                baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                contextUrl: commonConfigurationService.getContextUrl()
+                baseUrl: configurationService.getSelfBaseUrl(),
+                contextUrl: configurationService.getContextUrl()
             ])
         }
 
@@ -205,7 +204,7 @@ class FavoritesviewController {
                     nickName: nickName,
                     fullPublicLink: createPublicLink(user.getId(), folderId),
                     dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                    baseUrl: commonConfigurationService.getSelfBaseUrl(),
+                    baseUrl: configurationService.getSelfBaseUrl(),
                     createAllFavoritesLink:favoritesService.createAllFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0,folderId),
                 ])
                 return
@@ -277,8 +276,8 @@ class FavoritesviewController {
                     urlsForOrderDate:orderLinks.urlsForOrderDate,
                     urlsForOrderNumber:orderLinks.urlsForOrderNumber,
                     urlsForOrderTitle:orderLinks.urlsForOrderTitle,
-                    baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                    contextUrl: commonConfigurationService.getContextUrl()
+                    baseUrl: configurationService.getSelfBaseUrl(),
+                    contextUrl: configurationService.getContextUrl()
                 ])
             }
         } else{
@@ -368,8 +367,8 @@ class FavoritesviewController {
                         results: allResultsOrdered,
                         dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                         userName:userService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
-                        baseUrl: commonConfigurationService.getSelfBaseUrl(),
-                        contextUrl: commonConfigurationService.getContextUrl(),
+                        baseUrl: configurationService.getSelfBaseUrl(),
+                        contextUrl: configurationService.getContextUrl(),
                         folderDescription:selectedFolder.description,
                         folderTitle: selectedFolder.title
                     ])
@@ -410,7 +409,7 @@ class FavoritesviewController {
                         publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
                         blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
                         unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
-                        selfBaseUrl: commonConfigurationService.getSelfBaseUrl()
+                        selfBaseUrl: configurationService.getSelfBaseUrl()
                     ])
                 }
                 flash.message = "ddbnext.favorites_list_reported"
