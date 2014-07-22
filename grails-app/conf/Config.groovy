@@ -168,7 +168,6 @@ environments {
 
 //DDB SPECIFIC Configuration variables
 //The variables have to be overwritten by defining local configurations, see below environments
-ddb.url="http://www.deutsche-digitale-bibliothek.de"
 ddb.binary.url="http://localhost/binary/"
 ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
