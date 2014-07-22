@@ -175,7 +175,7 @@ class DdbItemService {
         def fields = translate(item.fields, itemService.convertToHtmlLink, request)
 
         if(configurationService.isCulturegraphFeaturesEnabled()){
-            itemService.createEntityLinks(fields)
+            itemService.createEntityLinks(fields, configurationService.getContextUrl())
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
