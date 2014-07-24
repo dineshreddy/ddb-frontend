@@ -47,7 +47,7 @@ $(function() {
       });
     };
 
-    de.ddb.next.search.initHistorySupport(stateManager);
+    de.ddb.common.search.initHistorySupport(stateManager);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     de.ddb.next.search.searchResultsInitializer();
   }
@@ -71,7 +71,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
     async : true,
     url : url + '&reqType=ajax',
     success : function(data) {
-      de.ddb.next.search.historyManager(url);
+      de.ddb.common.search.historyManager(url);
       if (!historySupport) {
         return;
       }
@@ -272,7 +272,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
-        de.ddb.next.search.historyManager(newUrl);
+        de.ddb.common.search.historyManager(newUrl);
         de.ddb.next.search.setSearchCookieParameter(paramsArray);
       });
 
@@ -405,7 +405,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
-        de.ddb.next.search.historyManager(newUrl);
+        de.ddb.common.search.historyManager(newUrl);
         de.ddb.next.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
@@ -424,7 +424,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
   });
 
   $('.type-selection').change(function(){
-    var currentQuery = de.ddb.next.search.getUrlVar('query');
+    var currentQuery = de.ddb.common.search.getUrlVar('query');
     var optionSelected = $('option:selected', this);
     window.location = optionSelected.val()+'?query='+currentQuery;
   });

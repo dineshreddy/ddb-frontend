@@ -15,9 +15,9 @@
  */
 
 // Create a global namespace for ddb
-de = {};
-de.ddb = {};
-de.ddb.next = {};
+de = de || {};
+de.ddb = de.ddb || {};
+de.ddb.next = de.ddb.next || {};
 
 var jsContextPath = "";
 var jsLanguage = "";
