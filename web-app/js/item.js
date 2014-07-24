@@ -17,7 +17,7 @@ $(document).ready(function() {
 
   if (jsPageName === "item") {
     var socialMediaManager = new SocialMediaManager();
-    de.ddb.next.search.initHistorySupport(null);
+    de.ddb.common.search.initHistorySupport(null);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     socialMediaManager.integrateSocialMedia();
 

@@ -386,7 +386,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
      var exact = null;
 
      // Search for time facetValues[] in the window url
-     var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
+     var facetValuesFromUrl = de.ddb.common.search.getFacetValuesFromUrl();
 
      if (facetValuesFromUrl) {
        $.each(facetValuesFromUrl, function(key) {
@@ -583,7 +583,7 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     daysTill = daysTill || '*';
 
     // Update Url (We want to keep the already selected facet values, but throw away the offset etc.)
-    var facetValuesFromUrl = de.ddb.next.search.getFacetValuesFromUrl();
+    var facetValuesFromUrl = de.ddb.common.search.getFacetValuesFromUrl();
 
     if (facetValuesFromUrl) {
       $.each(facetValuesFromUrl, function(key, value) {

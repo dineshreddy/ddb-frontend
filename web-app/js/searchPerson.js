@@ -18,7 +18,7 @@
 /* Search Person namespace! Some functionality is also found on searchResults.js  */
 $(function() {
   if (jsPageName === "searchperson") {
-    var queryString = decodeURIComponent(de.ddb.next.search.getParameterByName("query").replace(/\+/g, '%20'));
+    var queryString = decodeURIComponent(de.ddb.common.search.getParameterByName("query").replace(/\+/g, '%20'));
     $("#form-search-header .query").val(queryString);
   }
 });
