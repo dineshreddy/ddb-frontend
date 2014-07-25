@@ -177,7 +177,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
 
   $('#form-search-header button').click(
       function() {
-        var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
+        var searchParameters = de.ddb.common.search.readCookie("searchParameters" + jsContextPath);
         if (searchParameters != null && searchParameters.length > 0) {
           searchParameters = searchParameters.substring(1, searchParameters.length - 1);
           searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -273,7 +273,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
         de.ddb.common.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
       });
 
   de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
@@ -406,7 +406,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
         de.ddb.common.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
   $('#keep-filters').click(function() {
@@ -417,10 +417,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
       paramsArray = [['keepFilters', 'true']];
     }
     $.addParamToCurrentUrl(paramsArray);
-    de.ddb.next.search.setSearchCookieParameter(paramsArray);
+    de.ddb.common.search.setSearchCookieParameter(paramsArray);
   });
   $('.clear-filters').click(function() {
-    de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+    de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
   });
 
   $('.type-selection').change(function(){
