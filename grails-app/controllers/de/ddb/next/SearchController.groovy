@@ -68,7 +68,7 @@ class SearchController {
             if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
                 entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
                 entities.each() { entity ->
-                    if (! entityService.entityImageExists(entity["thumbnail"])) {
+                    if (! entity["thumbnail"]) {
                         entity["thumbnail"] = null
                     }
                 }
