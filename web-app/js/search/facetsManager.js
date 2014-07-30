@@ -374,7 +374,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     var newUrl = $.removeParamFromUrl(facetsToRemove);
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
-      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+      de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
       $.addParamToCurrentUrl([['offset', 0]], newUrl);
@@ -407,7 +407,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
     
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
-      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+      de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
 
     $.addParamToCurrentUrl([['offset', 0]], newUrl)
