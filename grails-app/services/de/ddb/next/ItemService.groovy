@@ -668,13 +668,10 @@ class ItemService {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-
             def licenseId = item.item.license."@resource"
-
             def propertyId = convertUriToProperties(licenseId)
 
             licenseInformation = [:]
-
 
             def text
             def url
