@@ -129,15 +129,12 @@ class EntityController {
         def entityImageUrl = null
         def thumbnailUrl = (jsonGraph?.person?.depiction?.thumbnail instanceof JSONArray) ? jsonGraph?.person?.depiction?.thumbnail[0] : jsonGraph?.person?.depiction?.thumbnail
         def imageUrl =  (jsonGraph?.person?.depiction?.image instanceof JSONArray) ? jsonGraph?.person?.depiction?.image[0] : jsonGraph?.person?.depiction?.image
-        def entityImageExists = false
 
         //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
-        if (entityService.entityImageExists(thumbnailUrl)){
+        if (thumbnailUrl){
             entityImageUrl = thumbnailUrl
-            entityImageExists = true
-        } else if (entityService.entityImageExists(imageUrl)) {
+        } else if (imageUrl) {
             entityImageUrl = imageUrl
-            entityImageExists = true
         }
 
         def model = ["entity": jsonGraph,
@@ -147,7 +144,6 @@ class EntityController {
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
-            "entityImageExists": entityImageExists,
             "entityImageUrl": entityImageUrl
         ]
 

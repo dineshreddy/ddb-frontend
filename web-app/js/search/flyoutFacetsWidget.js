@@ -351,7 +351,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
 
             // If renderRoleFacetValue is invoked by initializeSelectedFacetOnLoad
             // we have to find out if the checkbox must be checked
-            var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
+            var paramsFacetValues = de.ddb.common.search.getFacetValuesFromUrl();
             if (paramsFacetValues) {
               var search = facetField + '=' + value.value;
               $.each(paramsFacetValues, function(key, value) {
