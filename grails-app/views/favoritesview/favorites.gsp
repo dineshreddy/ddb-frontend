@@ -495,7 +495,7 @@ limitations under the License.
       <div class="modal-header">
         <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="folderEditConfirmLabel">
-          <g:message encodeAs="html" code="ddbnext.Edit_Folder" />
+          <g:message encodeAs="html" code="ddbcommon.Edit_Folder" />
         </h3>
       </div>
       <div class="modal-body">
@@ -516,15 +516,15 @@ limitations under the License.
           <div>
             <fieldset>
               <input type="radio" name="privacy" value="private" id="folder-edit-privacy-private">
-              <label for="folder-edit-privacy-private"><g:message encodeAs="html" code="ddbnext.favorites_list_private"/></label>
+              <label for="folder-edit-privacy-private"><g:message encodeAs="html" code="ddbcommon.favorites_list_private"/></label>
               <br />
               <input type="radio" name="privacy" value="public" id="folder-edit-privacy-public">
-              <label for="folder-edit-privacy-public"><g:message encodeAs="html" code="ddbnext.favorites_list_public"/></label>
+              <label for="folder-edit-privacy-public"><g:message encodeAs="html" code="ddbcommon.favorites_list_public"/></label>
             </fieldset>
           </div>
           <br />
           <div>
-            <g:message encodeAs="html" code="ddbnext.favorites_list_publishtext"/>
+            <g:message encodeAs="html" code="ddbcommon.favorites_list_publishtext"/>
             <br />
             <select name="publisher-name" size="1" id="folder-edit-publish-name">
               <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
