@@ -241,11 +241,6 @@ class EntityController {
 
         def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-
-        //TODO for DDBNEXT-1630 : because the backend returns an error using the sort param for entities endpoint we have to remove it from the urlQuery
-        urlQuery.remove("sort")
-
-
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
