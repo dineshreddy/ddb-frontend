@@ -107,7 +107,7 @@ class UrlMappings {
 
         name delFavorites: "/apis/favorites/_delete" {
             controller="favorites"
-            action=[POST: "deleteFavoritesFromFolder"]
+            action=[POST: "deleteFavorites"]
         }
 
         "/apis/favorites/$id/_move" {
