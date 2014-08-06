@@ -165,7 +165,7 @@ limitations under the License.
                           <g:message encodeAs="html" code="ddbnext.properties"/>
                         </a>
                         <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}" title="${message(code: 'ddbnext.delete_favorites')}">
-                          <g:message encodeAs="html" code="ddbnext.Delete"/>
+                          <g:message encodeAs="html" code="ddbcommon.Delete"/>
                         </g:link>
                       </g:if>
                     </g:each>
@@ -231,7 +231,7 @@ limitations under the License.
                             <g:message encodeAs="html" code="ddbnext.properties"/>
                           </a>
                           <g:link controller="favorites" action="deleteFavoritesFolder" class="bookmarks-list-delete deletefolders" data-folder-id="${it.folder.folderId}" title="${message(code: 'ddbnext.delete_favorites')}">
-                            <g:message encodeAs="html" code="ddbnext.Delete"/>
+                            <g:message encodeAs="html" code="ddbcommon.Delete"/>
                           </g:link>
                         </g:if>
                       </g:each>
@@ -240,15 +240,15 @@ limitations under the License.
                   <div class="options-buttons-container mobile-off">
                     <div class="delete-btn">
                       <g:form id="favorites-copy" method="POST" name="favorites-copy" mapping="copyFavorites">
-                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Copy_Favorites" />">
-                          <span><g:message encodeAs="html" code="ddbnext.Copy"></g:message></span>
+                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbcommon.favorites_copy" />">
+                          <span><g:message encodeAs="html" code="ddbcommon.Copy"></g:message></span>
                         </button>
                       </g:form>
                     </div>
                     <div class="delete-btn">
                       <g:form id="favorites-remove" method="POST" name="favorites-remove" mapping="delFavorites">
-                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbnext.Delete_Favorites" />">
-                          <span><g:message encodeAs="html" code="ddbnext.Delete"></g:message></span>
+                        <button type="submit" class="submit disabled" title="<g:message encodeAs="html" code="ddbcommon.favorites_delete" />">
+                          <span><g:message encodeAs="html" code="ddbcommon.Delete"></g:message></span>
                         </button>
                       </g:form>
                     </div>
@@ -418,11 +418,11 @@ limitations under the License.
       <div class="modal-header">
         <span title="<g:message encodeAs="html" code="ddbcommon.Close" />" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="favoritesCopyLabel">
-          <g:message encodeAs="html" code="ddbnext.Copy_Confirmation" />
+          <g:message encodeAs="html" code="ddbcommon.favorites_copy_confirmation_title" />
         </h3>
       </div>
       <div class="modal-body">
-        <g:message encodeAs="html" code="ddbnext.Copy_Favorites" />
+        <g:message encodeAs="html" code="ddbcommon.favorites_copy" />
         <br />
         <select name="copyTargets" size="10" multiple="multiple" class="favorites-copy-selection">
           <g:each in="${allFolders}">
@@ -485,7 +485,7 @@ limitations under the License.
       </div>
       <div class="modal-footer">
         <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbnext.Delete" /> </button> 
+        <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbcommon.Delete" /> </button> 
       </div>
     </div>
   
