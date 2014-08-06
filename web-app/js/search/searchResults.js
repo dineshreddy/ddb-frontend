@@ -199,7 +199,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
                 '<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>');
           }
           if (json["sort"]) {
-            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>');
+            //Only a_to_z and z_to_a should be considered
+            if (json["sort"] === 'ALPHA_ASC' || json["sort"] === 'ALPHA_DESC') {
+              $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>');
+            }
           }
         }
       });
