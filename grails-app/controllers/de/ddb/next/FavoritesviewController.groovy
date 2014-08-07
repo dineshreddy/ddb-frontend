@@ -372,7 +372,7 @@ class FavoritesviewController {
         if (folder) {
             bookmarkIdsInFolder = result*.bookmark.bookmarkId
             folder.bookmarks = bookmarkIdsInFolder
-            bookmarksService.updateFolder(folder)
+            bookmarksService.updateFolder(folder, false)
         }
 
         if (order == favoritesService.ORDER_DESC) {
