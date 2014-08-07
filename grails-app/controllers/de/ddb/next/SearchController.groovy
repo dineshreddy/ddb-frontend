@@ -51,7 +51,8 @@ class SearchController {
             }
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+
+            def firstLastQuery = urlQuery.clone()
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
             searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
