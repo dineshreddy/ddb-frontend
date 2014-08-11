@@ -226,9 +226,9 @@ class EntityController {
     def personsearch() {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = [
-            EntityFacetEnum.PERSON_OCCUPATION.getName(),
-            EntityFacetEnum.PERSON_PLACE.getName(),
-            EntityFacetEnum.PERSON_GENDER.getName()
+            EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+            EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+            EntityFacetEnum.PERSON_GENDER_FCT.getName()
         ]
 
         def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
