@@ -48,10 +48,11 @@ class SearchController {
 
             if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.CULTURAL_ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
+                return
             }
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-            def firstLastQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+            def firstLastQuery = urlQuery.clone()
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
             searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName())

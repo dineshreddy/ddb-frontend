@@ -25,6 +25,6 @@ limitations under the License.
   </div>
   <div class="modal-footer">
     <button class="submit grey" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbnext.Delete" /></button>
+    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbcommon.Delete" /></button>
   </div>
 </div>
