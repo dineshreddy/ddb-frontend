@@ -22,23 +22,23 @@ limitations under the License.
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
       <span class="count"><ddb:getLocalizedNumber>${facetValues[i]['cnt']}</ddb:getLocalizedNumber></span>
-      <g:if test="${facetType == FacetEnum.AFFILIATE.getName() || facetType == FacetEnum.KEYWORDS.getName() || facetType == FacetEnum.PLACE.getName() || facetType == FacetEnum.PROVIDER.getName() || facetType == FacetEnum.STATE.getName()}">        
+      <g:if test="${facetType == FacetEnum.AFFILIATE_FCT.getName() || facetType == FacetEnum.KEYWORDS_FCT.getName() || facetType == FacetEnum.PLACE_FCT.getName() || facetType == FacetEnum.PROVIDER_FCT.getName() || facetType == FacetEnum.STATE_FCT.getName()}">        
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetType == EntityFacetEnum.PERSON_PLACE.getName() }">
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
-      <g:if test="${facetType == FacetEnum.TYPE.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TYPE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      <g:if test="${facetType == FacetEnum.TYPE_FCT.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TYPE_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-      <g:if test="${facetType == FacetEnum.TIME.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TIME.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      <g:if test="${facetType == FacetEnum.TIME_FCT.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TIME_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-      <g:if test="${facetType == FacetEnum.LANGUAGE.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${FacetEnum.LANGUAGE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      <g:if test="${facetType == FacetEnum.LANGUAGE_FCT.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.LANGUAGE_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-      <g:if test="${facetType == FacetEnum.SECTOR.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${FacetEnum.SECTOR.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      <g:if test="${facetType == FacetEnum.SECTOR_FCT.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${FacetEnum.SECTOR_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
       <g:if test="${facetType == FacetEnum.LICENSE_GROUP.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.LICENSE_GROUP.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
