@@ -48,6 +48,7 @@ class SearchController {
 
             if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.CULTURAL_ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
+                return
             }
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
