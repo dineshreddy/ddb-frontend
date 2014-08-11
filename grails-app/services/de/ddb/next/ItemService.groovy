@@ -111,7 +111,14 @@ class ItemService {
         def fields
         if (json.item.fields instanceof JSONArray) {
             def displayFieldsTag = json.item.fields.findAll{ it."@usage".contains('display') }
-            fields = displayFieldsTag[0].field.findAll()
+            // https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1744
+            // Ensure that "fields" always contains an array of field objects.
+            if (displayFieldsTag[0].field[0]) {
+                fields = displayFieldsTag[0].field.findAll()
+            }
+            else {
+                fields = [displayFieldsTag[0].field]
+            }
         }
         else {
             // old data format
@@ -132,12 +139,12 @@ class ItemService {
     def prepareImagesForPdf(model) {
         //ADD Hierarchy
         model.hierarchy=getHierarchyItem(model.itemId)
-        
+
         def baseFolder= Holders.getApplicationContext().getResource("/images/").getFile().toString()
         def logoHeaderFile = '/logoHeaderSmall.png'
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
-        
+
         def logoResource
         try {
             logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
@@ -154,7 +161,7 @@ class ItemService {
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
         model.fontCalibri=grailsApplication.mainContext.getResourceByPath('/css/fonts/Calibri.ttf').file.bytes
-        
+
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
@@ -626,7 +633,7 @@ class ItemService {
             }
 
             //FIXME Sets the item category to objects! If we need the pagination also for institution details we need to build a switch!
-            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName())
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -668,13 +675,10 @@ class ItemService {
         def licenseInformation
 
         if(item.item?.license && !item.item.license.isEmpty()){
-
             def licenseId = item.item.license."@resource"
-
             def propertyId = convertUriToProperties(licenseId)
 
             licenseInformation = [:]
-
 
             def text
             def url

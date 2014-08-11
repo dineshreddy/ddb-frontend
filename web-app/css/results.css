@@ -107,11 +107,6 @@
   margin-left: 10px;
 }
 
-/* disable sorting capabilities in entity search */
-.search-results-container.entities .sort-results-switch {
-  display: none;
-}
-
 .page-info-nav {
   display: block;
   overflow: hidden;

@@ -29,7 +29,7 @@ limitations under the License.
                   ${folder?.title}
                   </a>
                 </h2>
-                <div class="item-details"><g:message encodeAs="html" code="ddbnext.lists.itemDetails" args="${[folder?.publishingName, folder?.count, folder?.creationDateFormatted]}"/></div>
+                <div class="item-details"><g:message encodeAs="html" code="ddbnext.lists.itemDetails" args="${[folder?.publishingName, folder?.count, folder?.creationDateFormatted, folder?.updatedDateFormatted]}"/></div>
                 <div class="item-description">${folder?.description}</div>
               </div>
               <div class="span2">

@@ -165,8 +165,12 @@ class EntityController {
         }else {
             randomSeed = getRandomSeed()
         }
-        def entitiesOnPage=400
-        def results = entityService.doEntitySearch([rows:entitiesOnPage,sort:"random_"+randomSeed])
+        def entitiesOnPage = 50
+        def results = entityService.doEntitySearch([
+            rows : entitiesOnPage,
+            query : "thumbnail:*",
+            sort : "random_" + randomSeed
+        ])
 
         //There are entities with no thumbnail. We leave them out...
         def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
@@ -225,7 +229,11 @@ class EntityController {
      */
     def personsearch() {
         //The list of the NON JS supported facets for institutions
-        def nonJsFacetsList = [EntityFacetEnum.PERSON_OCCUPATION.getName(),EntityFacetEnum.PERSON_PLACE.getName(),EntityFacetEnum.PERSON_GENDER.getName()]
+        def nonJsFacetsList = [
+            EntityFacetEnum.PERSON_OCCUPATION.getName(),
+            EntityFacetEnum.PERSON_PLACE.getName(),
+            EntityFacetEnum.PERSON_GENDER.getName()
+        ]
 
         def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
 
@@ -237,11 +245,6 @@ class EntityController {
 
         def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-
-        //TODO for DDBNEXT-1630 : because the backend returns an error using the sort param for entities endpoint we have to remove it from the urlQuery
-        urlQuery.remove("sort")
-
-
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
