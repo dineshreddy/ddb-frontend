@@ -56,14 +56,14 @@ class SearchFacetLists {
 
 
     public static final List<FacetEnum> entitySearchNonJavascriptFacetList = [
-        EntityFacetEnum.PERSON_OCCUPATION.getName(),
-        EntityFacetEnum.PERSON_PLACE.getName(),
-        EntityFacetEnum.PERSON_GENDER.getName()
+        EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+        EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+        EntityFacetEnum.PERSON_GENDER_FCT.getName()
     ]
 
     public static final List<FacetEnum> entitySearchJavascriptFacetList = [
-        EntityFacetEnum.PERSON_OCCUPATION.getName(),
-        EntityFacetEnum.PERSON_PLACE.getName(),
-        EntityFacetEnum.PERSON_GENDER.getName()
+        EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+        EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+        EntityFacetEnum.PERSON_GENDER_FCT.getName()
     ]
 }

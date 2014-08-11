@@ -22,10 +22,10 @@ limitations under the License.
   <li>
     <a href="${facetValues[i]['url']}" class="${facetValues[i]['selected']}">
       <span class="count"><ddb:getLocalizedNumber>${facetValues[i]['cnt']}</ddb:getLocalizedNumber></span>
-      <g:if test="${facetType == FacetEnum.AFFILIATE_FCT.getName() || facetType == FacetEnum.KEYWORDS_FCT.getName() || facetType == FacetEnum.PLACE_FCT.getName() || facetType == FacetEnum.PROVIDER_FCT.getName() || facetType == FacetEnum.STATE_FCT.getName()}">        
+      <g:if test="${facetType == FacetEnum.AFFILIATE_FCT.getName() || facetType == FacetEnum.KEYWORDS_FCT.getName() || facetType == FacetEnum.PLACE_FCT.getName() || facetType == FacetEnum.PROVIDER_FCT.getName() || facetType == FacetEnum.STATE_FCT.getName()}">
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
-      <g:if test="${facetType == EntityFacetEnum.PERSON_OCCUPATION.getName() || facetType == EntityFacetEnum.PERSON_PLACE.getName() }">
+      <g:if test="${facetType == EntityFacetEnum.PERSON_OCCUPATION_FCT.getName() || facetType == EntityFacetEnum.PERSON_PLACE_FCT.getName() }">
         <span class="label">${facetValues[i]['fctValue']}</span>
       </g:if>
       <g:if test="${facetType == FacetEnum.TYPE_FCT.getName() }">
@@ -46,8 +46,8 @@ limitations under the License.
       <g:if test="${facetType == FacetEnum.LICENSE.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.LICENSE.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-      <g:if test="${facetType == EntityFacetEnum.PERSON_GENDER.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${EntityFacetEnum.PERSON_GENDER.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
+      <g:if test="${facetType == EntityFacetEnum.PERSON_GENDER_FCT.getName() }">
+        <span class="label"><g:message encodeAs="html" code="${EntityFacetEnum.PERSON_GENDER_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
     </a>	
   </li>
