@@ -12,8 +12,4 @@ class FacetsServiceTests {
     void testGetFacet() {
         assert true
     }
-
-    void testGetExtendedFacets() {
-        assert true
-    }
 }
