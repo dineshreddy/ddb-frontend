@@ -28,7 +28,6 @@ import net.sf.json.JSONObject
 
 import org.apache.commons.codec.binary.Base32
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.io.support.UrlResource
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
@@ -75,18 +74,8 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        def logoResource
-        try {
-            logoResource = new UrlResource(configurationService.getSelfBaseUrl()+model.institutionImage).getURL()
-            model.institutionImage = logoResource.bytes
-        }
-        catch (IOException e) {
-            // use placeholder logo as fallback
-            logoResource = new UrlResource(configurationService.getSelfBaseUrl() +
-                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
-                    "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
-            model.institutionImage = logoResource.bytes
-        }
+        model.institutionImage = new URL(new URL(configurationService.getSelfBaseUrl()),
+                model.institutionImage).bytes
 
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
@@ -95,9 +84,11 @@ class DdbItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+                viewerContent= new URL(new URL(configurationService.getSelfBaseUrl()),
+                        model.binaryList.first().thumbnail.uri).bytes
             }else {
-                viewerContent= new UrlResource(configurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+                viewerContent= new URL(new URL(configurationService.getSelfBaseUrl()),
+                        model.binaryList.first().preview.uri).bytes
             }
         }
         model.put("binariesListViewerContent", viewerContent)
@@ -262,7 +253,7 @@ class DdbItemService {
             }
 
             //FIXME Sets the item category to objects! If we need the pagination also for institution details we need to build a switch!
-            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName())
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
