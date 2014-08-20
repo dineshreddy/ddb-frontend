@@ -469,7 +469,12 @@ var itemHierarchy = {
       async : true,
       url : url.dir + "parents/" + id,
       complete : function(data) {
-        complete(jQuery.parseJSON(data.responseText));
+        var response = jQuery.parseJSON(data.responseText);
+
+        // filter out institutions
+        complete($.grep(response, function(value) {
+          return value.type !== "institution";
+        }));
       }
     });
   },
