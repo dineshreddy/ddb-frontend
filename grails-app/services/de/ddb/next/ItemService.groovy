@@ -28,7 +28,6 @@ import net.sf.json.JSONObject
 
 import org.apache.commons.codec.binary.Base32
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.io.support.UrlResource
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.NoSuchMessageException
@@ -36,13 +35,13 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.common.beans.Bookmark
 
 class ItemService {
     private static final log = LogFactory.getLog(this)
@@ -145,18 +144,8 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        def logoResource
-        try {
-            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.institutionImage).getURL()
-            model.institutionImage = logoResource.bytes
-        }
-        catch (IOException e) {
-            // use placeholder logo as fallback
-            logoResource = new UrlResource(commonConfigurationService.getSelfBaseUrl() +
-                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
-                    "file": "/placeholder/searchResultMediaInstitution.png")).getURL()
-            model.institutionImage = logoResource.bytes
-        }
+        model.institutionImage = new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                model.institutionImage).bytes
 
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
@@ -165,9 +154,11 @@ class ItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().thumbnail.uri).getURL().bytes
+                viewerContent= new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                        model.binaryList.first().thumbnail.uri).bytes
             }else {
-                viewerContent= new UrlResource(commonConfigurationService.getSelfBaseUrl()+model.binaryList.first().preview.uri).getURL().bytes
+                viewerContent= new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                        model.binaryList.first().preview.uri).bytes
             }
         }
         model.put("binariesListViewerContent", viewerContent)
