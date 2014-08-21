@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import org.springframework.web.servlet.support.RequestContextUtils as RCU
+import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.constants.SupportedLocales
@@ -26,74 +26,49 @@ class ContentController {
 
     def configurationService
 
-    def staticcontent(){
-        try{
-            def firstLvl = configurationService.getDefaultStaticPage()
-            if (params.dir!=null){
-                firstLvl=getFirstLvl()
-            }
-
+    def staticcontent() {
+        try {
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
-
-            if(browserUrl.endsWith("content")){
-                redirect uri: browserUrl+"/"
-                return
-            }
-            if(browserUrl?.endsWith(firstLvl)){
-                redirect uri: browserUrl+"/"
-                return
+            def location = browserUrl.substring("/content".length())
+            while (location.endsWith("/")) {
+                location = location.substring(0, location.length() - 1)
             }
 
-            if(!params.dir){
-                redirect uri: browserUrl + firstLvl + "/"
+            /* If first level dir is missing use a default context dir from contentDefault. */
+            if (!location) {
+                redirect uri: new File(browserUrl, configurationService.getDefaultStaticPage()).toString() + "/"
                 return
-            }else{
-                firstLvl = getFirstLvl()
             }
 
-            def prioritySortedLocales = SupportedLocales.getSupportedLocalesByPriority(RCU.getLocale(request))
+            def url = configurationService.getStaticUrl()
+            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+
+            /* Load the the file from $content-location.html. If not found then load it from $content-location/index.html */
+            def path = locale.toString() + "/" + location + ".html"
             def response
-
-            for(int i=0; i < prioritySortedLocales.size(); i++){
-                def it = prioritySortedLocales.get(i)
-
-                def secondLvl = getSecLvl()
-                def url = configurationService.getStaticUrl()
-                def lang = it.getISO2()
-                def path = lang+"/"+firstLvl+"/index.html"
-                if (params.id!=null){
-                    path = lang+"/"+firstLvl+"/"+secondLvl+".html"
+            def apiResponse = ApiConsumer.getText(url, path, false)
+            if (apiResponse.isOk()) {
+                response = apiResponse.getResponse()
+            } else {
+                if (!browserUrl.endsWith ("/")) {
+                    redirect uri: browserUrl + "/"
+                    return
                 }
-
-                def apiResponse = ApiConsumer.getText(url, path, false)
+                path = locale.toString() + "/" + location + "/index.html"
+                apiResponse = ApiConsumer.getText(url, path, false)
                 if(apiResponse.isOk()){
                     response = apiResponse.getResponse()
-                    break
                 }
-                else if (i == prioritySortedLocales.size()-1) {
-                    //A 404 was returned for EVERY supported language
+                else {
                     throw new ItemNotFoundException()
                 }
             }
-
             def map = retrieveArguments(response)
             render(view: "staticcontent", model: map)
-        } catch(ItemNotFoundException infe){
+        } catch (ItemNotFoundException infe) {
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
             forward controller: "error", action: "itemNotFound"
         }
-    }
-
-    private def getFirstLvl(){
-        String firstLvl = cleanHtml(params.dir, 'none')
-        return firstLvl
-    }
-
-    private String getSecLvl(){
-        if (params.id==null){
-            return null
-        }
-        return cleanHtml(params.id, 'none')
     }
 
     private def retrieveArguments(def content){
