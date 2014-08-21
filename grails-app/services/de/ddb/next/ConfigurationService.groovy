@@ -35,6 +35,10 @@ class ConfigurationService {
         return commonConfigurationService.getConfigValue("ddb.binary.url")
     }
 
+    String getDefaultStaticPage(){
+        return commonConfigurationService.getConfigValue("ddb.default.staticPage")
+    }
+
     public String getStaticUrl(){
         return commonConfigurationService.getConfigValue("ddb.static.url")
     }
