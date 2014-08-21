@@ -28,7 +28,7 @@ class ContentController {
 
     def staticcontent(){
         try{
-            def firstLvl = "news"
+            def firstLvl = configurationService.getDefaultStaticPage()
             if (params.dir!=null){
                 firstLvl=getFirstLvl()
             }
