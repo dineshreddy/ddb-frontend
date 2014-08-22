@@ -53,8 +53,10 @@ class FacetsController {
         def facetValues
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
+        def enu = FacetEnum.getEnumFromName(facetName.toString())
+
         // Key based facets uses the "Search" endpoint (/apis/search)
-        if(facetName == FacetEnum.TIME_FCT.getName() || facetName == FacetEnum.SECTOR_FCT.getName() || facetName == FacetEnum.LANGUAGE_FCT.getName() || facetName == FacetEnum.TYPE_FCT.getName() || facetName == FacetEnum.LICENSE_GROUP.getName()|| facetName == FacetEnum.LICENSE.getName()){
+        if (enu.isSearchFacet()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
             //Use query filter if roles were selected
