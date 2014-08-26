@@ -19,29 +19,19 @@ import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
 import grails.util.Holders
 
-import java.util.regex.Matcher
-import java.util.regex.Pattern
-
-import net.sf.json.JSONArray
-import net.sf.json.JSONNull
-import net.sf.json.JSONObject
-
-import org.apache.commons.codec.binary.Base32
 import org.apache.commons.logging.LogFactory
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
-import org.springframework.context.NoSuchMessageException
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.ApiResponse
+import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.common.beans.Bookmark
 
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
@@ -74,8 +64,8 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = new URL(new URL(configurationService.getSelfBaseUrl()),
-                model.institutionImage).bytes
+        model.institutionImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                model.institutionImage))
 
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
@@ -84,11 +74,11 @@ class DdbItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri).bytes
+                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                        model.binaryList.first().thumbnail.uri))
             }else {
-                viewerContent= new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().preview.uri).bytes
+                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                        model.binaryList.first().preview.uri))
             }
         }
         model.put("binariesListViewerContent", viewerContent)
@@ -197,6 +187,33 @@ class DdbItemService {
         ]
 
         return model
+    }
+
+    /**
+     * Follow redirects.
+     */
+    private def findRealUrl(url) {
+        HttpURLConnection conn = url.openConnection()
+        conn.followRedirects = false
+        conn.requestMethod = 'HEAD'
+        if(conn.responseCode in [301, 302]) {
+            if (conn.headerFields.'Location') {
+                return findRealUrl(conn.headerFields.Location.first().toURL())
+            } else {
+                throw new RuntimeException('Failed to follow redirect')
+            }
+        }
+        return url
+    }
+
+    /**
+     * Get the content of the given URL and follow redirects.
+     *
+     * @param url URL
+     * @return content of that URL
+     */
+    private byte[] getContent(URL url) {
+        return findRealUrl(url).bytes
     }
 
     private def log(list) {
