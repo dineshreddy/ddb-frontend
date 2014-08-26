@@ -144,8 +144,8 @@ class ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
-                model.institutionImage).bytes
+        model.institutionImage = getContent(new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                model.institutionImage))
 
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
@@ -154,11 +154,11 @@ class ItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri).bytes
+                viewerContent= getContent(new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                        model.binaryList.first().thumbnail.uri))
             }else {
-                viewerContent= new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
-                        model.binaryList.first().preview.uri).bytes
+                viewerContent= getContent(new URL(new URL(commonConfigurationService.getSelfBaseUrl()),
+                        model.binaryList.first().preview.uri))
             }
         }
         model.put("binariesListViewerContent", viewerContent)
@@ -494,6 +494,33 @@ class ItemService {
             }
         }
         return (['images':images,'audios':audios,'videos':videos])
+    }
+
+    /**
+     * Follow redirects.
+     */
+    def findRealUrl(url) {
+        HttpURLConnection conn = url.openConnection()
+        conn.followRedirects = false
+        conn.requestMethod = 'HEAD'
+        if(conn.responseCode in [301, 302]) {
+            if (conn.headerFields.'Location') {
+                return findRealUrl(conn.headerFields.Location.first().toURL())
+            } else {
+                throw new RuntimeException('Failed to follow redirect')
+            }
+        }
+        return url
+    }
+
+    /**
+     * Get the content of the given URL and follow redirects.
+     *
+     * @param url URL
+     * @return content of that URL
+     */
+    private byte[] getContent(URL url) {
+        return findRealUrl(url).bytes
     }
 
     /**
