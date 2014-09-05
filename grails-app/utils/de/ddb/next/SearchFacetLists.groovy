@@ -22,48 +22,48 @@ import de.ddb.common.constants.FacetEnum
 class SearchFacetLists {
 
     public static final List<FacetEnum> itemSearchNonJavascriptFacetList = [
-        FacetEnum.PLACE.getName(),
-        FacetEnum.AFFILIATE.getName(),
-        FacetEnum.KEYWORDS.getName(),
-        FacetEnum.LANGUAGE.getName(),
-        FacetEnum.TYPE.getName(),
-        FacetEnum.SECTOR.getName(),
-        FacetEnum.PROVIDER.getName()
+        FacetEnum.PLACE_FCT.getName(),
+        FacetEnum.AFFILIATE_FCT.getName(),
+        FacetEnum.KEYWORDS_FCT.getName(),
+        FacetEnum.LANGUAGE_FCT.getName(),
+        FacetEnum.TYPE_FCT.getName(),
+        FacetEnum.SECTOR_FCT.getName(),
+        FacetEnum.PROVIDER_FCT.getName()
     ]
 
 
     public static final List<FacetEnum> itemSearchJavascriptFacetList = [
-        FacetEnum.PLACE.getName(),
-        FacetEnum.AFFILIATE_ROLE.getName(),
-        FacetEnum.KEYWORDS.getName(),
-        FacetEnum.LANGUAGE.getName(),
+        FacetEnum.PLACE_FCT.getName(),
+        FacetEnum.AFFILIATE_FCT_ROLE.getName(),
+        FacetEnum.KEYWORDS_FCT.getName(),
+        FacetEnum.LANGUAGE_FCT.getName(),
         FacetEnum.LICENSE.getName(),
         FacetEnum.LICENSE_GROUP.getName(),
-        FacetEnum.TYPE.getName(),
-        FacetEnum.SECTOR.getName(),
-        FacetEnum.PROVIDER.getName()
+        FacetEnum.TYPE_FCT.getName(),
+        FacetEnum.SECTOR_FCT.getName(),
+        FacetEnum.PROVIDER_FCT.getName()
     ]
 
     public static final List<FacetEnum> institutionSearchNonJavascriptFacetList = [
-        FacetEnum.SECTOR.getName(),
-        FacetEnum.STATE.getName()
+        FacetEnum.SECTOR_FCT.getName(),
+        FacetEnum.STATE_FCT.getName()
     ]
 
     public static final List<FacetEnum> institutionSearchJavascriptFacetList = [
-        FacetEnum.SECTOR.getName(),
-        FacetEnum.STATE.getName()
+        FacetEnum.SECTOR_FCT.getName(),
+        FacetEnum.STATE_FCT.getName()
     ]
 
 
     public static final List<FacetEnum> entitySearchNonJavascriptFacetList = [
-        EntityFacetEnum.PERSON_OCCUPATION.getName(),
-        EntityFacetEnum.PERSON_PLACE.getName(),
-        EntityFacetEnum.PERSON_GENDER.getName()
+        EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+        EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+        EntityFacetEnum.PERSON_GENDER_FCT.getName()
     ]
 
     public static final List<FacetEnum> entitySearchJavascriptFacetList = [
-        EntityFacetEnum.PERSON_OCCUPATION.getName(),
-        EntityFacetEnum.PERSON_PLACE.getName(),
-        EntityFacetEnum.PERSON_GENDER.getName()
+        EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+        EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+        EntityFacetEnum.PERSON_GENDER_FCT.getName()
     ]
 }

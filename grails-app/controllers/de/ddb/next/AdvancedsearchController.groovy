@@ -15,13 +15,14 @@
  */
 package de.ddb.next
 
+import de.ddb.common.constants.FacetEnum;
 import de.ddb.common.constants.SearchParamEnum
 
 
 
 /**
  * Controller for Advanced Search
- * 
+ *
  * @author mih
  *
  */
@@ -29,24 +30,25 @@ class AdvancedsearchController {
 
     //The factes for the advanced search
     def allowedFacets = [
-        "search_all",
-        "title",
-        "description",
-        "place",
-        "affiliate",
-        "keywords",
-        "language",
-        "type",
-        "sector",
-        "provider",
-        "license_group"
+        FacetEnum.SEARCH_ALL.getName(),
+        FacetEnum.TITLE.getName(),
+        FacetEnum.DESCRIPTION.getName(),
+        FacetEnum.PLACE.getName(),
+        FacetEnum.AFFILIATE.getName(),
+        FacetEnum.KEYWORDS.getName(),
+        FacetEnum.LANGUAGE.getName(),
+        FacetEnum.TYPE.getName(),
+        FacetEnum.SECTOR.getName(),
+        FacetEnum.PROVIDER.getName(),
+        FacetEnum.LICENSE_GROUP.getName()
     ]
 
-    private static final String enumSearchType = "ENUM"
-    private static final String textSearchType = "TEXT"
-    private static final String languageTagPrefix = "ddbnext.facet_"
-    private static final String facetNameSuffix = "_fct"
-    private static final String labelSortType = "ALPHA_LABEL"
+    private static final String ENUM_SEARCH_TYPE = "ENUM"
+    private static final String TEXT_SEARCH_TYPE = "TEXT"
+    private static final String I18N_FACET_VALUE_PREFIX = "ddbnext."
+    private static final String I18N_FACET_NAME_PREFIX =  "ddbnext.facet_"
+    private static final String FACET_NAME_SUFFIX = "_fct"
+    private static final String LABEL_SORT_TYPE = "ALPHA_LABEL"
 
     static defaultAction = "fillValues"
 
@@ -57,30 +59,30 @@ class AdvancedsearchController {
 
     /**
      * render advanced search form
-     * 
+     *
      * @return
      */
     def fillValues() {
         int searchGroupCount = configurationService.getSearchGroupCount()
         int searchFieldCount = configurationService.getSearchFieldCount()
         List facetSearchfields = facetsService.getAllFacets()
-        facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
-        Map facetValuesMap = getFacetValues(facetSearchfields)
+        facetSearchfields = facetsService.filterOnlyAdvancedSearchFacets(facetSearchfields, allowedFacets)
+        Map facetValuesMap = facetsService.getFacetValues(facetSearchfields, I18N_FACET_VALUE_PREFIX)
 
         render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,
             searchFieldCount: searchFieldCount,
             facetSearchfields: facetSearchfields,
             facetValuesMap : facetValuesMap,
-            textSearchType : textSearchType,
-            languageTagPrefix : languageTagPrefix,
-            facetNameSuffix : facetNameSuffix,
-            labelSortType : labelSortType,
-            enumSearchType : enumSearchType])
+            textSearchType : TEXT_SEARCH_TYPE,
+            languageTagPrefix : I18N_FACET_NAME_PREFIX,
+            facetNameSuffix : FACET_NAME_SUFFIX,
+            labelSortType : LABEL_SORT_TYPE,
+            enumSearchType : ENUM_SEARCH_TYPE])
     }
 
     /**
      * Take form-parameters from advanced-search-form, generate query and call search with query.
-     * 
+     *
      * @throws IOException
      */
     def executeSearch() throws IOException {
@@ -90,73 +92,11 @@ class AdvancedsearchController {
         int offset = configurationService.getSearchOffset()
         int rows = configurationService.getSearchRows()
         def facetSearchfields = facetsService.getAllFacets()
-        facetSearchfields = filterOnlyAdvancedSearchFacets(facetSearchfields)
+        facetSearchfields = facetsService.filterOnlyAdvancedSearchFacets(facetSearchfields, allowedFacets)
 
         AdvancedSearchFormToQueryConverter converter =
                 new AdvancedSearchFormToQueryConverter(params, searchGroupCount, searchFieldCount, facetSearchfields)
         String query = converter.convertFormParameters()
         redirect(uri: "/searchresults?"+SearchParamEnum.QUERY.getName()+"=" + query + "&"+SearchParamEnum.OFFSET.getName()+"=" + offset + "&"+SearchParamEnum.ROWS.getName()+"=" + rows)
-    }
-
-    /**
-     * request facet-values (for select-box) for all facets that are searchable.
-     * fill results in global variable facetValuesMap (key: name of facet, value: map with value, display-value, sorted)
-     * 
-     */
-    private Map getFacetValues(facetSearchfields) {
-        def facetValuesMap = [:]
-        def allFacetFilters = configurationService.getFacetsFilter()
-
-        for ( facetSearchfield in facetSearchfields ) {
-            if (facetSearchfield.searchType.equals(enumSearchType)) {
-                def facetValues = null
-                def facetDisplayValuesMap = new TreeMap()
-
-                //Special handling for "license_group, as this facet has "
-                if (facetSearchfield.name == "license_group") {
-                    facetValues = facetsService.getFacet(facetSearchfield.name , allFacetFilters)
-                    for (facetValue in facetValues) {
-                        //translate because of sorting
-                        facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + "_" + facetValue)
-                    }
-                } else {
-                    facetValues = facetsService.getFacet(facetSearchfield.name + facetNameSuffix, allFacetFilters)
-                    for (facetValue in facetValues) {
-                        //translate because of sorting
-                        facetDisplayValuesMap[facetValue] = message(code: "ddbnext." + facetSearchfield.name + facetNameSuffix + "_" + facetValue)
-                    }
-                }
-
-                if (facetSearchfield.sortType != null && facetSearchfield.sortType.equals(labelSortType)) {
-                    facetDisplayValuesMap = facetDisplayValuesMap.sort {it.value}
-                }
-                else {
-                    //workaround for time_fct, sort desc by id
-                    if (facetSearchfield.name == "time") {
-                        facetDisplayValuesMap = facetDisplayValuesMap.sort {a, b -> b.key <=> a.key}
-                    }
-                    else {
-                        facetDisplayValuesMap = facetDisplayValuesMap.sort {it.key}
-                    }
-                }
-
-                facetValuesMap[facetSearchfield.name + facetNameSuffix] = facetDisplayValuesMap
-            }
-        }
-        return facetValuesMap
-    }
-
-    private List filterOnlyAdvancedSearchFacets(List allFacets){
-        List filteredFacets = []
-
-        //To stay with the right order we have to iterate over both facet lists.
-        allowedFacets.each { itAllowedFacets ->
-            allFacets.each { itAllFacets ->
-                if(itAllFacets.name == itAllowedFacets){
-                    filteredFacets.add(itAllFacets)
-                }
-            }
-        }
-        return filteredFacets
     }
 }

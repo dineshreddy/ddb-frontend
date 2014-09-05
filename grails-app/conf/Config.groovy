@@ -129,16 +129,16 @@ ddb {
     backend {
         facets {
             filter = [
-                [facetName:FacetEnum.LANGUAGE.getName(), filter:'term:unknown' ],
-                [facetName:FacetEnum.LANGUAGE.getName(), filter:'term:termunknown'],
-                [facetName:FacetEnum.KEYWORDS.getName(), filter:'null'],
-                [facetName:FacetEnum.PROVIDER.getName(), filter:'null'],
-                [facetName:FacetEnum.AFFILIATE.getName(), filter:'null'],
-                [facetName:FacetEnum.AFFILIATE_ROLE.getName(), filter:'null'],
-                [facetName:FacetEnum.TYPE.getName(), filter:'null'],
-                [facetName:FacetEnum.SECTOR.getName(), filter:'null'],
-                [facetName:FacetEnum.PLACE.getName(), filter:'null'],
-                [facetName:FacetEnum.TIME.getName(), filter:'null']
+                [facetName:FacetEnum.LANGUAGE_FCT.getName(), filter:'term:unknown' ],
+                [facetName:FacetEnum.LANGUAGE_FCT.getName(), filter:'term:termunknown'],
+                [facetName:FacetEnum.KEYWORDS_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.PROVIDER_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_FCT_ROLE.getName(), filter:'null'],
+                [facetName:FacetEnum.TYPE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.SECTOR_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.TIME_FCT.getName(), filter:'null']
             ]
         }
     }
@@ -197,6 +197,7 @@ ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 ddb.public.url="http://www.deutsche-digitale-bibliothek.de/"
+ddb.default.staticPage="news"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
