@@ -26,7 +26,7 @@ import de.ddb.common.TimeFacetHelper
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
- * 
+ *
  * @author ema
  *
  */
@@ -42,7 +42,7 @@ class FacetsController {
 
     /**
      * Returns the values for a specific search facet for the item search.
-     * 
+     *
      * @return the values for a specific search facet for the item search.
      */
     def facetsList() {
@@ -56,7 +56,7 @@ class FacetsController {
         def enu = FacetEnum.getEnumFromName(facetName.toString())
 
         // Key based facets uses the "Search" endpoint (/apis/search)
-        if (enu.isSearchFacet()){
+        if (enu.isI18nFacet()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
             //Use query filter if roles were selected
@@ -107,7 +107,7 @@ class FacetsController {
 
     /**
      * Returns the values for a specific entity facet for the person search.
-     * 
+     *
      * @return the values for a specific entity facet for the person search.
      */
     def entityFacetsList() {
@@ -143,7 +143,7 @@ class FacetsController {
 
     /**
      * Returns the roles for a specific facet value
-     * 
+     *
      * @return the roles for a specific facet value
      */
     def getRolesForFacetValue() {
@@ -175,7 +175,7 @@ class FacetsController {
     /**
      * Returns a list of all defined facets on the backend.
      * The returned json is an array of facet objects.
-     * 
+     *
      * @return a list of all facets in the json format
      */
     def allFacetsList() {
@@ -185,7 +185,7 @@ class FacetsController {
 
     /**
      * Calculates the time facet day representation for the given dates.
-     * 
+     *
      * @return  the time facet day representations in JSON format
      */
     def calculateTimeFacetDays() {
@@ -213,7 +213,7 @@ class FacetsController {
 
     /**
      * Calculates the date representation for the given time facet days.
-     * 
+     *
      * @return the date representation in JSON format
      */
     def calculateTimeFacetDates() {
