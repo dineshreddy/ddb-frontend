@@ -65,7 +65,7 @@ class UrlMappings {
             action="informationItem"
         }
 
-        "/content/$dir/$id?" {
+        "/content/$dir**" {
             controller="content"
             action="staticcontent"
         }
