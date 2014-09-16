@@ -38,7 +38,7 @@ class ApisController {
         def filteredQuery = apisService.filterForRoleFacets(query)
 
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, filteredQuery)
-        if(!apiResponse.isOk()){
+        if(!apiResponse.isOk() && apiResponse.getStatus() != HttpStatus.HTTP_400){
             log.error "Json: Json file was not found"
             apiResponse.throwException(request)
         }
@@ -120,7 +120,7 @@ class ApisController {
         int cacheValidInDays = 1
 
         boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
-        
+
         // parse selected sector information from request
         def selectedSectors = params.selectedSectors
         def sectors = selectedSectors.tokenize(',[]')
@@ -138,7 +138,7 @@ class ApisController {
 
         // get the clustered institutions
         def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)
-        
+
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
         Calendar expiresDate = Calendar.getInstance()
@@ -160,7 +160,7 @@ class ApisController {
     def entitiesAutocomplete (){
         callSuggestEndpoint('/entities/suggest')
     }
-    
+
     /**
      * This function should be obsolete once the
      * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
@@ -169,7 +169,7 @@ class ApisController {
      */
     private callSuggestEndpoint(def path) {
         def query = apisService.getQueryParameters(params)
-        
+
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),path, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -182,7 +182,7 @@ class ApisController {
             render (contentType:"text/json"){result}
         }
     }
-    
+
     /**
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
