@@ -21,8 +21,10 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
+import de.ddb.common.JsonUtil
 import de.ddb.common.ApiResponse.HttpStatus
 import de.ddb.common.constants.SupportedLocales
+
 
 class ApisController {
 
@@ -62,7 +64,7 @@ class ApisController {
             subtitle = (it.subtitle instanceof JSONNull)?"":it.subtitle
 
             thumbnail = (it.thumbnail instanceof JSONNull)?"":it.thumbnail
-            if(!(it.media instanceof JSONNull)){
+            if(!JsonUtil.isAnyNull(it.media)){
                 it.media.split (",").each{ media.add(it) }
             }
 
