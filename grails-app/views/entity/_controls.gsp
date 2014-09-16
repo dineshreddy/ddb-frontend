@@ -33,7 +33,7 @@ limitations under the License.
   </div>
 
   <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-body">
+    <div class="modal-body" id="myModalLabel">
       <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
       <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
       <g:select name="favorite-folders" from="" multiple="multiple"/>
