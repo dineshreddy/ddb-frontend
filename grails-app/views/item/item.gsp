@@ -16,8 +16,7 @@ limitations under the License.
 <g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 <html>
 <head>
-<title>
-  ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title>${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
 <ddb:getSocialmediaMeta
