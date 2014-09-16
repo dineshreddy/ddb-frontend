@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse.HttpStatus
 import de.ddb.common.constants.SupportedLocales
 
 class ApisController {
@@ -39,8 +40,14 @@ class ApisController {
 
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search', false, filteredQuery)
         if(!apiResponse.isOk()){
-            log.error "Json: Json file was not found"
-            apiResponse.throwException(request)
+            if(apiResponse.getStatus() == HttpStatus.HTTP_400){
+                render(status: response.SC_BAD_REQUEST)
+                return
+            }
+            else {
+                log.error "Json: Json file was not found"
+                apiResponse.throwException(request)
+            }
         }
         def jsonResp = apiResponse.getResponse()
         jsonResp.results["docs"].get(0).each{
@@ -120,7 +127,7 @@ class ApisController {
         int cacheValidInDays = 1
 
         boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
-        
+
         // parse selected sector information from request
         def selectedSectors = params.selectedSectors
         def sectors = selectedSectors.tokenize(',[]')
@@ -138,7 +145,7 @@ class ApisController {
 
         // get the clustered institutions
         def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)
-        
+
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
         Calendar expiresDate = Calendar.getInstance()
@@ -160,7 +167,7 @@ class ApisController {
     def entitiesAutocomplete (){
         callSuggestEndpoint('/entities/suggest')
     }
-    
+
     /**
      * This function should be obsolete once the
      * url : "http://backend.deutsche-digitale-bibliothek.de:9998/search/suggest/", would support JSONP and return the callback function
@@ -169,7 +176,7 @@ class ApisController {
      */
     private callSuggestEndpoint(def path) {
         def query = apisService.getQueryParameters(params)
-        
+
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),path, false, query)
         if(!apiResponse.isOk()){
             log.error "Json: Json file was not found"
@@ -182,7 +189,7 @@ class ApisController {
             render (contentType:"text/json"){result}
         }
     }
-    
+
     /**
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
