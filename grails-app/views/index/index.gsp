@@ -59,11 +59,11 @@ limitations under the License.
         <g:if test="${articles}">
           <g:each in="${articles}">
             <div class="span3">
-              <a href="${it.uri}" title="${it.caption}">
-                <img class="article" src="${it.imageUri}" alt="${it.caption}"/>
+              <a href="${request.contextPath}${it.uri}" title="${it.title}">
+                <img class="article" src="${request.contextPath}${it.src}" alt="${it.title}"/>
               </a>
               <div class="caption">
-                <a href="${it.uri}" title="${it.caption}">${it.caption}</a>
+                <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
               </div>
             </div>
           </g:each>
@@ -74,11 +74,11 @@ limitations under the License.
           <g:if test="${articles}">
             <g:each in="${articles}">
               <div class="article">
-                <a href="${it.uri}" title="${it.caption}" target="_self">
-                  <img src="${it.imageUri}" alt="${it.caption}" />
+                <a href="${request.contextPath}${it.uri}" title="${it.title}" target="_self">
+                  <img src="${request.contextPath}${it.src}" alt="${it.title}" />
                 </a>
                 <div class="caption">
-                  <a href="${it.uri}" title="${it.caption}">${it.caption}</a>
+                  <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
                 </div>
               </div>
             </g:each>

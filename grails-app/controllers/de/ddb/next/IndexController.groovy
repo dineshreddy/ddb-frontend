@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 package de.ddb.next
-
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.common.ApiConsumer
@@ -25,40 +24,62 @@ class IndexController {
     def configurationService
 
     def index() {
-        // fetch the DDB news from static server.
-        def staticUrl = configurationService.getStaticUrl()
-        def locale = SupportedLocales.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/teaser.html"
+        def path
 
+        def staticUrl = configurationService.getStaticUrl()
+        def locale = RCU.getLocale(request)
+
+        // fetch the DDB news from static server.
+        if(locale.toString().substring(0, 2)== "de") {
+            path = SupportedLocales.DE.getISO2() + "/homepage.xml"
+        } else {
+            path = SupportedLocales.EN.getISO2() + "/homepage.xml"
+        }
+
+        def query = [ client: "DDB-NEXT" ]
         // Submit a request via GET
-        def apiResponse = ApiConsumer.getXml(staticUrl, path)
+        def apiResponse = ApiConsumer.getText(staticUrl, path, false, query)
         if(!apiResponse.isOk()){
             log.error "text: Text file was not found"
             apiResponse.throwException(request)
         }
-        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children())])
+        def response = apiResponse.getResponse()
+
+        def articles = retrieveArguments(response)
+
+        render(view: "index", model: [articles: articles])
     }
 
-    /**
-     * Rewrite CMS server URLs so they suit our needs.
-     *
-     * @param articles articles with CMS URLs
-     * @return articles with modified URLs
-     */
-    private def rewriteUrls(def articles) {
-        URL staticUrl = new URL(configurationService.getStaticUrl())
-        articles.each { article ->
-            // image URLs from CMS are absolute URLs
-            String imageUri = article.imageUri.text()
-            String pattern = "/sites/default"
-            int index = imageUri.indexOf(pattern)
-            if (index >= 0) {
-                article.imageUri = new URL(staticUrl, imageUri.substring(index + pattern.length() + 1))
+    private def retrieveArguments(def content){
+        def title = fetchTitle(content)
+        def uri = fetchUri(content)
+        def src = fetchSrc(content)
+        def articles = new ArrayList()
+        def article
+        if (title != null) {
+            for(def i=0; i<title.size() ; i++) {
+                article = [title:title[i][1], uri:uri[i][1], src:src[i][1]]
+                articles.add(article)
             }
-
-            // URLs need our context path in front
-            article.uri = configurationService.getContextPath() + article.uri.text()
         }
         return articles
+    }
+
+    private def fetchTitle(content) {
+        def titleMatch = content =~ /(?s)<caption>(.*?)<\/caption>/
+        if (titleMatch)
+            return titleMatch
+    }
+
+    private def fetchUri(content) {
+        def uriMatch = content =~ /(?s)<uri>(.*?)<\/uri>/
+        if (uriMatch)
+            return uriMatch
+    }
+
+    private def fetchSrc(content) {
+        def imageUriMatch = content =~ /(?s)<imageUri>(.*?)<\/imageUri>/
+        if (imageUriMatch)
+            return imageUriMatch
     }
 }
