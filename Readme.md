@@ -57,14 +57,15 @@ In case there is a need to change the default configurations, through external c
 A list of some predefined variables is set below:
 
     # DDB services configuration
-    ddb.binary.url="http://api.deutsche-digitale-bibliothek.de" (used from the DFG viewer)
-    ddb.static.url="http://www.deutsche-digitale-bibliothek.de/static"
-    ddb.apis.url="http://localhost:8080"
-    ddb.backend.url="http://backend-p1.deutsche-digitale-bibliothek.de:9998"
+    ddb.binary.url=http://api.deutsche-digitale-bibliothek.de/ (used from the DFG viewer)
+    ddb.static.url=http://www.deutsche-digitale-bibliothek.de/static/
+    ddb.apis.url=http://localhost:8080/
+    ddb.backend.url=http://backend-p1.deutsche-digitale-bibliothek.de:9998/
     ddb.backend.apikey= (put a valid API key here or leave it empty)
     ddb.aas.url=http://aas-p1.deutsche-digitale-bibliothek.de:8081/aas/
-    ddb.culturegraph.url=http://hub.culturegraph.org
-    ddb.elasticsearch.url=http://else-p1.deutsche-digitale-bibliothek.de:9200
+    ddb.culturegraph.url=http://hub.culturegraph.org/
+    ddb.elasticsearch.url=http://else-p1.deutsche-digitale-bibliothek.de:9200/
+    ddb.cms.url=http://cms.deutsche-digitale-bibliothek.de/
 
     # Favorites configuration
     ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
@@ -190,6 +191,13 @@ Configuration parameter:
 * 'ddb.elasticsearch.url' defines the url where to retrieve documents of type bookmark
 
 More infos to the service can be found here (https://github.com/Deutsche-Digitale-Bibliothek/ddb-bookmark-web-api)
+
+
+####Content Management System
+The Content Management System is used to display the main menu (except "My DDB") and the teaser.
+
+Configuration parameter:
+* 'ddb.cms.url' defines the url where to retrieve the data
 
 
 ## Dependencies
