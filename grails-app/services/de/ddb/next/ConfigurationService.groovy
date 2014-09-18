@@ -78,6 +78,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.apikey.terms.url")
     }
 
+    public String getCmsUrl(){
+        return getConfigValue("ddb.cms.url")
+    }
+
     public String getCulturegraphUrl(){
         return getConfigValue("ddb.culturegraph.url")
     }
@@ -107,20 +111,8 @@ class ConfigurationService extends CommonConfigurationService {
     }
 
     public boolean isCulturegraphFeaturesEnabled() {
-        //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
-        //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
-        //      we will return always true in this method of the develop branch.
-        //      Later versions of develop might reactivate the code.
-
-        //        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
-        //        return Boolean.parseBoolean(value.toString())
-
+        // return getExistingConfigValue("ddb.culturegraph.features.enabled")
         return true
-    }
-
-    public boolean isExhibitionsFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
-        return Boolean.parseBoolean(value.toString())
     }
 
     public def logConfigurationSettings() {
@@ -130,6 +122,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
+        log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
@@ -138,7 +131,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
-        log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "-------------------------------------------------------"
     }
 }

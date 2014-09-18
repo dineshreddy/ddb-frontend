@@ -15,6 +15,9 @@
  */
 package de.ddb.next
 
+import groovy.xml.XmlUtil
+
+import org.ccil.cowan.tagsoup.Parser
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
@@ -84,7 +87,7 @@ class ContentController {
             keywords:keywords,
             robot:robot,
             metaDescription:metaDescription,
-            content:body
+            content:rewriteUrls(body)
         ]
     }
 
@@ -121,5 +124,39 @@ class ContentController {
         def robotMatch = content =~ /(?s)<meta (.*?)name="robots" (.*?)content="(.*?)"(.*?)\/>/
         if (robotMatch)
             return robotMatch[0][3]
+    }
+
+    /**
+     * Rewrite CMS server URLs so they suit our needs.
+     *
+     * @param content content with CMS URLs
+     * @return content with modified URLs
+     */
+    private def rewriteUrls(def content) {
+        URL staticUrl = new URL(configurationService.getStaticUrl())
+        Parser tagsoupParser = new Parser()
+        tagsoupParser.setFeature(Parser.namespacesFeature, false)
+        tagsoupParser.setFeature(Parser.namespacePrefixesFeature, false)
+        def result = new XmlSlurper(tagsoupParser).parseText(content)
+        result.depthFirst().collect {it}.findAll {it}.each {element ->
+            if (element.name() == "a") {
+                // URLs need our context path in front
+                String href = element.@href.text()
+                String pattern = "/content"
+                if (href.startsWith(pattern)) {
+                    element.@href = configurationService.getContextPath() + href
+                }
+            }
+            else if (element.name() == "img") {
+                // image URLs from CMS are absolute URLs
+                String src = element.@src.text()
+                String pattern = "/sites/default"
+                int index = src.indexOf(pattern)
+                if (index >= 0) {
+                    element.@src = new URL(staticUrl, src.substring(index + pattern.length() + 1)).toString()
+                }
+            }
+        }
+        return XmlUtil.serialize(result)
     }
 }
