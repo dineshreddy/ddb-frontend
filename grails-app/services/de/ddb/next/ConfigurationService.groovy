@@ -102,10 +102,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
     }
 
-    public String getPiwikTrackingFile(){
-        return getExistingConfigValue("ddb.tracking.piwikfile")
-    }
-
     public boolean isCulturegraphFeaturesEnabled() {
         //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
         //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
@@ -136,7 +132,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
-        log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "-------------------------------------------------------"
