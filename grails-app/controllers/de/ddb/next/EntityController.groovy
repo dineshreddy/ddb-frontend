@@ -79,9 +79,7 @@ class EntityController {
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
         if(!apiResponse.isOk()){
             if(apiResponse.getStatus() == HttpStatus.HTTP_404){
-                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_404)
-                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
-                throw errorPageException
+                return
             }else{
                 CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
                 request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
