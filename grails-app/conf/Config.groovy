@@ -196,8 +196,8 @@ ddb.apikey.terms.url="/content/terms/api"
 ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
-ddb.public.url="http://www.deutsche-digitale-bibliothek.de/"
 ddb.default.staticPage="news"
+ddb.domain.canonic="http://www.deutsche-digitale-bibliothek.de/"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

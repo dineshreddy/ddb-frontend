@@ -82,6 +82,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.culturegraph.url")
     }
     
+    public String getDomainCanonic(){
+        return getConfigValue("ddb.domain.canonic")
+    }
+    
     public String getGrailsMailHost(){
         return getConfigValue("grails.mail.host")
     }
@@ -127,6 +131,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
+        log.info "ddb.domain.canonic = " + getDomainCanonic()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
