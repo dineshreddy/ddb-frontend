@@ -39,7 +39,6 @@ class ItemController {
             if(params.pdf){
                 // inline images via data uris
                 model = ddbItemService.prepareImagesForPdf(model)
-
                 try {
                     renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
                 } catch (grails.plugin.rendering.document.XmlParseException e) {
