@@ -36,7 +36,7 @@ limitations under the License.
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject && it.value."@resource" != null && !it.value."@resource".isEmpty()}">
+          <g:if test="${it.value instanceof JSONObject && !JsonUtil.isAnyNull(it.value."@resource")}">
             <g:link 
               controller="entity" 
               action="index" 
