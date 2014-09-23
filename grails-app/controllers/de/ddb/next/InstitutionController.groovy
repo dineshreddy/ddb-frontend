@@ -113,6 +113,7 @@ class InstitutionController {
                         countObjcs: countObjectsForProv,
                         vApiInst: vApiInstitution,
                         url: pageUrl,
+                        domainCanonic:configurationService.getDomainCanonic(),
                         isFavorite: isFavorite]
                     )
         } else {
