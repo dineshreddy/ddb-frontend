@@ -16,7 +16,8 @@ limitations under the License.
 <html>
 <head>
   <title>${entity.person.preferredName} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
+<%-- Used for Canonical URL --%>
+<link rel="canonical" href="${createLink(controller:'entity',action:'index',params: [id: entityId], base:domainCanonic)}" />
   <meta name="page" content="entity" />
   <meta name="layout" content="main" />
 

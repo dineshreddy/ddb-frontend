@@ -17,6 +17,7 @@ limitations under the License.
 <html>
 <head>
 <title>${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<%-- Used for Canonical URL --%>
 <link rel="canonical" href="${createLink(controller:'item',action:'findById',params: [id: itemId], base:domainCanonic)}" />
 <meta name="page" content="item" />
 <meta name="layout" content="main" />

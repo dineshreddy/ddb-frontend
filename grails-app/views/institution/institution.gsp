@@ -20,6 +20,7 @@ limitations under the License.
 <html>
 <head>
 <title>${selectedOrgXML.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<%-- Used for Canonical URL --%>
 <link rel="canonical" href="${createLink(controller:'institution',action:'showInstitutionsTreeByItemId',params: [id: itemId], base:domainCanonic)}" />
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />

@@ -142,6 +142,7 @@ class EntityController {
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
+            domainCanonic:configurationService.getDomainCanonic(),
             "entityImageUrl": entityImageUrl
         ]
 
