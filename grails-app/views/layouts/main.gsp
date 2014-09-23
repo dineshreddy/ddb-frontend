@@ -66,6 +66,6 @@ limitations under the License.
     </script>
     --%>
     
-    <ddb:getPiwikTracking />
+    <ddbcommon:getPiwikTracking />
   </body>
 </html>
