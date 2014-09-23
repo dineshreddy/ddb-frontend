@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.CultureGraphService"%>
+<%@page import="de.ddb.common.JsonUtil"%>
 <%@ page import="net.sf.json.*" %>
 <div class="fields">
   <g:each in="${fields}">
@@ -22,7 +24,7 @@ limitations under the License.
         <div>
           <g:if test="${it.value instanceof JSONArray}"> 
             <g:each var="value" in="${it.value }">
-              <g:if test="${value instanceof JSONObject && value."@entityId" != null && !value."@entityId".isEmpty()}"> 
+              <g:if test="${value instanceof JSONObject && !JsonUtil.isAnyNull(value."@entityId")}"> 
                 <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">${ddb.encodeInvalidHtml(text:value."\$")}</g:link>
               </g:if>
               <g:else>
@@ -32,7 +34,18 @@ limitations under the License.
             </g:each>
           </g:if>
           <g:else>
-            ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
+            <g:if test="${it.value instanceof JSONObject && !JsonUtil.isAnyNull(it.value."@resource")}">
+              <g:link 
+                controller="entity" 
+                action="index" 
+                params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
+                class="entity-link">
+                ${it.value."\$"}
+              </g:link>
+            </g:if>
+            <g:else>
+              ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
+            </g:else>
           </g:else>
         </div>
       </div>
