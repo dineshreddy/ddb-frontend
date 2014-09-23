@@ -81,7 +81,7 @@ class ConfigurationService extends CommonConfigurationService {
     public String getCulturegraphUrl(){
         return getConfigValue("ddb.culturegraph.url")
     }
-
+    
     public String getGrailsMailHost(){
         return getConfigValue("grails.mail.host")
     }

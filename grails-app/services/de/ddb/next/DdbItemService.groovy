@@ -183,6 +183,7 @@ class DdbItemService {
             isFavorite: isFavorite,
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
+            domainCanonic:configurationService.getDomainCanonic(),
             similarItems : similarItems
         ]
 
