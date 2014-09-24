@@ -42,7 +42,7 @@ limitations under the License.
               action="index" 
               params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
               class="entity-link">
-              ${it.value."\$"}
+              <ddbcommon:wellFormedDocFromString text="${it.value."\$"}"/>
             </g:link>
           </g:if>
           <g:else>
