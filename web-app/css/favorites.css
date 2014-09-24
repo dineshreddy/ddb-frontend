@@ -199,7 +199,7 @@ hr {
 }
 
 .favorites-results-controls .page-nav {
-  font-size: 0.938em;
+  font-size: 1em;
 }
 
 #favorites-remove .submit {
@@ -390,7 +390,7 @@ hr {
 
 .favorites-results .results-list .subtitle {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 1em;
   line-height: 1em;
   margin: 7px 0 0;
   color: #3e3a37;
@@ -723,7 +723,7 @@ hr {
 .favorites-results .results-list .comment .comment-text {
   width: 100%;
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 1em;
   line-height: 1em;
   color: #3e3a37;
 }
@@ -821,6 +821,7 @@ hr {
 .favorites-results-container .header-row h3{
   margin:0;
   line-height: 20px;
+  font-size: 1em;
 }
 
 .favorites-results-controls .list-name{
@@ -829,6 +830,7 @@ hr {
 
 .favorites-results-controls .controls-container {
   float: right;
+  font-size: 15px;
 }
 
 .favorites-results-controls .list-name span {
