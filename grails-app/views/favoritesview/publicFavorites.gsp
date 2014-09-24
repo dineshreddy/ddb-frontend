@@ -57,6 +57,9 @@ limitations under the License.
             --%>
           </div>
           <div class="right-container">
+          <a class="favorites-report" title="<g:message encodeAs="html" code="ddbnext.liste_melden" />">
+              <span><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></span>
+            </a>
             <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
@@ -94,16 +97,7 @@ limitations under the License.
             </ul>
           </div>
           </g:if>
-          <div class="folder-information bt bb bl br">
-            <%--         
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </a>
-            --%>
-            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </g:link>
-          </div>
+
           <g:message code="ddbnext.List_Created_At" />:
           ${createdDateString}
           <br>

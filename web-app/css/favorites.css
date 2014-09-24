@@ -493,6 +493,7 @@ hr {
 .favorites-results-container .favorites-report {
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
   padding-left: 25px;
+  margin-right: 30px;
 }
 
 .favorites-results .results-list .extra {
