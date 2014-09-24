@@ -197,6 +197,7 @@ ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 ddb.default.staticPage="news"
+ddb.public.url="http://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="http://www.deutsche-digitale-bibliothek.de/"
 
 // The grails.serverURL is required for the PDF rendering plugin.
