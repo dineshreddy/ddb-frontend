@@ -71,39 +71,66 @@ limitations under the License.
       </div>
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
-          <div class="folder-information bt bb bl br">
-            <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+          <div>
+            <strong>
+              <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+            </strong>
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
-              <br />          
-              <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
+              <br />
+              <strong>
+                <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
+              </strong>
               <br />
               ${selectedFolder.description}
+              <br />
+              <br />
             </g:if>
           </div>
+          <p class="date-info">
+            <g:message code="ddbnext.List_Created_At" />:
+            ${createdDateString}
+            <br>
+            <g:message code="ddbnext.List_Updated_At" />:
+            ${updatedDateString}
+          </p>
+          <br />
+          <br />
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
-            <div class="folder-information bt bb bl br">
-              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}:
-              <ul>
-                <g:each var="publicFolder" in="${publicFolders}">
-                  <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
-                    <li>
+            <strong>
+              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+            </strong>
+            <ul class="other-folder-list">
+              <g:each var="publicFolder" in="${publicFolders}">
+                <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
+                  <li>
+                    <i class="icon-institution"></i>
+                    <div>
                       <g:link class="folder-siblings" controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
                         ${publicFolder.title}
                       </g:link>
-                    </li>
-                  </g:if>
-                </g:each>
+                    </div>
+                  </li>
+                </g:if>
+              </g:each>
             </ul>
-          </div>
+            /.../
+            <br />
+            <br />
+            <g:link controller="favoritesview" action="favorites" class="underlined">
+              <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+            </g:link>
           </g:if>
-
-          <g:message code="ddbnext.List_Created_At" />:
-          ${createdDateString}
-          <br>
-          <g:message code="ddbnext.List_Updated_At" />:
-          ${updatedDateString}
-          
+          <div class="folder-information bt bb bl br">
+            <%--
+            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
+              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
+            </a>
+            --%>
+            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
+              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
+            </g:link>
+          </div>
         </div>
         <div class="span9 favorites-results-content">
           <g:if test="${flash.message}">
@@ -191,7 +218,7 @@ limitations under the License.
                        <g:else>
                         <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
-                      </span>                    
+                      </span>
                     </a>
                   </g:if> 
                   <g:else>
@@ -224,8 +251,5 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
-    
-    
   </body>
 </html>

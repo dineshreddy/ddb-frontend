@@ -1494,6 +1494,10 @@ select {
   cursor: default !important;
 }
 
+.underlined {
+  text-decoration: underline;
+}
+
 .form-horizontal label {
   cursor: default;
 }
