@@ -112,6 +112,7 @@ modules = {
         resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
+        resource url:'/js/institution.js'
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'

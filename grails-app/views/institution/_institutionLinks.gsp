@@ -60,5 +60,6 @@ limitations under the License.
             code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
     </div>
+    <ddb:getSocialmediaBody />
   </div>
 </div>

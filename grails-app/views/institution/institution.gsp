@@ -29,12 +29,14 @@ limitations under the License.
 </head>
 <body>
   <div class="institution-item-page">
-
+    
+    <g:render template="institutionLinks" />
+    
     <div class="row">
        <div class="span12 institution">
          <div class="row">
            <div class="span9">
-             <div>
+             <div class="sector">
                <g:message encodeAs="html" code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
@@ -63,8 +65,6 @@ limitations under the License.
          </div>
        </div>
      </div>
-
-     <g:render template="institutionLinks" />
 
      <div class="row">
        <div class="span12 locations">
