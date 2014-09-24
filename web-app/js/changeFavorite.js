@@ -86,7 +86,6 @@ function addToFavorites(jElemFavorite, data,objectType) {
         window.setTimeout(function() {
           $("#favorite-confirmation").modal("hide");
         }, 1500);
-        $("#favorite-folders").destroy();
       }
     });
     break;
