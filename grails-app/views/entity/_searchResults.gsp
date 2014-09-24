@@ -21,9 +21,7 @@ limitations under the License.
           <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
         </g:if>
         <g:else>
-          <img src="<g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaText.png"/>"
-               title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>"
-               alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
+          <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaText.png"  />
         </g:else>
       </g:link>
       <div class="caption">
