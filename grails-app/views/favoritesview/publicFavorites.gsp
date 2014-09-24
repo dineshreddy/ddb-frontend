@@ -104,6 +104,12 @@ limitations under the License.
               <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
             </g:link>
           </div>
+          <g:message code="ddbnext.List_Created_At" />:
+          ${createdDateString}
+          <br>
+          <g:message code="ddbnext.List_Updated_At" />:
+          ${updatedDateString}
+          
         </div>
         <div class="span9 favorites-results-content">
           <g:if test="${flash.message}">
