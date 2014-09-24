@@ -377,7 +377,7 @@ class UserController {
 
     private getFavoriteCount(User user) {
         Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-        List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
+        List favorites = favoritesService.getFavoriteList(user, mainFavoritesFolder)
         def favoritesCount = favorites.size()
 
         return favoritesCount
