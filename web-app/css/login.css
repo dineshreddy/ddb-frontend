@@ -27,7 +27,7 @@
 } 
 
 .openid-google {
-  background: transparent url("../images/icons/openId.png") no-repeat -80px -200px;
+  background: transparent url("../images/icons/openId.png") no-repeat -80px -194px;
   width: 150px;
   height: 50px;
 }
@@ -38,27 +38,21 @@
   height: 50px;
 }
 
+.openid-facebook,
+.openid-twitter,
+.openid-google,
+.openid-yahoo {
+  display: inline-block;
+}
+
 .login .spacer-vertical {
   margin-top: 15px;
 }
 
-@media (min-width: 768px) {
-  .login .dialog {
-    border-right: 1px solid #3e3a37;
-    margin-left: 0;
-  }
-  .login .openid {
-    margin-left: 30px;
-  }
-}
-@media (max-width: 767px) {
-  .login .dialog {
-    margin-bottom: 40px;
-    margin-left: 0;
-  }
-  .login .openid {
-    margin-left: 0;
-  }
+.login .dialog {
+  border-bottom: solid 2px #efebe8;
+  margin-bottom: 15px;
+  margin-left: 0;
 }
 
 .login .feedback {
@@ -91,4 +85,10 @@
   height: 25px;
   line-height: 20px;
   background: url(../images/icons/listArrows.png) no-repeat 0 1px;
+}
+
+.login .heading {
+  margin-bottom: 15px;
+  border-bottom: solid 2px #efebe8;
+  padding-bottom: 15px;
 }
