@@ -217,7 +217,11 @@ class SearchController {
             redirect(controller: "search", action: "institution", params: params)
         }
 
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
+        def urlParams = params.clone()
+        urlParams.isThumbnailFiltered=false
+        
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
 
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
