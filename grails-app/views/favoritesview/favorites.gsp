@@ -249,9 +249,11 @@ limitations under the License.
             <g:message encodeAs="html" code="ddbcommon.favorites_list_publishtext"/>
             <br />
             <select name="publisher-name" size="1" id="folder-edit-publish-name">
-              <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}">${nickName}</option>
+              <option value="${FolderConstants.PUBLISHING_NAME_USERNAME.value}"
+                      <g:if test="${selectedFolder.publishingName == nickName}"> selected</g:if>>${nickName}</option>
               <g:if test="${fullName}"> 
-                <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}">${fullName}</option>
+                <option value="${FolderConstants.PUBLISHING_NAME_FULLNAME.value}"
+                        <g:if test="${selectedFolder.publishingName == fullName}"> selected</g:if>>${fullName}</option>
               </g:if>
             </select>
           </div>
