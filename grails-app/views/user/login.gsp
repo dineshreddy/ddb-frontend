@@ -30,7 +30,7 @@ limitations under the License.
         <div class="heading">
           <h1><g:message encodeAs="html" code="ddbcommon.Login_Button"/></h1>
           <br />
-          <g:message encodeAs="html" code="ddbnext.Login_description" args="${"/content/ddb/registration"}"/>
+          <span><g:message encodeAs="none" code="ddbnext.Login_description" args="${[registrationInfoUrl]}"/></span>
         </div>
         <div class="row">
           <div class="span12">

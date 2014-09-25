@@ -45,6 +45,10 @@
   display: inline-block;
 }
 
+.login {
+  font-size:0.938em;
+}
+
 .login .spacer-vertical {
   margin-top: 15px;
 }
@@ -91,4 +95,8 @@
   margin-bottom: 15px;
   border-bottom: solid 2px #efebe8;
   padding-bottom: 15px;
+}
+
+.login .heading a {
+  text-decoration: underline;
 }
