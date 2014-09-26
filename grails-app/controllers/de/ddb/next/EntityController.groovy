@@ -237,9 +237,12 @@ class EntityController {
         if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.ENTITY)) {
             redirect(controller: "entity", action: "personsearch", params: params)
         }
-
+        //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
+        def urlParams = params.clone()
+        urlParams.isThumbnailFiltered=false
+        
         def queryString = request.getQueryString()
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
