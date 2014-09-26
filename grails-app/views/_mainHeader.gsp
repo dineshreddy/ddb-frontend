@@ -94,14 +94,14 @@ limitations under the License.
             <li>
               <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
               <ul class="nav">
-                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
                   <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                </li>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                 </li>
               </ul>
             </li><!-- /end of exhibitions -->
@@ -224,16 +224,16 @@ limitations under the License.
                     </div>
                     <ul>
                       <li
-                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                      </li>
-                      <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                      </li>
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                       </li>
                     </ul>
                   </li>
