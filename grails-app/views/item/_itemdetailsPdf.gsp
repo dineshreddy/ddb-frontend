@@ -36,14 +36,8 @@ limitations under the License.
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject && !JsonUtil.isAnyNull(it.value."@resource")}">
-            <g:link 
-              controller="entity" 
-              action="index" 
-              params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
-              class="entity-link">
-              <ddbcommon:wellFormedDocFromString text="${it.value."\$"}"/>
-            </g:link>
+          <g:if test="${it.value instanceof JSONObject}">
+            <ddbcommon:wellFormedDocFromString text="${it.value."\$"}"/>
           </g:if>
           <g:else>
             <ddbcommon:wellFormedDocFromString text="${it.value}"/>
