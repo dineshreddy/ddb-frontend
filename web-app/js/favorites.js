@@ -60,6 +60,17 @@ $(function() {
         return false;
       }
     });
+    
+    /** Fade in report-favorites overlay when social icon is clicked * */
+    $(".reportfav").mouseover(function() {
+      showReportFavoritesOverlay();
+    });
+
+    /** Fade out report-favorites overlay when overlay div is leaved * */
+    $(".reportfav").mouseleave(
+        function() {
+          hideReportFavoritesOverlay();
+        });
 
     updateNavigationUrl();
 
@@ -558,4 +569,14 @@ function updateRanking (bookmarkId, folderId, newPosition){
     },
     error: function(){return false;}
   });
+}
+
+function showReportFavoritesOverlay() {
+    $(".reportfav .report-overlay-container").fadeIn(200);
+  }
+
+function hideReportFavoritesOverlay() {
+    window.setTimeout(function() {
+        $(".reportfav .report-overlay-container").fadeOut(200);
+      }, 200);
 }
