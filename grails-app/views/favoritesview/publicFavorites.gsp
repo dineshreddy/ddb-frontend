@@ -20,7 +20,7 @@ limitations under the License.
   <head>
   
     <title>
-      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedUser.getFirstnameAndLastnameOrNickname()]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
     <meta name="page" content="favorites">
@@ -73,7 +73,7 @@ limitations under the License.
         <div class="span3 folder-information-container">
           <div>
             <strong>
-              <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+              <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedFolder.publishingName}
             </strong>
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
