@@ -57,9 +57,22 @@ limitations under the License.
             --%>
           </div>
           <div class="right-container">
-          <a class="favorites-report" title="<g:message encodeAs="html" code="ddbnext.liste_melden" />">
-              <span><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></span>
-            </a>
+            <div class="reportfav">
+              <div class="report-locked">
+                <div class="report-overlay-container">
+                  <div class="report-overlay">
+                    <b><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></b>
+                    <br />
+                      ${raw(g.message(code: 'ddbnext.Report_Favorites'))}
+                    <br />
+                    <br />
+                  </div>
+                </div>
+                  <a>
+                    <span><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></span>
+                  </a>
+              </div>
+            </div>
             <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
