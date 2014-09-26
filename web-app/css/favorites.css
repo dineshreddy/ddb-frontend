@@ -994,8 +994,8 @@ hr {
 .reportfav .report-overlay-container {
   display: none;
   position: absolute;
-  right: 0px;
-  top: 0px;
+  right: 0;
+  top: 0;
   width: 100%;
   min-width: 400px;
   z-index: 100;
@@ -1016,8 +1016,8 @@ hr {
   }
 
 .reportfav a span, .reportfav a span{
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
   display: block;
   line-height: 22px;
   text-align: right;
