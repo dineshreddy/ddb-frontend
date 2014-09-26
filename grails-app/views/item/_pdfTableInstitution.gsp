@@ -19,12 +19,14 @@ limitations under the License.
     <td>
       <table border="0" cellpadding="0" cellspacing="0" width="100%" class="item-detail">
         <tr>
-          <td class=" institution"><g:message encodeAs="html" code="ddbnext.Institution" /> <br /> <g:link
+          <td class="institution"><g:message encodeAs="html" code="ddbnext.Institution" /> <br /> <g:link
               class="institution-name" controller="institution" action="showInstitutionsTreeByItemId"
               params="[id: institution.id]">
               ${institution.name}
-            </g:link> <br /> <a class="institution-link" href="${institution.url}"> ${institution.url}</a> <g:if
-              test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
+            </g:link>
+            <br />
+            <a class="institution-link" href="<ddb:doHtmlEncode url="${institution.url}"/>"><ddb:doHtmlEncode url="${institution.url}"/></a>
+            <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                 <g:if test="${!originUrl?.toString()?.isEmpty()}">
                   <a href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">

@@ -24,26 +24,7 @@ limitations under the License.
           </span>
         </span>
       </div>
-      <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-body">
-          <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
-          <ddbcommon:isPersonalFavoritesAvailable>
-            <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
-            <g:select name="favorite-folders" from="" multiple="true"/>
-          </ddbcommon:isPersonalFavoritesAvailable>
-        </div>
-        <ddbcommon:isPersonalFavoritesAvailable>
-          <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbcommon.Close"/>
-            </button>
-            <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-              <g:message encodeAs="html" code="ddbcommon.Save"/>
-            </button>
-          </div>
-        </ddbcommon:isPersonalFavoritesAvailable>
-      </div>
-    </ddbcommon:isLoggedIn>
+      <g:render template="../common/addToFavorites"/>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
