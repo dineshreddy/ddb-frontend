@@ -134,16 +134,6 @@ limitations under the License.
               <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
             </g:link>
           </g:if>
-          <div class="folder-information bt bb bl br">
-            <%--
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </a>
-            --%>
-            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </g:link>
-          </div>
         </div>
         <div class="span9 favorites-results-content">
           <g:if test="${flash.message}">
