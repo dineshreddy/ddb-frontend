@@ -175,6 +175,10 @@ class UrlMappings {
             action="publicFavorites"
         }
 
+        "/favorites/allpublicfolders/$userId/$selectedFolderId" {
+            controller="favoritesview"
+            action="allpublicfolders"
+        }
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]

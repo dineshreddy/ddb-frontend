@@ -559,3 +559,13 @@ function updateRanking (bookmarkId, folderId, newPosition){
     error: function(){return false;}
   });
 }
+
+$('#alle-listen').click(function(){
+  event.preventDefault();
+
+  var url = jsContextPath + "/favorites/allpublicfolders/"+ $(this).attr("data-userId")+ '/' +$(this).attr("data-selectedFolderId");
+  $.get(url, function(data) {
+    $('#public-folder').empty();
+    $('#public-folder').append(data);
+  });
+});

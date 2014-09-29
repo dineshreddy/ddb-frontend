@@ -18,15 +18,15 @@ limitations under the License.
 
 <html>
   <head>
-  
+
     <title>
-      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedUser.getFirstnameAndLastnameOrNickname()]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedUserFirstnameAndLastnameOrNickname]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUser.getFirstnameAndLastnameOrNickname()]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -40,7 +40,7 @@ limitations under the License.
           </div>
           <div class="print-header">
             <h3>
-              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
+              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
             </h3>
           <%--
             <div class="page-info">
@@ -69,10 +69,10 @@ limitations under the License.
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
           <div class="folder-information bt bb bl br">
-            <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+            <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
-              <br />          
+              <br />
               <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
               <br />
               ${selectedFolder.description}
@@ -80,27 +80,19 @@ limitations under the License.
           </div>
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
             <div class="folder-information bt bb bl br">
-              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}:
-              <ul>
-                <g:each var="publicFolder" in="${publicFolders}">
-                  <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
-                    <li>
-                      <g:link class="folder-siblings" controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
-                        ${publicFolder.title}
-                      </g:link>
-                    </li>
-                  </g:if>
-                </g:each>
+              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}:
+              <ul id="public-folder">
+                <g:render template="favoritesAllFolders" ></g:render>
             </ul>
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">
-            <%--         
+            <%--
             <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
               <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
             </a>
             --%>
-            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
+            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUserId, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
               <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
             </g:link>
           </div>
@@ -109,7 +101,6 @@ limitations under the License.
           <br>
           <g:message code="ddbnext.List_Updated_At" />:
           ${updatedDateString}
-          
         </div>
         <div class="span9 favorites-results-content">
           <g:if test="${flash.message}">
@@ -197,7 +188,7 @@ limitations under the License.
                        <g:else>
                         <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
-                      </span>                    
+                      </span>
                     </a>
                   </g:if> 
                   <g:else>
@@ -230,8 +221,5 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
-    
-    
   </body>
 </html>

@@ -57,8 +57,15 @@ class FavoritesviewController {
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
-        publicFolders.sort{ a, b ->
-            a.title <=> b.title
+
+        publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
+
+        def tamMax = 20
+        def showAllList = false
+
+        if(publicFolders.size() > tamMax) {
+            publicFolders = publicFolders.subList(0, tamMax)
+            showAllList = true
         }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
@@ -67,13 +74,15 @@ class FavoritesviewController {
 
         def lastPgOffset=0
 
-
         if (totalResults <1){
             render(view: ACTION, model: [
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
-                selectedUser: user,
+                selectedUserId: user.id,
+                selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
+                selectedUserUserName: user.username,
                 publicFolders: publicFolders,
+                showAllList: showAllList,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
@@ -130,19 +139,19 @@ class FavoritesviewController {
             if (request.method=="POST"){
                 sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
             }
-            
+
             def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." + 
             selectedFolder.creationDate.cdate.month.toString() + "." + 
             selectedFolder.creationDate.cdate.year.toString() + " um " + 
             selectedFolder.creationDate.cdate.hours.toString() + ":" + 
             selectedFolder.creationDate.cdate.minutes.toString()
-            
+
             def updatedDateString = selectedFolder.updatedDate.cdate.dayOfMonth.toString() + "." + 
             selectedFolder.updatedDate.cdate.month.toString() + "." + 
             selectedFolder.updatedDate.cdate.year.toString() + " um " + 
             selectedFolder.updatedDate.cdate.hours.toString() + ":" + 
             selectedFolder.updatedDate.cdate.minutes.toString()
-            
+
             render(view: ACTION, model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -159,7 +168,10 @@ class FavoritesviewController {
                 rows: rows,
                 order: order,
                 by: by,
-                selectedUser: user,
+                selectedUserId: user.id,
+                selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
+                selectedUserUserName: user.username,
+                showAllList: showAllList,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
@@ -433,5 +445,29 @@ class FavoritesviewController {
                 flash.error = "ddbnext.favorites_list_notreported"
             }
         }
+    }
+
+    def allpublicfolders() {
+        List publicFolders = bookmarksService.findAllPublicFolders(params.userId)
+
+        publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, params.selectedFolderId)
+
+        render(template: "favoritesAllFolders", model: [publicFolders: publicFolders, selectedUserId : params.userId])
+    }
+
+    private sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolderId) {
+        publicFolders.sort{ a, b ->
+            b.updatedDate <=> a.updatedDate
+            }
+
+        def aux
+        publicFolders.each() {
+            if(it.folderId == selectedFolderId) {
+                 aux = it
+            }
+        }
+        publicFolders.remove(aux)
+
+        return publicFolders
     }
 }
