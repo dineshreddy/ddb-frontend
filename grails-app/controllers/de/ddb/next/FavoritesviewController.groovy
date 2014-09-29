@@ -21,7 +21,7 @@ class FavoritesviewController {
     def sessionService
     def userService
 
-    def publicFavorites() {
+    def publicFavorites(params) {
         final def ACTION = "publicFavorites"
         int rows = params.rows ? params.rows.toInteger() : 9999
         int offset = params.offset ? params.offset.toInteger() : 0
@@ -78,7 +78,8 @@ class FavoritesviewController {
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
-                contextUrl: configurationService.getContextUrl()
+                contextUrl: configurationService.getContextUrl(),
+                publicUrl: configurationService.getPublicUrl()
             ])
             return
         }else{
@@ -119,7 +120,8 @@ class FavoritesviewController {
                 offset : offset
             ])
 
-            def orderedFavorites = favoritesService.orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
+//            def orderedFavorites = favoritesService.orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
+            def orderedFavorites = allResultsWithAdditionalInfo
             if (offset != 0){
                 resultsItems=orderedFavorites.drop(offset)
                 resultsItems=resultsItems.take(rows)
@@ -128,7 +130,7 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
+                sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
             }
             
             def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." + 
@@ -384,6 +386,7 @@ class FavoritesviewController {
                         userName:userService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
+                        publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
                         folderTitle: selectedFolder.title
                     ])
@@ -417,15 +420,14 @@ class FavoritesviewController {
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo configurationService.getFavoritesSendMailFrom()
                     subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
-                    body( view:"_favoritesReportEmailBody",
-                    model:[
-                        userId: userId,
-                        folderId: folderId,
-                        publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-                        blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-                        unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
-                        selfBaseUrl: configurationService.getSelfBaseUrl()
-                    ])
+                    body( view:"_favoritesReportEmailBody", model:[
+                                            userId: userId,
+                                            folderId: folderId,
+                                            publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                                            blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                                            unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+                                            selfBaseUrl: configurationService.getSelfBaseUrl()
+                                        ])
                 }
                 flash.message = "ddbnext.favorites_list_reported"
             } catch (e) {

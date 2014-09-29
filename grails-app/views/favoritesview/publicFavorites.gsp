@@ -25,6 +25,7 @@ limitations under the License.
 
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
+    <meta name="page" content="publicFavorites">
 
     <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUser.getFirstnameAndLastnameOrNickname()]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
@@ -57,12 +58,18 @@ limitations under the License.
             --%>
           </div>
           <div class="right-container">
+            
             <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
-            <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-              <ddb:getSocialmediaBody/>
-            </g:if>
+            
+            <a class="saved-searches-list-envelope" id="favorites-list-send" href="#" title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
+              <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
+            </a>
+            
+<%--            <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">--%>
+<%--              <ddb:getSocialmediaBody/>--%>
+<%--            </g:if>--%>
           </div>
         </div>
       </div>
@@ -232,6 +239,36 @@ limitations under the License.
     </div>
     
     
-    
+<%--    <g:if test="${numberOfResults > 0}">--%>
+    <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3 id="sendSavedSearchesLabel">
+          <g:message code="ddbnext.Send_Savedsearches" />
+        </h3>
+      </div>
+      <form method="POST">
+        <div class="modal-body">
+          <fieldset>
+            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required"> 
+            <br /> 
+              <small class="muted">
+                <g:message code="ddbnext.send_favorites_more_recipients" />
+              </small> 
+            <br />
+          </fieldset>
+        </div>
+        <div class="modal-footer">
+          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
+            <g:message code="ddbcommon.Close" />
+          </button>
+          <button class="btn-padding" type="submit" id="btnSubmit">
+            <g:message code="ddbnext.send_now" />
+          </button>
+        </div>
+      </form>
+    </div>
+<%--  </g:if>--%>
+  
   </body>
 </html>
