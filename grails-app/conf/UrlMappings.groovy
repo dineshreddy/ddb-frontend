@@ -175,7 +175,7 @@ class UrlMappings {
             action="publicFavorites"
         }
 
-        "/favorites/allpublicfolders/$userId/$selectedFolderId" {
+        "/user/$userId/favorites/allpublicfolders/$selectedFolderId" {
             controller="favoritesview"
             action="allpublicfolders"
         }

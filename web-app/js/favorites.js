@@ -562,8 +562,7 @@ function updateRanking (bookmarkId, folderId, newPosition){
 
 $('#alle-listen').click(function(){
   event.preventDefault();
-
-  var url = jsContextPath + "/favorites/allpublicfolders/"+ $(this).attr("data-userId")+ '/' +$(this).attr("data-selectedFolderId");
+  var url = jsContextPath + "/user/" +  $(this).attr("data-userId") + "/favorites/allpublicfolders/"+ $(this).attr("data-selectedFolderId");
   $.get(url, function(data) {
     $('#public-folder').empty();
     $('#public-folder').append(data);
