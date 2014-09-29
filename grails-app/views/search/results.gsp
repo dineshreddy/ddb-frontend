@@ -86,7 +86,7 @@ limitations under the License.
               <span class="compare-default"><g:message encodeAs="html" code="ddbnext.SearchResultsChooseObject1" /></span>
               <a class="compare-link">
                 <span class="compare-text"></span>
-                <img class="compare-img" alt="" src="//:0"/>
+                <img class="compare-img" alt="" />
               </a>
               <span data-index="1" class="fancybox-toolbar-close"></span>
             </div>

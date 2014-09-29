@@ -1494,6 +1494,10 @@ select {
   cursor: default !important;
 }
 
+.no-script {
+  display: none !important;
+}
+
 .underlined {
   text-decoration: underline;
 }
