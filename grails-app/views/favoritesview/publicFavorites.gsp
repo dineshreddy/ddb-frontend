@@ -18,7 +18,7 @@ limitations under the License.
 
 <html>
   <head>
-  
+
     <title>
       ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
@@ -26,7 +26,7 @@ limitations under the License.
     <meta name="page" content="favorites">
     <meta name="layout" content="main">
 
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUser.getFirstnameAndLastnameOrNickname()]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -40,7 +40,7 @@ limitations under the License.
           </div>
           <div class="print-header">
             <h3>
-              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
+              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
             </h3>
           <%--
             <div class="page-info">
@@ -111,27 +111,16 @@ limitations under the License.
           <br />
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
             <strong>
-              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
             </strong>
-            <ul class="other-folder-list">
-              <g:each var="publicFolder" in="${publicFolders}">
-                <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
-                  <li>
-                    <i class="icon-institution"></i>
-                    <div>
-                      <g:link class="folder-siblings" controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
-                        ${publicFolder.title}
-                      </g:link>
-                    </div>
-                  </li>
-                </g:if>
-              </g:each>
+            <ul id="public-folders" class="other-folder-list">
+              <g:render template="favoritesAllFolders" ></g:render>
             </ul>
             /.../
             <br />
             <br />
             <g:link controller="favoritesview" action="favorites" class="underlined">
-              <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+              <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
             </g:link>
           </g:if>
         </div>
