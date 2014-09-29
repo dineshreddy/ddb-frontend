@@ -175,6 +175,7 @@ class UrlMappings {
             action="publicFavorites"
         }
 
+        // This URL-Map is also used hard-coded in favorites.js file.
         "/user/$userId/favorites/allpublicfolders/$selectedFolderId" {
             controller="favoritesview"
             action="allpublicfolders"
