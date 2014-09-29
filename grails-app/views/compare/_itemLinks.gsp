@@ -24,7 +24,8 @@ limitations under the License.
           </span>
         </span>
       </div>
-      <g:render template="../common/addToFavorites"/>
+    </ddbcommon:isLoggedIn>
+    <g:render template="../common/addToFavorites"/>
     <div class="link-block">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
