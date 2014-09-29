@@ -66,19 +66,13 @@ $(document)
               var currentGallery = "images";
               if (totImages > 0) {
                 currentGallery = "images";
-                if (totImages > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               } else if (totVideos > 0) {
                 currentGallery = "videos";
-                if (totVideos > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               } else if (totAudios > 0) {
                 currentGallery = "audios";
-                if (totAudios > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               }
               currentTab($("p."+currentGallery));
               $("div."+currentGallery).show();
