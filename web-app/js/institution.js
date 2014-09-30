@@ -23,7 +23,7 @@ $(document).ready(function() {
 
     var windowWidth = 0;
 
-    var carouselWidth = 1090;
+    var carouselWidth = 1080;
 
     var carouselHeight = 175;
 
@@ -121,11 +121,11 @@ $(document).ready(function() {
       windowWidth = $(window).width();
 
       if ((windowWidth >= windowMediumMax && windowWidth < windowLarge) || (windowWidth >= windowSmallMax && windowWidth < windowMediumMin)) {
-        carouselWidth = 600;
+        carouselWidth = 720;
       } else if ((windowWidth >= windowMediumMin && windowWidth < windowMediumMax) || (windowWidth >= windowSmallMin && windowWidth < windowSmallMax)){
-        carouselWidth = 400;
+        carouselWidth = 540;
       } else if (windowWidth < windowSmallMin){
-        carouselWidth = 200;
+        carouselWidth = 180;
       }
 
       if (carouselItems.length) {
