@@ -92,7 +92,6 @@ class FavoritesviewController {
             // convertQueryParametersToSearchParameters modifies params
             params.remove("query")
 
-            urlQuery["offset"] = 0
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
             def totalPages = (Math.ceil(allRes.size().toInteger()/urlQuery["rows"].toInteger()).toInteger())
@@ -228,7 +227,7 @@ class FavoritesviewController {
                 def locale = favoritesService.getLocale()
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                def queryString = request.getQueryString()
+                def queryString = request.getQueryString() ? request.getQueryString() : ""
 
                 // convertQueryParametersToSearchParameters modifies params
                 params.remove("query")

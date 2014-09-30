@@ -17,7 +17,6 @@
 $(function() {
 
   if (jsPageName === "favorites") {
-    de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     var socialMediaManager = new SocialMediaManager();
     socialMediaManager.integrateSocialMedia();
     $("#favoritesCopyDialog select").MultiSelect({css_class_selected: "multiselect-selected-folder"});
