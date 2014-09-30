@@ -51,10 +51,10 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${entityItem.id}">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
                 <g:if test="${entityItem.thumbnail}">
-                    <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55px" />" alt="${entityItem.preferredName }" width="55px" />
+                    <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55" />" alt="${entityItem.preferredName }" width="55" />
                 </g:if>
                 <g:else>
-                <g:img dir="images/placeholder" file="entity.png" width="55px" height="90" />
+                <g:img dir="images/placeholder" file="entity.png" width="55" height="90" alt="${entityItem.preferredName }" />
               </g:else>
               </g:link>
             </div>
@@ -75,26 +75,4 @@ limitations under the License.
   </g:each>
 </ul>
 <div class="bb end-result-border"></div>
-<ddbcommon:isLoggedIn>
-  <ddbcommon:isPersonalFavoritesAvailable>
-    <div id="favorite-confirmation" class="modal hide fade bb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-      <div class="modal-body">
-        <p>
-          <g:message encodeAs="html" code="ddbnext.Added_To_Favorites" />
-        </p>
-        <p>
-          <g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites" />
-        </p>
-        <g:select name="favorite-folders" from="" size="10" multiple="multiple" />
-        <div class="modal-footer">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message encodeAs="html" code="ddbcommon.Close" />
-          </button>
-          <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-            <g:message encodeAs="html" code="ddbcommon.Save" />
-          </button>
-        </div>
-      </div>
-    </div>
-  </ddbcommon:isPersonalFavoritesAvailable>
-</ddbcommon:isLoggedIn>
+<g:render template="../common/addToFavorites"/>

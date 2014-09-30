@@ -99,7 +99,7 @@ limitations under the License.
                 <div class="span1 delete-btn">
                   <g:form id="deleteSavedSearches" method="POST" name="deleteSavedSearches" mapping="delSavedSearches">
                     <button type="submit" class="submit" title="<g:message code="ddbnext.Delete_Savedsearches"/>">
-                      <span><g:message code="ddbnext.Delete" /></span>
+                      <span><g:message code="ddbcommon.Delete" /></span>
                     </button>
                   </g:form>
                 </div>

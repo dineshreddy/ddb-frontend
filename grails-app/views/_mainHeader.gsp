@@ -28,7 +28,7 @@ limitations under the License.
     <div class="row">
       <div class="span12">
         <p>
-          <g:message code="ddbnext.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
+          <g:message code="ddbcommon.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
         </p>
         <a class="close" aria-controls="cookie-notice"></a>
       </div>
@@ -57,7 +57,7 @@ limitations under the License.
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
                 placeholder="Suche"
-                value="<ddb:getCookieFieldValue fieldname="query" />">
+                value="<ddbcommon:getCookieFieldValue fieldname="query" />">
               <button type="submit">
                 <g:message encodeAs="html" code="ddbnext.Go_Button" />
               </button>
@@ -94,14 +94,14 @@ limitations under the License.
             <li>
               <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
               <ul class="nav">
-                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
                   <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                </li>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                 </li>
               </ul>
             </li><!-- /end of exhibitions -->
@@ -224,16 +224,16 @@ limitations under the License.
                     </div>
                     <ul>
                       <li
-                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                      </li>
-                      <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                      </li>
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                       </li>
                     </ul>
                   </li>
@@ -312,10 +312,10 @@ limitations under the License.
                       code="ddbnext.Search_text_field" /></span>
                 </label>
                 <input type="hidden" id="querycache"
-                  value="<ddb:getCookieFieldValue fieldname="query" />" />
+                  value="<ddbcommon:getCookieFieldValue fieldname="query" />" />
                 <input type="search" id="search-small" class="query"
                   name="query"
-                  value="<ddb:getCookieFieldValue fieldname="query" />"
+                  value="<ddbcommon:getCookieFieldValue fieldname="query" />"
                   autocomplete="off" />
                 <button type="submit">
                   <!--[if !IE]><!-->
@@ -328,7 +328,7 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="keep-filters off">
                     <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+                      <input id="keep-filters" type="checkbox" name="keepFilters" <g:if test="${keepFiltersChecked}">checked="checked"</g:if> />
                       <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
                     </label>
                   </div>

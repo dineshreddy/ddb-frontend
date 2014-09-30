@@ -93,6 +93,7 @@ modules = {
         resource url:'/js/header.js'
         resource url:'/js/tooltip.js'
         resource url:'/js/vendor/json2-2010.11.17/json2.js'
+        resource url:'/js/commonGlobalVariables.js'
         resource url:'/js/globalVariables.js'
         resource url:'/js/globalScripts.js'
         resource url:'/js/paginationWidget.js'
@@ -111,6 +112,7 @@ modules = {
         resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
+        resource url:'/js/institution.js'
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
@@ -130,6 +132,7 @@ modules = {
         resource url:'/js/persons.js'
         resource url:'/js/vendor/masonry/masonry.pkgd.js'
         resource url:'/js/vendor/masonry/imagesloaded.pkgd.min.js'
+        resource url:'/js/publicFavorites.js'
     }
 
     item { resource url:'/js/persistentSendPdfMailModalDialog.js' }

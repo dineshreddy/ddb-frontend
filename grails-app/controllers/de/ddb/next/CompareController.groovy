@@ -21,8 +21,8 @@ import de.ddb.common.constants.SearchParamEnum
 
 class CompareController {
     def searchService
-    def commonConfigurationService
-    def itemService
+    def configurationService
+    def ddbItemService
     def LinkGenerator grailsLinkGenerator
 
     def index() {
@@ -31,8 +31,8 @@ class CompareController {
         def firstId = params.firstId
         def secondId = params.secondId
 
-        def modelItem1 = itemService.getFullItemModel(firstId)+[position: "first"]
-        def modelItem2 = itemService.getFullItemModel(secondId)+[position: "second"]
+        def modelItem1 = ddbItemService.getFullItemModel(firstId)+[position: "first"]
+        def modelItem2 = ddbItemService.getFullItemModel(secondId)+[position: "second"]
 
         def searchResultParameters = handleSearchResultParameters(params, request)
 
@@ -45,7 +45,7 @@ class CompareController {
             modelItem1: modelItem1,
             modelItem2: modelItem2,
             searchResultUri: searchResultParameters["searchResultUri"],
-            baseUrl: commonConfigurationService.getSelfBaseUrl()
+            baseUrl: configurationService.getSelfBaseUrl()
         ])
     }
 

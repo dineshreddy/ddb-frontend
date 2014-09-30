@@ -71,10 +71,14 @@ function checkFavorites() {
                         $("#addToFavoritesConfirm").click(
                             function() {
                               $("#favorite-confirmation").modal("hide");
-                              $.each($("#favorite-folders").val(), function(index, value) {
-                                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value +
-                                  "&reqObjectType=" + objectType);
-                              });
+                              var folderList = $("#favorite-folders").val();
+
+                              if (folderList) {
+                                $.each(folderList, function(index, value) {
+                                  $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
+                                  objectType);
+                                });
+                              }
                             });
                       } else {
                         window.setTimeout(function() {

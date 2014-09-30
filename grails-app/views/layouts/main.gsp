@@ -16,10 +16,8 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="${ddb.getCurrentLocale()}">
   <head>
-    <meta charset="utf-8" />
-
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-
+    <meta charset="utf-8" />
     <g:if test="${!metaDescription}">
       <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
     </g:if>
@@ -66,6 +64,6 @@ limitations under the License.
     </script>
     --%>
     
-    <ddb:getPiwikTracking />
+    <ddbcommon:getPiwikTracking />
   </body>
 </html>

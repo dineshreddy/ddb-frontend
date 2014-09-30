@@ -21,11 +21,12 @@ import net.sf.json.JSONNull
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.CategoryFacetEnum;
+import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.common.exception.BadRequestException
 
 class SearchController {
@@ -34,7 +35,6 @@ class SearchController {
 
     def entityService
     def searchService
-    def ddbSearchService
     def configurationService
     def cultureGraphService
 
@@ -43,20 +43,20 @@ class SearchController {
             //The list of the NON JS supported facets for items
             def nonJsFacetsList = SearchFacetLists.itemSearchNonJavascriptFacetList
 
-            def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+            def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
             def additionalParams = [:]
 
-            if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ITEM)) {
+            if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.CULTURAL_ITEM)) {
                 redirect(controller: "search", action: "results", params: params)
+                return
             }
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
-
             def firstLastQuery = urlQuery.clone()
 
             //Search should only return documents, no institutions, see DDBNEXT-1504
-            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName());
-            searchService.setCategory(firstLastQuery, CategoryFacetEnum.CULTURE.getName());
+            searchService.setCategory(urlQuery, CategoryFacetEnum.CULTURE.getName())
+            searchService.setCategory(firstLastQuery, CategoryFacetEnum.CULTURE.getName())
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
@@ -68,11 +68,6 @@ class SearchController {
             //Return a maximum of 2 entities as search result
             if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
                 entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
-                entities.each() { entity ->
-                    if (! entityService.entityImageExists(entity["thumbnail"])) {
-                        entity["thumbnail"] = null
-                    }
-                }
             }
 
             if(resultsItems["randomSeed"]){
@@ -109,7 +104,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ITEM))
+            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.CULTURAL_ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -213,16 +208,20 @@ class SearchController {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = SearchFacetLists.institutionSearchNonJavascriptFacetList
 
-        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
 
         def additionalParams = [:]
 
 
-        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.INSTITUTION)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.INSTITUTION)) {
             redirect(controller: "search", action: "institution", params: params)
         }
 
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
+        def urlParams = params.clone()
+        urlParams.isThumbnailFiltered=false
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
 
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
@@ -230,7 +229,7 @@ class SearchController {
         def queryString = request.getQueryString()
 
         //Only select institutions, no documents!
-        searchService.setCategory(urlQuery, CategoryFacetEnum.INSTITUTION.getName());
+        searchService.setCategory(urlQuery, CategoryFacetEnum.INSTITUTION.getName())
 
         if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"]) {
             queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
@@ -252,7 +251,7 @@ class SearchController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, SearchTypeEnum.INSTITUTION))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, Type.INSTITUTION))
 
         def model = [
             title: title,

@@ -47,7 +47,7 @@ $(function() {
       });
     };
 
-    de.ddb.next.search.initHistorySupport(stateManager);
+    de.ddb.common.search.initHistorySupport(stateManager);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     de.ddb.next.search.searchResultsInitializer();
   }
@@ -71,7 +71,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
     async : true,
     url : url + '&reqType=ajax',
     success : function(data) {
-      de.ddb.next.search.historyManager(url);
+      de.ddb.common.search.historyManager(url);
       if (!historySupport) {
         return;
       }
@@ -177,7 +177,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
 
   $('#form-search-header button').click(
       function() {
-        var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
+        var searchParameters = de.ddb.common.search.readCookie("searchParameters" + jsContextPath);
         if (searchParameters != null && searchParameters.length > 0) {
           searchParameters = searchParameters.substring(1, searchParameters.length - 1);
           searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -275,8 +275,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
-        de.ddb.next.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.historyManager(newUrl);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
       });
 
   de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
@@ -408,8 +408,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
-        de.ddb.next.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.historyManager(newUrl);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
   $('#keep-filters').click(function() {
@@ -420,14 +420,14 @@ de.ddb.next.search.searchResultsInitializer = function() {
       paramsArray = [['keepFilters', 'true']];
     }
     $.addParamToCurrentUrl(paramsArray);
-    de.ddb.next.search.setSearchCookieParameter(paramsArray);
+    de.ddb.common.search.setSearchCookieParameter(paramsArray);
   });
   $('.clear-filters').click(function() {
-    de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+    de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
   });
 
   $('.type-selection').change(function(){
-    var currentQuery = de.ddb.next.search.getUrlVar('query');
+    var currentQuery = de.ddb.common.search.getUrlVar('query');
     var optionSelected = $('option:selected', this);
     window.location = optionSelected.val()+'?query='+currentQuery;
   });

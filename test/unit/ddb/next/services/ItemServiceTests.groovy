@@ -1,12 +1,12 @@
 package ddb.next.services
 
-import de.ddb.next.ItemService;
+import de.ddb.next.DdbItemService;
 import grails.test.mixin.TestFor;
 
 /**
  * See the API for usage instructions
  */
-@TestFor(ItemService)
+@TestFor(DdbItemService)
 class ItemServiceTests {
 
 

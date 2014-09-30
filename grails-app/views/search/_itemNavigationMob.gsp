@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="prevId" value="${navData.results.results["docs"][0].id}" />
+<g:set var="prevId" value="${navData.results.results["docs"][0]?.id}" />
 <g:set var="nextId" value="nodisplay" />
 <g:if test="${navData.hitNumber == 1}">
   <g:set var="enableLeftPagination" value="${false}" />
@@ -29,13 +29,13 @@ limitations under the License.
 </g:else>
 
 <g:if test="${navData.hitNumber == 1 && navData.results["numberOfResults"] > 1}">
-<g:set var="nextId" value="${navData.results.results["docs"][1].id}" />
+<g:set var="nextId" value="${navData.results.results["docs"][1]?.id}" />
 </g:if>
 <g:elseif test="${navData.hitNumber == navData.results["numberOfResults"]}">
-<g:set var="nextId" value="${navData.results.results["docs"][0].id}" />
+<g:set var="nextId" value="${navData.results.results["docs"][0]?.id}" />
 </g:elseif>
 <g:else>
-<g:set var="nextId" value="${navData.results.results["docs"][2].id}" />
+<g:set var="nextId" value="${navData.results.results["docs"][2]?.id}" />
 </g:else>
 
 <ul class="inline">

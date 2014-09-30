@@ -75,20 +75,27 @@
 }
 
 .institution-item-page .institution {
-  border-color: #efebe8;
-  border-style: solid;
+    border-width: 0 0 5px;
+    font-size: 0.938em;
+    margin-bottom: 2em;
+    margin-top: 1em;
+    overflow: hidden;
+    padding: 0 0 10px;
+}
+
+.institution-item-page .highlights {
   border-width: 0 0 5px 0;
   padding: 0 0 10px 0;
   overflow: hidden;
   font-size: 0.938em;
-  margin-top: 1em;
+  margin-bottom: 1em;
 }
 
 .institution-item-page .logo {
   color: black; 
   font-size: small;
   float: right;
-  margin: 0 15px 0 0 !important;
+  margin: 0 0 0 0 !important;
 }
 
 .hierarchy > .institution-list {
@@ -156,4 +163,118 @@
 
 circle {
   cursor: pointer;
+}
+
+.institution-item-page .item-links {
+  text-align: right;
+  border-bottom:solid 2px #efebe8;
+  margin-bottom:0;
+  padding-bottom:5px;
+}
+
+.institution-item-page .sector{
+  font-size:14px;
+}
+
+.institution-item-page .carousel {
+  position: relative;
+  display: none;
+  margin-bottom: 30px;
+}
+
+.institution-item-page .caroufredsel_wrapper {
+  background-color: white;
+}
+
+.institution-item-page .preview-item {
+    float: left;
+    position: relative;
+    max-width: 180px;
+    width: 180px;
+    height: 175px;
+}
+
+.institution-item-page .preview-image {
+  height: 120px;
+}
+
+.institution-item-page .preview-caption {
+  display: inline-table;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  height: 36px;
+  line-height: 18px;
+}
+
+.institution-item-page .preview-item img {
+  text-align: center;
+  max-height: 105px;
+  max-width: 140px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.institution-item-page .btn-prev,.institution-item-page .btn-next {
+  background:#efebe8;
+  outline:none;
+}
+.institution-item-page .btn-prev.disabled,.institution-item-page .btn-next.disabled {
+  cursor:default;
+}
+
+.institution-item-page button {
+  position:absolute;
+  top:0;
+  width:35px;
+  height:175px;
+  text-indent:-999em;
+  display:block;
+  box-shadow:none;
+  -moz-box-shadow:none;
+  -webkit-box-shadow:none;
+}
+
+.institution-item-page .btn-prev,.institution-item-page .btn-next {
+  background:#efebe8;
+  outline:none;
+}
+
+.institution-item-page .btn-prev span,.institution-item-page .btn-next span {
+  top:75px;
+  position:absolute;
+  left:7px;
+  height:24px;
+  width:20px;
+  background-image:url("../images/icons/objectViewerCarouselControls.png");
+}
+
+.institution-item-page .btn-prev span {
+  background-position:0 -91px;
+}
+.institution-item-page .btn-prev.disabled span {
+  background-position:0 -151px;
+}
+.institution-item-page .btn-prev:hover:not(.disabled) span {
+  background-position:0 -121px;
+}
+.institution-item-page .btn-next {
+  float:right;
+  right:0;
+}
+.institution-item-page .btn-next span {
+  background-position:0 -2px;
+}
+.institution-item-page .btn-next.disabled span {
+  background-position:0 -62px;
+}
+.institution-item-page .btn-next:hover:not(.disabled) span {
+  background-position:0 -32px;
+}
+
+.institution-item-page .btn-next {
+  float:right;
+  right:0;
 }

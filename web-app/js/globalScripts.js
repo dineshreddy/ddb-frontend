@@ -187,7 +187,7 @@ $(window).on('load', function () {
           p = cookieBar.find('p'),
           closeButton = cookieBar.find('.close');
 
-      var cookie = de.ddb.next.search.readCookie("cb_cookie_notice");
+      var cookie = de.ddb.common.search.readCookie("cb_cookie_notice");
 
       window.setTimeout(function(){
         if(cookie!=1){

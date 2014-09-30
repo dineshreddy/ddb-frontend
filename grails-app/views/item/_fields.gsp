@@ -32,27 +32,21 @@ limitations under the License.
             </g:if>
             <g:else>
               <g:if test="${value instanceof JSONObject}">
-                ${raw(ddb.encodeInvalidHtml(text:value."\$"))}
+                ${raw(ddbcommon.encodeInvalidHtml(text:value."\$"))}
               </g:if>
               <g:else>
-                ${raw(ddb.encodeInvalidHtml(text:value))}
+                ${raw(ddbcommon.encodeInvalidHtml(text:value))}
               </g:else>
             </g:else>
             <br />
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject && it.value."@resource" != null && !it.value."@resource".isEmpty()}">
-            <g:link 
-              controller="entity" 
-              action="index" 
-              params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
-              class="entity-link">
-              ${it.value."\$"}
-            </g:link>
+          <g:if test="${it.value instanceof JSONObject}">
+            ${raw(ddbcommon.encodeInvalidHtml(text:it.value."\$"))}
           </g:if>
           <g:else>
-            ${raw(ddb.encodeInvalidHtml(text:it.value))}
+            ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
           </g:else>
         </g:else>
       </div>

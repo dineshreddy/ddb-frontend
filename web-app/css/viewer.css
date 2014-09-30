@@ -269,6 +269,7 @@ noscript .scroller, .pdf-scroller {
   position: absolute; 
   width: 50%;
   height: 100%;
+  background-color: rgba(255, 255, 255, 0);
 }
 .fancybox-click-nav.right {
   right: 0;

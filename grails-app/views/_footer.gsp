@@ -29,7 +29,7 @@ limitations under the License.
           <li><g:link controller="content" params="[dir: 'sitemap']"><g:message encodeAs="html" code="ddbnext.Sitemap"/></g:link></li>
           <li><g:link controller="content" params="[dir: 'contact']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
         </ul>
-        <div class="build"><ddb:getFrontendVersion /> / <ddb:getBackendVersion/></div>
+        <div class="build"><ddbcommon:getFrontendVersion /> / <ddbcommon:getBackendVersion/></div>
         <div class="twitter">
           <g:message code="ddbnext.follow"/>:
           <a href="https://twitter.com/ddbkultur" target="_blank">

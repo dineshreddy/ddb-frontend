@@ -14,17 +14,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:each var="item" in="${entity?.searchPreview?.items}">
+<g:each var="item" in="${institution?.searchPreview?.items}">
     <div class="preview-item">
+      <div class="preview-image">
       <g:link controller="item" action="findById" params="${["id": item?.id]}">
-        <g:if test="${ (item?.preview?.thumbnail.toString().contains('binary'))}">
+         <g:if test="${ (item?.preview?.thumbnail.toString().contains('binary'))}">
           <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
         </g:if>
         <g:else>
           <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaText.png"  />
         </g:else>
       </g:link>
-      <div class="caption">
+      </div>
+      <div class="preview-caption">
         <g:link controller="item" action="findById" params="${["id": item?.id]}">
           <ddbcommon:getTruncatedItemTitle title="${item?.preview?.title}" length="${ 40 }" />
         </g:link>
