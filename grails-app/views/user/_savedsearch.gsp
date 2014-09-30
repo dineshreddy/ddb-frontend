@@ -62,8 +62,12 @@ limitations under the License.
         </div>
         <div class="span2 created-at">
           <div>
-            <g:formatDate format="dd.MM.yyyy HH:mm"
+            <g:formatDate format="dd.MM.yyyy,"
               date="${search.creationDate}" />
+          </div>
+          <div>
+            <g:formatDate format="HH:mm"
+              date="${search.creationDate}" /> Uhr
           </div>
         </div>
       </div>
