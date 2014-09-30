@@ -132,6 +132,7 @@ modules = {
         resource url:'/js/persons.js'
         resource url:'/js/vendor/masonry/masonry.pkgd.js'
         resource url:'/js/vendor/masonry/imagesloaded.pkgd.min.js'
+        resource url:'/js/publicFavorites.js'
     }
 
     item { resource url:'/js/persistentSendPdfMailModalDialog.js' }
