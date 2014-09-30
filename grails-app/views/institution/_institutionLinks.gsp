@@ -18,14 +18,14 @@ limitations under the License.
   <div class="span12 item-links bb">
     <ddbcommon:isLoggedIn>
       <div class="favorite">
-        <span
+        <a
           class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>"
           <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if>
           <g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite">
             <g:message encodeAs="html" code="ddbnext.favorit" />
           </span>
-        </span>
+        </a>
       </div>
       <g:render template="../common/addToFavorites"/>
     </ddbcommon:isLoggedIn>
