@@ -18,8 +18,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 <html>
 <head>
-<title>
-  <g:message encodeAs="html" code="ddbnext.lists.page" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title><g:message encodeAs="html" code="ddbnext.lists.page" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
 
