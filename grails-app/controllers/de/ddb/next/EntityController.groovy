@@ -287,9 +287,9 @@ class EntityController {
                 }
             }
 
-            def keepFiltersChecked = ""
+            def keepFiltersChecked = false
             if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                keepFiltersChecked = "checked=\"checked\""
+                keepFiltersChecked = true
             }
             def subFacetsUrl = [:]
             def selectedFacets = entityService.buildSubFacets(urlQuery, nonJsFacetsList)
