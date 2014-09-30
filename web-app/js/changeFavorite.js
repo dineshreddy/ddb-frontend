@@ -67,17 +67,21 @@ function addToFavorites(jElemFavorite, data,objectType) {
             var selectEntry = "<option value=" + folder.folderId + ">"
                 + folder.title.charAt(0).toUpperCase() + folder.title.slice(1) + "</option>";
 
-            $("#favorite-folders").append(selectEntry);
+            $("#favorite-folders").prepend(selectEntry);
           }
         });
         $("#favoriteId").val(itemId);
         $("#addToFavoritesConfirm").click(
             function() {
               $("#favorite-confirmation").modal("hide");
-              $.each($("#favorite-folders").val(), function(index, value) {
-                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
-                  objectType);
-              });
+              var folderList = $("#favorite-folders").val();
+
+              if (folderList) {
+                $.each(folderList, function(index, value) {
+                  $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
+                    objectType);
+                });
+              }
 
               $("#idFavorite").parent().parent().attr('title',
                   messages.ddbnext.favorites_already_saved);
