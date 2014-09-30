@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
+<%@page import="de.ddb.common.constants.Type"%>
 <div class="row">
   <div class="span12 item-links bb">
     <ddbcommon:isLoggedIn>
@@ -22,7 +22,8 @@ limitations under the License.
           class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>"
           <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if>
           <g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
-          <span data-itemid="${selectedItemId}" data-actn="POST" id="idFavorite">
+          <span data-itemid="${selectedItemId}" data-objecttype="${Type.INSTITUTION.name}" data-actn="POST"
+                id="idFavorite">
             <g:message encodeAs="html" code="ddbnext.favorit" />
           </span>
         </a>
