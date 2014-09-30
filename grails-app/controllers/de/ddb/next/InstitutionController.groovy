@@ -15,9 +15,13 @@
  */
 package de.ddb.next
 import grails.converters.JSON
+import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiInstitution
+import de.ddb.common.ApiResponse
 import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
 
 class InstitutionController {
@@ -182,4 +186,70 @@ class InstitutionController {
         return vResult
     }
 
+    /**
+     * Controller method for rendering AJAX calls for an entity based item search
+     *
+     * @return the content of the backend search
+     */
+    public def getInstitutionHighlights() {
+        def institutionid = params["institutionid"]
+        def offset = params.long(SearchParamEnum.OFFSET.getName())
+        def rows = params.long(SearchParamEnum.ROWS.getName())
+
+        if(!rows) {
+            rows = 4
+        }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
+        def institution = [:]
+
+        //TODO Call to dummy method for DDBNEXT-1809 which should be replaced by a call to the FavoritesService.
+        def searchPreview = doItemSearch(institutionid, offset, rows)
+
+        institution["searchPreview"] = searchPreview
+
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/institution/searchResults", model:["institution": institution]).replaceAll("\r\n", '').replaceAll("\n", '')
+
+        def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
+
+        render (contentType:"text/json"){result}
+    }
+
+
+    /**
+     * TODO This is a dummy method for DDBNEXT-1809 and should be replaced by a call to the FavoritesService.
+     *
+     */
+    def doItemSearch(def institutionid, def offset, def rows) {
+        def searchParams = [:]
+        searchParams[SearchParamEnum.FACET.getName()] = FacetEnum.PROVIDER_ID.getName()
+        searchParams[FacetEnum.PROVIDER_ID.getName()] = institutionid
+        searchParams["offset"] = offset
+        searchParams["rows"] = rows
+
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchParams)
+        if(!apiResponse.isOk()){
+            def message = "doItemSearch(): Search response contained error"
+            log.error message
+            throw new RuntimeException(message)
+        }
+
+        def jsonSearchResult = apiResponse.getResponse()
+
+        def searchPreview = [:]
+        searchPreview["items"] = jsonSearchResult.results?.docs
+        searchPreview["resultCount"] = jsonSearchResult.numberOfResults
+
+        return searchPreview
+    }
 }
