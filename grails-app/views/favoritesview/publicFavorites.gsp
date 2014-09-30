@@ -96,9 +96,9 @@ limitations under the License.
               </strong>
               <br />
               ${selectedFolder.description}
-              <br />
-              <br />
             </g:if>
+              <br />
+              <br />
           </div>
           <p class="date-info">
             <g:message code="ddbnext.List_Created_At" />:
