@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <ul class="results-list unstyled entity-list">
 <g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
@@ -55,7 +56,7 @@ limitations under the License.
             <ul class="item-options-ul">
               <ddbcommon:isLoggedIn>
                 <li>
-                  <div data-itemid="${entityId}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
+                  <div data-itemid="${entityId}" data-actn="POST" data-objecttype="${Type.ENTITY.name}" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
                 </li>
               </ddbcommon:isLoggedIn>
             </ul>

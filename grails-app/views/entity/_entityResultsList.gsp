@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
   <g:each in="${entities.entity.docs}" var="entityItems">
@@ -62,7 +63,7 @@ limitations under the License.
               <ul class="item-options-ul">
                 <ddbcommon:isLoggedIn>
                   <li>
-                    <div data-itemid="${entityItem.id.substring(cultureGraphUrl.length())}" data-objecttype="entity" data-actn="POST" class="add-to-favorites"
+                    <div data-itemid="${entityItem.id.substring(cultureGraphUrl.length())}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" class="add-to-favorites"
                       title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                   </li>
                 </ddbcommon:isLoggedIn>

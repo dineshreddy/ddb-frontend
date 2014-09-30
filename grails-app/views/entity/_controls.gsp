@@ -13,13 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <div class="row">
   <div class="object-controls span12">
     <!-- buttons -->
     <div class="span6">
       <ddbcommon:isLoggedIn>
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
-          <span data-itemid="${entityId}" data-objecttype="entity" data-actn="POST" id="idFavorite">
+          <span data-itemid="${entityId}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" id="idFavorite">
             <g:message encodeAs="html" code="ddbnext.favorit" />
           </span>
         </span>
