@@ -240,6 +240,11 @@ class UrlMappings {
             action="personsearch"
         }
 
+        "/institution/ajax/highlights" {
+            controller="institution"
+            action="getInstitutionHighlights"
+        }
+
         "/persons"{
             controller="entity"
             action="persons"

@@ -29,7 +29,7 @@ limitations under the License.
 </head>
 <body>
   <div class="institution-item-page">
-    
+    <a id="institution-id" data-institutionid="${itemId}"></a>
     <g:render template="institutionLinks" />
     
     <div class="row">
@@ -65,7 +65,19 @@ limitations under the License.
          </div>
        </div>
      </div>
-
+     <div class="row">
+       <div class="span12 highlights">
+        <h3>Highlights der Sammlung</h3>
+         <div class="carousel bb bt">
+            <div id="items">
+            <%--      Items will be retrieved via Javascript       --%>
+            </div>
+            <div class="clearfix"></div>
+            <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
+            <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
+          </div>
+       </div>
+     </div>
      <div class="row">
        <div class="span12 locations">
 
