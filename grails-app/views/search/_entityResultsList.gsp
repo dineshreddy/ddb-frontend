@@ -44,10 +44,10 @@ limitations under the License.
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
               <g:if test="${entityItem.thumbnail != null}">
-                <img src="${entityItem.thumbnail}" alt="${ entityItem.preferredName }" width="55" alt="<ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" />" />
+                <img src="${entityItem.thumbnail}" width="55" alt="<ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" />" />
               </g:if>
               <g:else>
-                <g:img dir="images/placeholder" file="entity.png" alt="<ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}"/>" width="55" />
+                <g:img dir="images/placeholder" file="entity.png" alt="${ddbcommon.getTruncatedItemTitle(title: entityItem.preferredName, length: 100)}" width="55" />
               </g:else>
             </g:link>
           </div>
