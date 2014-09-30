@@ -328,7 +328,7 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="keep-filters off">
                     <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+                      <input id="keep-filters" type="checkbox" name="keepFilters" <g:if test="${keepFiltersChecked}">checked="checked"</g:if> />
                       <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
                     </label>
                   </div>

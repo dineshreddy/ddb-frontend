@@ -51,10 +51,10 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${entityItem.id}">
               <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
                 <g:if test="${entityItem.thumbnail}">
-                    <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55px" />" alt="${entityItem.preferredName }" width="55px" />
+                    <img src="<ddb:fixWikimediaImageWidth thumbnail="${entityItem.thumbnail}" desiredWidth="55" />" alt="${entityItem.preferredName }" width="55" />
                 </g:if>
                 <g:else>
-                <g:img dir="images/placeholder" file="entity.png" width="55px" height="90" />
+                <g:img dir="images/placeholder" file="entity.png" width="55" height="90" alt="${entityItem.preferredName }" />
               </g:else>
               </g:link>
             </div>
