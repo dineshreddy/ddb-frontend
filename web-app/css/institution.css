@@ -74,13 +74,21 @@
   color: #3e3a37;
 }
 
+.institution-item-page .institution {
+    border-width: 0 0 5px;
+    font-size: 0.938em;
+    margin-bottom: 2em;
+    margin-top: 1em;
+    overflow: hidden;
+    padding: 0 0 10px;
+}
+
 .institution-item-page .highlights {
   border-width: 0 0 5px 0;
   padding: 0 0 10px 0;
   overflow: hidden;
   font-size: 0.938em;
-  margin-top: 1em;
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
 
 .institution-item-page .logo {
