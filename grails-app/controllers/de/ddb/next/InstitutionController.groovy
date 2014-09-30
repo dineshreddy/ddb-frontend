@@ -212,6 +212,7 @@ class InstitutionController {
 
         def institution = [:]
 
+        //TODO Call to dummy method for DDBNEXT-1809 which should be replaced by a call to the FavoritesService.
         def searchPreview = doItemSearch(institutionid, offset, rows)
 
         institution["searchPreview"] = searchPreview
@@ -226,13 +227,8 @@ class InstitutionController {
 
 
     /**
-     * Performs a search request on the backend.
+     * TODO This is a dummy method for DDBNEXT-1809 and should be replaced by a call to the FavoritesService.
      *
-     * @param query the name of the entity
-     * @param offset the search offset
-     * @param rows the number of search results
-     *
-     * @return the serach result
      */
     def doItemSearch(def institutionid, def offset, def rows) {
         def searchParams = [:]
