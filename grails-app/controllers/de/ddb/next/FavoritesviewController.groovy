@@ -23,7 +23,7 @@ class FavoritesviewController {
 
     def publicFavorites() {
         final def ACTION = "publicFavorites"
-        int rows = params.rows ? params.rows.toInteger() : 9999
+        int rows = params.rows ? params.rows.toInteger() : 20
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
@@ -96,19 +96,18 @@ class FavoritesviewController {
             def resultsItems
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def queryString = request.getQueryString() ? request.getQueryString() : ""
 
             // convertQueryParametersToSearchParameters modifies params
             params.remove("query")
 
-            urlQuery["offset"] = 0
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
-            def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-            lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-
+            def totalPages = (Math.ceil(allRes.size().toInteger()/urlQuery["rows"].toInteger()).toInteger())
+            lastPgOffset=((Math.ceil(allRes.size()/rows)*rows)-rows).toInteger()
             if (totalPages.toFloat()<page.toFloat()){
-                offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                offset= (Math.ceil((allRes.size()-rows)/10)*10).toInteger()
+                if ((Math.ceil((allRes.size()-rows)/10)*10).toInteger()<0){
                     lastPgOffset=20
                 }
                 page=totalPages
@@ -140,17 +139,17 @@ class FavoritesviewController {
                 sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
             }
 
-            def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." + 
-            selectedFolder.creationDate.cdate.month.toString() + "." + 
-            selectedFolder.creationDate.cdate.year.toString() + " um " + 
-            selectedFolder.creationDate.cdate.hours.toString() + ":" + 
-            selectedFolder.creationDate.cdate.minutes.toString()
+            def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." +
+                    selectedFolder.creationDate.cdate.month.toString() + "." +
+                    selectedFolder.creationDate.cdate.year.toString() + " um " +
+                    selectedFolder.creationDate.cdate.hours.toString() + ":" +
+                    selectedFolder.creationDate.cdate.minutes.toString()
 
-            def updatedDateString = selectedFolder.updatedDate.cdate.dayOfMonth.toString() + "." + 
-            selectedFolder.updatedDate.cdate.month.toString() + "." + 
-            selectedFolder.updatedDate.cdate.year.toString() + " um " + 
-            selectedFolder.updatedDate.cdate.hours.toString() + ":" + 
-            selectedFolder.updatedDate.cdate.minutes.toString()
+            def updatedDateString = selectedFolder.updatedDate.cdate.dayOfMonth.toString() + "." +
+                    selectedFolder.updatedDate.cdate.month.toString() + "." +
+                    selectedFolder.updatedDate.cdate.year.toString() + " um " +
+                    selectedFolder.updatedDate.cdate.hours.toString() + ":" +
+                    selectedFolder.updatedDate.cdate.minutes.toString()
 
             render(view: ACTION, model: [
                 results: resultsItems,
@@ -159,6 +158,7 @@ class FavoritesviewController {
                 allResultsOrdered: allResultsWithAdditionalInfo,
                 viewType: urlQuery["viewType"],
                 resultsPaginatorOptions: resultsPaginatorOptions,
+                paginationURL: searchService.buildPagination(allRes.size(), urlQuery, request.forwardURI+'?'+queryString),
                 page: page,
                 resultsNumber: totalResults,
                 createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
@@ -239,7 +239,7 @@ class FavoritesviewController {
                 def locale = favoritesService.getLocale()
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                def queryString = request.getQueryString()
+                def queryString = request.getQueryString() ? request.getQueryString() : ""
 
                 // convertQueryParametersToSearchParameters modifies params
                 params.remove("query")
@@ -458,12 +458,12 @@ class FavoritesviewController {
     private sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolderId) {
         publicFolders.sort{ a, b ->
             b.updatedDate <=> a.updatedDate
-            }
+        }
 
         def aux
         publicFolders.each() {
             if(it.folderId == selectedFolderId) {
-                 aux = it
+                aux = it
             }
         }
         publicFolders.remove(aux)

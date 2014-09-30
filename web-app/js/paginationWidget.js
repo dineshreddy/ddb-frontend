@@ -125,7 +125,6 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
         $(this).find('a').each(function() {
           $(this).remove();
         });
-
         $.each(JSONresponse.paginationURL.pages, function() {
           var tmpAnchor = $(document.createElement('a'));
           tmpAnchor.addClass('page-nav-result');

@@ -15,7 +15,6 @@ limitations under the License.
 --%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"></g:set>
-
 <html>
   <head>
 
@@ -141,6 +140,11 @@ limitations under the License.
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
+                    <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex,
+                                           numberOfResults: numberOfResultsFormatted,
+                                           page: page,
+                                           totalPages: totalPages,
+                                           paginationURL: paginationURL]}"/>
               <div class="results-sorter">
                 <span class="favorite-numberheader">
                   <g:if test="${order == "desc"}">
