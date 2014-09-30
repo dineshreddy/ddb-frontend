@@ -31,7 +31,7 @@ limitations under the License.
       <g:else>
         <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Entity_Objects" /></th>
       </g:else>
-      <th style="width: 170px;"></th>
+      <th style="width: 170px; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Added_On" /></th>
     </tr>
   </thead>
   <tbody>
@@ -67,7 +67,6 @@ limitations under the License.
                   ${it.bookmark.description.trim()}
                 </g:if>
               </span>
-
             </div>
           </g:if>
         </td>
@@ -78,10 +77,15 @@ limitations under the License.
               <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
             </g:if>
             <g:else>
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${contextUrl}${confBinary}</g:if><g:else>${baseUrl}</g:else>${it.preview.thumbnail}"
+            <g:set var="cuttedThumbnailUrl" value="${it.preview.thumbnail.replaceAll('/ddb-next/', '') }" />
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${publicUrl}${confBinary}</g:if><g:else>${publicUrl}</g:else>${cuttedThumbnailUrl}"
                    alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:else>
           </g:link>
+          <br>
+         <g:if test="${!it.bookmark.creationDateFormatted.isEmpty()}">
+            ${it.bookmark.creationDateFormatted}
+          </g:if>
         </td>
       </tr>
     </g:each>
