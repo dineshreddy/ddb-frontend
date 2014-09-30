@@ -21,7 +21,7 @@ class FavoritesviewController {
     def sessionService
     def userService
 
-    def publicFavorites(params) {
+    def publicFavorites() {
         final def ACTION = "publicFavorites"
         int rows = params.rows ? params.rows.toInteger() : 9999
         int offset = params.offset ? params.offset.toInteger() : 0
@@ -120,8 +120,7 @@ class FavoritesviewController {
                 offset : offset
             ])
 
-//            def orderedFavorites = favoritesService.orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
-            def orderedFavorites = allResultsWithAdditionalInfo
+            def orderedFavorites = favoritesService.orderFavorites(allResultsWithAdditionalInfo, selectedFolder.folderId, order, by)
             if (offset != 0){
                 resultsItems=orderedFavorites.drop(offset)
                 resultsItems=resultsItems.take(rows)
@@ -130,7 +129,7 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
+                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder)
             }
             
             def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." + 

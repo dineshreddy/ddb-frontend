@@ -165,7 +165,7 @@ limitations under the License.
   </div>
 
   <g:if test="${numberOfResults > 0}">
-    <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
+    <div id="sendSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="sendSavedSearchesLabel">

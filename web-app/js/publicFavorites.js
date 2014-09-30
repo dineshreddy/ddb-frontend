@@ -16,7 +16,7 @@
      */
     //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the saved searches page
     $(function() {
-      if (jsPageName === "favorites") {
+      if (jsPageName === "publicFavorites") {
         $('.page-input').removeClass('off');
         $('.page-nonjs').addClass("off");
         // workaround for ffox + ie click focus - prevents links that load dynamic

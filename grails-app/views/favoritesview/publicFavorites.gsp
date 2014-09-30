@@ -23,7 +23,6 @@ limitations under the License.
       ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedUser.getFirstnameAndLastnameOrNickname()]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
-    <meta name="page" content="favorites">
     <meta name="layout" content="main">
     <meta name="page" content="publicFavorites">
 
@@ -43,19 +42,6 @@ limitations under the License.
             <h3>
               <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
             </h3>
-          <%--
-            <div class="page-info">
-              <span class="results-overall-index">1-2 </span> 
-              <span><g:message encodeAs="html" code="ddbnext.Of" /> </span> 
-              <span><strong><span class="results-total">2 </span></strong> </span> 
-              <g:if test="${numberOfResultsFormatted == '1'}"> 
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Result_lowercase" /></span>
-              </g:if>
-              <g:else>
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Results_lowercase" /></span>
-              </g:else>
-            </div>
-            --%>
           </div>
           <div class="right-container">
             
@@ -66,10 +52,6 @@ limitations under the License.
             <a class="saved-searches-list-envelope" id="favorites-list-send" href="#" title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
               <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
             </a>
-            
-<%--            <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">--%>
-<%--              <ddb:getSocialmediaBody/>--%>
-<%--            </g:if>--%>
           </div>
         </div>
       </div>
@@ -102,11 +84,6 @@ limitations under the License.
           </div>
           </g:if>
           <div class="folder-information bt bb bl br">
-            <%--         
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </a>
-            --%>
             <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
               <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
             </g:link>
@@ -239,12 +216,11 @@ limitations under the License.
     </div>
     
     
-<%--    <g:if test="${numberOfResults > 0}">--%>
-    <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendSavedSearchesLabel" aria-hidden="true">
+    <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendFavoriteListLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="sendSavedSearchesLabel">
-          <g:message code="ddbnext.Send_Savedsearches" />
+        <h3 id="sendFavoriteListLabel">
+          <g:message code="ddbnext.send_favorites" />
         </h3>
       </div>
       <form method="POST">
@@ -268,7 +244,6 @@ limitations under the License.
         </div>
       </form>
     </div>
-<%--  </g:if>--%>
   
   </body>
 </html>
