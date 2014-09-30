@@ -187,12 +187,25 @@ circle {
 }
 
 .institution-item-page .preview-item {
-    display: block;
     float: left;
     position: relative;
     max-width: 180px;
     width: 180px;
-    height: 105px;
+    height: 175px;
+}
+
+.institution-item-page .preview-image {
+  height: 120px;
+}
+
+.institution-item-page .preview-caption {
+  display: inline-table;
+  font-size: 15px;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  overflow: hidden;
+  height: 36px;
+  line-height: 18px;
 }
 
 .institution-item-page .preview-item img {
@@ -265,13 +278,3 @@ circle {
   float:right;
   right:0;
 }
-
-.institution-item-page .caption {
-  font-size: 15px;
-  text-overflow: ellipsis;
-  word-wrap: break-word;
-  overflow: hidden;
-  max-height: 70px;
-  line-height: 18px;
-}
-
