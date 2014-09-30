@@ -42,5 +42,5 @@ $(document).ready(function() {
     var referrerUrl = window.location.pathname + window.location.search + window.location.hash;
     $(this).attr("href", jsContextPath+"/login?referrer="+encodeURIComponent(referrerUrl));
   });
-  $("#no-script").show();
+  $(".no-script").show();
 });

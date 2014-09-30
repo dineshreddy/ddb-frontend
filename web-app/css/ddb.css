@@ -1495,7 +1495,7 @@ select {
 }
 
 .no-script {
-  display: none !important;
+  display: none;
 }
 
 .underlined {
