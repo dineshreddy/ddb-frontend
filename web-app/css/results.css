@@ -433,6 +433,11 @@ input[type="checkbox"],input[type="radio"] {
   word-wrap: break-word;
 }
 
+.search-results .results-list .summary-main-wrapper .grid-title{
+  text-align:center!important;
+  font-size:1em;
+}
+
 .search-results .results-list .subtitle {
   font-family: Calibri,Arial,sans-serif;
   font-size: 1.063em;

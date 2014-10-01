@@ -23,6 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
+  
   if (jsPageName === "results" || jsPageName === "searchinstitution" || jsPageName === "searchperson") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
@@ -50,6 +51,11 @@ $(function() {
     de.ddb.common.search.initHistorySupport(stateManager);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     de.ddb.next.search.searchResultsInitializer();
+
+    //Operations on the grid where triggered only once clicked and ignored if the viewtype grid was coming from the URL
+    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()=='grid'){
+      $("#view-grid").trigger( "click" );
+    }
   }
 });
 
@@ -216,6 +222,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
       function() {
         $('.summary-main .title a').each(
             function(index, value) {
+              $(this).closest( "div" ).removeClass("grid-title");
               var newTitle = value.title.toString();
               if (newTitle.length > 100) {
                 newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ")
@@ -346,10 +353,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
         $('.summary-main .title a').each(
             function(index, value) {
               var newTitle = value.title.toString();
-              if (newTitle.length > 53) {
-                newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ")
-                    + "...";
-              }
               if ($(this).closest('.summary-main').find('.matches li span strong').length === 0
                   && jQuery.trim($(value).find('strong')).length > 0) {
                 newTitle = jQuery.trim($(value).html());
@@ -369,6 +372,11 @@ de.ddb.next.search.searchResultsInitializer = function() {
                 newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),
                     "<strong>\$1</strong>");
               }
+              if (newTitle.length > 60) {
+                newTitle = $.trim(newTitle).substring(0, 50).split(" ").slice(0, -1).join(" ")
+                    + "...";
+              }
+              $(this).closest( "div" ).addClass("grid-title");
               value.innerHTML = newTitle;
             });
         $('#view-list').removeClass('selected');
