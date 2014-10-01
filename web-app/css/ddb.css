@@ -1536,8 +1536,10 @@ select {
 }
 
 .modal-header h3 {
-  font-size: 1em !important;
+  font-size: 16px;
   text-transform: uppercase;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
 }
 
 /* responsive genaral rules */

@@ -203,12 +203,8 @@ limitations under the License.
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <button class="submit" id="id-confirm">
-        <g:message code="ddbcommon.Yes" />
-      </button>
-      <button class="submit" data-dismiss="modal">
-        <g:message code="ddbcommon.No" />
-      </button>
+      <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
+      <button class="submit" id="id-confirm"><g:message code="ddbcommon.Yes" /></button>
     </div>
   </div>
 
@@ -221,24 +217,14 @@ limitations under the License.
     </div>
     <div class="modal-body">
       <div>
-        <b><g:message code="ddbnext.Mandatory" /></b>
-      </div>
-      <br />
-      <div>
         <g:message code="ddbnext.Savedsearch_Title" />
-        *
       </div>
       <div>
         <input id="editSavedSearchId" type="hidden"> <input id="editSavedSearchTitle" type="text">
       </div>
     </div>
     <div class="modal-footer">
-      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message code="ddbcommon.Close" />
-      </button>
-      <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
-        <g:message code="ddbcommon.Save" />
-      </button>
+      <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
     </div>
   </div>
 
