@@ -373,7 +373,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
                     "<strong>\$1</strong>");
               }
               if (newTitle.length > 60) {
-                newTitle = $.trim(newTitle).substring(0, 50).split(" ").slice(0, -1).join(" ")
+                newTitle = $.trim(newTitle).substring(0, 60).split(" ").slice(0, -1).join(" ")
                     + "...";
               }
               $(this).closest( "div" ).addClass("grid-title");
