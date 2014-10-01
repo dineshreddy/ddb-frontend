@@ -18,6 +18,9 @@ $(document).ready(
 
       if (jsPageName === "entity") {
 
+        var socialMediaManager = new SocialMediaManager();
+        socialMediaManager.integrateSocialMedia();
+
         var defaultRowCount = 10;
 
         var allRowCount = 0;
