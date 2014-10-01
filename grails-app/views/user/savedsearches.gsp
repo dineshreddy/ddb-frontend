@@ -208,7 +208,7 @@ limitations under the License.
     </div>
   </div>
 
-  <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
+  <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
@@ -223,7 +223,7 @@ limitations under the License.
         <input id="editSavedSearchId" type="hidden"> <input id="editSavedSearchTitle" type="text">
       </div>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer-savesearch">
       <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
     </div>
   </div>
