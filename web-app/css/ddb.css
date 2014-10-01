@@ -1535,6 +1535,27 @@ select {
   background-color: #EFEBE8 !important;
 }
 
+.modal-backdrop, .modal-backdrop.fade.in {
+  opacity: 0.5;
+  background-color: #6F6B68;
+}
+
+.modal {
+  box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+  -moz-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+  -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+   border:none !important;
+   padding: 1em;
+}
+
+.modal-body {
+  padding: 1em;
+  font-size: 16px;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  padding: 1em;
+}
+
 .modal-header h3 {
   font-size: 16px;
   text-transform: uppercase;

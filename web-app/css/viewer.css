@@ -240,7 +240,7 @@ noscript .scroller, .pdf-scroller {
   right: 0;
   cursor: pointer !important;
   float: right;
-  width: 18px;
+  width: 28px;
   height: 18px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -475px;
 }
