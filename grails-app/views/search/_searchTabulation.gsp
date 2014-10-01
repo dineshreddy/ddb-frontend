@@ -67,9 +67,6 @@ limitations under the License.
             </h3>
           </div>
           <div class="modal-body">
-            <div>
-              <b><g:message encodeAs="html" code="ddbnext.Mandatory" /></b>
-            </div>
             <br />
             <div>
               <g:message encodeAs="html" code="ddbnext.Savedsearch_Title" />
@@ -80,9 +77,6 @@ limitations under the License.
             </div>
           </div>
           <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbcommon.Close" />
-            </button>
             <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
               <g:message encodeAs="html" code="ddbcommon.Save" />
             </button>

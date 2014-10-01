@@ -20,7 +20,7 @@ limitations under the License.
   <g:each in="${fields}">
     <div class="row">
       <div class="span2"><strong>${it.name}: </strong></div>
-      <div class="value span4">
+      <div class="value span3">
         <div>
           <g:if test="${it.value instanceof JSONArray}"> 
             <g:each var="value" in="${it.value }">

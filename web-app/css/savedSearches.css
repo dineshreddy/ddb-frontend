@@ -52,7 +52,7 @@
 
 .saved-searches-list-envelope:before {
   content: '';
-  background: url("../images/icons/ddbIkonographie.png")  -30px -328px no-repeat;
+  background: url("../images/icons/ddbIkonographie.png") -30px -328px no-repeat;
   width: 20px;
   height: 20px;
   position: absolute;

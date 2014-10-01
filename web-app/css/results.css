@@ -433,6 +433,11 @@ input[type="checkbox"],input[type="radio"] {
   word-wrap: break-word;
 }
 
+.search-results .results-list .summary-main-wrapper .grid-title{
+  text-align:center!important;
+  font-size:1em;
+}
+
 .search-results .results-list .subtitle {
   font-family: Calibri,Arial,sans-serif;
   font-size: 1.063em;
@@ -445,7 +450,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .entity-type {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 0.938em;
+  font-size: 0.875em;
   line-height: 1em;
   margin: -2px 0 7px 0;
   color: #3e3a37;
@@ -1156,6 +1161,7 @@ color: #a5003b;
 }
 #addToSavedSearchesAnchor {
   cursor: pointer;
+  font-size: 15px;
 }
 
 #addToSavedSearchesTitle {
