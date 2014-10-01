@@ -1161,6 +1161,7 @@ color: #a5003b;
 }
 #addToSavedSearchesAnchor {
   cursor: pointer;
+  font-size: 15px;
 }
 
 #addToSavedSearchesTitle {
