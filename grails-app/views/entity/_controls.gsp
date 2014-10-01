@@ -16,7 +16,7 @@ limitations under the License.
 <div class="row">
   <div class="object-controls span12">
     <!-- buttons -->
-    <div class="span4 share-controls">
+    <div class="span4 fr">
       <ddbcommon:isLoggedIn>
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${entityId}" data-objecttype="entity" data-actn="POST" id="idFavorite">
