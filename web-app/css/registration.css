@@ -26,23 +26,20 @@
   width: 465px;
 }
 
-#registration-form label.checkbox-label {
-  width: 53%;
-}
-
-#registration-form label.checkbox-label a {
+#registration-form .reg-checkbox-label a {
   text-decoration: underline;
 }
 
-#registration-form .controls.checkbox label.error {
+#registration-form label[for="termOfUse"].error {
   position: absolute;
-  margin-top: -12px;  
-  margin-left: 5px;
+  margin-top: 24px;
+  margin-left: -20px;
 }
 
-#enduser {  
+#enduser {
   font-size: 0.938em;
-  padding-top: 30px;
+  padding: 5px 0 10px 0;
+  border-bottom: solid 2px #efebe8;
 }
 
 #enduser span {
@@ -60,7 +57,7 @@
 }
 
 .reg-subtitle {
-  margin-bottom: 30px;
+  margin-bottom: 15px;
 }
 
 .control-group label.error {
@@ -73,35 +70,33 @@
   margin-left: 0;
 }
 
-.well {
-  background-color: #EFEBE8;
+.form-horizontal .control-group {
+  margin-bottom: 15px;
+}
+
+#registration-form .reg-label {
+  margin-bottom: 2px;
+  font-weight: bold;
 }
 
 /* responsive design */
 
-@media (max-width: 1199px) {
-  #registration-form label.checkbox-label {
-    width: 53%;
-  }
-  #registration-form .controls.checkbox label.error {
-    margin-top: 24px;
-    margin-left: -216px;
+@media (max-width: 979px) {
+  #registration-form label[for="termOfUse"].error {
+    margin-top: 5px;
+    margin-left: 5px;
   }
 }
-
-@media (max-width: 767px) {
-  #registration-form label.checkbox-label {
-    width: 46%;
+@media (max-width: 529px) {
+  .control-group label.error {
+    margin-left: 0;
+  }
+  #registration-form label[for="termOfUse"].error {
+    margin-top: 0;
+    margin-left: 5px;
   }
 }
 @media (max-width: 480px) {
-  #registration-form .controls.checkbox {
-    margin-left: 0;
-  }
-  #registration-form .controls.checkbox label.error {
-    margin-top: -14px;
-    margin-left: 4px;
-  }
   #termOfUse {
     margin: 0 0 0;
   }
