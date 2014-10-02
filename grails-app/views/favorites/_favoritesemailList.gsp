@@ -77,7 +77,7 @@ limitations under the License.
               <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
             </g:if>
             <g:else>
-            <g:set var="cuttedThumbnailUrl" value="${it.preview.thumbnail.replaceAll('/ddb-next/', '') }" />
+            <g:set var="cuttedThumbnailUrl" value="${it.preview.thumbnail}" />
               <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${publicUrl}${confBinary}</g:if><g:else>${publicUrl}</g:else>${cuttedThumbnailUrl}"
                    alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:else>
