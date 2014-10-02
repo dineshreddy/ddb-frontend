@@ -59,7 +59,6 @@
 
 .facets-item a.h3, .time-facet  a.h3 {
   color: #3e3a37;
-  font-size: 1.063em;
 }
 
 .facets-list a.h3 {
@@ -440,7 +439,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .subtitle {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
   line-height: 1em;
   margin: 7px 0 0;
   color: #3e3a37;
@@ -834,7 +832,7 @@ input[type="checkbox"],input[type="radio"] {
   box-shadow: #999 -8px 18px 32px -11px;
   padding-left: 10px;
   padding-right: 10px;
-  font-size: 0.938em;
+  font-size: 0.875em;
 }
 .flyout-right-head {
   font-weight: bold;
@@ -899,7 +897,7 @@ input[type="checkbox"],input[type="radio"] {
   position:relative;
   line-height: 28px;
   color: #4c4a48;
-  font-size: 0.938em;
+  font-size: 0.875em;
 }
 .selected-items .facet-value {
   display: block;
