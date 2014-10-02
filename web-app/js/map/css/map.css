@@ -165,5 +165,12 @@
   background: none !important;
 }
 
+.olMap .outside-cluster a {
+  color : #a0a0a0 !important;
+}
+
+.olMap .inside-cluster a {
+  color : #3e3a37 !important;
+}
 
 /* Popup end */
