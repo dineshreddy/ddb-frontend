@@ -53,7 +53,7 @@
 }
 
 .view-type-switch #view-institution-list.selected:before,.view-type-switch #view-institution-list.selected:hover:before,.view-type-switch #view-institution-list.selected:focus:before {
-  margin: -60px 0 0 -241px;
+  margin: -60px 0 0 -240px;
 }
 
 .view-type-switch .ie8-version #view-institution-list.selected:before,.view-type-switch .ie8-version #view-institution-list.selected:hover:before,.view-type-switch .ie8-version #view-institution-list.selected:focus:before {
