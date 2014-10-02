@@ -203,16 +203,12 @@ limitations under the License.
       <span id="totalNrSelectedObjects"></span>
     </div>
     <div class="modal-footer">
-      <button class="submit" id="id-confirm">
-        <g:message code="ddbcommon.Yes" />
-      </button>
-      <button class="submit" data-dismiss="modal">
-        <g:message code="ddbcommon.No" />
-      </button>
+      <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
+      <button class="submit" id="id-confirm"><g:message code="ddbcommon.Yes" /></button>
     </div>
   </div>
 
-  <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
+  <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
@@ -221,24 +217,14 @@ limitations under the License.
     </div>
     <div class="modal-body">
       <div>
-        <b><g:message code="ddbnext.Mandatory" /></b>
-      </div>
-      <br />
-      <div>
         <g:message code="ddbnext.Savedsearch_Title" />
-        *
       </div>
       <div>
         <input id="editSavedSearchId" type="hidden"> <input id="editSavedSearchTitle" type="text">
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message code="ddbcommon.Close" />
-      </button>
-      <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
-        <g:message code="ddbcommon.Save" />
-      </button>
+    <div class="modal-footer-savesearch">
+      <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
     </div>
   </div>
 

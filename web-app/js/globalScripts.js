@@ -208,3 +208,8 @@ $(window).on('load', function () {
 
   });
 });
+
+var h = ($('.modal').height())/2;
+var w = ($('.modal').width())/2;
+$('.modal').css({'top':'50%','margin-top':'-'+h+'px'});
+$('.modal').css({'left':'50%','margin-left':'-'+w+'px'});

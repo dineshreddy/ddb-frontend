@@ -57,7 +57,7 @@ limitations under the License.
           </span>
         </div>
 
-        <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+        <div id="addToSavedSearchesModal" class="modal hide fade savesearch" tabindex="-1" role="dialog"
           aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
           <div class="modal-header">
             <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal"
@@ -76,7 +76,7 @@ limitations under the License.
               <input id="addToSavedSearchesTitle" type="text">
             </div>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer-savesearch">
             <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
               <g:message encodeAs="html" code="ddbcommon.Save" />
             </button>
