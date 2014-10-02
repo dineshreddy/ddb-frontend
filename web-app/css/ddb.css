@@ -731,12 +731,18 @@ header .language-widget form,.header .language-widget form {
   height: 90px;
 }
 
+.btn-nav {
+    height: 30px;
+    position: absolute;
+    right: 0;
+    width : 40px;
+    background: url(../images/icons/ddbIkonographie.png) no-repeat -236px -315px;
+}
 
-.btn-navbar {
-  height: 30px;
-  position: absolute;
-  right: 0;
-  background-image: none;
+.btn-nav:hover {
+   background-position-x : -181px;
+   background-position-y : -315px;
+   transition:none;
 }
 
 .nav-list ul>li {
