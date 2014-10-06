@@ -748,57 +748,6 @@ input[type="checkbox"],input[type="radio"] {
   font-weight:bold;
 }
 
-.information .hovercard-info-item {
-  background: #fff;
-  border: 1px solid #a7a7a6;
-  width: 523px;
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  -moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
-  color: #3e3a37;
-  font-size: 0.875em;
-  font-family: Calibri,Arial,sans-serif;
-  z-index: 1;
-  line-height: 1em;
-  text-align: left;
-  position: absolute;
-  right: 0;
-  top: 30px;
-  display:none;
-}
-
-.information .hovercard-info-item h4 {
-  background-color: #efebe8;
-  margin: 0;
-  padding: 6px 5px 5px 20px;
-  font-size: 1em;
-  font-weight: bold;
-}
-
-.information .hovercard-info-item .fieldName {
-  margin-left: 20px;
-  font-weight: bold;
-  width: 150px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-.information .hovercard-info-item .fieldContent {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  line-height: 25px;
-  margin: 0;
-  word-wrap: normal;
-  width: 340px;
-}
-
-.hovercard-info-item ul span {
-  display: block;
-  float: left;
-  line-height: 25px;
-}
-
 .facets-container .tooltip, .compare-header .tooltip, .fields .tooltip, .time-restriction .tooltip {
   font-size: 0.813em;
 }
@@ -1062,20 +1011,7 @@ input[type="checkbox"],input[type="radio"] {
     margin-right: 40px;
   }
   
-  .item-options .hovercard-info-item {
-    width: 373px;
-  }
-  
-  .item-options .hovercard-info-item .fieldContent {
-    width: 240px;
-    margin-left: 20px;
-  }
-  
-  .item-options .hovercard-info-item .fieldName{
-    margin-left: 13px;
-    width: 100px;
-  }
-      
+
   .search-results .results-list .summary .compare {
     display: none;
   }
@@ -1100,20 +1036,6 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 @media (max-width: 480px) {
-  .item-options .hovercard-info-item {
-    width: 213px;
-  }
-  
-  .item-options .hovercard-info-item .fieldContent {
-    width: 119px;
-    margin-left: 7px;
-  }
-  
-    .item-options .hovercard-info-item .fieldName {
-    width: 70px;
-    margin-left: 10px;
-  }
-
   .page-info-nav .results-label {
      display: none;
   }
