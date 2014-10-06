@@ -522,11 +522,14 @@ header .header-spacer,.header .header-spacer {
 }
 
 #form-search-header .link-adv-search {
-  font-size: 0.938em;
   display: inline-block;
   float: right;
   text-align: left;
   height:23px;
+}
+
+.keep-filters label{
+  font-size: 1em;
 }
 
 .keep-filters {
