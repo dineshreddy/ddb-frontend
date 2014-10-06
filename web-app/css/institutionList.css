@@ -19,6 +19,14 @@
   text-align: right;
 }
 @media (max-width: 767px) {
+  .summary-text {
+    display: none;
+  }
+
+  .nonjs-registered-institutions {
+    display: none !important;
+  }
+
   .view-type-switch {
     display:none;
     visibility: hidden;

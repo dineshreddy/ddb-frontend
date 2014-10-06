@@ -330,6 +330,11 @@
   background: white;
 }
 
+.similar-objects .information .hovercard-info-item {
+  right: none;
+  left: 160px;
+}
+
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
@@ -337,6 +342,9 @@
   }
   .page-link-block {
     display: none !important;
+  }
+  .similar-objects .information .hovercard-info-item {
+    left: 130px;
   }
 }
 
@@ -361,6 +369,9 @@
   .item-nav-mob .inline li:first-child {
     padding-left: 0;
   }
+  .similar-objects .information .hovercard-info-item {
+    left: 100px;
+  }
 }
 
 @media (min-width: 481px) {
@@ -378,6 +389,10 @@
   }
   .item-nav .hit-number:after {
     content: " / ";
+  }
+  
+  .similar-objects .information .hovercard-info-item {
+    left: 50px;
   }
 }
 
@@ -436,6 +451,8 @@
 
 .similar-objects-item{
   font-size: 0.938em;
+  background: url("../images/icons/listArrowPlum.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
 }
 
 .similar-objects-header {
@@ -461,6 +478,10 @@
   padding: 0 20px 0 0;
   z-index: 10;
 } 
+
+.similar-objects .information {
+  position: relative !important;
+}
 
 .socialmedia {
   display: inline-block;

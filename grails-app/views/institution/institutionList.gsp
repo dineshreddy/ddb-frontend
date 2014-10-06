@@ -26,7 +26,7 @@ limitations under the License.
 <body>
   <h1><g:message encodeAs="html" code="ddbnext.Institutions" /></h1>
   <div class="row">
-    <div class="span12">
+    <div class="span12 summary-text">
       <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
     </div>
     <div class="span12 nonjs-registered-institutions bb no-script">
