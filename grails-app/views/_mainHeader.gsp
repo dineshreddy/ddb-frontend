@@ -50,7 +50,7 @@ limitations under the License.
         <r:img dir="images" file="mobileLogo.png"
           alt="${message(code: 'ddbnext.Logo_Description')}" />
       </g:link>
-      <div class="nav-collapse collapse">
+      <div class="nav-collapse collapse ">
         <ul class="nav nav-list">
           <li><g:form class="navbar-search pull-left"
               method="get" role="search" id="form-search-header-mobile"
@@ -63,10 +63,10 @@ limitations under the License.
               </button>
             </g:form></li>
 
-          <li class="<ddb:isMappingActive context="${params}"
+          <li class="highlight" <ddb:isMappingActive context="${params}"
               testif="${[[controller: "content", dir: "about"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'about']">
-              <g:message encodeAs="html" code="ddbnext.AboutUs" />
+              ${message(code: 'ddbnext.AboutUs').toUpperCase()}
             </g:link>
             <ul class="nav">
               <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
@@ -86,13 +86,15 @@ limitations under the License.
               </li>
             </ul><!-- /end of .nav -->
           </li>
-          <li class="<ddb:isMappingActive context="${params}"
+          <hr />
+          <li class="highlight" "<ddb:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
-            <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
+            <g:link controller="content" params="[dir: 'help']">${message(code: 'ddbnext.Help').toUpperCase()}</g:link>
           </li><!-- /end of help -->
+          <hr />
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
-            <li>
-              <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+            <li class="highlight">
+              <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
               <ul class="nav">
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
@@ -105,6 +107,7 @@ limitations under the License.
                 </li>
               </ul>
             </li><!-- /end of exhibitions -->
+            <hr />
           </g:if>
             <ddbcommon:isLoggedIn>
               <li>
@@ -122,8 +125,8 @@ limitations under the License.
                 </ul>
               </li>
             </ddbcommon:isLoggedIn>
-            <li><a>
-              <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
+            <li class="highlight"><a>
+              ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
               <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
@@ -138,9 +141,9 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li>
+          <li class="highlight">
             <ddbcommon:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> ${message(code: 'ddbcommon.Login_Button').toUpperCase()}</g:link>
             </ddbcommon:isNotLoggedIn>
             <ddbcommon:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
