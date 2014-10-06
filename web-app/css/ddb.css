@@ -523,7 +523,7 @@ header .header-spacer,.header .header-spacer {
   height:23px;
 }
 
-#keep-filters{
+.keep-filters label{
   font-size: 1em;
 }
 

@@ -1286,6 +1286,6 @@ color: #a5003b;
   right: 10px;
 }
 
-.grid .thumbnail-wrapper .item-options {
-  bottom: auto;
+.summary-main.grid-title .title {
+  padding-right: 30px;
 }
