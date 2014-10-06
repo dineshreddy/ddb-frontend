@@ -393,11 +393,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
                   .removeClass('span6');
               $('.results-list .thumbnail-wrapper').not('.entity-list .thumbnail-wrapper')
                   .removeClass('span3');
-              $('.results-list .item-options').not('.entity-list .item-options').removeClass('bl');
               $('.results-list .item-options .information').not(
                   '.entity-list .item-options .information').removeClass('bb');
-              $('.results-list .item-options .compare').not('.entity-list .item-options .compare')
-                  .removeClass('bb');
               $('.results-list').not('.entity-list').addClass("grid");
               $('.search-results').fadeOut('fast');
               $('.results-list .summary .summary-main-wrapper').not(

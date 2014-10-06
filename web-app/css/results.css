@@ -369,7 +369,7 @@ input[type="checkbox"],input[type="radio"] {
 }
 
 .search-results-content .search-results .item {
-  padding: 15px 0 15px 0;
+  padding: 0 0 15px 0;
   position: relative;
 }
 
@@ -459,6 +459,10 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 15px;
 }
 
+.institutions .search-results-content .search-results .item .title {
+  padding-top: 15px;
+}
+
 .search-results .results-list .thumbnail .persist {
   position: relative;
   text-align: center;
@@ -479,6 +483,7 @@ input[type="checkbox"],input[type="radio"] {
   display: inline;
   float: right;
   margin-right: 60px;
+  padding-top: 0;
   width: 55px;
 }
 
@@ -489,6 +494,11 @@ input[type="checkbox"],input[type="radio"] {
   float: none;
   border: 0;
   margin: auto;
+  padding-top: 15px;
+}
+
+.search-results .results-list .persons-results .thumbnail img {
+  padding-top: 0;
 }
 
 .search-results .results-list .thumbnail-entity img {
@@ -506,6 +516,7 @@ input[type="checkbox"],input[type="radio"] {
   bottom: 0;
   right: 0;
   width: 30px;
+  height: 100%;
 }
 
 .thumbnail-wrapper .item-options-ul {
