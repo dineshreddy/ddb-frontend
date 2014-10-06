@@ -250,6 +250,7 @@ hr {
   display: inline-block;
   float: right;
   line-height: 62px;
+  font-size: 0.938em;
 }
 
 .public-favorites .socialmedia {
@@ -744,6 +745,7 @@ hr {
 
 .folder-information-container .date-info {
   color:grey;
+  font-size: 0.875em;
 }
 
 .folder-information-container .other-folder-list {
