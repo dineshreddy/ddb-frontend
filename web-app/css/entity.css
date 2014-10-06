@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 .entity-page .link-block {
   display: inline-block;
   margin-right: 10px;
 }
- 
-.entity-page .objects h3{
+
+.entity-page .objects h3 {
   display: inline-block;
 }
 
-.entity-page .objects .tooltip{
+.entity-page .objects .tooltip {
   margin-left:56px;
   font-size: 0.813em;
   width: 30%;
@@ -33,7 +33,7 @@
   vertical-align: middle;
   display: inline-block;  
 }
- 
+
 .entity-page .fields{
   font-size: 1em;
 }
@@ -102,10 +102,11 @@
 }
 
 .entity-page .carousel {
-  padding: 0 0 0 1px;
+  padding: 0 0 0 0;
   position: relative;
   display: none;
   margin-bottom: 10px;
+  border: 2px solid #EFEBE8;
 }
 
 .entity-page .preview-item {
@@ -152,11 +153,19 @@
 }
 
 .entity-page .carousel a.previous:hover {
-  background-position: 0 -50px;
+  background-position: 0 0;
 }
 
 .entity-page .carousel a.next:hover {
-  background-position: 0 -200px;
+  background-position: 0 -150px;
+}
+
+.entity-page .carousel a.previous {
+  background-position: 0 -100px;
+}
+
+.entity-page .carousel a.next {
+  background-position: 0 -250px;
 }
 
 .entity-page .previous.disabled, .entity-page .next.disabled {
@@ -169,6 +178,18 @@
 
 .entity-page .next.disabled, .entity-page .next.disabled:hover {
   background-position: 0 -250px !important;
+}
+
+.entity-page .entity-controls {
+  position: absolute;
+  height: 180px;
+  top: 0;
+  background: #efebe8;
+  width: 35px;
+}
+
+.entity-page .entity-controls.next {
+  right: 0;
 }
 
 .entity-page .carousel .clearfix {
@@ -275,41 +296,26 @@
 /* carousel controls responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
-    left: 0;
+    left: -3px;
   }
   .entity-page .carousel a.next {
-    right: -8px;
+    right: -11px;
   }
   .entity-page .preview-item {
     width: 160px;
   }
 }
 
-@media (min-width: 980px) and (max-width: 1199px) {
+@media (max-width: 1199px) {
   .entity-page .carousel a.previous {
-    left: -6px;
+    left: -3px;
   }
   .entity-page .carousel a.next {
-    right: -10px;
-  }
-}
-
-@media (max-width: 979px) {
-  .entity-page .carousel a.previous {
-    left: -8px;
-  }
-  .entity-page .carousel a.next {
-    right: -12px;
+    right: -11px;
   }
 }
 
 @media (max-width: 767px) {
-  .entity-page .carousel a.previous {
-    left: -4px;
-  }
-  .entity-page .carousel a.next {
-    right: -8px;
-  }
 
   .entity-page .header-objects {
     float: left;
