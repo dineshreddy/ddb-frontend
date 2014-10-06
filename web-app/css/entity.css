@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 .entity-page .link-block {
   display: inline-block;
   margin-right: 10px;
 }
- 
+
 .entity-page .objects h3 {
   display: inline-block;
 }
@@ -33,7 +33,7 @@
   vertical-align: middle;
   display: inline-block;  
 }
- 
+
 .entity-page .fields{
   font-size: 1em;
 }
@@ -191,6 +191,7 @@
 .entity-page .entity-controls.next {
   right: 0;
 }
+
 .entity-page .carousel .clearfix {
   float: none;
   clear: both;
