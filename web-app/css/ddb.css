@@ -79,6 +79,11 @@ select {
   background-color: #0088cc;
 }
 
+.nav-list ul > li{
+  line-height: 35px;
+  padding-left: 18px;
+}
+
 .tooltip {
   position: static;
   z-index: auto;
@@ -724,6 +729,17 @@ header .language-widget form,.header .language-widget form {
 
 .navbar .brand {
   padding: 0 10px 0 10px;
+}
+
+.nav-collapse .nav > .highlight > a:hover, .nav-collapse .dropdown-menu a:hover {
+  color: #a5003b;
+}
+
+.nav-collapse .nav > hr {
+  border: 0;
+  height: 1px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .brand img {
