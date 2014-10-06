@@ -456,6 +456,7 @@ $(document).ready(function() {
       _getPopupContentHtml : function(dataObjectList) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
+          
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
@@ -471,8 +472,13 @@ $(document).ready(function() {
         for(var i=0; i<institutionHierarchy.length; i++){
           var institutionItem = institutionHierarchy[i];
           var institutionChildren = institutionItem.childInstitutions;
-
-          html += "      <li>";
+          
+          var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
+          if (!isInCluster) {
+            html += "      <li class='outside-cluster'>";
+          } else {
+            html += "      <li class='inside-cluster'>";
+          }
           html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
           html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
@@ -482,15 +488,14 @@ $(document).ready(function() {
             html += "      <ul>";
             for(var j=0; j<institutionChildren.length; j++){
               var childInstitution = institutionChildren[j];
-              html += "      <li>";
+              isInCluster = dataObjectList.indexOf(childInstitution.id) != -1;
+              if (!isInCluster) {
+                html += "      <li class='outside-cluster'>";
+              } else {
+                html += "      <li class='inside-cluster'>";
+              }
               html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + childInstitution.id + ">";
-              if(childInstitution.highlight){
-                html += "        <b>";
-              }
               html += "            "+childInstitution.name + " (" + messages.ddbnext[childInstitution.sector]() + ")";
-              if(childInstitution.highlight){
-                html += "        </b>";
-              }
               html += "        </a>";
               html += "      </li>";
             }
