@@ -24,7 +24,7 @@ limitations under the License.
 <body>
   <div class="row advanced-search">
       <div class="span12">
-          <div class="row heading bb">
+          <div class="row heading">
               <div class="span12">
                   <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></h1></div>
                   <ddbcommon:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoId="search-advanced" infoDir="help" />
@@ -35,6 +35,12 @@ limitations under the License.
                   <g:form method="post" id="advanced-search-form" url="[controller:'advancedsearch', action:'executeSearch']" >
                       <div class="row">
                           <div class="span12">
+                              <g:set var="group" value="${0}"/>
+                              <g:while test="${group < searchGroupCount}">
+                                <fieldset>
+                                    <g:render template="/search/advancedsearchgroup" /><%group++%>
+                                </fieldset>
+                              </g:while>
                               <fieldset>
                                 <div class="row operator global-operator">
                                   <div class="span12">
@@ -46,12 +52,6 @@ limitations under the License.
                                   </div>
                                 </div>
                               </fieldset>
-                              <g:set var="group" value="${0}"/>
-                              <g:while test="${group < searchGroupCount}">
-                                <fieldset>
-                                    <g:render template="/search/advancedsearchgroup" /><%group++%>
-                                </fieldset>
-                              </g:while>
                               <fieldset>
                                 <div class="row bb">
                                   <div class="span12 button-group">
@@ -64,7 +64,7 @@ limitations under the License.
                               <fieldset>
                                 <div class="row">
                                   <div class="span6 button-group fr">
-                                    <button class="reset" type="reset"><span><g:message encodeAs="html" code="ddbnext.Reset"/></span></button>
+                                    <button class="reset grey" type="reset"><span><g:message encodeAs="html" code="ddbnext.Reset"/></span></button>
                                     <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.Search"/></span></button>
                                   </div>
                                 </div>
