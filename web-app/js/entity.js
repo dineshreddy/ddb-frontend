@@ -29,7 +29,7 @@ $(document).ready(
 
         var carouselWidth = 800;
 
-        var carouselHeight = 170;
+        var carouselHeight = 180;
 
         var windowLarge = 1185;
 
