@@ -1587,13 +1587,21 @@ select {
 .errors-container {
   padding: 10px;
   margin: 5px 0 15px 0;
-  border: red 1px solid;
+  border: none;
+  background-color: #FDE6EB;
+  font-size: 16px;
+  color: #A5003B;
+  font-weight: bold;
 }
 .errors-container ul {
   margin:0;
 }
 .errors-container i {
   margin: 3px 5px 0 0;
+}
+
+input[type="text"].error {
+  border-color: #A5003B;
 }
 /* errors - end */
 
