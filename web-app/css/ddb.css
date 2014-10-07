@@ -1569,6 +1569,18 @@ select {
 .savesearch{
   width: 400px;
   height: 180px;
+  padding: 1em;
+  border-radius: 0px;
+  padding-bottom: 0px;
+}
+
+.savesearch-edit-input{
+  padding: 1em;
+  height: 1.75em;
+}
+
+.savesearch-edit-title{
+  padding-bottom: 0.25em;
 }
 
 .modal {
@@ -1586,6 +1598,15 @@ select {
   padding: 1em;
 }
 
+.modal-body-savesearch {
+  font-size: 16px;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  padding: 1em;
+  padding-left: 0em;
+  padding-right: 0em;
+}
+
 .modal-header h3 {
   font-size: 16px;
   text-transform: uppercase;
@@ -1593,8 +1614,12 @@ select {
   font-family: Calibri, Arial, sans-serif;
 }
 
+.modal-header-savesearch {
+    padding: 0px 9px 9px 0px;
+}
+
 .modal-footer-savesearch {
-  padding: 14px 15px 15px;
+  padding: 14px 0px 15px 0px;
   margin-bottom: 0;
   text-align: right;
   border-top: 1px solid #ddd;
