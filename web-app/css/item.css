@@ -333,6 +333,7 @@
 .similar-objects .information .hovercard-info-item {
   right: none;
   left: 160px;
+  font-size: 0.933em;
 }
 
 @media (max-width: 979px) {
