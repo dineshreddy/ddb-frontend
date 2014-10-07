@@ -18,6 +18,10 @@
   padding-right: 10px;
 }
 
+.registration-container {
+  width: 75%;
+}
+
 #registration-form label.error {
   vertical-align: middle;
 }
@@ -45,7 +49,6 @@
 #enduser span {
   margin-top: -10px;
   display: inline-block;
-  width: 75%;
 }
 
 #enduser a {
