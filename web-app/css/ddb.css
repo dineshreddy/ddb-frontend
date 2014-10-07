@@ -1589,7 +1589,7 @@ select {
   margin: 5px 0 15px 0;
   border: none;
   background-color: #FDE6EB;
-  font-size: 16px;
+  font-size: 1em;
   color: #A5003B;
   font-weight: bold;
 }
