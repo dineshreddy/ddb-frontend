@@ -53,7 +53,7 @@ limitations under the License.
               <g:if test="${flash.error}">
                 <div class="errors-container">
                   <ul class="unstyled">
-                    <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
+                    <li><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
                   </ul>
                 </div>
               </g:if>

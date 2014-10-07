@@ -103,3 +103,8 @@
     float: none;
   }
 }
+
+.control-group label.label-error {
+  font-size: 1em;
+  color: #A5003B;;
+}
