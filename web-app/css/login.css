@@ -100,3 +100,7 @@
 .login .heading a {
   text-decoration: underline;
 }
+
+.login .heading h1 {
+  font-size: 1.867em;
+}
