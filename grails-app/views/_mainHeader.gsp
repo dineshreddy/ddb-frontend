@@ -85,13 +85,15 @@ limitations under the License.
                 <g:link controller="content" params="[dir: 'faq']"><g:message encodeAs="html" code="ddbnext.Faq" /></g:link>
               </li>
             </ul><!-- /end of .nav -->
+            <hr/>
           </li>
-          <hr />
+          
           <li class="highlight <ddb:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']">${message(code: 'ddbnext.Help').toUpperCase()}</g:link>
+            <hr/>
           </li><!-- /end of help -->
-          <hr />
+          
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
             <li class="highlight">
               <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
@@ -106,8 +108,9 @@ limitations under the License.
                   <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                 </li>
               </ul>
+              <hr/>
             </li><!-- /end of exhibitions -->
-            <hr />
+            
           </g:if>
             <ddbcommon:isLoggedIn>
               <li>
