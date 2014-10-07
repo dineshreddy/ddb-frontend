@@ -134,6 +134,7 @@ $(document).ready(
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
+              circular: false,
               width : carouselWidth,
               height : carouselHeight,
               align : false,
