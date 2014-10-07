@@ -9,7 +9,9 @@
   </li>
 </g:each>
 <g:if test="${showAllList}" >
-    <g:link elementId="alle-listen" data-userId="${selectedUserId}" data-selectedFolderId="${selectedFolder.folderId}" class="folder-siblings">
-      <g:message encodeAs="html" code="ddbnext.AlleListen" />
+    <br />
+    <br />
+    <g:link elementId="alle-listen" data-userId="${selectedUserId}" data-selectedFolderId="${selectedFolder.folderId}" class="underlined">
+      <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
     </g:link>
 </g:if>
