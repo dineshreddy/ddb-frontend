@@ -756,6 +756,7 @@ header .language-widget form,.header .language-widget form {
     right: 0;
     width : 40px;
     background: url(../images/icons/ddbIkonographie.png) no-repeat -236px -315px;
+    margin-right: 10px;
 }
 
 .btn-nav:hover {
