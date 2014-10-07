@@ -1575,7 +1575,6 @@ select {
   -moz-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
   -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
    border:none !important;
-   padding: 1em;
 }
 
 .modal-body {
