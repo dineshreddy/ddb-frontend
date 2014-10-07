@@ -738,7 +738,7 @@ header .language-widget form,.header .language-widget form {
   color: #a5003b;
 }
 
-.nav-collapse .nav > hr {
+.nav-collapse .nav > .highlight > hr {
   border: 0;
   height: 1px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
@@ -756,6 +756,7 @@ header .language-widget form,.header .language-widget form {
     right: 0;
     width : 40px;
     background: url(../images/icons/ddbIkonographie.png) no-repeat -236px -315px;
+    margin-right: 10px;
 }
 
 .btn-nav:hover {
@@ -1575,7 +1576,6 @@ select {
   -moz-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
   -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
    border:none !important;
-   padding: 1em;
 }
 
 .modal-body {
@@ -1654,13 +1654,21 @@ select {
 .errors-container {
   padding: 10px;
   margin: 5px 0 15px 0;
-  border: red 1px solid;
+  border: none;
+  background-color: #FDE6EB;
+  font-size: 1em;
+  color: #A5003B;
+  font-weight: bold;
 }
 .errors-container ul {
   margin:0;
 }
 .errors-container i {
   margin: 3px 5px 0 0;
+}
+
+input[type="text"].error {
+  border-color: #A5003B;
 }
 /* errors - end */
 

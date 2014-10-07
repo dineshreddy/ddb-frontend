@@ -132,7 +132,6 @@ de.ddb.next.search.showError = function(errorHtml) {
       '.search-results-list').find('.errors-container') : $(document.createElement('div'));
   var errorIcon = $(document.createElement('i'));
   errorContainer.addClass('errors-container');
-  errorIcon.addClass('icon-exclamation-sign');
   errorContainer.html(errorHtml);
   errorContainer.prepend(errorIcon);
   $('.search-results-list').prepend(errorContainer);

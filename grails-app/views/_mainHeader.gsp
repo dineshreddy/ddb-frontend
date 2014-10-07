@@ -50,7 +50,7 @@ limitations under the License.
         <r:img dir="images" file="mobileLogo.png"
           alt="${message(code: 'ddbnext.Logo_Description')}" />
       </g:link>
-      <div class="nav-collapse collapse ">
+      <div class="nav-collapse collapse">
         <ul class="nav nav-list">
           <li><g:form class="navbar-search pull-left"
               method="get" role="search" id="form-search-header-mobile"
@@ -63,7 +63,7 @@ limitations under the License.
               </button>
             </g:form></li>
 
-          <li class="highlight" <ddb:isMappingActive context="${params}"
+          <li class="highlight <ddb:isMappingActive context="${params}"
               testif="${[[controller: "content", dir: "about"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'about']">
               ${message(code: 'ddbnext.AboutUs').toUpperCase()}
@@ -85,13 +85,15 @@ limitations under the License.
                 <g:link controller="content" params="[dir: 'faq']"><g:message encodeAs="html" code="ddbnext.Faq" /></g:link>
               </li>
             </ul><!-- /end of .nav -->
+            <hr/>
           </li>
-          <hr />
-          <li class="highlight" "<ddb:isMappingActive context="${params}"
+          
+          <li class="highlight <ddb:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'help']">${message(code: 'ddbnext.Help').toUpperCase()}</g:link>
+            <hr/>
           </li><!-- /end of help -->
-          <hr />
+          
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
             <li class="highlight">
               <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
@@ -106,8 +108,9 @@ limitations under the License.
                   <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                 </li>
               </ul>
+              <hr/>
             </li><!-- /end of exhibitions -->
-            <hr />
+            
           </g:if>
             <ddbcommon:isLoggedIn>
               <li>

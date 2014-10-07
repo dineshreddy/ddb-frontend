@@ -75,7 +75,15 @@ class EntityController {
             offset = 0
         }
 
-
+        try {
+            entityService.getEntityDetails(entityId);
+        } catch (Exception e) {
+            def errors = []
+            errors.add("ddbnext.Error_Entity_No_Elements")
+            render(view: "/message/message", model: [errors: errors])
+            return
+        }
+        
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
         if(!apiResponse.isOk()){
             if(apiResponse.getStatus() == HttpStatus.HTTP_404){

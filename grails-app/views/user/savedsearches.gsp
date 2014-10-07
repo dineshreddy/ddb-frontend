@@ -62,14 +62,14 @@ limitations under the License.
         <g:elseif test="${flash.email_error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span></li>
+              <li><span><g:message code="${flash.email_error}" /></span></li>
             </ul>
           </div>
         </g:elseif>
         <g:if test="${flash.error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+              <li><span><g:message code="${flash.error}" /></span></li>
             </ul>
           </div>
         </g:if>
