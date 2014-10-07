@@ -140,18 +140,6 @@ class FavoritesviewController {
                 sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder)
             }
 
-            def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." +
-                    selectedFolder.creationDate.cdate.month.toString() + "." +
-                    selectedFolder.creationDate.cdate.year.toString() + " um " +
-                    selectedFolder.creationDate.cdate.hours.toString() + ":" +
-                    selectedFolder.creationDate.cdate.minutes.toString()
-
-            def updatedDateString = selectedFolder.updatedDate.cdate.dayOfMonth.toString() + "." +
-                    selectedFolder.updatedDate.cdate.month.toString() + "." +
-                    selectedFolder.updatedDate.cdate.year.toString() + " um " +
-                    selectedFolder.updatedDate.cdate.hours.toString() + ":" +
-                    selectedFolder.updatedDate.cdate.minutes.toString()
-
             render(view: ACTION, model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -181,8 +169,8 @@ class FavoritesviewController {
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl(),
-                createdDateString:createdDateString,
-                updatedDateString: updatedDateString
+                createdDateString: favoritesService.formatDate(selectedFolder.creationDate),
+                updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate)
             ])
         }
 
