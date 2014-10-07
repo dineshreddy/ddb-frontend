@@ -738,7 +738,7 @@ header .language-widget form,.header .language-widget form {
   color: #a5003b;
 }
 
-.nav-collapse .nav > hr {
+.nav-collapse .nav > .highlight > hr {
   border: 0;
   height: 1px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
