@@ -41,28 +41,28 @@ limitations under the License.
                 <g:form controller="user" action="doLogin">
                   <g:hiddenField name="referrer" value="${referrer}" />
                   <g:if test="${loginStatus == LoginStatus.FAILURE}">
-                    <div class="row login-error">
+                    <div class="row login-error errors-container">
                       <div class="span9"> 
                         <g:message encodeAs="html" code="ddbcommon.Error_Email_Password_Combination" />
                       </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_DENIED}">
-                    <div class="row login-error">
+                    <div class="row login-error errors-container">
                       <div class="span9">
                         <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Denied" />
                       </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.AUTH_PROVIDER_UNKNOWN}">
-                    <div class="row login-error">
+                    <div class="row login-error errors-container">
                       <div class="span9">
                         <g:message encodeAs="html" code="ddbcommon.Error_Authentication_Provider_Unknown" />
                       </div>
                     </div>
                   </g:if>
                   <g:if test="${loginStatus == LoginStatus.NO_COOKIES}">
-                    <div class="row login-error">
+                    <div class="row login-error errors-container">
                       <div class="span9">
                         <g:message encodeAs="html" code="ddbcommon.Error_Authentication_No_Cookies" />
                       </div>

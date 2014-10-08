@@ -63,6 +63,11 @@ $(document).ready(function() {
         required : $("#error-messages").children('li').eq(0).children('a').text()
       }
 
+    },
+    errorPlacement: function(error, element) {
+      console.log($(element).parent().prev())
+      $(element).parent().prev().addClass("label-error");
+      error.insertAfter(element);
     }
 
   });

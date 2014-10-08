@@ -43,7 +43,7 @@ $(document).ready(function() {
     errorPlacement: function(error, element) {
       $(element).parent().prev().children().addClass("label-error");
       error.insertAfter(element);
-    },
+    }
 
   });
 

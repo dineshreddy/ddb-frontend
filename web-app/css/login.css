@@ -64,12 +64,12 @@
 }
 
 .login .login-error {
-  color: #A5003B;
   margin-bottom: 20px;
 }
 
 .login .login-error div {
   width: 90%;
+  margin: 0;
 }
 
 .login #login-username {
