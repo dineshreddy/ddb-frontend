@@ -579,7 +579,7 @@ function hideReportFavoritesOverlay() {
         $(".reportfav .report-overlay-container").fadeOut(200);
       }, 200);
 }
-$('#alle-listen').click(function(){
+$('#alle-listen').click(function(event){
   event.preventDefault();
   var url = jsContextPath + "/user/" +  $(this).attr("data-userId") + "/favorites/allpublicfolders/"+ $(this).attr("data-selectedFolderId");
   $.get(url, function(data) {
