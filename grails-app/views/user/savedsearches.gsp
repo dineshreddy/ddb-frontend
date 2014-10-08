@@ -209,7 +209,7 @@ limitations under the License.
   </div>
 
   <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
-    <div class="modal-header modal-header-savesearch">
+    <div class="modal-header" id="modal-header-savesearch">
       <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
         <g:message code="ddbnext.Edit_Savedsearch" />
