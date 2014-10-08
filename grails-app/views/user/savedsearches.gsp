@@ -169,17 +169,17 @@ limitations under the License.
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="sendSavedSearchesLabel">
-          <g:message code="ddbnext.Send_Savedsearches" />
+          <g:message code="ddbnext.Send_Savedsearch" />
         </h3>
       </div>
-      <form method="POST">
+      <form method="POST" class="searchsend-form">
         <div class="modal-body">
           <fieldset>
             <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required"> <br /> <small class="muted"><g:message
                 code="ddbnext.send_favorites_more_recipients" /></small> <br />
           </fieldset>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer-savesearch">
           <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
             <g:message code="ddbcommon.Close" />
           </button>
@@ -202,7 +202,7 @@ limitations under the License.
       <g:message code="ddbnext.Delete_Savedsearches_Dialog" />
       <span id="totalNrSelectedObjects"></span>
     </div>
-    <div class="modal-footer">
+    <div class="modal-footer-savesearch">
       <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
       <button class="submit" id="id-confirm"><g:message code="ddbcommon.Yes" /></button>
     </div>
