@@ -17,21 +17,25 @@ limitations under the License.
 <div class="row">
   <div class="object-controls span12">
     <!-- buttons -->
-    <div class="span4 fr">
-      <ddbcommon:isLoggedIn>
-        <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
-          <span data-itemid="${entityId}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" id="idFavorite">
-            <g:message encodeAs="html" code="ddbnext.favorit" />
-          </span>
-        </span>
-      </ddbcommon:isLoggedIn>
+    <div class="fr">
+      <ddb:getSocialmediaBody />
+    </div>
+    <div class="fr">
       <span class="link-block">
         <a class="page-link page-link-popup-anchor" href="${entityUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
           <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
         </a>
       </span>
-      <ddb:getSocialmediaBody />
     </div>
+    <ddbcommon:isLoggedIn>
+      <div class="fr">
+        <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
+          <span data-itemid="${entityId}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" id="idFavorite">
+            <g:message encodeAs="html" code="ddbnext.favorit" />
+          </span>
+        </span>
+      </div>
+    </ddbcommon:isLoggedIn>
   </div>
 
   <g:render template="../common/addToFavorites"/>
