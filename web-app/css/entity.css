@@ -251,7 +251,7 @@
 }
 
 .entity-page #idFavorite {
-  margin-right: 10px;
+  margin-right: 30px;
 }
 
 .entity-page .thumb hr {
@@ -259,9 +259,8 @@
 }
 
 .entity-page .favorite-actions.favorite-add {
-  background-position: -6px -68px;
+  background-position: -6px -67px;
   cursor: pointer;
-  font-size: 17px;
 }
 
 .entity-page .favorite-actions.favorite-add:hover {
