@@ -1577,6 +1577,9 @@ select {
 .searchsend-form {
   margin: 0 0 0px;
 }
+#favorite-confirmation{
+	padding: 0.25em;
+}
 
 .savesearch-edit-input{
   padding: 1em;
@@ -1593,7 +1596,7 @@ select {
   -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
    border:none !important;
    border-radius: 0px;
-   padding: 1em;
+   padding: 0.75em;
 }
 
 .modal-body {
@@ -1619,8 +1622,11 @@ select {
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
 }
+/* .modal-header { */
+/*   padding: 0px 0px 0px 15px */
+/* } */
 
-.modal-header-savesearch {
+#modal-header-savesearch {
     padding: 0px 9px 9px 0px;
 }
 

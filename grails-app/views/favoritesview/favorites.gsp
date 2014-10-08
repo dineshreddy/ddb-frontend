@@ -103,7 +103,7 @@ limitations under the License.
               <br />
             </fieldset>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer-savesearch">
             <button class="btn-padding" data-dismiss="modal" aria-hidden="true"><g:message encodeAs="html" code="ddbcommon.Close" /></button>
             <button class="btn-padding" type="submit" id="btnSubmit"><g:message encodeAs="html" code="ddbnext.send_now" /></button>
           </div>
@@ -128,7 +128,7 @@ limitations under the License.
         </g:else>
         <span class="totalNrSelectedObjects"></span>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-savesearch">
         <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.No" /></button>
         <button class="submit" id="id-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button>
       </div>
@@ -154,7 +154,7 @@ limitations under the License.
           </g:each>
         </select>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-savesearch">
         <button class="submit" id="copy-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -180,7 +180,7 @@ limitations under the License.
           <textarea rows="10" cols="20" class="folder-create-description" id="folder-create-description"></textarea>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-savesearch">
         <button class="submit" id="create-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
@@ -205,7 +205,7 @@ limitations under the License.
           </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-savesearch">
         <button class="submit grey" data-dismiss="modal" ><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
         <button class="submit" id="delete-confirm"><g:message encodeAs="html" code="ddbcommon.Delete" /> </button> 
       </div>
@@ -259,7 +259,7 @@ limitations under the License.
           </div>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer-savesearch">
         <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
