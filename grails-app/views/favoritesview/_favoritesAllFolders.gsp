@@ -10,7 +10,6 @@
 </g:each>
 <g:if test="${showAllList}" >
     <br />
-    <br />
     <g:link elementId="alle-listen" data-userId="${selectedUserId}" data-selectedFolderId="${selectedFolder.folderId}" class="underlined">
       <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
     </g:link>
