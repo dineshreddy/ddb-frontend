@@ -250,7 +250,7 @@ limitations under the License.
             <br />
           </fieldset>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer-savesearch">
           <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
             <g:message code="ddbcommon.Close" />
           </button>
