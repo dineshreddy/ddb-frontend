@@ -155,7 +155,7 @@ $(document)
               $("div.binary-rights span").text(rights);
               $("div.binary-rights").attr("title", rights);
 
-              $(a).find(".thumbnail").addClass("active");
+              addRedBorder($(a).find(".thumbnail"));
             }
             ;
             var jwPlayerSetup = function(content, poster) {
@@ -229,8 +229,11 @@ $(document)
               }
             }
             ;
+            var addRedBorder = function(el) {
+              $(el).addClass("active");
+            }
             var removeRedBorder = function() {
-              $(".scroller").find("ul").children('li').children('a').find(".thumbnail").removeClass("active");
+              $(".scroller ul>li>a").find(".thumbnail").removeClass("active");
             };
             $(".btn-prev").click(function() {
               if (!$(this).hasClass("disabled")) {
@@ -341,7 +344,7 @@ $(document)
 
               $.hideErrors();
               removeRedBorder();
-              $(this).find(".thumbnail").addClass("active");
+              addRedBorder($(this).find(".thumbnail"));
 
               if (type == "image") {
                 if ($("#jwplayer-container")) {
