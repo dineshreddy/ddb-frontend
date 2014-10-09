@@ -261,6 +261,7 @@ $(document)
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-images"));
+                  removeRedBorder();
                   updatePreview(tab);
                   $("#binary-viewer").addClass("img-binary");
                 });
@@ -274,6 +275,7 @@ $(document)
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-videos"));
+                  removeRedBorder();
                   updatePreview(tab);
                   $("#binary-viewer").removeClass("img-binary");
                 });
@@ -287,6 +289,7 @@ $(document)
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-audios"));
+                  removeRedBorder();
                   updatePreview(tab);
                   $("#binary-viewer").removeClass( ".img-binary" );
                 });
