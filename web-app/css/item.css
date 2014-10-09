@@ -459,26 +459,18 @@
 .similar-objects-header {
   cursor: pointer;
   color: #3E3A37;
-  font-size: 17px;
+  font-size: 1.125em;
   font-weight: bold;
   line-height: 30px;
-  background: url("../images/icons/arrows.png") no-repeat scroll 100% -48px rgba(0, 0, 0, 0);
+  background: url("../images/icons/arrows.png") no-repeat scroll 100% -45px rgba(0, 0, 0, 0);
   display: inline-block;
   padding: 0 20px 0 0;
   z-index: 10;
 }
 
 .similar-objects-header.active {
-  cursor: pointer;
-  color: #3E3A37;
-  font-size: 17px;
-  font-weight: bold;
-  line-height: 30px;
   background: url("../images/icons/arrows.png") no-repeat scroll 100% -96px rgba(0, 0, 0, 0);
-  display: inline-block;
-  padding: 0 20px 0 0;
-  z-index: 10;
-} 
+}
 
 .similar-objects .information {
   position: relative !important;
