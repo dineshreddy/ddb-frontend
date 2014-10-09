@@ -154,6 +154,8 @@ $(document)
 
               $("div.binary-rights span").text(rights);
               $("div.binary-rights").attr("title", rights);
+
+              $(a).find(".thumbnail").addClass("active");
             }
             ;
             var jwPlayerSetup = function(content, poster) {
@@ -227,6 +229,9 @@ $(document)
               }
             }
             ;
+            var removeRedBorder = function() {
+              $(".scroller").find("ul").children('li').children('a').find(".thumbnail").removeClass("active");
+            };
             $(".btn-prev").click(function() {
               if (!$(this).hasClass("disabled")) {
                 $(this).addClass("disabled");
@@ -333,7 +338,11 @@ $(document)
               var title = $(this).attr("title");
               var author = $(this).attr("data-author");
               var rights = $(this).attr("data-rights");
+
               $.hideErrors();
+              removeRedBorder();
+              $(this).find(".thumbnail").addClass("active");
+
               if (type == "image") {
                 if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();
