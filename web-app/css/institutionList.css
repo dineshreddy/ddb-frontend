@@ -31,6 +31,15 @@
     display:none;
     visibility: hidden;
   }
+  
+  .container.list h1 {
+    margin: 10px 0 0 0;
+  }
+  
+  .container.list .institutionlist {
+    margin: 0 0 0 0;
+  }
+  
 }
 
 .view-type-switch #view-institution-list {
