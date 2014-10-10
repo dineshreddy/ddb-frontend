@@ -266,8 +266,9 @@
 .entity-page .favorite-actions.favorite-add:hover {
   background-position: -6px -97px;
 }
+
 .entity-page .favorite-actions.favorite-selected {
-  background-position: -6px -9px;
+  background-position: -6px -7px;
 }
 
 .entity-page .favorite-actions.favorite-selected:hover {
