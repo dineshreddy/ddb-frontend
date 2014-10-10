@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.Type"%>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <ul class="results-list unstyled entity-list">
 <g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
@@ -36,6 +37,16 @@ limitations under the License.
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                 ${profession}<g:if test="${i != last}">, </g:if>
               </g:each>
+              
+              <br>
+              <g:if test="${RequestContextUtils.getLocale(request).toString() == 'en'}">
+                <g:message encodeAs="html" code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth_en}, ${entityItem.placeOfBirth[0]} · 
+                <g:message encodeAs="html" code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath_en}, ${entityItem.placeOfDeath[0]}
+              </g:if>
+              <g:elseif test="${RequestContextUtils.getLocale(request).toString() == 'de'}">
+                <g:message encodeAs="html" code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth_de}, ${entityItem.placeOfBirth[0]} · 
+                <g:message encodeAs="html" code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath_de}, ${entityItem.placeOfDeath[0]}
+              </g:elseif>
             </div>
           </div>
           <div class="extra">
