@@ -1576,16 +1576,16 @@ select {
 .searchsend-form {
   margin: 0 0 0px;
 }
-#favorite-confirmation{
-	padding: 0.25em;
+#favorite-confirmation {
+  margin-top: -140.5px !important;
 }
 
-.savesearch-edit-input{
+.savesearch-edit-input {
   padding: 1em;
   height: 1.75em;
 }
 
-.savesearch-edit-title{
+.savesearch-edit-title {
   padding-bottom: 0.25em;
 }
 
@@ -1595,24 +1595,30 @@ select {
   -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
    border:none !important;
    border-radius: 0px;
-   padding: 0.75em;
+   padding: 1em;
+}
+
+.modal-header {
+  padding: 0 0 0.7em 0;
+  border-bottom: 1px solid #eee;
 }
 
 .modal-body {
-  padding: 1em;
-  font-size: 16px;
+  font-size: 1em;
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
-  padding: 1em;
+  position: relative;
+  max-height: 400px;
+  padding: 1em 0 0 0;
+  text-align: left;
+  overflow-y: auto;
 }
 
 .modal-body-savesearch {
-  font-size: 16px;
+  font-size: 1em;
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
-  padding: 1em;
-  padding-left: 0em;
-  padding-right: 0em;
+  padding: 1em 0;
 }
 
 .modal-header h3 {
@@ -1621,16 +1627,18 @@ select {
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
 }
-/* .modal-header { */
-/*   padding: 0px 0px 0px 15px */
-/* } */
+
+#addToSavedSearchesModal,
+#editSavedSearchModal {
+  height:161px;
+}
 
 #modal-header-savesearch {
-    padding: 0px 9px 9px 0px;
+  padding: 0 0.7em 0.7em 0;
 }
 
 .modal-footer-savesearch {
-  padding: 14px 0px 0px 0px;
+  padding-top: 1em;
   margin-bottom: 0;
   text-align: right;
   border-top: 1px solid #ddd;
@@ -1641,6 +1649,10 @@ select {
   -webkit-box-shadow: inset 0 1px 0 #ffffff;
      -moz-box-shadow: inset 0 1px 0 #ffffff;
           box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.modal-footer-savesearch button {
+  margin: 0;
 }
 
 .modal-footer {
@@ -1655,6 +1667,12 @@ select {
   -webkit-box-shadow: inset 0 1px 0 #ffffff;
      -moz-box-shadow: inset 0 1px 0 #ffffff;
           box-shadow: inset 0 1px 0 #ffffff;
+}
+
+#favoritesDeleteConfirmDialog .modal-body,
+#deleteSavedSearchesModal .modal-body,
+#sendSavedSearchesModal .modal-body {
+  padding-bottom: 1em;
 }
 
 /* responsive genaral rules */
