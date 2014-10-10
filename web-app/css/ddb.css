@@ -1565,6 +1565,10 @@ select {
   background-color: #6F6B68;
 }
 
+#addToSavedSearchesModal{
+	padding: 22px;
+	padding-top: 5px;
+}
 .savesearch{
   width: 400px;
   height: 155px;
