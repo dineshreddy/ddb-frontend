@@ -30,7 +30,7 @@ class InstitutionController {
     def sessionService
 
     def show() {
-        def allInstitution = institutionService.findAll()
+        def allInstitution = institutionService.findAllByAlphabet()
         def institutionByFirstLetter = allInstitution.data
 
         def all = []
@@ -52,7 +52,7 @@ class InstitutionController {
     }
 
     def getJson() {
-        render institutionService.findAll() as JSON
+        render institutionService.findAllByAlphabet() as JSON
     }
 
     def showInstitutionsTreeByItemId() {

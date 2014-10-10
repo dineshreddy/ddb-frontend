@@ -338,3 +338,29 @@ grails {
 // Often needed for testing the staticpages on localhost,
 // because these use absolute linking to the server root "/abc"
 //grails.app.context = "/"
+
+grails {
+    cache {
+       enabled = true
+       clearAtStartup = true
+       ehcache {
+          ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
+          reloadable = true
+       }
+    }
+ }
+
+grails.cache.config = {
+    cache {
+        name 'institutionCache'
+        enable: true
+    }
+
+    defaults {
+        eternal false
+        overflowToDisk false
+        timeToLiveSeconds 600
+        timeToIdleSeconds 0
+        maxElementsInMemory 100000
+    }
+}

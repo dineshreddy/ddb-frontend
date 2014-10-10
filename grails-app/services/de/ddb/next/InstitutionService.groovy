@@ -15,9 +15,12 @@
  */
 package de.ddb.next
 
+import grails.plugin.cache.Cacheable;
+
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse;
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -39,42 +42,77 @@ class InstitutionService {
 
     def servletContext
 
+    /**
+     * Return all institutions from the backend
+     *
+     * The value of this method is cached!
+     *
+     * @return all institutions from the backend
+     */
+    @Cacheable(value="institutionCache", key="'findAll'")
     def findAll() {
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
+        if(!responseWrapper.isOk()){
+            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        return responseWrapper.getResponse()
+    }
+
+
+    /**
+     * Returns all archives that have items.
+     *
+     * The value of this method is cached!
+     *
+     * @return all archives that have items.
+     */
+    @Cacheable(value="institutionCache", key="'findAllArchiveInstitutionsWithItems'")
+    def findAllArchiveInstitutionsWithItems() {
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, ["hasItems": "true"])
+        if(!responseWrapper.isOk()){
+            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        return responseWrapper.getResponse()
+    }
+
+    /**
+     * Returns all archives ordered by alphabet.
+     *
+     * The value of this method is cached!
+     *
+     * @return all archives that have items.
+     */
+    def findAllByAlphabet() {
         def totalInstitution = 0
         def allInstitutions = [data: [:], total: totalInstitution]
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/institutions')
-        if (apiResponse.isOk()) {
-            def institutionList = apiResponse.getResponse()
-            def institutionByFirstChar = buildIndex()
 
-            institutionList.each { it ->
+        def institutionList = grailsApplication.mainContext.institutionService.findAll()
+        def institutionByFirstChar = buildIndex()
 
-                totalInstitution++
+        institutionList.each { it ->
+            totalInstitution++
 
-                def firstChar = it?.name[0]?.toUpperCase()
-                it.firstChar = firstChar
+            def firstChar = it?.name[0]?.toUpperCase()
+            it.firstChar = firstChar
 
-                /*
-                 * mark an institution as the first one that start with the
-                 * character. We will use it for assigning the id in the HTML.
-                 * See: views/institutions/_listItem.gsp
-                 * */
-                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-                    it.isFirst = true
-                }
-
-                it.sectorLabelKey = 'ddbnext.' + it.sector
-                buildChildren(it, totalInstitution)
-                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
+            /*
+             * mark an institution as the first one that start with the
+             * character. We will use it for assigning the id in the HTML.
+             * See: views/institutions/_listItem.gsp
+             * */
+            if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
+                it.isFirst = true
             }
 
-            allInstitutions.data = institutionByFirstChar
-            allInstitutions.total = getTotal(institutionList)
+            it.sectorLabelKey = 'ddbnext.' + it.sector
+            buildChildren(it, totalInstitution)
+            institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
         }
-        else {
-            log.error "findAll: Json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
+
+        allInstitutions.data = institutionByFirstChar
+        allInstitutions.total = getTotal(institutionList)
 
         return allInstitutions
     }
@@ -212,7 +250,7 @@ class InstitutionService {
         }else{
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
-        
+
         def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
         return result
     }
