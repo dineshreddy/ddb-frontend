@@ -283,7 +283,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
         currObjInstance.removeCompareCookieParameter(index);
         currObjInstance.renderCompareObjects();
-        currObjInstance.setItemCompareButtonState
+        currObjInstance.setItemCompareButtonState();
       });
       
     });
