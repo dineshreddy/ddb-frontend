@@ -31,7 +31,7 @@ limitations under the License.
                 <strong><ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
-            <div class="subtitle">
+            <div class="subtitle hidden-phone">
               <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                 ${profession}<g:if test="${i != last}">, </g:if>
@@ -52,7 +52,7 @@ limitations under the License.
               </g:else>
             </g:link>
           </div>
-          <div class="item-options bl">
+          <div class="item-options bl hidden-phone">
             <ul class="item-options-ul">
               <ddbcommon:isLoggedIn>
                 <li>

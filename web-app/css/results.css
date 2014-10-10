@@ -1014,16 +1014,37 @@ input[type="checkbox"],input[type="radio"] {
     display: none;
   }
   
-  .search-results .results-list .entity .thumbnail img {
-    display: none;
-  }
-  
   .search-results .results-list .summary-main {
     min-height: 0;
   }
   
   .search-results .results-list .summary .compare.disabled {
     display: none;
+  }
+  
+
+  .search-results .entity-list .summary-main-wrapper-gnd{
+    display:inline-block;
+    margin-right: -75px;
+  }
+
+  .search-results .entity-list  .summary-main {
+    margin-right: 75px;
+  }
+  
+  .search-results .entity-list .thumbnail-wrapper {
+    float:right;
+    display:inline-block;
+    width: 75px;
+    vertical-align: center;
+  }
+
+  .search-results-list .summary .thumbnail {
+    margin-right: 0;
+  }
+
+  .search-results .entity-list .entity .thumbnail img {
+    margin-right: 15px;
   }
 }
 
