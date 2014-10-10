@@ -60,10 +60,10 @@
   letter-spacing: normal;
   display: inline-block;
   width: 116px;
-  margin-left: 10px;
+  margin-left: 8px;
 }
 .scroller li:first-child {
-  margin-left: 11px;
+  margin-left: 10px;
 }
 @media (max-width: 529px) {
   .scroller li {
