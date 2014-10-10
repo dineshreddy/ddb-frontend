@@ -58,6 +58,8 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
 
     this.extraControls = $('.extra-controls');
     this.goToPage = $('.go-to-page');
+    
+    this.pageInfoNav = $('.page-info-nav');
   },
 
   resetNavigationElements : function(JSONresponse) {
@@ -66,6 +68,13 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
 
     this.numberOfResults.html(JSONresponse.numberOfResults);
 
+    if (JSONresponse.numberOfResults === "0"){
+    	this.pageInfoNav.addClass("hidden");
+    }else{
+    	this.pageInfoNav.removeClass("hidden");
+    }
+    
+    
     if (JSONresponse.numberOfResults == "1") {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
     } else {
