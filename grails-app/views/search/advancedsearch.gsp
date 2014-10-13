@@ -25,10 +25,8 @@ limitations under the License.
   <div class="row advanced-search">
       <div class="span12">
           <div class="row heading">
-              <div class="span12">
-                  <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></h1></div>
-                  <ddbcommon:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoId="search-advanced" infoDir="help" />
-              </div>
+            <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></h1></div>
+            <ddbcommon:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoId="search-advanced" infoDir="help" />
           </div>
           <div class="row">
               <div class="span12">
@@ -43,18 +41,27 @@ limitations under the License.
                               </g:while>
                               <fieldset>
                                 <div class="row operator global-operator">
-                                  <div class="span12">
+                                  <div class="span12 button-group">
                                       <label for="operator" ><g:message encodeAs="html" code="ddbnext.AdvancedSearch_AllGroupsOperator_MatchLabel"/></label>
                                       <select id="operator" name="operator">
                                           <option value="OR"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGlobalOperator_AnyGroups"/></option>
                                           <option value="AND"><g:message encodeAs="html" code="ddbnext.AdvancedSearchGlobalOperator_AllGroups"/></option>
                                       </select>
+                                      <div class="fr add-group-link" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
+                                        <a href="#"></a>
+                                      </div>
+                                      <button type="button" class="add-group-button fr" style="display: none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
+                                        <g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>
+                                      </button>
                                   </div>
                                 </div>
                               </fieldset>
-                              <fieldset>
+                              <fieldset id="initialAddGroupButtonFieldSet">
                                 <div class="row bb">
                                   <div class="span12 button-group">
+                                      <div class="fr add-group-link" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
+                                        <a href="#"></a>
+                                      </div>
                                       <button type="button" class="add-group-button fr" style="display: none" title="<g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>">
                                         <g:message encodeAs="html" code="ddbnext.AdvancedSearch_AddGroupButton_Title"/>
                                       </button>
