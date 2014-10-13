@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.Type"%>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <ul class="results-list unstyled entity-list">
 <g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
@@ -36,6 +37,15 @@ limitations under the License.
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                 ${profession}<g:if test="${i != last}">, </g:if>
               </g:each>
+              <br>
+                <g:if test="${entityItem.dateOfBirth}">
+                  <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")} -
+                </g:if>
+                <g:if test="${entityItem.dateOfDeath}">
+                  <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+                </g:if>
             </div>
           </div>
           <div class="extra">
