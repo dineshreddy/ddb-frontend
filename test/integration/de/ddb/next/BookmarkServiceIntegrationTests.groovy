@@ -27,7 +27,7 @@ class BookmarkServiceIntegrationTests {
 
     /**
      * Is called before every test method.
-     * Creates a new userId for the test. 
+     * Creates a new userId for the test.
      */
     void setUp() {
         println "--------------------------------------------------------------------"
@@ -93,7 +93,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         return bookmarksService.createFolder(newFolder)
     }
 
@@ -155,7 +156,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 0,
-                0)
+                0,
+                null)
         def folderId = bookmarksService.createFolder(newFolder)
         assertNotNull folderId
 
@@ -219,7 +221,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${FolderConstants.MAIN_BOOKMARKS_FOLDER.value} folder(${folderId}) for a user(${userId})"
 
@@ -382,7 +385,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
 
         def folders = bookmarksService.findAllFolders(userId)
@@ -409,7 +413,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String itemId = UUID.randomUUID() as String
         String folderId = bookmarksService.createFolder(newFolder)
         def favoriteId = createBookmark(itemId, folderId)
@@ -457,7 +462,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
@@ -491,7 +497,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
