@@ -91,7 +91,6 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
         content.empty();
         var JSONresponse = jQuery.parseJSON(data.responseText);
 
-        var allTheCommas = new RegExp(',', 'g');//used for a replaceAll in JS 
         $.each(JSONresponse, function(key, value) {
           if (key !== 'last_update' && value != "" && key.indexOf("normdata") === -1 && key.indexOf("fct_role") === -1 && key.indexOf("time_fct") === -1&& key.indexOf("apd_keywords_fct") === -1) {
             var li = $(document.createElement('li'));
@@ -105,8 +104,9 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
             for (i = 0; i < value.length; i++) {
               facetValues.push(value[i]);
             }
+            console.log(facetValues);
             fieldName.text(de.ddb.next.search.getLocalizedFacetField(key));
-            fieldContent.text(facetValues.join().replace(allTheCommas, '; '));
+            fieldContent.text(facetValues.join('; '));
 
             li.append(fieldName);
             li.append(fieldContent);
