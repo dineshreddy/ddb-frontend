@@ -448,7 +448,7 @@ class FavoritesviewController {
 
         publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, params.selectedFolderId)
 
-        render(template: "favoritesAllFolders", model: [publicFolders: publicFolders, selectedUserId : params.userId, showLinkAllList:false])
+        render(template: "favoritesAllFolders", model: [publicFolders: publicFolders, selectedUserId : params.userId])
     }
 
     private sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolderId) {
