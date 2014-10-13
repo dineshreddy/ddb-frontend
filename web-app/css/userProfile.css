@@ -63,6 +63,10 @@
 #user-profile-form .privacylink {
   text-decoration: underline;
 }
+
+#sendFavoriteListModal form {
+  margin: 0;
+}
 /* responsive design */
 
 @media (max-width: 1199px) {
