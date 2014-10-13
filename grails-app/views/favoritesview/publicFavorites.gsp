@@ -229,9 +229,7 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
-    
-    
+
     <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendFavoriteListLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
@@ -251,11 +249,8 @@ limitations under the License.
           </fieldset>
         </div>
         <div class="modal-footer-savesearch">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbcommon.Close" />
-          </button>
           <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now" />
+            <g:message code="ddbnext.favorites_list_send" />
           </button>
         </div>
       </form>
