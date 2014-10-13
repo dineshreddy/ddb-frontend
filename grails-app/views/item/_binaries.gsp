@@ -107,7 +107,14 @@ limitations under the License.
     <span></span>
   </div>
 
-  <div class="tabs">
+  <g:if test="${flashInformation.images[0] > 1 || flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0}">
+    <g:set var="showGallery" value=""/>
+  </g:if>
+  <g:else>
+    <g:set var="showGallery" value="off"/>
+  </g:else>
+
+  <div class="tabs ${showGallery}">
     <g:if test="${flashInformation.images[0] > 1 || ((flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0) && flashInformation.images[0] > 0)}">
       <g:set var="display" value=""/>
     </g:if>
