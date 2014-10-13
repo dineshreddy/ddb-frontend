@@ -65,7 +65,7 @@
   font-weight:normal;
   text-shadow:none;
   color:#000000;
-  background-position: 0px 0px
+  background-position: 0 0;
   line-height: 0;
 }
 .advanced-search .add-group-button:hover {
@@ -84,7 +84,6 @@
   background-position: -358px -288px
 }
 .add-group-link {
-  margin-top: 3px;
   cursor: pointer;
 }
 .advanced-search .value {
