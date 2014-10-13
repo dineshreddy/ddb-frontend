@@ -61,17 +61,6 @@ $(function() {
       }
     });
     
-    /** Fade in report-favorites overlay when social icon is clicked * */
-    $(".reportfav").mouseover(function() {
-      showReportFavoritesOverlay();
-    });
-
-    /** Fade out report-favorites overlay when overlay div is leaved * */
-    $(".reportfav").mouseleave(
-        function() {
-          hideReportFavoritesOverlay();
-        });
-
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -570,15 +559,6 @@ function updateRanking (bookmarkId, folderId, newPosition){
   });
 }
 
-function showReportFavoritesOverlay() {
-    $(".reportfav .report-overlay-container").fadeIn(200);
-  }
-
-function hideReportFavoritesOverlay() {
-    window.setTimeout(function() {
-        $(".reportfav .report-overlay-container").fadeOut(200);
-      }, 200);
-}
 $('#alle-listen').click(function(event){
   event.preventDefault();
   var url = jsContextPath + "/user/" +  $(this).attr("data-userId") + "/favorites/allpublicfolders/"+ $(this).attr("data-selectedFolderId");

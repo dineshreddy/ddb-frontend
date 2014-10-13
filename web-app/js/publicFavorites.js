@@ -16,7 +16,19 @@
      */
     //IMPORTANT FOR MERGING: This is the main function that has to be called when we are in the saved searches page
     $(function() {
-      if (jsPageName === "publicFavorites") {
+        if (jsPageName === "publicFavorites") {
+
+        /** Fade in report-favorites overlay when social icon is clicked * */
+        $(".reportfav").mouseover(function() {
+          showReportFavoritesOverlay();
+        });
+
+        /** Fade out report-favorites overlay when overlay div is leaved * */
+        $(".reportfav").mouseleave(
+            function() {
+              hideReportFavoritesOverlay();
+            });
+
         $('.page-input').removeClass('off');
         $('.page-nonjs').addClass("off");
         // workaround for ffox + ie click focus - prevents links that load dynamic
@@ -33,3 +45,13 @@
           });
       }
     });
+
+  function showReportFavoritesOverlay() {
+      $(".reportfav .report-overlay-container").fadeIn(200);
+    }
+
+  function hideReportFavoritesOverlay() {
+      window.setTimeout(function() {
+          $(".reportfav .report-overlay-container").fadeOut(200);
+        }, 200);
+  }
