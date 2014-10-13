@@ -37,7 +37,6 @@ class SearchController {
     def searchService
     def configurationService
     def cultureGraphService
-    def institutionService
 
     def results() {
         try {
@@ -237,8 +236,6 @@ class SearchController {
         }
 
         def results = searchService.doInstitutionSearch(urlQuery)
-
-        //results = institutionService.filterSearchResultByInstitutionsWithObject(results);
 
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
