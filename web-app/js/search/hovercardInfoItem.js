@@ -104,7 +104,6 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
             for (i = 0; i < value.length; i++) {
               facetValues.push(value[i]);
             }
-            console.log(facetValues);
             fieldName.text(de.ddb.next.search.getLocalizedFacetField(key));
             fieldContent.text(facetValues.join('; '));
 
