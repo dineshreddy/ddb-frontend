@@ -58,9 +58,13 @@ class ListsController {
         //*********************************************************************
         def folders = null
 
+        String id =  "dailyList"
         if (params.id) {
-            model.selectedListId = params.id
-            folders = getFoldersOfList(params.id, offset, rows)
+            id = params.id
+        }
+        if (id) {
+            model.selectedListId = id
+            folders = getFoldersOfList(id, offset, rows)
         }
         //If the page is loaded for the first time, take the first entry in the menu
         else if (model.lists.size() > 0) {

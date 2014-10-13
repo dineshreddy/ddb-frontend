@@ -350,6 +350,11 @@ class UrlMappings {
             action="index"
         }
 
+        "/lists" {
+            controller="lists"
+            action="index"
+        }
+        
         "/lists/$q?" {
             controller="lists"
             action="index"

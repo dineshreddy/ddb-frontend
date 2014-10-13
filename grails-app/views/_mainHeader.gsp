@@ -99,7 +99,7 @@ limitations under the License.
               <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
               <ul class="nav">
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="lists" params="[id: 'dailyList']"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                  <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
                   <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
@@ -231,7 +231,7 @@ limitations under the License.
                     <ul>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="lists" params="[id: 'dailyList']"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                        <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
