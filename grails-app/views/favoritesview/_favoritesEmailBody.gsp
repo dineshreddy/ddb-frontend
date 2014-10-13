@@ -173,6 +173,6 @@ a {
   <![endif]-->
 </head>
 <body style="font-family:Calibri,Arial,sans-serif;">
-  <ddb:renderFavoritesEmailResults results="${results}" userName="${userName}" folderDescription="${folderDescription}" />
+  <ddb:renderFavoritesEmailResults results="${results}" userName="${userName}" folderDescription="${folderDescription}" favoriteUrl="${favoriteUrl}" />
 </body>
 </html>

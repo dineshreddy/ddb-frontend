@@ -387,7 +387,8 @@ class FavoritesviewController {
                         contextUrl: configurationService.getContextUrl(),
                         publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
-                        folderTitle: selectedFolder.title
+                        folderTitle: selectedFolder.title,
+                        favoriteUrl: configurationService.getFavoriteUrl()
                     ])
 
                 }

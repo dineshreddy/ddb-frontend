@@ -81,7 +81,8 @@ limitations under the License.
               <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
             </g:if>
             <g:else>
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${baseURL}${confBinary}</g:if><g:else>${baseURL}</g:else>${it.preview.thumbnail}"
+            favoriteUrl: ${favoriteUrl }
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${favoriteUrl}${confBinary}</g:if><g:else>${favoriteUrl}</g:else>${it.preview.thumbnail}"
                    alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:else>
           </g:link>
