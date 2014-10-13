@@ -218,9 +218,9 @@ var page = {};
       var groups = $(selectors.groupWidget, root);
       
       if (groups.filter(":visible").length > 1) {
-    	  $("#initialAddGroupButtonFieldSet").css("display", "none");
+    	  $("#initialAddGroupButtonFieldSet").addClass("off");
       } else {
-    	  $("#initialAddGroupButtonFieldSet").css("display", "inline");
+    	  $("#initialAddGroupButtonFieldSet").removeClass("off");
       }
 
       if (groups.filter(":hidden").length === 0) {
