@@ -60,7 +60,7 @@ class FavoritesviewController {
 
         publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
 
-        def tamMax = 2
+        def tamMax = 20
         def showLinkAllList
 
         if(publicFolders.size() > tamMax) {
