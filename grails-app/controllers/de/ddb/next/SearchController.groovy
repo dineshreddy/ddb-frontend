@@ -75,7 +75,7 @@ class SearchController {
                 if (mlocale.toString() == "de"){
                     entity.dateOfBirth = entity.dateOfBirth_de
                     entity.dateOfDeath = entity.dateOfDeath_de
-                }else if (locale.toString() == "en"){
+                }else if (mlocale.toString() == "en"){
                     entity.dateOfBirth = entity.dateOfBirth_en
                     entity.dateOfDeath = entity.dateOfDeath_en
                 }
