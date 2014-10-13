@@ -61,11 +61,18 @@ class FavoritesviewController {
         publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
 
         def tamMax = 20
-        def showAllList = false
+        def showLinkAllList
 
         if(publicFolders.size() > tamMax) {
-            publicFolders = publicFolders.subList(0, tamMax)
-            showAllList = true
+            if(params.showLinkAllList) {
+                showLinkAllList = params.showLinkAllList.toBoolean()
+            }else {
+             showLinkAllList = true
+            }
+
+            if(showLinkAllList) {
+                publicFolders = publicFolders.subList(0, tamMax)
+            }
         }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
@@ -82,7 +89,7 @@ class FavoritesviewController {
                 selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
                 selectedUserUserName: user.username,
                 publicFolders: publicFolders,
-                showAllList: showAllList,
+                showLinkAllList: showLinkAllList,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
@@ -160,7 +167,7 @@ class FavoritesviewController {
                 selectedUserId: user.id,
                 selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
                 selectedUserUserName: user.username,
-                showAllList: showAllList,
+                showLinkAllList: showLinkAllList,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
