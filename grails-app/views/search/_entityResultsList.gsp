@@ -37,16 +37,15 @@ limitations under the License.
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                 ${profession}<g:if test="${i != last}">, </g:if>
               </g:each>
-              
               <br>
-              <g:if test="${RequestContextUtils.getLocale(request).toString() == 'en'}">
-                <g:message encodeAs="html" code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth_en}, ${entityItem.placeOfBirth[0]} · 
-                <g:message encodeAs="html" code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath_en}, ${entityItem.placeOfDeath[0]}
-              </g:if>
-              <g:elseif test="${RequestContextUtils.getLocale(request).toString() == 'de'}">
-                <g:message encodeAs="html" code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth_de}, ${entityItem.placeOfBirth[0]} · 
-                <g:message encodeAs="html" code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath_de}, ${entityItem.placeOfDeath[0]}
-              </g:elseif>
+                <g:if test="${entityItem.dateOfBirth}">
+                  <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")} -
+                </g:if>
+                <g:if test="${entityItem.dateOfDeath}">
+                  <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+                </g:if>
             </div>
           </div>
           <div class="extra">
