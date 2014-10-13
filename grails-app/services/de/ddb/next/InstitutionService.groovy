@@ -333,4 +333,21 @@ class InstitutionService {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
 
+    def filterSearchResultByInstitutionsWithObject(searchResult) {
+        def filteredResult = [:]
+        def institutionsWithItems = grailsApplication.mainContext.institutionService.findAllArchiveInstitutionsWithItems()
+        def filteredInstitutions = []
+
+        searchResult.docs.each { inst ->
+          def institution = institutionsWithItems.findAll { it.id == inst.id}
+          if (institution?.hasItems) {
+              filteredInstitutions.add(inst)
+          }
+        }
+
+        filteredResult["docs"] = filteredInstitutions
+        filteredResult["totalResults"] = filteredInstitutions.size()
+
+        return filteredResult
+    }
 }

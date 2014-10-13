@@ -37,6 +37,7 @@ class SearchController {
     def searchService
     def configurationService
     def cultureGraphService
+    def institutionService
 
     def results() {
         try {
@@ -220,7 +221,7 @@ class SearchController {
         //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
         def urlParams = params.clone()
         urlParams.isThumbnailFiltered=false
-        
+
         def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
 
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
@@ -236,6 +237,8 @@ class SearchController {
         }
 
         def results = searchService.doInstitutionSearch(urlQuery)
+
+        //results = institutionService.filterSearchResultByInstitutionsWithObject(results);
 
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
