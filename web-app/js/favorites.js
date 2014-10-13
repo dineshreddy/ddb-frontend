@@ -585,5 +585,8 @@ $('#alle-listen').click(function(event){
   $.get(url, function(data) {
     $('#public-folders').empty();
     $('#public-folders').append(data);
+
+    var newUrl = updateURLParameter(window.location.href, 'showLinkAllList', false);
+    window.location.href = newUrl;
   });
 });
