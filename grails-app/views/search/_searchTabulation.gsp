@@ -57,32 +57,24 @@ limitations under the License.
           </span>
         </div>
 
-        <div id="addToSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+        <div id="addToSavedSearchesModal" class="modal hide fade savesearch" tabindex="-1" role="dialog"
           aria-labelledby="addToSavedSearchesLabel" aria-hidden="true">
-          <div class="modal-header">
+          <div class="modal-header modal-header-savesearch">
             <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal"
               class="fancybox-toolbar-close"></span>
             <h3 id="addToSavedSearchesLabel">
               <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" />
             </h3>
           </div>
-          <div class="modal-body">
-            <div>
-              <b><g:message encodeAs="html" code="ddbnext.Mandatory" /></b>
-            </div>
-            <br />
-            <div>
+          <div class="modal-body-savesearch">
+            <div class="savesearch-edit-title">
               <g:message encodeAs="html" code="ddbnext.Savedsearch_Title" />
-              *
             </div>
             <div>
               <input id="addToSavedSearchesTitle" type="text">
             </div>
           </div>
-          <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbcommon.Close" />
-            </button>
+          <div class="modal-footer-savesearch">
             <button class="btn-padding" type="submit" id="addToSavedSearchesConfirm">
               <g:message encodeAs="html" code="ddbcommon.Save" />
             </button>

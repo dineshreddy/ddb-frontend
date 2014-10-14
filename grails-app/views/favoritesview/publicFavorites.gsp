@@ -103,13 +103,6 @@ limitations under the License.
             <ul id="public-folders" class="other-folder-list">
               <g:render template="favoritesAllFolders" ></g:render>
             </ul>
-            /.../
-            <br />
-            <br />
-            <g:link controller="favoritesview" action="favorites" class="underlined">
-              <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
-
-            </g:link>
           </g:if>
         </div>
         <div class="span9 favorites-results-content">
@@ -123,7 +116,7 @@ limitations under the License.
           <g:if test="${flash.error}">
             <div class="errors-container">
               <ul class="unstyled">
-                <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
+                <li><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
               </ul>
             </div>
           </g:if>
@@ -236,9 +229,7 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
-    
-    
+
     <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendFavoriteListLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
@@ -257,12 +248,9 @@ limitations under the License.
             <br />
           </fieldset>
         </div>
-        <div class="modal-footer">
-          <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-            <g:message code="ddbcommon.Close" />
-          </button>
+        <div class="modal-footer-savesearch">
           <button class="btn-padding" type="submit" id="btnSubmit">
-            <g:message code="ddbnext.send_now" />
+            <g:message code="ddbnext.favorites_list_send" />
           </button>
         </div>
       </form>

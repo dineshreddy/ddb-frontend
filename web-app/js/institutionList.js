@@ -507,7 +507,7 @@
       buttonClass : 'btn btn-small',
       buttonWidth : 'auto',
       maxHeight : false,
-      field_NoneSelected : messages.ddbnext.None_Selected,
+      field_NoneSelected : messages.ddbnext.InstitutionPage_FilterBySector,
       onChange : function(element) {
         ddb.applyFilter();
       },

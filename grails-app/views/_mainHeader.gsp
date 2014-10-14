@@ -38,7 +38,7 @@ limitations under the License.
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <button type="button" class="btn btn-nav" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -63,10 +63,10 @@ limitations under the License.
               </button>
             </g:form></li>
 
-          <li class="<ddb:isMappingActive context="${params}"
+          <li class="highlight <ddb:isMappingActive context="${params}"
               testif="${[[controller: "content", dir: "about"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'about']">
-              <g:message encodeAs="html" code="ddbnext.AboutUs" />
+              ${message(code: 'ddbnext.AboutUs').toUpperCase()}
             </g:link>
             <ul class="nav">
               <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
@@ -85,17 +85,21 @@ limitations under the License.
                 <g:link controller="content" params="[dir: 'faq']"><g:message encodeAs="html" code="ddbnext.Faq" /></g:link>
               </li>
             </ul><!-- /end of .nav -->
+            <hr/>
           </li>
-          <li class="<ddb:isMappingActive context="${params}"
+          
+          <li class="highlight <ddb:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
-            <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
+            <g:link controller="content" params="[dir: 'help']">${message(code: 'ddbnext.Help').toUpperCase()}</g:link>
+            <hr/>
           </li><!-- /end of help -->
+          
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
-            <li>
-              <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+            <li class="highlight">
+              <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
               <ul class="nav">
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                  <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
                   <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
@@ -104,7 +108,9 @@ limitations under the License.
                   <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                 </li>
               </ul>
+              <hr/>
             </li><!-- /end of exhibitions -->
+            
           </g:if>
             <ddbcommon:isLoggedIn>
               <li>
@@ -122,8 +128,8 @@ limitations under the License.
                 </ul>
               </li>
             </ddbcommon:isLoggedIn>
-            <li><a>
-              <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
+            <li class="highlight"><a>
+              ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
               <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
@@ -138,9 +144,9 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li>
+          <li class="highlight">
             <ddbcommon:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> ${message(code: 'ddbcommon.Login_Button').toUpperCase()}</g:link>
             </ddbcommon:isNotLoggedIn>
             <ddbcommon:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
@@ -225,7 +231,7 @@ limitations under the License.
                     <ul>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                        <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">

@@ -18,7 +18,7 @@ limitations under the License.
     <div class="row">
 
         <div class="span9">
-            <div><g:message encodeAs="html" code="ddbnext.Institution" /></div>
+            <div class="label-institution"><g:message encodeAs="html" code="ddbnext.Institution" /></div>
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>

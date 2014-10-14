@@ -61,11 +61,18 @@ class FavoritesviewController {
         publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
 
         def tamMax = 20
-        def showAllList = false
+        def showLinkAllList
 
         if(publicFolders.size() > tamMax) {
-            publicFolders = publicFolders.subList(0, tamMax)
-            showAllList = true
+            if(params.showLinkAllList) {
+                showLinkAllList = params.showLinkAllList.toBoolean()
+            }else {
+             showLinkAllList = true
+            }
+
+            if(showLinkAllList) {
+                publicFolders = publicFolders.subList(0, tamMax)
+            }
         }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
@@ -82,7 +89,7 @@ class FavoritesviewController {
                 selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
                 selectedUserUserName: user.username,
                 publicFolders: publicFolders,
-                showAllList: showAllList,
+                showLinkAllList: showLinkAllList,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
@@ -137,20 +144,9 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder)
+                def favoriteUrl =  request.getServerName()
+                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder, favoriteUrl)
             }
-
-            def createdDateString = selectedFolder.creationDate.cdate.dayOfMonth.toString() + "." +
-                    selectedFolder.creationDate.cdate.month.toString() + "." +
-                    selectedFolder.creationDate.cdate.year.toString() + " um " +
-                    selectedFolder.creationDate.cdate.hours.toString() + ":" +
-                    selectedFolder.creationDate.cdate.minutes.toString()
-
-            def updatedDateString = selectedFolder.updatedDate.cdate.dayOfMonth.toString() + "." +
-                    selectedFolder.updatedDate.cdate.month.toString() + "." +
-                    selectedFolder.updatedDate.cdate.year.toString() + " um " +
-                    selectedFolder.updatedDate.cdate.hours.toString() + ":" +
-                    selectedFolder.updatedDate.cdate.minutes.toString()
 
             render(view: ACTION, model: [
                 results: resultsItems,
@@ -172,7 +168,7 @@ class FavoritesviewController {
                 selectedUserId: user.id,
                 selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
                 selectedUserUserName: user.username,
-                showAllList: showAllList,
+                showLinkAllList: showLinkAllList,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
@@ -181,8 +177,8 @@ class FavoritesviewController {
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl(),
-                createdDateString:createdDateString,
-                updatedDateString: updatedDateString
+                createdDateString: favoritesService.formatDate(selectedFolder.creationDate),
+                updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate)
             ])
         }
 
@@ -276,7 +272,8 @@ class FavoritesviewController {
                 }
 
                 if (request.method=="POST"){
-                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
+                    def favoriteUrl =  request.getServerName()
+                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder, favoriteUrl)
                 }
                 render(view: ACTION, model: [
                     results: resultsItems,
@@ -373,7 +370,7 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder,String favoriteUrl) {
         if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
@@ -399,7 +396,8 @@ class FavoritesviewController {
                         contextUrl: configurationService.getContextUrl(),
                         publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
-                        folderTitle: selectedFolder.title
+                        folderTitle: selectedFolder.title,
+                        favoriteUrl: favoriteUrl
                     ])
 
                 }

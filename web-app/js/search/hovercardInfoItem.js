@@ -90,8 +90,9 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
         var content = currObjInstance.hovercard.find('ul.unstyled');
         content.empty();
         var JSONresponse = jQuery.parseJSON(data.responseText);
+
         $.each(JSONresponse, function(key, value) {
-          if (key !== 'last_update' && value != "" && key.indexOf("normdata") === -1 && key.indexOf("fct_role") === -1 && key.indexOf("time_fct") === -1) {
+          if (key !== 'last_update' && value != "" && key.indexOf("normdata") === -1 && key.indexOf("fct_role") === -1 && key.indexOf("time_fct") === -1&& key.indexOf("apd_keywords_fct") === -1) {
             var li = $(document.createElement('li'));
             var fieldName = $(document.createElement('span'));
             var fieldContent = $(document.createElement('span'));
@@ -103,9 +104,8 @@ $.extend(de.ddb.next.search.HovercardInfoItem.prototype, {
             for (i = 0; i < value.length; i++) {
               facetValues.push(value[i]);
             }
-
             fieldName.text(de.ddb.next.search.getLocalizedFacetField(key));
-            fieldContent.text(facetValues.join());
+            fieldContent.text(facetValues.join('; '));
 
             li.append(fieldName);
             li.append(fieldContent);

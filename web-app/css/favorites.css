@@ -104,15 +104,15 @@ hr {
   position:relative;
 }
 
-.bookmarks-list-edit:before{
+.bookmarks-list-edit:before {
   background-position: -29px -239px;
 }
 
-.bookmarks-list-delete:before{
+.bookmarks-list-delete:before {
   background-position: -29px -269px;
 }
 
-.bookmarks-list-publish:before{
+.bookmarks-list-publish:before {
   background-position: -29px -446px;
 }
 .bookmarks-list-publish.open-lock:before{
@@ -123,7 +123,7 @@ hr {
   vertical-align: baseline;
 }
 
-.favorites-results-controls .controls-container .page-link.page-link-popup-anchor{
+.favorites-results-controls .controls-container .page-link.page-link-popup-anchor {
   margin-right:0;
 }
 
@@ -250,6 +250,7 @@ hr {
   display: inline-block;
   float: right;
   line-height: 62px;
+  font-size: 0.938em;
 }
 
 .public-favorites .socialmedia {
@@ -424,7 +425,6 @@ hr {
 
 .favorites-results .results-list .created-at {
   text-align:right;
-  font-size: 0.938em;
 }
 
 .favorites-results .results-list .matches {
@@ -744,6 +744,7 @@ hr {
 
 .folder-information-container .date-info {
   color:grey;
+  font-size: 0.875em;
 }
 
 .folder-information-container .other-folder-list {
@@ -1034,5 +1035,8 @@ hr {
   margin-right:30px;
   padding-left:24px;
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
-  
+}
+
+#folderEditConfirmDialog {
+  margin-top: -270px !important;
 }

@@ -53,15 +53,17 @@
   border:1px solid #efebe8;
 }
 .scroller ul {
-  padding:0;
+  padding:0 0 0 23px;
   white-space:nowrap;
-  letter-spacing:-4px;
-  left:9px !important;
 }
 .scroller li {
-  letter-spacing:normal;
-  display:inline-block;
-  width:140px;
+  letter-spacing: normal;
+  display: inline-block;
+  width: 116px;
+  margin-left: 8px;
+}
+.scroller li:first-child {
+  margin-left: 10px;
 }
 @media (max-width: 529px) {
   .scroller li {
@@ -77,8 +79,18 @@
 .scroller li .group .thumbnail {
   display: block;
   text-align:center;
-  width: 120px;
-  height: 90px;
+  width: 116px;
+  height: 87px;
+  font: 0/0 a;
+}
+.scroller li .group .thumbnail:before {
+  content: ' ';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+}
+.scroller li .group .thumbnail.active {
+  border: 1px solid #a5003b;
 }
 .scroller li .group .placeholder.thumbnail.audio {
   background:#fff url("../images/icons/searchResultMediaAudio.png") no-repeat center center;
@@ -240,7 +252,7 @@ noscript .scroller, .pdf-scroller {
   right: 0;
   cursor: pointer !important;
   float: right;
-  width: 18px;
+  width: 28px;
   height: 18px;
   background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -475px;
 }

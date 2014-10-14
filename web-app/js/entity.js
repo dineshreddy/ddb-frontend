@@ -18,6 +18,9 @@ $(document).ready(
 
       if (jsPageName === "entity") {
 
+        var socialMediaManager = new SocialMediaManager();
+        socialMediaManager.integrateSocialMedia();
+
         var defaultRowCount = 10;
 
         var allRowCount = 0;
@@ -26,7 +29,7 @@ $(document).ready(
 
         var carouselWidth = 800;
 
-        var carouselHeight = 170;
+        var carouselHeight = 180;
 
         var windowLarge = 1185;
 
@@ -131,6 +134,7 @@ $(document).ready(
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
+              circular: false,
               width : carouselWidth,
               height : carouselHeight,
               align : false,

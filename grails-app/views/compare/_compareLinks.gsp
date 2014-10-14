@@ -21,18 +21,18 @@ limitations under the License.
           <a class="back-to-list" href="${searchResultUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
           </a>
-      </g:if> 
+      </g:if>
       <g:else>
           <span class="back-to-list-greyed-out"><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /> </span>
       </g:else>
-    </div>  
-    <div class="link-block">
+    </div>
+    <div class="share-block fr">
+      <ddb:getSocialmediaBody />
+    </div>
+    <div class="link-block fr">
       <a class="page-link page-link-popup-anchor" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
         <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
       </a>
-    </div>
-    <div class="share-block">
-      <ddb:getSocialmediaBody />
     </div>
   </div>
 </div>

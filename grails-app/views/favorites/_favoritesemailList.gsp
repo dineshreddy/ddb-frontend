@@ -42,8 +42,12 @@ limitations under the License.
           <g:set var="controller" value="institution" />
           <g:set var="action" value="showInstitutionsTreeByItemId" />
       </g:if>
-      
+      <g:if test="${it.category == 'Entity'}">
+          <g:set var="controller" value="entity" />
+          <g:set var="action" value="index" />
+      </g:if>
       <tr>
+      
         <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
@@ -77,8 +81,8 @@ limitations under the License.
               <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
             </g:if>
             <g:else>
-            <g:set var="cuttedThumbnailUrl" value="${it.preview.thumbnail.replaceAll('/ddb-next/', '') }" />
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${publicUrl}${confBinary}</g:if><g:else>${publicUrl}</g:else>${cuttedThumbnailUrl}"
+            favoriteUrl: ${favoriteUrl }
+              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${favoriteUrl}${confBinary}</g:if><g:else>${favoriteUrl}</g:else>${it.preview.thumbnail}"
                    alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
             </g:else>
           </g:link>

@@ -25,10 +25,18 @@ limitations under the License.
       <ul class="unstyled">
         <g:each var="resultDocs" in="${similarItems.results.docs}">
           <g:each var="doc" in="${resultDocs}">
-              <li class="similar-objects-item">
-                <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}" title="${ddbcommon.getTruncatedHovercardTitle(title: doc.title, length: 350)}">
+              <li class="similar-objects-item information">
+                <g:link class="persist" controller="item" action="findById" params="${[id:doc.id]}">
                   <ddbcommon:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
                 </g:link>
+                <div class="hovercard-info-item" data-iid="${doc.id}">
+                  <h4><ddbcommon:getTruncatedHovercardTitle title="${ doc.title }" length="${ 350 }" /></h4>
+                  <ul class="unstyled">
+                    <li>
+                      <div class="small-loader"></div>
+                    </li>
+                  </ul>
+                </div>
               </li>
           </g:each>
         </g:each>

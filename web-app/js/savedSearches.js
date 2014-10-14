@@ -168,7 +168,6 @@ function showError(errorHtml) {
         '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
     var errorIcon = $(document.createElement('i'));
     errorContainer.addClass('errors-container');
-    errorIcon.addClass('icon-exclamation-sign');
     errorContainer.html(errorHtml);
     errorContainer.prepend(errorIcon);
 

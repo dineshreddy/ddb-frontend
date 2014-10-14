@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
   <g:each in="${entities.entity.docs}" var="entityItems">
@@ -36,13 +37,17 @@ limitations under the License.
                 <g:if test="${entityItem.professionOrOccupation}">
                   <br />
                 </g:if>
-                <g:if test="${entityItem.dateOfBirth}">
+                <g:if test="${entityItem.dateOfBirth || entityItem.placeOfBirth}">
                   <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
-                  <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")} -
+                  <g:message code="ddbnext.Entity_Birth"/>: 
+                    <g:if test="${entityItem.dateOfBirth}" >${entityItem?.dateOfBirth} - </g:if>
+                    <g:if test="${placeOfBirth}" > ${placeOfBirth}</g:if>;  
                 </g:if>
-                <g:if test="${entityItem.dateOfDeath}">
+                <g:if test="${entityItem.dateOfDeath || entityItem.placeOfDeath}">
                   <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
-                  <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+                  <g:message code="ddbnext.Entity_Death"/>: 
+                  <g:if test="${entityItem.dateOfDeath}" >${entityItem.dateOfDeath}, </g:if>
+                  <g:if test="${placeOfDeath}" >${placeOfDeath}</g:if>
                 </g:if>
               </div>
             </div>
@@ -62,7 +67,7 @@ limitations under the License.
               <ul class="item-options-ul">
                 <ddbcommon:isLoggedIn>
                   <li>
-                    <div data-itemid="${entityItem.id.substring(cultureGraphUrl.length())}" data-objecttype="entity" data-actn="POST" class="add-to-favorites"
+                    <div data-itemid="${entityItem.id.substring(cultureGraphUrl.length())}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" class="add-to-favorites"
                       title="<g:message code="ddbnext.Add_To_Favorites"/>"></div>
                   </li>
                 </ddbcommon:isLoggedIn>

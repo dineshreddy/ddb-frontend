@@ -107,7 +107,14 @@ limitations under the License.
     <span></span>
   </div>
 
-  <div class="tabs">
+  <g:if test="${flashInformation.images[0] > 1 || flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0}">
+    <g:set var="showGallery" value=""/>
+  </g:if>
+  <g:else>
+    <g:set var="showGallery" value="off"/>
+  </g:else>
+
+  <div class="tabs ${showGallery}">
     <g:if test="${flashInformation.images[0] > 1 || ((flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0) && flashInformation.images[0] > 0)}">
       <g:set var="display" value=""/>
     </g:if>
@@ -129,7 +136,7 @@ limitations under the License.
           <g:if test="${(it.full.uri != '' || it.preview.uri != '') && it.orig.uri.video.isEmpty() && it.orig.uri.audio.isEmpty()}">
             <li>
               <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${it.preview.title}">
-                <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder</g:if> thumbnail image">
+                <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail image">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label off">${it.preview.title}</span>
@@ -154,7 +161,7 @@ limitations under the License.
             <g:if test="${it.full.uri != '' && it.orig.uri.video.isEmpty() && it.orig.uri.audio.isEmpty()}">
               <li>
                 <a class="group" href="${it.full.uri}" title="${it.preview.title}">
-                  <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder</g:if> thumbnail image">
+                  <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail image">
                     <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label off">
@@ -189,7 +196,7 @@ limitations under the License.
                    href="${it.preview.uri}"
                  </g:else>
                  data-content="${it.orig.uri.video}"  data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="video" title="${it.orig.title}">
-                <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder</g:if> thumbnail video">
+                <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
                 <span class="label off">${it.orig.title}</span>
@@ -215,7 +222,7 @@ limitations under the License.
             <g:if test="${it.orig.uri.video != '' }">
               <li>
                 <a class="group" href="${it.orig.uri.video}" title="${it.orig.title}">
-                  <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder</g:if> thumbnail video">
+                  <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail video">
                     <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                   </div>
                   <span class="label off">${it.orig.title}</span>

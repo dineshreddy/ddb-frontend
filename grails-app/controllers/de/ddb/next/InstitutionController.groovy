@@ -18,11 +18,9 @@ import grails.converters.JSON
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiInstitution
 import de.ddb.common.ApiResponse
-import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.Type
 
 class InstitutionController {
 
@@ -32,7 +30,7 @@ class InstitutionController {
     def sessionService
 
     def show() {
-        def allInstitution = institutionService.findAll()
+        def allInstitution = institutionService.findAllByAlphabet()
         def institutionByFirstLetter = allInstitution.data
 
         def all = []
@@ -54,24 +52,12 @@ class InstitutionController {
     }
 
     def getJson() {
-        render institutionService.findAll() as JSON
+        render institutionService.findAllByAlphabet() as JSON
     }
 
     def showInstitutionsTreeByItemId() {
         def id = params.id
         def itemId = id
-
-        def isFavorite = isFavorite(id)
-        log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
-        if (params.reqActn) {
-            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
-                isFavorite = response.SC_FOUND
-            }
-            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
-                isFavorite = response.SC_NOT_FOUND
-            }
-        }
-
         def vApiInstitution = new ApiInstitution()
         log.debug("read insitution by item id: ${id}")
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
@@ -118,72 +104,12 @@ class InstitutionController {
                         vApiInst: vApiInstitution,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
-                        isFavorite: isFavorite]
+                        isFavorite: isFavorite(id)]
                     )
         } else {
             forward controller: 'error', action: "defaultNotFound"
         }
 
-    }
-
-    private def isFavorite(itemId) {
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if(user != null){
-            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
-        }else{
-            return false
-        }
-    }
-
-    def delFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: delFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            // Bug: DDBNEXT-626: if (bookmarksService.deleteBookmarksByBookmarkIds(user.getId(), [pId])) {
-            bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])
-            def isFavorite = isFavorite(itemId)
-            if (isFavorite == response.SC_NOT_FOUND) {
-                log.info "non-JavaScript: delFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: delFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
-    }
-
-    def addFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: addFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            Bookmark newBookmark = new Bookmark(
-                    null,
-                    user.getId(),
-                    itemId,
-                    new Date().getTime(),
-                    Type.INSTITUTION,
-                    null,
-                    "",
-                    new Date().getTime())
-            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
-            if (newBookmarkId) {
-                log.info "non-JavaScript: addFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: addFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
     }
 
     /**
@@ -225,12 +151,11 @@ class InstitutionController {
         render (contentType:"text/json"){result}
     }
 
-
     /**
      * TODO This is a dummy method for DDBNEXT-1809 and should be replaced by a call to the FavoritesService.
      *
      */
-    def doItemSearch(def institutionid, def offset, def rows) {
+    private def doItemSearch(def institutionid, def offset, def rows) {
         def searchParams = [:]
         searchParams[SearchParamEnum.FACET.getName()] = FacetEnum.PROVIDER_ID.getName()
         searchParams[FacetEnum.PROVIDER_ID.getName()] = institutionid
@@ -251,5 +176,14 @@ class InstitutionController {
         searchPreview["resultCount"] = jsonSearchResult.numberOfResults
 
         return searchPreview
+    }
+
+    private def isFavorite(itemId) {
+        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
+        if(user != null){
+            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
+        }else{
+            return false
+        }
     }
 }

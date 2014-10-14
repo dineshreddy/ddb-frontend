@@ -57,6 +57,7 @@ modules = {
         resource url:'/css/timeFacet.css'
         resource url:'/css/paginationWidget.css', bundle: 'screen'
         resource url:'/css/lists.css'
+        resource url:'/css/hovercard.css'
     }
 
     cssprint {

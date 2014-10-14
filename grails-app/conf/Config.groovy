@@ -197,8 +197,8 @@ ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
 ddb.default.staticPage="news"
-ddb.public.url="http://www.deutsche-digitale-bibliothek.de/"
-ddb.domain.canonic="http://www.deutsche-digitale-bibliothek.de/"
+ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
+ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
@@ -338,3 +338,33 @@ grails {
 // Often needed for testing the staticpages on localhost,
 // because these use absolute linking to the server root "/abc"
 //grails.app.context = "/"
+
+grails {
+    cache {
+       enabled = true
+       clearAtStartup = true
+       ehcache {
+          ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
+          reloadable = true
+       }
+    }
+ }
+
+grails.cache.config = {
+    provider {
+      name "ehcache-" + appName
+    }
+
+    cache {
+        name 'institutionCache'
+        enable: true
+    }
+
+    defaults {
+        eternal false
+        overflowToDisk false
+        timeToLiveSeconds 600
+        timeToIdleSeconds 0
+        maxElementsInMemory 100000
+    }
+}

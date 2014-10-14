@@ -62,6 +62,11 @@
   padding-left: 24px;
 }
 
+.no-origin {
+  font-size: 0.938em; 
+  color: rgb(183, 181, 179);
+}
+
 .page-link:before {
   background-position: -27px -150px;
 }
@@ -83,7 +88,9 @@
   padding-bottom: 10px;
   border: 1px solid #e9e5e2;
   border-width: 0 0 5px;
-  font-size: 0.938em;
+}
+.item-detail .label-institution{
+  font-size: 0.875em;
 }
 
 .item-detail .institution .span3 img {
@@ -102,11 +109,12 @@
   line-height: 20px;
   background: url(../images/icons/listArrows.png) no-repeat 0 1px;
   font-weight: bold;
-  font-size: 1.133em;
+  font-size: 1.125em;
 }
 
 .institution-link {
   display: block;
+  font-size:0.875em;
 }
 
 .institution-link > span {
@@ -129,6 +137,7 @@
 .has-origin {
   padding-left: 23px;
   background-position: -2px -120px;
+  font-size:0.938em;
 }
 
 .show-origin {
@@ -183,14 +192,6 @@
 
 .favorite-actions span {
   background: white;
-}
-
-.modal-body {
-  position: relative;
-  max-height: 400px;
-  padding: 15px;
-  text-align: left;
-  overflow-y: auto;
 }
 
 .item-nav {
@@ -321,6 +322,12 @@
   background: white;
 }
 
+.similar-objects .information .hovercard-info-item {
+  right: none;
+  left: 160px;
+  font-size: 0.933em;
+}
+
 @media (max-width: 979px) {
   .object-controls .inline .first-item, 
   .object-controls .inline .last-item {
@@ -328,6 +335,9 @@
   }
   .page-link-block {
     display: none !important;
+  }
+  .similar-objects .information .hovercard-info-item {
+    left: 130px;
   }
 }
 
@@ -352,6 +362,9 @@
   .item-nav-mob .inline li:first-child {
     padding-left: 0;
   }
+  .similar-objects .information .hovercard-info-item {
+    left: 100px;
+  }
 }
 
 @media (min-width: 481px) {
@@ -369,6 +382,10 @@
   }
   .item-nav .hit-number:after {
     content: " / ";
+  }
+  
+  .similar-objects .information .hovercard-info-item {
+    left: 50px;
   }
 }
 
@@ -427,31 +444,29 @@
 
 .similar-objects-item{
   font-size: 0.938em;
+  background: url("../images/icons/listArrowPlum.png") no-repeat scroll 0 0 !important;
+  padding-left: 17px;
 }
 
 .similar-objects-header {
   cursor: pointer;
   color: #3E3A37;
-  font-size: 17px;
+  font-size: 1.125em;
   font-weight: bold;
   line-height: 30px;
-  background: url("../images/icons/arrows.png") no-repeat scroll 100% -48px rgba(0, 0, 0, 0);
+  background: url("../images/icons/arrows.png") no-repeat scroll 100% -45px rgba(0, 0, 0, 0);
   display: inline-block;
   padding: 0 20px 0 0;
   z-index: 10;
 }
 
 .similar-objects-header.active {
-  cursor: pointer;
-  color: #3E3A37;
-  font-size: 17px;
-  font-weight: bold;
-  line-height: 30px;
   background: url("../images/icons/arrows.png") no-repeat scroll 100% -96px rgba(0, 0, 0, 0);
-  display: inline-block;
-  padding: 0 20px 0 0;
-  z-index: 10;
-} 
+}
+
+.similar-objects .information {
+  position: relative !important;
+}
 
 .socialmedia {
   display: inline-block;

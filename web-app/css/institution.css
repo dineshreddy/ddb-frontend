@@ -225,7 +225,7 @@ circle {
   cursor:default;
 }
 
-.institution-item-page button {
+.institution-item-page .highlights button {
   position:absolute;
   top:0;
   width:35px;
