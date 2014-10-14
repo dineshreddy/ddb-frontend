@@ -65,21 +65,8 @@ limitations under the License.
          </div>
        </div>
      </div>
-     <g:if test="${(countObjcs > 0)}">
-       <div class="row">
-         <div class="span12 highlights">
-          <h3><g:message encodeAs="html" code="ddbnext.InstitutionItem_CollectionHighlights" /></h3>
-           <div class="carousel bb bt">
-              <div id="items">
-              <%--      Items will be retrieved via Javascript       --%>
-              </div>
-              <div class="clearfix"></div>
-              <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
-              <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
-            </div>
-         </div>
-       </div>
-     </g:if>
+<%-- FIXME: The highlights feature comes with release 4.7--%>
+<%--     <g:render template="highlights" />--%>
      <div class="row">
        <div class="span12 locations">
 
