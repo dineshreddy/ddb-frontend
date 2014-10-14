@@ -32,11 +32,6 @@ limitations under the License.
     <div class="favorites-results-container public-favorites">
       <div class="row favorites-results-head">
         <div class="span12 public-favorites-header">
-          <div class="title">
-            <h1>
-              ${selectedFolder.title.capitalize()}
-            </h1>
-          </div>
           <div class="print-header">
             <h3>
               <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
@@ -68,6 +63,11 @@ limitations under the License.
             </a>
           </div>
         </div>
+      </div>
+      <div class="title">
+        <h1>
+          ${selectedFolder.title.capitalize()}
+        </h1>
       </div>
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
