@@ -98,6 +98,28 @@ class BookmarkServiceIntegrationTests {
         return bookmarksService.createFolder(newFolder)
     }
 
+    def createNewInstitutionFolder(String institutionId) {
+        def now = System.currentTimeMillis()
+        def folderTitle= 'Highlights-' + institutionId
+        def isPublic = true
+        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.getValue()
+
+        Folder newFolder = new Folder(
+                null,
+                userId,
+                folderTitle,
+                "",
+                isPublic,
+                publishingName,
+                false,
+                "",
+                null,
+                now,
+                now,
+                institutionId)
+        return bookmarksService.createFolder(newFolder)
+    }
+
 
     // Folder
     @Test void shouldCreateNewFolder() {
@@ -598,4 +620,12 @@ class BookmarkServiceIntegrationTests {
         assert folder.bookmarks.equals([])
         bookmarksService.deleteFolder(folderId)
     }
+
+    @Test void shouldGetFolderbyInstitutionId() {
+        String folderId = createNewInstitutionFolder()
+
+        Folder folder = bookmarksService.findFolderByInstitutionId("2GJUO7RSKB56546VZZIK5GN7GZUYU5L3")
+        assert folder.folderId == "2GJUO7RSKB56546VZZIK5GN7GZUYU5L3"
+    }
+
 }
