@@ -352,6 +352,10 @@ grails {
  }
 
 grails.cache.config = {
+    provider {
+      name "ehcache-" + appName
+    }
+
     cache {
         name 'institutionCache'
         enable: true
