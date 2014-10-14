@@ -622,10 +622,25 @@ class BookmarkServiceIntegrationTests {
     }
 
     @Test void shouldGetFolderbyInstitutionId() {
-        String folderId = createNewInstitutionFolder()
+        String folderId = createNewInstitutionFolder("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
 
-        Folder folder = bookmarksService.findFolderByInstitutionId("2GJUO7RSKB56546VZZIK5GN7GZUYU5L3")
-        assert folder.institutionId == "2GJUO7RSKB56546VZZIK5GN7GZUYU5L3"
+        Folder folder = bookmarksService.findFolderByInstitutionId("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
+        assert folder.institutionId == "NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE"
+        assert folder.folderId == folderId
     }
+
+    @Test void shouldHandleNotExistingFolderbyInstitutionId() {
+        Folder folder = bookmarksService.findFolderByInstitutionId("2GJUO7RSKB56546VZZIK5GN7GZUY")
+        assert folder == null
+    }
+
+    @Test void shouldGetOnlyOneFolderbyInstitutionId() {
+        String folderId1 = createNewInstitutionFolder("ABC")
+        String folderId2 = createNewInstitutionFolder("ABC")
+
+        Folder folder = bookmarksService.findFolderByInstitutionId("ABC")
+        assert folder.folderId == folderId1
+    }
+
 
 }
