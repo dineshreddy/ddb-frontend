@@ -255,6 +255,9 @@ class EntityController {
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
+        //The Entity API deliveres a dateBirth_de and a dateBirth_en. In the View we just pass a dateOfBirth without locale
+        fixLocalizedDateOfBirth(results)
+        
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
@@ -319,8 +322,6 @@ class EntityController {
                 keepFiltersChecked: keepFiltersChecked]
             render(view: "searchPerson", model: model)
         }
-
-
     }
 
     /**
@@ -368,5 +369,23 @@ class EntityController {
         def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
 
         render (contentType:"text/json"){result}
+    }
+    
+    /**
+     * This function takes the entity result and modifies entity dates based on the locale
+     * @param results
+     * @return results
+     */
+    private fixLocalizedDateOfBirth(results) {
+        def mlocale = RequestContextUtils.getLocale(request)
+        for (entity in results.entity[0].docs) {
+            if (mlocale.toString() == "de"){
+                entity.dateOfBirth = entity.dateOfBirth_de
+                entity.dateOfDeath = entity.dateOfDeath_de
+            }else if (mlocale.toString() == "en"){
+                entity.dateOfBirth = entity.dateOfBirth_en
+                entity.dateOfDeath = entity.dateOfDeath_en
+            }
+        }
     }
 }
