@@ -625,7 +625,7 @@ class BookmarkServiceIntegrationTests {
         String folderId = createNewInstitutionFolder()
 
         Folder folder = bookmarksService.findFolderByInstitutionId("2GJUO7RSKB56546VZZIK5GN7GZUYU5L3")
-        assert folder.folderId == "2GJUO7RSKB56546VZZIK5GN7GZUYU5L3"
+        assert folder.institutionId == "2GJUO7RSKB56546VZZIK5GN7GZUYU5L3"
     }
 
 }
