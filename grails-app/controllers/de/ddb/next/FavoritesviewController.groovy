@@ -273,7 +273,7 @@ class FavoritesviewController {
 
                 if (request.method=="POST"){
                     def favoriteUrl =  request.getServerName()
-                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
+                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder, favoriteUrl)
                 }
                 render(view: ACTION, model: [
                     results: resultsItems,
