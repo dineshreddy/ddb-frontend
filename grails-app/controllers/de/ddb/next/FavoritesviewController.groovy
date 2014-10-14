@@ -144,7 +144,8 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder)
+                def favoriteUrl =  request.getServerName()
+                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder, favoriteUrl)
             }
 
             render(view: ACTION, model: [
@@ -271,6 +272,7 @@ class FavoritesviewController {
                 }
 
                 if (request.method=="POST"){
+                    def favoriteUrl =  request.getServerName()
                     sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
                 }
                 render(view: ACTION, model: [
@@ -368,7 +370,7 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder,String favoriteUrl) {
         if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
@@ -395,7 +397,7 @@ class FavoritesviewController {
                         publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
                         folderTitle: selectedFolder.title,
-                        favoriteUrl: configurationService.getFavoriteUrl()
+                        favoriteUrl: favoriteUrl
                     ])
 
                 }
