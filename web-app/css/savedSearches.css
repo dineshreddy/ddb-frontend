@@ -48,6 +48,10 @@
   position: relative;
 }
 
+.right-container .saved-searches-list-envelope {
+  padding-right: 30px;
+}
+
 .saved-searches-list-envelope:before {
   content: '';
   background: url("../images/icons/ddbIkonographie.png") -30px -328px no-repeat;

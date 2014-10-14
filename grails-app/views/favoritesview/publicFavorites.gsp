@@ -61,6 +61,7 @@ limitations under the License.
             <a class="saved-searches-list-envelope" id="favorites-list-send" href="#" title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
               <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
             </a>
+            <ddb:getSocialmediaBody />
           </div>
         </div>
       </div>
