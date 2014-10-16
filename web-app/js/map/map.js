@@ -489,30 +489,88 @@ $(document).ready(function() {
         var newobj = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
 			var insti = institutionHierarchy[i];
+			var locationDisplayName;
+			
+			if (i%2 == 0){
+				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
+			}else{
+				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+			}
+			
 			newobj.data.push({
 				id: insti.id,
 				name: insti.name,
 				sector: insti.sector,
-				children: insti.children,
+				childInstitutions: insti.childInstitutions,
         		parents: insti.parents,
-				locationDisplayName: "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union"
+				locationDisplayName: locationDisplayName
 			});
 		}
-        console.log(newobj);
+
+        
         var institutionList = newobj.data;
+        
+        var newobj2 = {data:[]};
+        for (var i = 0; i < institutionList.length; i++) {
+			var insti = institutionList[i];
+//			var array = string.split(',');
+			var locationArray = insti.locationDisplayName.split(',');
+//			var locationArray2 = locationArray.splice(locationArray.length-4, 3);
+			locationArray.splice(9, 1);
+			locationArray.splice(8, 1);
+			locationArray.splice(7, 1);
+			locationArray = locationArray.reverse();
+			
+			newobj2.data.push({
+				id: insti.id,
+				name: insti.name,
+				sector: insti.sector,
+				childInstitutions: insti.childInstitutions,
+        		parents: insti.parents,
+				locationDisplayName: locationArray
+			});
+		}
+        
+        var locationIndex = 0;
+        var locationFound = false;
+        var institutionList2 = newobj2.data;
+        var firstInsti = institutionList2[0];
+        
+        for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
+        	
+            var firstLoc = firstInsti.locationDisplayName[j]
+            console.log(firstLoc);
+            
+	        for (var i = 1; i < institutionList2.length; i++) {
+	        	var actualInsti = institutionList2[i];
+	        	var actualLoc = actualInsti.locationDisplayName[j];
+	        	
+	        	console.log(actualLoc + "-" + firstLoc + " = " + (actualLoc != firstLoc));
+	        	
+	        	if (actualLoc != firstLoc){
+	        		locationIndex = j;
+	        		locationFound = true;
+	        		break
+	        	}
+	        }
+	        
+	        if (locationFound){break}
+        }
+        
+        console.log("locationIndex: " + locationIndex);
+//        console.log(newobj2.data)
 //        for (var i = 0; i < institutionList.length; i++) {
 //        	console.log(institutionList[i]);
 //        }
         
-        for(var i=0; i<institutionHierarchy.length; i++){
-          var institutionItem = institutionHierarchy[i];
+        for(var i=0; i<institutionList.length; i++){
+          var institutionItem = institutionList[i];
           var institutionChildren = institutionItem.childInstitutions;
           
 //          console.log(institutionItem);
           
           actualInstName = institutionItem.sector
           if (previousInstName && actualInstName != previousInstName){
-//        	  console.log("new sector");
         	  html += "  <br><div class='olPopupDDBHeader'>";
         	  html += "    " + institutionItem.sector
         	  html += "  </div><br>";
