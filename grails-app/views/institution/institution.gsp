@@ -65,9 +65,8 @@ limitations under the License.
          </div>
        </div>
      </div>
-     <g:if test="${(countObjcs > 0)}">
        <div class="row">
-         <div class="span12 highlights">
+         <div class="span12 highlights off">
           <h3><g:message encodeAs="html" code="ddbnext.InstitutionItem_CollectionHighlights" /></h3>
            <div class="carousel bb bt">
               <div id="items">
@@ -79,7 +78,6 @@ limitations under the License.
             </div>
          </div>
        </div>
-     </g:if>
      <div class="row">
        <div class="span12 locations">
 

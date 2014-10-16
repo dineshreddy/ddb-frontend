@@ -18,6 +18,7 @@ package de.ddb.next
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse;
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -38,6 +39,8 @@ class InstitutionService {
     def configurationService
 
     def servletContext
+
+    def bookmarksService
 
     def findAll() {
         def totalInstitution = 0
@@ -212,7 +215,7 @@ class InstitutionService {
         }else{
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
-        
+
         def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
         return result
     }
@@ -295,4 +298,53 @@ class InstitutionService {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
 
+
+    /**
+     * Returns the search result for the institution highlight items
+     *
+     * @param institutionid the institution id to search the highlights
+     * @param offset the offset of the search result
+     * @param rows the number of items to retrieve
+     */
+    def getInstitutionHighlights(def institutionid, int offset, int rows) {
+        def utils = WebUtils.retrieveGrailsWebRequest()
+        def params = utils.getParameterMap()
+
+        def bookmarks = []
+        def searchPreview = [:]
+
+        //1) Find the bookmarkFolder that match the institutionId
+        def bookmarkfolder = bookmarksService.findFolderByInstitutionId(params["institutionid"])
+        if (bookmarkfolder) {
+            //2) Find the number of bookmarks in that folder
+            def bookmarkCount = bookmarksService.countBookmarksInFolder(bookmarkfolder.userId, bookmarkfolder.folderId)
+
+            //3) Find the bookmark objects
+            bookmarks = bookmarksService.findBookmarksByFolderId(bookmarkfolder.folderId, offset, rows)
+
+            //4) Define a search query to get the items that matches the bookmarks
+            def query = ""
+            boolean first = true
+            bookmarks.each{
+                if (!first) {
+                    query += " OR "
+                }
+                query += it.itemId
+                first = false
+            }
+
+            ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, [query: query])
+            if(!apiResponse.isOk()){
+                def message = "doItemSearch(): Search response contained error"
+                log.error message
+                throw new RuntimeException(message)
+            }
+
+            //5) Create result object
+            def jsonSearchResult = apiResponse.getResponse()
+            searchPreview["items"] = jsonSearchResult.results?.docs
+            searchPreview["resultCount"] = bookmarkCount
+        }
+        return searchPreview
+    }
 }

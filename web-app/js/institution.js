@@ -55,6 +55,8 @@ $(document).ready(function() {
           var items = $.parseHTML(jsonResponse.html);
 
           if(items) {
+            $(".highlights").removeClass("off");
+            
             //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
             $.each(items, function(index, value) {
               if (value.tagName == 'DIV') {
@@ -102,8 +104,7 @@ $(document).ready(function() {
             var currentPosition = carouselItems.triggerHandler("currentPosition");
             var nextVisbleItem = currentPosition + numberOfVisibleItems;
 
-            if ((nextVisbleItem > (currentLoadItems.length - 1))
-                && (currentLoadItems.length < allRowCount)) {
+            if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
               var institutionid = $("#institution-id").data("institutionid");
               var urlParameters = "?institutionid=" + institutionid + "&offset=" + currentLoadItems.length + "&rows=" + defaultRowCount;
               var History = window.History;
