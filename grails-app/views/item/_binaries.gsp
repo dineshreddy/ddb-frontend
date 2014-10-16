@@ -95,6 +95,9 @@ limitations under the License.
       </div>
     </div>
   </div>
+
+  <div id="ddb-map" class="off" data-geometry="${geometryInput}"></div>
+
   <div class="binary-title">
     <span>${itemTitle}</span>
   </div>
@@ -107,7 +110,7 @@ limitations under the License.
     <span></span>
   </div>
 
-  <g:if test="${flashInformation.images[0] > 1 || flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0}">
+  <g:if test="${flashInformation.images[0] > 1 || flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0 || geometryInput}">
     <g:set var="showGallery" value=""/>
   </g:if>
   <g:else>
@@ -292,5 +295,10 @@ limitations under the License.
         </ul>
       </div>
     </noscript>
+    <g:if test="${geometryInput}">
+      <div role="tablist">
+        <p class="tab map" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Map" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Map" /></p>
+      </div>
+    </g:if>
   </div>
 </div>
