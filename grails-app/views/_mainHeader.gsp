@@ -96,7 +96,7 @@ limitations under the License.
           
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
             <li class="highlight">
-              <g:link controller="content" params="[dir: 'exhibits']">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
+              <g:link controller="lists">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
               <ul class="nav">
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
                   <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
@@ -224,7 +224,7 @@ limitations under the License.
                   <!-- TODO add link to person pages -->
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"],[controller: "lists"]]}">active-default</ddb:isMappingActive>">
-                    <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+                    <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
                     <div class="arrow-container">
                       <div class="arrow-up"></div>
                     </div>
