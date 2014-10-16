@@ -80,7 +80,7 @@ limitations under the License.
               <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:if>
             <g:else>
-              <img src="${publicUrl + it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
+              <img src="${baseUrl + it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:else>
           </g:link>
           <br>

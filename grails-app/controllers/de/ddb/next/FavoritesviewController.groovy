@@ -94,8 +94,7 @@ class FavoritesviewController {
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
-                contextUrl: configurationService.getContextUrl(),
-                publicUrl: configurationService.getPublicUrl()
+                contextUrl: configurationService.getContextUrl()
             ])
             return
         }else{
@@ -392,7 +391,6 @@ class FavoritesviewController {
                         userName:userService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
-                        publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
                         folderTitle: selectedFolder.title
                     ])
