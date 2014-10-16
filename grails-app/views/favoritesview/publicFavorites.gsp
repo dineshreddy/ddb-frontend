@@ -46,7 +46,6 @@ limitations under the License.
                     <br />
                       ${raw(g.message(code: 'ddbnext.Report_Favorites'))}
                     <br />
-                    <br />
                   </div>
                 </div>
                   <a>
