@@ -469,9 +469,55 @@ $(document).ready(function() {
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
+        
+        institutionHierarchy.sort(function(a, b){
+      	  var nameA=a.sector.toLowerCase(), nameB=b.sector.toLowerCase()
+      	  if (nameA < nameB) //sort string ascending
+      	   return -1 
+      	  if (nameA > nameB)
+      	   return 1
+      	  return 0 //default return value (no sorting)
+      	 })
+      	 
+      	var previousInstName = null;
+        if(institutionCount > 1){
+        	html += "  <div class='olPopupDDBHeader'>";
+        	html += "    " + institutionHierarchy[0].sector
+        	html += "  </div><br>";
+        }
+        
+        var newobj = {data:[]};
+        for (var i = 0; i < institutionHierarchy.length; i++) {
+			var insti = institutionHierarchy[i];
+			newobj.data.push({
+				id: insti.id,
+				name: insti.name,
+				sector: insti.sector,
+				children: insti.children,
+        		parents: insti.parents,
+				locationDisplayName: "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union"
+			});
+		}
+        console.log(newobj);
+        var institutionList = newobj.data;
+//        for (var i = 0; i < institutionList.length; i++) {
+//        	console.log(institutionList[i]);
+//        }
+        
         for(var i=0; i<institutionHierarchy.length; i++){
           var institutionItem = institutionHierarchy[i];
           var institutionChildren = institutionItem.childInstitutions;
+          
+//          console.log(institutionItem);
+          
+          actualInstName = institutionItem.sector
+          if (previousInstName && actualInstName != previousInstName){
+//        	  console.log("new sector");
+        	  html += "  <br><div class='olPopupDDBHeader'>";
+        	  html += "    " + institutionItem.sector
+        	  html += "  </div><br>";
+          }
+          previousInstName = actualInstName;
           
           var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
           if (!isInCluster) {
