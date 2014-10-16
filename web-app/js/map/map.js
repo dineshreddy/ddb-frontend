@@ -470,18 +470,21 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
         
-        var newobj = {data:[]};
+        //Create Fake Data on locationDisplayName uuntil we get from Backend
+        var fakeData = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
 			var insti = institutionHierarchy[i];
 			var locationDisplayName;
 			
-			if (i%2 == 0){
+			if (i%3 == 0){
 				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
-			}else{
+			}else if (i%3 == 1){
 				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+			}else{
+				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
 			}
 			
-			newobj.data.push({
+			fakeData.data.push({
 				id: insti.id,
 				name: insti.name,
 				sector: insti.sector,
@@ -491,21 +494,19 @@ $(document).ready(function() {
 			});
 		}
 
+        //Create a table with the string of location and create a new array
+        var fakeDataList = fakeData.data;
         
-        var institutionList = newobj.data;
-        
-        var newobj2 = {data:[]};
-        for (var i = 0; i < institutionList.length; i++) {
-			var insti = institutionList[i];
-//			var array = string.split(',');
+        var formattedData = {data:[]};
+        for (var i = 0; i < fakeDataList.length; i++) {
+			var insti = fakeDataList[i];
 			var locationArray = insti.locationDisplayName.split(',');
-//			var locationArray2 = locationArray.splice(locationArray.length-4, 3);
 			locationArray.splice(9, 1);
 			locationArray.splice(8, 1);
 			locationArray.splice(7, 1);
 			locationArray = locationArray.reverse();
 			
-			newobj2.data.push({
+			formattedData.data.push({
 				id: insti.id,
 				name: insti.name,
 				sector: insti.sector,
@@ -517,19 +518,16 @@ $(document).ready(function() {
         
         var locationIndex = 0;
         var locationFound = false;
-        var institutionList2 = newobj2.data;
-        var firstInsti = institutionList2[0];
+        var institutionList = formattedData.data;
+        var firstInsti = institutionList[0];
         
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
         	
-            var firstLoc = firstInsti.locationDisplayName[j]
-            console.log(firstLoc);
+            var firstLoc = firstInsti.locationDisplayName[j];
             
-	        for (var i = 1; i < institutionList2.length; i++) {
-	        	var actualInsti = institutionList2[i];
+	        for (var i = 1; i < institutionList.length; i++) {
+	        	var actualInsti = institutionList[i];
 	        	var actualLoc = actualInsti.locationDisplayName[j];
-	        	
-	        	console.log(actualLoc + "-" + firstLoc + " = " + (actualLoc != firstLoc));
 	        	
 	        	if (actualLoc != firstLoc){
 	        		locationIndex = j;
@@ -541,9 +539,7 @@ $(document).ready(function() {
 	        if (locationFound){break}
         }
         
-        console.log("locationIndex: " + locationIndex);
-        
-        institutionList2.sort(function(a, b){
+        institutionList.sort(function(a, b){
         	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
         	  if (nameA < nameB) //sort string ascending
         	   return -1 
@@ -555,7 +551,7 @@ $(document).ready(function() {
         	var previousInstName = null;
           if(institutionCount > 1){
           	html += "  <div class='olPopupDDBHeader'>";
-          	html += "    " + institutionList2[0].locationDisplayName[locationIndex]
+          	html += "    " + institutionList[0].locationDisplayName[locationIndex]
           	html += "  </div><br>";
           }
           
@@ -564,8 +560,8 @@ $(document).ready(function() {
 //        	console.log(institutionList[i]);
 //        }
         
-        for(var i=0; i<institutionList2.length; i++){
-          var institutionItem = institutionList2[i];
+        for(var i=0; i<institutionList.length; i++){
+          var institutionItem = institutionList[i];
           var institutionChildren = institutionItem.childInstitutions;
           
 //          console.log(institutionItem);
