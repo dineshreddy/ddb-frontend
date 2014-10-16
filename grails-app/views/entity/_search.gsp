@@ -24,4 +24,3 @@ limitations under the License.
     </g:link>
   </div>
 </div>
-<hr>
