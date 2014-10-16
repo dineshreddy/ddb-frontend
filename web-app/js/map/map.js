@@ -470,22 +470,6 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
         
-        institutionHierarchy.sort(function(a, b){
-      	  var nameA=a.sector.toLowerCase(), nameB=b.sector.toLowerCase()
-      	  if (nameA < nameB) //sort string ascending
-      	   return -1 
-      	  if (nameA > nameB)
-      	   return 1
-      	  return 0 //default return value (no sorting)
-      	 })
-      	 
-      	var previousInstName = null;
-        if(institutionCount > 1){
-        	html += "  <div class='olPopupDDBHeader'>";
-        	html += "    " + institutionHierarchy[0].sector
-        	html += "  </div><br>";
-        }
-        
         var newobj = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
 			var insti = institutionHierarchy[i];
@@ -558,21 +542,38 @@ $(document).ready(function() {
         }
         
         console.log("locationIndex: " + locationIndex);
+        
+        institutionList2.sort(function(a, b){
+        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
+        	  if (nameA < nameB) //sort string ascending
+        	   return -1 
+        	  if (nameA > nameB)
+        	   return 1
+        	  return 0 //default return value (no sorting)
+        	 })
+        	 
+        	var previousInstName = null;
+          if(institutionCount > 1){
+          	html += "  <div class='olPopupDDBHeader'>";
+          	html += "    " + institutionList2[0].locationDisplayName[locationIndex]
+          	html += "  </div><br>";
+          }
+          
 //        console.log(newobj2.data)
 //        for (var i = 0; i < institutionList.length; i++) {
 //        	console.log(institutionList[i]);
 //        }
         
-        for(var i=0; i<institutionList.length; i++){
-          var institutionItem = institutionList[i];
+        for(var i=0; i<institutionList2.length; i++){
+          var institutionItem = institutionList2[i];
           var institutionChildren = institutionItem.childInstitutions;
           
 //          console.log(institutionItem);
           
-          actualInstName = institutionItem.sector
+          actualInstName = institutionItem.locationDisplayName[locationIndex]
           if (previousInstName && actualInstName != previousInstName){
         	  html += "  <br><div class='olPopupDDBHeader'>";
-        	  html += "    " + institutionItem.sector
+        	  html += "    " + institutionItem.locationDisplayName[locationIndex];
         	  html += "  </div><br>";
           }
           previousInstName = actualInstName;
