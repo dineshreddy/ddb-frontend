@@ -165,8 +165,8 @@ $(document).ready(
 
         initPage();
         
-        if($("div.external-links ul li.external-link").length == 0) {
-        	$("div.external-links").addClass("off");
+        if($("div.external-links ul li.external-link").length > 1) {
+        	$("div.external-links").removeClass("off");
         }
         
       }
