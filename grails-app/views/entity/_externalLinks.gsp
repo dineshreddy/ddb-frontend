@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="external-links">
+  <hr>
   <h3><g:message encodeAs="html" code="ddbnext.External_Links" />:</h3>
   <ul class="unstyled">  
     <g:each var="link" in="${entity.sameAs}">
