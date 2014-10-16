@@ -77,13 +77,10 @@ limitations under the License.
         <td style="width: 170px; padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${contextUrl}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
-              <!-- institution logos still point to the content server -->
-              <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
+              <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:if>
             <g:else>
-            favoriteUrl: ${favoriteUrl }
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${favoriteUrl}${confBinary}</g:if><g:else>${favoriteUrl}</g:else>${it.preview.thumbnail}"
-                   alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="${publicUrl + it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:else>
           </g:link>
           <br>
