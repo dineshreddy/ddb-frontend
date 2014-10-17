@@ -72,7 +72,7 @@ limitations under the License.
                                 <div class="row">
                                   <div class="span6 button-group fr">
                                     <button class="reset grey" type="reset"><span><g:message encodeAs="html" code="ddbnext.Reset"/></span></button>
-                                    <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.Search"/></span></button>
+                                    <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.SearchButton"/></span></button>
                                   </div>
                                 </div>
                               </fieldset>
