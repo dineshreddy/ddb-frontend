@@ -185,6 +185,15 @@ class InstitutionService {
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
+                
+                //Create Fake Data on locationDisplayName until we get from Backend
+//                if (i%3 == 0){
+//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
+//                }else if (i%3 == 1){
+//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+//                }else{
+//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
+//                }
             }
 
             // Go over all the Cortex institutions and transfer children/parents information
