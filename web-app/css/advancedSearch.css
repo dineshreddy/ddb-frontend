@@ -71,13 +71,16 @@
 .advanced-search .add-group-button:hover {
   color: #990000;
 }
-.advanced-search .remove-button,.remove-group-button {
+.advanced-search .remove-button {
   background-position: -337px -288px;
+}
+.remove-group-button, .remove-group-button:hover {
+  background-position: -28px -474px;
 }
 .advanced-search .add-button, .add-group-link {
   background-position: -358px -288px
 }
-.advanced-search .remove-button:hover, .remove-group-button:hover {
+.advanced-search .remove-button:hover {
   background-position: -337px -288px;
 }
 .advanced-search .add-button:hover {
