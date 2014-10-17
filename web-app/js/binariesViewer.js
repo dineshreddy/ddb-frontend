@@ -243,6 +243,11 @@ $(document)
                 }, 500);
               }
             });
+            var hideMap = function() {
+              $(".binary-viewer-container").removeClass("off");
+              $("#ddb-map").addClass("off");
+              $("div.tabs").addClass("fix");
+            };
             $(".btn-next").click(function() {
               if (!$(this).hasClass("disabled")) {
                 $(this).addClass("disabled");
@@ -258,6 +263,7 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-images"));
@@ -272,6 +278,7 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-videos"));
@@ -286,12 +293,25 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-audios"));
                   removeRedBorder();
                   updatePreview(tab);
-                  $("#binary-viewer").removeClass( ".img-binary" );
+                  $("#binary-viewer").removeClass("img-binary");
+                });
+            $("p.map").click(
+                function() {
+                  currentTab(this);
+                  $("div.scroller").hide();
+                  $(".binary-viewer-container").addClass("off");
+                  $("#ddb-map").removeClass("off");
+                  if ($("#ddb-map").is(":empty")) {
+                    var map = new DDBMap();
+                    map.displayMultipolygone({"rootDivId": "ddb-map"});
+                  }
+                  $("div.tabs").removeClass("fix");
                 });
             $(".previews").click(
                     function(e) {

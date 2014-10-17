@@ -65,8 +65,9 @@ limitations under the License.
          </div>
        </div>
      </div>
-<%-- FIXME: The highlights feature comes with release 4.7--%>
-<%--     <g:render template="highlights" />--%>
+
+     <g:render template="highlights" />
+     
      <div class="row">
        <div class="span12 locations">
 

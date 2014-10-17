@@ -145,7 +145,7 @@ modules = {
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/map/projections.js'
         resource url:'/js/map/map.js'
-        resource url:'/js/multipolygone.js'
+        //resource url:'/js/multipolygone.js' //used only for the prototype
     }
 
     autocomplete {

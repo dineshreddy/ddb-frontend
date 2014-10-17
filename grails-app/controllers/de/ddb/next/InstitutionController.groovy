@@ -26,8 +26,8 @@ class InstitutionController {
 
     def institutionService
     def configurationService
-    def bookmarksService
     def sessionService
+    def bookmarksService
 
     def show() {
         def allInstitution = institutionService.findAllByAlphabet()
@@ -119,8 +119,8 @@ class InstitutionController {
      */
     public def getInstitutionHighlights() {
         def institutionid = params["institutionid"]
-        def offset = params.long(SearchParamEnum.OFFSET.getName())
-        def rows = params.long(SearchParamEnum.ROWS.getName())
+        int offset = params.int(SearchParamEnum.OFFSET.getName())
+        int rows = params.int(SearchParamEnum.ROWS.getName())
 
         if(!rows) {
             rows = 4
@@ -138,44 +138,15 @@ class InstitutionController {
 
         def institution = [:]
 
-        //TODO Call to dummy method for DDBNEXT-1809 which should be replaced by a call to the FavoritesService.
-        def searchPreview = doItemSearch(institutionid, offset, rows)
-
-        institution["searchPreview"] = searchPreview
+        def highLights = institutionService.getInstitutionHighlights(institutionid, offset, rows)
+        institution["searchPreview"] = highLights
 
         //Replace all the newlines. The resulting html is better parsable by JQuery
         def resultsHTML = g.render(template:"/institution/searchResults", model:["institution": institution]).replaceAll("\r\n", '').replaceAll("\n", '')
 
-        def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
+        def result = ["html": resultsHTML, "resultCount" : highLights?.resultCount]
 
         render (contentType:"text/json"){result}
-    }
-
-    /**
-     * TODO This is a dummy method for DDBNEXT-1809 and should be replaced by a call to the FavoritesService.
-     *
-     */
-    private def doItemSearch(def institutionid, def offset, def rows) {
-        def searchParams = [:]
-        searchParams[SearchParamEnum.FACET.getName()] = FacetEnum.PROVIDER_ID.getName()
-        searchParams[FacetEnum.PROVIDER_ID.getName()] = institutionid
-        searchParams["offset"] = offset
-        searchParams["rows"] = rows
-
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, searchParams)
-        if(!apiResponse.isOk()){
-            def message = "doItemSearch(): Search response contained error"
-            log.error message
-            throw new RuntimeException(message)
-        }
-
-        def jsonSearchResult = apiResponse.getResponse()
-
-        def searchPreview = [:]
-        searchPreview["items"] = jsonSearchResult.results?.docs
-        searchPreview["resultCount"] = jsonSearchResult.numberOfResults
-
-        return searchPreview
     }
 
     private def isFavorite(itemId) {
