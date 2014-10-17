@@ -521,10 +521,10 @@ $(document).ready(function() {
 	        	if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
 	        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
 	        	  if (nameA < nameB) //sort string ascending
-	        	   return -1 
+	        	   {return -1} 
 	        	  if (nameA > nameB)
-	        	   return 1
-	        	  return 0 //default return value (no sorting)
+	        	   {return 1}
+	        	  {return 0 }//default return value (no sorting)
 	        	}
         	 })
         	 
