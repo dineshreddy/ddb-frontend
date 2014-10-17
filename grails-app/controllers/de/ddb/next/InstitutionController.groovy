@@ -27,6 +27,7 @@ class InstitutionController {
     def institutionService
     def configurationService
     def sessionService
+    def bookmarksService
 
     def show() {
         def allInstitution = institutionService.findAllByAlphabet()
