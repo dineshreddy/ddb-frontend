@@ -144,10 +144,6 @@ class ApisController {
             apiResponse.throwException(request)
         }
         def institutions = apiResponse.getResponse()
-        
-//        institutions.each {
-//            it.locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union"
-//        }
 
         // get the clustered institutions
         def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)

@@ -469,43 +469,20 @@ $(document).ready(function() {
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
-        
-        //Create Fake Data on locationDisplayName uuntil we get from Backend
-        var fakeData = {data:[]};
-        for (var i = 0; i < institutionHierarchy.length; i++) {
-			var insti = institutionHierarchy[i];
-			var locationDisplayName;
-			
-			if (i%3 == 0){
-				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
-			}else if (i%3 == 1){
-				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
-			}else{
-				locationDisplayName = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
-			}
-			
-			fakeData.data.push({
-				id: insti.id,
-				name: insti.name,
-				sector: insti.sector,
-				childInstitutions: insti.childInstitutions,
-        		parents: insti.parents,
-				locationDisplayName: locationDisplayName
-			});
-		}
 
-        //Create a table with the string of location and create a new array
-        var fakeDataList = fakeData.data;
         
         var formattedData = {data:[]};
-        for (var i = 0; i < fakeDataList.length; i++) {
-			var insti = fakeDataList[i];
-			var locationArray = insti.locationDisplayName.split(',');
-			locationArray.splice(9, 1);
-			locationArray.splice(8, 1);
-			locationArray.splice(7, 1);
-			locationArray = locationArray.reverse();
+        for (var i = 0; i < institutionHierarchy.length; i++) {
+			var insti = institutionHierarchy[i];
+			var locationArray = [];
 			
+			if (insti.locationDisplayName){
+				locationArray = insti.locationDisplayName.split(',');
+				locationArray.splice(9, 1);
+				locationArray.splice(8, 1);
+				locationArray.splice(7, 1);
+				locationArray = locationArray.reverse();
+			}
 			formattedData.data.push({
 				id: insti.id,
 				name: insti.name,
@@ -540,37 +517,37 @@ $(document).ready(function() {
         }
         
         institutionList.sort(function(a, b){
-        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
-        	  if (nameA < nameB) //sort string ascending
-        	   return -1 
-        	  if (nameA > nameB)
-        	   return 1
-        	  return 0 //default return value (no sorting)
+	        	if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
+	        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
+	        	  if (nameA < nameB) //sort string ascending
+	        	   return -1 
+	        	  if (nameA > nameB)
+	        	   return 1
+	        	  return 0 //default return value (no sorting)
+	        	}
         	 })
         	 
-        	var previousInstName = null;
-          if(institutionCount > 1){
-          	html += "  <div class='olPopupDDBHeader'>";
-          	html += "    " + institutionList[0].locationDisplayName[locationIndex]
-          	html += "  </div><br>";
+    	  var previousInstName = null;
+          if(institutionCount >= 1){
+        	if (institutionList[0].locationDisplayName[locationIndex]){
+        		html += "  <div class='olPopupDDBHeader'>";
+          		html += "    " + institutionList[0].locationDisplayName[locationIndex];
+          		html += "  </div><br>";
+          	}
           }
-          
-//        console.log(newobj2.data)
-//        for (var i = 0; i < institutionList.length; i++) {
-//        	console.log(institutionList[i]);
-//        }
         
         for(var i=0; i<institutionList.length; i++){
           var institutionItem = institutionList[i];
           var institutionChildren = institutionItem.childInstitutions;
           
-//          console.log(institutionItem);
           
           actualInstName = institutionItem.locationDisplayName[locationIndex]
           if (previousInstName && actualInstName != previousInstName){
-        	  html += "  <br><div class='olPopupDDBHeader'>";
-        	  html += "    " + institutionItem.locationDisplayName[locationIndex];
-        	  html += "  </div><br>";
+			if (institutionList[0].locationDisplayName[locationIndex]){
+				html += "  <br><div class='olPopupDDBHeader'>";
+				html += "    " + institutionItem.locationDisplayName[locationIndex];
+				html += "  </div><br>";
+			}
           }
           previousInstName = actualInstName;
           
