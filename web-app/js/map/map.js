@@ -470,7 +470,7 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
 
-        
+        //Get the location data and create an Array with this data
         var formattedData = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
 			var insti = institutionHierarchy[i];
@@ -493,6 +493,7 @@ $(document).ready(function() {
 			});
 		}
         
+        //find geographical priority
         var locationIndex = 0;
         var locationFound = false;
         var institutionList = formattedData.data;
@@ -515,7 +516,7 @@ $(document).ready(function() {
 	        
 	        if (locationFound){break}
         }
-        
+        //sort based on the geographical place founded on the step before
         institutionList.sort(function(a, b){
 	        	if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
 	        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
@@ -527,7 +528,8 @@ $(document).ready(function() {
 	        	}
         	 })
         	 
-    	  var previousInstName = null;
+    	 //Create the first tag of geographical group
+    	 var previousInstName = null;
           if(institutionCount >= 1){
         	if (institutionList[0].locationDisplayName[locationIndex]){
         		html += "  <div class='olPopupDDBHeader'>";
@@ -540,7 +542,7 @@ $(document).ready(function() {
           var institutionItem = institutionList[i];
           var institutionChildren = institutionItem.childInstitutions;
           
-          
+          //Create tag of geographical group
           actualInstName = institutionItem.locationDisplayName[locationIndex]
           if (previousInstName && actualInstName != previousInstName){
 			if (institutionList[0].locationDisplayName[locationIndex]){
