@@ -162,17 +162,11 @@ class EntityController {
      * https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1339
      */
     def persons() {
-        def randomSeed
-        if (params.sort){
-            randomSeed=params.sort
-        }else {
-            randomSeed = getRandomSeed()
-        }
         def entitiesOnPage = 50
         def results = entityService.doEntitySearch([
             rows : entitiesOnPage,
             query : "thumbnail:*",
-            sort : "random_" + randomSeed
+            sort : "random_" + getRandomSeed()
         ])
 
         //There are entities with no thumbnail. We leave them out...
