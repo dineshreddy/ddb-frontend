@@ -27,7 +27,7 @@ class BookmarkServiceIntegrationTests {
 
     /**
      * Is called before every test method.
-     * Creates a new userId for the test. 
+     * Creates a new userId for the test.
      */
     void setUp() {
         println "--------------------------------------------------------------------"
@@ -93,7 +93,30 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
+        return bookmarksService.createFolder(newFolder)
+    }
+
+    def createNewInstitutionFolder(String institutionId) {
+        def now = System.currentTimeMillis()
+        def folderTitle= 'Highlights-' + institutionId
+        def isPublic = true
+        def publishingName = FolderConstants.PUBLISHING_NAME_USERNAME.getValue()
+
+        Folder newFolder = new Folder(
+                null,
+                userId,
+                folderTitle,
+                "",
+                isPublic,
+                publishingName,
+                false,
+                "",
+                null,
+                now,
+                now,
+                institutionId)
         return bookmarksService.createFolder(newFolder)
     }
 
@@ -155,7 +178,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 0,
-                0)
+                0,
+                null)
         def folderId = bookmarksService.createFolder(newFolder)
         assertNotNull folderId
 
@@ -219,7 +243,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${FolderConstants.MAIN_BOOKMARKS_FOLDER.value} folder(${folderId}) for a user(${userId})"
 
@@ -382,7 +407,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
 
         def folders = bookmarksService.findAllFolders(userId)
@@ -409,7 +435,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String itemId = UUID.randomUUID() as String
         String folderId = bookmarksService.createFolder(newFolder)
         def favoriteId = createBookmark(itemId, folderId)
@@ -457,7 +484,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
@@ -491,7 +519,8 @@ class BookmarkServiceIntegrationTests {
                 "",
                 null,
                 now,
-                now)
+                now,
+                null)
         String folderId = bookmarksService.createFolder(newFolder)
         log.info "the bookmark service created a ${folderTitle} folder(${folderId}) for a user(${userId})"
 
@@ -591,4 +620,27 @@ class BookmarkServiceIntegrationTests {
         assert folder.bookmarks.equals([])
         bookmarksService.deleteFolder(folderId)
     }
+
+    @Test void shouldGetFolderbyInstitutionId() {
+        String folderId = createNewInstitutionFolder("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
+
+        Folder folder = bookmarksService.findFolderByInstitutionId("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
+        assert folder.institutionId == "NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE"
+        assert folder.folderId == folderId
+    }
+
+    @Test void shouldHandleNotExistingFolderbyInstitutionId() {
+        Folder folder = bookmarksService.findFolderByInstitutionId("2GJUO7RSKB56546VZZIK5GN7GZUY")
+        assert folder == null
+    }
+
+    @Test void shouldGetOnlyOneFolderbyInstitutionId() {
+        String folderId1 = createNewInstitutionFolder("ABC")
+        String folderId2 = createNewInstitutionFolder("ABC")
+
+        Folder folder = bookmarksService.findFolderByInstitutionId("ABC")
+        assert folder.folderId == folderId1
+    }
+
+
 }
