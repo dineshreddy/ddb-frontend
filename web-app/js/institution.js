@@ -152,11 +152,11 @@ $(document).ready(function() {
     
     var initPage = function() {
       var institutionid = $("#institution-id").data("institutionid");
-// FIXME: The highlights feature comes with release 4.7
-//      initCarousel();
-//      
-//      // Initialize Search results
-//      getNewSearchResults(0, defaultRowCount, institutionid);
+
+      initCarousel();
+      
+      // Initialize Search results
+      getNewSearchResults(0, defaultRowCount, institutionid);
       
       var socialMediaManager = new SocialMediaManager();
       de.ddb.common.search.initHistorySupport(null);

@@ -67,21 +67,7 @@ limitations under the License.
      </div>
 
      <g:render template="highlights" />
-
-       <div class="row">
-         <div class="span12 highlights off">
-          <h3><g:message encodeAs="html" code="ddbnext.InstitutionItem_CollectionHighlights" /></h3>
-           <div class="carousel bb bt">
-              <div id="items">
-              <%--      Items will be retrieved via Javascript       --%>
-              </div>
-              <div class="clearfix"></div>
-              <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
-              <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
-            </div>
-         </div>
-       </div>
->>>>>>> refs/heads/DDBNEXT-1809
+     
      <div class="row">
        <div class="span12 locations">
 

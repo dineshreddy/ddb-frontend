@@ -13,18 +13,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:if test="${(countObjcs > 0)}">
-  <div class="row">
-   <div class="span12 highlights">
-    <h3><g:message encodeAs="html" code="ddbnext.InstitutionItem_CollectionHighlights" /></h3>
-     <div class="carousel bb bt">
-        <div id="items">
-        <%--      Items will be retrieved via Javascript       --%>
-        </div>
-        <div class="clearfix"></div>
-        <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
-        <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
+
+<div class="row">
+ <div class="span12 highlights off">
+  <h3><g:message encodeAs="html" code="ddbnext.InstitutionItem_CollectionHighlights" /></h3>
+   <div class="carousel bb bt">
+      <div id="items">
+      <%--      Items will be retrieved via Javascript       --%>
       </div>
-   </div>
-  </div>
-</g:if>
+      <div class="clearfix"></div>
+      <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
+      <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
+    </div>
+ </div>
+</div>
