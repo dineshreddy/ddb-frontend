@@ -190,7 +190,6 @@ class UserController {
                     params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "asc"])
                 ]
             }
-            def totalResults= savedSearches.size()
             render(view: "savedsearches", model: [
                 dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
