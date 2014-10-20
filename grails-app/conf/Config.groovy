@@ -137,8 +137,7 @@ ddb {
                 [facetName:FacetEnum.AFFILIATE_FCT_ROLE.getName(), filter:'null'],
                 [facetName:FacetEnum.TYPE_FCT.getName(), filter:'null'],
                 [facetName:FacetEnum.SECTOR_FCT.getName(), filter:'null'],
-                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null'],
-                [facetName:FacetEnum.TIME_FCT.getName(), filter:'null']
+                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null']
             ]
         }
     }
