@@ -36,8 +36,6 @@ import de.ddb.common.exception.ItemNotFoundException
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
 
-    private static final SOURCE_PLACEHOLDER = '{0}'
-
     def transactional = false
     def grailsApplication
     def configurationService

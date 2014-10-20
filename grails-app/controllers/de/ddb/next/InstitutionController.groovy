@@ -15,11 +15,8 @@
  */
 package de.ddb.next
 import grails.converters.JSON
-import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiInstitution
-import de.ddb.common.ApiResponse
 import de.ddb.common.beans.User
-import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 
 class InstitutionController {
