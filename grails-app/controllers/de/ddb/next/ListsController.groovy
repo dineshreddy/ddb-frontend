@@ -16,12 +16,7 @@
 package de.ddb.next
 
 import net.sf.json.JSON
-
-import org.springframework.web.servlet.support.RequestContextUtils
-
-import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 
 /**
  * Controller class for list related views
@@ -29,7 +24,6 @@ import de.ddb.common.constants.SupportedLocales
  * @author boz
  */
 class ListsController {
-    def userService
     def listsService
     def searchService
 
@@ -44,7 +38,6 @@ class ListsController {
 
         //Request parameter handling
         //*********************************************************************
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def queryString = request.getQueryString() ? request.getQueryString() : ""
         int offset = urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()
@@ -63,9 +56,9 @@ class ListsController {
         if (params.id) {
             id = params.id
         }
-            model.selectedListId =id
+        model.selectedListId =id
         folders = getFoldersOfList(id, offset, rows)
-        
+
         model.folders = folders.folders  as JSON
         model.folderCount = folders.count
 
