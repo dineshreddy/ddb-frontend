@@ -157,7 +157,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
   Public.setupDom4MapDisplay = function() {
     var hash = window.location.hash.substring(1);
-    if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
+    if (hash === 'map' || hash === '') {
       _enableMapView();
     } else {
       _enableListView();
