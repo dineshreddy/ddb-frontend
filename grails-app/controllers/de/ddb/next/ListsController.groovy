@@ -100,13 +100,13 @@ class ListsController {
     private createListMenu() {
         def menu = []
 
-        //Initialize the daily favorite lists
-        def ddbAllList = listsService.getDdbAllList()
-        menu.add(ddbAllList)
-
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
         lists?.each { menu.add(it) }
+
+        //Initialize the daily favorite lists
+        def ddbAllList = listsService.getDdbAllList()
+        menu.add(ddbAllList)
 
         return menu
     }
