@@ -32,5 +32,14 @@ $(function() {
         itemSelector: '.pin'
       });
     });
+
+    $(window).bind("load", function() {
+        $('.small-loader').remove();
+        $('.search-results-overlay-waiting').remove();
+        $('.search-results-overlay-modal').remove();
+        $('.search-results-content').fadeIn('fast');
+      });
+    
   }
+  
 });

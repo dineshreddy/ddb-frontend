@@ -107,3 +107,34 @@
   font-size: 15px;
 }
 
+.search-results-content {
+  position: relative;
+}
+
+.search-results-content .search-results-overlay-modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background-color: #FFFFFF;
+  opacity: 0.90;
+  filter: alpha(opacity = 90);
+}
+
+.search-results-content .search-results-overlay-waiting {
+  text-align: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.search-results-content .search-results-overlay-waiting .small-loader {
+  position: relative;
+  top: 50px;
+  left: 45%;
+}
+

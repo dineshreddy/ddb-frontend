@@ -40,7 +40,6 @@ limitations under the License.
       </div>
     </div>
   </div>
-  
   <div class="row persons-body">
     <div class="span3 persons-font">
       <p>
@@ -55,6 +54,10 @@ limitations under the License.
     </div>
     <div class="span9 search-results-content">
         <div>
+        <div class="search-results-overlay-modal"></div>
+        <div class="search-results-overlay-waiting">
+          <div class="small-loader"></div>
+        </div>
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
