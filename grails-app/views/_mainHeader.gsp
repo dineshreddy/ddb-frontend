@@ -340,7 +340,7 @@ limitations under the License.
                   </div>
                   <g:link class="link-adv-search"
                     controller="advancedsearch">
-                    <g:message encodeAs="html" code="ddbnext.Advanced_search" />
+                    <g:message encodeAs="html" code="ddbnext.AdvancedSearch" />
                   </g:link>
                 </div>
               </form>

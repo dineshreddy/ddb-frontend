@@ -46,7 +46,7 @@ limitations under the License.
             </button>
             
             <div class="link-adv-search">
-              <g:link class="fl" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.Advanced_search"/></g:link>
+              <g:link class="fl" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></g:link>
             </div>
           </g:form>
         </div>

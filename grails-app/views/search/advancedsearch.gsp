@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message encodeAs="html" code="ddbnext.Advanced_search" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message encodeAs="html" code="ddbnext.AdvancedSearch" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
