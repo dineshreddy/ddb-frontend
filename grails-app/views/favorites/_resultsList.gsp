@@ -30,7 +30,7 @@ limitations under the License.
     </g:elseif>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span6">
+        <div class="summary-main-wrapper span5">
           <g:if test="${publicView}">
             <div class="rank">${it.orderNumber}</div>
           </g:if>
@@ -82,7 +82,7 @@ limitations under the License.
             </g:link>
           </g:else>
         </div>
-        <div class="span1 created-at">
+        <div class="span2 created-at">
          <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>
