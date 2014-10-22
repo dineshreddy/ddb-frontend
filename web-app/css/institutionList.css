@@ -26,6 +26,14 @@
   .nonjs-registered-institutions {
     display: none !important;
   }
+
+  .container h1 {
+    margin: 10px 0 0 0;
+  }
+
+  .container .institutionlist {
+    margin-top: 0;
+  }
 }
 
 .view-type-switch #view-institution-list {
