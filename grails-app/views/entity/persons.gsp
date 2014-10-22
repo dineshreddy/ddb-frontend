@@ -52,10 +52,10 @@ limitations under the License.
         <g:message code="ddbnext.entities.personspage.licenceInfo" />
       </p>
     </div>
-    <div class="span9 search-results-content">
+    <div class="span9 persons-overview-content">
         <div>
-        <div class="search-results-overlay-modal"></div>
-        <div class="search-results-overlay-waiting">
+        <div class="persons-overview-overlay-modal"></div>
+        <div class="persons-overview-overlay-waiting">
           <div class="small-loader"></div>
         </div>
       <div id="columns">
