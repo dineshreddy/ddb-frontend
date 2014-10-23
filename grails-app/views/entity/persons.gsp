@@ -40,7 +40,6 @@ limitations under the License.
       </div>
     </div>
   </div>
-  
   <div class="row persons-body">
     <div class="span3 persons-font">
       <p>
@@ -53,8 +52,12 @@ limitations under the License.
         <g:message code="ddbnext.entities.personspage.licenceInfo" />
       </p>
     </div>
-    <div class="span9 search-results-content">
+    <div class="span9 persons-overview-content">
         <div>
+        <div class="persons-overview-overlay-modal"></div>
+        <div class="persons-overview-overlay-waiting">
+          <div class="small-loader"></div>
+        </div>
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
