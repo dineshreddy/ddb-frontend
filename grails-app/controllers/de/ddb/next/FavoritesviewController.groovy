@@ -94,8 +94,7 @@ class FavoritesviewController {
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
-                contextUrl: configurationService.getContextUrl(),
-                publicUrl: configurationService.getPublicUrl()
+                contextUrl: configurationService.getContextUrl()
             ])
             return
         }else{
@@ -144,8 +143,7 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                def favoriteUrl =  request.getServerName()
-                sendBookmarkPerMail(params.email,orderedFavorites, selectedFolder, favoriteUrl)
+                sendBookmarkPerMail(params.email, orderedFavorites, selectedFolder)
             }
 
             render(view: ACTION, model: [
@@ -272,8 +270,7 @@ class FavoritesviewController {
                 }
 
                 if (request.method=="POST"){
-                    def favoriteUrl =  request.getServerName()
-                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder, favoriteUrl)
+                    sendBookmarkPerMail(params.email, allResultsWithAdditionalInfo, selectedFolder)
                 }
                 render(view: ACTION, model: [
                     results: resultsItems,
@@ -370,7 +367,7 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder,String favoriteUrl) {
+    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
@@ -394,10 +391,8 @@ class FavoritesviewController {
                         userName:userService.getUserFromSession().getFirstnameAndLastnameOrNickname(),
                         baseUrl: configurationService.getSelfBaseUrl(),
                         contextUrl: configurationService.getContextUrl(),
-                        publicUrl: configurationService.getPublicUrl(),
                         folderDescription:selectedFolder.description,
-                        folderTitle: selectedFolder.title,
-                        favoriteUrl: favoriteUrl
+                        folderTitle: selectedFolder.title
                     ])
 
                 }
