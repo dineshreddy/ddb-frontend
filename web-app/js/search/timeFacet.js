@@ -369,7 +369,9 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     if (beginDate || endDate) {
       currObjInstance.updateTimeSpanForm();
       currObjInstance.openForm();
-      $("#add-timespan").removeClass('');
+      $("#add-timespan").removeClass('disabled');
+      $('#reset-timefacet').removeClass('disabled');
+      $('#reset-timefacet').addClass('grey');
     } else {
       //Close the form if no values has been found.
       currObjInstance.closeForm();
