@@ -19,7 +19,6 @@ import net.sf.json.JSON
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 
@@ -63,9 +62,9 @@ class ListsController {
         if (params.id) {
             id = params.id
         }
-            model.selectedListId =id
+        model.selectedListId =id
         folders = getFoldersOfList(id, offset, rows)
-        
+
         model.folders = folders.folders  as JSON
         model.folderCount = folders.count
 
@@ -109,11 +108,12 @@ class ListsController {
 
         //Initialize the daily favorite lists
         def ddbAllList = listsService.getDdbAllList()
-        menu.add(ddbAllList)
 
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
         lists?.each { menu.add(it) }
+
+        menu.add(ddbAllList)
 
         return menu
     }

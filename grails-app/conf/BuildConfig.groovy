@@ -113,7 +113,7 @@ grails.project.dependency.resolution = {
 
         if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
-            compile "de.ddb:ddb-common:0.12"
+            compile "de.ddb:ddb-common:0.12.1"
         }
     }
 
