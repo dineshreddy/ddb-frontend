@@ -54,7 +54,10 @@ $(function() {
 
     //Operations on the grid where triggered only once clicked and ignored if the viewtype grid was coming from the URL
     if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()=='grid'){
-      $("#view-grid").trigger( "click" );
+      //In IE9<= creates an infinite loop due that doesn't support pushState.
+      if (de.ddb.common.search.historySupport){
+          $("#view-grid").trigger( "click" );
+      }
     }
   }
 });
