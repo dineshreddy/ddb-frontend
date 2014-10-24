@@ -27,7 +27,7 @@ limitations under the License.
           ${item.bookmark.updateDateFormatted}
         </div>
       </g:if>
-      <div class="comment-content <g:if test="${publicView}">comment-content-with-publisher</g:if>"
+      <div class="comment-content"
            id="comment-text-dyn-${item.bookmark.bookmarkId}">
         <g:if test="${!item.bookmark.description.isEmpty()}">
           ${item.bookmark.description.trim()}
@@ -35,12 +35,13 @@ limitations under the License.
         <g:else>
           <g:message encodeAs="html" code="ddbnext.Favorites_Comment_Label" />
         </g:else>
-        <g:if test="${publicView}">
-          <div class="comment-meta fr">
-            <g:message code="ddbnext.Public_Favorites_Comment_Of"/> ${item.folder.publishingName}
-          </div>
-        </g:if>
       </div>
+      <g:if test="${publicView}">
+        <div class="comment-meta fr">
+          <g:message code="ddbnext.Public_Favorites_Comment_Of"/> ${item.folder.publishingName}
+        </div>
+        <div class="clearfix"></div>
+      </g:if>
     </div>
     <g:if test="${!publicView}">
       <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ><g:if test="${!item.bookmark.description.isEmpty()}">${item.bookmark.description.trim()}</g:if></textarea>
