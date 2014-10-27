@@ -42,9 +42,11 @@ limitations under the License.
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject}">
-            ${raw(ddbcommon.encodeInvalidHtml(text:it.value."\$"))}
-          </g:if>
+           <g:if test="${it.value instanceof JSONObject && !JsonUtil.isAnyNull(it.value."@entityId")}">
+              <g:link controller="entity" action="index" params="${["id": it.value."@entityId"]}" class="entity-link">
+                ${it.value."\$"}
+              </g:link>
+            </g:if>
           <g:else>
             ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
           </g:else>
