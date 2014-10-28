@@ -26,15 +26,10 @@ limitations under the License.
         <g:if test="${it.value instanceof JSONArray}">
           <g:each var="value" in="${it.value}">
             <g:if test="${value instanceof JSONObject && !JsonUtil.isAnyNull(value."@entityId")}">
-              <g:if test="${value."@isLink"}">
-                  <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
-                    ${value."\$"}
-                  </g:link>
-                </g:if>
-                <g:else>
-                  ${value."\$"}
-                </g:else>
-              </g:if>
+              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
+                ${value."\$"}
+              </g:link>
+            </g:if>
             <g:else>
               <g:if test="${value instanceof JSONObject}">
                 ${raw(ddbcommon.encodeInvalidHtml(text:value."\$"))}
@@ -47,16 +42,11 @@ limitations under the License.
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject}">
-            <g:if test="${it.value."@isLink"}">
-                  <g:link controller="entity" action="index" params="${["id": it.value."@entityId"]}" class="entity-link">
-                    ${raw(ddbcommon.encodeInvalidHtml(text:it.value."\$"))}
-                  </g:link>
+           <g:if test="${it.value instanceof JSONObject && !JsonUtil.isAnyNull(it.value."@entityId")}">
+              <g:link controller="entity" action="index" params="${["id": it.value."@entityId"]}" class="entity-link">
+                ${it.value."\$"}
+              </g:link>
             </g:if>
-            <g:else>
-              ${raw(ddbcommon.encodeInvalidHtml(text:it.value."\$"))}
-            </g:else>
-          </g:if>
           <g:else>
             ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
           </g:else>
