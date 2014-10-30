@@ -266,6 +266,14 @@ hr {
   margin-top: 5px;
 }
 
+.public-favorites .page-link-popup-anchor {
+  margin-right: 0;
+}
+
+.public-favorites .saved-searches-list-envelope {
+  margin-left: 30px;
+}
+
 .public-favorites .popup-dialog-wrapper {
   margin-top: -48px !important;
 }
