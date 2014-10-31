@@ -108,7 +108,7 @@ limitations under the License.
                 </div>
               </g:if>
             </div>
-            <div id="divOSM" class="span5 no-script">
+            <div id="divOSM" class="span5 script">
               <div id="ddb-map"></div>
             </div>
         </div>

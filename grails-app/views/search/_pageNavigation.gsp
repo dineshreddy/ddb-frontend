@@ -20,7 +20,7 @@ limitations under the License.
     <ddb:renderResultsPaginatorOptions paginatorData="${paginatorOptions}"></ddb:renderResultsPaginatorOptions>
   </g:if>
   
-  <div class="no-script">
+  <div class="script">
   <g:if test="${paginatorViewSwitch != null && paginatorViewSwitch != false}">
     <div class="view-type-switch">
       <!--[if lt IE 9]>

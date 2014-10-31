@@ -59,13 +59,16 @@ limitations under the License.
                   </a>
               </div>
             </div>
-            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}"
+               title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
-            
-            <a class="saved-searches-list-envelope" id="favorites-list-send" href="#" title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
-              <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
-            </a>
+            <ddbcommon:isLoggedIn>
+              <a class="saved-searches-list-envelope" id="favorites-list-send" href="#"
+                 title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
+                <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
+              </a>
+            </ddbcommon:isLoggedIn>
           </div>
         </div>
       </div>
