@@ -148,7 +148,7 @@ class EntityController implements InitializingBean {
             entityImageUrl = imageUrl
         }
 
-        // filter out external links with point to DDB
+        // filter out external links which point to DDB
         jsonGraph.sameAs.removeAll { link -> new URL(link.'@id').getHost().equals(ddbUrl.getHost())}
 
         def model = ["entity": jsonGraph,
