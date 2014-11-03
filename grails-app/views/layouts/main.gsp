@@ -29,7 +29,10 @@ limitations under the License.
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
-    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: 'opensearch.osdx')}" type="application/opensearchdescription+xml" />
+    <g:if test="${ddb.getCurrentLocale() == 'de'}"><g:set var="filename" value="opensearch_de.osdx"></g:set></g:if>
+    <g:else if test="${ddb.getCurrentLocale() == 'en'}"><g:set var="filename" value="opensearch_en.osdx"></g:set></g:else>
+    
+    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: filename)}" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
