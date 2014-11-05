@@ -32,6 +32,7 @@ limitations under the License.
     <g:if test="${ddb.getCurrentLocale() == 'de'}"><g:set var="filename" value="opensearch_de.osdx"></g:set></g:if>
     <g:else if test="${ddb.getCurrentLocale() == 'en'}"><g:set var="filename" value="opensearch_en.osdx"></g:set></g:else>
     
+    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: filename)}" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
