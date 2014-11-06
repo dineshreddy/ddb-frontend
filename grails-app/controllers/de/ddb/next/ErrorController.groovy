@@ -153,19 +153,12 @@ class ErrorController {
 
         // Return the view dependent on the configured environment (PROD vs DEV)
         if ( Environment.PRODUCTION == Environment.getCurrent() ) {
-
             // Return the 404 view
-            log.error "notFound(): Return view '404'"
             return render(view:'404_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [type: type])
-
         } else {
-
             // Not it production? show an ugly, developer-focused error message
-            log.error "notFound(): Return view '404_development'"
             return render(view:'404_development', model: ["error_message": exceptionMessage, "apiResponse": apiResponse, type: type], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-
         }
-
     }
 
     def defaultNotFound() {
