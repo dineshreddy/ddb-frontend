@@ -16,7 +16,7 @@ limitations under the License.
 
 <g:each var="item" in="${entity?.searchPreview?.items}">
     <div class="preview-item">
-    <div style="height: 105px; padding-bottom: 10px;">
+    <div class="preview-item-image">
       <g:link controller="item" action="findById" params="${["id": item?.id]}">
         <g:if test="${ (item?.preview?.thumbnail.toString().contains('binary'))}">
           <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />

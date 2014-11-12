@@ -141,6 +141,11 @@
   font-weight: normal;
 }
 
+.preview-item .preview-item-image {
+  height: 105px;
+  padding-bottom: 10px;
+}
+
 .entity-page .media-bar a {
   text-decoration: underline;
 }
