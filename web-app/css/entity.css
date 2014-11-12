@@ -120,7 +120,6 @@
 .entity-page .preview-item img {
   text-align: center;
   max-height: 105px;
-  height: 105px;
   max-width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -131,13 +130,15 @@
   left:0px;
   bottom:0px;
   font-size: 0.875em;
-  font-weight: bold;
   height: 36px;
   line-height: 18px;
-  opacity: 0.8;
   text-overflow: ellipsis;
   text-align: center;
   max-width: 150px;
+}
+
+.caption strong {
+  font-weight: normal;
 }
 
 .entity-page .media-bar a {
