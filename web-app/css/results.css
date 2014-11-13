@@ -974,7 +974,7 @@ input[type="checkbox"],input[type="radio"] {
     display: none;
   }
 
-  .view-type-switch {
+  .search-results-content .view-type-switch {
     display:none;
     visibility: hidden;
   }
