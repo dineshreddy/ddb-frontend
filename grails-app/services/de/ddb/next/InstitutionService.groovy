@@ -80,32 +80,17 @@ class InstitutionService {
 
     @Cacheable(value="institutionCache", key="'getNumberOfItemsAndInstitutionsWithItems'")
     def getNumberOfItemsAndInstitutionsWithItems() {
-        List list = grailsApplication.mainContext.institutionService.findAllArchiveInstitutionsWithItems()
-        return countItemsAndInstitutions(list)
-    }
-
-    private countItemsAndInstitutions(List institutionList) {
-        def itemCounter = 0
-        def institutionCounter = 0
-
-        if (institutionList != null) {
-            institutionList.each { it ->
-                if (it.hasItems) {
-                    institutionCounter++;
-                    itemCounter += it.numberOfItems
-                }
-                if (it.children) {
-                    def subs = countItemsAndInstitutions(it.children)
-                    itemCounter += subs.items
-                    institutionCounter += subs.institutions
-                }
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, ["client":"DDB-NEXT", "facet": "provider_fct", "offset": "0", "rows": "0", "query": "*", "facet.limit": "-1"])
+        def responseContent = apiResponse.getResponse()
+        def institutions = 0;
+        def items = responseContent.numberOfResults
+        responseContent.facets.each { it ->
+            if (it.field == "provider_fct") {
+                institutions = it.numberOfFacets
             }
         }
-        return [items: itemCounter, institutions: institutionCounter]
+        return [items : items, institutions : institutions]
     }
-
-
-
 
 
     /**
