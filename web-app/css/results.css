@@ -974,6 +974,11 @@ input[type="checkbox"],input[type="radio"] {
     display: none;
   }
 
+  .view-type-switch {
+    display:none;
+    visibility: hidden;
+  }
+  
   .page-nav-mob  {
     display: block;
   }
