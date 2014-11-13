@@ -21,6 +21,8 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse;
+import de.ddb.common.constants.FacetEnum;
+import de.ddb.common.constants.SearchParamEnum;
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -78,9 +80,20 @@ class InstitutionService {
         return responseWrapper.getResponse()
     }
 
+    /**
+     * Determines the number of institutions providing items and the total number of items.
+     * 
+     * @return a map containing the fields "items" and "institutions" 
+     */
     @Cacheable(value="institutionCache", key="'getNumberOfItemsAndInstitutionsWithItems'")
     def getNumberOfItemsAndInstitutionsWithItems() {
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, ["client":"DDB-NEXT", "facet": "provider_fct", "offset": "0", "rows": "0", "query": "*", "facet.limit": "-1"])
+        def queryMap = [:]
+        queryMap.put(SearchParamEnum.FACET.getName(), FacetEnum.PROVIDER_FCT.getName())
+        queryMap.put(SearchParamEnum.OFFSET.getName(), "0")
+        queryMap.put(SearchParamEnum.ROWS.getName(), "0")
+        queryMap.put(SearchParamEnum.QUERY.getName(), "*")
+        queryMap.put("facet.limit", "-1")
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, queryMap)
         def responseContent = apiResponse.getResponse()
         def institutions = 0;
         def items = responseContent.numberOfResults
