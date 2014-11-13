@@ -959,6 +959,11 @@ header .language-widget form,.header .language-widget form {
   font-size: 0.938em;
 }
 
+#form-search .link-stats {
+  margin-top: 10px;
+  font-size: 0.938em;
+}
+
 #form-search .tooltip {
   max-width: 93%;
   margin: 12px 0;
