@@ -162,7 +162,6 @@ limitations under the License.
     </tr>
   </table>
   <g:render template="itemdetailsPdf" />
-  <g:render template="itemHierarchyPdf" model="[hierarchy:hierarchy]" />  
   <g:render template="linkurlPdf" />
 </body>
 </html>
