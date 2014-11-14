@@ -21,6 +21,8 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse;
+import de.ddb.common.constants.FacetEnum;
+import de.ddb.common.constants.SearchParamEnum;
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -75,16 +77,41 @@ class InstitutionService {
         if(!responseWrapper.isOk()){
             responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
-
         return responseWrapper.getResponse()
     }
+
+    /**
+     * Determines the number of institutions providing items and the total number of items.
+     * 
+     * @return a map containing the fields "items" and "institutions" 
+     */
+    @Cacheable(value="institutionCache", key="'getNumberOfItemsAndInstitutionsWithItems'")
+    def getNumberOfItemsAndInstitutionsWithItems() {
+        def queryMap = [:]
+        queryMap.put(SearchParamEnum.FACET.getName(), FacetEnum.PROVIDER_FCT.getName())
+        queryMap.put(SearchParamEnum.OFFSET.getName(), "0")
+        queryMap.put(SearchParamEnum.ROWS.getName(), "0")
+        queryMap.put(SearchParamEnum.QUERY.getName(), "*")
+        queryMap.put("facet.limit", "-1")
+        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, queryMap)
+        def responseContent = apiResponse.getResponse()
+        def institutions = 0;
+        def items = responseContent.numberOfResults
+        responseContent.facets.each { it ->
+            if (it.field == "provider_fct") {
+                institutions = it.numberOfFacets
+            }
+        }
+        return [items : items, institutions : institutions]
+    }
+
 
     /**
      * Returns all archives ordered by alphabet.
      *
      * The value of this method is cached!
      *
-     * @return all archives that have items.
+     * @return all archives 
      */
     def findAllByAlphabet() {
         def totalInstitution = 0
@@ -185,15 +212,15 @@ class InstitutionService {
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
-                
+
                 //Create Fake Data on locationDisplayName until we get from Backend
-//                if (i%3 == 0){
-//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
-//                }else if (i%3 == 1){
-//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
-//                }else{
-//                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
-//                }
+                //                if (i%3 == 0){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
+                //                }else if (i%3 == 1){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+                //                }else{
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
+                //                }
             }
 
             // Go over all the Cortex institutions and transfer children/parents information

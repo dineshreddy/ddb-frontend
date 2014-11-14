@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
+
 <html>
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Homepage"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -44,9 +46,14 @@ limitations under the License.
                 <g:message encodeAs="html" code="ddbnext.Go_Button"/>
               <![endif]-->
             </button>
-            
+            <div class="link-stats">
+              <g:link class="fl" controller="content" action="faq" fragment="A110" title="${g.message(code:"ddbnext.Homepage_Statistics_Whats_Offered")}" >
+                <g:message encodeAs="html" args='["${String.format(RequestContextUtils.getLocale(request),'%,d', stats.items)}", 
+                    "${String.format(RequestContextUtils.getLocale(request),'%,d', stats.institutions)}"]' code="ddbnext.Homepage_Statistics"/>
+              </g:link>
+            </div>
             <div class="link-adv-search">
-              <g:link class="fl" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></g:link>
+              <g:link class="fr" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></g:link>
             </div>
           </g:form>
         </div>
