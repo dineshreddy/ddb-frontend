@@ -1314,7 +1314,7 @@ color: #a5003b;
 }
 
 .search-results .results-list.grid{
-  text-align:center;
+  text-align: left;
 }
 
 .results-list.grid .thumbnail a {
