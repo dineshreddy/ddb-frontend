@@ -1255,17 +1255,17 @@ $(document).ready(function() {
               }
               this._addButton("panright", "east-mini.png", px.add(wposition, 0), sz);
               this._addButton("pandown", "south-mini.png", centered.add(0, sz.h*2), sz);
-              this._addButton("zoomin", "zoom-plus-mini.png", centered.add(0, sz.h*3+5), sz);
+              this._addButton("zoomin", "zoom-plus.png", centered.add(0, sz.h*3+5));
               centered = this._addZoomBar(centered.add(0, sz.h*4 + 5));
-              this._addButton("zoomout", "zoom-minus-mini.png", centered, sz);
+              this._addButton("zoomout", "zoom-minus.png", centered);
           }
           else {
-              this._addButton("zoomin", "zoom-plus-mini.png", px, sz);
+              this._addButton("zoomin", "zoom-plus.png", px, sz);
               centered = this._addZoomBar(px.add(0, sz.h));
-              this._addButton("zoomout", "zoom-minus-mini.png", centered, sz);
+              this._addButton("zoomout", "zoom-minus.png", centered);
               if (this.zoomWorldIcon) {
                   centered = centered.add(0, sz.h+3);
-                  this._addButton("zoomworld", "zoom-world-mini.png", centered, sz);
+                  this._addButton("zoomworld", "zoom-world-mini.png", centered);
               }
           }
           return this.div;
