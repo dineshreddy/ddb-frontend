@@ -44,7 +44,7 @@ hr {
 }
 
 .fav-text a{
-  display: block;
+  display: inline;
 }
 
 .saved-searches .bookmarks-lists .bookmarks-list {
