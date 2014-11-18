@@ -612,12 +612,19 @@ $(document).ready(function() {
 
       _getSelectedSectors : function() {
         var sectors = [];
-        $('.sector-facet').each(function() {
-          var sector = $(this).find('input').data('sector');
-          if ($(this).find('input').is(':checked')) {
-            sectors.push(sector);
-          }
-        });
+        if ($('.multiselect').is(':visible')) {
+          $('.multiselect option:selected').each(function() {
+            sectors.push($(this).val());
+          });   
+        }
+        else {
+          $('.sector-facet').each(function() {
+            var sector = $(this).find('input').data('sector');
+            if ($(this).find('input').is(':checked')) {
+              sectors.push(sector);
+            }
+          });
+        }
         return sectors;
       },
 
