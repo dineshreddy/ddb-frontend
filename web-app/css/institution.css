@@ -189,8 +189,8 @@ circle {
 .institution-item-page .preview-item {
     float: left;
     position: relative;
-    max-width: 180px;
-    width: 180px;
+    max-width: 140px;
+    width: 140px;
     height: 175px;
 }
 
@@ -206,12 +206,14 @@ circle {
   overflow: hidden;
   height: 36px;
   line-height: 18px;
+  text-align: center;
+  width: 100%;
 }
 
 .institution-item-page .preview-item img {
   text-align: center;
   max-height: 105px;
-  max-width: 140px;
+  max-width: 120px;
   margin-left: auto;
   margin-right: auto;
   display: block;
