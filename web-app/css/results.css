@@ -1313,7 +1313,11 @@ color: #a5003b;
   padding-right: 30px;
 }
 
-.search-results .results-list.grid{
+.search-results .results-list.grid .title {
+  text-align: center;
+}
+
+.search-results .results-list.grid {
   text-align: left;
 }
 
