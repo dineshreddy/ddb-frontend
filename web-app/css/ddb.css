@@ -1585,9 +1585,6 @@ select {
 .searchsend-form {
   margin: 0 0 0px;
 }
-#favorite-confirmation {
-  margin-top: -140.5px !important;
-}
 
 .savesearch-edit-input {
   padding: 1em;
@@ -1605,6 +1602,7 @@ select {
    border:none !important;
    border-radius: 0px;
    padding: 1em;
+   margin-top: -176px !important;
 }
 
 .modal-header {
@@ -1617,8 +1615,8 @@ select {
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
   position: relative;
-  max-height: 400px;
-  padding: 1em 0 0 0;
+  max-height: 220px;
+  padding: 1em 1em 0 0;
   text-align: left;
   overflow-y: auto;
 }
@@ -1635,11 +1633,6 @@ select {
   text-transform: uppercase;
   color: #3e3a37;
   font-family: Calibri, Arial, sans-serif;
-}
-
-#addToSavedSearchesModal,
-#editSavedSearchModal {
-  height:161px;
 }
 
 #modal-header-savesearch {
@@ -1838,3 +1831,58 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   }
 }
 /* cookie notice -end */
+
+/* start light boxes individual height and position */
+/* base therefore was DDBNEXT-1938: all light boxes are centered horizontally and the height adapted that no vertical scrollbar is needed */
+#folderCreateConfirmDialog {
+  margin-top: -212px !important; 
+}
+
+#folderCreateConfirmDialog .modal-body {
+  max-height: 296px !important;
+}
+
+#folderCreateConfirmDialog .modal-footer-savesearch {
+  border-top: 0 !important;
+  padding-right: 1em;
+}
+
+#folderEditConfirmDialog {
+  margin-top: -272px !important; 
+}
+
+#folderEditConfirmDialog .modal-body {
+  max-height: 410px !important;
+}
+
+#folderDeleteConfirmDialog {
+  margin-top: -118px !important; 
+}
+
+#favorite-confirmation {
+  margin-top: -204px !important; 
+}
+
+#favorite-confirmation .modal-body {
+  max-height: 320px !important;
+}
+
+#favorite-confirmation .modal-footer-savesearch {
+  border-top: 0 !important;
+}
+
+#msDeleteAccount {
+  margin-top: -84px !important; 
+}
+
+#folder-edit-privacy-area {
+  padding-bottom: 1em;
+}
+
+#addToSavedSearchesModal,
+#editSavedSearchModal,
+#deleteSavedSearchesModal {
+  margin-top: -94px !important; 
+}
+
+/* end light boxes individual height and position */
