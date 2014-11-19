@@ -386,7 +386,7 @@ class InstitutionService {
         def searchPreview = [:]
 
         //1) Find the bookmarkFolder that match the institutionId
-        def bookmarkfolder = bookmarksService.findFolderByInstitutionId(params["institutionid"])
+        def bookmarkfolder = bookmarksService.findPublicFolderByInstitutionId(params["institutionid"])
         if (bookmarkfolder) {
             //2) Find the number of bookmarks in that folder
             def bookmarkCount = bookmarksService.countBookmarksInFolder(bookmarkfolder.userId, bookmarkfolder.folderId)
@@ -395,17 +395,20 @@ class InstitutionService {
             bookmarks = bookmarksService.findBookmarksByFolderId(bookmarkfolder.folderId, offset, rows)
 
             //4) Define a search query to get the items that matches the bookmarks
-            def query = ""
+            def query = [:]
+            def queryIds = ""
             boolean first = true
             bookmarks.each{
                 if (!first) {
-                    query += " OR "
+                    queryIds += " OR "
                 }
-                query += it.itemId
+                queryIds += it.itemId
                 first = false
             }
+            query['query'] = queryIds
+            query[SearchParamEnum.SORT.getName()] = SearchParamEnum.SORT_RELEVANCE.getName()
 
-            ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, [query: query])
+            ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, query)
             if(!apiResponse.isOk()){
                 def message = "doItemSearch(): Search response contained error"
                 log.error message
