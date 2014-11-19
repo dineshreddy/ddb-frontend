@@ -23,11 +23,11 @@ limitations under the License.
       <div class="inner">
         <small><g:message encodeAs="html" code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
         <ul>
-          <li><g:link controller="content" params="[dir: 'terms']"><g:message encodeAs="html" code="ddbnext.Terms_of_Use"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'privacy']"><g:message encodeAs="html" code="ddbnext.Privacy_Policy"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'publisher']"><g:message encodeAs="html" code="ddbnext.Publisher"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'nutzungsbedingungen']"><g:message encodeAs="html" code="ddbnext.Terms_of_Use"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'datenschutzerklaerung']"><g:message encodeAs="html" code="ddbnext.Privacy_Policy"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'impressum']"><g:message encodeAs="html" code="ddbnext.Publisher"/></g:link></li>
           <li><g:link controller="content" params="[dir: 'sitemap']"><g:message encodeAs="html" code="ddbnext.Sitemap"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'contact']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
+          <li><g:link controller="content" params="[dir: 'kontakt']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
         </ul>
         <div class="build"><ddbcommon:getFrontendVersion /> / <ddbcommon:getBackendVersion/></div>
         <div class="twitter">
