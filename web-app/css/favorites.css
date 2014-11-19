@@ -1045,19 +1045,3 @@ hr {
   padding-left:24px;
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
 }
-
-#folderEditConfirmDialog {
-  margin-top: -270px !important;
-}
-
-#folderCreateConfirmDialog {
-  margin-top: -225px !important;
-}
-
-#folderCreateConfirmDialog .modal-body {
-  padding: 1em 1em 0;
-}
-
-#folderCreateConfirmDialog .modal-footer-savesearch {
-  border-top: 0;
-}
