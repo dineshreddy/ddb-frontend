@@ -1885,4 +1885,8 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   margin-top: -94px !important; 
 }
 
+#favoritesDeleteConfirmDialog {
+  margin-top: -94px !important; 
+}
+
 /* end light boxes individual height and position */
