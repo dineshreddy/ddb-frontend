@@ -33,7 +33,7 @@ limitations under the License.
                          <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
                        </div>
                    </g:else>
-                   <g:if test="${!(it.aggregationEntity)}">
+                   <g:if test="${!(it.aggregationEntity) && (loopCount+1 < maxDepthOfLoop)}">
                        <g:set var="itemId" value="${it.id}" />
                        <g:render template="subinstitutions" />
                    </g:if>
