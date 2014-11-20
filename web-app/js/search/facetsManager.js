@@ -419,7 +419,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   initializeFacetValuesDynamicSearch : function(inputSearchElement) {
     var currObjInstance = this;
-	  var timer;
+    var timer;
     inputSearchElement.keyup(function(e) {
       clearInterval(timer); 
       var code = (e.keyCode ? e.keyCode : e.which);
