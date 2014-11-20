@@ -118,7 +118,7 @@ limitations under the License.
   </g:else>
 
   <div class="tabs ${showGallery}">
-    <g:if test="${flashInformation.images[0] > 1 || ((flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0) && flashInformation.images[0] > 0)}">
+    <g:if test="${flashInformation.images[0] > 1 || ((flashInformation.videos[0] > 0 || flashInformation.audios[0] > 0 || geometryInput) && flashInformation.images[0] > 0)}">
       <g:set var="display" value=""/>
     </g:if>
     <g:else>
@@ -177,7 +177,7 @@ limitations under the License.
         </ul>
       </div>
     </noscript>
-    <g:if test="${flashInformation.videos[0] > 1 || ((flashInformation.images[0] > 0 || flashInformation.audios[0] > 0) && flashInformation.videos[0] > 0)}">
+    <g:if test="${flashInformation.videos[0] > 1 || ((flashInformation.images[0] > 0 || flashInformation.audios[0] > 0 || geometryInput) && flashInformation.videos[0] > 0)}">
       <g:set var="display" value=""/>
     </g:if>
     <g:else>
@@ -236,7 +236,7 @@ limitations under the License.
         </ul>
       </div>
     </noscript>
-    <g:if test="${flashInformation.audios[0] > 1 || ((flashInformation.images[0] > 0 || flashInformation.videos[0] > 0) && flashInformation.audios[0] > 0)}">
+    <g:if test="${flashInformation.audios[0] > 1 || ((flashInformation.images[0] > 0 || flashInformation.videos[0] > 0 || geometryInput) && flashInformation.audios[0] > 0)}">
       <g:set var="display" value=""/>
     </g:if>
     <g:else>
