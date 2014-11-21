@@ -22,8 +22,9 @@ import de.ddb.common.exception.ItemNotFoundException
 class ItemController {
     static defaultAction = "findById"
     def fileService
+    def ddbItemService
+    def configurationService
     def itemService
-    def commonConfigurationService
 
     /**
      * Handle the default show Item logic
@@ -33,12 +34,11 @@ class ItemController {
     def findById() {
         try {
             def id = params.id
-            def model = itemService.getFullItemModel(id)
+            def model = ddbItemService.getFullItemModel(id)
 
             if(params.pdf){
                 // inline images via data uris
-                model = itemService.prepareImagesForPdf(model)
-
+                model = ddbItemService.prepareImagesForPdf(model)
                 try {
                     renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
                 } catch (grails.plugin.rendering.document.XmlParseException e) {
@@ -76,7 +76,7 @@ class ItemController {
 
     def sendPdf() {
         def itemId = params.id
-        def url = commonConfigurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
+        def url = configurationService.getSelfBaseUrl() +g.createLink(controller: 'item', params:[id:itemId]).toString()+"?pdf=1"
         def message = g.message(code:'ddbnext.item.sendPdfMailSuccess')
         try {
             def fileBytes = fileService.downloadFile(url)

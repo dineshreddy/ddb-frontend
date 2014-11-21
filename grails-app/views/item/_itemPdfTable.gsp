@@ -135,6 +135,9 @@ limitations under the License.
   .item-title {
     font-size: 16px;
   }
+  .binary-title{
+    padding-top:6px;
+  }
 }
 </style>
 </head>

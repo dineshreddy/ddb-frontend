@@ -4,7 +4,7 @@ import grails.test.mixin.TestFor
 
 import org.junit.Test
 
-import de.ddb.next.EncodeInvalidHtmlTagLib
+import de.ddb.common.EncodeInvalidHtmlTagLib
 
 @TestFor(EncodeInvalidHtmlTagLib)
 class EncodeInvalidHtmlTagLibTests {
@@ -12,7 +12,7 @@ class EncodeInvalidHtmlTagLibTests {
     @Test
     void textShouldBeEncoded() {
         String text = "before<br /><Izchak><br />after"
-        String result = applyTemplate('<ddb:encodeInvalidHtml text="${text}"/>', [text : text]).trim()
+        String result = applyTemplate('<ddbcommon:encodeInvalidHtml text="${text}"/>', [text : text]).trim()
 
         assert result.equals(text.encodeAsHTML())
     }

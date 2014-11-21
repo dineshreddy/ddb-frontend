@@ -26,7 +26,7 @@ import de.ddb.common.TimeFacetHelper
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
- * 
+ *
  * @author ema
  *
  */
@@ -42,7 +42,7 @@ class FacetsController {
 
     /**
      * Returns the values for a specific search facet for the item search.
-     * 
+     *
      * @return the values for a specific search facet for the item search.
      */
     def facetsList() {
@@ -53,8 +53,10 @@ class FacetsController {
         def facetValues
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
 
+        def enu = FacetEnum.valueOfName(facetName)
+
         // Key based facets uses the "Search" endpoint (/apis/search)
-        if(facetName == FacetEnum.TIME.getName() || facetName == FacetEnum.SECTOR.getName() || facetName == FacetEnum.LANGUAGE.getName() || facetName == FacetEnum.TYPE.getName() || facetName == FacetEnum.LICENSE_GROUP.getName()|| facetName == FacetEnum.LICENSE.getName()){
+        if (enu && enu.isI18nFacet()){
             def urlQuery = searchService.convertFacetQueryParametersToFacetSearchParameters(params) // facet.limit: 1000
 
             //Use query filter if roles were selected
@@ -85,18 +87,23 @@ class FacetsController {
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
 
             if(!apiResponse.isOk()){
-                apiResponse.throwException(request)
-            }
+                //Thrown an exception is useless for the frontend in an Ajax response.
+                //We give back instead an empty set of results.
+                //apiResponse.throwException(request)
+                facetValues = [type: facetName, values: []]
+            }else{
 
-            def resultsItems = apiResponse.getResponse()
-
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-            //Filter the role values for mixed facets like affiliate_facet_role!
-            if (facetName.endsWith("role")) {
-                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
-            } else {
-                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+                def resultsItems = apiResponse.getResponse()
+    
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+    
+                //Filter the role values for mixed facets like affiliate_facet_role!
+                if (facetName.endsWith("role")) {
+                    facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
+                } else {
+                    facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+                }
+                
             }
         }
 
@@ -105,7 +112,7 @@ class FacetsController {
 
     /**
      * Returns the values for a specific entity facet for the person search.
-     * 
+     *
      * @return the values for a specific entity facet for the person search.
      */
     def entityFacetsList() {
@@ -141,7 +148,7 @@ class FacetsController {
 
     /**
      * Returns the roles for a specific facet value
-     * 
+     *
      * @return the roles for a specific facet value
      */
     def getRolesForFacetValue() {
@@ -173,7 +180,7 @@ class FacetsController {
     /**
      * Returns a list of all defined facets on the backend.
      * The returned json is an array of facet objects.
-     * 
+     *
      * @return a list of all facets in the json format
      */
     def allFacetsList() {
@@ -183,7 +190,7 @@ class FacetsController {
 
     /**
      * Calculates the time facet day representation for the given dates.
-     * 
+     *
      * @return  the time facet day representations in JSON format
      */
     def calculateTimeFacetDays() {
@@ -211,7 +218,7 @@ class FacetsController {
 
     /**
      * Calculates the date representation for the given time facet days.
-     * 
+     *
      * @return the date representation in JSON format
      */
     def calculateTimeFacetDates() {

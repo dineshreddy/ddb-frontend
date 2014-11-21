@@ -28,7 +28,7 @@ limitations under the License.
     <div class="row">
       <div class="span12">
         <p>
-          <g:message code="ddbnext.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
+          <g:message code="ddbcommon.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
         </p>
         <a class="close" aria-controls="cookie-notice"></a>
       </div>
@@ -38,7 +38,7 @@ limitations under the License.
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <button type="button" class="btn btn-nav" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -57,16 +57,16 @@ limitations under the License.
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
                 placeholder="Suche"
-                value="<ddb:getCookieFieldValue fieldname="query" />">
+                value="<ddbcommon:getCookieFieldValue fieldname="query" />">
               <button type="submit">
                 <g:message encodeAs="html" code="ddbnext.Go_Button" />
               </button>
             </g:form></li>
 
-          <li class="<ddb:isMappingActive context="${params}"
+          <li class="highlight <ddb:isMappingActive context="${params}"
               testif="${[[controller: "content", dir: "about"]]}">active</ddb:isMappingActive>">
             <g:link controller="content" params="[dir: 'about']">
-              <g:message encodeAs="html" code="ddbnext.AboutUs" />
+              ${message(code: 'ddbnext.AboutUs').toUpperCase()}
             </g:link>
             <ul class="nav">
               <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "news"]]}">active</ddb:isMappingActive>">
@@ -85,26 +85,32 @@ limitations under the License.
                 <g:link controller="content" params="[dir: 'faq']"><g:message encodeAs="html" code="ddbnext.Faq" /></g:link>
               </li>
             </ul><!-- /end of .nav -->
+            <hr/>
           </li>
-          <li class="<ddb:isMappingActive context="${params}"
+          
+          <li class="highlight <ddb:isMappingActive context="${params}"
             testif="${[[controller: "content", dir: "help"]]}">active</ddb:isMappingActive>">
-            <g:link controller="content" params="[dir: 'help']"><g:message encodeAs="html" code="ddbnext.Help" /></g:link>
+            <g:link controller="content" params="[dir: 'help']">${message(code: 'ddbnext.Help').toUpperCase()}</g:link>
+            <hr/>
           </li><!-- /end of help -->
+          
           <g:if test="${config.isExhibitionsFeaturesEnabled()}">
-            <li>
-              <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+            <li class="highlight">
+              <g:link controller="lists">${message(code: 'ddbnext.Discover').toUpperCase()}</g:link>
               <ul class="nav">
-                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active</ddb:isMappingActive>">
-                  <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                  <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                 </li>
                 <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active</ddb:isMappingActive>">
                   <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
                 </li>
+                <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active</ddb:isMappingActive>">
+                  <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
+                </li>
               </ul>
+              <hr/>
             </li><!-- /end of exhibitions -->
+            
           </g:if>
             <ddbcommon:isLoggedIn>
               <li>
@@ -122,8 +128,8 @@ limitations under the License.
                 </ul>
               </li>
             </ddbcommon:isLoggedIn>
-            <li><a>
-              <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
+            <li class="highlight"><a>
+              ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
               <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
@@ -138,9 +144,9 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li>
+          <li class="highlight">
             <ddbcommon:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> ${message(code: 'ddbcommon.Login_Button').toUpperCase()}</g:link>
             </ddbcommon:isNotLoggedIn>
             <ddbcommon:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
@@ -218,22 +224,22 @@ limitations under the License.
                   <!-- TODO add link to person pages -->
                   <li
                     class="keep-in-front <ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"],[controller: "lists"]]}">active-default</ddb:isMappingActive>">
-                    <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
+                    <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Discover" /></g:link>
                     <div class="arrow-container">
                       <div class="arrow-up"></div>
                     </div>
                     <ul>
                       <li
-                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
-                      </li>
-                      <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "lists"]]}">active-default</ddb:isMappingActive>">
-                        <g:link controller="lists"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
+                        <g:link controller="lists" action="index"><g:message encodeAs="html" code="ddbnext.Favoriteslists" /></g:link>
                       </li>
                       <li
                         class="<ddb:isMappingActive context="${params}" testif="${[[controller: "persons"]]}">active-default</ddb:isMappingActive>">
                         <g:link controller="persons"><g:message encodeAs="html" code="ddbnext.Personpages" /></g:link>
+                      </li>
+                      <li
+                        class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "exhibits"]]}">active-default</ddb:isMappingActive>">
+                        <g:link controller="content" params="[dir: 'exhibits']"><g:message encodeAs="html" code="ddbnext.Exhibitions" /></g:link>
                       </li>
                     </ul>
                   </li>
@@ -312,10 +318,10 @@ limitations under the License.
                       code="ddbnext.Search_text_field" /></span>
                 </label>
                 <input type="hidden" id="querycache"
-                  value="<ddb:getCookieFieldValue fieldname="query" />" />
+                  value="<ddbcommon:getCookieFieldValue fieldname="query" />" />
                 <input type="search" id="search-small" class="query"
                   name="query"
-                  value="<ddb:getCookieFieldValue fieldname="query" />"
+                  value="<ddbcommon:getCookieFieldValue fieldname="query" />"
                   autocomplete="off" />
                 <button type="submit">
                   <!--[if !IE]><!-->
@@ -328,7 +334,7 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="keep-filters off">
                     <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+                      <input id="keep-filters" type="checkbox" name="keepFilters" <g:if test="${keepFiltersChecked}">checked="checked"</g:if> />
                       <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
                     </label>
                   </div>

@@ -65,7 +65,7 @@ class UrlMappings {
             action="informationItem"
         }
 
-        "/content/$dir/$id?" {
+        "/content/$dir**" {
             controller="content"
             action="staticcontent"
         }
@@ -107,7 +107,7 @@ class UrlMappings {
 
         name delFavorites: "/apis/favorites/_delete" {
             controller="favorites"
-            action=[POST: "deleteFavoritesFromFolder"]
+            action=[POST: "deleteFavorites"]
         }
 
         "/apis/favorites/$id/_move" {
@@ -175,6 +175,11 @@ class UrlMappings {
             action="publicFavorites"
         }
 
+        // This URL-Map is also used hard-coded in favorites.js file.
+        "/user/$userId/favorites/allpublicfolders/$selectedFolderId" {
+            controller="favoritesview"
+            action="allpublicfolders"
+        }
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
@@ -233,6 +238,11 @@ class UrlMappings {
         "/entity/search/person/$q?" {
             controller="entity"
             action="personsearch"
+        }
+
+        "/institution/ajax/highlights" {
+            controller="institution"
+            action="getInstitutionHighlights"
         }
 
         "/persons"{

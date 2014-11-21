@@ -25,6 +25,7 @@ import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
+import de.ddb.common.constants.Type
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
@@ -40,9 +41,8 @@ class EntityController {
     def cultureGraphService
     def configurationService
     def entityService
-    def itemService
+    def ddbItemService
     def searchService
-    def ddbSearchService
 
     int PREVIEW_COUNT = 4
 
@@ -75,13 +75,19 @@ class EntityController {
             offset = 0
         }
 
-
+        try {
+            entityService.getEntityDetails(entityId);
+        } catch (Exception e) {
+            def errors = []
+            errors.add("ddbnext.Error_Entity_No_Elements")
+            render(view: "/message/message", model: [errors: errors])
+            return
+        }
+        
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
         if(!apiResponse.isOk()){
             if(apiResponse.getStatus() == HttpStatus.HTTP_404){
-                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_404)
-                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
-                throw errorPageException
+                return
             }else{
                 CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
                 request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
@@ -129,25 +135,22 @@ class EntityController {
         def entityImageUrl = null
         def thumbnailUrl = (jsonGraph?.person?.depiction?.thumbnail instanceof JSONArray) ? jsonGraph?.person?.depiction?.thumbnail[0] : jsonGraph?.person?.depiction?.thumbnail
         def imageUrl =  (jsonGraph?.person?.depiction?.image instanceof JSONArray) ? jsonGraph?.person?.depiction?.image[0] : jsonGraph?.person?.depiction?.image
-        def entityImageExists = false
 
         //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
-        if (entityService.entityImageExists(thumbnailUrl)){
+        if (thumbnailUrl){
             entityImageUrl = thumbnailUrl
-            entityImageExists = true
-        } else if (entityService.entityImageExists(imageUrl)) {
+        } else if (imageUrl) {
             entityImageUrl = imageUrl
-            entityImageExists = true
         }
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
             "entityId": entityId,
-            "isFavorite": itemService.isFavorite(entityId),
+            "isFavorite": ddbItemService.isFavorite(entityId),
             "searchPreview": searchPreview,
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
-            "entityImageExists": entityImageExists,
+            domainCanonic:configurationService.getDomainCanonic(),
             "entityImageUrl": entityImageUrl
         ]
 
@@ -230,25 +233,31 @@ class EntityController {
     def personsearch() {
         //The list of the NON JS supported facets for institutions
         def nonJsFacetsList = [
-            EntityFacetEnum.PERSON_OCCUPATION.getName(),
-            EntityFacetEnum.PERSON_PLACE.getName(),
-            EntityFacetEnum.PERSON_GENDER.getName()
+            EntityFacetEnum.PERSON_OCCUPATION_FCT.getName(),
+            EntityFacetEnum.PERSON_PLACE_FCT.getName(),
+            EntityFacetEnum.PERSON_GENDER_FCT.getName()
         ]
 
-        def cookieParametersMap = ddbSearchService.getSearchCookieAsMap(request, request.cookies)
+        def cookieParametersMap = searchService.getSearchCookieAsMap(request, request.cookies)
 
         def additionalParams = [:]
 
-        if (ddbSearchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, SearchTypeEnum.ENTITY)) {
+        if (searchService.checkPersistentFacets(cookieParametersMap, params, additionalParams, Type.ENTITY)) {
             redirect(controller: "entity", action: "personsearch", params: params)
         }
+        //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
+        def urlParams = params.clone()
+        urlParams.isThumbnailFiltered=false
 
         def queryString = request.getQueryString()
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
+        //The Entity API deliveres a dateBirth_de and a dateBirth_en. In the View we just pass a dateOfBirth without locale
+        fixLocalizedDateOfBirth(results)
+        
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
@@ -262,7 +271,7 @@ class EntityController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(ddbSearchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, SearchTypeEnum.ENTITY))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.ENTITY))
 
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
@@ -289,9 +298,9 @@ class EntityController {
                 }
             }
 
-            def keepFiltersChecked = ""
+            def keepFiltersChecked = false
             if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                keepFiltersChecked = "checked=\"checked\""
+                keepFiltersChecked = true
             }
             def subFacetsUrl = [:]
             def selectedFacets = entityService.buildSubFacets(urlQuery, nonJsFacetsList)
@@ -313,8 +322,6 @@ class EntityController {
                 keepFiltersChecked: keepFiltersChecked]
             render(view: "searchPerson", model: model)
         }
-
-
     }
 
     /**
@@ -362,5 +369,23 @@ class EntityController {
         def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
 
         render (contentType:"text/json"){result}
+    }
+    
+    /**
+     * This function takes the entity result and modifies entity dates based on the locale
+     * @param results
+     * @return results
+     */
+    private fixLocalizedDateOfBirth(results) {
+        def mlocale = RequestContextUtils.getLocale(request)
+        for (entity in results.entity[0].docs) {
+            if (mlocale.toString() == "de"){
+                entity.dateOfBirth = entity.dateOfBirth_de
+                entity.dateOfDeath = entity.dateOfDeath_de
+            }else if (mlocale.toString() == "en"){
+                entity.dateOfBirth = entity.dateOfBirth_en
+                entity.dateOfDeath = entity.dateOfDeath_en
+            }
+        }
     }
 }

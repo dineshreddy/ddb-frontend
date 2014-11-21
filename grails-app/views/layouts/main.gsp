@@ -16,10 +16,8 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="${ddb.getCurrentLocale()}">
   <head>
-    <meta charset="utf-8" />
-
     <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
-
+    <meta charset="utf-8" />
     <g:if test="${!metaDescription}">
       <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
     </g:if>
@@ -31,7 +29,10 @@ limitations under the License.
     <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
     <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
 
-    <link rel="search" title="Deutsche Digitale Bibliothek" href=${resource(dir: '/', file: 'opensearch.osdx')} type="application/opensearchdescription+xml" />
+    <g:if test="${ddb.getCurrentLocale() == 'de'}"><g:set var="filename" value="opensearch_de.osdx"></g:set></g:if>
+    <g:else if test="${ddb.getCurrentLocale() == 'en'}"><g:set var="filename" value="opensearch_en.osdx"></g:set></g:else>
+    
+    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: filename)}" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
@@ -66,6 +67,6 @@ limitations under the License.
     </script>
     --%>
     
-    <ddb:getPiwikTracking />
+    <ddbcommon:getPiwikTracking />
   </body>
 </html>

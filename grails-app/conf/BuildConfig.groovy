@@ -77,7 +77,7 @@ grails.project.dependency.resolution = {
         // mavenRepo "http://repository.jboss.com/maven2/"
 
         // This are the geotools repositories required for coordinate transformation
-        mavenRepo "http://repo.opengeo.org/"
+        mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
         mavenRepo "https://www.escidoc.org/artifactory/repo/"
     }
@@ -99,7 +99,9 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ':cache:1.0.0'
+        compile ':cache:1.1.7'
+        compile ':cache-ehcache:1.0.1'
+        compile ':hibernate:3.6.10.12'
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
         compile ":message-digest:1.1"
@@ -111,7 +113,7 @@ grails.project.dependency.resolution = {
 
         if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
-            compile "de.ddb:ddb-common:0.3"
+            compile "de.ddb:ddb-common:0.12.2"
         }
     }
 

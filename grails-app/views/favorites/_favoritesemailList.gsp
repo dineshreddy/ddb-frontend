@@ -31,7 +31,7 @@ limitations under the License.
       <g:else>
         <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Entity_Objects" /></th>
       </g:else>
-      <th style="width: 170px;"></th>
+      <th style="width: 170px; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Added_On" /></th>
     </tr>
   </thead>
   <tbody>
@@ -42,8 +42,12 @@ limitations under the License.
           <g:set var="controller" value="institution" />
           <g:set var="action" value="showInstitutionsTreeByItemId" />
       </g:if>
-      
+      <g:if test="${it.category == 'Entity'}">
+          <g:set var="controller" value="entity" />
+          <g:set var="action" value="index" />
+      </g:if>
       <tr>
+      
         <td style="width: 70%; height: 130px; padding: 10px;">
           <h2>
             <g:link style="color:#a5003b" controller="${ controller }" base="${contextUrl}"
@@ -67,21 +71,22 @@ limitations under the License.
                   ${it.bookmark.description.trim()}
                 </g:if>
               </span>
-
             </div>
           </g:if>
         </td>
         <td style="width: 170px; padding: 10px;">
           <g:link controller="${ controller }" action="${ action }" params="[id: it.id]" base="${contextUrl}">
             <g:if test="${new UrlValidator().isValid(it.preview.thumbnail)}">
-              <!-- institution logos still point to the content server -->
-              <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>"></img>
+              <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:if>
             <g:else>
-              <img src="<g:if test="${it.preview.thumbnail.contains('binary')}">${contextUrl}${confBinary}</g:if><g:else>${baseUrl}</g:else>${it.preview.thumbnail}"
-                   alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="${baseUrl + it.preview.thumbnail}" alt="${ddb.getWithoutTags(body:it.preview.title)}"></img>
             </g:else>
           </g:link>
+          <br>
+         <g:if test="${!it.bookmark.creationDateFormatted.isEmpty()}">
+            ${it.bookmark.creationDateFormatted}
+          </g:if>
         </td>
       </tr>
     </g:each>

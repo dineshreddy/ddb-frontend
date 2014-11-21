@@ -74,10 +74,14 @@ function addToFavorites(jElemFavorite, data,objectType) {
         $("#addToFavoritesConfirm").click(
             function() {
               $("#favorite-confirmation").modal("hide");
-              $.each($("#favorite-folders").val(), function(index, value) {
-                $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
-                  objectType);
-              });
+              var folderList = $("#favorite-folders").val();
+
+              if (folderList) {
+                $.each(folderList, function(index, value) {
+                  $.post(jsContextPath + "/apis/favorites/" + itemId + "?folderId=" + value + "&reqObjectType=" +
+                    objectType);
+                });
+              }
 
               $("#idFavorite").parent().parent().attr('title',
                   messages.ddbnext.favorites_already_saved);
@@ -86,7 +90,6 @@ function addToFavorites(jElemFavorite, data,objectType) {
         window.setTimeout(function() {
           $("#favorite-confirmation").modal("hide");
         }, 1500);
-        $("#favorite-folders").destroy();
       }
     });
     break;

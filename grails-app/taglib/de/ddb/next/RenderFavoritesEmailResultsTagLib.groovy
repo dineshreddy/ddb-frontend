@@ -19,8 +19,8 @@ package de.ddb.next
 class RenderFavoritesEmailResultsTagLib {
 
     static namespace = "ddb"
-
+        
     def renderFavoritesEmailResults = { attrs, body ->
-        out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath()])
+        out << render(template:"/favorites/favoritesemailList", model:[results: attrs.results, userName: attrs.userName,confBinary: request.getContextPath(), favoriteUrl: attrs.favoriteUrl])
     }
 }

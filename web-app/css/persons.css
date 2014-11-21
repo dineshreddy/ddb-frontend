@@ -27,6 +27,10 @@
   float: right;
 }
 
+.persons-head .page-link {
+  font-size: 0.938em;
+}
+
 .persons-head .page-link:before {
   margin-top: 22px;
 }

@@ -23,8 +23,8 @@ limitations under the License.
   <div class="modal-body">
     <g:message encodeAs="html" code="ddbnext.User.Really_Delete_Account" />
   </div>
-  <div class="modal-footer">
-    <button class="submit grey" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
-    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbnext.Delete" /></button>
+  <div class="modal-footer-savesearch">
+    <button class="submit grey" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.No" /></button>
+    <button class="submit" data-dismiss="modal" id="delete-account-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button>
   </div>
 </div>

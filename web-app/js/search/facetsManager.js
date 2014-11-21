@@ -108,7 +108,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   fetchRoleFacetValues : function(facetValueContainer, facetValue, facetField) {
     var currObjInstance = this;
 
-    var oldParams = de.ddb.next.search.getUrlVars();
+    var oldParams = de.ddb.common.search.getUrlVars();
     var fctValues = '';
     var isThumbnailFiltered = '';
     var queryParam = '&query=' + facetValue;
@@ -153,7 +153,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }
-    var oldParams = de.ddb.next.search.getUrlVars();
+    var oldParams = de.ddb.common.search.getUrlVars();
     var searchQueryParam = '';
     var currObjInstance = this;
     var fctValues = '';
@@ -325,7 +325,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     this.connectedflyoutWidget.close();
 
     //Update the search params
-    var paramsArray = de.ddb.next.search.addFacetValueToParams(this.currentFacetField, facetValue);
+    var paramsArray = de.ddb.common.search.addFacetValueToParams(this.currentFacetField, facetValue);
 
     //Perform a search with the new facet value
     currObjInstance.fetchResultsList($.addParamToCurrentUrl(paramsArray), function() {
@@ -374,7 +374,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
 
     var newUrl = $.removeParamFromUrl(facetsToRemove);
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
-      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+      de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
     if (!unselectWithoutFetch) {
       $.addParamToCurrentUrl([['offset', 0]], newUrl);
@@ -394,7 +394,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   selectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
-    var paramsArray = de.ddb.next.search.addFacetValueToParams(facetField, facetValue);
+    var paramsArray = de.ddb.common.search.addFacetValueToParams(facetField, facetValue);
     currObjInstance.fetchResultsList($.addParamToCurrentUrl(paramsArray));
   },
 
@@ -407,7 +407,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
     
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
-      de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+      de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
 
     $.addParamToCurrentUrl([['offset', 0]], newUrl)
@@ -461,7 +461,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     $(".js.facets-list").removeClass("off");
 
     this.connectedflyoutWidget = connectedflyoutWidget;
-    var paramsFacetValues = de.ddb.next.search.getFacetValuesFromUrl();
+    var paramsFacetValues = de.ddb.common.search.getFacetValuesFromUrl();
 
     if (paramsFacetValues) {
 

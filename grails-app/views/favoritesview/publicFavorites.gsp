@@ -15,18 +15,17 @@ limitations under the License.
 --%>
 <g:set var="resultsPaginatorOptions" value="${[pageFilter: [10,20,40], pageFilterSelected: 20]}"></g:set>
 <g:set var="navigationData" value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"></g:set>
-
 <html>
   <head>
-  
+
     <title>
-      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedUser.getFirstnameAndLastnameOrNickname()]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
+      ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
 
-    <meta name="page" content="favorites">
     <meta name="layout" content="main">
+    <meta name="page" content="publicFavorites">
 
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUser.getFirstnameAndLastnameOrNickname()]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
 
   </head>
   <body>
@@ -40,70 +39,74 @@ limitations under the License.
           </div>
           <div class="print-header">
             <h3>
-              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUser.username, dateString]}" default="ddbnext.Favorites_List_Of" />
+              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
             </h3>
-          <%--
-            <div class="page-info">
-              <span class="results-overall-index">1-2 </span> 
-              <span><g:message encodeAs="html" code="ddbnext.Of" /> </span> 
-              <span><strong><span class="results-total">2 </span></strong> </span> 
-              <g:if test="${numberOfResultsFormatted == '1'}"> 
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Result_lowercase" /></span>
-              </g:if>
-              <g:else>
-                  <span id="results-label"><g:message encodeAs="html" code="ddbnext.Results_lowercase" /></span>
-              </g:else>
-            </div>
-            --%>
           </div>
           <div class="right-container">
-            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
+            <div class="reportfav">
+              <div class="report-locked">
+                <div class="report-overlay-container">
+                  <div class="report-overlay">
+                    <b><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></b>
+                    <br />
+                      ${raw(g.message(code: 'ddbnext.Report_Favorites'))}
+                    <br />
+                    <br />
+                  </div>
+                </div>
+                  <a>
+                    <span><g:message encodeAs="html" code="ddbnext.Report_Public_List" /></span>
+                  </a>
+              </div>
+            </div>
+            <a class="page-link page-link-popup-anchor" href="${fullPublicLink}"
+               title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
             </a>
-            <g:if test="${selectedFolder.isPublic && resultsNumber > 0}">
-              <ddb:getSocialmediaBody/>
-            </g:if>
+            <ddbcommon:isLoggedIn>
+              <a class="saved-searches-list-envelope" id="favorites-list-send" href="#"
+                 title="<g:message encodeAs="html" code="ddbnext.favorites_list_send" />">
+                <span><g:message encodeAs="html" code="ddbnext.favorites_list_send" /></span>
+              </a>
+            </ddbcommon:isLoggedIn>
           </div>
         </div>
       </div>
       <div class="row favorites-results-container">
         <div class="span3 folder-information-container">
-          <div class="folder-information bt bb bl br">
-            <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}
+          <div>
+            <strong>
+              <g:message encodeAs="html" code="ddbnext.List_Of"/> ${selectedFolder.publishingName}
+            </strong>
             <g:if test="${selectedFolder.description != null && !selectedFolder.description.trim().isEmpty()}">
               <br />
-              <br />          
-              <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
+              <br />
+              <strong>
+                <g:message encodeAs="html" code="ddbcommon.Create_Folder_Description"/>:
+              </strong>
               <br />
               ${selectedFolder.description}
             </g:if>
+              <br />
+              <br />
           </div>
+          <p class="date-info">
+            <g:message code="ddbnext.List_Created_At" />:
+            ${createdDateString}
+            <br>
+            <g:message code="ddbnext.List_Updated_At" />:
+            ${updatedDateString}
+          </p>
+          <br />
+          <br />
           <g:if test="${publicFolders != null && publicFolders.size() > 1}">
-            <div class="folder-information bt bb bl br">
-              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUser.getFirstnameAndLastnameOrNickname()}:
-              <ul>
-                <g:each var="publicFolder" in="${publicFolders}">
-                  <g:if test="${publicFolder.folderId != selectedFolder.folderId}">
-                    <li>
-                      <g:link class="folder-siblings" controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: publicFolder.folderId]}">
-                        ${publicFolder.title}
-                      </g:link>
-                    </li>
-                  </g:if>
-                </g:each>
+            <strong>
+              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
+            </strong>
+            <ul id="public-folders" class="other-folder-list">
+              <g:render template="favoritesAllFolders" ></g:render>
             </ul>
-          </div>
           </g:if>
-          <div class="folder-information bt bb bl br">
-            <%--         
-            <a class="favorites-report" href="mailto:geschaeftsstelle@deutsche-digitale-bibliothek.de?subject=<g:message encodeAs="html" code="ddbnext.Report_Public_List" />: ${selectedFolder.title}&body=${contextUrl}${g.createLink(controller: "favoritesview", action:"publicFavorites", params: [userId: selectedUser.id, folderId: selectedFolder.folderId]) }" >
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </a>
-            --%>
-            <g:link controller="favoritesview" action="publicFavorites" params="${[userId: selectedUser.id, folderId: selectedFolder.folderId, report: true]}" class="favorites-report">
-              <g:message encodeAs="html" code="ddbnext.Report_Public_List" />
-            </g:link>
-          </div>
         </div>
         <div class="span9 favorites-results-content">
           <g:if test="${flash.message}">
@@ -116,12 +119,17 @@ limitations under the License.
           <g:if test="${flash.error}">
             <div class="errors-container">
               <ul class="unstyled">
-                <li><i class="icon-exclamation-sign"></i><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
+                <li><span><g:message encodeAs="html" code="${flash.error}" /></span></li>
               </ul>
             </div>
           </g:if>
           <g:if test="${resultsNumber > 0}">
             <div class="favorites-results-controls">
+                    <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex,
+                                           numberOfResults: numberOfResultsFormatted,
+                                           page: page,
+                                           totalPages: totalPages,
+                                           paginationURL: paginationURL]}"/>
               <div class="results-sorter">
                 <span class="favorite-numberheader">
                   <g:if test="${order == "desc"}">
@@ -191,7 +199,7 @@ limitations under the License.
                        <g:else>
                         <g:img dir="images/icons" file="arrowsUpDown.png" class="orderList" alt="${message(code: 'ddbnext.No_Order')}"/>
                        </g:else>
-                      </span>                    
+                      </span>
                     </a>
                   </g:if> 
                   <g:else>
@@ -224,8 +232,31 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
-    
-    
+
+    <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendFavoriteListLabel" aria-hidden="true">
+      <div class="modal-header">
+        <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+        <h3 id="sendFavoriteListLabel">
+          <g:message code="ddbnext.send_favorites" />
+        </h3>
+      </div>
+      <form method="POST">
+        <div class="modal-body">
+          <fieldset>
+            <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required"> 
+            <br /> 
+              <small class="muted">
+                <g:message code="ddbnext.send_favorites_more_recipients" />
+              </small> 
+            <br />
+          </fieldset>
+        </div>
+        <div class="modal-footer-savesearch">
+          <button class="btn-padding" type="submit" id="btnSubmit">
+            <g:message code="ddbnext.favorites_list_send" />
+          </button>
+        </div>
+      </form>
+    </div>
   </body>
 </html>

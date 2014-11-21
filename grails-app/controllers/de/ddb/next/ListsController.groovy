@@ -19,7 +19,6 @@ import net.sf.json.JSON
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
 
@@ -58,16 +57,13 @@ class ListsController {
         //*********************************************************************
         def folders = null
 
+        // load Daily List per default
+        String id =  "dailyList"
         if (params.id) {
-            model.selectedListId = params.id
-            folders = getFoldersOfList(params.id, offset, rows)
+            id = params.id
         }
-        //If the page is loaded for the first time, take the first entry in the menu
-        else if (model.lists.size() > 0) {
-            def firstList = model.lists.get(0)
-            model.selectedListId = firstList.folderListId
-            folders = getFoldersOfList(firstList.folderListId, offset, rows)
-        }
+        model.selectedListId =id
+        folders = getFoldersOfList(id, offset, rows)
 
         model.folders = folders.folders  as JSON
         model.folderCount = folders.count
@@ -112,11 +108,12 @@ class ListsController {
 
         //Initialize the daily favorite lists
         def ddbAllList = listsService.getDdbAllList()
-        menu.add(ddbAllList)
 
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
         lists?.each { menu.add(it) }
+
+        menu.add(ddbAllList)
 
         return menu
     }

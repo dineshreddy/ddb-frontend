@@ -13,34 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
+<%@page import="de.ddb.common.constants.Type"%>
 <div class="row">
   <div class="span12 item-links bb">
     <ddbcommon:isLoggedIn>
       <div class="favorite" >
-        <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
-          <span data-itemid="${itemId}" data-actn="POST" id="idFavorite">
+        <a class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
+          <span data-itemid="${itemId}" data-actn="POST" data-objecttype="${Type.CULTURAL_ITEM.name}" id="idFavorite">
             <g:message encodeAs="html" code="ddbnext.favorit" />
           </span>
-        </span>
+        </a>
       </div>
-      <ddbcommon:isPersonalFavoritesAvailable>
-        <div id="favorite-confirmation" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-          <div class="modal-body">
-            <p><g:message encodeAs="html" code="ddbnext.Added_To_Favorites"/></p>
-            <p><g:message encodeAs="html" code="ddbnext.Add_To_Personal_Favorites"/></p>
-            <g:select name="favorite-folders" from="" multiple="true"/>
-          </div>
-          <div class="modal-footer">
-            <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-              <g:message encodeAs="html" code="ddbcommon.Close"/>
-            </button>
-            <button class="btn-padding" type="submit" id="addToFavoritesConfirm">
-              <g:message encodeAs="html" code="ddbcommon.Save"/>
-            </button>
-          </div>
-        </div>
-      </ddbcommon:isPersonalFavoritesAvailable>
+      <g:render template="../common/addToFavorites"/>
     </ddbcommon:isLoggedIn>
     <div class="page-link-block">
       <a class="page-link page-link-popup-anchor hidden-phone hidden-tablet" href="${itemUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />">

@@ -60,7 +60,7 @@ $(function() {
         return false;
       }
     });
-
+    
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -529,7 +529,6 @@ function showError(errorHtml) {
         '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
     var errorIcon = $(document.createElement('i'));
     errorContainer.addClass('errors-container');
-    errorIcon.addClass('icon-exclamation-sign');
     errorContainer.html(errorHtml);
     errorContainer.prepend(errorIcon);
 
@@ -559,3 +558,15 @@ function updateRanking (bookmarkId, folderId, newPosition){
     error: function(){return false;}
   });
 }
+
+$('#alle-listen').click(function(event){
+  event.preventDefault();
+  var url = jsContextPath + "/user/" +  $(this).attr("data-userId") + "/favorites/allpublicfolders/"+ $(this).attr("data-selectedFolderId");
+  $.get(url, function(data) {
+    $('#public-folders').empty();
+    $('#public-folders').append(data);
+
+    var newUrl = updateURLParameter(window.location.href, 'showLinkAllList', false);
+    window.location.href = newUrl;
+  });
+});

@@ -56,7 +56,7 @@ The components and the behaviour of the application can be configured via an ext
 In case there is a need to change the default configurations, through external configuration files it is possible to override the default configurations. 
 A list of some predefined variables is set below:
 
-	#DDB services configuration
+    # DDB services configuration
     ddb.binary.url="http://api.deutsche-digitale-bibliothek.de" (used from the DFG viewer)
     ddb.static.url="http://www.deutsche-digitale-bibliothek.de/static"
     ddb.apis.url="http://localhost:8080"
@@ -66,40 +66,42 @@ A list of some predefined variables is set below:
     ddb.culturegraph.url=http://hub.culturegraph.org
     ddb.elasticsearch.url=http://else-p1.deutsche-digitale-bibliothek.de:9200
 
-	#Favorites configuration
+    # Favorites configuration
     ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
     ddb.favorites.reportMailTo=geschaeftsstelle@deutsche-digitale-bibliothek.de
-	ddb.favorites.reportMailTo=noreply@deutsche-digitale-bibliothek.de
+    ddb.favorites.reportMailTo=noreply@deutsche-digitale-bibliothek.de
 
-	#Filter configuration
+    # Filter configuration
     ddb.backend.facets.filter="[[facetName:language_fct, filter:term:unknown], [facetName:language_fct, filter:term:termunknown], [facetName:keywords_fct, filter:null], [facetName:provider_fct, filter:null], [facetName:affiliate_fct, filter:null], [facetName:type_fct, filter:null], [facetName:sector_fct, filter:null], [facetName:place_fct, filter:null], [facetName:time_fct, filter:null]]"
 
-	#piwik configuration
+    # Piwik configuration
     ddb.tracking.piwikfile=/opt/ddb/tracking.txt
     
-    #content configuration
+    # content configuration
     grails.views.gsp.encoding=UTF-8
     grails.mime.types['html'][0]=text/html
 
-	#Advanced Search configuration
+    # Advanced Search configuration
     ddb.advancedSearch.searchGroupCount=3
     ddb.advancedSearch.searchFieldCount=10
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
     ddbcommon.session.timeout=3600
 
-	#Logging configuration
+    # Logging configuration
     ddb.logging.folder=/opt/ddb/logs
 
-	#Loadbalance configuration
+    # Loadbalance configuration
     ddb.loadbalancer.header.name="nid"
     ddb.loadbalancer.header.value="-1"
     
-    #Mail configuration
+    # Mail configuration
     grails.mail.host=localhost
     grails.mail.port=1025
-	
-	
+
+    # static content
+    ddb.default.staticPage=news
+
 ####Runtime configuration
 The tomcat configuration in the server.xml must ensure, that the used Connector must contain a valid URIEncoding tag.
 

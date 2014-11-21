@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 .entity-page .link-block {
   display: inline-block;
   margin-right: 10px;
 }
- 
-.entity-page .objects h3{
+
+.entity-page .objects h3 {
   display: inline-block;
 }
 
-.entity-page .objects .tooltip{
+.entity-page .objects .tooltip {
   margin-left:56px;
   font-size: 0.813em;
   width: 30%;
@@ -33,7 +33,7 @@
   vertical-align: middle;
   display: inline-block;  
 }
- 
+
 .entity-page .fields{
   font-size: 1em;
 }
@@ -91,9 +91,10 @@
   padding: 0 0 10px 0;
 }
 
-.entity-page .search-entity {
-  background: url(../images/icons/search.png) no-repeat 0 -297px;
-  padding: 0 0 0 20px;
+.entity-page .icon-search-entity {
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -209px;
+  width: 16px;
+  height: 16px;
 }
 
 .entity-page .objects, .entity-page .profession-dates {
@@ -101,10 +102,11 @@
 }
 
 .entity-page .carousel {
-  padding: 0 0 0 1px;
+  padding: 0 0 0 0;
   position: relative;
   display: none;
   margin-bottom: 10px;
+  border: 2px solid #EFEBE8;
 }
 
 .entity-page .preview-item {
@@ -150,14 +152,6 @@
   top: 70px;
 }
 
-.entity-page .carousel a.previous:hover {
-  background-position: 0 -50px;
-}
-
-.entity-page .carousel a.next:hover {
-  background-position: 0 -200px;
-}
-
 .entity-page .previous.disabled, .entity-page .next.disabled {
   cursor: default;
 }
@@ -168,6 +162,19 @@
 
 .entity-page .next.disabled, .entity-page .next.disabled:hover {
   background-position: 0 -250px !important;
+}
+
+.entity-page .entity-controls {
+  position: absolute;
+  height: 180px;
+  top: 0;
+  background: #efebe8;
+  width: 35px;
+  cursor: pointer;
+}
+
+.entity-page .entity-controls.next {
+  right: 0;
 }
 
 .entity-page .carousel .clearfix {
@@ -241,57 +248,56 @@
 
 .entity-page .object-controls {
   background-color: white;
-  border-color: #efebe8;
-  border-style: solid;
-  border-width: 5px 0 0 0;
 }
 
 .entity-page #idFavorite {
-  margin-right: 10px;
+  margin-right: 30px;
 }
 
 .entity-page .thumb hr {
   display: none;
 }
 
+.entity-page .favorite-actions.favorite-add {
+  background-position: -6px -67px;
+  cursor: pointer;
+}
+
+.entity-page .favorite-actions.favorite-add:hover {
+  background-position: -6px -97px;
+}
+
+.entity-page .favorite-actions.favorite-selected {
+  background-position: -6px -7px;
+}
+
+.entity-page .favorite-actions.favorite-selected:hover {
+  background-position: -6px -37px;
+}
+
 /* carousel controls responsiveness */
 @media (min-width: 1200px) {
   .entity-page .carousel a.previous {
-    left: 0;
+    left: -3px;
   }
   .entity-page .carousel a.next {
-    right: -8px;
+    right: -11px;
   }
   .entity-page .preview-item {
     width: 160px;
   }
 }
 
-@media (min-width: 980px) and (max-width: 1199px) {
+@media (max-width: 1199px) {
   .entity-page .carousel a.previous {
-    left: -6px;
+    left: -3px;
   }
   .entity-page .carousel a.next {
-    right: -10px;
-  }
-}
-
-@media (max-width: 979px) {
-  .entity-page .carousel a.previous {
-    left: -8px;
-  }
-  .entity-page .carousel a.next {
-    right: -12px;
+    right: -11px;
   }
 }
 
 @media (max-width: 767px) {
-  .entity-page .carousel a.previous {
-    left: -4px;
-  }
-  .entity-page .carousel a.next {
-    right: -8px;
-  }
 
   .entity-page .header-objects {
     float: left;

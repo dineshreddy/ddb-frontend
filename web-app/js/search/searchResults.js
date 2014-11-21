@@ -23,6 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
+  
   if (jsPageName === "results" || jsPageName === "searchinstitution" || jsPageName === "searchperson") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
@@ -47,9 +48,17 @@ $(function() {
       });
     };
 
-    de.ddb.next.search.initHistorySupport(stateManager);
+    de.ddb.common.search.initHistorySupport(stateManager);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     de.ddb.next.search.searchResultsInitializer();
+
+    //Operations on the grid where triggered only once clicked and ignored if the viewtype grid was coming from the URL
+    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()=='grid'){
+      //In IE9<= creates an infinite loop due that doesn't support pushState.
+      if (de.ddb.common.search.historySupport){
+          $("#view-grid").trigger( "click" );
+      }
+    }
   }
 });
 
@@ -71,7 +80,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
     async : true,
     url : url + '&reqType=ajax',
     success : function(data) {
-      de.ddb.next.search.historyManager(url);
+      de.ddb.common.search.historyManager(url);
       if (!historySupport) {
         return;
       }
@@ -126,7 +135,6 @@ de.ddb.next.search.showError = function(errorHtml) {
       '.search-results-list').find('.errors-container') : $(document.createElement('div'));
   var errorIcon = $(document.createElement('i'));
   errorContainer.addClass('errors-container');
-  errorIcon.addClass('icon-exclamation-sign');
   errorContainer.html(errorHtml);
   errorContainer.prepend(errorIcon);
   $('.search-results-list').prepend(errorContainer);
@@ -177,7 +185,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
 
   $('#form-search-header button').click(
       function() {
-        var searchParameters = de.ddb.next.search.readCookie("searchParameters" + jsContextPath);
+        var searchParameters = de.ddb.common.search.readCookie("searchParameters" + jsContextPath);
         if (searchParameters != null && searchParameters.length > 0) {
           searchParameters = searchParameters.substring(1, searchParameters.length - 1);
           searchParameters = searchParameters.replace(/\\"/g, '"');
@@ -216,6 +224,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
       function() {
         $('.summary-main .title a').each(
             function(index, value) {
+              $(this).closest( "div" ).removeClass("grid-title");
               var newTitle = value.title.toString();
               if (newTitle.length > 100) {
                 newTitle = $.trim(newTitle).substring(0, 100).split(" ").slice(0, -1).join(" ")
@@ -275,8 +284,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=list'));
-        de.ddb.next.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.historyManager(newUrl);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
       });
 
   de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
@@ -346,10 +355,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
         $('.summary-main .title a').each(
             function(index, value) {
               var newTitle = value.title.toString();
-              if (newTitle.length > 53) {
-                newTitle = $.trim(newTitle).substring(0, 53).split(" ").slice(0, -1).join(" ")
-                    + "...";
-              }
               if ($(this).closest('.summary-main').find('.matches li span strong').length === 0
                   && jQuery.trim($(value).find('strong')).length > 0) {
                 newTitle = jQuery.trim($(value).html());
@@ -369,6 +374,11 @@ de.ddb.next.search.searchResultsInitializer = function() {
                 newTitle = newTitle.replace(new RegExp(replacementsRegex.toString(), 'gi'),
                     "<strong>\$1</strong>");
               }
+              if (newTitle.length > 60) {
+                newTitle = $.trim(newTitle).substring(0, 60).split(" ").slice(0, -1).join(" ")
+                    + "...";
+              }
+              $(this).closest( "div" ).addClass("grid-title");
               value.innerHTML = newTitle;
             });
         $('#view-list').removeClass('selected');
@@ -385,11 +395,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
                   .removeClass('span6');
               $('.results-list .thumbnail-wrapper').not('.entity-list .thumbnail-wrapper')
                   .removeClass('span3');
-              $('.results-list .item-options').not('.entity-list .item-options').removeClass('bl');
-              $('.results-list .item-options .information').not(
-                  '.entity-list .item-options .information').removeClass('bb');
-              $('.results-list .item-options .compare').not('.entity-list .item-options .compare')
-                  .removeClass('bb');
               $('.results-list').not('.entity-list').addClass("grid");
               $('.search-results').fadeOut('fast');
               $('.results-list .summary .summary-main-wrapper').not(
@@ -408,8 +413,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
         });
         $('.clear-filters a').attr('href',
             $('.clear-filters a').attr('href').replace(/viewType=(list|grid)/i, 'viewType=grid'));
-        de.ddb.next.search.historyManager(newUrl);
-        de.ddb.next.search.setSearchCookieParameter(paramsArray);
+        de.ddb.common.search.historyManager(newUrl);
+        de.ddb.common.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
   $('#keep-filters').click(function() {
@@ -420,14 +425,14 @@ de.ddb.next.search.searchResultsInitializer = function() {
       paramsArray = [['keepFilters', 'true']];
     }
     $.addParamToCurrentUrl(paramsArray);
-    de.ddb.next.search.setSearchCookieParameter(paramsArray);
+    de.ddb.common.search.setSearchCookieParameter(paramsArray);
   });
   $('.clear-filters').click(function() {
-    de.ddb.next.search.removeSearchCookieParameter('facetValues[]');
+    de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
   });
 
   $('.type-selection').change(function(){
-    var currentQuery = de.ddb.next.search.getUrlVar('query');
+    var currentQuery = de.ddb.common.search.getUrlVar('query');
     var optionSelected = $('option:selected', this);
     window.location = optionSelected.val()+'?query='+currentQuery;
   });

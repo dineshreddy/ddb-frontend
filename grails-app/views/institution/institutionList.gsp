@@ -26,19 +26,15 @@ limitations under the License.
 <body>
   <h1><g:message encodeAs="html" code="ddbnext.Institutions" /></h1>
   <div class="row">
-    <div class="span12">
+    <div class="span12 summary-text">
       <g:message encodeAs="html" code="ddbnext.InstitutionsPage_SummaryText"/>
     </div>
-    <noscript>
-      <div class="span12 nonjs-registered-institutions bb">
-          <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
-      </div>
-    </noscript>
+    <div class="span12 nonjs-registered-institutions bb no-script">
+      <g:message code="ddbnext.InstitutionsPage_RegisteredInstitutions"/>: ${total}
+    </div>
   </div>
   <div class="row institutionlist">
-    <noscript>
-      <div class="off">
-    </noscript>
+    <div class="script">
     <div class="span3">
       <g:render template="filterNotPhone" />
     </div>
@@ -75,9 +71,7 @@ limitations under the License.
         </div>
       </div>
     </div>
-    <noscript>
-      </div>
-    </noscript>
+    </div>
     
     
     <div class="span9">

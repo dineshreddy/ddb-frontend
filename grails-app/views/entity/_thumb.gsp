@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<g:if test="${entityImageExists}">
+<g:if test="${entityImageUrl}">
   <div class="thumb">
     <hr>
     <div class="thumbinner">

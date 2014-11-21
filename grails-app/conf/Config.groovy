@@ -129,16 +129,16 @@ ddb {
     backend {
         facets {
             filter = [
-                [facetName:FacetEnum.LANGUAGE.getName(), filter:'term:unknown' ],
-                [facetName:FacetEnum.LANGUAGE.getName(), filter:'term:termunknown'],
-                [facetName:FacetEnum.KEYWORDS.getName(), filter:'null'],
-                [facetName:FacetEnum.PROVIDER.getName(), filter:'null'],
-                [facetName:FacetEnum.AFFILIATE.getName(), filter:'null'],
-                [facetName:FacetEnum.AFFILIATE_ROLE.getName(), filter:'null'],
-                [facetName:FacetEnum.TYPE.getName(), filter:'null'],
-                [facetName:FacetEnum.SECTOR.getName(), filter:'null'],
-                [facetName:FacetEnum.PLACE.getName(), filter:'null'],
-                [facetName:FacetEnum.TIME.getName(), filter:'null']
+                [facetName:FacetEnum.LANGUAGE_FCT.getName(), filter:'term:unknown' ],
+                [facetName:FacetEnum.LANGUAGE_FCT.getName(), filter:'term:termunknown'],
+                [facetName:FacetEnum.KEYWORDS_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.PROVIDER_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.AFFILIATE_FCT_ROLE.getName(), filter:'null'],
+                [facetName:FacetEnum.TYPE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.SECTOR_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null'],
+                [facetName:FacetEnum.TIME_FCT.getName(), filter:'null']
             ]
         }
     }
@@ -188,7 +188,7 @@ ddb.session.timeout=3600 // in sec -> 60min
 ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
-ddb.favorites.reportMailTo=""  // "geschaeftsstelle@deutsche-digitale-bibliothek.de"
+ddb.favorites.reportMailTo=""
 ddb.culturegraph.features.enabled=false
 ddb.exhibitions.features.enabled=true
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
@@ -196,8 +196,9 @@ ddb.apikey.terms.url="/content/terms/api"
 ddb.registration.info.url="/content/ddb/registration"
 ddb.account.terms.url="/content/terms/ugc"
 ddb.account.privacy.url="/content/privacy/personal_data"
-ddb.public.url="http://www.deutsche-digitale-bibliothek.de/"
 ddb.default.staticPage="news"
+ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
+ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
@@ -337,3 +338,33 @@ grails {
 // Often needed for testing the staticpages on localhost,
 // because these use absolute linking to the server root "/abc"
 //grails.app.context = "/"
+
+grails {
+    cache {
+       enabled = true
+       clearAtStartup = true
+       ehcache {
+          ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
+          reloadable = true
+       }
+    }
+ }
+
+grails.cache.config = {
+    provider {
+      name "ehcache-" + appName
+    }
+
+    cache {
+        name 'institutionCache'
+        enable: true
+    }
+
+    defaults {
+        eternal false
+        overflowToDisk false
+        timeToLiveSeconds 600
+        timeToIdleSeconds 0
+        maxElementsInMemory 100000
+    }
+}

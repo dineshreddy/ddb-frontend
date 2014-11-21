@@ -63,6 +63,10 @@
 #user-profile-form .privacylink {
   text-decoration: underline;
 }
+
+#sendFavoriteListModal form {
+  margin: 0;
+}
 /* responsive design */
 
 @media (max-width: 1199px) {
@@ -102,4 +106,9 @@
     text-align: left;
     float: none;
   }
+}
+
+.control-group label.label-error {
+  font-size: 1em;
+  color: #A5003B;;
 }

@@ -17,7 +17,7 @@ $(document).ready(function() {
 
   if (jsPageName === "item") {
     var socialMediaManager = new SocialMediaManager();
-    de.ddb.next.search.initHistorySupport(null);
+    de.ddb.common.search.initHistorySupport(null);
     de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
     socialMediaManager.integrateSocialMedia();
 
@@ -31,6 +31,11 @@ $(document).ready(function() {
 
       $(".similar-objects-header").toggleClass("active");
     });
+    
+    $('.similar-objects-items').find('li').each(function() {
+      new de.ddb.next.search.HovercardInfoItem($(this));
+    });
+    
     $('.page-input').removeClass('off');
     $('.page-nonjs').addClass("off");
     de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(
