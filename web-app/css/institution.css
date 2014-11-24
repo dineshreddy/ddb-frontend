@@ -179,9 +179,16 @@ circle {
 .institution-item-page .carousel {
   position: relative;
   display: none;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
+.institution-item-page .link-highlights {
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding-left: 10px;
+  text-decoration: underline;
+}
+  
 .institution-item-page .caroufredsel_wrapper {
   background-color: white;
 }

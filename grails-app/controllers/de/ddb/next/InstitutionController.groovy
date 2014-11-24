@@ -16,6 +16,7 @@
 package de.ddb.next
 import grails.converters.JSON
 import de.ddb.common.ApiInstitution
+import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 
@@ -86,6 +87,8 @@ class InstitutionController {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
+            
+            Folder folder = bookmarksService.findFolderByInstitutionId(itemId)
 
             render(
                     view: "institution",
@@ -101,7 +104,8 @@ class InstitutionController {
                         vApiInst: vApiInstitution,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
-                        isFavorite: isFavorite(id)]
+                        isFavorite: isFavorite(id),
+                        folder: folder]
                     )
         } else {
             forward controller: 'error', action: "defaultNotFound"

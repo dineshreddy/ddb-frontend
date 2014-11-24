@@ -25,5 +25,12 @@ limitations under the License.
       <button class="btn-prev disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></button>
       <button class="btn-next disabled"><span class="opaque"><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></button>
     </div>
+    <div class="link-highlights">
+      <g:if test="${folder}">
+        <g:link controller="favoritesview" action="publicFavorites" params="[userId: folder.userId, folderId: folder.folderId]">
+          <g:message encodeAs="html" code="ddbnext.InstitutionItem_LinkHighlights" />
+        </g:link>
+      </g:if>
+    </div>
  </div>
 </div>
