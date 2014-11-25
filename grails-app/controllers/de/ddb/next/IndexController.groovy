@@ -46,14 +46,14 @@ class IndexController {
      * @return articles with modified URLs
      */
     private def rewriteUrls(def articles) {
-        URL staticUrl = new URL(configurationService.getStaticUrl())
         articles.each { article ->
             // image URLs from CMS are absolute URLs
             String imageUri = article.imageUri.text()
             String pattern = "/sites/default"
             int index = imageUri.indexOf(pattern)
             if (index >= 0) {
-                article.imageUri = new URL(staticUrl, imageUri.substring(index + pattern.length() + 1))
+                article.imageUri = configurationService.getContextPath() + "/static/" +
+                        imageUri.substring(index + pattern.length() + 1)
             }
 
             // URLs need our context path in front

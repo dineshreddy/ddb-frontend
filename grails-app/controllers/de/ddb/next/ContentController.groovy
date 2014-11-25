@@ -133,7 +133,6 @@ class ContentController {
      * @return content with modified URLs
      */
     private def rewriteUrls(def content) {
-        URL staticUrl = new URL(configurationService.getStaticUrl())
         Parser tagsoupParser = new Parser()
         tagsoupParser.setFeature(Parser.namespacesFeature, false)
         tagsoupParser.setFeature(Parser.namespacePrefixesFeature, false)
@@ -153,7 +152,8 @@ class ContentController {
                 String pattern = "/sites/default"
                 int index = src.indexOf(pattern)
                 if (index >= 0) {
-                    element.@src = new URL(staticUrl, src.substring(index + pattern.length() + 1)).toString()
+                    element.@src = configurationService.getContextPath() + "/static/" +
+                            src.substring(index + pattern.length() + 1).toString()
                 }
             }
         }
