@@ -151,7 +151,6 @@
 }
 
 #divOSM img {
-  max-width: none !important;
   vertical-align: initial !important;
   border: none !important;
   margin: 0 !important;
