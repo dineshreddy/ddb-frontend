@@ -151,7 +151,7 @@ $(document).ready(function() {
     };
     
     var initPage = function() {
-      var institutionid = $("#institution-id").data("institutionid");
+      var institutionid = $("#institution-id").data("selectedinstitutionid");
 
       initCarousel();
       
