@@ -387,12 +387,12 @@ class EntityController implements InitializingBean {
     private fixLocalizedDateOfBirth(results) {
         def mlocale = RequestContextUtils.getLocale(request)
         for (entity in results.entity[0].docs) {
-            if (mlocale.toString() == "de"){
-                entity.dateOfBirth = entity.dateOfBirth_de
-                entity.dateOfDeath = entity.dateOfDeath_de
-            }else if (mlocale.toString() == "en"){
+            if (mlocale.toString() == "en"){
                 entity.dateOfBirth = entity.dateOfBirth_en
                 entity.dateOfDeath = entity.dateOfDeath_en
+            } else {
+                entity.dateOfBirth = entity.dateOfBirth_de
+                entity.dateOfDeath = entity.dateOfDeath_de
             }
         }
     }
