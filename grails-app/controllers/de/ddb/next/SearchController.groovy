@@ -69,15 +69,16 @@ class SearchController {
             if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
                 entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
             }
-            
+
             def mlocale = RequestContextUtils.getLocale(request)
+
             for (entity in entities) {
-                if (mlocale.toString() == "de"){
-                    entity.dateOfBirth = entity.dateOfBirth_de
-                    entity.dateOfDeath = entity.dateOfDeath_de
-                }else if (mlocale.toString() == "en"){
+                if (mlocale.toString() == "en") {
                     entity.dateOfBirth = entity.dateOfBirth_en
                     entity.dateOfDeath = entity.dateOfDeath_en
+                } else {
+                    entity.dateOfBirth = entity.dateOfBirth_de
+                    entity.dateOfDeath = entity.dateOfDeath_de
                 }
             }
 
