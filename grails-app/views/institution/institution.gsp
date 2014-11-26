@@ -29,7 +29,7 @@ limitations under the License.
 </head>
 <body>
   <div class="institution-item-page">
-    <a id="institution-id" data-institutionid="${itemId}"></a>
+    <a id="institution-id" data-institutionid="${itemId}" data-selectedinstitutionid="${selectedItemId}"></a>
     <g:render template="institutionLinks" />
     
     <div class="row">
