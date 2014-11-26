@@ -199,6 +199,7 @@ $(document).ready(function() {
           }
 
           self.osmMap.setCenter(position, zoom);
+          self._addMultiPolygonLayer();
         });
 
         return tiles;
