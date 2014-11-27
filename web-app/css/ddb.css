@@ -1898,7 +1898,8 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 /* end light boxes individual height and position */
 
 /* jwplayer fix */
-#jwplayer-container_display_button #jwplayer-container_display_button_buffer {
+#jwplayer-container_display_button_buffer,
+#mediaspace_display_button_buffer {
   width: 50px !important;
 }
 /* end - jwplayer fix */
