@@ -568,6 +568,10 @@ input[type="checkbox"],input[type="radio"] {
   min-height: 74px;
 }
 
+.search-results .results-list .summary-main .matching-item {
+    word-wrap: break-word;
+}
+
 .search-results .results-list .summary-entity {
   margin-left: 10px;
   margin-bottom: 10px;
