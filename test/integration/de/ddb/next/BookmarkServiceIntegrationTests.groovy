@@ -7,11 +7,10 @@ import grails.test.mixin.integration.IntegrationTestMixin
 import org.junit.*
 
 import de.ddb.common.BookmarksService
-
-import de.ddb.common.constants.FolderConstants
-import de.ddb.common.constants.Type
 import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.Folder
+import de.ddb.common.constants.FolderConstants
+import de.ddb.common.constants.Type
 
 
 @TestMixin(IntegrationTestMixin)
@@ -116,7 +115,7 @@ class BookmarkServiceIntegrationTests {
                 null,
                 now,
                 now,
-                institutionId)
+                [institutionId])
         return bookmarksService.createFolder(newFolder)
     }
 
@@ -625,7 +624,8 @@ class BookmarkServiceIntegrationTests {
         String folderId = createNewInstitutionFolder("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
 
         Folder folder = bookmarksService.findFolderByInstitutionId("NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE")
-        assert folder.institutionId == "NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE"
+        assert folder.institutionIds as Set == [
+            "NNTMQJNFQCQOV5QI3EG3XBHXYWMNFACE"] as Set
         assert folder.folderId == folderId
     }
 
