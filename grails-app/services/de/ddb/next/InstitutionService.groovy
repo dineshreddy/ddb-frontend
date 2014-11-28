@@ -15,14 +15,16 @@
  */
 package de.ddb.next
 
-import grails.plugin.cache.Cacheable;
+import grails.plugin.cache.Cacheable
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.ApiResponse;
-import de.ddb.common.constants.FacetEnum;
-import de.ddb.common.constants.SearchParamEnum;
+import de.ddb.common.ApiResponse
+import de.ddb.common.FavoritesService
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -45,6 +47,7 @@ class InstitutionService {
     def servletContext
 
     def bookmarksService
+    def favoritesService
 
     /**
      * Return all institutions from the backend
@@ -95,7 +98,7 @@ class InstitutionService {
         queryMap.put("facet.limit", "-1")
         def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/search', false, queryMap)
         def responseContent = apiResponse.getResponse()
-        def institutions = 0;
+        def institutions = 0
         def items = responseContent.numberOfResults
         responseContent.facets.each { it ->
             if (it.field == "provider_fct") {
@@ -379,48 +382,25 @@ class InstitutionService {
      * @param rows the number of items to retrieve
      */
     def getInstitutionHighlights(def institutionid, int offset, int rows) {
-        def utils = WebUtils.retrieveGrailsWebRequest()
-        def params = utils.getParameterMap()
+        def result = [:]
+        def bookmarkfolder = bookmarksService.findPublicFolderByInstitutionId(institutionid)
 
-        def bookmarks = []
-        def searchPreview = [:]
-
-        //1) Find the bookmarkFolder that match the institutionId
-        def bookmarkfolder = bookmarksService.findPublicFolderByInstitutionId(params["institutionid"])
         if (bookmarkfolder) {
-            //2) Find the number of bookmarks in that folder
-            def bookmarkCount = bookmarksService.countBookmarksInFolder(bookmarkfolder.userId, bookmarkfolder.folderId)
+            User user = new User()
 
-            //3) Find the bookmark objects
-            bookmarks = bookmarksService.findBookmarksByFolderId(bookmarkfolder.folderId, offset, rows)
+            user.id = bookmarkfolder.userId
+            result = favoritesService.getFavoriteList(user, bookmarkfolder, FavoritesService.ORDER_ASC,
+                    FavoritesService.ORDER_BY_NUMBER)
 
-            //4) Define a search query to get the items that matches the bookmarks
-            def query = [:]
-            def queryIds = ""
-            boolean first = true
-            bookmarks.each{
-                if (!first) {
-                    queryIds += " OR "
-                }
-                queryIds += it.itemId
-                first = false
+            // paging
+            if (offset != 0) {
+                result = result.drop(offset)
+                result = result.take(rows)
             }
-            query['query'] = queryIds
-            query[SearchParamEnum.SORT.getName()] = SearchParamEnum.SORT_RELEVANCE.getName()
-
-            ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, query)
-            if(!apiResponse.isOk()){
-                def message = "doItemSearch(): Search response contained error"
-                log.error message
-                throw new RuntimeException(message)
+            else {
+                result = result.take(rows)
             }
-
-            //5) Create result object
-            def jsonSearchResult = apiResponse.getResponse()
-            searchPreview["items"] = jsonSearchResult.results?.docs
-            searchPreview["resultCount"] = bookmarkCount
         }
-        return searchPreview
+        return result
     }
-
 }
