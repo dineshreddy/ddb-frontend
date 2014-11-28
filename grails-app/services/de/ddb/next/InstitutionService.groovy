@@ -96,7 +96,6 @@ class InstitutionService {
         def institutions = recursiveInstitutionCount(tree)
         
         // Use search to determine number of items in ddb 
-        // Why this uses category=Kultur? No idea, but that is default for an "empty search"  
         // http://backend-t1.deutsche-digitale-bibliothek.de:9998/search?client=DDB-NEXT&query=*&offset=0&rows=0&facet=category&category=Kultur
         def searchParams = [:]
         searchParams.put("query", "*");
