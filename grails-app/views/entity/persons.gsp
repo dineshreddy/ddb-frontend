@@ -53,29 +53,29 @@ limitations under the License.
       </p>
     </div>
     <div class="span9 persons-overview-content">
-        <div>
+      <div>
         <div class="persons-overview-overlay-modal"></div>
         <div class="persons-overview-overlay-waiting">
           <div class="small-loader"></div>
         </div>
-      <div id="columns">
-        <g:each var="person" in="${results[0]}">
-          <div class="pin">
-            <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
-               title="${person.preferredName}">
-              <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
-                   alt="${person.preferredName}"/>
-            </a>
-            <p>
+        <div id="columns">
+          <g:each var="person" in="${results[0]}">
+            <div class="pin">
               <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
                  title="${person.preferredName}">
-                ${person.preferredName}
+                <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
+                     alt="${person.preferredName}"/>
               </a>
-            </p>
-          </div>
-        </g:each>
+              <p>
+                <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
+                   title="${person.preferredName}">
+                  ${person.preferredName}
+                </a>
+              </p>
+            </div>
+          </g:each>
+        </div>
       </div>
-      <div>
     </div>
   </div>
 </body>
