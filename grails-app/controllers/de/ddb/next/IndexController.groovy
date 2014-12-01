@@ -29,7 +29,7 @@ class IndexController {
         // fetch the DDB news from static server.
         def staticUrl = configurationService.getStaticUrl()
         def locale = SupportedLocales.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/teaser.html"
+        def path = locale + "/ddb-services/teaser.xml"
 
         // Submit a request via GET
         def apiResponse = ApiConsumer.getXml(staticUrl, path)
