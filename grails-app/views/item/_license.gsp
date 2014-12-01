@@ -22,8 +22,8 @@ limitations under the License.
         <ddbcommon:renderInfoTooltip messageCode="ddbnext.Licence_TooltipContent" controllerAction="lizenzen" hasArrow="true" />
       </div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
-        <a href="${license.url}" target="_blank" class="no-external-link-icon" alt="${license.text}">
-          <g:if test="${license.img}"><img src="${request.contextPath + license.img}" class="license-icon" /></g:if><span>${license.text}</span>
+        <a href="${license.url}" target="_blank" class="no-external-link-icon">
+          <g:if test="${license.img}"><img src="${request.contextPath + license.img}" class="license-icon" alt="${license.text}"/></g:if><span>${license.text}</span>
         </a>
       </div>
     </div>
