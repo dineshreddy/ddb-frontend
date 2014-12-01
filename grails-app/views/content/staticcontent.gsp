@@ -18,6 +18,8 @@ limitations under the License.
 <head>
   <title>${raw(title)} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
   <meta name="page" content="staticcontent" />
+  <link rel="canonical" href="${createLink(controller:'content',action:'staticcontent',params: [dir: location], base:domainCanonic)}/" />
+  
   <g:if test="${author}">
     <meta name="author" content="${author}" />
   </g:if>
