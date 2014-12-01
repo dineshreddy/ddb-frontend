@@ -67,9 +67,9 @@ limitations under the License.
         <div class="modal-body">
           <g:message encodeAs="html" code="ddbnext.Api_Key_Delete_Confirmation" />
         </div>
-        <div class="modal-footer">
-          <button class="submit" data-dismiss="modal" id="delete-apikey-confirm"><g:message encodeAs="html" code="ddbcommon.Ok" /></button>
-          <button class="submit" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.Cancel" /></button>
+        <div class="modal-footer-savesearch">
+          <button class="submit grey" data-dismiss="modal"><g:message encodeAs="html" code="ddbcommon.No" /></button>
+          <button class="submit" data-dismiss="modal" id="delete-apikey-confirm"><g:message encodeAs="html" code="ddbcommon.Yes" /></button>
         </div>
       </div>
     </div>

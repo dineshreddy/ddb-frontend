@@ -18,6 +18,9 @@ $(document).ready(
 
       if (jsPageName === "entity") {
 
+        var socialMediaManager = new SocialMediaManager();
+        socialMediaManager.integrateSocialMedia();
+
         var defaultRowCount = 10;
 
         var allRowCount = 0;
@@ -26,7 +29,7 @@ $(document).ready(
 
         var carouselWidth = 800;
 
-        var carouselHeight = 170;
+        var carouselHeight = 180;
 
         var windowLarge = 1185;
 
@@ -56,12 +59,14 @@ $(document).ready(
               var jsonResponse = $.parseJSON(data.responseText);
               var items = $.parseHTML(jsonResponse.html);
 
-              //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
-              $.each(items, function(index, value) {
-                if (value.tagName == 'DIV') {
-                  $("#items").triggerHandler("insertItem", [ value, "end", true ]);
-                }
-              });
+              if(items) {
+                //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
+                $.each(items, function(index, value) {
+                  if (value.tagName == 'DIV') {
+                    $("#items").triggerHandler("insertItem", [ value, "end", true ]);
+                  }
+                });
+              }
 
               allRowCount = jsonResponse.resultCount;
 
@@ -129,6 +134,7 @@ $(document).ready(
           if (carouselItems.length) {
             carouselItems.carouFredSel({
               infinite : false,
+              circular: false,
               width : carouselWidth,
               height : carouselHeight,
               align : false,
@@ -158,6 +164,10 @@ $(document).ready(
         };
 
         initPage();
-
+        
+        if($("div.external-links ul li.external-link").length > 1) {
+        	$("div.external-links").removeClass("off");
+        }
+        
       }
     });

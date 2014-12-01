@@ -32,7 +32,7 @@ class ContentController {
     def staticcontent() {
         try {
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
-            def location = browserUrl.substring("/content".length())
+            def location = params.dir ? params.dir : browserUrl.substring("/content".length())
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
@@ -54,7 +54,7 @@ class ContentController {
                 response = apiResponse.getResponse()
             } else {
                 if (!browserUrl.endsWith ("/")) {
-                    redirect uri: browserUrl + "/"
+                    redirect uri: "/" + params.controller + "/" + location + "/"
                     return
                 }
                 path = locale.toString() + "/" + location + "/index.html"

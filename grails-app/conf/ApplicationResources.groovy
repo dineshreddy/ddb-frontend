@@ -57,6 +57,7 @@ modules = {
         resource url:'/css/timeFacet.css'
         resource url:'/css/paginationWidget.css', bundle: 'screen'
         resource url:'/css/lists.css'
+        resource url:'/css/hovercard.css'
     }
 
     cssprint {
@@ -112,6 +113,7 @@ modules = {
         resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
+        resource url:'/js/institution.js'
         resource url:'/js/savedSearches.js'
         resource url:'/js/apiKey.js'
         resource url:'/js/compare.js'
@@ -131,6 +133,7 @@ modules = {
         resource url:'/js/persons.js'
         resource url:'/js/vendor/masonry/masonry.pkgd.js'
         resource url:'/js/vendor/masonry/imagesloaded.pkgd.min.js'
+        resource url:'/js/publicFavorites.js'
     }
 
     item { resource url:'/js/persistentSendPdfMailModalDialog.js' }
@@ -142,7 +145,7 @@ modules = {
         resource url:'/js/vendor/openlayers-2.14/OpenLayers.js'
         resource url:'/js/map/projections.js'
         resource url:'/js/map/map.js'
-        resource url:'/js/multipolygone.js'
+        //resource url:'/js/multipolygone.js' //used only for the prototype
     }
 
     autocomplete {

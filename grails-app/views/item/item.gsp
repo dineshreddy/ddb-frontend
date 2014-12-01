@@ -17,8 +17,11 @@ limitations under the License.
 <html>
 <head>
 <title>${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<%-- Used for Canonical URL --%>
+<link rel="canonical" href="${createLink(controller:'item',action:'findById',params: [id: itemId], base:domainCanonic)}" />
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
+<r:require module="multipolygone"/>
 <ddb:getSocialmediaMeta
   likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}"
   likeUrl="${baseUrl + request.forwardURI}" />
@@ -63,7 +66,7 @@ limitations under the License.
       <g:render template="binaries" />
     </g:if>
   </div>
-<%-- https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-1627 <g:render template="similarObjects" /> --%>
+  <g:render template="similarObjects" /> 
   <g:render template="hierarchy" />
   <g:render template="linkurl" />
 </body>

@@ -20,7 +20,8 @@ limitations under the License.
 <html>
 <head>
 <title>${selectedOrgXML.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
+<%-- Used for Canonical URL --%>
+<link rel="canonical" href="${createLink(controller:'institution',action:'showInstitutionsTreeByItemId',params: [id: itemId], base:domainCanonic)}" />
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
@@ -28,12 +29,14 @@ limitations under the License.
 </head>
 <body>
   <div class="institution-item-page">
-
+    <a id="institution-id" data-institutionid="${itemId}" data-selectedinstitutionid="${selectedItemId}"></a>
+    <g:render template="institutionLinks" />
+    
     <div class="row">
        <div class="span12 institution">
          <div class="row">
            <div class="span9">
-             <div>
+             <div class="sector">
                <g:message encodeAs="html" code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
@@ -63,8 +66,8 @@ limitations under the License.
        </div>
      </div>
 
-     <g:render template="institutionLinks" />
-
+     <g:render template="highlights" />
+     
      <div class="row">
        <div class="span12 locations">
 
@@ -98,7 +101,7 @@ limitations under the License.
                           <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                         </div>
                       </g:else>
-                      <g:set var="maxDepthOfLoop" value="${10}" />
+                      <g:set var="maxDepthOfLoop" value="${3}" />
                       <g:set var="loopCount" value="${0}" />
                       <g:render template="subinstitutions" />
                     </li>
@@ -106,15 +109,9 @@ limitations under the License.
                 </div>
               </g:if>
             </div>
-            <noscript>
-              <div class="off">
-            </noscript>
-            <div id="divOSM" class="span5">
+            <div id="divOSM" class="span5 script">
               <div id="ddb-map"></div>
             </div>
-            <noscript>
-              </div>
-            </noscript>
         </div>
       </div>
   </div> 

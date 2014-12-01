@@ -79,6 +79,11 @@ select {
   background-color: #0088cc;
 }
 
+.nav-list ul > li{
+  line-height: 35px;
+  padding-left: 18px;
+}
+
 .tooltip {
   position: static;
   z-index: auto;
@@ -517,11 +522,14 @@ header .header-spacer,.header .header-spacer {
 }
 
 #form-search-header .link-adv-search {
-  font-size: 0.938em;
   display: inline-block;
   float: right;
   text-align: left;
   height:23px;
+}
+
+.keep-filters label{
+  font-size: 1em;
 }
 
 .keep-filters {
@@ -726,17 +734,34 @@ header .language-widget form,.header .language-widget form {
   padding: 0 10px 0 10px;
 }
 
+.nav-collapse .nav > .highlight > a:hover, .nav-collapse .dropdown-menu a:hover {
+  color: #a5003b;
+}
+
+.nav-collapse .nav > .highlight > hr {
+  border: 0;
+  height: 1px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
 .brand img {
   margin: 0 0 0 10px;
   height: 90px;
 }
 
-
-.btn-navbar {
+.btn-nav {
   height: 30px;
   position: absolute;
   right: 0;
-  background-image: none;
+  width : 40px;
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -236px -315px;
+  margin-right: 10px;
+}
+
+.btn-nav:hover {
+  background: url(../images/icons/ddbIkonographie.png) no-repeat -181px -315px;
+  transition:none;
 }
 
 .nav-list ul>li {
@@ -934,6 +959,11 @@ header .language-widget form,.header .language-widget form {
   font-size: 0.938em;
 }
 
+#form-search .link-stats {
+  margin-top: 10px;
+  font-size: 0.938em;
+}
+
 #form-search .tooltip {
   max-width: 93%;
   margin: 12px 0;
@@ -1122,16 +1152,22 @@ footer .legal ul li+li,.footer .legal ul li+li {
   padding-left: 17px;
 }
 
-footer .twitter, .footer .twitter {
+footer .social-icons, .footer .social-icons {
   float: right;
   z-index: 3;
 }
 
-footer .twitter a, .footer .twitter a {
+footer .twitter-icon, .footer .twitter-icon {
   background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent !important;
 }
 
-footer .twitter a:before{
+footer .facebook-icon {
+  background: transparent url("../images/icons/openId.png") no-repeat -55px 0;
+  width: 150px;
+  height: 100px;
+}
+
+footer .social-icons a:before{
   background:none!important;
   width:0!important;
 }
@@ -1494,6 +1530,18 @@ select {
   cursor: default !important;
 }
 
+/* replacement for <noscript> */
+.no-script {
+}
+
+.script {
+  display: none;
+}
+
+.underlined {
+  text-decoration: underline;
+}
+
 .form-horizontal label {
   cursor: default;
 }
@@ -1527,9 +1575,115 @@ select {
   background-color: #EFEBE8 !important;
 }
 
+.modal-backdrop, .modal-backdrop.fade.in {
+  opacity: 0.5;
+  background-color: #6F6B68;
+}
+
+.savesearch{
+  width: 400px;
+  height: 155px;
+  padding: 1em;
+  border-radius: 0px;
+  padding-bottom: 0px;
+}
+
+.searchsend-form {
+  margin: 0 0 0px;
+}
+
+.savesearch-edit-input {
+  padding: 1em;
+  height: 1.75em;
+}
+
+.savesearch-edit-title {
+  padding-bottom: 0.25em;
+}
+
+.modal {
+  box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+  -moz-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+  -webkit-box-shadow: 9px 6px 9px rgba(0,0,0,0.33);
+   border:none !important;
+   border-radius: 0px;
+   padding: 1em;
+   margin-top: -176px !important;
+}
+
+.modal-header {
+  padding: 0 0 0.7em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-body {
+  font-size: 1em;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  position: relative;
+  max-height: 220px;
+  padding: 1em 1em 0 0;
+  text-align: left;
+  overflow-y: auto;
+}
+
+.modal-body-savesearch {
+  font-size: 1em;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  padding: 1em 0;
+}
+
 .modal-header h3 {
-  font-size: 1em !important;
+  font-size: 16px;
   text-transform: uppercase;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+}
+
+#modal-header-savesearch {
+  padding: 0 0.7em 0.7em 0;
+}
+
+.modal-footer-savesearch {
+  padding-top: 1em;
+  margin-bottom: 0;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 #ffffff;
+     -moz-box-shadow: inset 0 1px 0 #ffffff;
+          box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.modal-footer-savesearch button {
+  margin: 0;
+}
+
+.modal-footer {
+  padding: 14px 0px 15px 0px;
+  margin-bottom: 0;
+  text-align: right;
+  border-top: 1px solid #ddd;
+  -webkit-border-radius: 0 0 6px 6px;
+     -moz-border-radius: 0 0 6px 6px;
+          border-radius: 0 0 6px 6px;
+  *zoom: 1;
+  -webkit-box-shadow: inset 0 1px 0 #ffffff;
+     -moz-box-shadow: inset 0 1px 0 #ffffff;
+          box-shadow: inset 0 1px 0 #ffffff;
+}
+
+#favoritesDeleteConfirmDialog .modal-body,
+#deleteSavedSearchesModal .modal-body,
+#sendSavedSearchesModal .modal-body,
+#sendFavoriteListModal .modal-body,
+#msDeleteAccount .modal-body,
+#msDeleteApiKey .modal-body {
+  padding-bottom: 1em;
 }
 
 /* responsive genaral rules */
@@ -1579,13 +1733,21 @@ select {
 .errors-container {
   padding: 10px;
   margin: 5px 0 15px 0;
-  border: red 1px solid;
+  border: none;
+  background-color: #FDE6EB;
+  font-size: 1em;
+  color: #A5003B;
+  font-weight: bold;
 }
 .errors-container ul {
   margin:0;
 }
 .errors-container i {
   margin: 3px 5px 0 0;
+}
+
+input[type="text"].error {
+  border-color: #A5003B;
 }
 /* errors - end */
 
@@ -1675,3 +1837,69 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   }
 }
 /* cookie notice -end */
+
+/* start light boxes individual height and position */
+/* base therefore was DDBNEXT-1938: all light boxes are centered horizontally and the height adapted that no vertical scrollbar is needed */
+#folderCreateConfirmDialog {
+  margin-top: -212px !important; 
+}
+
+#folderCreateConfirmDialog .modal-body {
+  max-height: 296px !important;
+}
+
+#folderCreateConfirmDialog .modal-footer-savesearch {
+  border-top: 0 !important;
+  padding-right: 1em;
+}
+
+#folderEditConfirmDialog {
+  margin-top: -272px !important; 
+}
+
+#folderEditConfirmDialog .modal-body {
+  max-height: 410px !important;
+}
+
+#folderDeleteConfirmDialog {
+  margin-top: -118px !important; 
+}
+
+#favorite-confirmation {
+  margin-top: -204px !important; 
+}
+
+#favorite-confirmation .modal-body {
+  max-height: 320px !important;
+}
+
+#favorite-confirmation .modal-footer-savesearch {
+  border-top: 0 !important;
+}
+
+#msDeleteAccount {
+  margin-top: -84px !important; 
+}
+
+#folder-edit-privacy-area {
+  padding-bottom: 1em;
+}
+
+#addToSavedSearchesModal,
+#editSavedSearchModal,
+#deleteSavedSearchesModal {
+  margin-top: -94px !important; 
+}
+
+#favoritesDeleteConfirmDialog {
+  margin-top: -94px !important; 
+}
+
+/* end light boxes individual height and position */
+
+/* jwplayer fix */
+#jwplayer-container_display_button_buffer,
+#mediaspace_display_button_buffer {
+  width: 50px !important;
+}
+/* end - jwplayer fix */

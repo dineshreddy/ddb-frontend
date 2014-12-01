@@ -35,13 +35,17 @@ limitations under the License.
         <g:render template="compareLinks" />
         <div class="row">
           <div class="span6">
-            <div class="compare-body">
-              <g:render template="compareItem" model="${modelItem1}"/>
+            <div class="bording-frame">
+              <div class="compare-body">
+                <g:render template="compareItem" model="${modelItem1}"/>
+              </div>
             </div>
           </div>
           <div class="span6">
-            <div class="compare-body">
-              <g:render template="compareItem" model="${modelItem2}"/>
+            <div class="bording-frame">
+              <div class="compare-body">
+                <g:render template="compareItem" model="${modelItem2}"/>
+              </div>
             </div>
           </div>
         </div>

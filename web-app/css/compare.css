@@ -28,24 +28,29 @@
 
 .compare .compare-links .link-block {
   display: inline-block;
-  margin-right: 10px;
+  margin: 5px 10px 0 0;
 }
 
 .compare .compare-links .share-block {
   display: inline-block;
-  margin-right: 10px;
+}
+
+.compare .bording-frame {
+  padding: 10px;
+  background-color: #e9e5e2;
 }
 
 .compare .compare-body {
   max-height: 800px;
-  border-right: 6px #e9e5e2;
   overflow: scroll;
   overflow-x: hidden;
   position: relative;
+  padding: 10px;
+  background-color: #fff;
 }
 
 .compare .slide-viewer {
-  float:none;
+  float: none;
 }
 
 .compare .binary-viewer {

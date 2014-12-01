@@ -39,7 +39,7 @@ limitations under the License.
 <header class="navbar navbar-fixed-top visible-phone">
   <div class="navbar-inner">
     <div class="container">
-      <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+      <button type="button" class="btn btn-nav" data-toggle="collapse" data-target=".nav-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -67,7 +67,7 @@ limitations under the License.
             <%-- menu items from CMS --%>
             <g:each var="menuItem" in="${menu.mainMenu}">
               <g:set var="isActive" value="${ddb.isMappingActive(context:params, testmenu:menuItem)}"/>
-              <li class="${isActive ? "active" : ""}">
+              <li class="highlight${isActive ? " active" : ""}">
                 <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
                 <g:if test="${menuItem.subMenuItems}">
                   <div class="arrow-container">
@@ -110,8 +110,8 @@ limitations under the License.
                 </ul>
               </li>
             </ddbcommon:isLoggedIn>
-            <li><a>
-              <g:message encodeAs="html" code="ddbnext.ChangeLanguage" />
+            <li class="highlight"><a>
+              ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
               <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
@@ -126,9 +126,9 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li>
+          <li class="highlight">
             <ddbcommon:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> <g:message encodeAs="html" code="ddbcommon.Login_Button" /></g:link>
+              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> ${message(code: 'ddbcommon.Login_Button').toUpperCase()}</g:link>
             </ddbcommon:isNotLoggedIn>
             <ddbcommon:isLoggedIn>
               <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
@@ -290,13 +290,13 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="keep-filters off">
                     <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked} />
+                      <input id="keep-filters" type="checkbox" name="keepFilters" <g:if test="${keepFiltersChecked}">checked="checked"</g:if> />
                       <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
                     </label>
                   </div>
                   <g:link class="link-adv-search"
                     controller="advancedsearch">
-                    <g:message encodeAs="html" code="ddbnext.Advanced_search" />
+                    <g:message encodeAs="html" code="ddbnext.AdvancedSearch" />
                   </g:link>
                 </div>
               </form>

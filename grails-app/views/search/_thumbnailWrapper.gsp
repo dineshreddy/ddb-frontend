@@ -22,7 +22,7 @@ limitations under the License.
       <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" />
     </g:link>
   </div>
-  <div class="item-options <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">bl</g:if>">
+  <div class="item-options bl">
     <ul class="item-options-ul">
       <ddbcommon:isLoggedIn>
         <li>

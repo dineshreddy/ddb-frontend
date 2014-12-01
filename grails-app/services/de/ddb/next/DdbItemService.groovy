@@ -36,8 +36,6 @@ import de.ddb.common.exception.ItemNotFoundException
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
 
-    private static final SOURCE_PLACEHOLDER = '{0}'
-
     def transactional = false
     def grailsApplication
     def configurationService
@@ -160,6 +158,9 @@ class DdbItemService {
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
+        def itemSource = itemService.getItemXmlSource(id)
+        def collection = new XmlSlurper().parseText(itemSource)
+        def geometry = collection.monument.georeference.geometry.text()
 
         def model = [
             itemUri: itemUri,
@@ -183,7 +184,9 @@ class DdbItemService {
             isFavorite: isFavorite,
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
-            similarItems : similarItems
+            domainCanonic:configurationService.getDomainCanonic(),
+            similarItems : similarItems,
+            geometryInput: geometry
         ]
 
         return model
@@ -275,7 +278,7 @@ class DdbItemService {
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
-                apiResponse.throwException(request)
+                apiResponse.throwException(httpRequest)
             }
             resultsItems = apiResponse.getResponse()
 

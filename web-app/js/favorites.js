@@ -60,7 +60,7 @@ $(function() {
         return false;
       }
     });
-
+    
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -433,19 +433,19 @@ $(function() {
       var newPosition = parseInt($(this).val());
       if(newPosition !== "NaN"){
         var parentElement = $(this).parents('.rank-wrapper');
-        updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+        updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition - 1);
       }
     });
     $('.rank-arrows .up, .rank-arrows .down').on('click', function(){
       if(!$(this).parent().hasClass('disabled')){
         var parentElement = $(this).parents('.rank-wrapper');
-        var currentPosition = parseInt(parentElement.find('.rank-input').val());
+        var currentPosition = parseInt(parentElement.find('.rank-input').val()) - 1;
         if($(this).hasClass('up') && currentPosition > 0){
-          var newPosition = currentPosition-1;
-          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'),
+                         currentPosition - 1);
         }else if($(this).hasClass('down')){
-          var newPosition = currentPosition+1;
-          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'),
+                         currentPosition + 1);
         }
       }
     });
@@ -529,7 +529,6 @@ function showError(errorHtml) {
         '.favorites-results-content').find('.errors-container') : $(document.createElement('div'));
     var errorIcon = $(document.createElement('i'));
     errorContainer.addClass('errors-container');
-    errorIcon.addClass('icon-exclamation-sign');
     errorContainer.html(errorHtml);
     errorContainer.prepend(errorIcon);
 
@@ -559,3 +558,15 @@ function updateRanking (bookmarkId, folderId, newPosition){
     error: function(){return false;}
   });
 }
+
+$('#alle-listen').click(function(event){
+  event.preventDefault();
+  var url = jsContextPath + "/user/" +  $(this).attr("data-userId") + "/favorites/allpublicfolders/"+ $(this).attr("data-selectedFolderId");
+  $.get(url, function(data) {
+    $('#public-folders').empty();
+    $('#public-folders').append(data);
+
+    var newUrl = updateURLParameter(window.location.href, 'showLinkAllList', false);
+    window.location.href = newUrl;
+  });
+});

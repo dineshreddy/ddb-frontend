@@ -23,6 +23,7 @@ import de.ddb.common.constants.SupportedLocales
 class IndexController {
 
     def configurationService
+    def institutionService
 
     def index() {
         // fetch the DDB news from static server.
@@ -36,7 +37,8 @@ class IndexController {
             log.error "text: Text file was not found"
             apiResponse.throwException(request)
         }
-        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children())])
+        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children()),
+                                      stats: institutionService.getNumberOfItemsAndInstitutionsWithItems()])
     }
 
     /**

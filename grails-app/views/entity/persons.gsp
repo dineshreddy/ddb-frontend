@@ -17,8 +17,7 @@ limitations under the License.
 
 <html>
 <head>
-<title>
-  ${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+<title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="persons" />
 <meta name="layout" content="main" />
 </head>
@@ -41,7 +40,6 @@ limitations under the License.
       </div>
     </div>
   </div>
-  
   <div class="row persons-body">
     <div class="span3 persons-font">
       <p>
@@ -54,21 +52,30 @@ limitations under the License.
         <g:message code="ddbnext.entities.personspage.licenceInfo" />
       </p>
     </div>
-    <div class="span9 search-results-content">
-        <div>
-      <div id="columns">
-        <g:each var="person" in="${results[0]}">
-          <div class="pin">
-            <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" title=" ${person.preferredName}"> <img
-              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="150px" />"></a>
-            <p>
-              <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" alt=" ${person.preferredName}"> ${person.preferredName}
-              </a>
-            </p>
-          </div>
-        </g:each>
-      </div>
+    <div class="span9 persons-overview-content">
       <div>
+        <div class="persons-overview-overlay-modal"></div>
+        <div class="persons-overview-overlay-waiting">
+          <div class="small-loader"></div>
+        </div>
+        <div id="columns">
+          <g:each var="person" in="${results[0]}">
+            <div class="pin">
+              <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
+                 title="${person.preferredName}">
+                <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
+                     alt="${person.preferredName}"/>
+              </a>
+              <p>
+                <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
+                   title="${person.preferredName}">
+                  ${person.preferredName}
+                </a>
+              </p>
+            </div>
+          </g:each>
+        </div>
+      </div>
     </div>
   </div>
 </body>

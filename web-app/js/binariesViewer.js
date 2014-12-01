@@ -66,19 +66,13 @@ $(document)
               var currentGallery = "images";
               if (totImages > 0) {
                 currentGallery = "images";
-                if (totImages > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               } else if (totVideos > 0) {
                 currentGallery = "videos";
-                if (totVideos > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               } else if (totAudios > 0) {
                 currentGallery = "audios";
-                if (totAudios > 1) {
-                  $("div.tabs").addClass("fix");
-                }
+                $("div.tabs").addClass("fix");
               }
               currentTab($("p."+currentGallery));
               $("div."+currentGallery).show();
@@ -160,6 +154,8 @@ $(document)
 
               $("div.binary-rights span").text(rights);
               $("div.binary-rights").attr("title", rights);
+
+              addRedBorder($(a).find(".thumbnail"));
             }
             ;
             var jwPlayerSetup = function(content, poster) {
@@ -233,6 +229,12 @@ $(document)
               }
             }
             ;
+            var addRedBorder = function(el) {
+              $(el).addClass("active");
+            }
+            var removeRedBorder = function() {
+              $(".scroller ul>li>a").find(".thumbnail").removeClass("active");
+            };
             $(".btn-prev").click(function() {
               if (!$(this).hasClass("disabled")) {
                 $(this).addClass("disabled");
@@ -241,6 +243,11 @@ $(document)
                 }, 500);
               }
             });
+            var hideMap = function() {
+              $(".binary-viewer-container").removeClass("off");
+              $("#ddb-map").addClass("off");
+              $("div.tabs").addClass("fix");
+            };
             $(".btn-next").click(function() {
               if (!$(this).hasClass("disabled")) {
                 $(this).addClass("disabled");
@@ -256,9 +263,11 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-images"));
+                  removeRedBorder();
                   updatePreview(tab);
                   $("#binary-viewer").addClass("img-binary");
                 });
@@ -269,9 +278,11 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-videos"));
+                  removeRedBorder();
                   updatePreview(tab);
                   $("#binary-viewer").removeClass("img-binary");
                 });
@@ -282,11 +293,25 @@ $(document)
                     return false;
                   }
                   currentTab(this);
+                  hideMap();
                   $("div.scroller").hide();
                   tab.show();
                   createGallery($(".gallery-audios"));
+                  removeRedBorder();
                   updatePreview(tab);
-                  $("#binary-viewer").removeClass( ".img-binary" );
+                  $("#binary-viewer").removeClass("img-binary");
+                });
+            $("p.map").click(
+                function() {
+                  currentTab(this);
+                  $("div.scroller").hide();
+                  $(".binary-viewer-container").addClass("off");
+                  $("#ddb-map").removeClass("off");
+                  if ($("#ddb-map").is(":empty")) {
+                    var map = new DDBMap();
+                    map.displayMultipolygone({"rootDivId": "ddb-map"});
+                  }
+                  $("div.tabs").removeClass("fix");
                 });
             $(".previews").click(
                     function(e) {
@@ -339,7 +364,11 @@ $(document)
               var title = $(this).attr("title");
               var author = $(this).attr("data-author");
               var rights = $(this).attr("data-rights");
+
               $.hideErrors();
+              removeRedBorder();
+              addRedBorder($(this).find(".thumbnail"));
+
               if (type == "image") {
                 if ($("#jwplayer-container")) {
                   $("#jwplayer-container").remove();

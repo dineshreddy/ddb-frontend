@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <g:if test="${hierarchy}">
   <div class="bt">
-    <g:set var="i" value="0" />
+    <g:set var="i" value="${0}" />
     <div class="hierarchy-header">
       <g:message code="ddbnext.View_related_objects" />
     </div>

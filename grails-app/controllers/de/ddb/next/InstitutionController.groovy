@@ -16,19 +16,19 @@
 package de.ddb.next
 import grails.converters.JSON
 import de.ddb.common.ApiInstitution
-import de.ddb.common.beans.Bookmark
+import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
-import de.ddb.common.constants.Type
+import de.ddb.common.constants.SearchParamEnum
 
 class InstitutionController {
 
     def institutionService
     def configurationService
-    def bookmarksService
     def sessionService
+    def bookmarksService
 
     def show() {
-        def allInstitution = institutionService.findAll()
+        def allInstitution = institutionService.findAllByAlphabet()
         def institutionByFirstLetter = allInstitution.data
 
         def all = []
@@ -50,24 +50,12 @@ class InstitutionController {
     }
 
     def getJson() {
-        render institutionService.findAll() as JSON
+        render institutionService.findAllByAlphabet() as JSON
     }
 
     def showInstitutionsTreeByItemId() {
         def id = params.id
         def itemId = id
-
-        def isFavorite = isFavorite(id)
-        log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
-        if (params.reqActn) {
-            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(id)) {
-                isFavorite = response.SC_FOUND
-            }
-            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(id)) {
-                isFavorite = response.SC_NOT_FOUND
-            }
-        }
-
         def vApiInstitution = new ApiInstitution()
         log.debug("read insitution by item id: ${id}")
         def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
@@ -99,6 +87,8 @@ class InstitutionController {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
+            
+            Folder folder = bookmarksService.findFolderByInstitutionId(itemId)
 
             render(
                     view: "institution",
@@ -113,12 +103,51 @@ class InstitutionController {
                         countObjcs: countObjectsForProv,
                         vApiInst: vApiInstitution,
                         url: pageUrl,
-                        isFavorite: isFavorite]
+                        domainCanonic:configurationService.getDomainCanonic(),
+                        isFavorite: isFavorite(id),
+                        folder: folder]
                     )
         } else {
             forward controller: 'error', action: "defaultNotFound"
         }
 
+    }
+
+    /**
+     * Controller method for rendering AJAX calls for an entity based item search
+     *
+     * @return the content of the backend search
+     */
+    public def getInstitutionHighlights() {
+        def institutionid = params["institutionid"]
+        int offset = params.int(SearchParamEnum.OFFSET.getName())
+        int rows = params.int(SearchParamEnum.ROWS.getName())
+
+        if(!rows) {
+            rows = 4
+        }
+        if(rows < 1){
+            rows = 1
+        }
+
+        if(!offset) {
+            offset = 0
+        }
+        if(offset < 0){
+            offset = 0
+        }
+
+        def institution = [:]
+
+        def highLights = institutionService.getInstitutionHighlights(institutionid, offset, rows)
+        institution["searchPreview"] = highLights
+
+        //Replace all the newlines. The resulting html is better parsable by JQuery
+        def resultsHTML = g.render(template:"/institution/searchResults", model:["institution": institution]).replaceAll("\r\n", '').replaceAll("\n", '')
+
+        def result = ["html": resultsHTML, "resultCount" : highLights?.resultCount]
+
+        render (contentType:"text/json"){result}
     }
 
     private def isFavorite(itemId) {
@@ -129,56 +158,4 @@ class InstitutionController {
             return false
         }
     }
-
-    def delFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: delFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            // Bug: DDBNEXT-626: if (bookmarksService.deleteBookmarksByBookmarkIds(user.getId(), [pId])) {
-            bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])
-            def isFavorite = isFavorite(itemId)
-            if (isFavorite == response.SC_NOT_FOUND) {
-                log.info "non-JavaScript: delFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: delFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
-    }
-
-    def addFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: addFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            Bookmark newBookmark = new Bookmark(
-                    null,
-                    user.getId(),
-                    itemId,
-                    new Date().getTime(),
-                    Type.INSTITUTION,
-                    null,
-                    "",
-                    new Date().getTime())
-            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
-            if (newBookmarkId) {
-                log.info "non-JavaScript: addFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: addFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
-    }
-
 }

@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
+<%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 <ul class="results-list unstyled entity-list">
 <g:set var="pageHitCounter" value="0"/>
   <g:each in="${entities}" var="entityItem">
@@ -30,11 +32,20 @@ limitations under the License.
                 <strong><ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
               </g:link>
             </h2>
-            <div class="subtitle">
+            <div class="subtitle hidden-phone">
               <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
                 ${profession}<g:if test="${i != last}">, </g:if>
               </g:each>
+              <br>
+                <g:if test="${entityItem.dateOfBirth}">
+                  <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")} -
+                </g:if>
+                <g:if test="${entityItem.dateOfDeath}">
+                  <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
+                  <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+                </g:if>
             </div>
           </div>
           <div class="extra">
@@ -44,18 +55,18 @@ limitations under the License.
           <div class="thumbnail">
             <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" class="no-external-link-icon">
               <g:if test="${entityItem.thumbnail != null}">
-                <img src="${entityItem.thumbnail}" alt="${ entityItem.preferredName }" width="55px" />
+                <img src="${entityItem.thumbnail}" width="55" alt="<ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" />" />
               </g:if>
               <g:else>
-                <g:img dir="images/placeholder" file="entity.png" alt="${ entityItem.preferredName }" width="55px"/>
+                <g:img dir="images/placeholder" file="entity.png" alt="${ddbcommon.getTruncatedItemTitle(title: entityItem.preferredName, length: 100)}" width="55" />
               </g:else>
             </g:link>
           </div>
-          <div class="item-options bl">
+          <div class="item-options bl hidden-phone">
             <ul class="item-options-ul">
               <ddbcommon:isLoggedIn>
                 <li>
-                  <div data-itemid="${entityId}" data-actn="POST" data-objecttype="entity" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
+                  <div data-itemid="${entityId}" data-actn="POST" data-objecttype="${Type.ENTITY.name}" class="add-to-favorites bb" title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>" ></div>
                 </li>
               </ddbcommon:isLoggedIn>
             </ul>

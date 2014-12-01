@@ -25,9 +25,8 @@
 .edit-saved-search-icon {
   background: url("../images/icons/ddbIkonographie.png") -30px -240px no-repeat;
   cursor: pointer;
-  position: relative;
-  margin-top: 7px;
   height: 20px;
+  vertical-align: middle;
 }
 
 #editSavedSearchTitle {
@@ -45,18 +44,22 @@
 }
 
 .saved-searches-list-envelope {
-  margin-left: 15px;
   padding-left: 20px;
   position: relative;
 }
 
+.right-container .saved-searches-list-envelope {
+  padding-right: 30px;
+}
+
 .saved-searches-list-envelope:before {
   content: '';
-  background: url("../images/icons/ddbIkonographie.png")  -30px -327px no-repeat;
+  background: url("../images/icons/ddbIkonographie.png") -30px -328px no-repeat;
   width: 20px;
   height: 20px;
   position: absolute;
   left: 0;
+  top:0;
 }
 
 .saved-searches-list-number {
