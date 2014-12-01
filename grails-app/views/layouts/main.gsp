@@ -25,20 +25,11 @@ limitations under the License.
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-57x57.png" type="appleicon" plugin="ddb-common"
-                sizes="57x57"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-72x72.png" type="appleicon" plugin="ddb-common"
-                sizes="72x72"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-76x76.png" type="appleicon" plugin="ddb-common"
-                sizes="76x76"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-114x114.png" type="appleicon" plugin="ddb-common"
-                sizes="114x114"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-120x120.png" type="appleicon" plugin="ddb-common"
-                sizes="120x120"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-144x144.png" type="appleicon" plugin="ddb-common"
-                sizes="144x144"/>
-    <g:external dir="images/apple-touch-icons" file="apple-touch-icon-152x152.png" type="appleicon" plugin="ddb-common"
-                sizes="152x152"/>
+    <g:each var="size" in="${["57x57", "72x72", "76x76", "114x114", "120x120", "144x144", "152x152"]}">
+      <link rel="apple-touch-icon" sizes="${size}" href="${g.resource("plugin": "ddb-common",
+                                                                      "dir": "images/apple-touch-icons",
+                                                                      "file": "apple-touch-icon-" + size + ".png")}"/>
+    </g:each>
 
     <link rel="search" title="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}"
           href="opensearch_${ddb.getCurrentLocale()}.osdx" type="application/opensearchdescription+xml" />
