@@ -61,10 +61,15 @@ limitations under the License.
       <div id="columns">
         <g:each var="person" in="${results[0]}">
           <div class="pin">
-            <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" title=" ${person.preferredName}"> <img
-              src="<ddb:fixWikimediaImageWidth thumbnail="${person.thumbnail}" desiredWidth="150px" />"></a>
+            <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
+               title="${person.preferredName}">
+              <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
+                   alt="${person.preferredName}"/>
+            </a>
             <p>
-              <a href="<g:createLink controller='entity' action='index' />/<ddb:getGndIdFromGndUri id="${person.id}"/>" alt=" ${person.preferredName}"> ${person.preferredName}
+              <a href="${g.createLink(controller: 'entity', action: 'index') + '/' + ddb.getGndIdFromGndUri(id: person.id)}"
+                 title="${person.preferredName}">
+                ${person.preferredName}
               </a>
             </p>
           </div>
