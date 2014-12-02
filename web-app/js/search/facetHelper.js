@@ -18,6 +18,7 @@
 de.ddb.next.search = de.ddb.next.search || {};
 
 de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
+
   if (facetField === 'affiliate_fct_role' || facetField === 'keywords_fct' || facetField === 'place_fct' || facetField === 'provider_fct' || facetField === 'state_fct') {
     return facetValue.toString();
   }
@@ -29,9 +30,6 @@ de.ddb.next.search.getLocalizedFacetValue = function(facetField, facetValue) {
   }
   else if (facetField === 'type_fct') {
     return messages.ddbnext['type_fct_' + facetValue];
-  }
-  else if (facetField === 'time_fct') {
-    return messages.ddbnext['time_fct_' + facetValue];
   }
   else if (facetField === 'language_fct') {
     return messages.ddbnext['language_fct_' + facetValue];

@@ -21,6 +21,7 @@ limitations under the License.
 <link rel="canonical" href="${createLink(controller:'item',action:'findById',params: [id: itemId], base:domainCanonic)}" />
 <meta name="page" content="item" />
 <meta name="layout" content="main" />
+<r:require module="multipolygone"/>
 <ddb:getSocialmediaMeta
   likeTitle="${itemTitle + " - " + g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}"
   likeUrl="${baseUrl + request.forwardURI}" />

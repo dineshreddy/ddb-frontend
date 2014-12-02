@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <div style="margin-top: 20px; margin-bottom: 20px">
   <g:message encodeAs="html" code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}" />
   <br />
@@ -37,9 +38,19 @@ limitations under the License.
       <tr>
         <td style="height: 130px; padding: 10px;">
           <h2>
-            <a style="color: #a5003b" href="${contextUrl + '/search?' + search.queryString}" title="${ddbcommon.getTruncatedHovercardTitle(title: search.label, length: 350)}">
-              <ddbcommon:getTruncatedItemTitle title="${search.label}" length="${100}" />
-            </a>
+            <a style="color: #a5003b"
+                <g:if test="${search.type == null || search.type == Type.CULTURAL_ITEM}">
+                  href="${contextUrl + '/searchresults?' + search.queryString}"
+                </g:if>
+                <g:elseif test="${search.type == Type.ENTITY}">
+                  href="${contextUrl + '/entity/search/person?' + search.queryString}"
+                </g:elseif>
+                <g:elseif test="${search.type == Type.INSTITUTION}">
+                  href="${contextUrl + '/searchresults/institution?' + search.queryString}"
+                </g:elseif>
+                title="${ddbcommon.getTruncatedHovercardTitle(title: search.label, length: 350)}">
+                <ddbcommon:getTruncatedItemTitle title="${search.label}" length="${100}" />
+              </a>
           </h2>
           <div>
             <g:render template="savedSearchEntry" model="['search':search]" />

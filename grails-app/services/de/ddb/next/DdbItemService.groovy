@@ -36,8 +36,6 @@ import de.ddb.common.exception.ItemNotFoundException
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
 
-    private static final SOURCE_PLACEHOLDER = '{0}'
-
     def transactional = false
     def grailsApplication
     def configurationService
@@ -160,6 +158,9 @@ class DdbItemService {
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
+        def itemSource = itemService.getItemXmlSource(id)
+        def collection = new XmlSlurper().parseText(itemSource)
+        def geometry = collection.monument.georeference.geometry.text()
 
         def model = [
             itemUri: itemUri,
@@ -184,7 +185,8 @@ class DdbItemService {
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
             domainCanonic:configurationService.getDomainCanonic(),
-            similarItems : similarItems
+            similarItems : similarItems,
+            geometryInput: geometry
         ]
 
         return model

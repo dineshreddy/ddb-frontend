@@ -44,7 +44,7 @@ hr {
 }
 
 .fav-text a{
-  display: block;
+  display: inline;
 }
 
 .saved-searches .bookmarks-lists .bookmarks-list {
@@ -280,6 +280,15 @@ hr {
 
 .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
   margin-left: 0px !important;
+}
+
+.public-favorites .comment .comment-content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.public-favorites .comment .comment-text .clearfix {
+  clear: right;
 }
 
 .results-sorter .select-all {
@@ -1043,8 +1052,4 @@ hr {
   margin-right:30px;
   padding-left:24px;
   background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
-}
-
-#folderEditConfirmDialog {
-  margin-top: -270px !important;
 }

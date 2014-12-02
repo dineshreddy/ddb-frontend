@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-<title><g:message encodeAs="html" code="ddbnext.Advanced_search" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message encodeAs="html" code="ddbnext.AdvancedSearch" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 
 <meta name="page" content="advancedsearch" />
 <meta name="layout" content="main" />
@@ -72,7 +72,7 @@ limitations under the License.
                                 <div class="row">
                                   <div class="span6 button-group fr">
                                     <button class="reset grey" type="reset"><span><g:message encodeAs="html" code="ddbnext.Reset"/></span></button>
-                                    <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.Search"/></span></button>
+                                    <button class="submit" type="submit"><span><g:message encodeAs="html" code="ddbnext.SearchButton"/></span></button>
                                   </div>
                                 </div>
                               </fieldset>

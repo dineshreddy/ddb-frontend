@@ -16,11 +16,7 @@
 package de.ddb.next
 
 import net.sf.json.JSON
-
-import org.springframework.web.servlet.support.RequestContextUtils
-
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 
 /**
  * Controller class for list related views
@@ -28,7 +24,6 @@ import de.ddb.common.constants.SupportedLocales
  * @author boz
  */
 class ListsController {
-    def userService
     def listsService
     def searchService
 
@@ -43,7 +38,6 @@ class ListsController {
 
         //Request parameter handling
         //*********************************************************************
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
         def queryString = request.getQueryString() ? request.getQueryString() : ""
         int offset = urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()
@@ -106,13 +100,12 @@ class ListsController {
     private createListMenu() {
         def menu = []
 
-        //Initialize the daily favorite lists
-        def ddbAllList = listsService.getDdbAllList()
-
         //Search the elastic search index for further lists
         def lists = listsService.findAllLists()
         lists?.each { menu.add(it) }
 
+        //Initialize the daily favorite lists
+        def ddbAllList = listsService.getDdbAllList()
         menu.add(ddbAllList)
 
         return menu

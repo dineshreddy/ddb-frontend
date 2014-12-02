@@ -137,8 +137,7 @@ ddb {
                 [facetName:FacetEnum.AFFILIATE_FCT_ROLE.getName(), filter:'null'],
                 [facetName:FacetEnum.TYPE_FCT.getName(), filter:'null'],
                 [facetName:FacetEnum.SECTOR_FCT.getName(), filter:'null'],
-                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null'],
-                [facetName:FacetEnum.TIME_FCT.getName(), filter:'null']
+                [facetName:FacetEnum.PLACE_FCT.getName(), filter:'null']
             ]
         }
     }
@@ -199,6 +198,7 @@ ddb.account.privacy.url="/content/privacy/personal_data"
 ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
+ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

@@ -16,6 +16,7 @@
 package de.ddb.next
 import net.sf.json.JSONArray
 
+import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
@@ -34,7 +35,7 @@ import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
  *
  * @author boz
  */
-class EntityController {
+class EntityController implements InitializingBean {
     private final static int NR_COLUMNS_DESIRED = 5
     private final static int RESULTS_DESIRED_IN_ONE_PERSONS_PAGE = 50
     private final static int MAX_SEED_RANGE=999999999 // Backend accept as high as 2^64 -1
@@ -44,7 +45,11 @@ class EntityController {
     def ddbItemService
     def searchService
 
-    int PREVIEW_COUNT = 4
+    URL ddbUrl
+
+    public void afterPropertiesSet() throws Exception {
+        ddbUrl = new URL(configurationService.getDomainCanonic())
+    }
 
     /**
      * Initialize the entity page with content from the Culturegraph service and the cortex backend.
@@ -83,7 +88,7 @@ class EntityController {
             render(view: "/message/message", model: [errors: errors])
             return
         }
-        
+
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
         if(!apiResponse.isOk()){
             if(apiResponse.getStatus() == HttpStatus.HTTP_404){
@@ -142,6 +147,9 @@ class EntityController {
         } else if (imageUrl) {
             entityImageUrl = imageUrl
         }
+
+        // filter out external links which point to DDB
+        jsonGraph.sameAs.removeAll { link -> new URL(link.'@id').getHost().equals(ddbUrl.getHost())}
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
@@ -257,7 +265,7 @@ class EntityController {
 
         //The Entity API deliveres a dateBirth_de and a dateBirth_en. In the View we just pass a dateOfBirth without locale
         fixLocalizedDateOfBirth(results)
-        
+
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
@@ -370,7 +378,7 @@ class EntityController {
 
         render (contentType:"text/json"){result}
     }
-    
+
     /**
      * This function takes the entity result and modifies entity dates based on the locale
      * @param results
@@ -379,12 +387,12 @@ class EntityController {
     private fixLocalizedDateOfBirth(results) {
         def mlocale = RequestContextUtils.getLocale(request)
         for (entity in results.entity[0].docs) {
-            if (mlocale.toString() == "de"){
-                entity.dateOfBirth = entity.dateOfBirth_de
-                entity.dateOfDeath = entity.dateOfDeath_de
-            }else if (mlocale.toString() == "en"){
+            if (mlocale.toString() == "en"){
                 entity.dateOfBirth = entity.dateOfBirth_en
                 entity.dateOfDeath = entity.dateOfDeath_en
+            } else {
+                entity.dateOfBirth = entity.dateOfBirth_de
+                entity.dateOfDeath = entity.dateOfDeath_de
             }
         }
     }

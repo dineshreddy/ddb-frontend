@@ -27,19 +27,13 @@
     display: none !important;
   }
 
-  .view-type-switch {
-    display:none;
-    visibility: hidden;
-  }
-  
-  .container.list h1 {
+  .container h1 {
     margin: 10px 0 0 0;
   }
-  
-  .container.list .institutionlist {
+
+  .container .institutionlist {
     margin-top: 0;
   }
-  
 }
 
 .view-type-switch #view-institution-list {
