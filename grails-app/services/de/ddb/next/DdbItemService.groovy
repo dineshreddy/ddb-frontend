@@ -91,7 +91,7 @@ class DdbItemService {
      * @return List
      */
     def getHierarchyItem(String id) {
-        def bottomUpHierarchy = itemService.getParent(id)
+        def bottomUpHierarchy = getParent(id)
         if (bottomUpHierarchy.size()<=1) {
             return []
         }
@@ -100,6 +100,21 @@ class DdbItemService {
         directParent["children"]= itemService.getChildren(directParent.id)
         flatHierarchy.add(directParent)
         return flatHierarchy
+    }
+
+    /**
+     * Return all parents for the given item except institutions.
+     * (see DDBNEXT-1885)
+     *
+     * @param itemId item id
+     *
+     * @return list of all parents
+     */
+    def getParent(String itemId) {
+        def parents = itemService.getParent(itemId)
+
+        // filter out institutions
+        return parents.findAll { parent -> parent.type != "institution" }
     }
 
     def getFullItemModel(id) {
