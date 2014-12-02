@@ -49,7 +49,6 @@ class ContentController {
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
-
             /* If first level dir is missing use a default context dir from contentDefault. */
             if (!location) {
                 redirect uri: new File(browserUrl, configurationService.getDefaultStaticPage()).toString() + "/"
@@ -80,6 +79,10 @@ class ContentController {
                 }
             }
             def map = retrieveArguments(response)
+            
+            //Needed for the canonicalURL
+            map << ["location": location,domainCanonic:configurationService.getDomainCanonic()]
+
             render(view: "staticcontent", model: map)
         } catch (ItemNotFoundException infe) {
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."

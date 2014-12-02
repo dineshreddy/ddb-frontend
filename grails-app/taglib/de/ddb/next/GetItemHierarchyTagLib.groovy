@@ -22,8 +22,9 @@ class GetItemHierarchyTagLib {
 
     static namespace = "ddb"
 
+    def ddbItemService
     def itemService
-
+    
     /**
      * This tag renders the hierarchy of a given item-id. The hierarchy of the given item-id is
      * dynamically created via two calls to the backend.
@@ -34,7 +35,7 @@ class GetItemHierarchyTagLib {
         def itemId = attrs.item
 
         // Build the hierarchy from the item to the root element. The root element is kept.
-        def parentList = itemService.getParent(itemId)
+        def parentList = ddbItemService.getParent(itemId)
 
         // No parentList -> No hierarchy
         if(!Item.doesParentListContainHierarchy(itemId, parentList)) {
