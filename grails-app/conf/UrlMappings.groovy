@@ -70,11 +70,6 @@ class UrlMappings {
             action="staticcontent"
         }
 
-        "/content/sitemap" {
-            controller="content"
-            action="sitemap"
-        }
-
         "/advancedsearch" {
             controller="advancedsearch"
             action="fillValues"

@@ -29,19 +29,6 @@ class ContentController {
 
     def configurationService
 
-    def sitemap() {
-        def staticUrl = configurationService.getStaticUrl()
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/sitemap.xml"
-        def apiResponse = ApiConsumer.getXml(staticUrl, path)
-
-        if (!apiResponse.isOk()) {
-            log.error "sitemap file was not found"
-            apiResponse.throwException(request)
-        }
-        render(view: "sitemap", model: [urlset : apiResponse.getResponse()])
-    }
-
     def staticcontent() {
         try {
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
