@@ -237,3 +237,7 @@ a.help-kw-link {
 .viewer-error-body {
   margin: 20px !important;
 }
+
+.asset-wrapper.asset strong {
+  display: none;
+}
