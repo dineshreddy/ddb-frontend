@@ -87,18 +87,23 @@ class FacetsController {
             def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
 
             if(!apiResponse.isOk()){
-                apiResponse.throwException(request)
-            }
+                //Thrown an exception is useless for the frontend in an Ajax response.
+                //We give back instead an empty set of results.
+                //apiResponse.throwException(request)
+                facetValues = [type: facetName, values: []]
+            }else{
 
-            def resultsItems = apiResponse.getResponse()
-
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-            //Filter the role values for mixed facets like affiliate_facet_role!
-            if (facetName.endsWith("role")) {
-                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
-            } else {
-                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+                def resultsItems = apiResponse.getResponse()
+    
+                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+    
+                //Filter the role values for mixed facets like affiliate_facet_role!
+                if (facetName.endsWith("role")) {
+                    facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
+                } else {
+                    facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
+                }
+                
             }
         }
 

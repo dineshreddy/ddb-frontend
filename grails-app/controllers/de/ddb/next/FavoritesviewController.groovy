@@ -23,7 +23,7 @@ class FavoritesviewController {
 
     def publicFavorites() {
         final def ACTION = "publicFavorites"
-        int rows = params.rows ? params.rows.toInteger() : 9999
+        int rows = params.rows ? params.rows.toInteger() : 20
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
@@ -57,8 +57,22 @@ class FavoritesviewController {
         }
 
         List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
-        publicFolders.sort{ a, b ->
-            a.title <=> b.title
+
+        publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
+
+        def tamMax = 20
+        def showLinkAllList
+
+        if(publicFolders.size() > tamMax) {
+            if(params.showLinkAllList) {
+                showLinkAllList = params.showLinkAllList.toBoolean()
+            }else {
+             showLinkAllList = true
+            }
+
+            if(showLinkAllList) {
+                publicFolders = publicFolders.subList(0, tamMax)
+            }
         }
 
         List items = bookmarksService.findBookmarksByPublicFolderId(folderId)
@@ -67,13 +81,15 @@ class FavoritesviewController {
 
         def lastPgOffset=0
 
-
         if (totalResults <1){
             render(view: ACTION, model: [
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
-                selectedUser: user,
+                selectedUserId: user.id,
+                selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
+                selectedUserUserName: user.username,
                 publicFolders: publicFolders,
+                showLinkAllList: showLinkAllList,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
                 fullPublicLink: createPublicLink(user.getId(), folderId),
@@ -87,19 +103,18 @@ class FavoritesviewController {
             def resultsItems
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
+            def queryString = request.getQueryString() ? request.getQueryString() : ""
 
             // convertQueryParametersToSearchParameters modifies params
             params.remove("query")
 
-            urlQuery["offset"] = 0
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((offset/urlQuery["rows"].toInteger())+1).toString()
-            def totalPages = (Math.ceil(items.size()/urlQuery["rows"].toInteger()).toInteger())
-            lastPgOffset=((Math.ceil(items.size()/rows)*rows)-rows).toInteger()
-
+            def totalPages = (Math.ceil(allRes.size().toInteger()/urlQuery["rows"].toInteger()).toInteger())
+            lastPgOffset=((Math.ceil(allRes.size()/rows)*rows)-rows).toInteger()
             if (totalPages.toFloat()<page.toFloat()){
-                offset= (Math.ceil((items.size()-rows)/10)*10).toInteger()
-                if ((Math.ceil((items.size()-rows)/10)*10).toInteger()<0){
+                offset= (Math.ceil((allRes.size()-rows)/10)*10).toInteger()
+                if ((Math.ceil((allRes.size()-rows)/10)*10).toInteger()<0){
                     lastPgOffset=20
                 }
                 page=totalPages
@@ -128,8 +143,9 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo)
+                sendBookmarksPerMail(params.email, orderedFavorites, selectedFolder)
             }
+
             render(view: ACTION, model: [
                 results: resultsItems,
                 selectedFolder: selectedFolder,
@@ -137,6 +153,7 @@ class FavoritesviewController {
                 allResultsOrdered: allResultsWithAdditionalInfo,
                 viewType: urlQuery["viewType"],
                 resultsPaginatorOptions: resultsPaginatorOptions,
+                paginationURL: searchService.buildPagination(allRes.size(), urlQuery, request.forwardURI+'?'+queryString),
                 page: page,
                 resultsNumber: totalResults,
                 createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
@@ -146,7 +163,10 @@ class FavoritesviewController {
                 rows: rows,
                 order: order,
                 by: by,
-                selectedUser: user,
+                selectedUserId: user.id,
+                selectedUserFirstnameAndLastnameOrNickname: user.getFirstnameAndLastnameOrNickname(),
+                selectedUserUserName: user.username,
+                showLinkAllList: showLinkAllList,
                 publicFolders: publicFolders,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
@@ -154,7 +174,9 @@ class FavoritesviewController {
                 urlsForOrderTitle: orderLinks.urlsForOrderTitle,
                 fullPublicLink: createPublicLink(user.getId(), folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
-                contextUrl: configurationService.getContextUrl()
+                contextUrl: configurationService.getContextUrl(),
+                createdDateString: favoritesService.formatDate(selectedFolder.creationDate),
+                updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate)
             ])
         }
 
@@ -212,7 +234,7 @@ class FavoritesviewController {
                 def locale = favoritesService.getLocale()
                 def resultsItems
                 def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
-                def queryString = request.getQueryString()
+                def queryString = request.getQueryString() ? request.getQueryString() : ""
 
                 // convertQueryParametersToSearchParameters modifies params
                 params.remove("query")
@@ -248,7 +270,7 @@ class FavoritesviewController {
                 }
 
                 if (request.method=="POST"){
-                    sendBookmarkPerMail(params.email,allResultsWithAdditionalInfo, selectedFolder)
+                    sendBookmarksPerMail(params.email, allResultsWithAdditionalInfo, selectedFolder)
                 }
                 render(view: ACTION, model: [
                     results: resultsItems,
@@ -345,7 +367,7 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
+    private sendBookmarksPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){
@@ -402,15 +424,14 @@ class FavoritesviewController {
                     from configurationService.getFavoritesSendMailFrom()
                     replyTo configurationService.getFavoritesSendMailFrom()
                     subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
-                    body( view:"_favoritesReportEmailBody",
-                    model:[
-                        userId: userId,
-                        folderId: folderId,
-                        publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-                        blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-                        unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
-                        selfBaseUrl: configurationService.getSelfBaseUrl()
-                    ])
+                    body( view:"_favoritesReportEmailBody", model:[
+                                            userId: userId,
+                                            folderId: folderId,
+                                            publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                                            blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                                            unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+                                            selfBaseUrl: configurationService.getSelfBaseUrl()
+                                        ])
                 }
                 flash.message = "ddbnext.favorites_list_reported"
             } catch (e) {
@@ -418,5 +439,29 @@ class FavoritesviewController {
                 flash.error = "ddbnext.favorites_list_notreported"
             }
         }
+    }
+
+    def allpublicfolders() {
+        List publicFolders = bookmarksService.findAllPublicFolders(params.userId)
+
+        publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, params.selectedFolderId)
+
+        render(template: "favoritesAllFolders", model: [publicFolders: publicFolders, selectedUserId : params.userId])
+    }
+
+    private sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolderId) {
+        publicFolders.sort{ a, b ->
+            b.updatedDate <=> a.updatedDate
+        }
+
+        def aux
+        publicFolders.each() {
+            if(it.folderId == selectedFolderId) {
+                aux = it
+            }
+        }
+        publicFolders.remove(aux)
+
+        return publicFolders
     }
 }

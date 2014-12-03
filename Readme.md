@@ -73,7 +73,7 @@ A list of some predefined variables is set below:
     ddb.favorites.reportMailTo=noreply@deutsche-digitale-bibliothek.de
 
     # Filter configuration
-    ddb.backend.facets.filter="[[facetName:language_fct, filter:term:unknown], [facetName:language_fct, filter:term:termunknown], [facetName:keywords_fct, filter:null], [facetName:provider_fct, filter:null], [facetName:affiliate_fct, filter:null], [facetName:type_fct, filter:null], [facetName:sector_fct, filter:null], [facetName:place_fct, filter:null], [facetName:time_fct, filter:null]]"
+    ddb.backend.facets.filter="[[facetName:language_fct, filter:term:unknown], [facetName:language_fct, filter:term:term:unknown], [facetName:keywords_fct, filter:null], [facetName:provider_fct, filter:null], [facetName:affiliate_fct, filter:null], [facetName:type_fct, filter:null], [facetName:sector_fct, filter:null], [facetName:place_fct, filter:null]]"
 
     # Piwik configuration
     ddb.tracking.piwikfile=/opt/ddb/tracking.txt

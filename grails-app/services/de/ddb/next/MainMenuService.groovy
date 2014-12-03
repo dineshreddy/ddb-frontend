@@ -29,7 +29,7 @@ class MainMenuService {
     def configurationService
     def transactional = false
 
-    MenuItem[] mainMenu
+    private MenuItem[] mainMenu
 
     public MenuItem[] getMainMenu() {
         if (!mainMenu) {

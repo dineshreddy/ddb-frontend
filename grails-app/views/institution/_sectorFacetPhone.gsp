@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<h3 class="filter-title"><g:message encodeAs="html" code="ddbnext.InstitutionPage_FilterBySector" /></h3>
 
 <select class="multiselect" multiple>
   <option value="sec_01"><g:message encodeAs="html" code="ddbnext.sec_01" /></option>

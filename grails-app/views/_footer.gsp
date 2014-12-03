@@ -30,9 +30,12 @@ limitations under the License.
           <li><g:link controller="content" params="[dir: 'kontakt']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
         </ul>
         <div class="build"><ddbcommon:getFrontendVersion /> / <ddbcommon:getBackendVersion/></div>
-        <div class="twitter">
+        <div class="social-icons">
           <g:message code="ddbnext.follow"/>:
-          <a href="https://twitter.com/ddbkultur" target="_blank">
+          <a class="facebook-icon" href="https://facebook.com/ddbkultur" target="_blank">
+            Facebook
+          </a>
+          <a class="twitter-icon" href="https://twitter.com/ddbkultur" target="_blank">
             Twitter
           </a>
         </div>

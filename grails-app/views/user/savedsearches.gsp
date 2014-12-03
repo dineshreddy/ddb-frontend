@@ -62,14 +62,14 @@ limitations under the License.
         <g:elseif test="${flash.email_error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.email_error}" /></span></li>
+              <li><span><g:message code="${flash.email_error}" /></span></li>
             </ul>
           </div>
         </g:elseif>
         <g:if test="${flash.error}">
           <div class="errors-container">
             <ul class="unstyled">
-              <li><i class="icon-exclamation-sign"></i><span><g:message code="${flash.error}" /></span></li>
+              <li><span><g:message code="${flash.error}" /></span></li>
             </ul>
           </div>
         </g:if>
@@ -169,17 +169,17 @@ limitations under the License.
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
         <h3 id="sendSavedSearchesLabel">
-          <g:message code="ddbnext.Send_Savedsearches" />
+          <g:message code="ddbnext.Send_Savedsearch" />
         </h3>
       </div>
-      <form method="POST">
+      <form method="POST" class="searchsend-form">
         <div class="modal-body">
           <fieldset>
             <input placeholder="<g:message code="ddbnext.send_favorites_email"/>" name="email" required="required"> <br /> <small class="muted"><g:message
                 code="ddbnext.send_favorites_more_recipients" /></small> <br />
           </fieldset>
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer-savesearch">
           <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
             <g:message code="ddbcommon.Close" />
           </button>
@@ -202,43 +202,29 @@ limitations under the License.
       <g:message code="ddbnext.Delete_Savedsearches_Dialog" />
       <span id="totalNrSelectedObjects"></span>
     </div>
-    <div class="modal-footer">
-      <button class="submit" id="id-confirm">
-        <g:message code="ddbcommon.Yes" />
-      </button>
-      <button class="submit" data-dismiss="modal">
-        <g:message code="ddbcommon.No" />
-      </button>
+    <div class="modal-footer-savesearch">
+      <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
+      <button class="submit" id="id-confirm"><g:message code="ddbcommon.Yes" /></button>
     </div>
   </div>
 
-  <div id="editSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
-    <div class="modal-header">
+  <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
+    <div class="modal-header" id="modal-header-savesearch">
       <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
         <g:message code="ddbnext.Edit_Savedsearch" />
       </h3>
     </div>
-    <div class="modal-body">
-      <div>
-        <b><g:message code="ddbnext.Mandatory" /></b>
-      </div>
-      <br />
-      <div>
+    <div class="modal-body-savesearch">
+      <div class="savesearch-edit-title">
         <g:message code="ddbnext.Savedsearch_Title" />
-        *
       </div>
       <div>
-        <input id="editSavedSearchId" type="hidden"> <input id="editSavedSearchTitle" type="text">
+        <input id="editSavedSearchId" type="hidden"> <input class="savesearch-edit-input" id="editSavedSearchTitle" type="text">
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-padding" data-dismiss="modal" aria-hidden="true">
-        <g:message code="ddbcommon.Close" />
-      </button>
-      <button class="btn-padding" type="submit" id="editSavedSearchConfirm">
-        <g:message code="ddbcommon.Save" />
-      </button>
+    <div class="modal-footer-savesearch">
+      <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
     </div>
   </div>
 

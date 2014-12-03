@@ -21,7 +21,7 @@ class IsItemHierarchyAvailableTagLib {
 
     static namespace = "ddb"
 
-    def itemService
+    def ddbItemService
 
     /**
      * Checks if a given item-id has a hierarchy. If it has, the body of the tag is rendered. If it has no
@@ -33,7 +33,7 @@ class IsItemHierarchyAvailableTagLib {
         def itemId = attrs.item
 
         // Check if the item has parents
-        def parentList = itemService.getParent(itemId)
+        def parentList = ddbItemService.getParent(itemId)
 
         if(Item.doesParentListContainHierarchy(itemId, parentList)){
             out << body()

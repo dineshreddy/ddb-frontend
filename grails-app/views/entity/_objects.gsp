@@ -34,17 +34,21 @@ limitations under the License.
   </g:if>
 
   <h3>
-  	<g:message encodeAs="html" code="ddbnext.Entity_Objects" />: 
+    <g:message encodeAs="html" code="ddbnext.Entity_Objects" />: 
   </h3>
   <ddbcommon:renderInfoTooltip messageCode="ddbnext.Entity_Objects_Tooltip" hasArrow="true"/>
-  
+
   <div class="carousel">
     <div id="items">
     <%--      Items are retrived via Javascript	  	  --%>
     </div>
     <div class="clearfix"></div>
-    <a class="previous" id="previous"><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></a>
-    <a class="next" id="next"><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></a>	
+    <div class="entity-controls">
+      <a class="previous" id="previous"><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></a>
+    </div>
+    <div class="entity-controls next">
+      <a class="next" id="next"><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></a>
+    </div>
   </div>
 
   <div class="media-bar">

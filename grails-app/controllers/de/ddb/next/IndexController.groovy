@@ -23,12 +23,13 @@ import de.ddb.common.constants.SupportedLocales
 class IndexController {
 
     def configurationService
+    def institutionService
 
     def index() {
         // fetch the DDB news from static server.
         def staticUrl = configurationService.getStaticUrl()
         def locale = SupportedLocales.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/teaser.html"
+        def path = locale + "/ddb-services/teaser.xml"
 
         // Submit a request via GET
         def apiResponse = ApiConsumer.getXml(staticUrl, path)
@@ -36,7 +37,8 @@ class IndexController {
             log.error "text: Text file was not found"
             apiResponse.throwException(request)
         }
-        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children())])
+        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children()),
+                                      stats: institutionService.getNumberOfItemsAndInstitutionsWithItems()])
     }
 
     /**
@@ -46,14 +48,14 @@ class IndexController {
      * @return articles with modified URLs
      */
     private def rewriteUrls(def articles) {
-        URL staticUrl = new URL(configurationService.getStaticUrl())
         articles.each { article ->
             // image URLs from CMS are absolute URLs
             String imageUri = article.imageUri.text()
             String pattern = "/sites/default"
             int index = imageUri.indexOf(pattern)
             if (index >= 0) {
-                article.imageUri = new URL(staticUrl, imageUri.substring(index + pattern.length() + 1))
+                article.imageUri = configurationService.getContextPath() + "/static/" +
+                        imageUri.substring(index + pattern.length() + 1)
             }
 
             // URLs need our context path in front

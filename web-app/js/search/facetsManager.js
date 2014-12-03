@@ -185,7 +185,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     if (this.category) {
       fctValues += '&facetValues%5B%5D=category%3D' + currObjInstance.category;
     }
-    
     this.connectedflyoutWidget.renderFacetLoader();
     $.ajax({
       type : 'GET',
@@ -420,7 +419,9 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    */
   initializeFacetValuesDynamicSearch : function(inputSearchElement) {
     var currObjInstance = this;
+    var timer;
     inputSearchElement.keyup(function(e) {
+      clearInterval(timer); 
       var code = (e.keyCode ? e.keyCode : e.which);
       var inputValue = this.value;
       if (code !== currObjInstance.keyCode.SHIFT
@@ -433,19 +434,16 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
           && code !== currObjInstance.keyCode.TAB) {
         var d = new Date();
         currObjInstance.searchFacetValuesTimeout = d.getTime();
-        setTimeout(function() {
+
+        timer = setTimeout(function() {
           var currentD = new Date();
-          if (currObjInstance.searchFacetValuesTimeout + 400 < currentD.getTime()
-              && currObjInstance.connectedflyoutWidget.opened) {
-            currObjInstance.connectedflyoutWidget.parentMainElement.find(
-                '.flyout-right-container').remove();
-            currObjInstance.connectedflyoutWidget.buildStructure();
-            currObjInstance.fetchFacetValues(null, inputValue);
-            currObjInstance.currentPage = 1;
-            currObjInstance.currentOffset = 0;
-          } else {
-            return;
-          }
+        currObjInstance.connectedflyoutWidget.parentMainElement.find(
+            '.flyout-right-container').remove();
+        currObjInstance.connectedflyoutWidget.buildStructure();
+        currObjInstance.fetchFacetValues(null, inputValue);
+        currObjInstance.currentPage = 1;
+        currObjInstance.currentOffset = 0;
+
         }, 500);
       }
     });

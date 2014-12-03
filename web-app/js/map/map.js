@@ -13,7 +13,9 @@ $(document).ready(function() {
       initLat: 51.55,
       initLon: 10.00,
       initZoom: 5,
-      tileServerUrls: ["http://a.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://b.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png", "http://c.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png"],
+      tileServerUrls: ["//a.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png",
+                       "//b.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png",
+                       "//c.tile.maps.deutsche-digitale-bibliothek.de/${z}/${x}/${y}.png"],
       imageFolder: jsContextPath+"/js/map/img/",
       themeFolder: jsContextPath+"/js/vendor/openlayers-2.13.1/theme/default/style.css",
       osmMap: null,
@@ -197,6 +199,7 @@ $(document).ready(function() {
           }
 
           self.osmMap.setCenter(position, zoom);
+          self._addMultiPolygonLayer();
         });
 
         return tiles;
@@ -456,6 +459,7 @@ $(document).ready(function() {
       _getPopupContentHtml : function(dataObjectList) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
+          
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
@@ -468,11 +472,96 @@ $(document).ready(function() {
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
-        for(var i=0; i<institutionHierarchy.length; i++){
-          var institutionItem = institutionHierarchy[i];
-          var institutionChildren = institutionItem.childInstitutions;
 
-          html += "      <li>";
+        //Get the location data and create an Array with this data
+        var formattedData = {data:[]};
+        for (var i = 0; i < institutionHierarchy.length; i++) {
+			var insti = institutionHierarchy[i];
+			var locationArray = [];
+			
+			if (insti.locationDisplayName){
+				locationArray = insti.locationDisplayName.split(',');
+				locationArray.splice(9, 1);
+				locationArray.splice(8, 1);
+				locationArray.splice(7, 1);
+				locationArray = locationArray.reverse();
+			}
+			formattedData.data.push({
+				id: insti.id,
+				name: insti.name,
+				sector: insti.sector,
+				childInstitutions: insti.childInstitutions,
+        		parents: insti.parents,
+				locationDisplayName: locationArray
+			});
+		}
+        
+        //find geographical priority
+        var locationIndex = 0;
+        var locationFound = false;
+        var institutionList = formattedData.data;
+        var firstInsti = institutionList[0];
+        
+        for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
+        	
+            var firstLoc = firstInsti.locationDisplayName[j];
+            
+	        for (var i = 1; i < institutionList.length; i++) {
+	        	var actualInsti = institutionList[i];
+	        	var actualLoc = actualInsti.locationDisplayName[j];
+	        	
+	        	if (actualLoc != firstLoc){
+	        		locationIndex = j;
+	        		locationFound = true;
+	        		break
+	        	}
+	        }
+	        
+	        if (locationFound){break}
+        }
+        //sort based on the geographical place founded on the step before
+        institutionList.sort(function(a, b){
+	        	if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
+	        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
+	        	  if (nameA < nameB) //sort string ascending
+	        	   {return -1} 
+	        	  if (nameA > nameB)
+	        	   {return 1}
+	        	  {return 0 }//default return value (no sorting)
+	        	}
+        	 })
+        	 
+    	 //Create the first tag of geographical group
+    	 var previousInstName = null;
+          if(institutionCount >= 1){
+        	if (institutionList[0].locationDisplayName[locationIndex]){
+        		html += "  <div class='olPopupDDBHeader'>";
+          		html += "    " + institutionList[0].locationDisplayName[locationIndex];
+          		html += "  </div><br>";
+          	}
+          }
+        
+        for(var i=0; i<institutionList.length; i++){
+          var institutionItem = institutionList[i];
+          var institutionChildren = institutionItem.childInstitutions;
+          
+          //Create tag of geographical group
+          actualInstName = institutionItem.locationDisplayName[locationIndex]
+          if (previousInstName && actualInstName != previousInstName){
+			if (institutionList[0].locationDisplayName[locationIndex]){
+				html += "  <br><div class='olPopupDDBHeader'>";
+				html += "    " + institutionItem.locationDisplayName[locationIndex];
+				html += "  </div><br>";
+			}
+          }
+          previousInstName = actualInstName;
+          
+          var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
+          if (!isInCluster) {
+            html += "      <li class='outside-cluster'>";
+          } else {
+            html += "      <li class='inside-cluster'>";
+          }
           html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
           html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
           html += "        </a>";
@@ -482,15 +571,14 @@ $(document).ready(function() {
             html += "      <ul>";
             for(var j=0; j<institutionChildren.length; j++){
               var childInstitution = institutionChildren[j];
-              html += "      <li>";
+              isInCluster = dataObjectList.indexOf(childInstitution.id) != -1;
+              if (!isInCluster) {
+                html += "      <li class='outside-cluster'>";
+              } else {
+                html += "      <li class='inside-cluster'>";
+              }
               html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + childInstitution.id + ">";
-              if(childInstitution.highlight){
-                html += "        <b>";
-              }
               html += "            "+childInstitution.name + " (" + messages.ddbnext[childInstitution.sector]() + ")";
-              if(childInstitution.highlight){
-                html += "        </b>";
-              }
               html += "        </a>";
               html += "      </li>";
             }
@@ -525,12 +613,19 @@ $(document).ready(function() {
 
       _getSelectedSectors : function() {
         var sectors = [];
-        $('.sector-facet').each(function() {
-          var sector = $(this).find('input').data('sector');
-          if ($(this).find('input').is(':checked')) {
-            sectors.push(sector);
-          }
-        });
+        if ($('.multiselect').is(':visible')) {
+          $('.multiselect option:selected').each(function() {
+            sectors.push($(this).val());
+          });   
+        }
+        else {
+          $('.sector-facet').each(function() {
+            var sector = $(this).find('input').data('sector');
+            if ($(this).find('input').is(':checked')) {
+              sectors.push(sector);
+            }
+          });
+        }
         return sectors;
       },
 
@@ -1168,17 +1263,17 @@ $(document).ready(function() {
               }
               this._addButton("panright", "east-mini.png", px.add(wposition, 0), sz);
               this._addButton("pandown", "south-mini.png", centered.add(0, sz.h*2), sz);
-              this._addButton("zoomin", "zoom-plus-mini.png", centered.add(0, sz.h*3+5), sz);
+              this._addButton("zoomin", "zoom-plus.png", centered.add(0, sz.h*3+5));
               centered = this._addZoomBar(centered.add(0, sz.h*4 + 5));
-              this._addButton("zoomout", "zoom-minus-mini.png", centered, sz);
+              this._addButton("zoomout", "zoom-minus.png", centered);
           }
           else {
-              this._addButton("zoomin", "zoom-plus-mini.png", px, sz);
+              this._addButton("zoomin", "zoom-plus.png", px, sz);
               centered = this._addZoomBar(px.add(0, sz.h));
-              this._addButton("zoomout", "zoom-minus-mini.png", centered, sz);
+              this._addButton("zoomout", "zoom-minus.png", centered);
               if (this.zoomWorldIcon) {
                   centered = centered.add(0, sz.h+3);
-                  this._addButton("zoomworld", "zoom-world-mini.png", centered, sz);
+                  this._addButton("zoomworld", "zoom-world-mini.png", centered);
               }
           }
           return this.div;

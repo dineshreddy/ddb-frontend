@@ -44,7 +44,7 @@ hr {
 }
 
 .fav-text a{
-  display: block;
+  display: inline;
 }
 
 .saved-searches .bookmarks-lists .bookmarks-list {
@@ -104,15 +104,15 @@ hr {
   position:relative;
 }
 
-.bookmarks-list-edit:before{
+.bookmarks-list-edit:before {
   background-position: -29px -239px;
 }
 
-.bookmarks-list-delete:before{
+.bookmarks-list-delete:before {
   background-position: -29px -269px;
 }
 
-.bookmarks-list-publish:before{
+.bookmarks-list-publish:before {
   background-position: -29px -446px;
 }
 .bookmarks-list-publish.open-lock:before{
@@ -123,7 +123,7 @@ hr {
   vertical-align: baseline;
 }
 
-.favorites-results-controls .controls-container .page-link.page-link-popup-anchor{
+.favorites-results-controls .controls-container .page-link.page-link-popup-anchor {
   margin-right:0;
 }
 
@@ -199,7 +199,7 @@ hr {
 }
 
 .favorites-results-controls .page-nav {
-  font-size: 0.938em;
+  font-size: 1em;
 }
 
 #favorites-remove .submit {
@@ -250,6 +250,7 @@ hr {
   display: inline-block;
   float: right;
   line-height: 62px;
+  font-size: 0.938em;
 }
 
 .public-favorites .socialmedia {
@@ -271,6 +272,15 @@ hr {
 
 .public-favorites .summary-main-wrapper .extra, .public-favorites .comment .comment-container {
   margin-left: 0px !important;
+}
+
+.public-favorites .comment .comment-content {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.public-favorites .comment .comment-text .clearfix {
+  clear: right;
 }
 
 .results-sorter .select-all {
@@ -390,7 +400,7 @@ hr {
 
 .favorites-results .results-list .subtitle {
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 1em;
   line-height: 1em;
   margin: 7px 0 0;
   color: #3e3a37;
@@ -424,7 +434,6 @@ hr {
 
 .favorites-results .results-list .created-at {
   text-align:right;
-  font-size: 0.938em;
 }
 
 .favorites-results .results-list .matches {
@@ -488,11 +497,6 @@ hr {
 
 .favorites-results-container .messages-container {
   margin-top: 7px;
-}
-
-.favorites-results-container .favorites-report {
-  background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
-  padding-left: 25px;
 }
 
 .favorites-results .results-list .extra {
@@ -653,8 +657,8 @@ hr {
   min-width: 260px;
 }
 
-.public-favorites .folder-siblings {
-  text-decoration: underline;
+.folder-information-container .folder-siblings {
+  margin-left: 18px;
 }
 
 .orderList{
@@ -723,7 +727,7 @@ hr {
 .favorites-results .results-list .comment .comment-text {
   width: 100%;
   font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
+  font-size: 1em;
   line-height: 1em;
   color: #3e3a37;
 }
@@ -747,12 +751,27 @@ hr {
   margin-bottom: 20px;  
 }
 
+.folder-information-container .date-info {
+  color:grey;
+  font-size: 0.875em;
+}
+
+.folder-information-container .other-folder-list {
+  margin: 5px 0 10px 0px;
+  padding-top: 2px;
+  border-top: solid 2px #efebe8;
+}
+
+.folder-information-container .other-folder-list li {
+  list-style:none;
+}
+
 .folder-information-container .folder-information {
   margin: 2px 0;
   position: relative;
   overflow: hidden;
   background-color: #efebe8;
-  padding: 5px 10px;
+  padding: 5px 0;
 }
 
 .folder-information-container .folder-information > ul {
@@ -821,6 +840,7 @@ hr {
 .favorites-results-container .header-row h3{
   margin:0;
   line-height: 20px;
+  font-size: 1em;
 }
 
 .favorites-results-controls .list-name{
@@ -829,6 +849,7 @@ hr {
 
 .favorites-results-controls .controls-container {
   float: right;
+  font-size: 15px;
 }
 
 .favorites-results-controls .list-name span {
@@ -971,4 +992,56 @@ hr {
   .favorites-results-container .mobile-list-title {
     max-width: 92px;
   }
+}
+
+/* Report favorites overlay*/
+
+.reportfav .report-locked {
+  display: block;
+  position: relative;
+}
+
+.reportfav .report-overlay-container {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 100%;
+  min-width: 400px;
+  z-index: 100;
+}
+
+.reportfav .report-overlay {
+  border: 1px solid #000000;
+  border-radius: 5px;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  background-color: #FFFFFF;
+  line-height: 20px;
+  margin: 30px 0 0 0;
+}
+
+.reportfav .report-overlay a{
+  text-decoration: underline;
+  }
+
+.reportfav a span, .reportfav a span{
+  margin: 0;
+  padding: 0;
+  display: block;
+  line-height: 22px;
+  text-align: right;
+}
+
+.reportfav {
+  display: inline-block;
+  float: right;
+}
+
+.public-favorites .reportfav {
+  float: left;
+  margin-top:22px;
+  margin-right:30px;
+  padding-left:24px;
+  background: url("../images/icons/objectViewerActions.png") no-repeat -0px -222px;
 }

@@ -36,8 +36,6 @@ import de.ddb.common.exception.ItemNotFoundException
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
 
-    private static final SOURCE_PLACEHOLDER = '{0}'
-
     def transactional = false
     def grailsApplication
     def configurationService
@@ -93,7 +91,7 @@ class DdbItemService {
      * @return List
      */
     def getHierarchyItem(String id) {
-        def bottomUpHierarchy = itemService.getParent(id)
+        def bottomUpHierarchy = getParent(id)
         if (bottomUpHierarchy.size()<=1) {
             return []
         }
@@ -102,6 +100,21 @@ class DdbItemService {
         directParent["children"]= itemService.getChildren(directParent.id)
         flatHierarchy.add(directParent)
         return flatHierarchy
+    }
+
+    /**
+     * Return all parents for the given item except institutions.
+     * (see DDBNEXT-1885)
+     *
+     * @param itemId item id
+     *
+     * @return list of all parents
+     */
+    def getParent(String itemId) {
+        def parents = itemService.getParent(itemId)
+
+        // filter out institutions
+        return parents.findAll { parent -> parent.type != "institution" }
     }
 
     def getFullItemModel(id) {
@@ -160,6 +173,9 @@ class DdbItemService {
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
+        def itemSource = itemService.getItemXmlSource(id)
+        def collection = new XmlSlurper().parseText(itemSource)
+        def geometry = collection.monument.georeference.geometry.text()
 
         def model = [
             itemUri: itemUri,
@@ -183,7 +199,9 @@ class DdbItemService {
             isFavorite: isFavorite,
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
-            similarItems : similarItems
+            domainCanonic:configurationService.getDomainCanonic(),
+            similarItems : similarItems,
+            geometryInput: geometry
         ]
 
         return model
@@ -275,7 +293,7 @@ class DdbItemService {
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl() ,'/apis/search', false, urlQuery)
             if(!apiResponse.isOk()){
                 log.error "Json: Json file was not found"
-                apiResponse.throwException(request)
+                apiResponse.throwException(httpRequest)
             }
             resultsItems = apiResponse.getResponse()
 

@@ -238,11 +238,14 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
 
     var cookieVal = currObjInstance.getComparisonCookieVal();
 
-    // By default all compare buttons of the items are enabled
+    //1) Add functionality for selecting result list items for comparison
     $('.compare').each(function() {
-      $(this).off();
       $(this).removeClass("disabled");
+      
+      //remove old click handler
+      $(this).off();
 
+      //add new click handler for selecting
       $(this).click(function(event) {
         event.stopPropagation();
         var item = $(event.target);
@@ -251,16 +254,38 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
       });
     });
 
-    // Disable the item compare buttons for all selected items
+    //2) Add functionality for deselecting result list items from comparison
     var selectedItems = $('.compare').filter(
         function() {
           if (cookieVal) {
             return ($(this).attr('data-iid') === cookieVal.id1 || $(this).attr('data-iid') === cookieVal.id2);
           }
-        });
-    selectedItems.each(function() {
-      $(this).off();
+     });
+    
+    selectedItems.each(function() { 
       $(this).addClass("disabled");
+      
+      //remove old click handler
+      $(this).off();
+
+      //add new click handler for deselecting
+      $(this).click(function(event) {
+        event.preventDefault();
+        cookieVal = currObjInstance.getComparisonCookieVal();
+        
+        // Get the index of the compare-object.
+        var index = -1;
+        if ($(this).attr('data-iid') === cookieVal.id1) {
+          index = 1;
+        } else if ($(this).attr('data-iid') === cookieVal.id2) {
+          index = 2;
+        }
+
+        currObjInstance.removeCompareCookieParameter(index);
+        currObjInstance.renderCompareObjects();
+        currObjInstance.setItemCompareButtonState();
+      });
+      
     });
   },
 

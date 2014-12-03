@@ -85,7 +85,11 @@ class ConfigurationService extends CommonConfigurationService {
     public String getCulturegraphUrl(){
         return getConfigValue("ddb.culturegraph.url")
     }
-
+    
+    public String getDomainCanonic(){
+        return getConfigValue("ddb.domain.canonic")
+    }
+    
     public String getGrailsMailHost(){
         return getConfigValue("grails.mail.host")
     }
@@ -106,10 +110,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
     }
 
-    public String getPiwikTrackingFile(){
-        return getExistingConfigValue("ddb.tracking.piwikfile")
-    }
-
     public boolean isCulturegraphFeaturesEnabled() {
         // return getExistingConfigValue("ddb.culturegraph.features.enabled")
         return true
@@ -124,12 +124,12 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
         log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
+        log.info "ddb.domain.canonic = " + getDomainCanonic()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
-        log.info "ddb.tracking.piwikfile = " + getPiwikTrackingFile()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "-------------------------------------------------------"
     }

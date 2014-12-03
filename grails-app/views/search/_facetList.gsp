@@ -31,9 +31,6 @@ limitations under the License.
       <g:if test="${facetType == FacetEnum.TYPE_FCT.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.TYPE_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>
-      <g:if test="${facetType == FacetEnum.TIME_FCT.getName() }">
-        <span class="label"><g:message encodeAs="html" code="${FacetEnum.TIME_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
-      </g:if>
       <g:if test="${facetType == FacetEnum.LANGUAGE_FCT.getName() }">
         <span class="label"><g:message encodeAs="html" code="${FacetEnum.LANGUAGE_FCT.getI18nPrefix()+facetValues[i]['fctValue']}" /></span>
       </g:if>

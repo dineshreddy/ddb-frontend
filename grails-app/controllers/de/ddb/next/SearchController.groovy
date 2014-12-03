@@ -70,6 +70,18 @@ class SearchController {
                 entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
             }
 
+            def mlocale = RequestContextUtils.getLocale(request)
+
+            for (entity in entities) {
+                if (mlocale.toString() == "en") {
+                    entity.dateOfBirth = entity.dateOfBirth_en
+                    entity.dateOfDeath = entity.dateOfDeath_en
+                } else {
+                    entity.dateOfBirth = entity.dateOfBirth_de
+                    entity.dateOfDeath = entity.dateOfDeath_de
+                }
+            }
+
             if(resultsItems["randomSeed"]){
                 urlQuery["randomSeed"] = resultsItems["randomSeed"]
                 firstLastQuery[SearchParamEnum.SORT.getName()] = resultsItems["randomSeed"]
@@ -217,7 +229,11 @@ class SearchController {
             redirect(controller: "search", action: "institution", params: params)
         }
 
-        def urlQuery = searchService.convertQueryParametersToSearchParameters(params, cookieParametersMap)
+        //No need for isThumbnailFiltered here: See bug DDBNEXT-1802
+        def urlParams = params.clone()
+        urlParams.isThumbnailFiltered=false
+
+        def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
 
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]

@@ -15,9 +15,16 @@
  */
 package de.ddb.next
 
+import grails.plugin.cache.Cacheable
+
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
+import de.ddb.common.FavoritesService
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -39,42 +46,133 @@ class InstitutionService {
 
     def servletContext
 
+    def bookmarksService
+    def favoritesService
+
+    /**
+     * Return all institutions from the backend
+     *
+     * The value of this method is cached!
+     *
+     * @return all institutions from the backend
+     */
+    @Cacheable(value="institutionCache", key="'findAll'")
     def findAll() {
+        log.info("findAll()")
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
+        if(!responseWrapper.isOk()){
+            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+
+        return responseWrapper.getResponse()
+    }
+
+
+    /**
+     * Returns all archives that have items.
+     *
+     * The value of this method is cached!
+     *
+     * @return all archives that have items.
+     */
+    @Cacheable(value="institutionCache", key="'findAllArchiveInstitutionsWithItems'")
+    def findAllArchiveInstitutionsWithItems() {
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, ["hasItems": "true"])
+        if(!responseWrapper.isOk()){
+            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return responseWrapper.getResponse()
+    }
+
+    /**
+     * Determines the number of institutions providing items and the total number of items.
+     * 
+     * @return a map containing the fields "items" and "institutions" 
+     */
+    @Cacheable(value="institutionCache", key="'getNumberOfItemsAndInstitutionsWithItems'")
+    def getNumberOfItemsAndInstitutionsWithItems() {
+
+        // Request the institutions with items from the backend and go through tree to count them. 
+        def tree = findAll();
+        def institutions = recursiveInstitutionWithItemsCount(tree)
+        
+        // Use search to determine number of items in ddb 
+        // http://backend....:9998/search?client=DDB-NEXT&query=*&offset=0&rows=0&facet=category&category=Kultur
+        def searchParams = [:]
+        searchParams.put("query", "*");
+        searchParams.put("offset", "0");
+        searchParams.put("rows", "0");
+        searchParams.put("facet", "category");
+        searchParams.put("category", "Kultur");
+        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/search", false, searchParams)
+        if(!responseWrapper.isOk()){
+            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        def searchResult = responseWrapper.getResponse()
+        def items = searchResult.numberOfResults
+
+        return [items: items, institutions: institutions]
+    }
+
+    
+    /**
+     * Recursively counts the number of institutions with items in the tree provided.
+     * @param list the current list of branches/leaves of the tree 
+     * @return
+     */
+    def recursiveInstitutionWithItemsCount(def list) {
+        def institutions = 0
+        list.each { it ->
+            if (it.hasItems) {
+                // increase number of institutions with items 
+                institutions++
+                // recurse only if parent has items
+                if (it.children) {
+                    institutions += recursiveInstitutionWithItemsCount(it.children);
+                }
+            }
+            
+        }
+        return institutions
+    }
+
+
+    /**
+     * Returns all archives ordered by alphabet.
+     *
+     * The value of this method is cached!
+     *
+     * @return all archives 
+     */
+    def findAllByAlphabet() {
         def totalInstitution = 0
         def allInstitutions = [data: [:], total: totalInstitution]
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), '/institutions')
-        if (apiResponse.isOk()) {
-            def institutionList = apiResponse.getResponse()
-            def institutionByFirstChar = buildIndex()
 
-            institutionList.each { it ->
+        def institutionList = grailsApplication.mainContext.institutionService.findAll()
+        def institutionByFirstChar = buildIndex()
 
-                totalInstitution++
+        institutionList.each { it ->
+            totalInstitution++
 
-                def firstChar = it?.name[0]?.toUpperCase()
-                it.firstChar = firstChar
+            def firstChar = it?.name[0]?.toUpperCase()
+            it.firstChar = firstChar
 
-                /*
-                 * mark an institution as the first one that start with the
-                 * character. We will use it for assigning the id in the HTML.
-                 * See: views/institutions/_listItem.gsp
-                 * */
-                if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
-                    it.isFirst = true
-                }
-
-                it.sectorLabelKey = 'ddbnext.' + it.sector
-                buildChildren(it, totalInstitution)
-                institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
+            /*
+             * mark an institution as the first one that start with the
+             * character. We will use it for assigning the id in the HTML.
+             * See: views/institutions/_listItem.gsp
+             * */
+            if (LETTERS.contains(firstChar) && institutionByFirstChar.get(firstChar)?.size() == 0) {
+                it.isFirst = true
             }
 
-            allInstitutions.data = institutionByFirstChar
-            allInstitutions.total = getTotal(institutionList)
+            it.sectorLabelKey = 'ddbnext.' + it.sector
+            buildChildren(it, totalInstitution)
+            institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
         }
-        else {
-            log.error "findAll: Json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
+
+        allInstitutions.data = institutionByFirstChar
+        allInstitutions.total = getTotal(institutionList)
 
         return allInstitutions
     }
@@ -145,6 +243,15 @@ class InstitutionService {
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
+
+                //Create Fake Data on locationDisplayName until we get from Backend
+                //                if (i%3 == 0){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
+                //                }else if (i%3 == 1){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+                //                }else{
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
+                //                }
             }
 
             // Go over all the Cortex institutions and transfer children/parents information
@@ -212,7 +319,7 @@ class InstitutionService {
         }else{
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
-        
+
         def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
         return result
     }
@@ -295,4 +402,33 @@ class InstitutionService {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
     }
 
+    /**
+     * Returns the search result for the institution highlight items
+     *
+     * @param institutionid the institution id to search the highlights
+     * @param offset the offset of the search result
+     * @param rows the number of items to retrieve
+     */
+    def getInstitutionHighlights(def institutionid, int offset, int rows) {
+        def result = [:]
+        def bookmarkfolder = bookmarksService.findPublicFolderByInstitutionId(institutionid)
+
+        if (bookmarkfolder) {
+            User user = new User()
+
+            user.id = bookmarkfolder.userId
+            result = favoritesService.getFavoriteList(user, bookmarkfolder, FavoritesService.ORDER_ASC,
+                    FavoritesService.ORDER_BY_NUMBER)
+
+            // paging
+            if (offset != 0) {
+                result = result.drop(offset)
+                result = result.take(rows)
+            }
+            else {
+                result = result.take(rows)
+            }
+        }
+        return result
+    }
 }

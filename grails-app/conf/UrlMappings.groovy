@@ -70,6 +70,11 @@ class UrlMappings {
             action="staticcontent"
         }
 
+        "/content/sitemap" {
+            controller="content"
+            action="sitemap"
+        }
+
         "/advancedsearch" {
             controller="advancedsearch"
             action="fillValues"
@@ -175,6 +180,11 @@ class UrlMappings {
             action="publicFavorites"
         }
 
+        // This URL-Map is also used hard-coded in favorites.js file.
+        "/user/$userId/favorites/allpublicfolders/$selectedFolderId" {
+            controller="favoritesview"
+            action="allpublicfolders"
+        }
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
@@ -233,6 +243,11 @@ class UrlMappings {
         "/entity/search/person/$q?" {
             controller="entity"
             action="personsearch"
+        }
+
+        "/institution/ajax/highlights" {
+            controller="institution"
+            action="getInstitutionHighlights"
         }
 
         "/persons"{

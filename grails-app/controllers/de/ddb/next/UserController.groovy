@@ -31,9 +31,11 @@ import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.AasService
 import de.ddb.common.ProxyUtil
+import de.ddb.common.Validations
+import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
-import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedLocales
@@ -43,9 +45,6 @@ import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.common.AasService
-import de.ddb.common.Validations
-import de.ddb.common.beans.Folder
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
@@ -66,7 +65,11 @@ class UserController {
 
     def index() {
         log.info "index()"
-        render(view: "login", model: ['loginStatus': LoginStatus.LOGGED_OUT, 'referrer': params.referrer])
+        render(view: "login",
+        model: ['loginStatus': LoginStatus.LOGGED_OUT,
+            'referrer': params.referrer,
+            'registrationInfoUrl': configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl()
+        ])
     }
 
     def doLogin() {
@@ -187,7 +190,6 @@ class UserController {
                     params: [(SearchParamEnum.OFFSET.getName()): 0, (SearchParamEnum.ROWS.getName()): rows, (SearchParamEnum.ORDER.getName()): "asc"])
                 ]
             }
-            def totalResults= savedSearches.size()
             render(view: "savedsearches", model: [
                 dateString: g.formatDate(ORDER_DATE: new Date(), format: "dd.MM.yyyy"),
                 numberOfResults: savedSearches.size(),
@@ -377,7 +379,7 @@ class UserController {
 
     private getFavoriteCount(User user) {
         Folder mainFavoritesFolder = bookmarksService.findMainBookmarksFolder(user.getId())
-        List favorites = bookmarksService.findBookmarksByFolderId(user.getId(), mainFavoritesFolder.folderId)
+        List favorites = favoritesService.getFavoriteList(user, mainFavoritesFolder)
         def favoritesCount = favorites.size()
 
         return favoritesCount

@@ -24,7 +24,7 @@ var page = {};
       group : ".search-field-group",
       removeGroupButton : "button.remove-group-button",
       addGroupButtonContainer : ".button-group",
-      addGroupButton : "button.add-group-button",
+      addGroupButton : "button.add-group-button, .add-group-link",
       row : ".search-field-row",
 
       removeButton : "button.remove-button",
@@ -216,6 +216,12 @@ var page = {};
     //handle buttons for add/removal of group
     function updateGroupButtons() {
       var groups = $(selectors.groupWidget, root);
+      
+      if (groups.filter(":visible").length > 1) {
+    	  $("#initialAddGroupButtonFieldSet").addClass("off");
+      } else {
+    	  $("#initialAddGroupButtonFieldSet").removeClass("off");
+      }
 
       if (groups.filter(":hidden").length === 0) {
         $(selectors.addGroupButton, root).hide();

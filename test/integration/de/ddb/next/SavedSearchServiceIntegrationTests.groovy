@@ -54,7 +54,7 @@ class SavedSearchServiceIntegrationTests {
     void shouldSavedUserSearch() {
         log.info "should saved user search"
 
-        def queryString = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryString = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
 
         def savedSearchId = savedSearchService.saveSearch(userId, queryString, Type.CULTURAL_ITEM)
         log.info "id: ${savedSearchId}"
@@ -65,7 +65,7 @@ class SavedSearchServiceIntegrationTests {
     void shouldSavedUserSearchWithTitleAndDescription() {
         log.info "should saved user search"
 
-        def queryString = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryString = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
 
         def savedSearchId = savedSearchService.saveSearch(userId, queryString, 'Goethe Related',
             'All things related to Goethe', Type.CULTURAL_ITEM)
@@ -77,12 +77,12 @@ class SavedSearchServiceIntegrationTests {
     void shouldFindAllSavedSearchesByUserId() {
         log.info "should find all saved searches by user ID"
 
-        def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related',
             'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
-        def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
             Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
@@ -95,12 +95,12 @@ class SavedSearchServiceIntegrationTests {
     void shouldDeleteSavedSearches() {
         log.info "should delete saved search by IDs"
 
-        def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe ,
             'Goethe Related', 'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
-        def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
             Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
@@ -120,12 +120,12 @@ class SavedSearchServiceIntegrationTests {
 
     @Test
     void shouldDeleteSavedSearchesByUserId() {
-        def queryStringForGoethe = 'query=goethe&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchService.saveSearch(userId, queryStringForGoethe , 'Goethe Related',
             'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
-        def queryStringForMozart = 'query=mozart&sort=ALPHA_ASC&facetValues[]=time_fct%3Dtime_62000&facetValues[]=time_fct%3Dtime_61600&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_02'
+        def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchService.saveSearch(userId, queryStringForMozart , 'Mozart Related',
             Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null

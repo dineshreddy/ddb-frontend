@@ -29,14 +29,26 @@ class ContentController {
 
     def configurationService
 
+    def sitemap() {
+        def staticUrl = configurationService.getStaticUrl()
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+        def path = locale + "/ddb-services/sitemap.xml"
+        def apiResponse = ApiConsumer.getXml(staticUrl, path)
+
+        if (!apiResponse.isOk()) {
+            log.error "sitemap file was not found"
+            apiResponse.throwException(request)
+        }
+        render(view: "sitemap", model: [urlset : apiResponse.getResponse()])
+    }
+
     def staticcontent() {
         try {
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
-            def location = browserUrl.substring("/content".length())
+            def location = params.dir ? params.dir : browserUrl.substring("/content".length())
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
-
             /* If first level dir is missing use a default context dir from contentDefault. */
             if (!location) {
                 redirect uri: new File(browserUrl, configurationService.getDefaultStaticPage()).toString() + "/"
@@ -54,7 +66,7 @@ class ContentController {
                 response = apiResponse.getResponse()
             } else {
                 if (!browserUrl.endsWith ("/")) {
-                    redirect uri: browserUrl + "/"
+                    redirect uri: "/" + params.controller + "/" + location + "/"
                     return
                 }
                 path = locale.toString() + "/" + location + "/index.html"
@@ -67,6 +79,10 @@ class ContentController {
                 }
             }
             def map = retrieveArguments(response)
+            
+            //Needed for the canonicalURL
+            map << ["location": location,domainCanonic:configurationService.getDomainCanonic()]
+
             render(view: "staticcontent", model: map)
         } catch (ItemNotFoundException infe) {
             log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
@@ -133,7 +149,6 @@ class ContentController {
      * @return content with modified URLs
      */
     private def rewriteUrls(def content) {
-        URL staticUrl = new URL(configurationService.getStaticUrl())
         Parser tagsoupParser = new Parser()
         tagsoupParser.setFeature(Parser.namespacesFeature, false)
         tagsoupParser.setFeature(Parser.namespacePrefixesFeature, false)
@@ -153,7 +168,8 @@ class ContentController {
                 String pattern = "/sites/default"
                 int index = src.indexOf(pattern)
                 if (index >= 0) {
-                    element.@src = new URL(staticUrl, src.substring(index + pattern.length() + 1)).toString()
+                    element.@src = configurationService.getContextPath() + "/static/" +
+                            src.substring(index + pattern.length() + 1).toString()
                 }
             }
         }

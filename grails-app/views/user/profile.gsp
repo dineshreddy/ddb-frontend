@@ -53,7 +53,7 @@ limitations under the License.
                 </div>
                 <div class="control-group">
                   <div>
-                    <label><g:message encodeAs="html" code="ddbcommon.Username" /></label>
+                    <label><g:message encodeAs="html" code="ddbcommon.Username" />*</label>
                   </div>
                   <div>
                     <input type="text" class="profile-input" id="username" name="username" placeholder="<g:message encodeAs="html" code="ddbcommon.Username" />" value="${user.username}" ${disableForOpenId}>
@@ -61,7 +61,7 @@ limitations under the License.
                 </div>
                 <div class="control-group">
                   <div>
-                    <label><g:message encodeAs="html" code="ddbcommon.Email" /></label>
+                    <label><g:message encodeAs="html" code="ddbcommon.Email" />*</label>
                   </div>
                   <div>
                     <input type="text" class="profile-input" id="email" name="email" placeholder="<g:message encodeAs="html" code="ddbcommon.Email" />" value="${user.email}" ${disableForOpenId}>

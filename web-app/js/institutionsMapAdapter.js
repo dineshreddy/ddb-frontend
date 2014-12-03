@@ -62,16 +62,31 @@ var InstitutionsMapAdapter = (function($, undefined) {
     var sectors = {};
     sectors['selected'] = [];
     sectors['deselected'] = [];
-    $('.sector-facet').each(function() {
-      var sectorData = {};
-      sectorData['sector'] = $(this).find('input').data('sector');
-      sectorData['name'] = $.trim($(this).children('label').text());
-      if ($(this).find('input').is(':checked')) {
-        sectors['selected'].push(sectorData);
-      } else {
-        sectors['deselected'].push(sectorData);
-      }
-    });
+    if ($('.multiselect').is(':visible')) {
+      $('.multiselect option').each(function () {
+        var sectorData = {};
+        sectorData['sector'] = $(this).val();
+        sectorData['name'] = $.trim($(this).text());
+        if ($(this).is(':selected')) {
+          sectors['selected'].push(sectorData);
+        }
+        else {
+          sectors['deselected'].push(sectorData);
+        }
+      });
+    }
+    else {
+      $('.sector-facet').each(function() {
+        var sectorData = {};
+        sectorData['sector'] = $(this).find('input').data('sector');
+        sectorData['name'] = $.trim($(this).children('label').text());
+        if ($(this).find('input').is(':checked')) {
+          sectors['selected'].push(sectorData);
+        } else {
+          sectors['deselected'].push(sectorData);
+        }
+      });
+    }
     return sectors;
   };
 
@@ -157,7 +172,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
   Public.setupDom4MapDisplay = function() {
     var hash = window.location.hash.substring(1);
-    if ((hash === 'map' || hash === '') && (_getWindowWidth() > 767)) {
+    if (hash === 'map' || hash === '') {
       _enableMapView();
     } else {
       _enableListView();
@@ -176,6 +191,10 @@ var InstitutionsMapAdapter = (function($, undefined) {
     });
 
     $('.institution-with-data input:checkbox').click(function() {
+      Public.selectSectors();
+    });
+    
+    $('.multiselect-container input:checkbox').click(function() {
       Public.selectSectors();
     });
   };

@@ -100,7 +100,7 @@ class ApisController {
         render resultList as JSON
     }
 
-    def removeNullValue(facets) {
+    private def removeNullValue(facets) {
         facets.each {
             if(it.facetValues.size()) {
                 it.facetValues.each { facetVal ->

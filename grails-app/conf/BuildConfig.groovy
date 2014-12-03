@@ -59,6 +59,7 @@ grails.project.dependency.resolution = {
     }
     log "warn" // log level of Ivy resolver, either 'error', 'warn', 'info', 'debug' or 'verbose'
     checksums true // Whether to verify checksums on resolve
+    legacyResolve false // whether to do a secondary resolve on plugin installation, not advised and here for backwards compatibility
 
     repositories {
         inherits true // Whether to inherit repository definitions from plugins
@@ -99,7 +100,9 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ':cache:1.0.0'
+        compile ':cache:1.1.7'
+        compile ':cache-ehcache:1.0.1'
+        compile ':hibernate:3.6.10.12'
         compile ":cache-headers:1.1.5"
         compile(":rendering:0.4.4")
         compile ":message-digest:1.1"
@@ -111,7 +114,7 @@ grails.project.dependency.resolution = {
 
         if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
-            compile "de.ddb:ddb-common:0.9-SNAPSHOT"
+            compile "de.ddb:ddb-common:0.14-SNAPSHOT"
         }
     }
 

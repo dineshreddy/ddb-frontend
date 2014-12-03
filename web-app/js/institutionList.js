@@ -149,10 +149,14 @@
      */
     onFilterSelect : function() {
       $('.sector-facet input:checkbox').click(function() {
+        var hash = window.location.hash.substring(1);
+        ddb.styleIndex(hash);
         ddb.applyFilter();
       });
       
       $('.institution-with-data input:checkbox').click(function() {
+        var hash = window.location.hash.substring(1);
+        ddb.styleIndex(hash);
         ddb.applyFilter();
       });
     },
@@ -507,7 +511,7 @@
       buttonClass : 'btn btn-small',
       buttonWidth : 'auto',
       maxHeight : false,
-      field_NoneSelected : messages.ddbnext.None_Selected,
+      field_NoneSelected : messages.ddbnext.InstitutionPage_FilterBySector,
       onChange : function(element) {
         ddb.applyFilter();
       },

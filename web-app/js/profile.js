@@ -39,7 +39,10 @@ $(document).ready(function() {
         required : $("#error-messages").children('li').eq(0).children('a').text(),
         email : $("#error-messages").children('li').eq(2).children('a').text()
       }
-
+    },
+    errorPlacement: function(error, element) {
+      $(element).parent().prev().children().addClass("label-error");
+      error.insertAfter(element);
     }
 
   });

@@ -13,47 +13,22 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.common.CultureGraphService"%>
-<%@page import="de.ddb.common.JsonUtil"%>
-<%@ page import="net.sf.json.*" %>
+<%@ page import="net.sf.json.JSONArray" %>
 <div class="fields">
-  <g:each in="${fields}">
+  <g:each var="field" in="${fields}">
     <div class="row">
       <div class="span2">
-        <strong>${it.name}: </strong>
+        <strong>${field.name}: </strong>
       </div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
-        <g:if test="${it.value instanceof JSONArray}">
-          <g:each var="value" in="${it.value}">
-            <g:if test="${value instanceof JSONObject && !JsonUtil.isAnyNull(value."@entityId")}">
-              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
-                ${value."\$"}
-              </g:link>
-            </g:if>
-            <g:else>
-              <g:if test="${value instanceof JSONObject}">
-                ${raw(ddbcommon.encodeInvalidHtml(text:value."\$"))}
-              </g:if>
-              <g:else>
-                ${raw(ddbcommon.encodeInvalidHtml(text:value))}
-              </g:else>
-            </g:else>
+        <g:if test="${field.value instanceof JSONArray}">
+          <g:each var="value" in="${field.value}">
+            <g:render template="field" model="['value':value]"/>
             <br />
           </g:each>
         </g:if>
         <g:else>
-          <g:if test="${it.value instanceof JSONObject && it.value."@resource" != null && !it.value."@resource".isEmpty()}">
-            <g:link 
-              controller="entity" 
-              action="index" 
-              params="${["id": it.value."@resource".substring(CultureGraphService.GND_URI_PREFIX.length())]}" 
-              class="entity-link">
-              ${it.value."\$"}
-            </g:link>
-          </g:if>
-          <g:else>
-            ${raw(ddbcommon.encodeInvalidHtml(text:it.value))}
-          </g:else>
+          <g:render template="field" model="['value':field.value]"/>
         </g:else>
       </div>
     </div>

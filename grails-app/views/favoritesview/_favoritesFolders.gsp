@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:set var="doNotShowFavorites" value="flash.error || flash.message"/>
 <div class="header-row">
   <h3><g:message encodeAs="html" code="ddbnext.lists"/></h3>
 </div>
@@ -25,7 +26,7 @@ limitations under the License.
           <g:set var="folderTooltip" value="${g.message(code:"ddbnext.All_Favorites")}" />
         </g:if>
 
-        <g:if test="${it.folder.folderId != selectedFolder.folderId }">
+        <g:if test="${it.folder.folderId != selectedFolder.folderId || doNotShowFavorites}">
           <g:if test="${it.folder.folderId == mainFavoriteFolder.folderId}">
             <g:link controller="favoritesview" action="favorites" params="${[id: it.folder.folderId]}"
                     title="${folderTooltip}">
