@@ -50,7 +50,9 @@
 }
 .plum-arrow li a:hover, .grey-arrow li a:hover, .lightgrey-arrow li a:hover, .plum-arrow li a:active, 
 .grey-arrow li a:active, .lightgrey-arrow li a:active, .plum-arrow li a:focus, .grey-arrow li a:focus, 
-.lightgrey-arrow li a:focus, ul.menu li a:hover, ul.menu li a:active, ul.menu li a:focus {
+.lightgrey-arrow li a:focus,
+ul.menu li a:hover, ul.menu li a:active, ul.menu li a:focus,
+.faq-category-node li a:hover, .faq-category-node li a:active, .faq-category-node li a:focus {
   text-decoration: underline;
 }
 .static_content h2 a:hover, .static_marginal h2 a:hover, h2 a:hover,
@@ -58,20 +60,20 @@
 .static_content h2 a:focus, .static_marginal h2 a:focus, h2 a:focus {
   text-decoration: underline;
 }  
-.plum-arrow li a, .grey-arrow li a, .lightgrey-arrow li a, ul.menu li a {
+.plum-arrow li a, .grey-arrow li a, .lightgrey-arrow li a, ul.menu li a, .faq-category-node li a {
   text-decoration: none;
 }
-.plum-arrow li, .grey-arrow li, .lightgrey-arrow li, ul.menu li {
+.plum-arrow li, .grey-arrow li, .lightgrey-arrow li, ul.menu li, .faq-category-node li {
   list-style: none outside none;
   padding-left: 17px;
   margin-left: -24px;
   padding-bottom: 3px;
   padding-top: 3px;
 }
-.plum-arrow li, ul.menu li {
+.plum-arrow li, ul.menu li, .faq-category h3 {
   background: url("../images/icons/listArrowPlum.png") no-repeat 0 4px;
 }
-.grey-arrow li {
+.grey-arrow li, .faq-category-node li {
   background: url("../images/icons/listArrowGrey.png") no-repeat 0 4px;
 }
 .no-arrow {
@@ -260,4 +262,18 @@ a.help-kw-link {
 .field-name-field-asset-image-description > div > div {
   color: rgb(62, 58, 56);
   font-style: italic;
+}
+
+.faq-category h3 {
+  padding-left: 15px; 
+}
+
+.faq-category h3 a {
+  font-size: 16px;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.faq-category-node li {
+  margin-left: 0;
 }
