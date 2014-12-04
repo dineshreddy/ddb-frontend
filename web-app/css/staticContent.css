@@ -256,3 +256,8 @@ a.help-kw-link {
   border-bottom: 3px solid #efebe8;
   padding-bottom: 15px;
 }
+
+.field-name-field-asset-image-description > div > div {
+  color: rgb(62, 58, 56);
+  font-style: italic;
+}
