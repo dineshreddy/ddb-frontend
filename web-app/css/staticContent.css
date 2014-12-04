@@ -256,8 +256,3 @@ a.help-kw-link {
   border-bottom: 3px solid #efebe8;
   padding-bottom: 15px;
 }
-
-#block-system-main .div .div::before {
-  position: absolute;
-  top: 20px;
-}
