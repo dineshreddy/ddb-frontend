@@ -39,7 +39,7 @@
   font-weight:normal;
   margin-top: 5px;
 }
-.static_content .date {
+.static_content .date, .views-field-created {
   font-size: 0.875em;
   margin: 0;
 }
@@ -240,4 +240,19 @@ a.help-kw-link {
 
 .asset-wrapper.asset strong {
   display: none;
+}
+
+/* CMS based static content */
+.views-field-created {
+  margin-top: 5px;
+}
+
+.views-field-field-asset-image img {
+  float: right;
+  margin: 5px 0 10px 15px;
+}
+
+.views-field-view-node {
+  border-bottom: 3px solid #efebe8;
+  padding-bottom: 15px;
 }
