@@ -246,21 +246,14 @@ a.help-kw-link {
 
 /* CMS based static content */
 .views-row {
+  border-bottom: 3px solid #efebe8;
   min-height: 240px;
-}
-
-.views-field-created {
-  margin-top: 5px;
+  padding: 10px 0 15px 0;
 }
 
 .views-field-field-asset-image img {
   float: right;
   margin: 5px 0 10px 15px;
-}
-
-.views-field-view-node {
-  border-bottom: 3px solid #efebe8;
-  padding-bottom: 15px;
 }
 
 .field-name-field-asset-image-description > div > div {
