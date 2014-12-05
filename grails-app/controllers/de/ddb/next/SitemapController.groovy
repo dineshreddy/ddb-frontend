@@ -35,7 +35,7 @@ class SitemapController {
             log.error "sitemap file was not found"
             apiResponse.throwException(request)
         }
-        render(contentType: "text/xml", text: rewriteUrls(apiResponse.getResponse()))
+        render(contentType: "text/xml", text: rewriteUrls(apiResponse.getResponse(), locale))
     }
 
     /**
@@ -44,7 +44,7 @@ class SitemapController {
      * @param content as XML content with CMS URLs
      * @return content as String with modified URLs
      */
-    private String rewriteUrls(def content) {
+    private String rewriteUrls(def content, String locale) {
         String cmsHost = new URL(configurationService.getCmsUrl()).getHost()
         URL publicUrl = new URL(configurationService.getPublicUrl())
 
@@ -53,12 +53,16 @@ class SitemapController {
                 URL url = new URL(element.text())
 
                 if (url.getHost() == cmsHost) {
-                    // remove language from path, prefix with "content/"
                     String path = url.getPath()
-                    int index = path.indexOf("/", 1)
 
-                    if (index > 0) {
-                        path = "content/" + path.substring(index + 1)
+                    // remove language from path
+                    if (path.startsWith("/" + locale)) {
+                        path = path.substring(locale.length() + 1)
+                    }
+
+                    // prefix path with "content"
+                    if (path.length() > 0) {
+                        path = "content" + path
                     }
                     element.parent().loc = new URL(publicUrl, path)
                 }
