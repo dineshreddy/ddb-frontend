@@ -245,6 +245,10 @@ a.help-kw-link {
 }
 
 /* CMS based static content */
+.views-row {
+  min-height: 240px;
+}
+
 .views-field-created {
   margin-top: 5px;
 }
