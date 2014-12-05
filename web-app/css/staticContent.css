@@ -105,7 +105,7 @@ a.help-link:link, a.help-bc-link:link {
   text-decoration: none;
 }
 
-.link_up {
+.link_up, .views-field-nothing a {
   padding-left: 17px;
   text-decoration: none !important;
   background: url("../images/icons/listArrowPlumUp.png") no-repeat -3px 6px;
@@ -245,7 +245,11 @@ a.help-kw-link {
 }
 
 /* CMS based static content */
-.views-row {
+.static_content {
+  font-family: Calibri, Arial, sans-serif;
+}
+
+.view-init-articles .views-row {
   border-bottom: 3px solid #efebe8;
   min-height: 240px;
   padding: 10px 0 15px 0;
@@ -262,7 +266,8 @@ a.help-kw-link {
 }
 
 .faq-category h3 {
-  padding-left: 15px; 
+  margin: 0;
+  padding-left: 15px;
 }
 
 .faq-category h3 a {
@@ -271,6 +276,35 @@ a.help-kw-link {
   text-decoration: none;
 }
 
+.faq-category h3 a:hover {
+  text-decoration: underline;
+}
+
 .faq-category-node li {
   margin-left: 0;
+}
+
+.view-init-faq h2 {
+  font-size: 1.125em;
+}
+
+.view-init-faq h2 a {
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  font-weight: bold;
+}
+
+.view-init-faq h2 a:hover {
+  text-decoration: none;
+}
+
+.view-init-faq > div > h3 a {
+  color: #3e3a37;
+  font-family: KarbidWeb, Calibri, Arial, sans-serif;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.views-field-nothing a {
+  text-decoration: none;
 }
