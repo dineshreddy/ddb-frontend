@@ -1,0 +1,69 @@
+/*
+ * Copyright (C) 2014 FIZ Karlsruhe
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package de.ddb.next
+
+import groovy.xml.XmlUtil
+
+import org.springframework.web.servlet.support.RequestContextUtils
+
+import de.ddb.common.ApiConsumer
+import de.ddb.common.constants.SupportedLocales
+
+class SitemapController {
+    def configurationService
+
+    def index() {
+        def staticUrl = configurationService.getStaticUrl()
+        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+        def path = locale + "/ddb-services/sitemap.xml"
+        def apiResponse = ApiConsumer.getXml(staticUrl, path)
+
+        if (!apiResponse.isOk()) {
+            log.error "sitemap file was not found"
+            apiResponse.throwException(request)
+        }
+        render(contentType: "text/xml", text: rewriteUrls(apiResponse.getResponse()))
+    }
+
+    /**
+     * Rewrite CMS server URLs so they suit our needs.
+     *
+     * @param content as XML content with CMS URLs
+     * @return content as String with modified URLs
+     */
+    private String rewriteUrls(def content) {
+        String cmsHost = new URL(configurationService.getCmsUrl()).getHost()
+        URL publicUrl = new URL(configurationService.getPublicUrl())
+
+        content.depthFirst().collect {it}.findAll {it}.each {element ->
+            if (element.name() == "loc") {
+                URL url = new URL(element.text())
+
+                if (url.getHost() == cmsHost) {
+                    // remove language from path, prefix with "content/"
+                    String path = url.getPath()
+                    int index = path.indexOf("/", 1)
+
+                    if (index > 0) {
+                        path = "content/" + path.substring(index + 1)
+                    }
+                    element.parent().loc = new URL(publicUrl, path)
+                }
+            }
+        }
+        return XmlUtil.serialize(content)
+    }
+}
