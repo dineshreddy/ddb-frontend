@@ -73,7 +73,7 @@ ul.menu li a:hover, ul.menu li a:active, ul.menu li a:focus,
 .plum-arrow li, ul.menu li, .faq-category h3 {
   background: url("../images/icons/listArrowPlum.png") no-repeat 0 4px;
 }
-.grey-arrow li, .faq-category-node li {
+.grey-arrow li, ul.menu li.leaf, .faq-category-node li {
   background: url("../images/icons/listArrowGrey.png") no-repeat 0 4px;
 }
 .no-arrow {
