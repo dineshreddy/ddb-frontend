@@ -48,8 +48,8 @@ limitations under the License.
             </button>
             <div class="link-stats">
               <g:link class="fl" controller="content" action="faq" fragment="A110" title="${g.message(code:"ddbnext.Homepage_Statistics_Whats_Offered")}" >
-                <g:message encodeAs="html" args='["${String.format(RequestContextUtils.getLocale(request),'%,d', stats.items)}", 
-                    "${String.format(RequestContextUtils.getLocale(request),'%,d', stats.institutions)}"]' code="ddbnext.Homepage_Statistics"/>
+                <g:message args='["${String.format(RequestContextUtils.getLocale(request),'%,d', stats)}"]'
+                           code="ddbnext.Homepage_Statistics"/>
               </g:link>
             </div>
             <div class="link-adv-search">

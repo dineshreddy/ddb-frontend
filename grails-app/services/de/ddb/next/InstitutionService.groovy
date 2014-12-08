@@ -85,59 +85,6 @@ class InstitutionService {
     }
 
     /**
-     * Determines the number of institutions providing items and the total number of items.
-     * 
-     * @return a map containing the fields "items" and "institutions" 
-     */
-    @Cacheable(value="institutionCache", key="'getNumberOfItemsAndInstitutionsWithItems'")
-    def getNumberOfItemsAndInstitutionsWithItems() {
-
-        // Request the institutions with items from the backend and go through tree to count them. 
-        def tree = findAll();
-        def institutions = recursiveInstitutionWithItemsCount(tree)
-        
-        // Use search to determine number of items in ddb 
-        // http://backend....:9998/search?client=DDB-NEXT&query=*&offset=0&rows=0&facet=category&category=Kultur
-        def searchParams = [:]
-        searchParams.put("query", "*");
-        searchParams.put("offset", "0");
-        searchParams.put("rows", "0");
-        searchParams.put("facet", "category");
-        searchParams.put("category", "Kultur");
-        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/search", false, searchParams)
-        if(!responseWrapper.isOk()){
-            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        def searchResult = responseWrapper.getResponse()
-        def items = searchResult.numberOfResults
-
-        return [items: items, institutions: institutions]
-    }
-
-    
-    /**
-     * Recursively counts the number of institutions with items in the tree provided.
-     * @param list the current list of branches/leaves of the tree 
-     * @return
-     */
-    def recursiveInstitutionWithItemsCount(def list) {
-        def institutions = 0
-        list.each { it ->
-            if (it.hasItems) {
-                // increase number of institutions with items 
-                institutions++
-                // recurse only if parent has items
-                if (it.children) {
-                    institutions += recursiveInstitutionWithItemsCount(it.children);
-                }
-            }
-            
-        }
-        return institutions
-    }
-
-
-    /**
      * Returns all archives ordered by alphabet.
      *
      * The value of this method is cached!

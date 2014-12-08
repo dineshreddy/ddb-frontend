@@ -22,7 +22,7 @@ import de.ddb.common.constants.SupportedLocales
 class IndexController {
 
     def configurationService
-    def institutionService
+    def itemService
 
     def index() {
         def path
@@ -47,8 +47,7 @@ class IndexController {
         def response = apiResponse.getResponse()
 
         def articles = retrieveArguments(response)
-        def stats = institutionService.getNumberOfItemsAndInstitutionsWithItems();
-        render(view: "index", model: [articles: articles, stats: stats])
+        render(view: "index", model: [articles: articles, stats: itemService.getNumberOfItems()])
     }
 
     private def retrieveArguments(def content){
