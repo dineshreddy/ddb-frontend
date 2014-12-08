@@ -32,7 +32,7 @@ limitations under the License.
     </g:each>
 
     <link rel="search" title="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}"
-          href="opensearch_${ddb.getCurrentLocale()}.osdx" type="application/opensearchdescription+xml" />
+          href="${request.contextPath}/opensearch_${ddb.getCurrentLocale()}.osdx" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
