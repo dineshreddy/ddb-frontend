@@ -13,7 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<div class="external-links">
+<div class="external-links off">
+  <hr>
   <h3><g:message encodeAs="html" code="ddbnext.External_Links" />:</h3>
   <ul class="unstyled">  
     <g:each var="link" in="${entity.sameAs}">

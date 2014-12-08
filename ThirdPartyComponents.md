@@ -34,7 +34,7 @@ public class ServiceWrapper {
 }
 
 #Call Wrapper Service from within template:
-<g:set var="facets" value="${de.ddb.next.ServiceWrapper.getData('/search/facets/time_fct')}" />
+<g:set var="facets" value="${de.ddb.next.ServiceWrapper.getData('/search/facets/place_fct')}" />
 
 Iterate through JSON:
 <g:each in="${facets.facetValues}" var="facetValue">

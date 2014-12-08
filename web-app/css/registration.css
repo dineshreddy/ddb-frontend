@@ -71,11 +71,6 @@
   margin-bottom: 15px;
 }
 
-#registration-form .reg-label {
-  margin-bottom: 2px;
-  font-weight: bold;
-}
-
 /* responsive design */
 
 @media (max-width: 979px) {

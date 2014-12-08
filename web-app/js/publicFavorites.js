@@ -55,3 +55,10 @@
           $(".reportfav .report-overlay-container").fadeOut(200);
         }, 200);
   }
+  
+  $(document).ready(function() {
+	  if (jsPageName === "publicFavorites") {
+	    var socialMediaManager = new SocialMediaManager();
+	    socialMediaManager.integrateSocialMedia();
+	  }
+	});  

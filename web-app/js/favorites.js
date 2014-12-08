@@ -433,19 +433,19 @@ $(function() {
       var newPosition = parseInt($(this).val());
       if(newPosition !== "NaN"){
         var parentElement = $(this).parents('.rank-wrapper');
-        updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+        updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition - 1);
       }
     });
     $('.rank-arrows .up, .rank-arrows .down').on('click', function(){
       if(!$(this).parent().hasClass('disabled')){
         var parentElement = $(this).parents('.rank-wrapper');
-        var currentPosition = parseInt(parentElement.find('.rank-input').val());
+        var currentPosition = parseInt(parentElement.find('.rank-input').val()) - 1;
         if($(this).hasClass('up') && currentPosition > 0){
-          var newPosition = currentPosition-1;
-          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'),
+                         currentPosition - 1);
         }else if($(this).hasClass('down')){
-          var newPosition = currentPosition+1;
-          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'), newPosition);
+          updateRanking (parentElement.attr('data-bookmark-id'), parentElement.attr('data-folder-id'),
+                         currentPosition + 1);
         }
       }
     });

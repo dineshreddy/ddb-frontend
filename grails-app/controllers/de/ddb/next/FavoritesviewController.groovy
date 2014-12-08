@@ -143,7 +143,7 @@ class FavoritesviewController {
             }
 
             if (request.method=="POST"){
-                sendBookmarkPerMail(params.email, orderedFavorites, selectedFolder)
+                sendBookmarksPerMail(params.email, orderedFavorites, selectedFolder)
             }
 
             render(view: ACTION, model: [
@@ -270,7 +270,7 @@ class FavoritesviewController {
                 }
 
                 if (request.method=="POST"){
-                    sendBookmarkPerMail(params.email, allResultsWithAdditionalInfo, selectedFolder)
+                    sendBookmarksPerMail(params.email, allResultsWithAdditionalInfo, selectedFolder)
                 }
                 render(view: ACTION, model: [
                     results: resultsItems,
@@ -367,7 +367,7 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private sendBookmarkPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
+    private sendBookmarksPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
         if (userService.isUserLoggedIn()) {
             def List emails = []
             if (paramEmails.contains(',')){

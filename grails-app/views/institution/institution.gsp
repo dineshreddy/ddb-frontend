@@ -29,7 +29,7 @@ limitations under the License.
 </head>
 <body>
   <div class="institution-item-page">
-    <a id="institution-id" data-institutionid="${itemId}"></a>
+    <a id="institution-id" data-institutionid="${itemId}" data-selectedinstitutionid="${selectedItemId}"></a>
     <g:render template="institutionLinks" />
     
     <div class="row">
@@ -65,8 +65,9 @@ limitations under the License.
          </div>
        </div>
      </div>
-<%-- FIXME: The highlights feature comes with release 4.7--%>
-<%--     <g:render template="highlights" />--%>
+
+     <g:render template="highlights" />
+     
      <div class="row">
        <div class="span12 locations">
 
@@ -100,7 +101,7 @@ limitations under the License.
                           <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                         </div>
                       </g:else>
-                      <g:set var="maxDepthOfLoop" value="${10}" />
+                      <g:set var="maxDepthOfLoop" value="${3}" />
                       <g:set var="loopCount" value="${0}" />
                       <g:render template="subinstitutions" />
                     </li>

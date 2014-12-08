@@ -20,13 +20,15 @@ limitations under the License.
     <%-- if public and no comment -> show nothing --%>
   </g:if>
   <g:else>
-    <div class="comment-text <g:if test="${!publicView}">comment-text-clickanchor</g:if>" id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
-      <g:if test="${!item.bookmark.description.isEmpty()}">
+    <div class="comment-text <g:if test="${!publicView}">comment-text-clickanchor</g:if>"
+         id="comment-text-${item.bookmark.bookmarkId}" data-bookmark-id="${item.bookmark.bookmarkId}">
+      <g:if test="${!(publicView || item.bookmark.description.isEmpty())}">
         <div class="comment-meta">
-          <g:if test="${publicView}"><g:message encodeAs="html" code="ddbnext.Favorites_Comment_Of" /> ${item.folder.publishingName}, </g:if>${item.bookmark.updateDateFormatted}
+          ${item.bookmark.updateDateFormatted}
         </div>
       </g:if>
-      <div class="comment-content" id="comment-text-dyn-${item.bookmark.bookmarkId}">
+      <div class="comment-content"
+           id="comment-text-dyn-${item.bookmark.bookmarkId}">
         <g:if test="${!item.bookmark.description.isEmpty()}">
           ${item.bookmark.description.trim()}
         </g:if>
@@ -34,6 +36,12 @@ limitations under the License.
           <g:message encodeAs="html" code="ddbnext.Favorites_Comment_Label" />
         </g:else>
       </div>
+      <g:if test="${publicView}">
+        <div class="comment-meta fr">
+          <g:message code="ddbnext.Public_Favorites_Comment_Of"/> ${item.folder.publishingName}
+        </div>
+        <div class="clearfix"></div>
+      </g:if>
     </div>
     <g:if test="${!publicView}">
       <textarea class="comment-input off" id="comment-input-${item.bookmark.bookmarkId}" draggable="false" ><g:if test="${!item.bookmark.description.isEmpty()}">${item.bookmark.description.trim()}</g:if></textarea>

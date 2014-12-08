@@ -30,14 +30,14 @@ limitations under the License.
     </g:elseif>
     <li class="item bt">
       <div class="summary row">
-        <div class="summary-main-wrapper span6">
+        <div class="summary-main-wrapper span5">
           <g:if test="${publicView}">
-            <div class="rank">${it.orderNumber}</div>
+            <div class="rank">${it.orderNumber + 1}</div>
           </g:if>
           <g:else>
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">
             <div class="rank-wrapper" data-bookmark-id="${it.bookmark.bookmarkId}" data-folder-id="${it.folder.folderId}">
-              <input type="text" value="${it.orderNumber}" class="rank-input" autocomplete="off" <g:if test="${!orderBy.equals("number")}">disabled</g:if>>
+              <input type="text" value="${it.orderNumber + 1}" class="rank-input" autocomplete="off" <g:if test="${!orderBy.equals("number")}">disabled</g:if>>
               <div class="rank-arrows <g:if test="${!orderBy.equals("number")}">disabled</g:if>">
                 <div class="up bb">+</div>
                 <div class="down">-</div>
@@ -82,7 +82,7 @@ limitations under the License.
             </g:link>
           </g:else>
         </div>
-        <div class="span1 created-at">
+        <div class="span2 created-at">
          <div>${it.bookmark.creationDateFormatted}</div>
         </div>
       </div>

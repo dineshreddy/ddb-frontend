@@ -73,7 +73,7 @@ limitations under the License.
                 <g:link controller="content" params="[dir: 'news']"><g:message encodeAs="html" code="ddbnext.News" /></g:link>
               </li>
               <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "institution"]]}">active</ddb:isMappingActive>">
-                <g:link controller="institution" action="show" fragment="list"><g:message encodeAs="html" code="ddbnext.Institutions" /></g:link>
+                <g:link controller="institution" action="show"><g:message encodeAs="html" code="ddbnext.Institutions" /></g:link>
               </li>
               <li class="<ddb:isMappingActive context="${params}" testif="${[[controller: "content", dir: "ddb"]]}">active</ddb:isMappingActive>">
                 <g:link controller="content" params="[dir: 'ddb']"><g:message encodeAs="html" code="ddbnext.Participate" /></g:link>
@@ -340,7 +340,7 @@ limitations under the License.
                   </div>
                   <g:link class="link-adv-search"
                     controller="advancedsearch">
-                    <g:message encodeAs="html" code="ddbnext.Advanced_search" />
+                    <g:message encodeAs="html" code="ddbnext.AdvancedSearch" />
                   </g:link>
                 </div>
               </form>

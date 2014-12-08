@@ -32,5 +32,13 @@ $(function() {
         itemSelector: '.pin'
       });
     });
+
+    $(window).bind("load", function() {
+        $('.small-loader').remove();
+        $('.persons-overview-overlay-waiting').remove();
+        $('.persons-overview-overlay-modal').remove();
+      });
+    
   }
+  
 });

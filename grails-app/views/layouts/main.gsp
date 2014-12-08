@@ -16,7 +16,7 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="${ddb.getCurrentLocale()}">
   <head>
-    <title><g:layoutTitle default="Deutsche Digitale Bibliothek" /></title>
+    <title><g:layoutTitle default="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" /></title>
     <meta charset="utf-8" />
     <g:if test="${!metaDescription}">
       <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
@@ -25,14 +25,14 @@ limitations under the License.
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
-    <!-- TODO: uncomment the next two lines, once we find the icons -->
-    <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"/ -->
-    <!-- link rel="apple-touch-startup-image" href="320x460-ipad1004x768.png"/ -->
+    <g:each var="size" in="${["57x57", "72x72", "76x76", "114x114", "120x120", "144x144", "152x152"]}">
+      <link rel="apple-touch-icon" sizes="${size}" href="${g.resource("plugin": "ddb-common",
+                                                                      "dir": "images/apple-touch-icons",
+                                                                      "file": "apple-touch-icon-" + size + ".png")}"/>
+    </g:each>
 
-    <g:if test="${ddb.getCurrentLocale() == 'de'}"><g:set var="filename" value="opensearch_de.osdx"></g:set></g:if>
-    <g:else if test="${ddb.getCurrentLocale() == 'en'}"><g:set var="filename" value="opensearch_en.osdx"></g:set></g:else>
-    
-    <link rel="search" title="Deutsche Digitale Bibliothek" href="${resource(dir: '/', file: filename)}" type="application/opensearchdescription+xml" />
+    <link rel="search" title="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}"
+          href="${request.contextPath}/opensearch_${ddb.getCurrentLocale()}.osdx" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />

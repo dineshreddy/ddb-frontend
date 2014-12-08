@@ -151,7 +151,6 @@
 }
 
 #divOSM img {
-  max-width: none !important;
   vertical-align: initial !important;
   border: none !important;
   margin: 0 !important;
@@ -179,9 +178,16 @@ circle {
 .institution-item-page .carousel {
   position: relative;
   display: none;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
+.institution-item-page .link-highlights {
+  margin-bottom: 10px;
+  font-size: 16px;
+  padding-left: 10px;
+  text-decoration: underline;
+}
+  
 .institution-item-page .caroufredsel_wrapper {
   background-color: white;
 }
@@ -189,8 +195,8 @@ circle {
 .institution-item-page .preview-item {
     float: left;
     position: relative;
-    max-width: 180px;
-    width: 180px;
+    max-width: 140px;
+    width: 140px;
     height: 175px;
 }
 
@@ -206,12 +212,14 @@ circle {
   overflow: hidden;
   height: 36px;
   line-height: 18px;
+  text-align: center;
+  width: 100%;
 }
 
 .institution-item-page .preview-item img {
   text-align: center;
   max-height: 105px;
-  max-width: 140px;
+  max-width: 120px;
   margin-left: auto;
   margin-right: auto;
   display: block;

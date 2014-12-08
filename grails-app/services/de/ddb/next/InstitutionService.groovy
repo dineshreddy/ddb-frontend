@@ -15,12 +15,16 @@
  */
 package de.ddb.next
 
-import grails.plugin.cache.Cacheable;
+import grails.plugin.cache.Cacheable
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.ApiResponse;
+import de.ddb.common.ApiResponse
+import de.ddb.common.FavoritesService
+import de.ddb.common.beans.User
+import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -42,6 +46,9 @@ class InstitutionService {
 
     def servletContext
 
+    def bookmarksService
+    def favoritesService
+
     /**
      * Return all institutions from the backend
      *
@@ -51,6 +58,7 @@ class InstitutionService {
      */
     @Cacheable(value="institutionCache", key="'findAll'")
     def findAll() {
+        log.info("findAll()")
         ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
         if(!responseWrapper.isOk()){
             responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
@@ -73,7 +81,6 @@ class InstitutionService {
         if(!responseWrapper.isOk()){
             responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
-
         return responseWrapper.getResponse()
     }
 
@@ -82,7 +89,7 @@ class InstitutionService {
      *
      * The value of this method is cached!
      *
-     * @return all archives that have items.
+     * @return all archives 
      */
     def findAllByAlphabet() {
         def totalInstitution = 0
@@ -183,6 +190,15 @@ class InstitutionService {
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
+
+                //Create Fake Data on locationDisplayName until we get from Backend
+                //                if (i%3 == 0){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland, European Union";
+                //                }else if (i%3 == 1){
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Test, 66111, Deutschland, European Union";
+                //                }else{
+                //                    clusterContainer["institutions"][institutionId]["locationDisplayName"] = "Deutsche Post AG, Ursulinenstraße, Nauwieser Viertel, Sankt Johann, Saarbrücken, Test, Karlsruhe, 66111, Deutschland, European Union";
+                //                }
             }
 
             // Go over all the Cortex institutions and transfer children/parents information
@@ -331,5 +347,35 @@ class InstitutionService {
 
     private def buildUri(id) {
         grailsLinkGenerator.link(url: [controller: 'institution', action: 'showInstitutionsTreeByItemId', id: id ])
+    }
+
+    /**
+     * Returns the search result for the institution highlight items
+     *
+     * @param institutionid the institution id to search the highlights
+     * @param offset the offset of the search result
+     * @param rows the number of items to retrieve
+     */
+    def getInstitutionHighlights(def institutionid, int offset, int rows) {
+        def result = [:]
+        def bookmarkfolder = bookmarksService.findPublicFolderByInstitutionId(institutionid)
+
+        if (bookmarkfolder) {
+            User user = new User()
+
+            user.id = bookmarkfolder.userId
+            result = favoritesService.getFavoriteList(user, bookmarkfolder, FavoritesService.ORDER_ASC,
+                    FavoritesService.ORDER_BY_NUMBER)
+
+            // paging
+            if (offset != 0) {
+                result = result.drop(offset)
+                result = result.take(rows)
+            }
+            else {
+                result = result.take(rows)
+            }
+        }
+        return result
     }
 }
