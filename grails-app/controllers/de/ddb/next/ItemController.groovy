@@ -56,7 +56,7 @@ class ItemController {
     }
 
     def parents() {
-        def jsonResp = itemService.getParent(params.id)
+        def jsonResp = ddbItemService.getParent(params.id)
 
         render(contentType:"application/json", text: jsonResp)
     }
