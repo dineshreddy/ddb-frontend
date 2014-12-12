@@ -13,36 +13,26 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="config" bean="configurationService"/>
-<g:set var="jsonHierarchyChildrenOfOrg" value="${vApiInst.getChildrenOfInstitutionByItemId(itemId, config.getBackendUrl())}" />
-<g:if test="${((jsonHierarchyChildrenOfOrg)&&(jsonHierarchyChildrenOfOrg.size() > 0))}">
-    <ol class="institution-list">
-       
-       <g:if test="${(loopCount++ < maxDepthOfLoop)}">
-           <g:each in="${jsonHierarchyChildrenOfOrg}" >
-               <li class="institution-listitem" data-sector="${ it?.sector }" data-institution-id="${ it?.id }" >
-                   <g:if test="${(selectedItemId == it.id)}">
-                       <i class="icon-institution"></i>
-                       <div>
-                         <b>${it.label}</b>
-                       </div>
-                   </g:if>
-                   <g:else>
-                       <i class="icon-child-institution"></i>
-                       <div>
-                         <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: it.id]">${it.label}</g:link>
-                       </div>
-                   </g:else>
-                   <g:if test="${!(it.aggregationEntity) && (loopCount+1 < maxDepthOfLoop)}">
-                       <g:set var="itemId" value="${it.id}" />
-                       <g:render template="subinstitutions" />
-                   </g:if>
-               </li>
-           </g:each>
-       </g:if>
-       <g:else>
-           <g:message encodeAs="html" code=" | broken loop at a depth of more than ${maxDepthOfLoop}" />
-       </g:else>
-
-    </ol>
-</g:if>
+<ol class="institution-list">
+  <g:each var="subinstitution" in="${subinstitutions}" >
+    <li class="institution-listitem" data-sector="${subinstitution.sector}" data-institution-id="${subinstitution.id}">
+      <g:if test="${(selectedItemId == subinstitution.id)}">
+        <i class="icon-institution"></i>
+        <div>
+          <b>${subinstitution.name}</b>
+        </div>
+      </g:if>
+      <g:else>
+        <i class="icon-child-institution"></i>
+        <div>
+          <g:link controller="institution" action="showInstitutionsTreeByItemId" params="[id: subinstitution.id]">
+            ${subinstitution.name}
+          </g:link>
+        </div>
+      </g:else>
+      <g:if test="${subinstitution.children.size() > 0}">
+        <g:render template="subinstitutions" model="[subinstitutions: subinstitution.children]"/>
+      </g:if>
+    </li>
+  </g:each>
+</ol>
