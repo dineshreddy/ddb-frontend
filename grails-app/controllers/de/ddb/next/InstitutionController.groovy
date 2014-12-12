@@ -99,7 +99,6 @@ class InstitutionController {
                         subinstitutions: institutionService.getChildren(itemId),
                         parentOrg: jsonOrgParentHierarchy,
                         countObjcs: countObjectsForProv,
-                        vApiInst: vApiInstitution,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
                         isFavorite: isFavorite(id),
