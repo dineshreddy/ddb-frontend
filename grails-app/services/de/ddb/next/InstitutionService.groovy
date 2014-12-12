@@ -124,6 +124,17 @@ class InstitutionService {
         return allInstitutions
     }
 
+    def getChildren(String institutionId) {
+        def result = []
+        def institutions = grailsApplication.mainContext.institutionService.findAll()
+        def institution = institutions.find {it.id == institutionId}
+
+        if (institution) {
+            result = institution.children
+        }
+        return result
+    }
+
     def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays, boolean onlyInstitutionWithData){
         log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
 
