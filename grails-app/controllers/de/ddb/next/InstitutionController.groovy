@@ -74,8 +74,6 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             log.debug("root itemId = ${itemId}")
-            def jsonOrgSubHierarchy = vApiInstitution.getChildrenOfInstitutionByItemId(itemId, configurationService.getBackendUrl())
-            log.debug("jsonOrgSubHierarchy: ${jsonOrgSubHierarchy}")
             def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name.text(), configurationService.getBackendUrl())
 
             // logo
@@ -98,10 +96,9 @@ class InstitutionController {
                         selectedItemId: id,
                         selectedOrgXML: selectedOrgXML,
                         organisationLogo: organisationLogo,
-                        subOrg: jsonOrgSubHierarchy,
+                        subinstitutions: institutionService.getChildren(itemId),
                         parentOrg: jsonOrgParentHierarchy,
                         countObjcs: countObjectsForProv,
-                        vApiInst: vApiInstitution,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
                         isFavorite: isFavorite(id),
