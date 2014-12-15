@@ -37,39 +37,22 @@ grails.mime.types = [
     css:           'text/css',
     csv:           'text/csv',
     form:          'application/x-www-form-urlencoded',
-    html:          [
-        'text/html',
-        'application/xhtml+xml'
-    ],
+    html:          ['text/html', 'application/xhtml+xml'],
     js:            'text/javascript',
-    json:          [
-        'application/json',
-        'text/json'
-    ],
+    json:          ['application/json', 'text/json'],
     multipartForm: 'multipart/form-data',
     rss:           'application/rss+xml',
     text:          'text/plain',
-    xml:           [
-        'text/xml',
-        'application/xml'
-    ]
-]
+    xml:           ['text/xml', 'application/xml'
+    ]]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
 grails.resources.uri.prefix = "appStatic"
 
 // What URL patterns should be processed by the resources plugin
-grails.resources.adhoc.patterns = [
-    '/images/*',
-    '/css/*',
-    '/js/*',
-    '/plugins/*'
-]
-grails.resources.adhoc.excludes = [
-    '**/WEB-INF/**',
-    '**/META-INF/**'
-]
+grails.resources.adhoc.patterns = ['/images/*', '/css/*', '/js/*', '/plugins/*']
+grails.resources.adhoc.excludes = ['**/WEB-INF/**', '**/META-INF/**']
 
 // The default codec used to encode data with ${}
 grails.views.default.codec = "html" // none, html, base64
@@ -146,9 +129,7 @@ ddb {
 environments {
     development {
         grails.logging.jul.usebridge = true
-        grails.config.locations = [
-            "file:${userHome}/.grails/${appName}.properties"
-        ]
+        grails.config.locations = ["file:${userHome}/.grails/${appName}.properties"]
     }
     production {
         grails.logging.jul.usebridge = false
@@ -158,9 +139,7 @@ environments {
     }
     test {
         grails.logging.jul.usebridge = true
-        grails.config.locations = [
-            "file:${userHome}/.grails/${appName}.properties"
-        ]
+        grails.config.locations = ["file:${userHome}/.grails/${appName}.properties"]
     }
     println "| Read properties from " + grails.config.locations[0]
 }
@@ -199,6 +178,8 @@ ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
+ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
+ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
@@ -341,19 +322,17 @@ grails {
 
 grails {
     cache {
-       enabled = true
-       clearAtStartup = true
-       ehcache {
-          ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
-          reloadable = true
-       }
+        enabled = true
+        clearAtStartup = true
+        ehcache {
+            ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
+            reloadable = true
+        }
     }
- }
+}
 
 grails.cache.config = {
-    provider {
-      name "ehcache-" + appName
-    }
+    provider { name "ehcache-" + appName }
 
     cache {
         name 'institutionCache'

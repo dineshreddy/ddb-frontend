@@ -81,11 +81,11 @@ class ConfigurationService extends CommonConfigurationService {
     public String getCulturegraphUrl(){
         return getConfigValue("ddb.culturegraph.url")
     }
-    
+
     public String getDomainCanonic(){
         return getConfigValue("ddb.domain.canonic")
     }
-    
+
     public String getGrailsMailHost(){
         return getConfigValue("grails.mail.host")
     }
@@ -104,6 +104,14 @@ class ConfigurationService extends CommonConfigurationService {
 
     public String getMimeTypeHtml(){
         return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
+    }
+
+    public getSocialIconsFacebookUrl(){
+        return getConfigValue("ddb.socialIcons.url.facebook")
+    }
+
+    public getSocialIconsTwitterUrl(){
+        return getConfigValue("ddb.socialIcons.url.twitter")
     }
 
     public boolean isCulturegraphFeaturesEnabled() {
