@@ -1,5 +1,3 @@
-import de.ddb.common.constants.FacetEnum
-
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
  *
@@ -15,6 +13,10 @@ import de.ddb.common.constants.FacetEnum
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+ import de.ddb.common.constants.FacetEnum
+ import de.ddb.common.constants.SupportedLocales
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
