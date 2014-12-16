@@ -24,7 +24,7 @@ class BootStrap {
     def init = { servletContext ->
         Locale.setDefault(Locale.GERMAN)
         log.info "Default Locale has been set to GERMAN"
-
+        SupportedLocales.setFilterLocale([new Locale("et","EE"), new Locale("ru","RU")])
 
         try {
             configurationService.logConfigurationSettings()
