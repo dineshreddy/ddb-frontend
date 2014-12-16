@@ -16,7 +16,6 @@
 
 import groovy.util.slurpersupport.NodeChild
 import groovy.xml.StreamingMarkupBuilder
-import de.ddb.common.constants.SupportedLocales
 
 class BootStrap {
 
