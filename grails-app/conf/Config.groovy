@@ -15,7 +15,6 @@
  */
 
  import de.ddb.common.constants.FacetEnum
- import de.ddb.common.constants.SupportedLocales
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
@@ -201,7 +200,8 @@ ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
-ddb.supportedLocales=[SupportedLocales.DE.locale, SupportedLocales.EN.locale]
+ddb.supportedLocales=["de_DE", "en_US"]
+ddb.defaultLanguage="de_DE"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
