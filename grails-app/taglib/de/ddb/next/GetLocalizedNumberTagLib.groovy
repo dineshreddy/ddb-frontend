@@ -17,18 +17,17 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
-
 class GetLocalizedNumberTagLib {
 
     static namespace = "ddb"
+    def languageService
 
     /**
      * Gives you back a localized representation of the number
      */
     def getLocalizedNumber = { attrs, body ->
 
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         def inputString = body()
         def outputString = ""

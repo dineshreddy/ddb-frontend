@@ -25,7 +25,6 @@ import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.CultureGraphException
 import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
@@ -44,6 +43,7 @@ class EntityController implements InitializingBean {
     def entityService
     def ddbItemService
     def searchService
+    def languageService
 
     URL ddbUrl
 
@@ -261,7 +261,7 @@ class EntityController implements InitializingBean {
         def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
         def results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         //The Entity API deliveres a dateBirth_de and a dateBirth_en. In the View we just pass a dateOfBirth without locale
         fixLocalizedDateOfBirth(results)

@@ -18,7 +18,7 @@ import de.ddb.common.constants.SupportedLocales
 // Place your Spring DSL code here
 beans = {
     localeResolver(org.springframework.web.servlet.i18n.CookieLocaleResolver) {
-        java.util.Locale.setDefault(SupportedLocales.getDefaultLocale())
+        java.util.Locale.setDefault(SupportedLocales.DE.locale)
         cookieMaxAge = 31536000 //1y
     }
 

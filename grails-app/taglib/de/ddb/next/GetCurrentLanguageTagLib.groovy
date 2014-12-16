@@ -18,20 +18,19 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
-
 class GetCurrentLanguageTagLib {
 
     static namespace = "ddb"
 
     def messageSource
+    def languageService
 
     /**
      * Prints out the currently selected language. The language itself is internationalized. The language must be
      * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
      */
     def getCurrentLanguage = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         def localeLanguage = locale.getLanguage()
         def i18nLanguageString = messageSource.getMessage("ddbnext.language_"+localeLanguage, null, locale)
