@@ -54,7 +54,7 @@ class ConfigurationServiceTests {
     }
 
     void testGetAasUrl_Complete() {
-        stringConfigTest("ddb.aas.url", { it.getAasUrl() })
+        stringConfigTest("ddb.aas.url", { it.getAasUrl() }, false)
     }
 
     void testGetCulturegraphUrl_Complete() {
@@ -62,7 +62,7 @@ class ConfigurationServiceTests {
     }
 
     void testGetElasticSearchUrl_Complete() {
-        stringConfigTest("ddb.elasticsearch.url", { it.getElasticSearchUrl() })
+        stringConfigTest("ddb.elasticsearch.url", { it.getElasticSearchUrl() }, false)
     }
 
     void testGetFavoritesSendMailFrom_Complete() {
@@ -193,8 +193,8 @@ class ConfigurationServiceTests {
     }
 
     void testGetProxyPort() {
-        systemPropertyTest("http.proxyPort") {   
-            it.getProxyPort()  
+        systemPropertyTest("http.proxyPort") {
+            it.getProxyPort()
         }
     }
 
@@ -228,7 +228,7 @@ class ConfigurationServiceTests {
         setupServiceWithoutConfigValues()
         setSystemProperty(STRING_VALUE) { configTest_Success() }
 
-          //FIXME boz: unfortunately after a big refactoring we cannot find the cause of the NullpointerException happen here 
+          //FIXME boz: unfortunately after a big refactoring we cannot find the cause of the NullpointerException happen here
 //        setSystemProperty(null) {
 //            setupServiceWithLogMock()
 //            configCall(service)
@@ -295,20 +295,22 @@ class ConfigurationServiceTests {
         }
     }
 
-    private void stringConfigTest(String key, Closure configCall) {
+    private void stringConfigTest(String key, Closure configCall, boolean throwsException=true) {
         this.key = key
         this.configCall = configCall
         setupService(STRING_VALUE)
         configTest_Success()
 
-        setupServiceWithoutConfigValues()
-        configTest_NotFound()
+        if (throwsException) {
+            setupServiceWithoutConfigValues()
+            configTest_NotFound()
 
-        setupService(EMPTY_STRING_VALUE)
-        configTest_NotFound()
+            setupService(EMPTY_STRING_VALUE)
+            configTest_NotFound()
 
-        setupService(OBJECT_VALUE)
-        configTest_WrongType()
+            setupService(OBJECT_VALUE)
+            configTest_WrongType()
+        }
     }
 
     private configTest_WrongType(String typeName = "a String", String key = this.key) {
