@@ -23,7 +23,6 @@ import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
 import de.ddb.common.JsonUtil
 import de.ddb.common.ApiResponse.HttpStatus
-import de.ddb.common.constants.SupportedLocales
 
 
 class ApisController {
@@ -239,8 +238,8 @@ class ApisController {
     private def formatDateForExpiresHeader(daysfromtoday=4){
         def tomorrow= new Date()+daysfromtoday
         String pattern = "EEE, dd MMM yyyy HH:mm:ss Z"
-        SimpleDateFormat format = new SimpleDateFormat(pattern, SupportedLocales.EN.getLocale())
-        String tomorrowString = String.format(SupportedLocales.EN.getLocale(), '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
+        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.US)
+        String tomorrowString = String.format(Locale.US, '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
         Date date = format.parse(tomorrowString)
         return date
     }

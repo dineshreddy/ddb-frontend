@@ -18,11 +18,10 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.TimeFacetHelper
 import de.ddb.common.constants.CortexConstants
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
-import de.ddb.common.TimeFacetHelper
 
 /**
  * Invoked from ajax request during the selection of filters for the search results page
@@ -38,6 +37,7 @@ class FacetsController {
     def facetsService
     def searchService
     def configurationService
+    def languageService
 
 
     /**
@@ -69,7 +69,7 @@ class FacetsController {
 
             def resultsItems = apiResponse.getResponse().facets
 
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             facetValues = searchService.getSelectedFacetValuesFromOldApi(resultsItems, facetName, maxResults, facetQuery, locale)
         }
@@ -94,16 +94,16 @@ class FacetsController {
             }else{
 
                 def resultsItems = apiResponse.getResponse()
-    
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-    
+
+                def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
                 //Filter the role values for mixed facets like affiliate_facet_role!
                 if (facetName.endsWith("role")) {
                     facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, true)
                 } else {
                     facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
                 }
-                
+
             }
         }
 
@@ -139,7 +139,7 @@ class FacetsController {
 
         def resultsItems = apiResponse.getResponse()
 
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
 
@@ -170,7 +170,7 @@ class FacetsController {
 
         def resultsItems = apiResponse.getResponse()
 
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         roleValues = searchService.getRolesForFacetValue(resultsItems, facetName, maxResults, locale)
 

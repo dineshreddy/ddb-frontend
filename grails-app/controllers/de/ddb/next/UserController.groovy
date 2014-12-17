@@ -38,7 +38,6 @@ import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.SupportedOpenIdProviders
 import de.ddb.common.constants.UserStatus
 import de.ddb.common.exception.AuthorizationException
@@ -62,6 +61,7 @@ class UserController {
     def bookmarksService
     def userService
     def favoritesService
+    def languageService
 
     def index() {
         log.info "index()"
@@ -267,7 +267,7 @@ class UserController {
         List<String> messages = []
         errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
         if (errors == null || errors.isEmpty()) {
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
             JSONObject userjson = aasService.getPersonJson(params.username, null, null, params.lname, params.fname, null, null, params.email, params.passwd, configurationService.getCreateConfirmationLink(), template, null, null)
             try {
@@ -321,7 +321,7 @@ class UserController {
         }
         if (errors == null || errors.isEmpty()) {
             try {
-                def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                 def template = messageSource.getMessage("ddbnext.User.PasswordReset_Mailtext", null, locale)
                 aasService.resetPassword(params.username, aasService.getResetPasswordJson(configurationService.getPasswordResetConfirmationLink(), template, null))
                 messages.add("ddbcommon.User.PasswordReset_Success")
@@ -456,7 +456,7 @@ class UserController {
                 if (eMailDifference && (errors == null || errors.isEmpty())) {
                     try {
                         //update email in aas
-                        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
                         def template = messageSource.getMessage("ddbnext.User.Email_Update_Mailtext", null, locale)
                         aasService.updateEmail(user.getId(), aasService.getUpdateEmailJson(params.email, configurationService.getEmailUpdateConfirmationLink(), template, null))
                         messages.add("ddbcommon.User.Email_Update_Success")

@@ -18,18 +18,17 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
-
 class GetCurrentLocaleFullTagLib {
 
     static namespace = "ddb"
+    def languageService
 
     /**
      * Prints out the currently selected language. The language itself is in full format (de_DE). The language must be
      * available as entry in the message.property files with the format "ddbnext.language_<ISO2-language>".
      */
     def getCurrentLocaleFull = { attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
         def localeFull = locale.getLanguage()+"_"+locale.getCountry()
         out << localeFull

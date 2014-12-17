@@ -1,5 +1,3 @@
-import de.ddb.common.constants.FacetEnum
-
 /*
  * Copyright (C) 2014 FIZ Karlsruhe
  *
@@ -15,6 +13,9 @@ import de.ddb.common.constants.FacetEnum
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+ import de.ddb.common.constants.FacetEnum
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -180,6 +181,8 @@ ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
+ddb.supportedLocales=["de_DE", "en_US"]
+ddb.defaultLanguage="de_DE"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation

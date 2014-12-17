@@ -17,11 +17,10 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
-
 class GetLanguageLinkTagLib {
 
     static namespace = "ddb"
+    def languageService
 
 
     /**
@@ -32,7 +31,7 @@ class GetLanguageLinkTagLib {
         def localeclass = attrs.islocaleclass
         def locale = RequestContextUtils.getLocale(request)
         if(!locale){
-            locale = SupportedLocales.getDefaultLocale()
+            locale = languageService.getDefaultLocale()
         }
 
         boolean isLocale = false

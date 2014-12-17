@@ -13,12 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import de.ddb.common.constants.SupportedLocales
 
 // Place your Spring DSL code here
 beans = {
     localeResolver(org.springframework.web.servlet.i18n.CookieLocaleResolver) {
-        java.util.Locale.setDefault(SupportedLocales.getDefaultLocale())
+        java.util.Locale.setDefault(Locale.GERMAN)
         cookieMaxAge = 31536000 //1y
     }
 

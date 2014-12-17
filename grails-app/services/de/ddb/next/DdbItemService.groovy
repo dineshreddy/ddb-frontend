@@ -29,7 +29,6 @@ import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
 
@@ -45,6 +44,7 @@ class DdbItemService {
     def cultureGraphService
     def bookmarksService
     def itemService
+    def languageService
 
     LinkGenerator grailsLinkGenerator
 
@@ -326,7 +326,7 @@ class DdbItemService {
     }
 
     def translate(fields, convertToHtmlLink, httpRequest) {
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(httpRequest))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(httpRequest))
 
         fields.each {
             it = convertToHtmlLink(it)
