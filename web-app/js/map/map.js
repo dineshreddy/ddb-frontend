@@ -476,26 +476,26 @@ $(document).ready(function() {
         //Get the location data and create an Array with this data
         var formattedData = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
-			var insti = institutionHierarchy[i];
-			var locationArray = [];
-			
-			if (insti.locationDisplayName){
-				locationArray = insti.locationDisplayName.split(',');
-				locationArray.splice(9, 1);
-				locationArray.splice(8, 1);
-				locationArray.splice(7, 1);
-				locationArray = locationArray.reverse();
-			}
-			formattedData.data.push({
-				id: insti.id,
-				name: insti.name,
-				sector: insti.sector,
-				childInstitutions: insti.childInstitutions,
-        		parents: insti.parents,
-				locationDisplayName: locationArray
-			});
-		}
-        
+          var insti = institutionHierarchy[i];
+          var locationArray = [];
+
+          if (insti.locationDisplayName){
+            locationArray = insti.locationDisplayName.split(',');
+            locationArray.splice(9, 1);
+            locationArray.splice(8, 1);
+            locationArray.splice(7, 1);
+            locationArray = locationArray.reverse();
+          }
+          formattedData.data.push({
+            id: insti.id,
+            name: insti.name,
+            sector: insti.sector,
+            childInstitutions: insti.childInstitutions,
+            parents: insti.parents,
+            locationDisplayName: locationArray
+          });
+        }
+
         //find geographical priority
         var locationIndex = 0;
         var locationFound = false;
@@ -521,16 +521,19 @@ $(document).ready(function() {
         }
         //sort based on the geographical place founded on the step before
         institutionList.sort(function(a, b){
-	        	if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
-	        	  var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
-	        	  if (nameA < nameB) //sort string ascending
-	        	   {return -1} 
-	        	  if (nameA > nameB)
-	        	   {return 1}
-	        	  {return 0 }//default return value (no sorting)
-	        	}
-        	 })
-        	 
+          if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
+            var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
+            if (nameA < nameB) //sort string ascending
+             {return -1} 
+            if (nameA > nameB)
+             {return 1}
+            {return 0 }//default return value (no sorting)
+          }
+          else {
+            return a.name.localeCompare(b.name);
+          }
+        })
+
     	 //Create the first tag of geographical group
     	 var previousInstName = null;
           if(institutionCount >= 1){
