@@ -396,6 +396,62 @@ $(document).ready(function() {
         return new OpenLayers.Geometry.Point(lon, lat).transform(this.fromProjection, this.toProjection);
       },
 
+      /*
+       * Check if the children of a given institution are in the cluster. If yes then add them to the children list
+       * and add the institution to the hierarchy list.
+       *
+       * @param {Array} institutionHierarchy hierarchy list
+       * @param {Array} institutionIds institution cluster
+       * @param {String} institutionId institution id to check
+       */
+      _checkChildren : function(institutionHierarchy, institutionIds, institutionId) {
+        var institution = this.clusters.institutions[institutionId];
+
+        if (institution.children.length > 0) {
+          institution.childInstitutions = [];
+          for (var index = 0; index < institution.children.length; index++) {
+            if ($.inArray(institution.children[index].id, institutionIds)) {
+              institution.childInstitutions.push(institution.children[index]);
+              this._checkChildren(institutionHierarchy, institutionIds, institution.children[index].id);
+            }
+          }
+          institutionHierarchy.push(institution);
+        }
+      },
+
+      /*
+       * Create HTML to display the tree of child institutions.
+       *
+       * @param {Array} institutionIds institution cluster
+       * @param {Array} children child institutions
+       *
+       * @return HTML snippet
+       */
+      _displayChildren : function(institutionIds, children) {
+        var result = "";
+
+        if (children.length > 0) {
+          result += "      <ul>";
+          for(var index = 0; index < children.length; index++) {
+            var child = children[index];
+            var isInCluster = institutionIds.indexOf(child.id) != -1;
+
+            if (!isInCluster) {
+              result += "      <li class='outside-cluster'>";
+            } else {
+              result += "      <li class='inside-cluster'>";
+            }
+            result += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + child.id + ">";
+            result += "            " + child.name + " (" + messages.ddbnext[child.sector]() + ")";
+            result += "        </a>";
+            result += this._displayChildren(institutionIds, child.children);
+            result += "      </li>";
+          }
+          result += "      </ul>";
+        }
+        return result;
+      },
+
       _prepareInstitutionHierarchy : function(institutionIdsParam) {
         var institutionIds = institutionIdsParam.slice();
         var institutionHierarchy = [];
@@ -427,39 +483,18 @@ $(document).ready(function() {
               institution.highlight = true;
             }
 
-          // Third case: institution is a parent
-          }else if(institution.children.length > 0){
-
-            // Check if childs are in the cluster
-            for(var j=0;j<institution.children.length;j++){
-              var childId = institution.children[j];
-              var isChildInCluster = false;
-              for(var k=0; k<institutionIds.length; k++){
-                if(institutionIds[k] == childId){
-                  isChildInCluster = true;
-                  break;
-                }
-              }
-              // If child is in cluster, add it to the parent
-              if(isChildInCluster){
-                var childInstitution = this.clusters.institutions[childId];
-                childInstitution.id = childId;
-                institution.childInstitutions.push(childInstitution);
-              }
-
-            }
-            institutionHierarchy.push(institution);
+          // Third case: institution has children
+          } else {
+            this._checkChildren(institutionHierarchy, institutionIds, institutionId);
           }
         }
-
         return institutionHierarchy;
-
       },
 
       _getPopupContentHtml : function(dataObjectList) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
-          
+
         var html = "";
         html += "<div class='olPopupDDBContent'>";
         html += "  <div class='olPopupDDBHeader'>";
@@ -546,16 +581,15 @@ $(document).ready(function() {
         
         for(var i=0; i<institutionList.length; i++){
           var institutionItem = institutionList[i];
-          var institutionChildren = institutionItem.childInstitutions;
-          
+
           //Create tag of geographical group
           actualInstName = institutionItem.locationDisplayName[locationIndex]
           if (previousInstName && actualInstName != previousInstName){
-			if (institutionList[0].locationDisplayName[locationIndex]){
-				html += "  <br><div class='olPopupDDBHeader'>";
-				html += "    " + institutionItem.locationDisplayName[locationIndex];
-				html += "  </div><br>";
-			}
+            if (institutionList[0].locationDisplayName[locationIndex]){
+              html += "  <br><div class='olPopupDDBHeader'>";
+              html += "    " + institutionItem.locationDisplayName[locationIndex];
+              html += "  </div><br>";
+            }
           }
           previousInstName = actualInstName;
           
@@ -570,23 +604,7 @@ $(document).ready(function() {
           html += "        </a>";
 
           // If the institution has children -> display them
-          if(institutionChildren.length > 0){
-            html += "      <ul>";
-            for(var j=0; j<institutionChildren.length; j++){
-              var childInstitution = institutionChildren[j];
-              isInCluster = dataObjectList.indexOf(childInstitution.id) != -1;
-              if (!isInCluster) {
-                html += "      <li class='outside-cluster'>";
-              } else {
-                html += "      <li class='inside-cluster'>";
-              }
-              html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + childInstitution.id + ">";
-              html += "            "+childInstitution.name + " (" + messages.ddbnext[childInstitution.sector]() + ")";
-              html += "        </a>";
-              html += "      </li>";
-            }
-            html += "      </ul>";
-          }
+          html += this._displayChildren(dataObjectList, institutionItem.childInstitutions);
           html += "      </li>";
 
         }
