@@ -222,9 +222,10 @@ class InstitutionService {
                     // Transfer child informations, if the institution is in the current selection
                     if(clusterContainer["institutions"][institutionId] != null){
                         for(int j=0;j<institution.children.size();j++){
-                            def childId = institution.children[j].id
+                            def child = institution.children[j]
+                            def childId = child.id
                             if(clusterContainer["institutions"][childId] != null){ // only add child if child is also in sector selection
-                                clusterContainer["institutions"][institutionId].children.push(childId)
+                                clusterContainer["institutions"][institutionId].children.push(child)
                                 childrenIds.push(childId)
                             }
                         }
@@ -232,7 +233,8 @@ class InstitutionService {
 
                     // Transfer parent information, if a child is in the current selection
                     for(int j=0;j<institution.children.size();j++){
-                        def childId = institution.children[j].id
+                        def child = institution.children[j]
+                        def childId = child.id
                         if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
                             clusterContainer["institutions"][childId]["parents"].push(institutionId)
 
@@ -241,12 +243,12 @@ class InstitutionService {
                                 clusterContainer["institutions"][institutionId] = [:]
                                 clusterContainer["institutions"][institutionId]["name"] = institution.name
                                 clusterContainer["institutions"][institutionId]["sector"] = institution.sector
-                                clusterContainer["institutions"][institutionId]["children"] = [childId]
+                                clusterContainer["institutions"][institutionId]["children"] = [child]
                                 clusterContainer["institutions"][institutionId]["parents"] = []
                             }else{
-                                boolean alreadyContainsChild = clusterContainer["institutions"][institutionId]["children"].contains(childId)
+                                boolean alreadyContainsChild = clusterContainer["institutions"][institutionId]["children"].contains(child)
                                 if(!alreadyContainsChild){
-                                    clusterContainer["institutions"][institutionId]["children"].push(childId)
+                                    clusterContainer["institutions"][institutionId]["children"].push(child)
                                 }
                             }
                         }
