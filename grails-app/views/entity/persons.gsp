@@ -32,9 +32,12 @@ limitations under the License.
         </h1>
       </div>
       <div class="right-container">
-          <a class="page-link page-link-popup-anchor" href="<g:createLink controller='entity' action='persons' />"
-            title="<g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Title" />"> <span><g:message encodeAs="html"
-                code="ddbnext.CulturalItem_LinkToThisPage_Label" /></span>
+          <a class="page-link page-link-popup-anchor"
+             href="${g.createLink(controller: 'entity', action: 'persons', params: [sort: randomSeed])}"
+             title="${g.message(code: 'ddbnext.CulturalItem_LinkToThisPage_Title')}">
+            <span>
+              <g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToThisPage_Label"/>
+            </span>
           </a>
           <ddb:getSocialmediaBody />
       </div>
