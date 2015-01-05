@@ -387,7 +387,7 @@ $(document).ready(function() {
         }
 
         var dest = new proj4.Proj("EPSG:900913");
-        var p = new proj4.Point(lon,lat);
+        var p = new proj4.toPoint([lon,lat]);
         proj4.transform(source, dest, p);
         return new OpenLayers.LonLat(p.x, p.y);
       },
