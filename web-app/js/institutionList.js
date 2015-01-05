@@ -334,7 +334,7 @@
         var filteredByData = ddb.filterOnlyInstitutionsWithData(filteredByFirstLetter, onlyInstitutionsWithData);
         var filteredBySector = _.reduce(filteredByData, function(memory, institution) {
           var firstChar = institution.firstChar;
-          if (firstChar === "A" || firstChar === "Ü" || firstChar === "Ö") {
+          if (firstChar === "Ä" || firstChar === "Ü" || firstChar === "Ö") {
             firstChar = ddb.skipUmlaut(firstChar);
           }
 
