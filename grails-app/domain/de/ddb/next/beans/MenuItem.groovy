@@ -16,7 +16,6 @@
 package de.ddb.next.beans
 
 import groovy.transform.ToString
-import de.ddb.common.constants.SupportedLocales
 
 /**
  * Domain object representing a menu item from the main menu.
@@ -25,13 +24,15 @@ import de.ddb.common.constants.SupportedLocales
  */
 @ToString(includeNames=true)
 class MenuItem {
+    def languageService
+    
     final def label = [:]
     final MenuItem[] subMenuItems
     final String uri
 
     MenuItem(String deLabel, String enLabel, String uri, Object subMenu) {
-        this.label[SupportedLocales.DE.locale.language] = deLabel
-        this.label[SupportedLocales.EN.locale.language] = enLabel
+        this.label[languageService.DE.locale.language] = deLabel
+        this.label[languageService.EN.locale.language] = enLabel
         this.uri = uri
         if (subMenu) {
             subMenuItems = new MenuItem[subMenu.size()]

@@ -20,14 +20,14 @@ import groovy.xml.XmlUtil
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.SupportedLocales
 
 class SitemapController {
     def configurationService
+    def languageService
 
     def index() {
         def staticUrl = configurationService.getStaticUrl()
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
         def path = locale + "/ddb-services/sitemap.xml"
         def apiResponse = ApiConsumer.getXml(staticUrl, path)
 
