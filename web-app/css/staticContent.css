@@ -312,3 +312,15 @@ a.help-kw-link {
 .rtecenter {
 text-align: center;
 }
+
+.rteright {
+text-align: right;
+}
+
+.rteleft {
+text-align: left;
+}
+
+.rtejustify {
+text-align: justify;
+}
