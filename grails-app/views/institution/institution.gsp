@@ -84,7 +84,7 @@ limitations under the License.
                 </p>
               </div>
 
-              <g:if test="${((subOrg)&&(subOrg.size() > 0)&&(!(parentOrg[parentOrg.size() - 1].aggregationEntity)))}">
+              <g:if test="${subinstitutions.size() > 0 && !parentOrg[parentOrg.size() - 1].aggregationEntity}">
                 <div class="hierarchy">
                   <span class="title"><g:message encodeAs="html" code="ddbnext.InstitutionItem_OtherLocations" /></span>
                   <ol class="institution-list">
@@ -101,9 +101,7 @@ limitations under the License.
                           <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
                         </div>
                       </g:else>
-                      <g:set var="maxDepthOfLoop" value="${3}" />
-                      <g:set var="loopCount" value="${0}" />
-                      <g:render template="subinstitutions" />
+                      <g:render template="subinstitutions" model="[subinstitutions: subinstitutions]"/>
                     </li>
                   </ol>
                 </div>
