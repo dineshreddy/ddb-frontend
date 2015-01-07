@@ -24,15 +24,13 @@ import groovy.transform.ToString
  */
 @ToString(includeNames=true)
 class MenuItem {
-    def languageService
-    
     final def label = [:]
     final MenuItem[] subMenuItems
     final String uri
 
     MenuItem(String deLabel, String enLabel, String uri, Object subMenu) {
-        this.label[languageService.DE.locale.language] = deLabel
-        this.label[languageService.EN.locale.language] = enLabel
+        this.label[Locale.GERMANY.language] = deLabel
+        this.label[Locale.GERMANY.language] = enLabel
         this.uri = uri
         if (subMenu) {
             subMenuItems = new MenuItem[subMenu.size()]
