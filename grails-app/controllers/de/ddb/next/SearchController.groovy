@@ -25,7 +25,6 @@ import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.BadRequestException
 
@@ -37,6 +36,7 @@ class SearchController {
     def searchService
     def configurationService
     def cultureGraphService
+    def languageService
 
     def results() {
         try {
@@ -123,7 +123,7 @@ class SearchController {
                     ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
                     urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
 
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
@@ -250,7 +250,7 @@ class SearchController {
         def results = searchService.doInstitutionSearch(urlQuery)
 
         def correctedQuery = ""
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())

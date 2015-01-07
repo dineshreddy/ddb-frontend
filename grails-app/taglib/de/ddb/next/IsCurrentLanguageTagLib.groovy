@@ -17,19 +17,18 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.constants.SupportedLocales
-
 class IsCurrentLanguageTagLib {
 
     static namespace = "ddb"
+    def languageService
 
     /**
      * Checks if the given "locale" attribute matches the currently set locale of the I18N. If it matches, the body is rendered,
      * otherwise not.
      */
     def isCurrentLanguage = {attrs, body ->
-        def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-        def checkLocale = SupportedLocales.getBestMatchingLocale(attrs.locale)
+        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+        def checkLocale = languageService.getBestMatchingLocale(attrs.locale)
 
         if(locale.getLanguage() == checkLocale.getLanguage()){
             out << body()

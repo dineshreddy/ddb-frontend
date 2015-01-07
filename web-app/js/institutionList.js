@@ -125,12 +125,17 @@
       ddb.styleIndex(hash);
       if (hash === '' || hash.toLowerCase() === 'all' || hash === 'list') {
         /*
-         * we check if the user return to the page using the web browser's back button and if they performed the sector
-         * filters before.
+         * We check if the user returns to the page using the web browser's back button and if a filter was performed
+         * before.
          */
-        var isChecked = $('.sector-facet input:checked').filter(':checked').length;
+        var isChecked;
         if ($('.multiselect').is(':visible')) {
-          isChecked = $('.multiselect option:selected').filter(':selected').length;
+          isChecked = $('.multiselect option:selected').filter(':selected').length ||
+                      $('.multiselect option[value="onlyInstitutionsWithData"]').prop("selected");
+        }
+        else {
+          isChecked = $('.sector-facet input:checked').filter(':checked').length ||
+                      $('.institution-with-data input:checkbox').prop('checked');
         }
 
         // apply the filter, if the filters is not empty.
@@ -334,7 +339,7 @@
         var filteredByData = ddb.filterOnlyInstitutionsWithData(filteredByFirstLetter, onlyInstitutionsWithData);
         var filteredBySector = _.reduce(filteredByData, function(memory, institution) {
           var firstChar = institution.firstChar;
-          if (firstChar === "A" || firstChar === "Ü" || firstChar === "Ö") {
+          if (firstChar === "Ä" || firstChar === "Ü" || firstChar === "Ö") {
             firstChar = ddb.skipUmlaut(firstChar);
           }
 

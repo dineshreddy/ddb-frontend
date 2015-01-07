@@ -18,17 +18,17 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.SupportedLocales
 
 class IndexController {
 
     def configurationService
     def itemService
+    def languageService
 
     def index() {
         // fetch the DDB news from static server.
         def staticUrl = configurationService.getStaticUrl()
-        def locale = SupportedLocales.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
+        def locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
         def path = locale + "/ddb-services/teaser.xml"
 
         // Submit a request via GET

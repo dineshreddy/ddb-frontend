@@ -21,13 +21,13 @@ import org.ccil.cowan.tagsoup.Parser
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.ItemNotFoundException
 
 class ContentController {
     static defaultAction = "staticcontent"
 
     def configurationService
+    def languageService
 
     def staticcontent() {
         try {
@@ -43,7 +43,7 @@ class ContentController {
             }
 
             def url = configurationService.getStaticUrl()
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
 
             /* Load the the file from $content-location.html. If not found then load it from $content-location/index.html */
             def path = locale.toString() + "/" + location + ".html"
@@ -66,7 +66,7 @@ class ContentController {
                 }
             }
             def map = retrieveArguments(response)
-            
+
             //Needed for the canonicalURL
             map << ["location": location,domainCanonic:configurationService.getDomainCanonic()]
 

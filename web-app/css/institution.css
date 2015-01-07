@@ -170,6 +170,9 @@ circle {
   margin-bottom:0;
   padding-bottom:5px;
 }
+.institution-item-page .item-links .popup-dialog-title {
+  text-align: left;
+}
 
 .institution-item-page .sector{
   font-size:14px;
@@ -262,22 +265,28 @@ circle {
 .institution-item-page .btn-prev span {
   background-position:0 -91px;
 }
+
 .institution-item-page .btn-prev.disabled span {
   background-position:0 -151px;
 }
+
 .institution-item-page .btn-prev:hover:not(.disabled) span {
   background-position:0 -121px;
 }
+
 .institution-item-page .btn-next {
   float:right;
   right:0;
 }
+
 .institution-item-page .btn-next span {
   background-position:0 -2px;
 }
+
 .institution-item-page .btn-next.disabled span {
   background-position:0 -62px;
 }
+
 .institution-item-page .btn-next:hover:not(.disabled) span {
   background-position:0 -32px;
 }

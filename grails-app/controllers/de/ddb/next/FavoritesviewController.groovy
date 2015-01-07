@@ -3,7 +3,6 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.beans.Folder
-import de.ddb.common.constants.SupportedLocales
 import de.ddb.common.exception.FavoritelistNotFoundException
 
 
@@ -20,6 +19,7 @@ class FavoritesviewController {
     def searchService
     def sessionService
     def userService
+    def languageService
 
     def publicFavorites() {
         final def ACTION = "publicFavorites"
@@ -98,7 +98,7 @@ class FavoritesviewController {
             ])
             return
         }else{
-            def locale = SupportedLocales.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def allRes = favoritesService.retrieveItemMD(items,locale)
             def resultsItems
 

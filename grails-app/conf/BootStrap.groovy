@@ -25,7 +25,6 @@ class BootStrap {
         Locale.setDefault(Locale.GERMAN)
         log.info "Default Locale has been set to GERMAN"
 
-
         try {
             configurationService.logConfigurationSettings()
         }
