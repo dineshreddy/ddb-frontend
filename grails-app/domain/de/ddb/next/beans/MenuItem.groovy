@@ -30,7 +30,7 @@ class MenuItem {
 
     MenuItem(String deLabel, String enLabel, String uri, Object subMenu) {
         this.label[Locale.GERMANY.language] = deLabel
-        this.label[Locale.GERMANY.language] = enLabel
+        this.label[Locale.ENGLISH.language] = enLabel
         this.uri = uri
         if (subMenu) {
             subMenuItems = new MenuItem[subMenu.size()]
