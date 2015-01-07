@@ -105,10 +105,8 @@ limitations under the License.
       <div class="modal-header">
         <span title="${message(code: "ddbcommon.Close")}" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       </div>
-      <div class="modal-body" id="institutionsPopupContent">
-        <div class="olMap">
-          <div class="olPopupDDBContent"></div>
-        </div>
+      <div class="modal-body olMap" id="institutionsPopupContent">
+        <div class="olPopupDDBContent"></div>
       </div>
     </div>
 
