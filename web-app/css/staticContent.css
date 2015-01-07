@@ -308,3 +308,19 @@ a.help-kw-link {
 .views-field-nothing a {
   text-decoration: none;
 }
+
+.rtecenter {
+text-align: center;
+}
+
+.rteright {
+text-align: right;
+}
+
+.rteleft {
+text-align: left;
+}
+
+.rtejustify {
+text-align: justify;
+}
