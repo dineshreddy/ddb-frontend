@@ -304,35 +304,52 @@ $(document).ready(function() {
             'featureunselected': onFeatureUnselect
         });
 
+        function isMobileView() {
+          return $('.multiselect').is(':visible');
+        }
+
         function onFeatureSelect(event) {
           var feature = event.feature;
           var institutionList = feature.data.institutions;
 
-          var popup = new OpenLayers.Popup.FramedDDB(
-            "institutionPopup",
-            feature.geometry.getBounds().getCenterLonLat(),
-            new OpenLayers.Size(315,100),
-            self._getPopupContentHtml(institutionList),
-            null,
-            true,
-            onPopupClose,
-            self.imageFolder);
+          if (isMobileView()) {
+            $('#institutionsPopupContent .olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList));
+            $('#institutionsPopupDialog').modal('show');
+          }
+          else {
+            var popup = new OpenLayers.Popup.FramedDDB(
+              "institutionPopup",
+              feature.geometry.getBounds().getCenterLonLat(),
+              new OpenLayers.Size(315,100),
+              self._getPopupContentHtml(institutionList),
+              null,
+              true,
+              onPopupClose,
+              self.imageFolder);
 
-          feature.popup = popup;
-          popup.feature = feature;
-          self.osmMap.addPopup(popup, true);
+            feature.popup = popup;
+            popup.feature = feature;
+            self.osmMap.addPopup(popup, true);
 
+          }
         };
 
         function onFeatureUnselect(event) {
           feature = event.feature;
-          var popup = feature.popup;
-          if (feature.popup) {
-              popup.feature = null;
-              self.osmMap.removePopup(popup);
-              popup.destroy();
-              feature.popup = null;
+          if (isMobileView()) {
+              selectionEventControl.unselectAll();
           }
+          else {
+	          var popup = feature.popup;
+	          if (feature.popup) {
+	              popup.feature = null;
+	              if (!isMobileView()) {
+	                self.osmMap.removePopup(popup);
+	                popup.destroy();
+	                feature.popup = null;
+	              }
+	          }
+	      }
         };
 
         function onPopupClose() {
@@ -1046,6 +1063,10 @@ $(document).ready(function() {
       initialize:function(imageFolder, ddbMap) {
         this.imageFolder = imageFolder;
         this.ddbMap = ddbMap;
+
+        $('#institutionsPopupDialog').on('hidden', function () {
+          ddbMap.vectorLayer.events.triggerEvent("featureunselected");
+        });
       },
 
       /**

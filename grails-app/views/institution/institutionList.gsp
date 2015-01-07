@@ -99,5 +99,18 @@ limitations under the License.
       </div>
     </div>
   </div>
+
+    <%-- Modal "Institutions popup for mobile view" --%>
+    <div class="modal hide fade" id="institutionsPopupDialog" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-header">
+        <span title="${message(code: "ddbcommon.Close")}" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      </div>
+      <div class="modal-body" id="institutionsPopupContent">
+        <div class="olMap">
+          <div class="olPopupDDBContent"></div>
+        </div>
+      </div>
+    </div>
+
 </body>
 </html>
