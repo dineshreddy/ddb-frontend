@@ -313,7 +313,7 @@ $(document).ready(function() {
           var institutionList = feature.data.institutions;
 
           if (isMobileView()) {
-            $('#institutionsPopupContent .olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList));
+            $('#institutionsPopupContent').replaceWith(self._getPopupContentHtml(institutionList, true));
             $('#institutionsPopupDialog').modal('show');
           }
           else {
@@ -321,7 +321,7 @@ $(document).ready(function() {
               "institutionPopup",
               feature.geometry.getBounds().getCenterLonLat(),
               new OpenLayers.Size(315,100),
-              self._getPopupContentHtml(institutionList),
+              self._getPopupContentHtml(institutionList, false),
               null,
               true,
               onPopupClose,
@@ -508,19 +508,20 @@ $(document).ready(function() {
         return institutionHierarchy;
       },
 
-      _getPopupContentHtml : function(dataObjectList) {
+      _getPopupContentHtml : function(dataObjectList, isMobileView) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
-
-        var html = "";
-        html += "<div class='olPopupDDBContent'>";
-        html += "  <div class='olPopupDDBHeader'>";
-        if(institutionCount > 1){
-          html += "    " + institutionCount + " "+ messages.ddbnext.Institutions();
-        }else{
-          html += "    " + institutionCount + " "+ messages.ddbnext.Institution();
+        var html = "<div class='olPopupDDBContent'>";
+        var headline = institutionCount + " " + ((institutionCount > 1) ?
+                       messages.ddbnext.Institutions() : messages.ddbnext.Institution());
+        if (isMobileView) {
+          $('#institutionsPopupHeader').replaceWith(headline);
         }
-        html += "  </div>";
+        else {
+          html += "  <div class='olPopupDDBHeader'>";
+          html += "    " + headline;
+          html += "  </div>";
+        }
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
