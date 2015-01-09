@@ -2,7 +2,6 @@
 .olMap {
   width: 100%; 
   height: 100%;
-  background-color: silver; 
   position: relative;
 }
 
@@ -100,6 +99,16 @@
 
 }
 
+@media (min-width: 768px) {
+  .olMap {
+    background-color: silver; 
+  }
+
+  .olMap .olPopupDDBScroll {
+    width: 300px;
+  }
+}
+
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panup, 
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panleft, 
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panright, 
@@ -168,7 +177,6 @@
 
 .olMap .olPopupDDBScroll {
   max-height: 150px;
-  width: 300px;
   
   overflow-x: hidden;
   overflow-y: auto; 
