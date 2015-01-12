@@ -37,12 +37,19 @@ limitations under the License.
     </g:each>
   </g:if>
 </g:each>
-<span style="font-weight: bold"><g:message encodeAs="html" code="ddbnext.Search_term" />:</span>
+<span><b><g:message encodeAs="html" code="ddbnext.Search_term" />:</b></span>
 ${(search.query != null ? search.query : "*")}
 <g:each var="facetValue" in="${facetValues}">
   ;
-  <span style="font-weight: bold">
-    ${message(code: 'ddbnext.facet_' + facetValue.key)}:
+  <span>
+    <b>${message(code: 'ddbnext.facet_' + facetValue.key)}:</b>
   </span>
   ${facetValue.value}
 </g:each>
+<g:if test="${search.queryMap["time"]}">
+  ;
+  <span>
+    <b>${message(code: 'ddbnext.facet_time')}:</b>
+  </span>
+  ${search.queryMap["time"][0].name}
+</g:if>
