@@ -313,7 +313,7 @@ $(document).ready(function() {
           var institutionList = feature.data.institutions;
 
           if (isMobileView()) {
-            $('#institutionsPopupContent').replaceWith(self._getPopupContentHtml(institutionList, true));
+            $('.olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList, true));
             $('#institutionsPopupDialog').modal('show');
           }
           else {
@@ -515,7 +515,7 @@ $(document).ready(function() {
         var headline = institutionCount + " " + ((institutionCount > 1) ?
                        messages.ddbnext.Institutions() : messages.ddbnext.Institution());
         if (isMobileView) {
-          $('#institutionsPopupHeader').replaceWith(headline);
+          $('#institutionsPopupHeader').text(headline);
         }
         else {
           html += "  <div class='olPopupDDBHeader'>";
@@ -534,10 +534,14 @@ $(document).ready(function() {
 
           if (insti.locationDisplayName){
             locationArray = insti.locationDisplayName.split(',');
-            locationArray.splice(9, 1);
-            locationArray.splice(8, 1);
-            locationArray.splice(7, 1);
+            // remove too detailed values like street name
+            locationArray.splice(0, locationArray.length - 6);
+            // remove zip code
+            locationArray.splice(3, 1);
             locationArray = locationArray.reverse();
+            $.each(locationArray, function(index, value) {
+              locationArray[index] = value.trim();
+            });
           }
           formattedData.data.push({
             id: insti.id,
@@ -574,22 +578,20 @@ $(document).ready(function() {
         }
         //sort based on the geographical place founded on the step before
         institutionList.sort(function(a, b){
+          var result = 0
           if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
             var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
-            if (nameA < nameB) //sort string ascending
-             {return -1} 
-            if (nameA > nameB)
-             {return 1}
-            {return 0 }//default return value (no sorting)
+            result = nameA.localeCompare(nameB)
           }
-          else {
-            return a.name.localeCompare(b.name);
+          if (result === 0) {
+            result = a.name.localeCompare(b.name);
           }
+          return result;
         })
 
     	 //Create the first tag of geographical group
     	 var previousInstName = null;
-          if(institutionCount >= 1){
+          if(institutionCount > 1){
         	if (institutionList[0].locationDisplayName[locationIndex]){
         		html += "  <div class='olPopupDDBHeader'>";
           		html += "    " + institutionList[0].locationDisplayName[locationIndex];
