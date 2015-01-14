@@ -23,8 +23,6 @@ import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
-import de.ddb.common.constants.FacetEnum
-import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.DataObject
@@ -35,6 +33,11 @@ class InstitutionService {
     private static final def LETTERS='A'..'Z'
 
     private static final def NUMBER_KEY = '0-9'
+
+    // values from Nominatim service
+    private static final String GERMANY = "Deutschland"
+    private static final String EUROPE = "European Union"
+    private static final String EUROPE_GERMAN = "Europäische Union"
 
     def transactional = false
 
@@ -200,7 +203,7 @@ class InstitutionService {
                 clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
                 clusterContainer["institutions"][institutionId]["locationDisplayName"] =
-                        dataObject.description.node.locationDisplayName
+                        fixNominatimIssues(dataObject.description.node.locationDisplayName)
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
             }
@@ -275,6 +278,52 @@ class InstitutionService {
 
         def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
         return result
+    }
+
+    /**
+     * Fix issues with the Nominatim service:
+     * - replace empty values with dummy values
+     * - trim value
+     * - ensure all entries end with "European Union"
+     * - replace "Europäische Union" with "European Union"
+     * - remove too detailed values like street name
+     * - remove zip code
+     * - reverse order
+     *
+     * @param locationDisplayName value from the Nominatim service
+     *
+     * @return fixed value
+     */
+    private String fixNominatimIssues(String locationDisplayName) {
+        def result
+
+        if (locationDisplayName) {
+            result = locationDisplayName.tokenize(",")*.trim()
+            if (result[-1] != EUROPE) {
+                if (result[-1] == EUROPE_GERMAN) {
+                    result[-1] = EUROPE
+                }
+                else {
+                    result += EUROPE
+                }
+            }
+
+            // remove too detailed values like street name
+            result = result.drop(result.size() - 6)
+
+            // remove zip code
+            result.remove(3)
+        }
+        else {
+            result = [
+                "",
+                "",
+                "",
+                GERMANY,
+                EUROPE
+            ]
+        }
+        return result.reverse().join(",")
     }
 
     private getTotal(rootList) {

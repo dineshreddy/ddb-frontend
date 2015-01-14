@@ -530,19 +530,8 @@ $(document).ready(function() {
         var formattedData = {data:[]};
         for (var i = 0; i < institutionHierarchy.length; i++) {
           var insti = institutionHierarchy[i];
-          var locationArray = [];
+          var locationArray = insti.locationDisplayName.split(',');
 
-          if (insti.locationDisplayName){
-            locationArray = insti.locationDisplayName.split(',');
-            // remove too detailed values like street name
-            locationArray.splice(0, locationArray.length - 6);
-            // remove zip code
-            locationArray.splice(3, 1);
-            locationArray = locationArray.reverse();
-            $.each(locationArray, function(index, value) {
-              locationArray[index] = value.trim();
-            });
-          }
           formattedData.data.push({
             id: insti.id,
             name: insti.name,
@@ -553,14 +542,13 @@ $(document).ready(function() {
           });
         }
 
-        //find geographical priority
+        // find geographical priority
         var locationIndex = 0;
         var locationFound = false;
         var institutionList = formattedData.data;
         var firstInsti = institutionList[0];
-        
+
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-        	
             var firstLoc = firstInsti.locationDisplayName[j];
             
 	        for (var i = 1; i < institutionList.length; i++) {
@@ -576,43 +564,44 @@ $(document).ready(function() {
 	        
 	        if (locationFound){break}
         }
-        //sort based on the geographical place founded on the step before
-        institutionList.sort(function(a, b){
-          var result = 0
-          if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
-            var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
-            result = nameA.localeCompare(nameB)
+
+        // sort based on the geographical place founded on the step before
+        institutionList.sort(function(a, b) {
+          var result = 0;
+          var nameA = a.locationDisplayName[locationIndex].toLowerCase();
+          var nameB = b.locationDisplayName[locationIndex].toLowerCase();
+
+          // put institutions without geographical place on top of the list
+          if (!nameA) {
+            result = nameB ? -1 : 0;
+          }
+          else if (!nameB) {
+            result = 1;
+          }
+          else {
+            result = nameA.localeCompare(nameB);
           }
           if (result === 0) {
             result = a.name.localeCompare(b.name);
           }
           return result;
-        })
+        });
 
-    	 //Create the first tag of geographical group
-    	 var previousInstName = null;
-          if(institutionCount > 1){
-        	if (institutionList[0].locationDisplayName[locationIndex]){
-        		html += "  <div class='olPopupDDBHeader'>";
-          		html += "    " + institutionList[0].locationDisplayName[locationIndex];
-          		html += "  </div><br>";
-          	}
-          }
-        
-        for(var i=0; i<institutionList.length; i++){
+        var previousInstName = "xxx";
+
+        for (var i = 0; i < institutionList.length; i++) {
           var institutionItem = institutionList[i];
 
-          //Create tag of geographical group
-          actualInstName = institutionItem.locationDisplayName[locationIndex]
-          if (previousInstName && actualInstName != previousInstName){
-            if (institutionList[0].locationDisplayName[locationIndex]){
-              html += "  <br><div class='olPopupDDBHeader'>";
-              html += "    " + institutionItem.locationDisplayName[locationIndex];
-              html += "  </div><br>";
-            }
+          // Create tag of geographical group
+          var actualInstName = institutionItem.locationDisplayName[locationIndex];
+
+          if (actualInstName && actualInstName != previousInstName) {
+            html += "  <br><div class='olPopupDDBHeader'>";
+            html += "    " + actualInstName;
+            html += "  </div><br>";
           }
           previousInstName = actualInstName;
-          
+
           var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
           if (!isInCluster) {
             html += "      <li class='outside-cluster'>";
