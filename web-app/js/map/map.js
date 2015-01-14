@@ -527,12 +527,13 @@ $(document).ready(function() {
         html += "      <ul>";
 
         //Get the location data and create an Array with this data
-        var formattedData = {data:[]};
+        var institutionList = [];
+
         for (var i = 0; i < institutionHierarchy.length; i++) {
           var insti = institutionHierarchy[i];
           var locationArray = insti.locationDisplayName.split(',');
 
-          formattedData.data.push({
+          institutionList.push({
             id: insti.id,
             name: insti.name,
             sector: insti.sector,
@@ -543,26 +544,26 @@ $(document).ready(function() {
         }
 
         // find geographical priority
-        var locationIndex = 0;
+        var locationIndex = 2;
         var locationFound = false;
-        var institutionList = formattedData.data;
         var firstInsti = institutionList[0];
 
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-            var firstLoc = firstInsti.locationDisplayName[j];
-            
-	        for (var i = 1; i < institutionList.length; i++) {
-	        	var actualInsti = institutionList[i];
-	        	var actualLoc = actualInsti.locationDisplayName[j];
-	        	
-	        	if (actualLoc != firstLoc){
-	        		locationIndex = j;
-	        		locationFound = true;
-	        		break
-	        	}
-	        }
-	        
-	        if (locationFound){break}
+          var firstLoc = firstInsti.locationDisplayName[j];
+
+          for (var i = 1; i < institutionList.length; i++) {
+            var actualInsti = institutionList[i];
+            var actualLoc = actualInsti.locationDisplayName[j];
+
+            if (actualLoc != firstLoc){
+              locationIndex = j;
+              locationFound = true;
+              break;
+            }
+          }
+          if (locationFound) {
+            break;
+          }
         }
 
         // sort based on the geographical place founded on the step before
@@ -587,7 +588,7 @@ $(document).ready(function() {
           return result;
         });
 
-        var previousInstName = "xxx";
+        var previousInstName = "?";
 
         for (var i = 0; i < institutionList.length; i++) {
           var institutionItem = institutionList[i];
@@ -595,8 +596,11 @@ $(document).ready(function() {
           // Create tag of geographical group
           var actualInstName = institutionItem.locationDisplayName[locationIndex];
 
-          if (actualInstName && actualInstName != previousInstName) {
-            html += "  <br><div class='olPopupDDBHeader'>";
+          if (actualInstName && actualInstName != previousInstName && institutionHierarchy.length > 1) {
+            if (i > 0) {
+              html += "<br>";
+            }
+            html += "  <div class='olPopupDDBHeader'>";
             html += "    " + actualInstName;
             html += "  </div><br>";
           }
