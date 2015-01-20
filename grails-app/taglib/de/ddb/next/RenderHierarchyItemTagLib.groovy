@@ -15,11 +15,9 @@
  */
 package de.ddb.next
 
-
 class RenderHierarchyItemTagLib {
 
     static namespace = "ddb"
-
 
     /**
      * This tag should only be used by the taglib itself!
@@ -30,7 +28,7 @@ class RenderHierarchyItemTagLib {
      *      given to render the whole hierarchy
      *
      */
-    private def renderHierarchyItem = { attrs, body ->
+    def renderHierarchyItem = { attrs, body ->
         def itemMap = [:]
         def item = attrs.item
         def mainItem = attrs.mainItem
