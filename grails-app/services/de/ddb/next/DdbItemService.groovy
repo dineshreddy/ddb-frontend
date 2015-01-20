@@ -232,17 +232,6 @@ class DdbItemService {
         return findRealUrl(url).bytes
     }
 
-    private def log(list) {
-        list.each { it ->
-            log.debug "---"
-            log.debug "name: ${it.'@name'}"
-            log.debug "mime: ${it.'@mimetype'}"
-            log.debug "path: ${it.'@path'}"
-            log.debug "pos: ${it.'@position'}"
-            log.debug "is primary?: ${it.'@primary'}"
-        }
-    }
-
     private def log(resp, xml) {
         // print response
         log.debug "response status: ${resp.statusLine}"
