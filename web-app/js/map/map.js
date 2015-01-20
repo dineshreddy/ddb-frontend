@@ -304,35 +304,52 @@ $(document).ready(function() {
             'featureunselected': onFeatureUnselect
         });
 
+        function isMobileView() {
+          return $('.multiselect').is(':visible');
+        }
+
         function onFeatureSelect(event) {
           var feature = event.feature;
           var institutionList = feature.data.institutions;
 
-          var popup = new OpenLayers.Popup.FramedDDB(
-            "institutionPopup",
-            feature.geometry.getBounds().getCenterLonLat(),
-            new OpenLayers.Size(315,100),
-            self._getPopupContentHtml(institutionList),
-            null,
-            true,
-            onPopupClose,
-            self.imageFolder);
+          if (isMobileView()) {
+            $('.olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList, true));
+            $('#institutionsPopupDialog').modal('show');
+          }
+          else {
+            var popup = new OpenLayers.Popup.FramedDDB(
+              "institutionPopup",
+              feature.geometry.getBounds().getCenterLonLat(),
+              new OpenLayers.Size(315,100),
+              self._getPopupContentHtml(institutionList, false),
+              null,
+              true,
+              onPopupClose,
+              self.imageFolder);
 
-          feature.popup = popup;
-          popup.feature = feature;
-          self.osmMap.addPopup(popup, true);
+            feature.popup = popup;
+            popup.feature = feature;
+            self.osmMap.addPopup(popup, true);
 
+          }
         };
 
         function onFeatureUnselect(event) {
           feature = event.feature;
-          var popup = feature.popup;
-          if (feature.popup) {
-              popup.feature = null;
-              self.osmMap.removePopup(popup);
-              popup.destroy();
-              feature.popup = null;
+          if (isMobileView()) {
+              selectionEventControl.unselectAll();
           }
+          else {
+	          var popup = feature.popup;
+	          if (feature.popup) {
+	              popup.feature = null;
+	              if (!isMobileView()) {
+	                self.osmMap.removePopup(popup);
+	                popup.destroy();
+	                feature.popup = null;
+	              }
+	          }
+	      }
         };
 
         function onPopupClose() {
@@ -491,37 +508,32 @@ $(document).ready(function() {
         return institutionHierarchy;
       },
 
-      _getPopupContentHtml : function(dataObjectList) {
+      _getPopupContentHtml : function(dataObjectList, isMobileView) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
-
-        var html = "";
-        html += "<div class='olPopupDDBContent'>";
-        html += "  <div class='olPopupDDBHeader'>";
-        if(institutionCount > 1){
-          html += "    " + institutionCount + " "+ messages.ddbnext.Institutions();
-        }else{
-          html += "    " + institutionCount + " "+ messages.ddbnext.Institution();
+        var html = "<div class='olPopupDDBContent'>";
+        var headline = institutionCount + " " + ((institutionCount > 1) ?
+                       messages.ddbnext.Institutions() : messages.ddbnext.Institution());
+        if (isMobileView) {
+          $('#institutionsPopupHeader').text(headline);
         }
-        html += "  </div>";
+        else {
+          html += "  <div class='olPopupDDBHeader'>";
+          html += "    " + headline;
+          html += "  </div>";
+        }
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
 
         //Get the location data and create an Array with this data
-        var formattedData = {data:[]};
+        var institutionList = [];
+
         for (var i = 0; i < institutionHierarchy.length; i++) {
           var insti = institutionHierarchy[i];
-          var locationArray = [];
+          var locationArray = insti.locationDisplayName.split(',');
 
-          if (insti.locationDisplayName){
-            locationArray = insti.locationDisplayName.split(',');
-            locationArray.splice(9, 1);
-            locationArray.splice(8, 1);
-            locationArray.splice(7, 1);
-            locationArray = locationArray.reverse();
-          }
-          formattedData.data.push({
+          institutionList.push({
             id: insti.id,
             name: insti.name,
             sector: insti.sector,
@@ -531,68 +543,69 @@ $(document).ready(function() {
           });
         }
 
-        //find geographical priority
-        var locationIndex = 0;
+        // find geographical priority
+        var locationIndex = 2;
         var locationFound = false;
-        var institutionList = formattedData.data;
         var firstInsti = institutionList[0];
-        
+
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-        	
-            var firstLoc = firstInsti.locationDisplayName[j];
-            
-	        for (var i = 1; i < institutionList.length; i++) {
-	        	var actualInsti = institutionList[i];
-	        	var actualLoc = actualInsti.locationDisplayName[j];
-	        	
-	        	if (actualLoc != firstLoc){
-	        		locationIndex = j;
-	        		locationFound = true;
-	        		break
-	        	}
-	        }
-	        
-	        if (locationFound){break}
-        }
-        //sort based on the geographical place founded on the step before
-        institutionList.sort(function(a, b){
-          if (a.locationDisplayName[locationIndex] && b.locationDisplayName[locationIndex]){
-            var nameA=a.locationDisplayName[locationIndex].toLowerCase(), nameB=b.locationDisplayName[locationIndex].toLowerCase()
-            if (nameA < nameB) //sort string ascending
-             {return -1} 
-            if (nameA > nameB)
-             {return 1}
-            {return 0 }//default return value (no sorting)
-          }
-          else {
-            return a.name.localeCompare(b.name);
-          }
-        })
+          var firstLoc = firstInsti.locationDisplayName[j];
 
-    	 //Create the first tag of geographical group
-    	 var previousInstName = null;
-          if(institutionCount >= 1){
-        	if (institutionList[0].locationDisplayName[locationIndex]){
-        		html += "  <div class='olPopupDDBHeader'>";
-          		html += "    " + institutionList[0].locationDisplayName[locationIndex];
-          		html += "  </div><br>";
-          	}
-          }
-        
-        for(var i=0; i<institutionList.length; i++){
-          var institutionItem = institutionList[i];
+          for (var i = 1; i < institutionList.length; i++) {
+            var actualInsti = institutionList[i];
+            var actualLoc = actualInsti.locationDisplayName[j];
 
-          //Create tag of geographical group
-          actualInstName = institutionItem.locationDisplayName[locationIndex]
-          if (previousInstName && actualInstName != previousInstName){
-            if (institutionList[0].locationDisplayName[locationIndex]){
-              html += "  <br><div class='olPopupDDBHeader'>";
-              html += "    " + institutionItem.locationDisplayName[locationIndex];
-              html += "  </div><br>";
+            if (actualLoc != firstLoc){
+              locationIndex = j;
+              locationFound = true;
+              break;
             }
           }
+          if (locationFound) {
+            break;
+          }
+        }
+
+        // sort based on the geographical place founded on the step before
+        institutionList.sort(function(a, b) {
+          var result = 0;
+          var nameA = a.locationDisplayName[locationIndex].toLowerCase();
+          var nameB = b.locationDisplayName[locationIndex].toLowerCase();
+
+          // put institutions without geographical place on top of the list
+          if (!nameA) {
+            result = nameB ? -1 : 0;
+          }
+          else if (!nameB) {
+            result = 1;
+          }
+          else {
+            result = nameA.localeCompare(nameB);
+          }
+          if (result === 0) {
+            result = a.name.localeCompare(b.name);
+          }
+          return result;
+        });
+
+        var previousInstName = "?";
+
+        for (var i = 0; i < institutionList.length; i++) {
+          var institutionItem = institutionList[i];
+
+          // Create tag of geographical group
+          var actualInstName = institutionItem.locationDisplayName[locationIndex];
+
+          if (actualInstName && actualInstName != previousInstName && institutionHierarchy.length > 1) {
+            if (i > 0) {
+              html += "<br>";
+            }
+            html += "  <div class='olPopupDDBHeader'>";
+            html += "    " + actualInstName;
+            html += "  </div><br>";
+          }
           previousInstName = actualInstName;
-          
+
           var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
           if (!isInCluster) {
             html += "      <li class='outside-cluster'>";
@@ -1046,6 +1059,10 @@ $(document).ready(function() {
       initialize:function(imageFolder, ddbMap) {
         this.imageFolder = imageFolder;
         this.ddbMap = ddbMap;
+
+        $('#institutionsPopupDialog').on('hidden', function () {
+          ddbMap.vectorLayer.events.triggerEvent("featureunselected");
+        });
       },
 
       /**
