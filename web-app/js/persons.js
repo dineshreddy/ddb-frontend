@@ -38,7 +38,7 @@ $(function() {
         $('.persons-overview-overlay-waiting').remove();
         $('.persons-overview-overlay-modal').remove();
       });
-    
+
   }
-  
+
 });

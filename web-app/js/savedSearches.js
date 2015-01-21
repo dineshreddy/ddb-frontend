@@ -40,7 +40,7 @@ $(function() {
       window.location.href = url;
       return false;
     });
-    
+
     $('#checkall').checkAll('#slaves input:checkbox', {
         reportTo : function() {
           var prefix = this.prop('checked') ? 'un' : '';
@@ -48,7 +48,7 @@ $(function() {
           $('#slaves').trigger('change');
         }
       });
-    
+
     //Managing "delete" and "copy" buttons
     $('.delete-btn button').addClass('disabled');
     $('#slaves').change(function(){
@@ -64,10 +64,6 @@ $(function() {
         return false;
       }
     });
-    
-
-    
-
 
     $('.page-input').keyup(function(e) {
           if (e.keyCode === 13) {

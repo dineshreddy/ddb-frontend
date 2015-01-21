@@ -60,7 +60,7 @@ $(function() {
         return false;
       }
     });
-    
+
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {

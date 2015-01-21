@@ -58,7 +58,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
 
     this.extraControls = $('.extra-controls');
     this.goToPage = $('.go-to-page');
-    
+
     this.pageInfoNav = $('.page-info-nav');
   },
 
@@ -73,8 +73,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     }else{
     	this.pageInfoNav.removeClass("hidden");
     }
-    
-    
+
     if (JSONresponse.numberOfResults == "1") {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
     } else {

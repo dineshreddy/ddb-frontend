@@ -404,7 +404,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
   unselectRoleFacetValue : function(facetField, facetValue) {
     var currObjInstance = this;
     var newUrl = $.removeParamFromUrl([['facetValues[]', facetField + '=' + facetValue]]);
-    
+
     if (decodeURIComponent(newUrl).indexOf('facetValues[]') === -1) {
       de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
@@ -421,7 +421,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var currObjInstance = this;
     var timer;
     inputSearchElement.keyup(function(e) {
-      clearInterval(timer); 
+      clearInterval(timer);
       var code = (e.keyCode ? e.keyCode : e.which);
       var inputValue = this.value;
       if (code !== currObjInstance.keyCode.SHIFT
@@ -526,7 +526,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
                     currObjInstance.connectedflyoutWidget.build($(this));
                   });
               });
-    } 
+    }
 
     //init TimeFacet
     currObjInstance.timeFacet.initOnLoad();

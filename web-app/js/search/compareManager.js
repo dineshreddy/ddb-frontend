@@ -241,7 +241,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     //1) Add functionality for selecting result list items for comparison
     $('.compare').each(function() {
       $(this).removeClass("disabled");
-      
+
       //remove old click handler
       $(this).off();
 
@@ -261,10 +261,10 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
             return ($(this).attr('data-iid') === cookieVal.id1 || $(this).attr('data-iid') === cookieVal.id2);
           }
      });
-    
-    selectedItems.each(function() { 
+
+    selectedItems.each(function() {
       $(this).addClass("disabled");
-      
+
       //remove old click handler
       $(this).off();
 
@@ -272,7 +272,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
       $(this).click(function(event) {
         event.preventDefault();
         cookieVal = currObjInstance.getComparisonCookieVal();
-        
+
         // Get the index of the compare-object.
         var index = -1;
         if ($(this).attr('data-iid') === cookieVal.id1) {
@@ -285,7 +285,6 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
         currObjInstance.renderCompareObjects();
         currObjInstance.setItemCompareButtonState();
       });
-      
     });
   },
 

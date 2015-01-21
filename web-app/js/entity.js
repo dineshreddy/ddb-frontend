@@ -164,10 +164,10 @@ $(document).ready(
         };
 
         initPage();
-        
+
         if($("div.external-links ul li.external-link").length > 1) {
         	$("div.external-links").removeClass("off");
         }
-        
+
       }
     });

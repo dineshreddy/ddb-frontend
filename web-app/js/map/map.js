@@ -650,7 +650,7 @@ $(document).ready(function() {
         if ($('.multiselect').is(':visible')) {
           $('.multiselect option:selected').each(function() {
             sectors.push($(this).val());
-          });   
+          });
         }
         else {
           $('.sector-facet').each(function() {
@@ -670,7 +670,7 @@ $(document).ready(function() {
         var selectedSectorsText = JSON.stringify(selectedSectors);
         var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
 
-        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed. 
+        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed.
         //Otherwise some checkbox choises might be overridden!
         if (self.loadCounter == 0) {
           $('input').prop('disabled', true);

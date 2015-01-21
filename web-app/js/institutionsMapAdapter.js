@@ -193,7 +193,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     $('.institution-with-data input:checkbox').click(function() {
       Public.selectSectors();
     });
-    
+
     $('.multiselect-container input:checkbox').click(function() {
       Public.selectSectors();
     });

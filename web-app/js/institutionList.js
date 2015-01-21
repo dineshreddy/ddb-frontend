@@ -48,7 +48,7 @@
 
     //global variable storing the filter state onlyInstitutionsWithData
     onlyInstitutionsWithData : false,
-    
+
     // find index[All| A | B |...| Z | 0-9] with no members after filtered
     // by sectors.
     findNoMember : function(visible) {
@@ -149,7 +149,7 @@
 
     /**
      * Filter selection only for the desktop view!
-     * 
+     *
      * Filter selction for mobile view is handled in the multiselect callback onChange
      */
     onFilterSelect : function() {
@@ -158,7 +158,7 @@
         ddb.styleIndex(hash);
         ddb.applyFilter();
       });
-      
+
       $('.institution-with-data input:checkbox').click(function() {
         var hash = window.location.hash.substring(1);
         ddb.styleIndex(hash);
@@ -208,7 +208,7 @@
       var firstLetter = ddb.getFirstLetter();
 
       ddb.retrieveFilterOnlyInstitutionsWithData();
-      
+
       ddb.filter(institutionList, sectors, firstLetter);
       // count all currently highlighted institutions
       var count = $('.institution-listitem.highlight').length;
@@ -252,7 +252,7 @@
 
       /*
        * Now we have two sector widgets. Based on the screen resolution, we show either the checkboxes or multiselect.
-       * 
+       *
        * Depends on which widget is visible, we get the selected values.
        */
       var allSelectedSectors = $('.sector-facet input:checked');
@@ -265,29 +265,29 @@
         if ($(el).val() != "onlyInstitutionsWithData") {
           sectors.push($(el).val());
         }
-        
+
         return sectors;
       }, []);
     },
 
     /**
-     * 
+     *
      */
     retrieveFilterOnlyInstitutionsWithData : function() {
       var institutionWithData = false;
-      
+
       //Mobile view
       if ($('.multiselect').is(':visible')) {
         institutionWithData = $('.multiselect option[value="onlyInstitutionsWithData"]').prop("selected");
-      } 
+      }
       //Desktop view
       else {
         institutionWithData = $('.institution-with-data input:checkbox').prop('checked');
       }
-      
+
       ddb.onlyInstitutionsWithData = institutionWithData;
     },
-    
+
     /**
      * Applies the selected filters (sector, data, letter) to the institution list.
      */
@@ -309,7 +309,7 @@
 
       /*
        * Case 1: Sector yes, Char no
-       * 
+       *
        * When at least one sector selected _and_ no first letter filter; e.g. sector = ['Media'], index = All
        */
       if (sectors.length > 0 && firstLetter === '') {
@@ -322,7 +322,7 @@
       }
       /*
        * Case 2: Sector yes, Char yes
-       * 
+       *
        * when at least one sector selected _and_ one of the first letter is selected, e.g., sector = ['Library',
        * 'Media'], index = 'B'
        */
@@ -330,7 +330,7 @@
       /*
        * 1. we collect all root institutions start with the selected firstLetter, for example 'W', including their
        * children. The children do *not* have to start with the selected first letter.
-       * 
+       *
        * 2. we start to apply the sector filter, for example [Library] to all institutions(roots and their children)
        * collected from the first step.
        */
@@ -370,7 +370,7 @@
 
       /*
        * Case 3: Case 3: Sector no, Char yes
-       * 
+       *
        * When no sector selected _and_ one of the first letter is selected. e.g. sector = [], index = 'C'
        */
       else if (sectors.length === 0 && firstLetter !== '') {

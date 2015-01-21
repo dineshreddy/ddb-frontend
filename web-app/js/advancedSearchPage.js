@@ -216,7 +216,7 @@ var page = {};
     //handle buttons for add/removal of group
     function updateGroupButtons() {
       var groups = $(selectors.groupWidget, root);
-      
+
       if (groups.filter(":visible").length > 1) {
     	  $("#initialAddGroupButtonFieldSet").addClass("off");
       } else {

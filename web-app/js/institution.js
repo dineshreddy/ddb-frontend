@@ -16,7 +16,7 @@
 $(document).ready(function() {
 
   if (jsPageName === "institution") {
-    
+
     var defaultRowCount = 10;
 
     var allRowCount = 0;
@@ -56,7 +56,7 @@ $(document).ready(function() {
 
           if(items) {
             $(".highlights").removeClass("off");
-            
+
             //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
             $.each(items, function(index, value) {
               if (value.tagName == 'DIV') {
@@ -85,7 +85,7 @@ $(document).ready(function() {
     var initCarousel = function() {
       $(".btn-prev").removeClass("disabled");
       $(".btn-next").removeClass("disabled");
-      
+
       var carouselItems = $("#items");
 
       $('div.carousel').show();
@@ -149,22 +149,22 @@ $(document).ready(function() {
         });
       }
     };
-    
+
     var initPage = function() {
       var institutionid = $("#institution-id").data("selectedinstitutionid");
 
       initCarousel();
-      
+
       // Initialize Search results
       getNewSearchResults(0, defaultRowCount, institutionid);
-      
+
       var socialMediaManager = new SocialMediaManager();
       de.ddb.common.search.initHistorySupport(null);
       de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
       socialMediaManager.integrateSocialMedia();
     }
-    
+
     initPage();
   }
-  
+
 });
