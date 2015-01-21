@@ -232,21 +232,6 @@ class DdbItemService {
         return findRealUrl(url).bytes
     }
 
-    private def log(resp, xml) {
-        // print response
-        log.debug "response status: ${resp.statusLine}"
-        log.debug 'Headers: -----------'
-
-        resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-
-        log.debug 'Response data: -----'
-        log.debug xml
-        log.debug '\n--------------------'
-
-        // parse
-        assert xml instanceof groovy.util.slurpersupport.GPathResult
-    }
-
     /**
      * Get Data to build Search Result Navigation Bar for Item Detail View
      *
