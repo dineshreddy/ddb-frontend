@@ -194,12 +194,12 @@ $(document)
                     /** Check for existing opengraph metatags to take config from * */
                     checkForOpenGraphMetaTags : function() {
                       var likeTitle = $("meta[property='og:title']").attr("content");
-                      if (likeTitle != null && likeTitle != "") {
+                      if (likeTitle !== null && likeTitle !== "") {
                         this.titleToLike = likeTitle;
                       }
 
                       var likeUrl = $("meta[property='og:url']").attr("content");
-                      if (likeUrl != null && likeUrl != "") {
+                      if (likeUrl !== null && likeUrl !== "") {
                         this.urlToLike = likeUrl;
                       }
                     }

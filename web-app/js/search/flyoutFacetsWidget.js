@@ -358,7 +358,7 @@ $.extend(de.ddb.next.search.FlyoutFacetsWidget.prototype,{
                 paramsFacetValues[key] = decodeURIComponent(value.replace(/\+/g, '%20'));
               });
 
-              if (jQuery.inArray(search, paramsFacetValues) != -1) {
+              if (jQuery.inArray(search, paramsFacetValues) !== -1) {
                 roleFacetValueCheckbox.prop('checked', true);
               }
             }

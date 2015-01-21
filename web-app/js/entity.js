@@ -62,7 +62,7 @@ $(document).ready(
               if(items) {
                 //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
                 $.each(items, function(index, value) {
-                  if (value.tagName == 'DIV') {
+                  if (value.tagName === 'DIV') {
                     $("#items").triggerHandler("insertItem", [ value, "end", true ]);
                   }
                 });

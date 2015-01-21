@@ -74,7 +74,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     	this.pageInfoNav.removeClass("hidden");
     }
 
-    if (JSONresponse.numberOfResults == "1") {
+    if (JSONresponse.numberOfResults === "1") {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
     } else {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Results);

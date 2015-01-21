@@ -90,11 +90,11 @@
     },
 
     skipUmlaut : function(firstChar) {
-      if (firstChar == "Ä") {
+      if (firstChar === "Ä") {
         firstChar = firstChar.replace(/Ä/g, 'A');
-      } else if (firstChar == "Ö") {
+      } else if (firstChar === "Ö") {
         firstChar = firstChar.replace(/Ö/g, 'O');
-      } else if (firstChar == "Ü") {
+      } else if (firstChar === "Ü") {
         firstChar = firstChar.replace(/Ü/g, 'U');
       }
       return firstChar;
@@ -262,7 +262,7 @@
 
       return _.reduce(allSelectedSectors, function(sectors, el) {
         //Do not add "onlyInstitutionsWithData" which comes from the multiselect!
-        if ($(el).val() != "onlyInstitutionsWithData") {
+        if ($(el).val() !== "onlyInstitutionsWithData") {
           sectors.push($(el).val());
         }
 

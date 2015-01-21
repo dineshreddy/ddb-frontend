@@ -189,7 +189,7 @@ $(document).ready(function() {
         $(".olControlDDBHome").click(function(){
 
           //Reset institution map filters only on the institutionList page
-          if (jsPageName == "institutionList") {
+          if (jsPageName === "institutionList") {
             $('input').prop('checked', false);
             self.applyFilters();
           }
@@ -447,7 +447,7 @@ $(document).ready(function() {
           result += "      <ul>";
           for(var index = 0; index < children.length; index++) {
             var child = children[index];
-            var isInCluster = institutionIds.indexOf(child.id) != -1;
+            var isInCluster = institutionIds.indexOf(child.id) !== -1;
 
             if (!isInCluster) {
               result += "      <li class='outside-cluster'>";
@@ -550,7 +550,7 @@ $(document).ready(function() {
             var actualInsti = institutionList[i];
             var actualLoc = actualInsti.locationDisplayName[j];
 
-            if (actualLoc != firstLoc){
+            if (actualLoc !== firstLoc){
               locationIndex = j;
               locationFound = true;
               break;
@@ -591,7 +591,7 @@ $(document).ready(function() {
           // Create tag of geographical group
           var actualInstName = institutionItem.locationDisplayName[locationIndex];
 
-          if (actualInstName && actualInstName != previousInstName && institutionHierarchy.length > 1) {
+          if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
             if (i > 0) {
               html += "<br>";
             }
@@ -601,7 +601,7 @@ $(document).ready(function() {
           }
           previousInstName = actualInstName;
 
-          var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
+          var isInCluster = dataObjectList.indexOf(institutionItem.id) !== -1;
           if (!isInCluster) {
             html += "      <li class='outside-cluster'>";
           } else {
@@ -667,7 +667,7 @@ $(document).ready(function() {
 
         //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed.
         //Otherwise some checkbox choises might be overridden!
-        if (self.loadCounter == 0) {
+        if (self.loadCounter === 0) {
           $('input').prop('disabled', true);
         }
 
@@ -687,7 +687,7 @@ $(document).ready(function() {
           complete : function(){
             self.loadCounter--;
 
-            if (self.loadCounter == 0) {
+            if (self.loadCounter === 0) {
               $('input').prop('disabled', false);
             }
           }

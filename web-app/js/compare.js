@@ -103,7 +103,7 @@ $(document)
                 if (first) {
                   $(".first .viewer-icon").parent().addClass("off");
                   $(".first .previews").each(function() {
-                    if ($(this).attr("href") == previewHref) {
+                    if ($(this).attr("href") === previewHref) {
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
@@ -111,7 +111,7 @@ $(document)
                     }
                   });
                   $(".first .no-previews").each(function() {
-                    if ($(this).find("img").attr("src") == previewUri) {
+                    if ($(this).find("img").attr("src") === previewUri) {
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
@@ -129,7 +129,7 @@ $(document)
                 } else {
                   $(".second .viewer-icon").parent().addClass("off");
                   $(".second .previews").each(function() {
-                    if ($(this).attr("href") == previewHref) {
+                    if ($(this).attr("href") === previewHref) {
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
@@ -137,7 +137,7 @@ $(document)
                     }
                   });
                   $(".second .no-previews").each(function() {
-                    if ($(this).find("img").attr("src") == previewUri) {
+                    if ($(this).find("img").attr("src") === previewUri) {
                       $(this).parent().removeClass("off");
                       return false;
                     } else {
@@ -212,7 +212,7 @@ $(document)
                   if ($(".first #jwplayer-container_wrapper")) {
                     $(".first #jwplayer-container_wrapper").remove();
                   }
-                  if ($("#jwplayer-container-first").attr("type") == "application/x-shockwave-flash") {
+                  if ($("#jwplayer-container-first").attr("type") === "application/x-shockwave-flash") {
                     $(".first binary-viewer-flash-upgrade").removeClass("off");
                   } else {
                     $(".first div.binary-viewer-error").removeClass("off");
@@ -245,7 +245,7 @@ $(document)
                   if ($(".second #jwplayer-container_wrapper")) {
                     $(".second #jwplayer-container_wrapper").remove();
                   }
-                  if ($("#jwplayer-container-second").attr("type") == "application/x-shockwave-flash") {
+                  if ($("#jwplayer-container-second").attr("type") === "application/x-shockwave-flash") {
                     $(".second binary-viewer-flash-upgrade").removeClass("off");
                   } else {
                     $(".second div.binary-viewer-error").removeClass("off");

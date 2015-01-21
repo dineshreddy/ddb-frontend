@@ -31,8 +31,8 @@ var apisWrapper = {
       async : false,
       url : jsContextPath + apisWrapper.Config.ddbBackendUrl + name + paramString.toString()
     });
-    if (request.status == 200) {
-      if (dataType == 'json') {
+    if (request.status === 200) {
+      if (dataType === 'json') {
         return jQuery.parseJSON(request.responseText);
       } else {
         return request.responseText;
