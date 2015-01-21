@@ -162,7 +162,7 @@ $(document).ready(function() {
       de.ddb.common.search.initHistorySupport(null);
       de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
       socialMediaManager.integrateSocialMedia();
-    }
+    };
 
     initPage();
   };
