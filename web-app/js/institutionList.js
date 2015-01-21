@@ -337,7 +337,7 @@
       else if (sectors.length > 0 && firstLetter !== '') {
         var filteredByFirstLetter = ddb.institutionsByFirstChar[firstLetter];
         var filteredByData = ddb.filterOnlyInstitutionsWithData(filteredByFirstLetter, onlyInstitutionsWithData);
-        var filteredBySector = _.reduce(filteredByData, function(memory, institution) {
+        filteredBySector = _.reduce(filteredByData, function(memory, institution) {
           var firstChar = institution.firstChar;
           if (firstChar === "Ä" || firstChar === "Ü" || firstChar === "Ö") {
             firstChar = ddb.skipUmlaut(firstChar);
@@ -357,14 +357,14 @@
           return parent.firstChar === firstLetter;
         });
 
-        var visible = _.union(parentList, filteredBySector);
+        visible = _.union(parentList, filteredBySector);
         ddb.showResult(visible, filteredBySector);
 
         // find all root institutions filtered by sectors. get the first letter, e.g., only As and Ls
         // show only A and L in Index.
         var filtered = ddb.filterBySectors(institutionsFilteredByData, sectors, parentList);
 
-        var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
+        hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), filtered));
         ddb.updateIndex(hasNoMember);
       }
 
@@ -378,10 +378,10 @@
         var institutionsByData = ddb.filterOnlyInstitutionsWithData(institutionsByLetter, onlyInstitutionsWithData);
         var institutionsBySector = ddb.filterBySectors(institutionsByData, sectors, parentList);
 
-        var visible = _.union(_.uniq(parentList), institutionsBySector);
+        visible = _.union(_.uniq(parentList), institutionsBySector);
         ddb.showResult(visible, null);
 
-        var hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), institutionsFilteredByData));
+        hasNoMember = ddb.findNoMember(_.union(_.uniq(parentList), institutionsFilteredByData));
         ddb.updateIndex(hasNoMember);
       }
       /*
@@ -391,11 +391,11 @@
       else {
         ddb.styleIndex('All');
         if (onlyInstitutionsWithData) {
-          var filteredBySector = ddb.filterBySectors(institutionsFilteredByData, sectors, parentList);
-          var visible = _.union(_.uniq(parentList), filteredBySector);
+          filteredBySector = ddb.filterBySectors(institutionsFilteredByData, sectors, parentList);
+          visible = _.union(_.uniq(parentList), filteredBySector);
           ddb.showResult(visible, null);
 
-          var hasNoMember = ddb.findNoMember(visible);
+          hasNoMember = ddb.findNoMember(visible);
           ddb.updateIndex(hasNoMember);
         } else {
           $('#institution-list').empty().html(ddb.$institutionList.html());

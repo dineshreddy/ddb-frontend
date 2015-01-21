@@ -149,7 +149,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
    * Makes an AJAX request to fetch the facet values for the currently selected facet field
    */
   fetchFacetValues : function(flyoutWidget, facetQuery) {
-    var currObjInstance = this;
     if (flyoutWidget != null) {
       this.connectedflyoutWidget = flyoutWidget;
     }

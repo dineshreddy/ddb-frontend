@@ -546,7 +546,7 @@ $(document).ready(function() {
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
           var firstLoc = firstInsti.locationDisplayName[j];
 
-          for (var i = 1; i < institutionList.length; i++) {
+          for (i = 1; i < institutionList.length; i++) {
             var actualInsti = institutionList[i];
             var actualLoc = actualInsti.locationDisplayName[j];
 
@@ -585,7 +585,7 @@ $(document).ready(function() {
 
         var previousInstName = "?";
 
-        for (var i = 0; i < institutionList.length; i++) {
+        for (i = 0; i < institutionList.length; i++) {
           var institutionItem = institutionList[i];
 
           // Create tag of geographical group

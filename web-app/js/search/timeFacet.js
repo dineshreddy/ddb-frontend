@@ -411,13 +411,13 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
 
            //Unscharf/Fuzzy
            if(decodedValue.indexOf('TO+*') !== -1){
-             var split = dividerPattern.exec(decodedValue);
+             split = dividerPattern.exec(decodedValue);
              beginDays = split[0];
              exact = false;
            }else {//Genau/Exactly
              var indexOfTo = decodedValue.indexOf('TO');
              var endSubstring = decodedValue.substr(indexOfTo);
-             var split = dividerPattern.exec(endSubstring);
+             split = dividerPattern.exec(endSubstring);
              endDays = split[0];
              exact = true;
            }
