@@ -106,8 +106,8 @@ $(document).ready(function() {
 
             if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
               var institutionid = $("#institution-id").data("institutionid");
-              var urlParameters = "?institutionid=" + institutionid + "&offset=" + currentLoadItems.length + "&rows=" + defaultRowCount;
-              var History = window.History;
+              //var urlParameters = "?institutionid=" + institutionid + "&offset=" + currentLoadItems.length + "&rows=" + defaultRowCount;
+              //var History = window.History;
               //History.pushState("", document.title, decodeURI(urlParameters));
 
               // Initialize Search results
@@ -165,6 +165,6 @@ $(document).ready(function() {
     }
 
     initPage();
-  }
+  };
 
 });

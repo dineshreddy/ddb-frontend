@@ -92,7 +92,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
   Public.selectSectors = function() {
     if (mapInitialized) {
-      var sectors = _getSectorSelection();
+      //var sectors = _getSectorSelection();
       //InstitutionsMapController.selectSectors(sectors);
       map.applyFilters();
     }
@@ -158,16 +158,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
     $('#main-container').addClass('map');
     $('#main-container').removeClass('list');
     _initializeMap();
-  };
-
-  var _getWindowWidth = function() {
-    if (window.innerWidth) {
-      return window.innerWidth;
-    } else if (window.document.documentElement && window.document.documentElement.clientWidth) {
-      return window.document.documentElement.clientWidth;
-    } else {
-      return window.document.body.offsetWidth;
-    }
   };
 
   Public.setupDom4MapDisplay = function() {

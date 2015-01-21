@@ -148,7 +148,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     }
 
     // Showing extra arrow
-    var totalPages = JSONresponse.totalPages.replace('.', '').replace(',', '')
+    var totalPages = JSONresponse.totalPages.replace('.', '').replace(',', '');
     if (totalPages > 5) {
       this.extraControls.removeClass('off');
     } else {

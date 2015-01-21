@@ -34,15 +34,13 @@ $(document).ready(function() {
       },
 
       displayMarker : function(config, lang, lon, lat, zoom){
-        var self = this;
-
         this._applyConfiguration(config);
 
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
           //Initialize Map
-          var tiles = this._initializeMap(lon, lat, zoom);
+          this._initializeMap(lon, lat, zoom);
 
           this._addMarkerLayer();
 
@@ -107,15 +105,13 @@ $(document).ready(function() {
       },
 
       displayMultipolygone : function(config) {
-        var self = this;
-
         this._applyConfiguration(config);
 
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
           //Initialize Map
-          var tiles = this._initializeMap(this.initLon, this.initLat, this.initZoom);
+          this._initializeMap(this.initLon, this.initLat, this.initZoom);
 
           //Add the multipolygon vector layer
           this._addMultiPolygonLayer();
@@ -493,9 +489,8 @@ $(document).ready(function() {
                 break;
               }
             }
-            if(isParentInCluster){
-              // do nothing
-            }else{ // If parent is not in Cluster: add it and let it handle the child
+            if(!isParentInCluster){
+              // If parent is not in Cluster: add it and let it handle the child
               institutionIds.push(parentId);
               institution.highlight = true;
             }

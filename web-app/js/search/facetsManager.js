@@ -409,7 +409,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
     }
 
-    $.addParamToCurrentUrl([['offset', 0]], newUrl)
+    $.addParamToCurrentUrl([['offset', 0]], newUrl);
     currObjInstance.fetchResultsList(newUrl);
   },
 
@@ -436,7 +436,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         currObjInstance.searchFacetValuesTimeout = d.getTime();
 
         timer = setTimeout(function() {
-          var currentD = new Date();
         currObjInstance.connectedflyoutWidget.parentMainElement.find(
             '.flyout-right-container').remove();
         currObjInstance.connectedflyoutWidget.buildStructure();

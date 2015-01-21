@@ -231,7 +231,7 @@ $(document)
             ;
             var addRedBorder = function(el) {
               $(el).addClass("active");
-            }
+            };
             var removeRedBorder = function() {
               $(".scroller ul>li>a").find(".thumbnail").removeClass("active");
             };
