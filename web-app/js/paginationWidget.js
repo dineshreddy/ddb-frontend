@@ -69,9 +69,9 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.numberOfResults.html(JSONresponse.numberOfResults);
 
     if (JSONresponse.numberOfResults === "0"){
-    	this.pageInfoNav.addClass("hidden");
+      this.pageInfoNav.addClass("hidden");
     }else{
-    	this.pageInfoNav.removeClass("hidden");
+      this.pageInfoNav.removeClass("hidden");
     }
 
     if (JSONresponse.numberOfResults === "1") {

@@ -336,16 +336,16 @@ $(document).ready(function() {
               selectionEventControl.unselectAll();
           }
           else {
-	          var popup = feature.popup;
-	          if (feature.popup) {
-	              popup.feature = null;
-	              if (!isMobileView()) {
-	                self.osmMap.removePopup(popup);
-	                popup.destroy();
-	                feature.popup = null;
-	              }
-	          }
-	      }
+            var popup = feature.popup;
+            if (feature.popup) {
+              popup.feature = null;
+              if (!isMobileView()) {
+                self.osmMap.removePopup(popup);
+                popup.destroy();
+                feature.popup = null;
+              }
+            }
+          }
         };
 
         function onPopupClose() {
