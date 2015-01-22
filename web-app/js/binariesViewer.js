@@ -26,8 +26,8 @@ $(document)
               var file = $(videoDiv).data("jwplayer-file");
               var image = $(videoDiv).data("jwplayer-image");
 
-              $.initializeJwPlayer(id, file, image, width, height, function(event) {
-              }, function(event) {
+              $.initializeJwPlayer(id, file, image, width, height, function() {
+              }, function() {
                 var playerDiv = $("#mediaspace_wrapper");
                 if (playerDiv.length === 0) {
                   playerDiv = $("#mediaspace");

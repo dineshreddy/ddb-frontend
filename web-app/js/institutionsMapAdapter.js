@@ -27,7 +27,7 @@ var mapInitialized = false;
 
 var map;
 
-var InstitutionsMapAdapter = (function($, undefined) {
+var InstitutionsMapAdapter = (function($) {
   'use strict';
 //
 //  var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';

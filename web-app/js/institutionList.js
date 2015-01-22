@@ -111,7 +111,7 @@
           onIndexClick();
           onFilterSelect();
           window.onhashchange = ddb.onHashChange;
-        }).error(function(jqXhr, textStatus, errorThrown) {
+        }).error(function() {
           /*
            * when we fail to fetch the JSON via AJAX, then we do not activate the JS-feature.
            */
@@ -517,7 +517,7 @@
       buttonWidth : 'auto',
       maxHeight : false,
       field_NoneSelected : messages.ddbnext.InstitutionPage_FilterBySector,
-      onChange : function(element) {
+      onChange : function() {
         ddb.applyFilter();
       },
       buttonText : function(options) {
