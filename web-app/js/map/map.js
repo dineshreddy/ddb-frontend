@@ -34,15 +34,13 @@ $(document).ready(function() {
       },
 
       displayMarker : function(config, lang, lon, lat, zoom){
-        var self = this;
-
         this._applyConfiguration(config);
 
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
           //Initialize Map
-          var tiles = this._initializeMap(lon, lat, zoom);
+          this._initializeMap(lon, lat, zoom);
 
           this._addMarkerLayer();
 
@@ -107,15 +105,13 @@ $(document).ready(function() {
       },
 
       displayMultipolygone : function(config) {
-        var self = this;
-
         this._applyConfiguration(config);
 
         var rootDiv = $("#"+this.rootDivId);
         if(rootDiv.length > 0){
 
           //Initialize Map
-          var tiles = this._initializeMap(this.initLon, this.initLat, this.initZoom);
+          this._initializeMap(this.initLon, this.initLat, this.initZoom);
 
           //Add the multipolygon vector layer
           this._addMultiPolygonLayer();
@@ -193,7 +189,7 @@ $(document).ready(function() {
         $(".olControlDDBHome").click(function(){
 
           //Reset institution map filters only on the institutionList page
-          if (jsPageName == "institutionList") {
+          if (jsPageName === "institutionList") {
             $('input').prop('checked', false);
             self.applyFilters();
           }
@@ -340,16 +336,16 @@ $(document).ready(function() {
               selectionEventControl.unselectAll();
           }
           else {
-	          var popup = feature.popup;
-	          if (feature.popup) {
-	              popup.feature = null;
-	              if (!isMobileView()) {
-	                self.osmMap.removePopup(popup);
-	                popup.destroy();
-	                feature.popup = null;
-	              }
-	          }
-	      }
+            var popup = feature.popup;
+            if (feature.popup) {
+              popup.feature = null;
+              if (!isMobileView()) {
+                self.osmMap.removePopup(popup);
+                popup.destroy();
+                feature.popup = null;
+              }
+            }
+          }
         };
 
         function onPopupClose() {
@@ -451,7 +447,7 @@ $(document).ready(function() {
           result += "      <ul>";
           for(var index = 0; index < children.length; index++) {
             var child = children[index];
-            var isInCluster = institutionIds.indexOf(child.id) != -1;
+            var isInCluster = institutionIds.indexOf(child.id) !== -1;
 
             if (!isInCluster) {
               result += "      <li class='outside-cluster'>";
@@ -493,9 +489,8 @@ $(document).ready(function() {
                 break;
               }
             }
-            if(isParentInCluster){
-              // do nothing
-            }else{ // If parent is not in Cluster: add it and let it handle the child
+            if(!isParentInCluster){
+              // If parent is not in Cluster: add it and let it handle the child
               institutionIds.push(parentId);
               institution.highlight = true;
             }
@@ -551,11 +546,11 @@ $(document).ready(function() {
         for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
           var firstLoc = firstInsti.locationDisplayName[j];
 
-          for (var i = 1; i < institutionList.length; i++) {
+          for (i = 1; i < institutionList.length; i++) {
             var actualInsti = institutionList[i];
             var actualLoc = actualInsti.locationDisplayName[j];
 
-            if (actualLoc != firstLoc){
+            if (actualLoc !== firstLoc){
               locationIndex = j;
               locationFound = true;
               break;
@@ -590,13 +585,13 @@ $(document).ready(function() {
 
         var previousInstName = "?";
 
-        for (var i = 0; i < institutionList.length; i++) {
+        for (i = 0; i < institutionList.length; i++) {
           var institutionItem = institutionList[i];
 
           // Create tag of geographical group
           var actualInstName = institutionItem.locationDisplayName[locationIndex];
 
-          if (actualInstName && actualInstName != previousInstName && institutionHierarchy.length > 1) {
+          if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
             if (i > 0) {
               html += "<br>";
             }
@@ -606,7 +601,7 @@ $(document).ready(function() {
           }
           previousInstName = actualInstName;
 
-          var isInCluster = dataObjectList.indexOf(institutionItem.id) != -1;
+          var isInCluster = dataObjectList.indexOf(institutionItem.id) !== -1;
           if (!isInCluster) {
             html += "      <li class='outside-cluster'>";
           } else {
@@ -650,7 +645,7 @@ $(document).ready(function() {
         if ($('.multiselect').is(':visible')) {
           $('.multiselect option:selected').each(function() {
             sectors.push($(this).val());
-          });   
+          });
         }
         else {
           $('.sector-facet').each(function() {
@@ -670,9 +665,9 @@ $(document).ready(function() {
         var selectedSectorsText = JSON.stringify(selectedSectors);
         var onlyInstitutionsWithData = $('.institution-with-data').find('input').is(':checked');
 
-        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed. 
+        //Use loadCounter to fix race condition problems. Disable all inputs as long as load calls (ther might be multiple in parallel) are executed.
         //Otherwise some checkbox choises might be overridden!
-        if (self.loadCounter == 0) {
+        if (self.loadCounter === 0) {
           $('input').prop('disabled', true);
         }
 
@@ -692,7 +687,7 @@ $(document).ready(function() {
           complete : function(){
             self.loadCounter--;
 
-            if (self.loadCounter == 0) {
+            if (self.loadCounter === 0) {
               $('input').prop('disabled', false);
             }
           }

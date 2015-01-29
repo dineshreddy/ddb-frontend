@@ -23,7 +23,7 @@ de.ddb.next.search = de.ddb.next.search || {};
  * be executed immediately
  */
 $(function() {
-  
+
   if (jsPageName === "results" || jsPageName === "searchinstitution" || jsPageName === "searchperson") {
     // workaround for ffox + ie click focus - prevents links that load dynamic
     // content to be focussed/active.
@@ -53,11 +53,11 @@ $(function() {
     de.ddb.next.search.searchResultsInitializer();
 
     //Operations on the grid where triggered only once clicked and ignored if the viewtype grid was coming from the URL
-    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()=='grid'){
-        //In IE9<= creates an infinite loop due that doesn't support pushState.
-    	if (de.ddb.common.search.historySupport){
-        	$("#view-grid").trigger( "click" );
-        }
+    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()==='grid'){
+      //In IE9<= creates an infinite loop due that doesn't support pushState.
+      if (de.ddb.common.search.historySupport){
+        $("#view-grid").trigger( "click" );
+      }
     }
   }
 });
@@ -100,7 +100,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
             $('.page-input').attr('value', JSONresponse.page);
             $('.page-nonjs').html(JSONresponse.page);
-            
+
             de.ddb.next.search.paginationWidget.resetNavigationElements(JSONresponse);
 
             $('.search-results-list').fadeIn('fast');

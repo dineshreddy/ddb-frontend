@@ -31,11 +31,11 @@ $(document).ready(function() {
 
       $(".similar-objects-header").toggleClass("active");
     });
-    
+
     $('.similar-objects-items').find('li').each(function() {
       new de.ddb.next.search.HovercardInfoItem($(this));
     });
-    
+
     $('.page-input').removeClass('off');
     $('.page-nonjs').addClass("off");
     de.ddb.next.search.paginationWidget.setPageInputKeyupHandler(

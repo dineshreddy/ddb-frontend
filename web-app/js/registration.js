@@ -65,7 +65,7 @@ $(document).ready(function() {
 
     },
     errorPlacement: function(error, element) {
-      console.log($(element).parent().prev())
+      console.log($(element).parent().prev());
       $(element).parent().prev().addClass("label-error");
       error.insertAfter(element);
     }

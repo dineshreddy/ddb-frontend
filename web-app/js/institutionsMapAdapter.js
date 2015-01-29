@@ -27,7 +27,7 @@ var mapInitialized = false;
 
 var map;
 
-var InstitutionsMapAdapter = (function($, undefined) {
+var InstitutionsMapAdapter = (function($) {
   'use strict';
 //
 //  var osmTileServer = 'maps.deutsche-digitale-bibliothek.de';
@@ -92,7 +92,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
 
   Public.selectSectors = function() {
     if (mapInitialized) {
-      var sectors = _getSectorSelection();
+      //var sectors = _getSectorSelection();
       //InstitutionsMapController.selectSectors(sectors);
       map.applyFilters();
     }
@@ -160,16 +160,6 @@ var InstitutionsMapAdapter = (function($, undefined) {
     _initializeMap();
   };
 
-  var _getWindowWidth = function() {
-    if (window.innerWidth) {
-      return window.innerWidth;
-    } else if (window.document.documentElement && window.document.documentElement.clientWidth) {
-      return window.document.documentElement.clientWidth;
-    } else {
-      return window.document.body.offsetWidth;
-    }
-  };
-
   Public.setupDom4MapDisplay = function() {
     var hash = window.location.hash.substring(1);
     if (hash === 'map' || hash === '') {
@@ -193,7 +183,7 @@ var InstitutionsMapAdapter = (function($, undefined) {
     $('.institution-with-data input:checkbox').click(function() {
       Public.selectSectors();
     });
-    
+
     $('.multiselect-container input:checkbox').click(function() {
       Public.selectSectors();
     });

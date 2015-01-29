@@ -60,7 +60,7 @@ $(function() {
         return false;
       }
     });
-    
+
     updateNavigationUrl();
 
     $('.page-input').keyup(function(e) {
@@ -494,7 +494,7 @@ function getParam(name) {
 function getParamWithDefault(name, defaultValue) {
   var result = getParam(name);
 
-  if (result == "") {
+  if (result === "") {
     result = defaultValue;
   }
   return result;
@@ -509,7 +509,7 @@ function updateURLParameter(url, param, paramVal) {
   if (additionalURL) {
     tempArray = additionalURL.split("&");
     for (i = 0; i < tempArray.length; i++) {
-      if (tempArray[i].split('=')[0] != param) {
+      if (tempArray[i].split('=')[0] !== param) {
         newAdditionalURL += temp + tempArray[i];
         temp = "&";
       }

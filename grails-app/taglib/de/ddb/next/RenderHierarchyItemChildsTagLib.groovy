@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 
-
 class RenderHierarchyItemChildsTagLib {
 
     static namespace = "ddb"
@@ -28,7 +27,7 @@ class RenderHierarchyItemChildsTagLib {
      * @attr mainItem The main Item (of type de.ddb.next.beans.Item), meaning the Item that was initially
      *      given to render the whole hierarchy
      */
-    private def renderHierarchyItemChilds = { attrs, body ->
+    def renderHierarchyItemChilds = { attrs, body ->
         def itemMap = [:]
         def item = attrs.item
         def mainItem = attrs.mainItem

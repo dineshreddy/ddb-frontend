@@ -25,7 +25,6 @@ import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
-import de.ddb.next.cluster.DataObject
 import de.ddb.next.cluster.InstitutionMapModel
 
 class InstitutionService {
@@ -196,8 +195,7 @@ class InstitutionService {
 
             // Collect all institutions available for the given selection
             clusterContainer["institutions"] = [:]
-            for (def i = 0; i<dataSets[0].objects.size(); i++) {
-                DataObject dataObject = dataSets[0].objects[i]
+            dataSets[0].objects.each {dataObject ->
                 def institutionId = dataObject.index
                 clusterContainer["institutions"][institutionId] = [:]
                 clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
@@ -210,8 +208,7 @@ class InstitutionService {
 
             // Go over all the Cortex institutions and transfer children/parents information
             def childrenIds = []
-            for(int i=0;i<institutions.institutions.size();i++){
-                def institution = institutions.institutions[i]
+            institutions.institutions.each {institution ->
                 def institutionId = institution.id
                 if(institution.children != null){
 
@@ -228,8 +225,7 @@ class InstitutionService {
                     }
 
                     // Transfer parent information, if a child is in the current selection
-                    for(int j=0;j<institution.children.size();j++){
-                        def child = institution.children[j]
+                    institution.children.each {child ->
                         def childId = child.id
                         if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
                             clusterContainer["institutions"][childId]["parents"].push(institutionId)

@@ -16,7 +16,7 @@
 $(document).ready(function() {
 
   if (jsPageName === "institution") {
-    
+
     var defaultRowCount = 10;
 
     var allRowCount = 0;
@@ -56,10 +56,10 @@ $(document).ready(function() {
 
           if(items) {
             $(".highlights").removeClass("off");
-            
+
             //Adds the items from the search to the carousel. Doing this one by one to avoid problems with the carousel.
             $.each(items, function(index, value) {
-              if (value.tagName == 'DIV') {
+              if (value.tagName === 'DIV') {
                 $("#items").triggerHandler("insertItem", [ value, "end", true ]);
               }
             });
@@ -85,7 +85,7 @@ $(document).ready(function() {
     var initCarousel = function() {
       $(".btn-prev").removeClass("disabled");
       $(".btn-next").removeClass("disabled");
-      
+
       var carouselItems = $("#items");
 
       $('div.carousel').show();
@@ -106,8 +106,8 @@ $(document).ready(function() {
 
             if ((nextVisbleItem > (currentLoadItems.length - 1)) && (currentLoadItems.length < allRowCount)) {
               var institutionid = $("#institution-id").data("institutionid");
-              var urlParameters = "?institutionid=" + institutionid + "&offset=" + currentLoadItems.length + "&rows=" + defaultRowCount;
-              var History = window.History;
+              //var urlParameters = "?institutionid=" + institutionid + "&offset=" + currentLoadItems.length + "&rows=" + defaultRowCount;
+              //var History = window.History;
               //History.pushState("", document.title, decodeURI(urlParameters));
 
               // Initialize Search results
@@ -149,22 +149,22 @@ $(document).ready(function() {
         });
       }
     };
-    
+
     var initPage = function() {
       var institutionid = $("#institution-id").data("selectedinstitutionid");
 
       initCarousel();
-      
+
       // Initialize Search results
       getNewSearchResults(0, defaultRowCount, institutionid);
-      
+
       var socialMediaManager = new SocialMediaManager();
       de.ddb.common.search.initHistorySupport(null);
       de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
       socialMediaManager.integrateSocialMedia();
-    }
-    
+    };
+
     initPage();
-  }
-  
+  };
+
 });

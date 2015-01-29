@@ -58,7 +58,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
 
     this.extraControls = $('.extra-controls');
     this.goToPage = $('.go-to-page');
-    
+
     this.pageInfoNav = $('.page-info-nav');
   },
 
@@ -69,13 +69,12 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     this.numberOfResults.html(JSONresponse.numberOfResults);
 
     if (JSONresponse.numberOfResults === "0"){
-    	this.pageInfoNav.addClass("hidden");
+      this.pageInfoNav.addClass("hidden");
     }else{
-    	this.pageInfoNav.removeClass("hidden");
+      this.pageInfoNav.removeClass("hidden");
     }
-    
-    
-    if (JSONresponse.numberOfResults == "1") {
+
+    if (JSONresponse.numberOfResults === "1") {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Result);
     } else {
       this.numberOfResultsLabel.html(messages.ddbnext.Multi_Page_Results);
@@ -149,7 +148,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     }
 
     // Showing extra arrow
-    var totalPages = JSONresponse.totalPages.replace('.', '').replace(',', '')
+    var totalPages = JSONresponse.totalPages.replace('.', '').replace(',', '');
     if (totalPages > 5) {
       this.extraControls.removeClass('off');
     } else {

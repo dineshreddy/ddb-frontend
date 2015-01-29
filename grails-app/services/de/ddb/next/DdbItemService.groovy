@@ -173,11 +173,11 @@ class DdbItemService {
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
-        def itemSource = itemService.getItemXmlSource(id)
+        def itemSource = itemService.getItemXmlSource(itemId)
         def collection = new XmlSlurper().parseText(itemSource)
         def geometry = collection.monument.georeference.geometry.text()
 
-        def model = [
+        return [
             itemUri: itemUri,
             viewerUri: item.viewerUri,
             title: item.title,
@@ -203,8 +203,6 @@ class DdbItemService {
             similarItems : similarItems,
             geometryInput: geometry
         ]
-
-        return model
     }
 
     /**
@@ -232,32 +230,6 @@ class DdbItemService {
      */
     private byte[] getContent(URL url) {
         return findRealUrl(url).bytes
-    }
-
-    private def log(list) {
-        list.each { it ->
-            log.debug "---"
-            log.debug "name: ${it.'@name'}"
-            log.debug "mime: ${it.'@mimetype'}"
-            log.debug "path: ${it.'@path'}"
-            log.debug "pos: ${it.'@position'}"
-            log.debug "is primary?: ${it.'@primary'}"
-        }
-    }
-
-    private def log(resp, xml) {
-        // print response
-        log.debug "response status: ${resp.statusLine}"
-        log.debug 'Headers: -----------'
-
-        resp.headers.each { h -> log.debug " ${h.name} : ${h.value}" }
-
-        log.debug 'Response data: -----'
-        log.debug xml
-        log.debug '\n--------------------'
-
-        // parse
-        assert xml instanceof groovy.util.slurpersupport.GPathResult
     }
 
     /**

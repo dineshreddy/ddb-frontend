@@ -22,7 +22,7 @@ limitations under the License.
           <td class="institution"><g:message encodeAs="html" code="ddbnext.Institution" /> <br /> <g:link
               class="institution-name" controller="institution" action="showInstitutionsTreeByItemId"
               params="[id: institution.id]">
-              ${institution.name}
+              ${institution.name.encodeAsHTML()}
             </g:link>
             <br />
             <a class="institution-link" href="<ddb:doHtmlEncode url="${institution.url}"/>"><ddb:doHtmlEncode url="${institution.url}"/></a>
