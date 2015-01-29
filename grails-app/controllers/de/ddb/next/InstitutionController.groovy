@@ -74,7 +74,7 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             log.debug("root itemId = ${itemId}")
-            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name.text(), configurationService.getBackendUrl())
+            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name, configurationService.getBackendUrl())
 
             // logo
             def organisationLogo
@@ -85,7 +85,7 @@ class InstitutionController {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
-            
+
             Folder folder = bookmarksService.findFolderByInstitutionId(itemId)
 
             render(
