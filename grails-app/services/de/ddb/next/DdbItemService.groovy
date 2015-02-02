@@ -211,33 +211,6 @@ class DdbItemService {
     }
 
     /**
-     * Follow redirects.
-     */
-    private def findRealUrl(url) {
-        HttpURLConnection conn = url.openConnection()
-        conn.followRedirects = false
-        conn.requestMethod = 'HEAD'
-        if(conn.responseCode in [301, 302]) {
-            if (conn.headerFields.'Location') {
-                return findRealUrl(conn.headerFields.Location.first().toURL())
-            } else {
-                throw new RuntimeException('Failed to follow redirect')
-            }
-        }
-        return url
-    }
-
-    /**
-     * Get the content of the given URL and follow redirects.
-     *
-     * @param url URL
-     * @return content of that URL
-     */
-    private byte[] getContent(URL url) {
-        return findRealUrl(url).bytes
-    }
-
-    /**
      * Get Data to build Search Result Navigation Bar for Item Detail View
      *
      * @param reqParameters requestParameters
