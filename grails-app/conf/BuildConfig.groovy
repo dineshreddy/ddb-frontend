@@ -18,7 +18,6 @@ import grails.util.Environment
 
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
-//grails.project.dependency.resolver = "maven"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
@@ -82,9 +81,7 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
 
-        mavenRepo("https://www.escidoc.org/artifactory/repo/") {
-            //updatePolicy 'always'
-        }
+        mavenRepo "https://www.escidoc.org/artifactory/repo/"
     }
 
     dependencies {
