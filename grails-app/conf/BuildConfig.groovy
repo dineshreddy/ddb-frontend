@@ -17,6 +17,7 @@ import grails.util.Environment
 
 grails.servlet.version = "2.5" // Change depending on target container compliance (2.5 or 3.0)
 grails.project.class.dir = "target/classes"
+grails.project.dependency.resolver = "maven"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.target.level = 1.6
@@ -80,16 +81,15 @@ grails.project.dependency.resolution = {
         // This are the geotools repositories required for coordinate transformation
         mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
-        mavenRepo "https://www.escidoc.org/artifactory/repo/"
+        mavenRepo("https://www.escidoc.org/artifactory/repo/") {
+            updatePolicy 'always'
+        }
     }
-    dependencies {
-        // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        compile "net.sf.ehcache:ehcache-core:2.4.6"
 
-        // runtime 'mysql:mysql-connector-java:5.1.20'
-        runtime "org.springframework:spring-test:3.1.2.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
+    dependencies {
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
+        runtime "org.springframework:spring-test:3.2.8.RELEASE" //Needed as dependency for rendering-plugin when used in WAR
         runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
 
         // This are the geotools dependencies required for coordinate transformation
@@ -103,9 +103,14 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.7'
         compile ':cache-ehcache:1.0.1'
         compile ':hibernate:3.6.10.12'
+        compile ":html-cleaner:0.2"
+        compile ":jawr:3.3.3"
+        compile ":rendering:1.0.0"
         compile ":cache-headers:1.1.5"
-        compile(":rendering:0.4.4")
+        compile ":mail:1.0.1"
+        compile ":rest:0.8"
         compile ":message-digest:1.1"
+
         build ":tomcat:7.0.52.1"
         runtime ":resources:1.2.7"
         runtime ":zipped-resources:1.0"
