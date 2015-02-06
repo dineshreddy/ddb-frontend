@@ -62,11 +62,11 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+        model.institutionImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                 model.institutionImage))
 
         if (model.license?.img) {
-            model.licenseImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+            model.licenseImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                     configurationService.getContextPath() + model.license.img))
         }
 
@@ -77,10 +77,10 @@ class DdbItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().thumbnail.uri))
             }else {
-                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().preview.uri))
             }
         }
