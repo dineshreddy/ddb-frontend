@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- import de.ddb.common.constants.FacetEnum
+import de.ddb.common.constants.FacetEnum
 
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
