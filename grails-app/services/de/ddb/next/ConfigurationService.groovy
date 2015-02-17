@@ -131,8 +131,8 @@ class ConfigurationService extends CommonConfigurationService {
         return Boolean.parseBoolean(value.toString())
     }
 
-    public boolean isRightsFacetteEnabled() {
-        def value = getExistingConfigValue("ddb.rights.facette.enabled")
+    public boolean isRightsFacetEnabled() {
+        def value = getExistingConfigValue("ddb.rights.facet.enabled")
         return Boolean.parseBoolean(value.toString())
     }
 
@@ -152,7 +152,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
-        log.info "ddb.ights.facette.enabled = " + isRightsFacetteEnabled()
+        log.info "ddb.rights.facet.enabled = " + isRightsFacetEnabled()
         log.info "-------------------------------------------------------"
     }
 }

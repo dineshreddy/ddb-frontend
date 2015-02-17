@@ -50,7 +50,7 @@ limitations under the License.
     </tr>
   </g:each>
   <!-- Item Rights -->
-  <g:if test="${config.isRightsFacetteEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
+  <g:if test="${config.isRightsFacetEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:
       </strong></td>

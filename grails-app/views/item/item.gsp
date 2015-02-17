@@ -47,7 +47,7 @@ limitations under the License.
         ${itemTitle.encodeAsHTML()}
       </h2>
       <g:render template="fields" />
-      <g:if test="${config.isRightsFacetteEnabled()}">
+      <g:if test="${config.isRightsFacetEnabled()}">
         <g:render template="rights" />
       </g:if>
       <g:render template="license" />
