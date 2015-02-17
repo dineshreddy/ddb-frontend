@@ -283,7 +283,7 @@ class DdbItemService {
             resultsItems = apiResponse.getResponse()
 
             //Workaround for last-hit (Performance-issue)
-            if (reqParameters.id && reqParameters.id.equals("lasthit")) {
+            if (reqParameters.id && reqParameters.id.equals("lasthit") && resultsItems.results["docs"]) {
                 searchResultParameters["lastItemId"] = resultsItems.results["docs"][resultsItems.results["docs"].size() - 1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
