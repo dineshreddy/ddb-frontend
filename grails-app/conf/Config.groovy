@@ -179,6 +179,7 @@ ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
+ddb.rights.facette.enabled=true
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]

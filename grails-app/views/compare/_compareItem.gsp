@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
+<g:set var="config" bean="configurationService"/>
 <g:render template="institution" />
 <div class="row item-detail item-content">
   <g:each in="${binaryList}">
@@ -30,7 +31,9 @@ limitations under the License.
       <g:render template="binaries" />
     </g:if>
     <g:render template="fields" />
-    <g:render template="rights" />
+    <g:if test="${config.isRightsFacetteEnabled()}">
+      <g:render template="rights" />
+    </g:if>
     <g:render template="license" />
     <g:render template="/item/origin" />
   </div>
