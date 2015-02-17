@@ -61,10 +61,14 @@ limitations under the License.
     <tr>
       <td style="width: 30%" class="valign-top"><strong> <g:message encodeAs="html" code="ddbnext.License_Field" />:
       </strong></td>
-      <td style="width: 60%" class="valign-top"><a href="${license.url}" class="no-external-link-icon"><g:if test="${license.img}">
-            <g:img file="${license.img}" class="license-icon" alt="" />
-          </g:if><span> ${license.text}
-        </span></a></td>
+      <td style="width: 60%" class="valign-top">
+        <a href="${license.url}" class="no-external-link-icon">
+          <g:if test="${license.img}">
+            <rendering:inlinePng bytes="${licenseImage}" alt="license.text"/>
+          </g:if>
+          <span>${license.text}</span>
+        </a>
+      </td>
     </tr>
   </g:if>
 </table>
