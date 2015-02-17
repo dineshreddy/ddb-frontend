@@ -109,7 +109,9 @@ class EntityController implements InitializingBean {
             throw errorPageException
         }
         else if (!jsonGraph.person) {
-            render(view: "/message/message", model: [errors: ["ddbnext.Error_Entity_No_Elements"]])
+            render(view: "/message/message", model: [errors: [
+                    "ddbnext.Error_Entity_No_Elements"
+                ]])
             return
         }
 
@@ -366,21 +368,23 @@ class EntityController implements InitializingBean {
         def jsonGraph = null
         if(apiResponse.isOk()){
             jsonGraph = apiResponse.getResponse()
+
+            def entity = [:]
+
+            def searchPreview = entityService.doItemSearch(query, offset, rows, jsonGraph)
+
+            entity["searchPreview"] = searchPreview
+
+            //Replace all the newlines. The resulting html is better parsable by JQuery
+            def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
+
+            def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
+
+            render (contentType:"text/json"){result}
         }
-
-
-        def entity = [:]
-
-        def searchPreview = entityService.doItemSearch(query, offset, rows, jsonGraph)
-
-        entity["searchPreview"] = searchPreview
-
-        //Replace all the newlines. The resulting html is better parsable by JQuery
-        def resultsHTML = g.render(template:"/entity/searchResults", model:["entity": entity]).replaceAll("\r\n", '').replaceAll("\n", '')
-
-        def result = ["html": resultsHTML, "resultCount" : searchPreview?.resultCount]
-
-        render (contentType:"text/json"){result}
+        else {
+            render(status: response.SC_NOT_FOUND)
+        }
     }
 
     /**
