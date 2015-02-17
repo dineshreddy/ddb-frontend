@@ -13,10 +13,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.common.CultureGraphService"%>
-<%@page import="de.ddb.common.JsonUtil"%>
+<%@ page import="de.ddb.common.CultureGraphService" %>
+<%@ page import="de.ddb.common.JsonUtil" %>
 <%@ page import="net.sf.json.*" %>
-<%@page defaultCodec="none" %>
+<%@ page defaultCodec="none" %>
+<g:set var="config" bean="configurationService"/>
 <table border="0" cellpadding="2" cellspacing="3" width="100%" class="fields-table">
   <g:each in="${fields}">
     <tr>
@@ -49,7 +50,7 @@ limitations under the License.
     </tr>
   </g:each>
   <!-- Item Rights -->
-  <g:if test="${item.rights != null && !item.rights.toString().trim().isEmpty()}">
+  <g:if test="${config.isRightsFacetteEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
       <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:
       </strong></td>
