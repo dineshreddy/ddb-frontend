@@ -62,8 +62,13 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+        model.institutionImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                 model.institutionImage))
+
+        if (model.license?.img) {
+            model.licenseImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    configurationService.getContextPath() + model.license.img))
+        }
 
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
@@ -72,10 +77,10 @@ class DdbItemService {
         def viewerContent
         if (model.binaryList.size() > 0) {
             if (model.binaryList.first().preview.uri == '') {
-                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().thumbnail.uri))
             }else {
-                viewerContent= getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().preview.uri))
             }
         }
@@ -206,33 +211,6 @@ class DdbItemService {
     }
 
     /**
-     * Follow redirects.
-     */
-    private def findRealUrl(url) {
-        HttpURLConnection conn = url.openConnection()
-        conn.followRedirects = false
-        conn.requestMethod = 'HEAD'
-        if(conn.responseCode in [301, 302]) {
-            if (conn.headerFields.'Location') {
-                return findRealUrl(conn.headerFields.Location.first().toURL())
-            } else {
-                throw new RuntimeException('Failed to follow redirect')
-            }
-        }
-        return url
-    }
-
-    /**
-     * Get the content of the given URL and follow redirects.
-     *
-     * @param url URL
-     * @return content of that URL
-     */
-    private byte[] getContent(URL url) {
-        return findRealUrl(url).bytes
-    }
-
-    /**
      * Get Data to build Search Result Navigation Bar for Item Detail View
      *
      * @param reqParameters requestParameters
@@ -271,7 +249,7 @@ class DdbItemService {
 
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
-                searchResultParameters["lastItemId"] = resultsItems.results["docs"][1].id
+                searchResultParameters["lastItemId"] = resultsItems.results["docs"][resultsItems.results["docs"].size() - 1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
 

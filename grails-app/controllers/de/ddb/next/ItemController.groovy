@@ -40,7 +40,7 @@ class ItemController {
                 // inline images via data uris
                 model = ddbItemService.prepareImagesForPdf(model)
                 try {
-                    renderPdf(template: "itemPdfTable", model: model, filename: "DDB-Item-${id}.pdf")
+                    renderPdf(template: "itemPdfTable", model: model, filename: "Item-${id}.pdf")
                 } catch (grails.plugin.rendering.document.XmlParseException e) {
                     log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
                     forward controller: "error", action: "pdfNotFound"

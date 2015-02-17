@@ -11,6 +11,13 @@ class InstitutionMapModel {
         maxLat: 55.0556, // 55.86127,
         maxLon: 15.0419  // 18.5233
     ]
+    def etBoundaries = [
+        minLat: 57.3,
+        minLon: 21.5,
+        maxLat: 59.5,
+        maxLon: 28.1
+    ]
+    def boundaries = deBoundaries
 
     def InstitutionMapModel(){
     }
@@ -68,8 +75,8 @@ class InstitutionMapModel {
     def tree2mapElement(treeNode,superNode,number,indentLevel) {
         def latitude = treeNode.latitude.toDouble()
         def longitude = treeNode.longitude.toDouble()
-        if (latitude < deBoundaries.minLat || latitude > deBoundaries.maxLat
-        || longitude < deBoundaries.minLon || longitude > deBoundaries.maxLon
+        if (latitude < boundaries.minLat || latitude > boundaries.maxLat
+        || longitude < boundaries.minLon || longitude > boundaries.maxLon
         ) {
             return null
         }

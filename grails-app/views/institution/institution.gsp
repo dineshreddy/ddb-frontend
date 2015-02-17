@@ -77,7 +77,7 @@ limitations under the License.
                 <p class="address">
                   <b>${selectedOrgXML.name}</b><br>
                   <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
-                  <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.text().length() > 0)}">
+                  <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.length() > 0)}">
                     ${selectedOrgXML.locations.location.address.addressSupplement}<br>
                   </g:if>
                   <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }

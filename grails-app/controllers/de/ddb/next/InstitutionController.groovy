@@ -16,7 +16,6 @@
 package de.ddb.next
 import grails.converters.JSON
 import de.ddb.common.ApiInstitution
-import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 
@@ -74,7 +73,7 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             log.debug("root itemId = ${itemId}")
-            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name.text(), configurationService.getBackendUrl())
+            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name, configurationService.getBackendUrl())
 
             // logo
             def organisationLogo
@@ -85,8 +84,6 @@ class InstitutionController {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
-            
-            Folder folder = bookmarksService.findFolderByInstitutionId(itemId)
 
             render(
                     view: "institution",
@@ -101,8 +98,7 @@ class InstitutionController {
                         countObjcs: countObjectsForProv,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
-                        isFavorite: isFavorite(id),
-                        folder: folder]
+                        isFavorite: isFavorite(id)]
                     )
         } else {
             forward controller: 'error', action: "defaultNotFound"
