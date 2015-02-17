@@ -81,7 +81,7 @@ class EntityController implements InitializingBean {
         }
 
         try {
-            entityService.getEntityDetails(entityId);
+            entityService.getEntityDetails(entityId)
         } catch (Exception e) {
             def errors = []
             errors.add("ddbnext.Error_Entity_No_Elements")
@@ -108,9 +108,13 @@ class EntityController implements InitializingBean {
             request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
             throw errorPageException
         }
+        else if (!jsonGraph.person) {
+            render(view: "/message/message", model: [errors: ["ddbnext.Error_Entity_No_Elements"]])
+            return
+        }
 
         def entityUri = request.forwardURI
-        def title = jsonGraph?.person?.preferredName
+        def title = jsonGraph.person.preferredName
 
         //------------------------- Object Search -------------------------------
 
@@ -149,7 +153,7 @@ class EntityController implements InitializingBean {
         }
 
         // filter out external links which point to DDB
-        jsonGraph.sameAs.removeAll { link -> new URL(link.'@id').getHost().equals(ddbUrl.getHost())}
+        jsonGraph.sameAs?.removeAll { link -> new URL(link.'@id').getHost().equals(ddbUrl.getHost())}
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,

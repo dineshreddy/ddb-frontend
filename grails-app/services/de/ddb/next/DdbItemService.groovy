@@ -158,7 +158,7 @@ class DdbItemService {
         }
 
         def similarItems = itemService.getSimilarItems(itemId)
-        def itemSource = itemService.getItemXmlSource(id)
+        def itemSource = itemService.getItemXmlSource(itemId)
         def collection = new XmlSlurper().parseText(itemSource)
         def geometry = collection.monument.georeference.geometry.text()
 
@@ -284,7 +284,7 @@ class DdbItemService {
 
             //Workaround for last-hit (Performance-issue)
             if (reqParameters.id && reqParameters.id.equals("lasthit")) {
-                searchResultParameters["lastItemId"] = resultsItems.results["docs"][1].id
+                searchResultParameters["lastItemId"] = resultsItems.results["docs"][resultsItems.results["docs"].size() - 1].id
             }
             searchResultParameters["resultsItems"] = resultsItems
 
