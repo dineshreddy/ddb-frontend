@@ -65,6 +65,11 @@ class DdbItemService {
         model.institutionImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                 model.institutionImage))
 
+        if (model.license?.img) {
+            model.licenseImage = getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    configurationService.getContextPath() + model.license.img))
+        }
+
         //FONT for PDF
         model.fontKarbidWeb=grailsApplication.mainContext.getResourceByPath('/css/fonts/KarbidWeb.woff').file.bytes
         model.fontCalibri=grailsApplication.mainContext.getResourceByPath('/css/fonts/Calibri.ttf').file.bytes
@@ -283,7 +288,7 @@ class DdbItemService {
             resultsItems = apiResponse.getResponse()
 
             //Workaround for last-hit (Performance-issue)
-            if (reqParameters.id && reqParameters.id.equals("lasthit")) {
+            if (reqParameters.id && reqParameters.id.equals("lasthit") && resultsItems.results["docs"]) {
                 searchResultParameters["lastItemId"] = resultsItems.results["docs"][resultsItems.results["docs"].size() - 1].id
             }
             searchResultParameters["resultsItems"] = resultsItems

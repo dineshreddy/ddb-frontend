@@ -20,7 +20,7 @@ limitations under the License.
 
 <g:set var="itemTitle" value="${ddbcommon.wellFormedDocFromString(text:ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351))) }" />
 <title>
-  ${itemTitle} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
+  ${itemTitle} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <style type="text/css">
 @media print {
   @page {

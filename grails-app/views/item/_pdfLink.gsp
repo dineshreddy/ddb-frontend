@@ -15,6 +15,6 @@ limitations under the License.
 --%>
 <div class="link-block hidden-phone">
   <g:link class="pdf-link" controller="item" params="${params + [pdf:true]}" title="${message(code: 'ddbnext.export_pdf')}" target="_blank">
-    <span><g:message encodeAs="html" code="ddbnext.export_pdf" /></span>
+    <span><g:message code="ddbnext.export_pdf" /></span>
   </g:link>
 </div>
