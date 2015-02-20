@@ -68,12 +68,25 @@ limitations under the License.
             <g:else>
               <g:set var="mediatype" value="image"/>
             </g:else>
+            <g:set var="mediaImage" value="${'images/placeholder/' + mediatype + '.png'}"/>
+            <!-- check if image exists -->
+            <g:if test="${request.servletContext.getResource(mediaImage)}">
+              <g:set var="mediaImage" value="${request.getContextPath() + '/' + mediaImage}"/>
+            </g:if>
+            <g:else>
+              <g:set var="mediaImage" value=""/>
+            </g:else>
             <div class="viewer-icon">
-              <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
+              <a target="_blank" class="show-origin" href="${ddb.doHtmlEncode(url: originUrl)}"
+                 title="${g.message(code: "ddbnext.stat_008")}">
+              </a>
             </div>
-            <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
-              <img src="${request.getContextPath() + '/images/placeholder/' + mediatype + '.png'}" alt="${itemTitle}" class="viewer-placeholder"/>
-            </a>
+            <g:if test="${mediaImage}">
+              <a target="_blank" class="no-external-link-icon" href="${ddb.doHtmlEncode(url: originUrl)}"
+                 title="${g.message(code: "ddbnext.stat_008")}">
+                <img src="${mediaImage}" alt="${itemTitle}" class="viewer-placeholder"/>
+              </a>
+            </g:if>
           </li>
         </g:else>
       </ul>
@@ -125,7 +138,10 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab images" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" /></p>
+      <p class="tab images" role="tab">
+        <g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Images"
+                   args="${flashInformation.images}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Images" />
+      </p>
     </div>
     <div class="scroller images ${display}" role="tabpanel">
       <ul class="gallery-images gallery-tab">
@@ -138,7 +154,8 @@ limitations under the License.
           </g:else>
           <g:if test="${(it.full.uri != '' || it.preview.uri != '') && it.orig.uri.video.isEmpty() && it.orig.uri.audio.isEmpty()}">
             <li>
-              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image" data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${it.preview.title}">
+              <a class="group" href="${it.preview.uri}" data-content="${content}" data-type="image"
+                 data-author="${it.preview.author}" data-rights="${it.preview.rights}" title="${it.preview.title}">
                 <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail image">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
@@ -184,7 +201,10 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab videos" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" /></p>
+      <p class="tab videos" role="tab">
+        <g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos"
+                   args="${flashInformation.videos}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Videos" />
+      </p>
     </div>
     <div class="scroller videos ${display}" role="tabpanel">
       <ul class="gallery-videos gallery-tab">
@@ -198,7 +218,8 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.video}"  data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="video" title="${it.orig.title}">
+                 data-content="${it.orig.uri.video}" data-author="${it.orig.author}" data-rights="${it.orig.rights}"
+                 data-type="video" title="${it.orig.title}">
                 <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder </g:if>thumbnail video">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
@@ -243,7 +264,10 @@ limitations under the License.
       <g:set var="display" value="off"/>
     </g:else>
     <div role="tablist" class="${display}">
-      <p class="tab audios ${display}" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" /></p>
+      <p class="tab audios ${display}" role="tab">
+        <g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios"
+                   args="${flashInformation.audios}" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Audios" />
+      </p>
     </div>
     <div class="scroller audios ${display}" role="tabpanel">
       <ul class="gallery-audios gallery-tab">
@@ -257,7 +281,8 @@ limitations under the License.
                  <g:else>
                    href="${it.preview.uri}"
                  </g:else>
-                 data-content="${it.orig.uri.audio}" data-author="${it.orig.author}" data-rights="${it.orig.rights}" data-type="audio" title="${it.orig.title}">
+                 data-content="${it.orig.uri.audio}" data-author="${it.orig.author}" data-rights="${it.orig.rights}"
+                 data-type="audio" title="${it.orig.title}">
                 <div class="<g:if test="${it.thumbnail.uri.isEmpty()}">placeholder</g:if> thumbnail audio">
                   <img src="${it.thumbnail.uri}" alt="${it.thumbnail.title}" />
                 </div>
@@ -297,7 +322,10 @@ limitations under the License.
     </noscript>
     <g:if test="${geometryInput}">
       <div role="tablist">
-        <p class="tab map" role="tab"><g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Map" default="ddbnext.BinaryViewer_MediaCountLabelFormat_Map" /></p>
+        <p class="tab map" role="tab">
+          <g:message encodeAs="html" code="ddbnext.BinaryViewer_MediaCountLabelFormat_Map"
+                     default="ddbnext.BinaryViewer_MediaCountLabelFormat_Map" />
+        </p>
       </div>
     </g:if>
   </div>
