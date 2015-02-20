@@ -39,10 +39,10 @@ limitations under the License.
       <div class="summary <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">row</g:if>">
         <g:if test="${viewType == SearchParamEnum.VIEWTYPE_GRID.getName()}">
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, hitNumber: hitNumber, action: action, controller: controller]}" />
-          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller, mediaIcons: false]}" />
+          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller]}" />
         </g:if>
         <g:else>
-          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller, mediaIcons: false]}" />
+          <g:render template="summaryMainWrapper" model="${[viewType: viewType, item: it, urlParams: urlParams, hitNumber: hitNumber, action: action, controller: controller]}" />
           <g:render template="thumbnailWrapper" model="${[viewType: viewType, item: it, confBinary: confBinary, hitNumber: hitNumber, action: action, controller: controller]}" />
         </g:else>
       </div>
