@@ -16,6 +16,8 @@ limitations under the License.
 <!--[if lt IE 9]>
   <div class="footer container" role="contentinfo">
 <![endif]-->
+<g:set var="menu" bean="mainMenuService"/>
+
 <footer class="container">
   <div class="row">
     <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Footer"/></h1>
@@ -23,11 +25,11 @@ limitations under the License.
       <div class="inner">
         <small><g:message encodeAs="html" code="ddbnext.Copyright"/></small>
         <ul>
-          <li><g:link controller="content" params="[dir: 'nutzungsbedingungen']"><g:message encodeAs="html" code="ddbnext.Terms_of_Use"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'datenschutzerklaerung']"><g:message encodeAs="html" code="ddbnext.Privacy_Policy"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'impressum']"><g:message encodeAs="html" code="ddbnext.Publisher"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'sitemap']"><g:message encodeAs="html" code="ddbnext.Sitemap"/></g:link></li>
-          <li><g:link controller="content" params="[dir: 'kontakt']"><g:message encodeAs="html" code="ddbnext.Contact"/></g:link></li>
+          <g:each var="menuItem" in="${menu.footerMenu}">
+            <li>
+              <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
+            </li>
+          </g:each>
         </ul>
         <div class="build"><ddbcommon:getFrontendVersion /> / <ddbcommon:getBackendVersion/></div>
         <ddb:getSocialIconsUrl />
