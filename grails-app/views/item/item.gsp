@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:set var="config" bean="configurationService"/>
 <g:set var="itemTitle" value="${ddbcommon.getTruncatedItemTitle(title: title, length: (binaryList?271:351)) }" />
 <html>
 <head>
@@ -46,7 +47,9 @@ limitations under the License.
         ${itemTitle.encodeAsHTML()}
       </h2>
       <g:render template="fields" />
-      <g:render template="rights" />
+      <g:if test="${config.isRightsFacetEnabled()}">
+        <g:render template="rights" />
+      </g:if>
       <g:render template="license" />
       <g:render template="origin" />
 <%--

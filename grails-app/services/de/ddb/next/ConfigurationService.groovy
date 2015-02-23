@@ -119,8 +119,25 @@ class ConfigurationService extends CommonConfigurationService {
     }
 
     public boolean isCulturegraphFeaturesEnabled() {
-        // return getExistingConfigValue("ddb.culturegraph.features.enabled")
+        //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
+        //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
+        //      we will return always true in this method of the develop branch.
+        //      Later versions of develop might reactivate the code.
+
+        //        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
+        //        return Boolean.parseBoolean(value.toString())
+
         return true
+    }
+
+    public boolean isExhibitionsFeaturesEnabled() {
+        def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
+        return Boolean.parseBoolean(value.toString())
+    }
+
+    public boolean isRightsFacetEnabled() {
+        def value = getExistingConfigValue("ddb.rights.facet.enabled")
+        return Boolean.parseBoolean(value.toString())
     }
 
     public def logConfigurationSettings() {
@@ -139,6 +156,8 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
+        log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
+        log.info "ddb.rights.facet.enabled = " + isRightsFacetEnabled()
         log.info "-------------------------------------------------------"
     }
 }

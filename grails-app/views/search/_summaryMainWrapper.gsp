@@ -41,9 +41,4 @@ limitations under the License.
       </li>
     </ul>
   </div>
-  <g:if test="${(mediaIcons && mediaIcons != false) || mediaIcons == null}">
-    <div class="extra">
-      <ddb:renderMediaTypesList mediaTypesArray="${item.preview.media}"></ddb:renderMediaTypesList>
-    </div>
-  </g:if>
 </div>

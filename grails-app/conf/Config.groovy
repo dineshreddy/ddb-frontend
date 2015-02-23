@@ -14,20 +14,7 @@
  * limitations under the License.
  */
 
- import de.ddb.common.constants.FacetEnum
-
-// locations to search for config files that get merged into the main config;
-// config files can be ConfigSlurper scripts, Java properties files, or classes
-// in the classpath in ConfigSlurper format
-
-// grails.config.locations = [ "classpath:${appName}-config.properties",
-//                             "classpath:${appName}-config.groovy",
-//                             "file:${userHome}/.grails/${appName}-config.properties",
-//                             "file:${userHome}/.grails/${appName}-config.groovy"]
-
-// if (System.properties["${appName}.config.location"]) {
-//    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
-// }
+import de.ddb.common.constants.FacetEnum
 
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 grails.mime.file.extensions = true // enables the parsing of file extensions from URLs into the request format
@@ -151,7 +138,7 @@ ddb.binary.url="http://localhost/binary/"
 ddb.static.url="http://localhost/static/"
 ddb.apis.url="http://localhost:8080/"
 ddb.backend.url="http://localhost/backend:9998/"
-ddb.backend.apikey=""
+ddb.backend.apikey="apikey"
 ddb.aas.admin.userid="userid"
 ddb.aas.admin.password=" "
 ddb.aas.url="http://localhost/aas:8081/aas/"
@@ -180,6 +167,7 @@ ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
+ddb.rights.facet.enabled=true
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]
@@ -188,29 +176,39 @@ ddb.defaultLanguage="de_DE"
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
+def appName = "${appName}"
 
 // log4j configuration
 log4j = {
 
     // The appenders define the output method of the loggings
     appenders {
-        console name: "console", threshold: org.apache.log4j.Level.INFO, layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "ddbnext-info", threshold: org.apache.log4j.Level.INFO, file: config.ddb.logging.folder+"/ddbnext-info.log", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "ddbnext-warn", threshold: org.apache.log4j.Level.WARN, file: config.ddb.logging.folder+"/ddbnext-warn.log", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "ddbnext-error", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-error.log", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "stacktrace", threshold: org.apache.log4j.Level.ERROR, file: config.ddb.logging.folder+"/ddbnext-stacktrace.log", layout:pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        console name: "console", threshold: org.apache.log4j.Level.INFO,
+            layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        file name: "${appName}-info", threshold: org.apache.log4j.Level.INFO,
+            file: config.ddb.logging.folder + "/${appName}-info.log",
+            layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        file name: "${appName}-warn", threshold: org.apache.log4j.Level.WARN,
+            file: config.ddb.logging.folder + "/${appName}-warn.log",
+            layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        file name: "${appName}-error", threshold: org.apache.log4j.Level.ERROR,
+            file: config.ddb.logging.folder + "/${appName}-error.log",
+            layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
+        file name: "stacktrace", threshold: org.apache.log4j.Level.ERROR,
+            file: config.ddb.logging.folder + "/${appName}-stacktrace.log",
+            layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
     }
 
     // The root logger defines the basic log level and to which appenders the logging is going
     environments {
         development {
-            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
+            root { info "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
         production {
-            root { info "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace" }
+            root { info "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
         test {
-            root {  info "console", "ddbnext-info", "ddbnext-warn", "ddbnext-error", "stacktrace"  }
+            root { info "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
     }
 

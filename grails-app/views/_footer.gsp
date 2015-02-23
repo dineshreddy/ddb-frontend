@@ -21,7 +21,7 @@ limitations under the License.
     <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Footer"/></h1>
     <div class="span12 legal">
       <div class="inner">
-        <small><g:message encodeAs="html" code="ddbnext.Copyright_Deutsche_Digitale_Bibliothek"/></small>
+        <small><g:message encodeAs="html" code="ddbnext.Copyright"/></small>
         <ul>
           <li><g:link controller="content" params="[dir: 'nutzungsbedingungen']"><g:message encodeAs="html" code="ddbnext.Terms_of_Use"/></g:link></li>
           <li><g:link controller="content" params="[dir: 'datenschutzerklaerung']"><g:message encodeAs="html" code="ddbnext.Privacy_Policy"/></g:link></li>
