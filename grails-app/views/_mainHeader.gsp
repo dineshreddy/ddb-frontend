@@ -65,7 +65,7 @@ limitations under the License.
             </g:form></li>
 
             <%-- menu items from CMS --%>
-            <g:each var="menuItem" in="${menu.mainMenu}">
+            <g:each var="menuItem" in="${menu.headerMenu}">
               <g:set var="isActive" value="${ddb.isMappingActive(context:params, testmenu:menuItem)}"/>
               <li class="highlight${isActive ? " active" : ""}">
                 <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
@@ -166,7 +166,7 @@ limitations under the License.
             <div role="navigation">
               <ul class="navigation inline">
                 <%-- menu items from CMS --%>
-                <g:each var="menuItem" in="${menu.mainMenu}">
+                <g:each var="menuItem" in="${menu.headerMenu}">
                   <g:set var="isActive" value="${ddb.isMappingActive(
                       context:params, testmenu:menuItem, testsubmenu:true)}"/>
                   <li class="${menuItem.subMenuItems ? "keep-in-front" : ""} ${isActive ? "active-default" : ""}">

@@ -15,11 +15,12 @@
  */
 package de.ddb.next
 
+import groovy.json.JsonSlurper
 import de.ddb.common.ApiConsumer
 import de.ddb.next.beans.MenuItem
 
 /**
- * Service for loading the main menu from CMS.
+ * Service for loading the main menu from JSON.
  *
  * @author sche
  */
@@ -29,13 +30,21 @@ class MainMenuService {
     def configurationService
     def transactional = false
 
-    private MenuItem[] mainMenu
+    private MenuItem[] footerMenu
+    private MenuItem[] headerMenu
 
-    public MenuItem[] getMainMenu() {
-        if (!mainMenu) {
-            mainMenu = loadMainMenu()
+    public MenuItem[] getFooterMenu() {
+        if (!footerMenu) {
+            footerMenu = loadMainMenu(configurationService.getFooterMenu())
         }
-        return mainMenu
+        return footerMenu
+    }
+
+    public MenuItem[] getHeaderMenu() {
+        if (!headerMenu) {
+            headerMenu = loadMainMenu()
+        }
+        return headerMenu
     }
 
     /**
@@ -58,6 +67,34 @@ class MainMenuService {
         }
         else {
             log.error "faild to load main menu file from " + configurationService.cmsUrl + PATH
+        }
+        return result
+    }
+
+    /**
+     * Load the menu JSON from a file.
+     *
+     * @param url JSON file to load
+     *
+     * @return list of menu items
+     */
+    private MenuItem[] loadMainMenu(String url) {
+        def result
+
+        def slurper = new JsonSlurper()
+        File menu = new File(url)
+
+        def jsonMenu = slurper.parse(menu.newReader())
+        if (jsonMenu) {
+            def mainMenu = jsonMenu.mainmenu
+            result = [mainMenu.size()]
+            mainMenu.each {menuItem ->
+                result[menuItem.position - 1] =
+                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
+            }
+        }
+        else {
+            log.error "faild to load main menu file " + menu
         }
         return result
     }
