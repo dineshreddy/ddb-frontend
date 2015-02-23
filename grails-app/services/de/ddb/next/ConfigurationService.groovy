@@ -86,6 +86,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.domain.canonic")
     }
 
+    public String getFooterMenu() {
+        return getConfigValue("ddb.footerMenu")
+    }
+
     public String getGrailsMailHost(){
         return getConfigValue("grails.mail.host")
     }
@@ -104,6 +108,10 @@ class ConfigurationService extends CommonConfigurationService {
 
     public String getMimeTypeHtml(){
         return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
+    }
+
+    public String getMainMenu(){
+        return getConfigValue("ddb.mainMenu")
     }
 
     public getSocialIconsFacebookUrl(){
@@ -152,7 +160,10 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
+        log.info "ddb.footerMenu = " + getFooterMenu()
+        log.info "ddb.mainMenu = " + getMainMenu()
         log.info "ddb.rights.facet.enabled = " + isRightsFacetEnabled()
+
         log.info "-------------------------------------------------------"
     }
 }
