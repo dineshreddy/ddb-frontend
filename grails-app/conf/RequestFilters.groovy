@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-//import org.codehaus.groovy.grails.web.servlet.mvc.GrailsParameterMap;
-//import de.ddb.next.DdbSecurityHelper;
-
+import org.springframework.web.servlet.LocaleResolver
+import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 /**
  * This class acts as the default Grails request filter class. 
@@ -26,10 +25,27 @@
  * @author hla
  */
 class RequestFilters {
-
-    def log
+    def configurationService
+    def languageService
 
     def filters = {
+        /**
+         * Ensure that the default locale is used if the locale from the user's browser isn't available.
+         */
+        setLocale(controller:'*', action:'*') {
+            before = {
+                if (request && !session.locale) {
+                    LocaleResolver localeResolver = RCU.getLocaleResolver(request)
+                    Locale currentLocale = localeResolver.resolveLocale(request)
+
+                    if (!languageService.supports(currentLocale)) {
+                        currentLocale = configurationService.getDefaultLanguage()
+                        localeResolver.setLocale(request, response,  currentLocale)
+                        session.locale = currentLocale
+                    }
+                }
+            }
+        }
 
         /**
          * Adds a new entry to the response header of all requested pages for IE compatibility. 
@@ -39,6 +55,5 @@ class RequestFilters {
                 response.addHeader("X-UA-Compatible", "IE=8,9,10")
             }
         }
-
     }
 }
