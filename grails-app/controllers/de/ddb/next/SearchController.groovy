@@ -128,8 +128,6 @@ class SearchController {
             //Calculating results pagination (previous page, next page, first page, and last page)
             def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
             def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-            def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
-
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
             def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
 
@@ -146,7 +144,8 @@ class SearchController {
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
-                    totalPages: totalPagesFormatted,
+                    totalPages: totalPages,
+                    totalPagesFormatted: String.format(locale, "%,d", totalPages.toInteger()),
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
                     offset: params[SearchParamEnum.OFFSET.getName()]
@@ -254,7 +253,6 @@ class SearchController {
         //Calculating results pagination (previous page, next page, first page, and last page)
         def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
         def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
                 ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
@@ -289,7 +287,8 @@ class SearchController {
                 resultsPaginatorOptions: resultsPaginatorOptions,
                 resultsOverallIndex:resultsOverallIndex,
                 page: page,
-                totalPages: totalPagesFormatted,
+                totalPages: totalPages,
+                totalPagesFormatted: String.format(locale, "%,d", totalPages.toInteger()),
                 paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                 numberOfResults: numberOfResultsFormatted,
                 offset: params[SearchParamEnum.OFFSET.getName()]
