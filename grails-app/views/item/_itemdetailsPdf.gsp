@@ -13,7 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@ page import="de.ddb.common.CultureGraphService" %>
 <%@ page import="de.ddb.common.JsonUtil" %>
 <%@ page import="net.sf.json.*" %>
 <%@ page defaultCodec="none" %>
@@ -21,8 +20,10 @@ limitations under the License.
 <table border="0" cellpadding="2" cellspacing="3" width="100%" class="fields-table">
   <g:each in="${fields}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong>
-      ${it.name}:</strong>
+      <td style="width: 35%" class="valign-top">
+        <strong>
+          <ddbcommon:wellFormedDocFromString text="${it.name}"/>:
+        </strong>
       </td>
       <td class="valign-top value">
         <g:if test="${it.value instanceof JSONArray}">
@@ -52,8 +53,11 @@ limitations under the License.
   <!-- Item Rights -->
   <g:if test="${config.isRightsFacetEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
-      <td style="width: 35%" class="valign-top"><strong> <g:message code="ddbnext.stat_007" />:
-      </strong></td>
+      <td style="width: 35%" class="valign-top">
+        <strong>
+          <g:message code="ddbnext.stat_007"/>:
+        </strong>
+      </td>
       <td style="width: 65%" class="valign-top">
         <ddbcommon:wellFormedDocFromString text="${item.rights}"/>
       </td>
@@ -62,14 +66,19 @@ limitations under the License.
   <!-- Item License -->
   <g:if test="${license}">
     <tr>
-      <td style="width: 30%" class="valign-top"><strong> <g:message code="ddbnext.License_Field" />:
-      </strong></td>
+      <td style="width: 30%" class="valign-top">
+        <strong>
+          <g:message code="ddbnext.License_Field"/>:
+        </strong>
+      </td>
       <td style="width: 60%" class="valign-top">
         <a href="${license.url}" class="no-external-link-icon">
           <g:if test="${license.img}">
-            <rendering:inlinePng bytes="${licenseImage}" alt="license.text"/>
+            <rendering:inlinePng bytes="${licenseImage}" alt="${ddbcommon.wellFormedDocFromString(text: license.text)}"/>
           </g:if>
-          <span>${license.text}</span>
+          <span>
+            <ddbcommon:wellFormedDocFromString text="${license.text}"/>
+          </span>
         </a>
       </td>
     </tr>

@@ -144,24 +144,29 @@ limitations under the License.
 <body>
   <table border="0" width="100%">
     <tr>
-      <td><rendering:inlinePng bytes="${logo}" alt="Deutsche Digitale Bibliothek" width="270px" height="68px" /></td>
+      <td>
+        <rendering:inlinePng bytes="${logo}" alt="${g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}"
+                             width="270px" height="68px"/>
+      </td>
     </tr>
     <tr>
       <td><div class="bb"></div></td>
     </tr>
     <tr>
-      <td><g:render template="pdfTableInstitution" /></td>
+      <td><g:render template="pdfTableInstitution"/></td>
     </tr>
     <tr>
       <td>
         <div class="item-title">
-          <h2>${ddbcommon.wellFormedDocFromString(text:itemTitle)}</h2>
+          <h2>
+            <ddbcommon:wellFormedDocFromString text="${itemTitle}"/>
+          </h2>
         </div>
-        <g:if test="${binaryList}"> <g:render template="itemBinariesPdf" /></g:if>
+        <g:if test="${binaryList}"><g:render template="itemBinariesPdf"/></g:if>
      </td>
     </tr>
   </table>
-  <g:render template="itemdetailsPdf" />
-  <g:render template="linkurlPdf" />
+  <g:render template="itemdetailsPdf"/>
+  <g:render template="linkurlPdf"/>
 </body>
 </html>
