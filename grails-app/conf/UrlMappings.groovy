@@ -366,7 +366,6 @@ class UrlMappings {
         "500"(controller: "error", action: "conflict", exception: de.ddb.common.exception.ConflictException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.ConfigurationException)
         "500"(controller: "error", action: "serverError", exception: de.ddb.common.exception.BackendErrorException)
-        "500"(controller: "error", action: "cultureGraphError", exception: de.ddb.common.exception.CultureGraphException)
         "500"(controller: "error", action: "uncaughtException")
         "404"(controller: "error", action: "defaultNotFound")
 
