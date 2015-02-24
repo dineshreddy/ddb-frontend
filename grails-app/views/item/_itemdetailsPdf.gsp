@@ -51,7 +51,7 @@ limitations under the License.
     </tr>
   </g:each>
   <!-- Item Rights -->
-  <g:if test="${config.isRightsFacetEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
+  <g:if test="${config.isRightsFacetFeaturesEnabled() && item.rights != null && !item.rights.toString().trim().isEmpty()}">
     <tr>
       <td style="width: 35%" class="valign-top">
         <strong>

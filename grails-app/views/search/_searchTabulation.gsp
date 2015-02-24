@@ -14,6 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.Type"%>
+<g:set var="config" bean="configurationService"/>
 <div class="results-paginator-options">
   <div class="row">
     <div class="span6 tabulator">
@@ -33,14 +34,13 @@ limitations under the License.
             <g:message code="ddbnext.Entity_Objects" />
           </g:link>
         </li>
-        <li>
+        <li class="${config.isEntitySearchFeaturesEnabled() ? "" : "off"}">
           <g:link controller="entity" action="personsearch" params="[query:query]"
             class="${(active==Type.ENTITY.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.entity.tabulator.persons" />
           </g:link>
         </li>
-        <%--<li><g:message code="ddbnext.Locations" /></li>--%>
-        <li>
+        <li class="${config.isInstitutionSearchFeaturesEnabled() ? "" : "off"}">
           <g:link controller="search" action="institution" params="[query:query]" class="${(active==Type.INSTITUTION.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.Institutions" />
           </g:link>
