@@ -20,14 +20,11 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiResponse
-import de.ddb.common.ApiResponse.HttpStatus
 import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
-import de.ddb.common.exception.CultureGraphException
-import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Controller class for all entity related views
@@ -83,30 +80,17 @@ class EntityController implements InitializingBean {
         try {
             entityService.getEntityDetails(entityId)
         } catch (Exception e) {
-            def errors = []
-            errors.add("ddbnext.Error_Entity_No_Elements")
-            render(view: "/message/message", model: [errors: errors])
             return
         }
 
         ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
-        if(!apiResponse.isOk()){
-            if(apiResponse.getStatus() == HttpStatus.HTTP_404){
-                return
-            }else{
-                CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
-                request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
-                throw errorPageException
-            }
+        if (!apiResponse.isOk()) {
+            return
         }
 
         def jsonGraph = apiResponse.getResponse()
-
         if (jsonGraph == null) {
-            // Should never be null. If null, something unexpected happened
-            CultureGraphException errorPageException = new CultureGraphException(CultureGraphExceptionType.RESPONSE_500)
-            request.setAttribute(ApiResponse.REQUEST_ATTRIBUTE_APIRESPONSE, errorPageException)
-            throw errorPageException
+            return
         }
         else if (!jsonGraph.person) {
             render(view: "/message/message", model: [errors: [

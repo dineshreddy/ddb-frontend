@@ -31,7 +31,7 @@ limitations under the License.
       <g:render template="binaries" />
     </g:if>
     <g:render template="fields" />
-    <g:if test="${config.isRightsFacetEnabled()}">
+    <g:if test="${config.isRightsFacetFeaturesEnabled()}">
       <g:render template="rights" />
     </g:if>
     <g:render template="license" />

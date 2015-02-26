@@ -115,13 +115,19 @@ limitations under the License.
     
 
     <div class="span9">
-      <div class="off result-pages-count">${totalPages}</div>
+      <div class="off result-pages-count"><ddb:getLocalizedNumber>${totalPages}</ddb:getLocalizedNumber></div>
       <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="${Type.CULTURAL_ITEM.getName()}" />
       <div style="clear:both;"> 
       
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.CULTURAL_ITEM.getName()]}" paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex,
+                                           numberOfResults: numberOfResultsFormatted,
+                                           page: page,
+                                           totalPages: totalPages,
+                                           paginationURL: paginationURL,
+                                           tabulatorActive: Type.CULTURAL_ITEM.getName()]}"
+                               paginatorOptions="${resultsPaginatorOptions}" paginatorViewSwitch="${true}"/>
               
         <g:if test="${correctedQuery!='null'}">
             <g:if test="${correctedQuery}">
@@ -141,7 +147,11 @@ limitations under the License.
           </div>
         </div>
             
-        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: numberOfResultsFormatted, page: page, totalPages: totalPages, paginationURL:paginationURL]}" />
+        <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex,
+                                           numberOfResults: numberOfResultsFormatted,
+                                           page: page,
+                                           totalPages: totalPages,
+                                           paginationURL:paginationURL]}"/>
       </div>
 
       <%-- favorite confirmation dialog - only one per page --%>
