@@ -21,15 +21,14 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
+import de.ddb.common.CommonInstitutionService
 import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
-import de.ddb.common.constants.FacetEnum
-import de.ddb.common.constants.SearchParamEnum
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.InstitutionMapModel
 
-class InstitutionService {
+class InstitutionService extends CommonInstitutionService {
 
     private static final def LETTERS='A'..'Z'
 
@@ -403,17 +402,6 @@ class InstitutionService {
     }
 
     /**
-     * Remove all objects from the institution list which are no institutions.
-     *
-     * @param institution list original list containing also tectonics
-     *
-     * @return institution list without tectonics
-     */
-    private def filterInstitutions(institutions) {
-        return institutions.findAll{it.type == "institution"}
-    }
-
-    /**
      * Returns the search result for the institution highlight items
      *
      * @param institutionid the institution id to search the highlights
@@ -439,45 +427,6 @@ class InstitutionService {
             else {
                 result = result.take(rows)
             }
-        }
-        return result
-    }
-
-    def getInstitutionViewByItemId(String id) {
-        log.debug("get institution view by item id: ${id}")
-        def result
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/items/" + id + "/view")
-        if (apiResponse.isOk()) {
-            result = apiResponse.getResponse()
-        }
-        return result
-    }
-
-    def getParentsOfInstitutionByItemId(String id) {
-        log.debug("get parent of institution by item id: ${id}")
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/items/" + id + "/parents")
-        if(!apiResponse.isOk()){
-            log.error "Json: json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        return filterInstitutions(apiResponse.getResponse().hierarchy)
-    }
-
-    def getProviderObjectCount(String provName) {
-        def result = 0
-        def query = [(SearchParamEnum.QUERY.getName()):"*",
-            (SearchParamEnum.FACET.getName()):FacetEnum.PROVIDER_FCT.getName(),
-            (FacetEnum.PROVIDER_FCT.getName()):"${provName}",
-            (SearchParamEnum.ROWS.getName()):"0"]
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/search", false, query)
-        if(!apiResponse.isOk()){
-            log.error "Json: json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        def jsonResult = apiResponse.getResponse()
-        def providerFct = jsonResult.facets.find {e -> FacetEnum.valueOfName(e.field) == FacetEnum.PROVIDER_FCT}
-        if (providerFct?.facetValues?.count?.size() > 0) {
-            result = providerFct.facetValues.count[0]
         }
         return result
     }
