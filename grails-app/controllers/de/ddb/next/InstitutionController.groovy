@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 import grails.converters.JSON
-import de.ddb.common.ApiInstitution
 import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 
@@ -55,13 +54,12 @@ class InstitutionController {
     def showInstitutionsTreeByItemId() {
         def id = params.id
         def itemId = id
-        def vApiInstitution = new ApiInstitution()
         log.debug("read insitution by item id: ${id}")
-        def selectedOrgXML = vApiInstitution.getInstitutionViewByItemId(id, configurationService.getBackendUrl())
+        def selectedOrgXML = institutionService.getInstitutionViewByItemId(id)
         def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
         if (selectedOrgXML) {
             selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
-            def jsonOrgParentHierarchy = vApiInstitution.getParentsOfInstitutionByItemId(id, configurationService.getBackendUrl())
+            def jsonOrgParentHierarchy = institutionService.getParentsOfInstitutionByItemId(id)
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
@@ -73,7 +71,7 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             log.debug("root itemId = ${itemId}")
-            def countObjectsForProv = vApiInstitution.getProviderObjectCount(selectedOrgXML.name, configurationService.getBackendUrl())
+            def countObjectsForProv = institutionService.getProviderObjectCount(selectedOrgXML.name)
 
             // logo
             def organisationLogo
