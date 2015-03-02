@@ -25,6 +25,8 @@ class IsMappingActiveTagLib {
     static namespace = "ddb"
     static returnObjectForTags = ['isMappingActive']
 
+    def grailsUrlMappingsHolder
+
     /**
      * Return true if the given controller/action/dir combination fits the currently 
      * displayed page. The following combinations are possible parameters for the tag:
@@ -52,7 +54,7 @@ class IsMappingActiveTagLib {
             result = testForControllers(controllers, controller, dir, action)
         }
         else if (menuItem) {
-            result = testForMenuItem(menuItem, controller, dir, testSubMenu)
+            result = testForMenuItem(menuItem, controller, dir, action, testSubMenu)
         }
         return result
     }
@@ -100,20 +102,21 @@ class IsMappingActiveTagLib {
      * @param menuItem menu item to check
      * @param controller the controller
      * @param dir the dir
+     * @param action the action
      * @param testSubMenu if true then also sub menu items are checked
      *
      * @return true if the menu item matches
      */
-    private boolean testForMenuItem(def menuItem, def controller, def dir, def testSubMenu) {
+    private boolean testForMenuItem(def menuItem, String controller, String dir, String action, def testSubMenu) {
         boolean result
 
         // check if the menu item itself matches
-        result = uriMatches(menuItem.uri, controller, dir)
+        result = uriMatches(menuItem.uri, controller, dir, action)
 
         // check if a sub menu item matches
         if (testSubMenu && menuItem.subMenuItems && !result) {
             for (subMenuItem in menuItem.subMenuItems) {
-                if (uriMatches(subMenuItem.uri, controller, dir)) {
+                if (uriMatches(subMenuItem.uri, controller, dir, action)) {
                     result = true
                     break
                 }
@@ -124,17 +127,23 @@ class IsMappingActiveTagLib {
 
     /**
      * Test if the given combination of controller/dir matches the given uri.
+     *
      * @param uri uri to check
      * @param controller the controller
      * @param dir the dir
+     * @param action the action
      *
      * @return true if the uri matches
      */
-    private boolean uriMatches(String uri, def controller, def dir) {
-        String[] pathElements = uri.split("/")
-        String firstPathElement = (pathElements.length > 1 ? pathElements[1] : "index")
-        String secondPathElement = (pathElements.length > 2 ? pathElements[2] : null)
+    private boolean uriMatches(String uri, String controller, String dir, String action) {
+        boolean result = new URI(uri).equals(new URI("/" + controller + "/" + dir))
 
-        return firstPathElement == controller && secondPathElement == dir
+        if (!result) {
+            def mappingParameters = grailsUrlMappingsHolder.match(uri).getParameters()
+
+            result = mappingParameters.controller == controller &&
+                    (mappingParameters.action == action || mappingParameters.action == dir)
+        }
+        return result
     }
 }
