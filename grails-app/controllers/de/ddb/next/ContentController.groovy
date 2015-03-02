@@ -71,8 +71,7 @@ class ContentController {
             map << ["location": location,domainCanonic:configurationService.getDomainCanonic()]
 
             render(view: "staticcontent", model: map)
-        } catch (ItemNotFoundException infe) {
-            log.error "staticcontent(): Request for nonexisting item with id: '" + params?.dir + "'. Going 404..."
+        } catch (ItemNotFoundException e) {
             forward controller: "error", action: "itemNotFound"
         }
     }

@@ -64,7 +64,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
 
   resetNavigationElements : function(JSONresponse) {
 
-    this.totalPages.html(JSONresponse.totalPages);
+    this.totalPages.html(JSONresponse.totalPagesFormatted);
 
     this.numberOfResults.html(JSONresponse.numberOfResults);
 
@@ -148,8 +148,7 @@ $.extend(de.ddb.next.PaginationWidget.prototype, {
     }
 
     // Showing extra arrow
-    var totalPages = JSONresponse.totalPages.replace('.', '').replace(',', '');
-    if (totalPages > 5) {
+    if (JSONresponse.totalPages > 5) {
       this.extraControls.removeClass('off');
     } else {
       this.extraControls.addClass('off');

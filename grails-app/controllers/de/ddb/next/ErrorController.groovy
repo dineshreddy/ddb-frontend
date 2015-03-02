@@ -17,8 +17,6 @@ package de.ddb.next
 
 import grails.util.Environment
 import de.ddb.common.ApiResponse
-import de.ddb.common.exception.CultureGraphException
-import de.ddb.common.exception.CultureGraphException.CultureGraphExceptionType
 
 /**
  * Central controller for handling error situations (404, 500, etc).
@@ -179,45 +177,6 @@ class ErrorController {
 
     def pdfNotFound() {
         notFound(Type404.PDF_NOT_FOUND)
-    }
-
-    def cultureGraphError() {
-        def exceptionMessage = ""
-        def exceptionType = CultureGraphExceptionType.RESPONSE_500
-
-        // Does it come from a automatically handled backend request?
-        if(request?.exception){
-            exceptionMessage = request.exception.getCause().getMessage()
-            exceptionType = request.exception.getCause().getExceptionType()
-        }
-
-        if(exceptionType == CultureGraphExceptionType.RESPONSE_404){
-            response.status = response.SC_NOT_FOUND // Return response code 404
-        }else{
-            response.status = response.SC_INTERNAL_SERVER_ERROR // Return response code 500
-        }
-        response.setHeader("Error-Message", exceptionMessage)
-
-        // The content type and encoding of the error page (should be explicitly set, otherwise the mime
-        // could be text/json if an API was called and the layout would be messed up
-        def contentTypeFromConfig = configurationService.getMimeTypeHtml()
-        def encodingFromConfig = configurationService.getEncoding()
-
-        // Return the view dependent on the configured environment (PROD vs DEV)
-        if ( Environment.PRODUCTION == Environment.getCurrent() ) {
-
-            // Return the 404 view
-            log.error "cultureGraphError(): Return view 'culturegraph_production'"
-            return render(view:'culturegraph_production', contentType: contentTypeFromConfig, encoding: encodingFromConfig, model: [exceptionType: exceptionType])
-
-        } else {
-
-            // Not it production? show an ugly, developer-focused error message
-            log.error "cultureGraphError(): Return view 'culturegraph_development'"
-            return render(view:'culturegraph_development', model: ["error_message": exceptionMessage, exceptionType: exceptionType], contentType: contentTypeFromConfig, encoding: encodingFromConfig)
-
-        }
-
     }
 
     /**

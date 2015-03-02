@@ -138,13 +138,23 @@ class ConfigurationService extends CommonConfigurationService {
         return true
     }
 
+    public boolean isEntitySearchFeaturesEnabled() {
+        def value = getExistingConfigValue("ddb.search.entities.features.enabled")
+        return Boolean.parseBoolean(value.toString())
+    }
+
     public boolean isExhibitionsFeaturesEnabled() {
         def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
         return Boolean.parseBoolean(value.toString())
     }
 
-    public boolean isRightsFacetEnabled() {
-        def value = getExistingConfigValue("ddb.rights.facet.enabled")
+    public boolean isInstitutionSearchFeaturesEnabled() {
+        def value = getExistingConfigValue("ddb.search.institutions.features.enabled")
+        return Boolean.parseBoolean(value.toString())
+    }
+
+    public boolean isRightsFacetFeaturesEnabled() {
+        def value = getExistingConfigValue("ddb.rights.facet.features.enabled")
         return Boolean.parseBoolean(value.toString())
     }
 
@@ -164,10 +174,12 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
         log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
+        log.info "ddb.entities.features.enabled = " + isEntitySearchFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.footerMenu = " + getFooterMenu()
+        log.info "ddb.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
         log.info "ddb.mainMenu = " + getMainMenu()
-        log.info "ddb.rights.facet.enabled = " + isRightsFacetEnabled()
+        log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
 
         log.info "-------------------------------------------------------"
     }
