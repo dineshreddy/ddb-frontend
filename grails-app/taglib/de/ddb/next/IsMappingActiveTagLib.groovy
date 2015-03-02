@@ -46,6 +46,7 @@ class IsMappingActiveTagLib {
         def controller = attrs?.context?.controller
         def action = attrs?.context?.action
         def dir = attrs?.context?.dir
+        def id = attrs?.context?.id
         def controllers = attrs?.testif
         def menuItem = attrs?.testmenu
         def testSubMenu = attrs?.testsubmenu
@@ -54,7 +55,7 @@ class IsMappingActiveTagLib {
             result = testForControllers(controllers, controller, dir, action)
         }
         else if (menuItem) {
-            result = testForMenuItem(menuItem, controller, dir, action, testSubMenu)
+            result = testForMenuItem(menuItem, controller, dir, action, id, testSubMenu)
         }
         return result
     }
@@ -103,20 +104,22 @@ class IsMappingActiveTagLib {
      * @param controller the controller
      * @param dir the dir
      * @param action the action
+     * @param id the id
      * @param testSubMenu if true then also sub menu items are checked
      *
      * @return true if the menu item matches
      */
-    private boolean testForMenuItem(def menuItem, String controller, String dir, String action, def testSubMenu) {
+    private boolean testForMenuItem(def menuItem, String controller, String dir, String action, String id,
+            def testSubMenu) {
         boolean result
 
         // check if the menu item itself matches
-        result = uriMatches(menuItem.uri, controller, dir, action)
+        result = uriMatches(menuItem.uri, controller, dir, action, id)
 
         // check if a sub menu item matches
         if (testSubMenu && menuItem.subMenuItems && !result) {
             for (subMenuItem in menuItem.subMenuItems) {
-                if (uriMatches(subMenuItem.uri, controller, dir, action)) {
+                if (uriMatches(subMenuItem.uri, controller, dir, action, id)) {
                     result = true
                     break
                 }
@@ -132,17 +135,19 @@ class IsMappingActiveTagLib {
      * @param controller the controller
      * @param dir the dir
      * @param action the action
+     * @param id the id
      *
      * @return true if the uri matches
      */
-    private boolean uriMatches(String uri, String controller, String dir, String action) {
+    private boolean uriMatches(String uri, String controller, String dir, String action, String id) {
         boolean result = new URI(uri).equals(new URI("/" + controller + "/" + dir))
 
         if (!result) {
             def mappingParameters = grailsUrlMappingsHolder.match(uri).getParameters()
 
             result = mappingParameters.controller == controller &&
-                    (mappingParameters.action == action || mappingParameters.action == dir)
+                    (mappingParameters.action == action || mappingParameters.action == dir) &&
+                    mappingParameters.id == id
         }
         return result
     }
