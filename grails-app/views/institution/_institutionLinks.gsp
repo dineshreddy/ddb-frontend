@@ -24,7 +24,7 @@ limitations under the License.
           <g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${selectedItemId}" data-objecttype="${Type.INSTITUTION.name}" data-actn="POST"
                 id="idFavorite">
-            <g:message encodeAs="html" code="ddbnext.favorit" />
+            <g:message encodeAs="html" code="ddbnext.Favorites" />
           </span>
         </a>
       </div>
