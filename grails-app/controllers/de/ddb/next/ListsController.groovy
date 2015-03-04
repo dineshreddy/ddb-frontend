@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import net.sf.json.JSON
+import de.ddb.common.beans.FolderList
 import de.ddb.common.constants.SearchParamEnum
 
 /**
@@ -24,6 +25,12 @@ import de.ddb.common.constants.SearchParamEnum
  * @author boz
  */
 class ListsController {
+    // predefined lists
+    private static final FolderList ALL_LIST =
+    new FolderList("DdbAllList", "ddbcommon.lists.allList", null, "", "")
+    private static final FolderList COLLECTIONS_LIST =
+    new FolderList("DdbCollectionsList", "ddbcommon.lists.collectionsList", null, "", "")
+
     def listsService
     def searchService
 
@@ -33,7 +40,6 @@ class ListsController {
      * @return
      */
     def index() {
-
         def model = [lists: [], folders: null, selectedListId : null]
 
         //Request parameter handling
@@ -67,7 +73,6 @@ class ListsController {
             model.errorMessage = "ddbnext.lists.listHasNoItems"
         }
 
-
         //Pagination stuff
         //*********************************************************************
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
@@ -88,10 +93,8 @@ class ListsController {
         model.paginationURL = paginationURL
         model.linkUri = request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")
 
-
         render(view: "lists", model: model)
     }
-
 
     /**
      * 
@@ -104,14 +107,12 @@ class ListsController {
         def lists = listsService.findAllLists()
         lists?.each { menu.add(it) }
 
-        //Initialize the daily favorite lists
-        def ddbAllList = listsService.getDdbAllList()
-        menu.add(ddbAllList)
+        // predefined lists
+        menu.add(COLLECTIONS_LIST)
+        menu.add(ALL_LIST)
 
         return menu
     }
-
-
 
     /**
      * Returns the folders for a given list
@@ -122,13 +123,15 @@ class ListsController {
     private getFoldersOfList(def listId, int offset=0, int size=20) {
         def folders = null
 
-        if (listId == "DdbAllList") {
+        if (listId == ALL_LIST.folderListId) {
             folders = listsService.getDdbAllPublicFolders(offset, size)
-        }else {
+        }
+        else if (listId == COLLECTIONS_LIST.folderListId) {
+            folders = listsService.getCollections(offset, size)
+        }
+        else {
             folders = listsService.getPublicFoldersForList(listId, offset, size)
         }
-
         return folders
     }
-
 }
