@@ -355,9 +355,6 @@ class UrlMappings {
             action="index"
         }
 
-        //Google Webmaster Tools
-        name googleWebmaster: "/google7731f5060584ff3c.html"(view:"google/webmaster")
-
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)
         "500"(controller: "error", action: "itemNotFound", exception: de.ddb.common.exception.ItemNotFoundException)
