@@ -119,8 +119,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
         fctValues = (value.indexOf(currObjInstance.currentFacetField) >= 0) ? fctValues : fctValues + '&facetValues%5B%5D=' + value;
       });
     }
-    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
-      isThumbnailFiltered = '&isThumbnailFiltered=true';
+    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'false') {
+      isThumbnailFiltered = '&isThumbnailFiltered=false';
     }
 
     if (this.category) {
@@ -168,8 +168,8 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
             : fctValues + '&facetValues%5B%5D=' + value;
       });
     }
-    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'true') {
-      isThumbnailFiltered = '&isThumbnailFiltered=true';
+    if (oldParams['isThumbnailFiltered'] && String(oldParams['isThumbnailFiltered']) === 'false') {
+      isThumbnailFiltered = '&isThumbnailFiltered=false';
     }
 
     if (oldParams['query']) {
