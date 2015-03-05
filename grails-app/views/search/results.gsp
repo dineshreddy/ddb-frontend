@@ -116,7 +116,10 @@ limitations under the License.
 
     <div class="span9">
       <div class="off result-pages-count"><ddb:getLocalizedNumber>${totalPages}</ddb:getLocalizedNumber></div>
-      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}" query="${title}" active="${Type.CULTURAL_ITEM.getName()}" />
+      <ddb:renderSearchTabulation totalResults="${numberOfResultsFormatted}"
+                                  query="${title}"
+                                  active="${Type.CULTURAL_ITEM.getName()}"
+                                  rows="${resultsPaginatorOptions.pageFilterSelected}"/>
       <div style="clear:both;"> 
       
       <%--   Search has results   --%>

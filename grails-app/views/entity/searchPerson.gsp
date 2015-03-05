@@ -70,7 +70,10 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation totalResults="${results.totalResults}" query="${title}" active="${Type.ENTITY.getName()}" />
+      <ddb:renderSearchTabulation totalResults="${results.totalResults}"
+                                  query="${title}"
+                                  active="${Type.ENTITY.getName()}"
+                                  rows="${resultsPaginatorOptions.pageFilterSelected}"/>
 
       <%--   Search has results   --%>
       <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
