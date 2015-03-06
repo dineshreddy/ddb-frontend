@@ -350,13 +350,10 @@ class UrlMappings {
             action="index"
         }
 
-        "/lists/$q?" {
+        "/lists/$id" {
             controller="lists"
             action="index"
         }
-
-        //Google Webmaster Tools
-        name googleWebmaster: "/google7731f5060584ff3c.html"(view:"google/webmaster")
 
         "500"(controller: "error", action: "badRequest", exception: de.ddb.common.exception.BadRequestException)
         "500"(controller: "error", action: "auth", exception: de.ddb.common.exception.AuthorizationException)

@@ -964,6 +964,11 @@ header .language-widget form,.header .language-widget form {
   font-size: 0.938em;
 }
 
+#form-search .link-stats div {
+  float: left;
+  margin-right: 0.5em;
+}
+
 #form-search .tooltip {
   max-width: 93%;
   margin: 12px 0;
@@ -1870,7 +1875,7 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 #favorite-confirmation .modal-body {
-  max-height: 320px !important;
+  max-height: 330px !important;
 }
 
 #favorite-confirmation .modal-footer-savesearch {

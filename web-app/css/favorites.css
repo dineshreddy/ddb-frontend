@@ -609,19 +609,86 @@ hr {
   width: 100%;
 }
 
+.favorites-results .results-list .comment .arrow-up {
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #efebe8;
+  height: 0;
+  margin-left: 120px;
+  margin-top: 10px;
+  width: 0;
+}
+
+.favorites-results .results-list .comment .comment-container {
+  background-color: #efebe8;
+  margin: 0 10px 0px 10px;
+}
+
+.favorites-results .results-list .comment .comment-input {
+  margin: 10px;
+  width: 96%;
+  height: 20px;
+  resize: none;
+  padding: 2px;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1.063em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+
+.favorites-results .results-list .comment .comment-text {
+  width: 100%;
+  font-family: Calibri,Arial,sans-serif;
+  font-size: 1em;
+  line-height: 1em;
+  color: #3e3a37;
+}
+
+.favorites-results .results-list .comment .comment-meta {
+  font-style: italic;
+  margin-bottom: 10px;
+  padding: 10px 10px 0 10px;
+}
+
+.favorites-results .results-list .comment .comment-content {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.favorites-results .results-list .comment .comment-button {
+  overflow: auto;
+}
+
+.favorites-results .results-list .comment button {
+  margin: 0 10px 10px 10px;
+}
+
+.favorites-results .results-list .comment .comment-hint {
+  display: inline-block;
+  float: right;
+  width: 60%;
+}
+
 /* responsive */
 
 @media (max-width: 979px) {
    .favorites-results .results-list .thumbnail .persist {
      display: inline;
    }
+
    .favorites-results-container .share-block {
      display: none;
    }
+
+   .favorites-results .results-list .comment .comment-hint {
+     width: 50%;
+   }
+
    .public-favorites .results-pagination {
      display: block;
    }
-   #folder-create .submit{
+
+   #folder-create .submit {
    		width: 165px;
    }
 }
@@ -634,12 +701,19 @@ hr {
   .public-favorites .favorites-results .results-list .summary .rank {
      display: none;
    }
+
   .page-nav .br {
     border-right: 0;
    }
+
   .page-nav .bl {
     border-left: 0;
    }
+
+   .favorites-results .results-list .comment .comment-hint {
+     width: 42%;
+   }
+
    .favorites-results-controls .results-pagination {
      margin-bottom: 10px;
    }
@@ -695,56 +769,6 @@ hr {
 .favorites-copy-selection {
   width: 100%;
   font-size: 1em;
-}
-
-.favorites-results .results-list .comment .arrow-up {
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  border-bottom: 8px solid #efebe8;
-  height: 0;
-  margin-left: 120px;
-  margin-top: 10px;
-  width: 0;
-}
-
-.favorites-results .results-list .comment .comment-container {
-  background-color: #efebe8;
-  margin: 0 10px 0px 10px;
-}
-
-.favorites-results .results-list .comment .comment-input {
-  margin: 10px;
-  width: 96%; 
-  height: 20px; 
-  resize: none;
-  padding: 2px;
-  font-family: Calibri,Arial,sans-serif;
-  font-size: 1.063em;
-  line-height: 1em;
-  color: #3e3a37;
-}
-
-.favorites-results .results-list .comment .comment-text {
-  width: 100%;
-  font-family: Calibri,Arial,sans-serif;
-  font-size: 1em;
-  line-height: 1em;
-  color: #3e3a37;
-}
-
-.favorites-results .results-list .comment .comment-meta {
-  font-style: italic;
-  margin-bottom: 10px;
-  padding: 10px 10px 0 10px;
-}
-
-.favorites-results .results-list .comment .comment-content {
-  margin-bottom: 10px;
-  padding: 10px;
-}
-
-.favorites-results .results-list .comment button {
-  margin: 0 10px 10px 10px;
 }
 
 .folder-information-container {

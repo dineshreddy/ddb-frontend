@@ -53,6 +53,7 @@ limitations under the License.
           <button type="submit" class="submit comment-cancel grey" title="<g:message encodeAs="html" code="ddbcommon.Cancel" />" data-bookmark-id="${item.bookmark.bookmarkId}">
             <span><g:message encodeAs="html" code="ddbnext.Discard"></g:message></span>
           </button>
+          <div class="comment-hint"><g:message code="ddbnext.Favorites_Comment_Hint"/></div>
         </g:form>
       </div>
     </g:if>
