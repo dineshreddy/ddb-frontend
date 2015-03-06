@@ -260,6 +260,7 @@ a.help-kw-link {
   margin: 5px 0 10px 15px;
 }
 
+.field-name-field-asset-image-copyright > div > div,
 .field-name-field-asset-image-description > div > div {
   color: rgb(62, 58, 56);
   font-style: italic;
@@ -324,3 +325,18 @@ text-align: left;
 .rtejustify {
 text-align: justify;
 }
+
+.asset.asset-align-right {
+  float: right;
+  margin: 0 0 0 8px;
+}
+
+.asset.asset-align-left {
+  float: left;
+  margin: 0 8px 0 0;
+}
+
+.node-article .field-type-image img {
+  margin:0;
+}
+
