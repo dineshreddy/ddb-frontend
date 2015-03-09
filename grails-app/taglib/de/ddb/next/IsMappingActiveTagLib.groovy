@@ -109,8 +109,7 @@ class IsMappingActiveTagLib {
      *
      * @return true if the menu item matches
      */
-    private boolean testForMenuItem(def menuItem, String controller, String dir, String action, String id,
-            def testSubMenu) {
+    private boolean testForMenuItem(def menuItem, def controller, def dir, def action, def id, def testSubMenu) {
         boolean result
 
         // check if the menu item itself matches
@@ -139,7 +138,7 @@ class IsMappingActiveTagLib {
      *
      * @return true if the uri matches
      */
-    private boolean uriMatches(String uri, String controller, String dir, String action, String id) {
+    private boolean uriMatches(def uri, def controller, def dir, def action, def id) {
         boolean result = new URI(uri).equals(new URI("/" + controller + "/" + dir))
 
         if (!result) {

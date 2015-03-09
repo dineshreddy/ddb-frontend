@@ -167,7 +167,7 @@ class SearchController {
                     keepFiltersChecked = "checked=\"checked\""
                 }
 
-                def isThumbnailFiltered = ""
+                def isThumbnailFiltered = "true"
                 if (params.isThumbnailFiltered) {
                     isThumbnailFiltered = params.isThumbnailFiltered
                 } else if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {

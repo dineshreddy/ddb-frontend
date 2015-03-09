@@ -31,7 +31,7 @@ limitations under the License.
       <div class="fr">
         <span class="favorite-actions <g:if test="${isFavorite}">favorite-selected</g:if><g:else>favorite-add</g:else>" <g:if test="${isFavorite}">title="<g:message encodeAs="html" code="ddbnext.favorites_already_saved"/>"</g:if><g:else>title="<g:message encodeAs="html" code="ddbnext.Add_To_Favorites"/>"</g:else>>
           <span data-itemid="${entityId}" data-objecttype="${Type.ENTITY.name}" data-actn="POST" id="idFavorite">
-            <g:message encodeAs="html" code="ddbnext.favorit" />
+            <g:message encodeAs="html" code="ddbnext.Favorites" />
           </span>
         </span>
       </div>
