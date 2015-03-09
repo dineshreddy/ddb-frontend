@@ -1866,6 +1866,8 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 #favorite-confirmation {
+  font-size: 15px;
+  line-height: 30px;
   margin-top: -204px !important; 
 }
 
