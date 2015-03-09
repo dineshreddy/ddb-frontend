@@ -76,12 +76,13 @@ class DdbItemService {
 
         def viewerContent
         if (model.binaryList.size() > 0) {
-            if (model.binaryList.first().preview.uri == '') {
-                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri))
-            }else {
+            if (model.binaryList.first().preview.uri) {
                 viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().preview.uri))
+            }
+            else if (model.binaryList.first().thumbnail.uri) {
+                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                        model.binaryList.first().thumbnail.uri))
             }
         }
         model.put("binariesListViewerContent", viewerContent)
