@@ -21,6 +21,7 @@ import net.sf.json.JSONNull
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.SearchService
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
@@ -167,13 +168,6 @@ class SearchController {
                     keepFiltersChecked = "checked=\"checked\""
                 }
 
-                def isThumbnailFiltered = "true"
-                if (params.isThumbnailFiltered) {
-                    isThumbnailFiltered = params.isThumbnailFiltered
-                } else if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                    isThumbnailFiltered = cookieParametersMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]
-                }
-
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
@@ -185,7 +179,7 @@ class SearchController {
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     entities: entities,
-                    isThumbnailFiltered: isThumbnailFiltered,
+                    isThumbnailFiltered: urlQuery[SearchService.THUMBNAIL_FACET],
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
