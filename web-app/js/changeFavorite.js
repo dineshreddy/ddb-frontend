@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-$(".add-to-favorites, #idFavorite").each(function() {
-  addFavoriteEvent($(this));
-});
+addFavoriteEvent($(".favorite-add #idFavorite"));
 
 /**
  * This function applies to the favorites in search result page, item detail view and institution detail view.

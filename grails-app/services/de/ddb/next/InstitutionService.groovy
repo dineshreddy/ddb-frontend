@@ -42,13 +42,8 @@ class InstitutionService extends CommonInstitutionService {
     def transactional = false
 
     def grailsApplication
-
     def grailsLinkGenerator
-
-    def configurationService
-
     def servletContext
-
     def bookmarksService
     def favoritesService
 

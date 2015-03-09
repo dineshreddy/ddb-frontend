@@ -964,11 +964,6 @@ header .language-widget form,.header .language-widget form {
   font-size: 0.938em;
 }
 
-#form-search .link-stats div {
-  float: left;
-  margin-right: 0.5em;
-}
-
 #form-search .tooltip {
   max-width: 93%;
   margin: 12px 0;

@@ -655,10 +655,6 @@ hr {
   padding: 10px;
 }
 
-.favorites-results .results-list .comment .comment-button {
-  overflow: auto;
-}
-
 .favorites-results .results-list .comment button {
   margin: 0 10px 10px 10px;
 }

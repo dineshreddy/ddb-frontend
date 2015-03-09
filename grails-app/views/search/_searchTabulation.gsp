@@ -41,7 +41,7 @@ limitations under the License.
           </g:link>
         </li>
         <li class="${config.isInstitutionSearchFeaturesEnabled() ? "" : "off"}">
-          <g:link controller="search" action="institution" params="[query: query, rows: rows]"
+          <g:link controller="search" action="institution" params="[query: query]"
                   class="${(active==Type.INSTITUTION.getName()) ? 'active-link' : '' }">
             <g:message code="ddbnext.Institutions" />
           </g:link>
