@@ -35,42 +35,44 @@ class ContentController {
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
-            /* If first level dir is missing use a default context dir from contentDefault. */
+            // If first level dir is missing use the default context dir.
             if (!location) {
                 redirect uri: new File(browserUrl, configurationService.getDefaultStaticPage()).toString() + "/"
                 return
             }
 
-            def url = configurationService.getStaticUrl()
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
 
-            /* Load the the file from $content-location.html. If not found then load it from $content-location/index.html */
-            def path = locale.toString() + "/" + location + ".html"
+            // Load the the file from $locale/$location.html.
+            // If not found then load it from $locale/$location/index.html.
             def response
-            def apiResponse = ApiConsumer.getText(url, path, false)
-            if (apiResponse.isOk()) {
-                response = apiResponse.getResponse()
-            } else {
-                if (!browserUrl.endsWith ("/")) {
-                    redirect uri: "/" + params.controller + "/" + location + "/"
-                    return
-                }
-                path = locale.toString() + "/" + location + "/index.html"
-                apiResponse = ApiConsumer.getText(url, path, false)
-                if(apiResponse.isOk()){
-                    response = apiResponse.getResponse()
+            try {
+                response = retrieveFile(browserUrl, location, locale)
+            }
+            catch (ItemNotFoundException e) {
+                // try default locale
+                def defaultLocale = configurationService.getDefaultLanguage().getLanguage()
+
+                if (defaultLocale != locale) {
+                    response = retrieveFile(browserUrl, location, defaultLocale)
                 }
                 else {
                     throw new ItemNotFoundException()
                 }
             }
+            catch (RedirectException e) {
+                redirect uri: e.uri
+                return
+            }
+
             def map = retrieveArguments(response)
 
-            //Needed for the canonicalURL
-            map << ["location": location,domainCanonic:configurationService.getDomainCanonic()]
+            // Needed for the canonicalURL
+            map << ["location": location, domainCanonic:configurationService.getDomainCanonic()]
 
             render(view: "staticcontent", model: map)
-        } catch (ItemNotFoundException e) {
+        }
+        catch (ItemNotFoundException e) {
             forward controller: "error", action: "itemNotFound"
         }
     }
@@ -90,6 +92,39 @@ class ContentController {
             metaDescription:metaDescription,
             content:rewriteUrls(body)
         ]
+    }
+
+    /**
+     * Retrieve a static file from the web server.
+     *
+     * First try $locale/$location.html and then $locale/$location/index.html.
+     *
+     * @param browserUrl request URL without context path
+     * @param location file location
+     * @param locale locale
+     *
+     * @return HTML content
+     */
+    private def retrieveFile(String browserUrl, String location, String locale) {
+        def result
+        def url = configurationService.getStaticUrl()
+        def path = locale + "/" + location + ".html"
+        def apiResponse = ApiConsumer.getText(url, path, false)
+        if (apiResponse.isOk()) {
+            result = apiResponse.getResponse()
+        }
+        else {
+            if (!browserUrl.endsWith("/")) {
+                throw new RedirectException("/" + params.controller + "/" + location + "/")
+            }
+            path = locale + "/" + location + "/index.html"
+            apiResponse = ApiConsumer.getText(url, path, false)
+            if (!apiResponse.isOk()) {
+                throw new ItemNotFoundException()
+            }
+            result = apiResponse.getResponse()
+        }
+        return result
     }
 
     private def fetchBody(content) {
@@ -154,5 +189,13 @@ class ContentController {
             }
         }
         return result.toString()
+    }
+
+    static class RedirectException extends Exception {
+        private String uri
+
+        public RedirectException(String uri) {
+            this.uri = uri
+        }
     }
 }

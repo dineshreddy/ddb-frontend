@@ -175,7 +175,7 @@ ddb.mainMenu="${userHome}/.grails/${appName}-menu.json".toString()
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]
-ddb.defaultLanguage="de_DE"
+ddb.defaultLanguage="de"
 
 // The grails.serverURL is required for the PDF rendering plugin.
 //grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
