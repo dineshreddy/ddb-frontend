@@ -15,9 +15,8 @@
  */
 package de.ddb.next
 
-import groovy.xml.XmlUtil
-
-import org.ccil.cowan.tagsoup.Parser
+import org.jsoup.Jsoup
+import org.jsoup.nodes.Element
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
@@ -135,30 +134,25 @@ class ContentController {
      * @return content with modified URLs
      */
     private def rewriteUrls(def content) {
-        Parser tagsoupParser = new Parser()
-        tagsoupParser.setFeature(Parser.namespacesFeature, false)
-        tagsoupParser.setFeature(Parser.namespacePrefixesFeature, false)
-        def result = new XmlSlurper(tagsoupParser).parseText(content)
-        result.depthFirst().collect {it}.findAll {it}.each {element ->
-            if (element.name() == "a") {
-                // URLs need our context path in front
-                String href = element.@href.text()
-                String pattern = "/content"
-                if (href.startsWith(pattern)) {
-                    element.@href = configurationService.getContextPath() + href
-                }
-            }
-            else if (element.name() == "img") {
-                // image URLs from CMS are absolute URLs
-                String src = element.@src.text()
-                String pattern = "/sites/default"
-                int index = src.indexOf(pattern)
-                if (index >= 0) {
-                    element.@src = configurationService.getContextPath() + "/static/" +
-                            src.substring(index + pattern.length() + 1).toString()
-                }
+        def result = Jsoup.parse(content)
+        result.select("a").each {element ->
+            // URLs need our context path in front
+            String href = element.attr("href")
+            String pattern = "/content"
+            if (href.startsWith(pattern)) {
+                element.attr("href", configurationService.getContextPath() + href)
             }
         }
-        return XmlUtil.serialize(result)
+        result.select("img").each {element ->
+            // image URLs from CMS are absolute URLs
+            String src = element.attr("src")
+            String pattern = "/sites/default"
+            int index = src.indexOf(pattern)
+            if (index >= 0) {
+                element.attr("src", configurationService.getContextPath() + "/static/" +
+                        src.substring(index + pattern.length() + 1).toString())
+            }
+        }
+        return result.toString()
     }
 }
