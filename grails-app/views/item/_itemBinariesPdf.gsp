@@ -1,7 +1,11 @@
 <%@page defaultCodec="none" %>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" class="slide-viewer item-detail">
   <tr>
-    <td class="binary-viewer"><rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/></td>
+    <td class="binary-viewer">
+      <g:if test="${binariesListViewerContent}">
+        <rendering:inlineJpeg bytes="${binariesListViewerContent}" alt=""/>
+      </g:if>
+    </td>
   </tr>
   <tr>
     <td>
