@@ -1872,7 +1872,7 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 }
 
 #favorite-confirmation .modal-body {
-  max-height: 330px !important;
+  max-height: 340px !important;
 }
 
 #favorite-confirmation .modal-footer-savesearch {
