@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import org.jsoup.Jsoup
-import org.jsoup.nodes.Element
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
