@@ -19,7 +19,10 @@ limitations under the License.
     <div class="row">
       <div class="span2">
         <strong><g:message encodeAs="html" code="ddbnext.License_Field" />: </strong>
-        <ddbcommon:renderInfoTooltip messageCode="ddbnext.Licence_TooltipContent" controllerAction="lizenzen" hasArrow="true" />
+        <ddbcommon:renderInfoTooltip
+            messageCode="ddbnext.Licence_TooltipContent"
+            infoDir="lizenzen-und-lizenzhinweise-rechtssicherheit-der-deutschen-digitalen-bibliothek"
+            hasArrow="true"/>
       </div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
         <a href="${license.url}" target="_blank" class="no-external-link-icon">

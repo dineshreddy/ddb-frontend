@@ -34,7 +34,8 @@ limitations under the License.
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
         <h3><g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" /></h3>
-        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
+        <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchResultsFacetHeading_TooltipContent"
+                                     infoDir="hilfe/suchergebnisse-filtern" hasArrow="true"/>
       </div>
       
 	    <%-- Shows the facets supported in the NON JS version--%>
