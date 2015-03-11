@@ -22,8 +22,6 @@ import de.ddb.common.ApiConsumer
 import de.ddb.common.exception.ItemNotFoundException
 
 class ContentController {
-    private static final String CHARACTER_ENCODING = "UTF-8"
-
     static defaultAction = "staticcontent"
 
     def configurationService
@@ -63,7 +61,7 @@ class ContentController {
                 }
             }
             catch (RedirectException e) {
-                redirect uri: URLEncoder.encode(e.uri, CHARACTER_ENCODING)
+                redirect uri: e.uri
                 return
             }
 
