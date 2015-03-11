@@ -21,6 +21,8 @@ import de.ddb.common.ApiConsumer
 import de.ddb.common.exception.ItemNotFoundException
 
 class ContentController {
+    private static final String CHARACTER_ENCODING = "UTF-8"
+
     static defaultAction = "staticcontent"
 
     def configurationService
@@ -33,6 +35,7 @@ class ContentController {
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
+
             // If first level dir is missing use the default context dir.
             if (!location) {
                 redirect uri: new File(browserUrl, configurationService.getDefaultStaticPage()).toString() + "/"
@@ -59,7 +62,7 @@ class ContentController {
                 }
             }
             catch (RedirectException e) {
-                redirect uri: e.uri
+                redirect uri: URLEncoder.encode(e.uri, CHARACTER_ENCODING)
                 return
             }
 
