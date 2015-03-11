@@ -142,11 +142,15 @@ class IsMappingActiveTagLib {
         boolean result = new URI(uri).equals(new URI("/" + controller + "/" + dir))
 
         if (!result) {
-            def mappingParameters = grailsUrlMappingsHolder.match(uri).getParameters()
+            def matchedUri = grailsUrlMappingsHolder.match(uri)
 
-            result = mappingParameters.controller == controller &&
-                    (mappingParameters.action == action || mappingParameters.action == dir) &&
-                    mappingParameters.id == id
+            if (matchedUri) {
+                def mappingParameters = matchedUri.getParameters()
+
+                result = mappingParameters.controller == controller &&
+                        (mappingParameters.action == action || mappingParameters.action == dir) &&
+                        mappingParameters.id == id
+            }
         }
         return result
     }
