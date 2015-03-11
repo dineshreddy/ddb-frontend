@@ -29,7 +29,7 @@ limitations under the License.
     <div class="row">
       <div class="span12">
         <p>
-          <g:message code="ddbcommon.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'privacy'])]}"/>
+          <g:message code="ddbcommon.Cookie_Acceptance" args="${[createLink(controller: 'content', params: [dir:'datenschutzerklaerung'])]}"/>
         </p>
         <a class="close" aria-controls="cookie-notice"></a>
       </div>
