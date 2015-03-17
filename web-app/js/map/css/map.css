@@ -99,16 +99,6 @@
 
 }
 
-@media (min-width: 768px) {
-  .olMap {
-    background-color: silver; 
-  }
-
-  .olMap .olPopupDDBScroll {
-    width: 300px;
-  }
-}
-
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panup, 
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panleft, 
 .olMap #OpenLayers_Control_DDBPanZoomBar_28_panright, 
@@ -136,7 +126,6 @@
   background: none !important;
   padding-left: 0px !important;
 }
-
 
 /* Controls end */
 
@@ -177,7 +166,6 @@
 
 .olMap .olPopupDDBScroll {
   max-height: 150px;
-  
   overflow-x: hidden;
   overflow-y: auto; 
   /*
@@ -207,7 +195,6 @@
   background: url("../img/list_arrow_grey.png") no-repeat scroll 0 0 !important;
   padding-left: 17px;
 }
-
 
 .olMap .olControlAttribution a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before {
   background: none !important;

@@ -300,52 +300,17 @@ $(document).ready(function() {
             'featureunselected': onFeatureUnselect
         });
 
-        function isMobileView() {
-          return $('.multiselect').is(':visible');
-        }
-
         function onFeatureSelect(event) {
           var feature = event.feature;
           var institutionList = feature.data.institutions;
 
-          if (isMobileView()) {
-            $('.olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList, true));
-            $('#institutionsPopupDialog').modal('show');
-          }
-          else {
-            var popup = new OpenLayers.Popup.FramedDDB(
-              "institutionPopup",
-              feature.geometry.getBounds().getCenterLonLat(),
-              new OpenLayers.Size(315,100),
-              self._getPopupContentHtml(institutionList, false),
-              null,
-              true,
-              onPopupClose,
-              self.imageFolder);
-
-            feature.popup = popup;
-            popup.feature = feature;
-            self.osmMap.addPopup(popup, true);
-
-          }
+          $('.olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList));
+          $('#institutionsPopupDialog').modal('show');
         };
 
         function onFeatureUnselect(event) {
           feature = event.feature;
-          if (isMobileView()) {
-              selectionEventControl.unselectAll();
-          }
-          else {
-            var popup = feature.popup;
-            if (feature.popup) {
-              popup.feature = null;
-              if (!isMobileView()) {
-                self.osmMap.removePopup(popup);
-                popup.destroy();
-                feature.popup = null;
-              }
-            }
-          }
+          selectionEventControl.unselectAll();
         };
 
         function onPopupClose() {
@@ -503,20 +468,14 @@ $(document).ready(function() {
         return institutionHierarchy;
       },
 
-      _getPopupContentHtml : function(dataObjectList, isMobileView) {
+      _getPopupContentHtml : function(dataObjectList) {
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
         var html = "<div class='olPopupDDBContent'>";
         var headline = institutionCount + " " + ((institutionCount > 1) ?
                        messages.ddbnext.Institutions() : messages.ddbnext.Institution());
-        if (isMobileView) {
-          $('#institutionsPopupHeader').text(headline);
-        }
-        else {
-          html += "  <div class='olPopupDDBHeader'>";
-          html += "    " + headline;
-          html += "  </div>";
-        }
+
+        $('#institutionsPopupHeader').text(headline);
         html += "  <div class='olPopupDDBBody'>";
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
