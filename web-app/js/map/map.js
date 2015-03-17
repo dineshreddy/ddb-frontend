@@ -526,7 +526,11 @@ $(document).ready(function() {
 
         for (var i = 0; i < institutionHierarchy.length; i++) {
           var insti = institutionHierarchy[i];
-          var locationArray = insti.locationDisplayName.split(',');
+          var locationArray = null;
+
+          if (insti.locationDisplayName) {
+              locationArray = insti.locationDisplayName.split(',');
+          }
 
           institutionList.push({
             id: insti.id,
@@ -543,45 +547,47 @@ $(document).ready(function() {
         var locationFound = false;
         var firstInsti = institutionList[0];
 
-        for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-          var firstLoc = firstInsti.locationDisplayName[j];
+        if (firstInsti.locationDisplayName) {
+          for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
+            var firstLoc = firstInsti.locationDisplayName[j];
 
-          for (i = 1; i < institutionList.length; i++) {
-            var actualInsti = institutionList[i];
-            var actualLoc = actualInsti.locationDisplayName[j];
+            for (i = 1; i < institutionList.length; i++) {
+              var actualInsti = institutionList[i];
+              var actualLoc = actualInsti.locationDisplayName[j];
 
-            if (actualLoc !== firstLoc){
-              locationIndex = j;
-              locationFound = true;
+              if (actualLoc !== firstLoc){
+                locationIndex = j;
+                locationFound = true;
+                break;
+              }
+            }
+            if (locationFound) {
               break;
             }
           }
-          if (locationFound) {
-            break;
-          }
+
+          // sort based on the geographical place founded on the step before
+          institutionList.sort(function(a, b) {
+            var result = 0;
+            var nameA = a.locationDisplayName[locationIndex].toLowerCase();
+            var nameB = b.locationDisplayName[locationIndex].toLowerCase();
+
+            // put institutions without geographical place on top of the list
+            if (!nameA) {
+              result = nameB ? -1 : 0;
+            }
+            else if (!nameB) {
+              result = 1;
+            }
+            else {
+              result = nameA.localeCompare(nameB);
+            }
+            if (result === 0) {
+              result = a.name.localeCompare(b.name);
+            }
+            return result;
+          });
         }
-
-        // sort based on the geographical place founded on the step before
-        institutionList.sort(function(a, b) {
-          var result = 0;
-          var nameA = a.locationDisplayName[locationIndex].toLowerCase();
-          var nameB = b.locationDisplayName[locationIndex].toLowerCase();
-
-          // put institutions without geographical place on top of the list
-          if (!nameA) {
-            result = nameB ? -1 : 0;
-          }
-          else if (!nameB) {
-            result = 1;
-          }
-          else {
-            result = nameA.localeCompare(nameB);
-          }
-          if (result === 0) {
-            result = a.name.localeCompare(b.name);
-          }
-          return result;
-        });
 
         var previousInstName = "?";
 
@@ -589,15 +595,17 @@ $(document).ready(function() {
           var institutionItem = institutionList[i];
 
           // Create tag of geographical group
-          var actualInstName = institutionItem.locationDisplayName[locationIndex];
+          if (institutionItem.locationDisplayName) {
+            var actualInstName = institutionItem.locationDisplayName[locationIndex];
 
-          if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
-            if (i > 0) {
-              html += "<br>";
+            if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
+              if (i > 0) {
+                html += "<br>";
+              }
+              html += "  <div class='olPopupDDBHeader'>";
+              html += "    " + actualInstName;
+              html += "  </div><br>";
             }
-            html += "  <div class='olPopupDDBHeader'>";
-            html += "    " + actualInstName;
-            html += "  </div><br>";
           }
           previousInstName = actualInstName;
 
@@ -614,7 +622,6 @@ $(document).ready(function() {
           // If the institution has children -> display them
           html += this._displayChildren(dataObjectList, institutionItem.childInstitutions);
           html += "      </li>";
-
         }
         html += "      </ul>";
         html += "    </div>";
