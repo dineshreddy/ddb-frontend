@@ -431,9 +431,9 @@ $(document).ready(function() {
             result += "        </a>";
             result += this._displayChildren(institutionIds, child.children);
             result += "      </li>";
-          }
+          });
           result += "      </ul>";
-        });
+        }
         return result;
       },
 
