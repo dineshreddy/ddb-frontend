@@ -375,6 +375,16 @@ $(document).ready(function() {
       },
 
       /*
+       * Add properties "isInCluster" and "locationDisplayName" to the given institution and it's children.
+       */
+      _addPropertiesToInstitution : function(institutionList, institution) {
+        institution.isInCluster = institutionList.indexOf(institution.id) !== -1;
+        if (institution.locationDisplayName && typeof institution.locationDisplayName === 'string') {
+          institution.locationDisplayName = institution.locationDisplayName.split(',');
+        }
+      },
+
+      /*
        * Check if the children of a given institution are in the cluster. If yes then add them to the children list
        * and add the institution to the hierarchy list.
        *
@@ -430,6 +440,23 @@ $(document).ready(function() {
         return result;
       },
 
+      /*
+       * Get the name of the location with the given index.
+       */
+      _getLocationName : function(institution, locationIndex) {
+        var result;
+
+        if (institution.isInCluster) {
+          result = institution.locationDisplayName[locationIndex];
+        }
+        $.each(institution.childInstitutions, function(index, childInstitution) {
+          if (childInstitution.isInCluster) {
+            result = childInstitution.locationDisplayName[locationIndex];
+          }
+        });
+        return result;
+      },
+
       _prepareInstitutionHierarchy : function(institutionIdsParam) {
         var institutionIds = institutionIdsParam.slice();
         var institutionHierarchy = [];
@@ -469,6 +496,7 @@ $(document).ready(function() {
       },
 
       _getPopupContentHtml : function(dataObjectList) {
+        var currObjInstance = this;
         var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
         var html = "<div class='olPopupDDBContent'>";
@@ -480,44 +508,36 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
 
-        //Get the location data and create an Array with this data
-        var institutionList = [];
-
-        for (var i = 0; i < institutionHierarchy.length; i++) {
-          var insti = institutionHierarchy[i];
-          var locationArray = null;
-
-          if (insti.locationDisplayName) {
-              locationArray = insti.locationDisplayName.split(',');
+        // add some properties to institution list
+        $.each(institutionHierarchy, function(index, institution) {
+          currObjInstance._addPropertiesToInstitution(dataObjectList, institution);
+          if (institution.childInstitutions) {
+            $.each(institution.childInstitutions, function(index, childInstitution) {
+              currObjInstance._addPropertiesToInstitution(dataObjectList, childInstitution);
+            });
           }
-
-          institutionList.push({
-            id: insti.id,
-            name: insti.name,
-            sector: insti.sector,
-            childInstitutions: insti.childInstitutions,
-            parents: insti.parents,
-            locationDisplayName: locationArray
-          });
-        }
+        });
 
         // find geographical priority
         var locationIndex = 2;
         var locationFound = false;
-        var firstInsti = institutionList[0];
+        var firstInsti = institutionHierarchy[0];
 
         if (firstInsti.locationDisplayName) {
           for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
             var firstLoc = firstInsti.locationDisplayName[j];
 
-            for (i = 1; i < institutionList.length; i++) {
-              var actualInsti = institutionList[i];
-              var actualLoc = actualInsti.locationDisplayName[j];
+            for (i = 1; i < institutionHierarchy.length; i++) {
+              var actualInsti = institutionHierarchy[i];
 
-              if (actualLoc !== firstLoc){
-                locationIndex = j;
-                locationFound = true;
-                break;
+              if (actualInsti.isInCluster) {
+                var actualLoc = actualInsti.locationDisplayName[j];
+
+                if (actualLoc !== firstLoc) {
+                  locationIndex = j;
+                  locationFound = true;
+                  break;
+                }
               }
             }
             if (locationFound) {
@@ -525,11 +545,11 @@ $(document).ready(function() {
             }
           }
 
-          // sort based on the geographical place founded on the step before
-          institutionList.sort(function(a, b) {
+          // sort based on the geographical place found on the step before
+          institutionHierarchy.sort(function(a, b) {
             var result = 0;
-            var nameA = a.locationDisplayName[locationIndex].toLowerCase();
-            var nameB = b.locationDisplayName[locationIndex].toLowerCase();
+            var nameA = currObjInstance._getLocationName(a, locationIndex).toLowerCase();
+            var nameB = currObjInstance._getLocationName(b, locationIndex).toLowerCase();
 
             // put institutions without geographical place on top of the list
             if (!nameA) {
@@ -550,12 +570,10 @@ $(document).ready(function() {
 
         var previousInstName = "?";
 
-        for (i = 0; i < institutionList.length; i++) {
-          var institutionItem = institutionList[i];
-
+        $.each(institutionHierarchy, function(index, institution) {
           // Create tag of geographical group
-          if (institutionItem.locationDisplayName) {
-            var actualInstName = institutionItem.locationDisplayName[locationIndex];
+          if (institution.locationDisplayName) {
+            var actualInstName = currObjInstance._getLocationName(institution, locationIndex);
 
             if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
               if (i > 0) {
@@ -568,20 +586,19 @@ $(document).ready(function() {
           }
           previousInstName = actualInstName;
 
-          var isInCluster = dataObjectList.indexOf(institutionItem.id) !== -1;
-          if (!isInCluster) {
-            html += "      <li class='outside-cluster'>";
-          } else {
+          if (institution.isInCluster) {
             html += "      <li class='inside-cluster'>";
+          } else {
+            html += "      <li class='outside-cluster'>";
           }
-          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institutionItem.id + ">";
-          html += "          "+institutionItem.name + " (" + messages.ddbnext[institutionItem.sector]() + ")";
+          html += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + institution.id + ">";
+          html += "          "+ institution.name + " (" + messages.ddbnext[institution.sector]() + ")";
           html += "        </a>";
 
           // If the institution has children -> display them
-          html += this._displayChildren(dataObjectList, institutionItem.childInstitutions);
+          html += currObjInstance._displayChildren(dataObjectList, institution.childInstitutions);
           html += "      </li>";
-        }
+        });
         html += "      </ul>";
         html += "    </div>";
         html += "  </div>";
