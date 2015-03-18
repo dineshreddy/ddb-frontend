@@ -576,7 +576,7 @@ $(document).ready(function() {
             var actualInstName = currObjInstance._getLocationName(institution, locationIndex);
 
             if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
-              if (i > 0) {
+              if (index > 0) {
                 html += "<br>";
               }
               html += "  <div class='olPopupDDBHeader'>";
