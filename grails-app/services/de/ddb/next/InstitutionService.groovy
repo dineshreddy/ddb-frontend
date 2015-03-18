@@ -196,8 +196,7 @@ class InstitutionService extends CommonInstitutionService {
                 clusterContainer["institutions"][institutionId] = [:]
                 clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
-                clusterContainer["institutions"][institutionId]["locationDisplayName"] =
-                        fixNominatimIssues(dataObject.description.node.locationDisplayName)
+                clusterContainer["institutions"][institutionId]["locationDisplayName"] = fixNominatimIssues(dataObject.description.node.locationDisplayName)
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
             }
@@ -212,6 +211,7 @@ class InstitutionService extends CommonInstitutionService {
                     if(clusterContainer["institutions"][institutionId] != null){
                         for(int j=0;j<institution.children.size();j++){
                             def child = institution.children[j]
+                            child.locationDisplayName = fixNominatimIssues(child.locationDisplayName)
                             def childId = child.id
                             if(clusterContainer["institutions"][childId] != null){ // only add child if child is also in sector selection
                                 clusterContainer["institutions"][institutionId].children.push(child)

@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 
 import net.sf.json.JSONNull
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.common.JsonUtil
 import de.ddb.common.ApiResponse.HttpStatus
 
@@ -195,11 +196,13 @@ class ApisController {
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
      */
-    synchronized def binary(){
+    synchronized def binary() {
         def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
 
-        if(!apiResponse.isOk()){
-            log.error "binary(): binary content was not found"
+        if (!apiResponse.isOk()) {
+            if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+                log.error "fetching binary content failed"
+            }
             apiResponse.throwException(request)
         }
 
@@ -216,8 +219,10 @@ class ApisController {
     def staticFiles() {
         def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getStaticUrl(), getFileNamePath() , response.outputStream)
 
-        if(!apiResponse.isOk()){
-            log.error "binary(): binary content was not found"
+        if (!apiResponse.isOk()) {
+            if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+                log.error "fetching static content failed"
+            }
             apiResponse.throwException(request)
         }
 
