@@ -38,6 +38,7 @@ class InstitutionService extends CommonInstitutionService {
     private static final String GERMANY = "Deutschland"
     private static final String EUROPE = "European Union"
     private static final String EUROPE_GERMAN = "Europäische Union"
+    private static final String EUROPE_SHORT = "Europe"
 
     def transactional = false
 
@@ -292,7 +293,7 @@ class InstitutionService extends CommonInstitutionService {
         if (locationDisplayName) {
             result = locationDisplayName.tokenize(",")*.trim().reverse()
             if (result[0] != EUROPE) {
-                if (result[0] == EUROPE_GERMAN) {
+                if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
                     result[0] = EUROPE
                 }
                 else {
