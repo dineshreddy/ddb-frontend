@@ -417,24 +417,22 @@ $(document).ready(function() {
        */
       _displayChildren : function(institutionIds, children) {
         var result = "";
+        var currObjInstance = this;
 
         if (children.length > 0) {
           result += "      <ul>";
-          for(var index = 0; index < children.length; index++) {
-            var child = children[index];
-            var isInCluster = institutionIds.indexOf(child.id) !== -1;
-
-            if (!isInCluster) {
-              result += "      <li class='outside-cluster'>";
-            } else {
+          $.each(children, function(index, child) {
+            if (child.isInCluster) {
               result += "      <li class='inside-cluster'>";
+            } else {
+              result += "      <li class='outside-cluster'>";
             }
             result += "        <a href=" + jsContextPath + "/about-us/institutions/item/" + child.id + ">";
             result += "            " + child.name + " (" + messages.ddbnext[child.sector]() + ")";
             result += "        </a>";
-            result += this._displayChildren(institutionIds, child.children);
+            result += currObjInstance._displayChildren(institutionIds, child.children);
             result += "      </li>";
-          }
+          });
           result += "      </ul>";
         }
         return result;
