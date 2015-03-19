@@ -66,23 +66,6 @@ class InstitutionService extends CommonInstitutionService {
         return responseWrapper.getResponse()
     }
 
-
-    /**
-     * Returns all archives that have items.
-     *
-     * The value of this method is cached!
-     *
-     * @return all archives that have items.
-     */
-    @Cacheable(value="institutionCache", key="'findAllArchiveInstitutionsWithItems'")
-    def findAllArchiveInstitutionsWithItems() {
-        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, ["hasItems": "true"])
-        if(!responseWrapper.isOk()){
-            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        return responseWrapper.getResponse()
-    }
-
     /**
      * Returns all archives ordered by alphabet.
      *
@@ -224,6 +207,7 @@ class InstitutionService extends CommonInstitutionService {
                     // Transfer parent information, if a child is in the current selection
                     institution.children.each {child ->
                         def childId = child.id
+                        child.locationDisplayName = fixNominatimIssues(child.locationDisplayName)
                         if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
                             clusterContainer["institutions"][childId]["parents"].push(institutionId)
 
@@ -291,21 +275,26 @@ class InstitutionService extends CommonInstitutionService {
         def result
 
         if (locationDisplayName) {
-            result = locationDisplayName.tokenize(",")*.trim().reverse()
+            result = locationDisplayName.tokenize(",")*.trim()
+
+            // check if it is already fixed
             if (result[0] != EUROPE) {
-                if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
-                    result[0] = EUROPE
+                result = result.reverse()
+                if (result[0] != EUROPE) {
+                    if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
+                        result[0] = EUROPE
+                    }
+                    else {
+                        result.add(0, EUROPE)
+                    }
                 }
-                else {
-                    result.add(0, EUROPE)
-                }
+
+                // remove zip code
+                result.remove(2)
+
+                // remove too detailed values like street name
+                result = result.take(result.size() - 2)
             }
-
-            // remove zip code
-            result.remove(2)
-
-            // remove too detailed values like street name
-            result = result.take(result.size() - 2)
         }
         else {
             result = [

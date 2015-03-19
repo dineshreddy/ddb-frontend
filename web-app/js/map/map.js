@@ -580,9 +580,9 @@ $(document).ready(function() {
               html += "  <div class='olPopupDDBHeader'>";
               html += "    " + actualInstName;
               html += "  </div><br>";
+              previousInstName = actualInstName;
             }
           }
-          previousInstName = actualInstName;
 
           if (institution.isInCluster) {
             html += "      <li class='inside-cluster'>";
