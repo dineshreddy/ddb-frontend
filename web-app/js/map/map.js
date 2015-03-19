@@ -393,16 +393,17 @@ $(document).ready(function() {
        * @param {String} institutionId institution id to check
        */
       _checkChildren : function(institutionHierarchy, institutionIds, institutionId) {
+        var currObjInstance = this;
         var institution = this.clusters.institutions[institutionId];
 
         if (institution.children.length > 0) {
           institution.childInstitutions = [];
-          for (var index = 0; index < institution.children.length; index++) {
-            if ($.inArray(institution.children[index].id, institutionIds)) {
-              institution.childInstitutions.push(institution.children[index]);
-              this._checkChildren(institutionHierarchy, institutionIds, institution.children[index].id);
+          $.each(institution.children, function(index, child) {
+            if ($.inArray(child.id, institutionIds)) {
+              institution.childInstitutions.push(child);
+              currObjInstance._checkChildren(institutionHierarchy, institutionIds, child.id);
             }
-          }
+          });
           institutionHierarchy.push(institution);
         }
       },
