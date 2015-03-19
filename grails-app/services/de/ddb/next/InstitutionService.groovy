@@ -290,32 +290,35 @@ class InstitutionService extends CommonInstitutionService {
         def result
 
         if (locationDisplayName) {
-            result = locationDisplayName.tokenize(",")*.trim()
-            if (result[-1] != EUROPE) {
-                if (result[-1] == EUROPE_GERMAN) {
-                    result[-1] = EUROPE
+            result = locationDisplayName.tokenize(",")*.trim().reverse()
+            if (result[0] != EUROPE) {
+                if (result[0] == EUROPE_GERMAN) {
+                    result[0] = EUROPE
                 }
                 else {
-                    result += EUROPE
+                    result.add(0, EUROPE)
                 }
             }
 
-            // remove too detailed values like street name
-            result = result.drop(result.size() - 6)
-
             // remove zip code
-            result.remove(3)
+            result.remove(2)
+
+            // remove too detailed values like street name
+            result = result.take(result.size() - 2)
         }
         else {
             result = [
-                "",
-                "",
-                "",
-                GERMANY,
-                EUROPE
+                EUROPE,
+                GERMANY
             ]
         }
-        return result.reverse().join(",")
+
+        // enlarge the list to 7 elements
+        for (int index = result.size(); index < 7; index++) {
+            result += ""
+        }
+
+        return result.join(",")
     }
 
     private getTotal(rootList) {

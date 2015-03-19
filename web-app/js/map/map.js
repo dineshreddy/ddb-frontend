@@ -448,12 +448,14 @@ $(document).ready(function() {
         if (institution.isInCluster) {
           result = institution.locationDisplayName[locationIndex];
         }
-        $.each(institution.childInstitutions, function(index, childInstitution) {
-          if (childInstitution.isInCluster) {
-            result = childInstitution.locationDisplayName[locationIndex];
-          }
-        });
-        return result;
+        else {
+          $.each(institution.childInstitutions, function(index, childInstitution) {
+            if (childInstitution.isInCluster) {
+              result = childInstitution.locationDisplayName[locationIndex];
+            }
+          });
+        }
+        return result ? result : "";
       },
 
       _prepareInstitutionHierarchy : function(institutionIdsParam) {
@@ -507,65 +509,68 @@ $(document).ready(function() {
         html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
         html += "      <ul>";
 
-        // add some properties to institution list
+        // add some properties to institution list, collect all clustered institutions in a separate list
+        var clusteredInstitutions = [];
+
         $.each(institutionHierarchy, function(index, institution) {
           currObjInstance._addPropertiesToInstitution(dataObjectList, institution);
+          if (institution.isInCluster) {
+            clusteredInstitutions.push(institution);
+          }
           if (institution.childInstitutions) {
             $.each(institution.childInstitutions, function(index, childInstitution) {
               currObjInstance._addPropertiesToInstitution(dataObjectList, childInstitution);
+              if (childInstitution.isInCluster) {
+                clusteredInstitutions.push(childInstitution);
+              }
             });
           }
         });
 
         // find geographical priority
-        var locationIndex = 2;
+        var locationIndex = 2; // ignore region and country
         var locationFound = false;
-        var firstInsti = institutionHierarchy[0];
+        var firstInsti = clusteredInstitutions[0];
 
-        if (firstInsti.locationDisplayName) {
-          for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-            var firstLoc = firstInsti.locationDisplayName[j];
+        for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
+          var firstLoc = firstInsti.locationDisplayName[j];
 
-            for (i = 1; i < institutionHierarchy.length; i++) {
-              var actualInsti = institutionHierarchy[i];
+          for (i = 1; i < clusteredInstitutions.length; i++) {
+            var actualInsti = clusteredInstitutions[i];
+            var actualLoc = actualInsti.locationDisplayName[j];
 
-              if (actualInsti.isInCluster) {
-                var actualLoc = actualInsti.locationDisplayName[j];
-
-                if (actualLoc !== firstLoc) {
-                  locationIndex = j;
-                  locationFound = true;
-                  break;
-                }
-              }
-            }
-            if (locationFound) {
+            if (actualLoc !== firstLoc) {
+              locationIndex = j;
+              locationFound = true;
               break;
             }
           }
-
-          // sort based on the geographical place found on the step before
-          institutionHierarchy.sort(function(a, b) {
-            var result = 0;
-            var nameA = currObjInstance._getLocationName(a, locationIndex).toLowerCase();
-            var nameB = currObjInstance._getLocationName(b, locationIndex).toLowerCase();
-
-            // put institutions without geographical place on top of the list
-            if (!nameA) {
-              result = nameB ? -1 : 0;
-            }
-            else if (!nameB) {
-              result = 1;
-            }
-            else {
-              result = nameA.localeCompare(nameB);
-            }
-            if (result === 0) {
-              result = a.name.localeCompare(b.name);
-            }
-            return result;
-          });
+          if (locationFound) {
+            break;
+          }
         }
+
+        // sort based on the geographical place found on the step before
+        institutionHierarchy.sort(function(a, b) {
+          var result = 0;
+          var nameA = currObjInstance._getLocationName(a, locationIndex).toLowerCase();
+          var nameB = currObjInstance._getLocationName(b, locationIndex).toLowerCase();
+
+          // put institutions without geographical place on top of the list
+          if (!nameA) {
+            result = nameB ? -1 : 0;
+          }
+          else if (!nameB) {
+            result = 1;
+          }
+          else {
+            result = nameA.localeCompare(nameB);
+          }
+          if (result === 0) {
+            result = a.name.localeCompare(b.name);
+          }
+          return result;
+        });
 
         var previousInstName = "?";
 
