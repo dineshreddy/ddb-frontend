@@ -498,20 +498,10 @@ $(document).ready(function() {
 
       _getPopupContentHtml : function(dataObjectList) {
         var currObjInstance = this;
-        var institutionCount = dataObjectList.length;
         var institutionHierarchy = this._prepareInstitutionHierarchy(dataObjectList);
-        var html = "<div class='olPopupDDBContent'>";
-        var headline = institutionCount + " " + ((institutionCount > 1) ?
-                       messages.ddbnext.Institutions() : messages.ddbnext.Institution());
-
-        $('#institutionsPopupHeader').text(headline);
-        html += "  <div class='olPopupDDBBody'>";
-        html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
-        html += "      <ul>";
-
-        // add some properties to institution list, collect all clustered institutions in a separate list
         var clusteredInstitutions = [];
 
+        // add some properties to institution list, collect all clustered institutions in a separate list
         $.each(institutionHierarchy, function(index, institution) {
           currObjInstance._addPropertiesToInstitution(dataObjectList, institution);
           if (institution.isInCluster) {
@@ -571,6 +561,16 @@ $(document).ready(function() {
           }
           return result;
         });
+
+        var html = "<div class='olPopupDDBContent'>";
+        var institutionCount = clusteredInstitutions.length;
+        var headline = institutionCount + " " + ((institutionCount > 1) ?
+                       messages.ddbnext.Institutions() : messages.ddbnext.Institution());
+
+        $('#institutionsPopupHeader').text(headline);
+        html += "  <div class='olPopupDDBBody'>";
+        html += "    <div class='olPopupDDBScroll' id='olPopupDDBScroll'>";
+        html += "      <ul>";
 
         var previousInstName = "?";
 
