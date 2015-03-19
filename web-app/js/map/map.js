@@ -399,7 +399,7 @@ $(document).ready(function() {
         if (institution.children.length > 0) {
           institution.childInstitutions = [];
           $.each(institution.children, function(index, child) {
-            if ($.inArray(child.id, institutionIds)) {
+            if ($.inArray(child.id, institutionIds) !== -1) {
               institution.childInstitutions.push(child);
               currObjInstance._checkChildren(institutionHierarchy, institutionIds, child.id);
             }
@@ -475,17 +475,9 @@ $(document).ready(function() {
           }else if(institution.parents.length > 0){
             var parentId = institution.parents[0];
             // If parent is also in cluster: just remove child from the institutionsList. It will get handled by the parent.
-            var isParentInCluster = false;
-            for(var j=0; j<institutionIds.length; j++){
-              if(institutionIds[j] === parentId){
-                isParentInCluster = true;
-                break;
-              }
-            }
-            if(!isParentInCluster){
+            if ($.inArray(parentId, institutionIds) === -1) {
               // If parent is not in Cluster: add it and let it handle the child
               institutionIds.push(parentId);
-              institution.highlight = true;
             }
 
           // Third case: institution has children
@@ -522,21 +514,23 @@ $(document).ready(function() {
         var locationFound = false;
         var firstInsti = clusteredInstitutions[0];
 
-        for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
-          var firstLoc = firstInsti.locationDisplayName[j];
+        if (firstInsti.locationDisplayName) {
+          for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
+            var firstLoc = firstInsti.locationDisplayName[j];
 
-          for (i = 1; i < clusteredInstitutions.length; i++) {
-            var actualInsti = clusteredInstitutions[i];
-            var actualLoc = actualInsti.locationDisplayName[j];
+            for (i = 1; i < clusteredInstitutions.length; i++) {
+              var actualInsti = clusteredInstitutions[i];
+              var actualLoc = actualInsti.locationDisplayName[j];
 
-            if (actualLoc !== firstLoc) {
-              locationIndex = j;
-              locationFound = true;
+              if (actualLoc !== firstLoc) {
+                locationIndex = j;
+                locationFound = true;
+                break;
+              }
+            }
+            if (locationFound) {
               break;
             }
-          }
-          if (locationFound) {
-            break;
           }
         }
 
