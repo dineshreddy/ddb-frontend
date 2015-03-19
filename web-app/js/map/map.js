@@ -579,7 +579,7 @@ $(document).ready(function() {
           if (institution.locationDisplayName) {
             var actualInstName = currObjInstance._getLocationName(institution, locationIndex);
 
-            if (actualInstName && actualInstName !== previousInstName && institutionHierarchy.length > 1) {
+            if (actualInstName && actualInstName !== previousInstName) {
               if (index > 0) {
                 html += "<br>";
               }
