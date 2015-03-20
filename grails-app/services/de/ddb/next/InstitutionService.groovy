@@ -275,11 +275,12 @@ class InstitutionService extends CommonInstitutionService {
         def result
 
         if (locationDisplayName) {
-            result = locationDisplayName.tokenize(",")*.trim()
-
             // check if it is already fixed
-            if (result[0] != EUROPE) {
-                result = result.reverse()
+            if (locationDisplayName.startsWith(EUROPE)) {
+                result = locationDisplayName.split(",")
+            }
+            else {
+                result = locationDisplayName.split(", ")*.trim().reverse()
                 if (result[0] != EUROPE) {
                     if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
                         result[0] = EUROPE
