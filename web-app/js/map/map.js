@@ -572,18 +572,16 @@ $(document).ready(function() {
 
         $.each(institutionHierarchy, function(index, institution) {
           // Create tag of geographical group
-          if (institution.locationDisplayName) {
-            var actualInstName = currObjInstance._getLocationName(institution, locationIndex);
+          var actualInstName = currObjInstance._getLocationName(institution, locationIndex);
 
-            if (actualInstName && actualInstName !== previousInstName) {
-              if (index > 0) {
-                html += "<br>";
-              }
-              html += "  <div class='olPopupDDBHeader'>";
-              html += "    " + actualInstName;
-              html += "  </div><br>";
-              previousInstName = actualInstName;
+          if (actualInstName && actualInstName !== previousInstName) {
+            if (index > 0) {
+              html += "<br>";
             }
+            html += "  <div class='olPopupDDBHeader'>";
+            html += "    " + actualInstName;
+            html += "  </div><br>";
+            previousInstName = actualInstName;
           }
 
           if (institution.isInCluster) {
