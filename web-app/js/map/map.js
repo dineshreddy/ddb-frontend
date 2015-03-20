@@ -518,14 +518,16 @@ $(document).ready(function() {
           for (var j = 0; j < firstInsti.locationDisplayName.length; j++) {
             var firstLoc = firstInsti.locationDisplayName[j];
 
-            for (i = 1; i < clusteredInstitutions.length; i++) {
-              var actualInsti = clusteredInstitutions[i];
-              var actualLoc = actualInsti.locationDisplayName[j];
+            if (firstLoc) {
+              for (i = 1; i < clusteredInstitutions.length; i++) {
+                var actualInsti = clusteredInstitutions[i];
+                var actualLoc = actualInsti.locationDisplayName[j];
 
-              if (actualLoc !== firstLoc) {
-                locationIndex = j;
-                locationFound = true;
-                break;
+                if (actualLoc && actualLoc !== firstLoc) {
+                  locationIndex = j;
+                  locationFound = true;
+                  break;
+                }
               }
             }
             if (locationFound) {
