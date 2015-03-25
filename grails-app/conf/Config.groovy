@@ -321,34 +321,37 @@ grails {
     }
 }
 
-// Often needed for testing the staticpages on localhost,
-// because these use absolute linking to the server root "/abc"
-//grails.app.context = "/"
-
 grails {
-    cache {
-        enabled = true
-        clearAtStartup = true
-        ehcache {
-            ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
-            reloadable = true
-        }
-    }
+   cache {
+      enabled = true
+      ehcache {
+         ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
+         reloadable = false
+      }
+   }
 }
 
 grails.cache.config = {
-    provider { name "ehcache-" + appName }
-
     cache {
-        name 'institutionCache'
-        enable: true
+       name 'institutionCache'
+       eternal false
+       overflowToDisk true
+       maxElementsInMemory 10000
+       maxElementsOnDisk 10000000
     }
 
-    defaults {
+    defaultCache {
+        maxElementsInMemory 10000
         eternal false
-        overflowToDisk false
-        timeToLiveSeconds 600
-        timeToIdleSeconds 0
-        maxElementsInMemory 100000
-    }
+        timeToIdleSeconds 120
+        timeToLiveSeconds 120
+        overflowToDisk true
+        maxElementsOnDisk 10000000
+        diskPersistent false
+        diskExpiryThreadIntervalSeconds 120
+        memoryStoreEvictionPolicy 'LRU'
+   }
 }
+
+grails.plugin.springsecurity.rejectIfNoRule = false
+grails.plugin.springsecurity.fii.rejectPublicInvocations = false

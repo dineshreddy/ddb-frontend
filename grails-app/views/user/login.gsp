@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.common.constants.SupportedOpenIdProviders"%>
+<%@page import="de.ddb.common.constants.SupportedOpenIdProvider"%>
 <%@page import="de.ddb.common.constants.LoginStatus"%>
 <html>
   <head>
@@ -116,12 +116,13 @@ limitations under the License.
                 </div>
                 <div class="row spacer-vertical">
                   <div class="span9">
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.GOOGLE, "referrer": referrer]}"><div class="openid-google"></div></g:link>
-                    <g:link controller="user" action="requestOpenIdLogin" params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}"><div class="openid-yahoo"></div></g:link>
+                    <g:link controller="user" action="requestOauthLogin"
+                            params="${["provider": SupportedOpenIdProvider.GOOGLE.name, "referrer": referrer]}">
+                      <div class="openid-google"></div>
+                    </g:link>
                   </div>
                 </div>
               </div>
-
             </ddbcommon:isNotLoggedIn>
 
             <ddbcommon:isLoggedIn>
@@ -133,7 +134,6 @@ limitations under the License.
                   <g:message encodeAs="html" code="ddbnext.Already_Logged_In" />
                 </g:else>
               </div>
-
             </ddbcommon:isLoggedIn>
 
           </div>

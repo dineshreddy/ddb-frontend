@@ -325,14 +325,14 @@ class UrlMappings {
             action="doLogout"
         }
 
-        "/login/openId" {
+        "/login/oauth" {
             controller="user"
-            action="requestOpenIdLogin"
+            action="requestOauthLogin"
         }
 
-        "/login/doOpenIdLogin" {
+        "/login/doOauthLogin" {
             controller="user"
-            action="doOpenIdLogin"
+            action="doOauthLogin"
         }
 
         "/compare/$firstId/with/$secondId" {
