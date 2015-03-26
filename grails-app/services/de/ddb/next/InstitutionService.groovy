@@ -38,6 +38,7 @@ class InstitutionService extends CommonInstitutionService {
     private static final String GERMANY = "Deutschland"
     private static final String EUROPE = "European Union"
     private static final String EUROPE_GERMAN = "Europäische Union"
+    private static final String EUROPE_SHORT = "Europe"
 
     def transactional = false
 
@@ -62,23 +63,6 @@ class InstitutionService extends CommonInstitutionService {
             responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
 
-        return responseWrapper.getResponse()
-    }
-
-
-    /**
-     * Returns all archives that have items.
-     *
-     * The value of this method is cached!
-     *
-     * @return all archives that have items.
-     */
-    @Cacheable(value="institutionCache", key="'findAllArchiveInstitutionsWithItems'")
-    def findAllArchiveInstitutionsWithItems() {
-        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, ["hasItems": "true"])
-        if(!responseWrapper.isOk()){
-            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
         return responseWrapper.getResponse()
     }
 
@@ -196,8 +180,7 @@ class InstitutionService extends CommonInstitutionService {
                 clusterContainer["institutions"][institutionId] = [:]
                 clusterContainer["institutions"][institutionId]["name"] = dataObject.description.node.name
                 clusterContainer["institutions"][institutionId]["sector"] = dataObject.description.node.sector
-                clusterContainer["institutions"][institutionId]["locationDisplayName"] =
-                        fixNominatimIssues(dataObject.description.node.locationDisplayName)
+                clusterContainer["institutions"][institutionId]["locationDisplayName"] = fixNominatimIssues(dataObject.description.node.locationDisplayName)
                 clusterContainer["institutions"][institutionId]["children"] = []
                 clusterContainer["institutions"][institutionId]["parents"] = []
             }
@@ -212,6 +195,7 @@ class InstitutionService extends CommonInstitutionService {
                     if(clusterContainer["institutions"][institutionId] != null){
                         for(int j=0;j<institution.children.size();j++){
                             def child = institution.children[j]
+                            child.locationDisplayName = fixNominatimIssues(child.locationDisplayName)
                             def childId = child.id
                             if(clusterContainer["institutions"][childId] != null){ // only add child if child is also in sector selection
                                 clusterContainer["institutions"][institutionId].children.push(child)
@@ -223,6 +207,7 @@ class InstitutionService extends CommonInstitutionService {
                     // Transfer parent information, if a child is in the current selection
                     institution.children.each {child ->
                         def childId = child.id
+                        child.locationDisplayName = fixNominatimIssues(child.locationDisplayName)
                         if(clusterContainer["institutions"][childId] != null){ // only add parent if child is also in sector selection
                             clusterContainer["institutions"][childId]["parents"].push(institutionId)
 
@@ -290,32 +275,41 @@ class InstitutionService extends CommonInstitutionService {
         def result
 
         if (locationDisplayName) {
-            result = locationDisplayName.tokenize(",")*.trim()
-            if (result[-1] != EUROPE) {
-                if (result[-1] == EUROPE_GERMAN) {
-                    result[-1] = EUROPE
-                }
-                else {
-                    result += EUROPE
-                }
+            // check if it is already fixed
+            if (locationDisplayName.startsWith(EUROPE)) {
+                result = locationDisplayName.split(",")
             }
+            else {
+                result = locationDisplayName.split(", ")*.trim().reverse()
+                if (result[0] != EUROPE) {
+                    if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
+                        result[0] = EUROPE
+                    }
+                    else {
+                        result.add(0, EUROPE)
+                    }
+                }
 
-            // remove too detailed values like street name
-            result = result.drop(result.size() - 6)
+                // remove zip code
+                result.remove(2)
 
-            // remove zip code
-            result.remove(3)
+                // remove too detailed values like street name
+                result = result.take(result.size() - 2)
+            }
         }
         else {
             result = [
-                "",
-                "",
-                "",
-                GERMANY,
-                EUROPE
+                EUROPE,
+                GERMANY
             ]
         }
-        return result.reverse().join(",")
+
+        // enlarge the list to 7 elements
+        for (int index = result.size(); index < 7; index++) {
+            result += ""
+        }
+
+        return result.join(",")
     }
 
     private getTotal(rootList) {

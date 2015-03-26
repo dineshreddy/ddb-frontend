@@ -96,7 +96,8 @@ class InstitutionController {
                         countObjcs: countObjectsForProv,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
-                        isFavorite: isFavorite(id)]
+                        isFavorite: isFavorite(id),
+                        folder: bookmarksService.findFolderByInstitutionId(itemId)]
                     )
         } else {
             forward controller: 'error', action: "defaultNotFound"

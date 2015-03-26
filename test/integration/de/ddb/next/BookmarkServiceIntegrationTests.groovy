@@ -352,7 +352,7 @@ class BookmarkServiceIntegrationTests {
         }
 
         def allFavs = bookmarksService.findBookmarksByUserId(userId)
-        log.error('all favorites is more than 10: ' + allFavs.size())
+        log.info('all favorites is more than 10: ' + allFavs.size())
         assert allFavs.size() > 10
     }
 
