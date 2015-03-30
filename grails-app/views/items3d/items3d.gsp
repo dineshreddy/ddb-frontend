@@ -34,6 +34,9 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
           </div>
           <div class="span6 slide-viewer item-detail">
             <div id="ddb-3d">
+              <g:if test="${draisine}">
+                <g:render template="draisine" />
+              </g:if>
               <g:if test="${elefant}">
                 <g:render template="elefant" />
               </g:if>
@@ -45,9 +48,10 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
               </g:if>
             </div>
             <div class="binary-title" title="**Some title**">
-                <h3><g:link controller="items3d" action="index" id="elefant">1. Elefant</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="nofretete">2. Nofretete</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="aegyptische_Statue3">3. Aegyptische Statue</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="draisine">1. Draisine</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="elefant">2. Elefant</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="nofretete">3. Nofretete</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="aegyptische_Statue3">4. Aegyptische Statue</g:link></h3>
             </div>
           </div>
         </div>
