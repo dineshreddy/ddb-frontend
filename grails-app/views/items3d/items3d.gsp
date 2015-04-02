@@ -44,7 +44,14 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
               <g:if test="${draisine}">
                 <x3d style='width:100%; height:100%; border:0; margin:0; padding:0;'> 
                   <scene>
-                    <inline url="${request.contextPath}/x3domCatalogueDDB/Draisine/draisine.x3d"> </inline> 
+                    <inline url="${request.contextPath}/x3domCatalogueDDB/Draisine/Draisine.x3d"> </inline> 
+                  </scene>
+                </x3d>
+              </g:if>
+              <g:if test="${bueste}">
+                <x3d style='width:100%; height:100%; border:0; margin:0; padding:0;'> 
+                  <scene>
+                    <inline url="${request.contextPath}/x3domCatalogueDDB/Bueste/bueste.x3d"> </inline> 
                   </scene>
                 </x3d>
               </g:if>
@@ -61,15 +68,16 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
             Press 'R' to reset the displayed item. 
             Use the mouse scroll to zoom.
             <div class="binary-title" title="**Some title**">
-                <h3><g:link controller="items3d" action="index" id="kanne">1. Kanne</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="draisine">2. Draisine</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="elefant">3. Elefant</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="nofretete">4. Nofretete</g:link></h3>
-                <h3><g:link controller="items3d" action="index" id="aegyptische_Statue3">5. Aegyptische Statue</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="kanne">-> Kanne</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="draisine">-> Draisine</g:link></h3>
+                <%--<h3><g:link controller="items3d" action="index" id="bueste">-> Bueste</g:link></h3>--%>
+                <h3><g:link controller="items3d" action="index" id="elefant">-> Elefant</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="nofretete">-> Nofretete</g:link></h3>
+                <h3><g:link controller="items3d" action="index" id="aegyptische_Statue3">-> Aegyptische Statue</g:link></h3>
             </div>
           </div>
         </div>
       </div>
-    </div>  
+    </div>
   </body>
 </html>
