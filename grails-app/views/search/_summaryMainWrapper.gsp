@@ -35,7 +35,12 @@ limitations under the License.
       <li class="matching-item">
         <span>
           <g:each var="match" in="${item.view}">
-            ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+            <g:if test="${match instanceof String}">
+              ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+            </g:if>
+            <g:else>
+              ...${match}...
+            </g:else>
           </g:each>
         </span>
       </li>
