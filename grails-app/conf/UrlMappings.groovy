@@ -330,9 +330,19 @@ class UrlMappings {
             action="requestOauthLogin"
         }
 
+        "/login/openId" {
+            controller="user"
+            action="requestOpenIdLogin"
+        }
+
         "/login/doOauthLogin" {
             controller="user"
             action="doOauthLogin"
+        }
+
+        "/login/doOpenIdLogin" {
+            controller="user"
+            action="doOpenIdLogin"
         }
 
         "/compare/$firstId/with/$secondId" {

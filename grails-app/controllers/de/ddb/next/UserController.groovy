@@ -17,9 +17,18 @@ package de.ddb.next
 
 import grails.converters.*
 
+import javax.servlet.http.HttpSession
+
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+import org.openid4java.consumer.ConsumerManager
+import org.openid4java.consumer.VerificationResult
+import org.openid4java.discovery.DiscoveryInformation
+import org.openid4java.discovery.Identifier
+import org.openid4java.message.AuthRequest
+import org.openid4java.message.ParameterList
+import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
@@ -30,7 +39,8 @@ import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.SupportedOpenIdProvider
+import de.ddb.common.constants.SupportedOauthProvider
+import de.ddb.common.constants.SupportedOpenIdProviders
 import de.ddb.common.constants.UserStatus
 import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
@@ -41,6 +51,9 @@ import de.ddb.common.oauth.GrailsOAuthService
 import de.ddb.common.oauth.OAuthProfile
 
 class UserController {
+    private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
+    private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+
     def LinkGenerator grailsLinkGenerator
     def aasService
     def sessionService
@@ -660,10 +673,10 @@ class UserController {
     }
 
     def requestOauthLogin() {
-        SupportedOpenIdProvider provider = SupportedOpenIdProvider.valueOfName(params.provider)
+        SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
 
         new ProxyUtil().setProxy()
-        if (provider == SupportedOpenIdProvider.GOOGLE) {
+        if (provider == SupportedOauthProvider.GOOGLE) {
             GrailsOAuthService service = resolveService(provider.name)
 
             if (!service) {
@@ -682,6 +695,161 @@ class UserController {
         else {
             render(view: "login", model: ['loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN])
         }
+    }
+
+    def requestOpenIdLogin() {
+        log.info "requestOpenIdLogin()"
+        def provider = params.provider
+        def loginStatus = LoginStatus.AUTH_PROVIDER_REQUEST
+
+        String discoveryUrl = ""
+
+        ProxyUtil proxyUtil = new ProxyUtil()
+        proxyUtil.setProxy()
+
+        FetchRequest fetch = FetchRequest.createFetchRequest()
+
+        if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
+            discoveryUrl = "https://www.google.com/accounts/o8/id"
+            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
+            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
+            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
+            fetch.setCount("openid.ext1.value.Email", 1)
+        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
+            discoveryUrl = "https://me.yahoo.com"
+            fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
+            fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
+        }else {
+            loginStatus = LoginStatus.AUTH_PROVIDER_UNKNOWN
+        }
+
+        if(loginStatus != LoginStatus.AUTH_PROVIDER_REQUEST) {
+            render(view: "login", model: ['loginStatus': loginStatus])
+            return
+        }
+
+
+        log.info "requestOpenIdLogin(): discoveryUrl="+discoveryUrl
+        ConsumerManager manager = new ConsumerManager()
+
+        sessionService.createNewSession()
+        sessionService.setSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER, provider)
+        sessionService.setSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER, manager)
+
+        // Delete problem with url page with # and manager.authenticate
+        def referrerUrl = params.referrer.replaceAll("#.*", "")
+
+        String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin?referrer=" + referrerUrl
+        List discoveries = manager.discover(discoveryUrl)
+        DiscoveryInformation discovered = manager.associate(discoveries)
+        AuthRequest authReq = manager.authenticate(discovered, returnURL)
+        authReq.addExtension(fetch)
+
+
+        // Leave DDB for login on OpenID-provider
+        redirect(url: authReq.getDestinationUrl(true))
+
+    }
+
+    def doOpenIdLogin() {
+        def loginStatus = LoginStatus.LOGGED_OUT
+
+        log.info "doOpenIdLogin(): got OpenID login request"
+
+        ConsumerManager manager = sessionService.getSessionAttributeIfAvailable(SESSION_CONSUMER_MANAGER)
+        if(manager) {
+            def provider = sessionService.getSessionAttributeIfAvailable(SESSION_OPENID_PROVIDER)
+
+            ParameterList openidResp = ParameterList.createFromQueryString(request.getQueryString())
+            DiscoveryInformation discovered = (DiscoveryInformation) sessionService.getSessionAttributeIfAvailable("discovered")
+            String returnURL = configurationService.getContextUrl() + "/login/doOpenIdLogin"
+            String receivingURL =  returnURL + "?" + request.getQueryString()
+            VerificationResult verification = manager.verify(receivingURL.toString(), openidResp, discovered)
+            Identifier verified = verification.getVerifiedId()
+
+            if (verified != null) {
+                log.info "doOpenIdLogin(): success verification"
+
+                def username = null
+                def firstName = null
+                def lastName = null
+                def email = null
+                def identifier = null
+
+                if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
+                    firstName = params["openid.ext1.value.FirstName"]
+                    lastName = params["openid.ext1.value.LastName"]
+                    username = firstName + " " + lastName
+                    email = params["openid.ext1.value.Email"]
+                    identifier = verified.getIdentifier()
+                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
+                    username = params["openid.ax.value.fullname"]
+                    def index = username.trim().lastIndexOf(' ')
+                    if (index > 0) {
+                        firstName = username.substring(0, index)
+                        lastName = username.substring(index + 1)
+                    }
+                    email = params["openid.ax.value.email"]
+                    identifier = verified.getIdentifier()
+                }else {
+                    render(view: "login", model: [
+                        'loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN]
+                    )
+                    return
+                }
+
+
+                //log.info "doOpenIdLogin(): credentials:  " + username + " / " + email + " / " + identifier
+
+                // Create new session, because the old one might be corrupt due to the redirect to the OpenID provider
+                //                getSessionObject(false)?.invalidate()
+                //                HttpSession newSession = getSessionObject(true)
+                sessionService.destroySession()
+                HttpSession newSession = sessionService.createNewSession()
+
+                User user = new User()
+                user.setId(userService.encodeAsMD5(identifier))
+                user.setEmail(email)
+                user.setUsername(username)
+                user.setFirstname(firstName)
+                user.setLastname(lastName)
+                user.setPassword(null)
+                user.setOpenIdUser(true)
+                user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+                log.info(user.toString())
+
+                sessionService.setSessionAttribute(newSession, User.SESSION_USER, user)
+
+                loginStatus = LoginStatus.SUCCESS
+
+                favoritesService.createFavoritesFolderIfNotExisting(user)
+
+                // deactivated until we have unique id for both OpenId and AAS
+                // aasService.createOrUpdatePersonAsAdmin(user)
+            }else {
+                log.info "doOpenIdLogin(): failure verification"
+                loginStatus = LoginStatus.AUTH_PROVIDER_DENIED
+            }
+        }
+
+        if(loginStatus == LoginStatus.SUCCESS) {
+            if (params.referrer) {
+                def referrerUrl = params.referrer
+
+                //Remove the context path from the url, otherwise it will be appear twice in the redirect
+                def contextLength = grailsLinkGenerator.contextPath.length()
+                referrerUrl = referrerUrl.substring(contextLength)
+
+                log.info "redirect to referrer: " + referrerUrl
+                redirect(uri: referrerUrl)
+            }
+            else {
+                redirect(controller: 'favoritesview', action: 'favorites')
+            }
+        }else {
+            render(view: "login", model: ['loginStatus': loginStatus])
+        }
+
     }
 
     private def resolveService(provider) {
@@ -718,7 +886,6 @@ class UserController {
 
         // deactivated until we have unique id for both OpenId and AAS
         // aasService.createOrUpdatePersonAsAdmin(user)
-
         redirect(uri: (session["${params.provider}_originalUrl"] ?: '/') - request.contextPath)
     }
 
