@@ -386,10 +386,7 @@ class UserController {
     }
 
     private getSavedSearchesCount() {
-        def savedSearchesResult = savedSearchesService.getSavedSearches()
-        def savedSearchesCount = savedSearchesResult.size()
-
-        return savedSearchesCount
+        return savedSearchesService.getSavedSearches()?.size()
     }
 
     def saveProfile() {
