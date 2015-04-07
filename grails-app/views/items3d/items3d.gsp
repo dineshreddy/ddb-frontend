@@ -51,7 +51,7 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
               <g:if test="${bueste}">
                 <x3d style='width:100%; height:100%; border:0; margin:0; padding:0;'> 
                   <scene>
-                    <inline url="${request.contextPath}/x3domCatalogueDDB/Bueste/bueste.x3d"> </inline> 
+                    <inline url="${request.contextPath}/x3domCatalogueDDB/Bueste/Bueste_200000_Polygone.x3d"> </inline> 
                   </scene>
                 </x3d>
               </g:if>
@@ -70,7 +70,7 @@ Curabitur id sem purus. Morbi in felis mollis, ullamcorper augue faucibus, dictu
             <div class="binary-title" title="**Some title**">
                 <h3><g:link controller="items3d" action="index" id="kanne">-> Kanne</g:link></h3>
                 <h3><g:link controller="items3d" action="index" id="draisine">-> Draisine</g:link></h3>
-                <%--<h3><g:link controller="items3d" action="index" id="bueste">-> Bueste</g:link></h3>--%>
+                <h3><g:link controller="items3d" action="index" id="bueste">-> Bueste</g:link></h3>
                 <h3><g:link controller="items3d" action="index" id="elefant">-> Elefant</g:link></h3>
                 <h3><g:link controller="items3d" action="index" id="nofretete">-> Nofretete</g:link></h3>
                 <h3><g:link controller="items3d" action="index" id="aegyptische_Statue3">-> Aegyptische Statue</g:link></h3>
