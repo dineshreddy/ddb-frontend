@@ -325,9 +325,19 @@ class UrlMappings {
             action="doLogout"
         }
 
+        "/login/oauth" {
+            controller="user"
+            action="requestOauthLogin"
+        }
+
         "/login/openId" {
             controller="user"
             action="requestOpenIdLogin"
+        }
+
+        "/login/doOauthLogin" {
+            controller="user"
+            action="doOauthLogin"
         }
 
         "/login/doOpenIdLogin" {

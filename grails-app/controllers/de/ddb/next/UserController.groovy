@@ -29,6 +29,7 @@ import org.openid4java.discovery.Identifier
 import org.openid4java.message.AuthRequest
 import org.openid4java.message.ParameterList
 import org.openid4java.message.ax.FetchRequest
+import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.AasService
@@ -38,12 +39,16 @@ import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
+import de.ddb.common.constants.SupportedOauthProvider
 import de.ddb.common.constants.SupportedOpenIdProviders
 import de.ddb.common.constants.UserStatus
 import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
+import de.ddb.common.oauth.AuthInfo
+import de.ddb.common.oauth.GrailsOAuthService
+import de.ddb.common.oauth.OAuthProfile
 
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
@@ -131,7 +136,7 @@ class UserController {
 
         logoutUserFromSession()
 
-        redirect(controller: 'index', action: 'index')
+        redirect(controller: 'index')
 
     }
 
@@ -402,7 +407,7 @@ class UserController {
             if (!user.isConsistent()) {
                 throw new BackendErrorException("user-attributes are not consistent")
             }
-            if (!user.getOpenIdUser()) {
+            if (!user.isOpenIdUser()) {
                 if (StringUtils.isBlank(params.username) || params.username.length() < 2) {
                     errors.add("ddbcommon.Error_Username_Empty")
                 }
@@ -414,7 +419,7 @@ class UserController {
                 }
             }
             if (errors == null || errors.isEmpty()) {
-                if (!user.getOpenIdUser()) {
+                if (!user.isOpenIdUser()) {
                     if (Validations.isDifferent(user.getFirstname(), params.fname)
                     || Validations.isDifferent(user.getLastname(), params.lname)
                     || Validations.isDifferent(user.getUsername(), params.username)) {
@@ -667,6 +672,31 @@ class UserController {
         redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
     }
 
+    def requestOauthLogin() {
+        SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
+
+        new ProxyUtil().setProxy()
+        if (provider == SupportedOauthProvider.GOOGLE) {
+            GrailsOAuthService service = resolveService(provider.name)
+
+            if (!service) {
+                redirect(controller: "index")
+            }
+
+            sessionService.createNewSession()
+            sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
+
+            AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
+            params: [provider: params.provider]))
+
+            sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
+            redirect(url: authInfo.authUrl)
+        }
+        else {
+            render(view: "login", model: ['loginStatus': LoginStatus.AUTH_PROVIDER_UNKNOWN])
+        }
+    }
+
     def requestOpenIdLogin() {
         log.info "requestOpenIdLogin()"
         def provider = params.provider
@@ -820,6 +850,43 @@ class UserController {
             render(view: "login", model: ['loginStatus': loginStatus])
         }
 
+    }
+
+    private def resolveService(provider) {
+        def serviceName = "${ provider as String }AuthService"
+        grailsApplication.mainContext.getBean(serviceName)
+    }
+
+    def doOauthLogin() {
+        GrailsOAuthService service = resolveService(params.provider)
+
+        if (!service) {
+            redirect(controller: "index")
+        }
+
+        AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
+        Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
+        OAuthProfile profile = service.getProfile(authInfo.service, accessToken)
+
+        sessionService.setSessionAttributeIfAvailable("${params.provider}_authToken", accessToken)
+        sessionService.setSessionAttributeIfAvailable("${params.provider}_profile", profile)
+
+        User user = new User()
+
+        user.setId(params.provider + "_" + userService.encodeAsMD5(profile.uid))
+        user.setEmail(profile.email)
+        user.setUsername(profile.username)
+        user.setFirstname(profile.firstname)
+        user.setLastname(profile.lastname)
+        user.setOpenIdUser(true)
+        user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+        sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+
+        favoritesService.createFavoritesFolderIfNotExisting(user)
+
+        // deactivated until we have unique id for both OpenId and AAS
+        // aasService.createOrUpdatePersonAsAdmin(user)
+        redirect(uri: (session["${params.provider}_originalUrl"] ?: '/') - request.contextPath)
     }
 
     def showApiKey() {
