@@ -99,19 +99,19 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        compile ':cache:1.1.8'
-        compile ':cache-ehcache:1.0.5'
-        compile ":html-cleaner:0.3"
+        compile ':cache:1.1.7'
+        compile ':cache-ehcache:1.0.1'
+        compile ":html-cleaner:0.2"
         compile ":jawr:3.3.3"
-        compile ":rendering:1.0.0"
-        compile ":cache-headers:1.1.7"
-        compile ":mail:1.0.7"
-        compile (":rest:0.8") { excludes "commons-codec"}
+        compile ":rendering:0.4.4"
+        compile ":cache-headers:1.1.5"
+        compile ":mail:1.0.1"
+        compile (":rest:0.7") { excludes "commons-codec"}
         compile ":message-digest:1.1"
         compile ":spring-security-core:2.0-RC4"
 
-        build ":tomcat:7.0.55.3"
-        runtime ":resources:1.2.14"
+        build ":tomcat:7.0.52.1"
+        runtime ":resources:1.2.7"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
