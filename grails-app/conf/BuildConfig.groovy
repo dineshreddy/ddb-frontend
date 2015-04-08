@@ -101,6 +101,7 @@ grails.project.dependency.resolution = {
     plugins {
         compile ':cache:1.1.7'
         compile ':cache-ehcache:1.0.1'
+        compile ':hibernate:3.6.10.12'
         compile ":html-cleaner:0.2"
         compile ":jawr:3.3.3"
         compile ":rendering:0.4.4"
