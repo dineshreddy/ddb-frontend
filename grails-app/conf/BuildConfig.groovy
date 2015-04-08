@@ -112,7 +112,7 @@ grails.project.dependency.resolution = {
         compile ":spring-security-core:1.2.7.2"
         //compile ":spring-security-core:2.0-RC4"
 
-        build ":tomcat:8.0.21"
+        build ":tomcat:7.0.55.3"
         runtime ":resources:1.2.14"
         runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
