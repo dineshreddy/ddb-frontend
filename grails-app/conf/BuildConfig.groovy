@@ -88,7 +88,7 @@ grails.project.dependency.resolution = {
     dependencies {
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
-        runtime 'org.scribe:scribe:1.3.0-patched'
+        runtime ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.springframework:spring-test:3.2.8.RELEASE'
         runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
 
@@ -107,7 +107,7 @@ grails.project.dependency.resolution = {
         compile ":rendering:1.0.0"
         compile ":cache-headers:1.1.7"
         compile ":mail:1.0.7"
-        compile ":rest:0.8"
+        compile (":rest:0.8") { excludes "commons-codec"}
         compile ":message-digest:1.1"
         compile ":spring-security-core:1.2.7.2"
         //compile ":spring-security-core:2.0-RC4"
