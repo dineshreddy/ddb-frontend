@@ -685,9 +685,13 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
-            AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getApisUrl()),
-                    configurationService.getContextPath() + "/login/doOauthLogin?provider=" +
-                    params.provider).toString())
+            AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
+            params: [provider: params.provider]))
+
+            log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
+            ProxySelector ps = ProxySelector.getDefault()
+            log.info ps.select(new URI(g.createLink(action: 'doOauthLogin', absolute: 'true',
+            params: [provider: params.provider])))
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             redirect(url: authInfo.authUrl)
@@ -863,8 +867,6 @@ class UserController {
         if (!service) {
             redirect(controller: "index")
         }
-
-        log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
 
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
