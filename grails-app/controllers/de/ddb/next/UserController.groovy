@@ -689,9 +689,6 @@ class UserController {
             AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
             params: [provider: params.provider]))
 
-            log.info "XXX " + g.createLink(action: 'doOauthLogin', absolute: 'true', params: [provider: params.provider])
-            log.info "YYY " +  configurationService.getContextUrl() + "/login/doOauthLogin?provider=google"
-
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             redirect(url: authInfo.authUrl)
         }
@@ -867,6 +864,7 @@ class UserController {
             redirect(controller: "index")
         }
 
+        new ProxyUtil().setProxy()
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
         OAuthProfile profile = service.getProfile(authInfo.service, accessToken)
