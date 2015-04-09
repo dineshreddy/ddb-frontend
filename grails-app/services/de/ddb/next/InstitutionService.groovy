@@ -290,11 +290,13 @@ class InstitutionService extends CommonInstitutionService {
                     }
                 }
 
-                // remove zip code
-                result.remove(2)
+                if (result.size() > 2) {
+                    // remove zip code
+                    result.remove(2)
 
-                // remove too detailed values like street name
-                result = result.take(result.size() - 2)
+                    // remove too detailed values like street name
+                    result = result.take(result.size() - 2)
+                }
             }
         }
         else {

@@ -3,10 +3,22 @@ package de.ddb.next
 class Items3dController {
     def index() {
         def id = params.id,
+        kanne = false,
+        draisine = false,
+        bueste = false,
         elefant = false,
         nofretete = false,
         aegyptische_Statue3 = false
 
+        if (id == "kanne") {
+            kanne = true
+        } else
+        if (id == "draisine") {
+            draisine = true
+        } else
+        if (id == "bueste") {
+            bueste = true
+        } else
         if (id == "elefant") {
             elefant = true
         } else
@@ -16,6 +28,6 @@ class Items3dController {
         if (id == "aegyptische_Statue3") {
             aegyptische_Statue3 = true
         }
-        render(view: "items3d", model: [elefant: elefant, nofretete: nofretete, aegyptische_Statue3: aegyptische_Statue3, id: id])
+        render(view: "items3d", model: [kanne: kanne, draisine: draisine, bueste: bueste, elefant: elefant, nofretete: nofretete, aegyptische_Statue3: aegyptische_Statue3, id: id])
     }
 }

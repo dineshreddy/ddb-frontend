@@ -31,6 +31,15 @@ class ContentController {
         try {
             def browserUrl = request.forwardURI.substring(request.contextPath.size())
             def location = params.dir ? params.dir : browserUrl.substring("/content".length())
+            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
+
+            //This particular redirect is in the scenario where an incorrect trailing slash is present. I.e a trailing slash is present in url but no /index.html at that location.
+            //If we just manipulate the url and the slash and use retrieveFile API without using a redirect, the relative paths inside the static content get affected wrongly.
+            if(checkIfRedirectNeeded(browserUrl, location, locale)) {
+                browserUrl = browserUrl.substring(0, browserUrl.length() - 1)
+                redirect uri: browserUrl
+            }
+
             while (location.endsWith("/")) {
                 location = location.substring(0, location.length() - 1)
             }
@@ -41,7 +50,6 @@ class ContentController {
                 return
             }
 
-            def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
 
             // Load the the file from $locale/$location.html.
             // If not found then load it from $locale/$location/index.html.
@@ -92,6 +100,21 @@ class ContentController {
             metaDescription:metaDescription,
             content:rewriteUrls(body)
         ]
+    }
+
+    private def checkIfRedirectNeeded(String browserUrl, String location, String locale) {
+
+        if (location.endsWith("/")) {
+            def path
+            def url = configurationService.getStaticUrl()
+            def apiResponse = ApiConsumer.getText(url, path, false)
+            path = locale + "/" + location + "/index.html"
+            apiResponse = ApiConsumer.getText(url, path, false)
+            if (!apiResponse.isOk()) {
+                return true
+            }
+        }
+        return false
     }
 
     /**
