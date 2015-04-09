@@ -675,7 +675,6 @@ class UserController {
     def requestOauthLogin() {
         SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
 
-        new ProxyUtil().setProxy()
         if (provider == SupportedOauthProvider.GOOGLE) {
             GrailsOAuthService service = resolveService(provider.name)
 
@@ -864,7 +863,9 @@ class UserController {
             redirect(controller: "index")
         }
 
-        new ProxyUtil().setProxy()
+        log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":"
+        + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
+
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
         OAuthProfile profile = service.getProfile(authInfo.service, accessToken)
