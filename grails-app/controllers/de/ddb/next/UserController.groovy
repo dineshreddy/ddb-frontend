@@ -685,8 +685,9 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
-            AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
-            params: [provider: params.provider]))
+            AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getApisUrl()),
+                    configurationService.getContextPath() + "/login/doOauthLogin?provider=" +
+                    params.provider).toString())
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             redirect(url: authInfo.authUrl)
