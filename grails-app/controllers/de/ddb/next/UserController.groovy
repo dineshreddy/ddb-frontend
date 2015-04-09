@@ -689,8 +689,8 @@ class UserController {
             AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
             params: [provider: params.provider]))
 
-            println "XXX " + g.createLink(action: 'doOauthLogin', absolute: 'true', params: [provider: params.provider])
-            println "YYY " +  configurationService.getContextUrl() + "/login/doOauthLogin?provider=google"
+            log.info "XXX " + g.createLink(action: 'doOauthLogin', absolute: 'true', params: [provider: params.provider])
+            log.info "YYY " +  configurationService.getContextUrl() + "/login/doOauthLogin?provider=google"
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             redirect(url: authInfo.authUrl)
