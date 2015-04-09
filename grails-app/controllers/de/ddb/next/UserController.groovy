@@ -863,8 +863,7 @@ class UserController {
             redirect(controller: "index")
         }
 
-        log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":"
-        + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
+        log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
 
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
