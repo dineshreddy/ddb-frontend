@@ -160,6 +160,7 @@ ddb.exhibitions.features.enabled=true
 ddb.rights.facet.features.enabled=true
 ddb.search.entities.features.enabled=true
 ddb.search.institutions.features.enabled=true
+ddb.search.timeSort.features.enabled=false
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
 ddb.apikey.terms.url="/content/terms/api"
 ddb.registration.info.url="/content/ddb/registration"
