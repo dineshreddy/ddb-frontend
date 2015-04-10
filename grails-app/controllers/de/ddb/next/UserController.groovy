@@ -689,7 +689,7 @@ class UserController {
             params: [provider: params.provider]))
 
             log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
-            log.info "system proxy settings: "System.getProperty("java.net.useSystemProxies")
+            log.info "system proxy settings: " + System.getProperty("java.net.useSystemProxies")
             System.setProperty("java.net.useSystemProxies", true)
             ProxySelector ps = ProxySelector.getDefault()
             log.info ps.select(new URI(g.createLink(action: 'doOauthLogin', absolute: 'true',
