@@ -35,7 +35,7 @@ limitations under the License.
               <option value="${SearchParamEnum.SORT_ALPHA_ASC.getName()}" <g:if test="${paginatorData.sortResultsSwitch == SearchParamEnum.SORT_ALPHA_ASC.getName()}">selected</g:if>><g:message encodeAs="html" code="ddbnext.Sort_ALPHA_ASC" /></option>
               <option value="${SearchParamEnum.SORT_ALPHA_DESC.getName()}" <g:if test="${paginatorData.sortResultsSwitch == SearchParamEnum.SORT_ALPHA_DESC.getName()}">selected</g:if>><g:message encodeAs="html" code="ddbnext.Sort_ALPHA_DESC" /></option>
               <%-- IAIS-52: Enable time sort for IAIS project. DDB-NEXT will follow. --%>
-              <g:if test="${grailsApplication.config.ddb.search.timeSort.features.enabled}">
+              <g:if test="${Boolean.valueOf(grailsApplication.config.ddb.search.timeSort.features.enabled)}">
                 <option value="${SearchParamEnum.SORT_TIME_ASC.getName()}" <g:if test="${paginatorData.sortResultsSwitch == SearchParamEnum.SORT_TIME_ASC.getName()}">selected</g:if>><g:message encodeAs="html" code="ddbnext.Sort_TIME_ASC" /></option>
                 <option value="${SearchParamEnum.SORT_TIME_DESC.getName()}" <g:if test="${paginatorData.sortResultsSwitch == SearchParamEnum.SORT_TIME_DESC.getName()}">selected</g:if>><g:message encodeAs="html" code="ddbnext.Sort_TIME_DESC" /></option>
               </g:if>
