@@ -691,8 +691,8 @@ class UserController {
             log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
             log.info "system proxy settings: " + System.getProperty("java.net.useSystemProxies")
             System.setProperty("java.net.useSystemProxies", "true")
-            ProxySelector ps = ProxySelector.getDefault()
-            log.info ps.select(new URI(g.createLink(action: 'doOauthLogin', absolute: 'true',
+            new ProxyUtil().setProxy()
+            log.info ProxySelector.getDefault().select(new URI(g.createLink(action: 'doOauthLogin', absolute: 'true',
             params: [provider: params.provider])))
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
