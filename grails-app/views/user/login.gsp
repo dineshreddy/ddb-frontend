@@ -116,15 +116,22 @@ limitations under the License.
                   </div>
                 </div>
                 <div class="row spacer-vertical">
-                  <div class="span9">
+                  <div class="span2">
                     <g:link controller="user" action="requestOpenIdLogin"
                             params="${["provider": SupportedOpenIdProviders.GOOGLE, "referrer": referrer]}">
                       <div class="openid-google"></div>
                     </g:link>
+                  </div>
+                  <div class="span7">
+                    <g:message code="ddbnext.Google_Login_Deprecated"/>
+                  </div>
+                  <div class="span9">
                     <g:link controller="user" action="requestOauthLogin"
                             params="${["provider": SupportedOauthProvider.GOOGLE.name, "referrer": referrer]}">
                       <div class="openid-google"></div>
                     </g:link>
+                  </div>
+                  <div class="span9">
                     <g:link controller="user" action="requestOpenIdLogin"
                             params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}">
                       <div class="openid-yahoo"></div>
