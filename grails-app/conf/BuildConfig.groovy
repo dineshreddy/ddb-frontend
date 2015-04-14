@@ -87,7 +87,7 @@ grails.project.dependency.resolution = {
     dependencies {
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
-        runtime ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
+        compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.springframework:spring-test:3.2.8.RELEASE' //Needed as dependency for rendering-plugin when used in WAR
         runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
 
