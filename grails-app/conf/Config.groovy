@@ -31,8 +31,8 @@ grails.mime.types = [
     multipartForm: 'multipart/form-data',
     rss:           'application/rss+xml',
     text:          'text/plain',
-    xml:           ['text/xml', 'application/xml'
-    ]]
+    xml:           ['text/xml', 'application/xml']
+]
 
 // URL Mapping Cache Max Size, defaults to 5000
 //grails.urlmapping.cache.maxsize = 1000
@@ -177,9 +177,6 @@ ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]
 ddb.defaultLanguage="de"
-
-// The grails.serverURL is required for the PDF rendering plugin.
-//grails.serverURL=ddb.apis.url // hla: Temporarily removed due to side effects on link generation
 
 def appName = "${appName}"
 
