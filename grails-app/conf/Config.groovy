@@ -325,7 +325,6 @@ grails {
       enabled = true
       ehcache {
          ehcacheXmlLocation = 'classpath:ehcache.xml' // conf/ehcache.xml
-         reloadable = false
       }
    }
 }
