@@ -686,6 +686,9 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
+            log.info "callback URL: " + new URL(new URL(configurationService.getPublicUrl()),
+                    "login/doOauthLogin?provider=" + provider.name).toString()
+
             AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getPublicUrl()),
                     "login/doOauthLogin?provider=" + provider.name).toString())
 
