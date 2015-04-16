@@ -96,12 +96,9 @@ grails.project.dependency.resolution = {
         runtime 'org.geotools:gt-geometry:10.2'
         runtime 'org.geotools:gt-epsg-hsql:10.2'
         runtime 'org.geotools:gt-epsg-extension:10.2'
-		
     }
 
     plugins {
-		compile ":html-cleaner:0.3"
-		
         compile ':cache:1.1.7'
         compile ':cache-ehcache:1.0.1'
         compile ':hibernate:3.6.10.12'
