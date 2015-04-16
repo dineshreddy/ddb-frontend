@@ -675,6 +675,7 @@ class UserController {
     def requestOauthLogin() {
         SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
 
+        new ProxyUtil().setProxy(true)
         if (provider == SupportedOauthProvider.GOOGLE) {
             GrailsOAuthService service = resolveService(provider.name)
 
@@ -685,9 +686,8 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
-            AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getApisUrl()),
-                    configurationService.getContextPath() + "/login/doOauthLogin?provider=" +
-                    params.provider).toString())
+            AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
+            params: [provider: params.provider]))
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             redirect(url: authInfo.authUrl)
@@ -704,8 +704,7 @@ class UserController {
 
         String discoveryUrl = ""
 
-        ProxyUtil proxyUtil = new ProxyUtil()
-        proxyUtil.setProxy()
+        new ProxyUtil().setProxy(false)
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
@@ -864,7 +863,7 @@ class UserController {
             redirect(controller: "index")
         }
 
-        log.info "proxy settings: " + System.getProperty("http.proxyHost") + ":" + System.getProperty("http.proxyPort") + "/" + System.getProperty("http.nonProxyHosts")
+        new ProxyUtil().setProxy(true)
 
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)

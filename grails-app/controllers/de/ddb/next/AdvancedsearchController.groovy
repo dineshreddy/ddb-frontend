@@ -15,7 +15,7 @@
  */
 package de.ddb.next
 
-import de.ddb.common.constants.FacetEnum;
+import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 
 
@@ -55,7 +55,7 @@ class AdvancedsearchController {
     def messageSource
     def configurationService
     def facetsService
-
+    def grailsApplication
 
     /**
      * render advanced search form
@@ -67,6 +67,12 @@ class AdvancedsearchController {
         int searchFieldCount = configurationService.getSearchFieldCount()
         List facetSearchfields = facetsService.getAllFacets()
         facetSearchfields = facetsService.filterOnlyAdvancedSearchFacets(facetSearchfields, allowedFacets)
+
+        // IAIS-61: Enable fulltext search for IAIS project. DDB-NEXT will follow.
+        if (grailsApplication.config.ddb.search.fulltext.features.enabled) {
+            facetSearchfields.add([searchType: "TEXT", name: "fulltext"])
+        }
+
         Map facetValuesMap = facetsService.getFacetValues(facetSearchfields, I18N_FACET_VALUE_PREFIX)
 
         render(view: "/search/advancedsearch", model: [searchGroupCount: searchGroupCount,

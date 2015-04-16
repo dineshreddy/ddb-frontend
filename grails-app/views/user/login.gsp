@@ -117,10 +117,6 @@ limitations under the License.
                 </div>
                 <div class="row spacer-vertical">
                   <div class="span9">
-                    <g:link controller="user" action="requestOpenIdLogin"
-                            params="${["provider": SupportedOpenIdProviders.GOOGLE, "referrer": referrer]}">
-                      <div class="openid-google"></div>
-                    </g:link>
                     <g:link controller="user" action="requestOauthLogin"
                             params="${["provider": SupportedOauthProvider.GOOGLE.name, "referrer": referrer]}">
                       <div class="openid-google"></div>
