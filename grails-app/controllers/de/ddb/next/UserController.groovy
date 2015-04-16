@@ -676,7 +676,7 @@ class UserController {
         SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
 
         new ProxyUtil().setProxy(true)
-        if (provider == SupportedOauthProvider.GOOGLE) {
+        if (provider) {
             GrailsOAuthService service = resolveService(provider.name)
 
             if (!service) {
