@@ -688,7 +688,8 @@ class UserController {
 
             AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getPublicUrl()),
                     "login/doOauthLogin?provider=" + provider.name).toString())
-
+            log.info("redirect after login to "+ new URL(new URL(configurationService.getPublicUrl()),
+                    "login/doOauthLogin?provider=" + provider.name))
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
             log.info("redirect to " + authInfo.authUrl)
             redirect(url: authInfo.authUrl)
@@ -858,8 +859,9 @@ class UserController {
     }
 
     def doOauthLogin() {
+        log.info("doOauthLogin")
         GrailsOAuthService service = resolveService(params.provider)
-
+        log.info("oauth service: " + service)
         if (!service) {
             redirect(controller: "index")
         }
