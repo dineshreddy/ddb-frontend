@@ -686,9 +686,6 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
-            log.info "callback URL: " + new URL(new URL(configurationService.getPublicUrl()),
-                    "login/doOauthLogin?provider=" + provider.name).toString()
-
             AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getPublicUrl()),
                     "login/doOauthLogin?provider=" + provider.name).toString())
 
@@ -868,9 +865,13 @@ class UserController {
 
         new ProxyUtil().setProxy(true)
 
+        log.info "get auth info ..."
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
+        log.info "authInfo: " + authInfo
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
+        log.info "accessToken: " + accessToken
         OAuthProfile profile = service.getProfile(authInfo.service, accessToken)
+        log.info "profile: " + profile
 
         sessionService.setSessionAttributeIfAvailable("${params.provider}_authToken", accessToken)
         sessionService.setSessionAttributeIfAvailable("${params.provider}_profile", profile)
