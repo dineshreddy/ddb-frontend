@@ -690,6 +690,7 @@ class UserController {
                     "login/doOauthLogin?provider=" + provider.name).toString())
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
+            log.info("redirect to " + authInfo.authUrl)
             redirect(url: authInfo.authUrl)
         }
         else {
