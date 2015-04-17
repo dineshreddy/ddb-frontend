@@ -676,7 +676,7 @@ class UserController {
         SupportedOauthProvider provider = SupportedOauthProvider.valueOfName(params.provider)
 
         new ProxyUtil().setProxy(true)
-        if (provider == SupportedOauthProvider.GOOGLE) {
+        if (provider) {
             GrailsOAuthService service = resolveService(provider.name)
 
             if (!service) {
@@ -686,10 +686,11 @@ class UserController {
             sessionService.createNewSession()
             sessionService.setSessionAttributeIfAvailable("${provider.name}_originalUrl", params.referrer)
 
-            AuthInfo authInfo = service.getAuthInfo(g.createLink(action: 'doOauthLogin', absolute: 'true',
-            params: [provider: params.provider]))
+            AuthInfo authInfo = service.getAuthInfo(new URL(new URL(configurationService.getPublicUrl()),
+                    "login/doOauthLogin?provider=" + provider.name).toString())
 
             sessionService.setSessionAttributeIfAvailable("${provider.name}_authInfo", authInfo)
+            log.info("redirect to " + authInfo.authUrl)
             redirect(url: authInfo.authUrl)
         }
         else {
@@ -865,9 +866,13 @@ class UserController {
 
         new ProxyUtil().setProxy(true)
 
+        log.info "get auth info ..."
         AuthInfo authInfo = sessionService.getSessionAttributeIfAvailable("${params.provider}_authInfo")
+        log.info "authInfo: " + authInfo
         Token accessToken = service.getAccessToken(authInfo.service, params, authInfo.requestToken)
+        log.info "accessToken: " + accessToken
         OAuthProfile profile = service.getProfile(authInfo.service, accessToken)
+        log.info "profile: " + profile
 
         sessionService.setSessionAttributeIfAvailable("${params.provider}_authToken", accessToken)
         sessionService.setSessionAttributeIfAvailable("${params.provider}_profile", profile)
