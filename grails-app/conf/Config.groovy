@@ -157,6 +157,7 @@ ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.reportMailTo=""
 ddb.culturegraph.features.enabled=false
 ddb.exhibitions.features.enabled=true
+ddb.institutions.grouping.features.enabled=false
 ddb.rights.facet.features.enabled=true
 ddb.search.entities.features.enabled=true
 ddb.search.fulltext.features.enabled=false
