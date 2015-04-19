@@ -178,6 +178,7 @@ ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]
 ddb.defaultLanguage="de"
+ddb.supportedOAuthProviders=["facebook", "google", "twitter"]
 
 def appName = "${appName}"
 
