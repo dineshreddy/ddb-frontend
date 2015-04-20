@@ -35,18 +35,21 @@ class RequestFilters {
         setLocale(controller:'*', action:'*') {
             before = {
                 log.info "XXX before " + session.locale
-                if (request && !session.locale) {
+                if (request) {
                     LocaleResolver localeResolver = RCU.getLocaleResolver(request)
-                    Locale currentLocale = localeResolver.resolveLocale(request)
-                    log.info "currentLocale: " + currentLocale
 
-                    if (!languageService.supports(currentLocale)) {
-                        currentLocale = configurationService.getDefaultLanguage()
+                    if (!session.locale) {
+                        Locale currentLocale = localeResolver.resolveLocale(request)
+                        log.info "currentLocale: " + currentLocale
+
+                        if (!languageService.supports(currentLocale)) {
+                            currentLocale = configurationService.getDefaultLanguage()
+                        }
+                        session.locale = currentLocale
                     }
-                    log.info "set new locale to " + currentLocale
-                    session.locale = currentLocale
+                    localeResolver.setLocale(request, response, session.locale)
                 }
-                localeResolver.setLocale(request, response, session.locale)
+                log.info "XXX after " + session.locale
             }
         }
 
