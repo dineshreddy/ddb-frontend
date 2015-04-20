@@ -42,9 +42,6 @@ class RequestFilters {
                         currentLocale = configurationService.getDefaultLanguage()
                         localeResolver.setLocale(request, response,  currentLocale)
                         session.locale = currentLocale
-
-                        // set default locale for DdbLocaleResolver
-                        Locale.setDefault(currentLocale)
                     }
                 }
             }
