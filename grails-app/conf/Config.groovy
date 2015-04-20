@@ -189,7 +189,7 @@ log4j = {
     appenders {
         console name: "console", threshold: org.apache.log4j.Level.INFO,
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "${appName}-info", threshold: org.apache.log4j.Level.ALL,
+        file name: "${appName}-info", threshold: org.apache.log4j.Level.INFO,
             file: config.ddb.logging.folder + "/${appName}-info.log",
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
         file name: "${appName}-warn", threshold: org.apache.log4j.Level.WARN,
@@ -219,7 +219,7 @@ log4j = {
     // This part can be used to filter out all loggings that are not interesting
     environments {
         development {
-            all    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+            warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
                     "grails.plugin",                            // only warnings or errors from grails.plugins
                     "org.grails.plugin",                        // only warnings or errors from plugins
                     "org.springframework",                      // only warnings or errors from spring
@@ -232,14 +232,6 @@ log4j = {
         }
         production {
             //Don't filter messages in production
-            all    "org.codehaus.groovy.grails",               // only warnings or errors from grails
-                    "grails.plugin",                            // only warnings or errors from grails.plugins
-                    "org.grails.plugin",                        // only warnings or errors from plugins
-                    "org.springframework",                      // only warnings or errors from spring
-                    "net.jawr",                                 // only warnings or errors from jawr
-                    "org.apache.catalina.core",                 // only warnings or errors from catalina core
-                    "org.apache.coyote.http11.Http11Protocol",  // only warnings or errors from Http11Protocol
-                    "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
         }
         test {
             warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
