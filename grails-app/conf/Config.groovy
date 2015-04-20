@@ -232,6 +232,14 @@ log4j = {
         }
         production {
             //Don't filter messages in production
+            all    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+                    "grails.plugin",                            // only warnings or errors from grails.plugins
+                    "org.grails.plugin",                        // only warnings or errors from plugins
+                    "org.springframework",                      // only warnings or errors from spring
+                    "net.jawr",                                 // only warnings or errors from jawr
+                    "org.apache.catalina.core",                 // only warnings or errors from catalina core
+                    "org.apache.coyote.http11.Http11Protocol",  // only warnings or errors from Http11Protocol
+                    "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
         }
         test {
             warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
