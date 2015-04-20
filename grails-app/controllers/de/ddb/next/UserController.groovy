@@ -708,13 +708,7 @@ class UserController {
 
         FetchRequest fetch = FetchRequest.createFetchRequest()
 
-        if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
-            discoveryUrl = "https://www.google.com/accounts/o8/id"
-            fetch.addAttribute("Email", "http://schema.openid.net/contact/email", true)
-            fetch.addAttribute("FirstName", "http://schema.openid.net/namePerson/first", true)
-            fetch.addAttribute("LastName", "http://schema.openid.net/namePerson/last", true)
-            fetch.setCount("openid.ext1.value.Email", 1)
-        }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
+        if (provider == SupportedOpenIdProviders.YAHOO.toString()) {
             discoveryUrl = "https://me.yahoo.com"
             fetch.addAttribute("Email", "http://axschema.org/contact/email", true)
             fetch.addAttribute("Fullname", "http://axschema.org/namePerson", true)
@@ -775,13 +769,7 @@ class UserController {
                 def email = null
                 def identifier = null
 
-                if(provider == SupportedOpenIdProviders.GOOGLE.toString()) {
-                    firstName = params["openid.ext1.value.FirstName"]
-                    lastName = params["openid.ext1.value.LastName"]
-                    username = firstName + " " + lastName
-                    email = params["openid.ext1.value.Email"]
-                    identifier = verified.getIdentifier()
-                }else if(provider == SupportedOpenIdProviders.YAHOO.toString()) {
+                if (provider == SupportedOpenIdProviders.YAHOO.toString()) {
                     username = params["openid.ax.value.fullname"]
                     def index = username.trim().lastIndexOf(' ')
                     if (index > 0) {
