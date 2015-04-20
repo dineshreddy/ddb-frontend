@@ -189,7 +189,7 @@ log4j = {
     appenders {
         console name: "console", threshold: org.apache.log4j.Level.INFO,
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "${appName}-info", threshold: org.apache.log4j.Level.INFO,
+        file name: "${appName}-info", threshold: org.apache.log4j.Level.ALL,
             file: config.ddb.logging.folder + "/${appName}-info.log",
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
         file name: "${appName}-warn", threshold: org.apache.log4j.Level.WARN,
@@ -219,7 +219,7 @@ log4j = {
     // This part can be used to filter out all loggings that are not interesting
     environments {
         development {
-            warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
+            all    "org.codehaus.groovy.grails",               // only warnings or errors from grails
                     "grails.plugin",                            // only warnings or errors from grails.plugins
                     "org.grails.plugin",                        // only warnings or errors from plugins
                     "org.springframework",                      // only warnings or errors from spring
