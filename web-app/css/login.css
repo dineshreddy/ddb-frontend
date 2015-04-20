@@ -37,8 +37,11 @@
   display: inline-block;
   height: 30px;
   margin-right: 10px;
-  text-decoration: none;
   width: 30px;
+}
+
+.openid a:hover {
+  text-decoration: none;
 }
 
 .login {
