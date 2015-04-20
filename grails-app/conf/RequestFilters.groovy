@@ -46,6 +46,9 @@ class RequestFilters {
                             currentLocale = configurationService.getDefaultLanguage()
                         }
                         session.locale = currentLocale
+                        if (Locale.getDefault() != currentLocale) {
+                            Locale.setDefault(currentLocale)
+                        }
                     }
                     localeResolver.setLocale(request, response, session.locale)
                 }
