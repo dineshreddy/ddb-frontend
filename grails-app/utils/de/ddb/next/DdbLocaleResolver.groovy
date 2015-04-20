@@ -39,6 +39,9 @@ class DdbLocaleResolver implements LocaleResolver {
         if (!result) {
             result = languageService.getDefaultLocale()
         }
+        if (Locale.getDefault() != result) {
+            Locale.setDefault(result)
+        }
         return result
     }
 }
