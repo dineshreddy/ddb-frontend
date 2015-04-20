@@ -24,7 +24,7 @@ class RefererFilters {
          if (request.method.toUpperCase() == "POST") {
            def referer = request.getHeader('Referer')
 
-           return referer && referer =~ validRefererPrefix
+           return !referer || referer =~ validRefererPrefix
          }
        }
      }
