@@ -16,8 +16,6 @@
 
 package de.ddb.next
 
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-
 import de.ddb.common.CommonConfigurationService
 
 /**
@@ -26,103 +24,55 @@ import de.ddb.common.CommonConfigurationService
  * @author hla
  */
 class ConfigurationService extends CommonConfigurationService {
-
-    def grailsApplication
-    def LinkGenerator grailsLinkGenerator
-
-    def transactional=false
-
-    /*
-     * Abstract methods from super class
-     */
-
-    public String getContextPath() {
-        return grailsLinkGenerator.contextPath
-    }
-
-    /**
-     * Return the application base URL with context path and without trailing slash.
-     */
-    public String getContextUrl(){
-        return grailsLinkGenerator.serverBaseURL
-    }
-
-    protected def getValueFromConfig(String key) {
-        def value = grailsApplication.config
-        for (String keyPart : key.split("\\.")) {
-            if (!(value instanceof ConfigObject)) {
-                value = null
-                break
-            }
-            value = value[keyPart]
-        }
-        try {
-            if (value?.isEmpty()) {
-                value = null
-            }
-        }
-        catch (MissingMethodException e) {
-        }
-        return value
-    }
-
-    /*
-     * Public methods
-     */
-
-    public String getApiKeyDocUrl(){
+    String getApiKeyDocUrl() {
         return getConfigValue("ddb.apikey.doc.url")
     }
 
-    public String getApiKeyTermsUrl(){
+    String getApiKeyTermsUrl() {
         return getConfigValue("ddb.apikey.terms.url")
     }
 
-    public String getCulturegraphUrl(){
+    String getCulturegraphUrl() {
         return getConfigValue("ddb.culturegraph.url")
     }
 
-    public String getDomainCanonic(){
+    String getDomainCanonic() {
         return getConfigValue("ddb.domain.canonic")
     }
 
-    public String getFooterMenu() {
+    String getFooterMenu() {
         return getConfigValue("ddb.footerMenu")
     }
 
-    public String getGrailsMailHost(){
+    String getGrailsMailHost() {
         return getConfigValue("grails.mail.host")
     }
 
-    public int getGrailsMailPort() {
+    int getGrailsMailPort() {
         return getIntegerConfigValue("grails.mail.port")
     }
 
-    public String getLoadbalancerHeaderName(){
+    String getLoadbalancerHeaderName() {
         return getConfigValue("ddb.loadbalancer.header.name")
     }
 
-    public String getLoadbalancerHeaderValue(){
+    String getLoadbalancerHeaderValue() {
         return getConfigValue("ddb.loadbalancer.header.value")
     }
 
-    public String getMimeTypeHtml(){
-        return getConfigValue("grails.mime.types['html'][0]", String, grailsApplication.config.grails?.mime?.types["html"][0])
-    }
-
-    public String getMainMenu(){
+    String getMainMenu() {
         return getConfigValue("ddb.mainMenu")
     }
 
-    public getSocialIconsFacebookUrl(){
+    String getSocialIconsFacebookUrl() {
         return getConfigValue("ddb.socialIcons.url.facebook")
     }
 
-    public getSocialIconsTwitterUrl(){
+    String getSocialIconsTwitterUrl() {
         return getConfigValue("ddb.socialIcons.url.twitter")
     }
 
-    public boolean isCulturegraphFeaturesEnabled() {
+    boolean isCulturegraphFeaturesEnabled() {
         //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
         //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
         //      we will return always true in this method of the develop branch.
@@ -134,29 +84,25 @@ class ConfigurationService extends CommonConfigurationService {
         return true
     }
 
-    public boolean isEntitySearchFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.search.entities.features.enabled")
-        return Boolean.parseBoolean(value.toString())
+    boolean isEntitySearchFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.search.entities.features.enabled")
     }
 
-    public boolean isExhibitionsFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.exhibitions.features.enabled")
-        return Boolean.parseBoolean(value.toString())
+    boolean isExhibitionsFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.exhibitions.features.enabled")
     }
 
-    public boolean isInstitutionSearchFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.search.institutions.features.enabled")
-        return Boolean.parseBoolean(value.toString())
+    boolean isInstitutionSearchFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.search.institutions.features.enabled")
     }
 
-    public boolean isRightsFacetFeaturesEnabled() {
-        def value = getExistingConfigValue("ddb.rights.facet.features.enabled")
-        return Boolean.parseBoolean(value.toString())
+    boolean isRightsFacetFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.rights.facet.features.enabled")
     }
 
-    public def logConfigurationSettings() {
+    def logConfigurationSettings() {
         //Call Common Configuration
-        super.logConfigurationSettings(grailsApplication)
+        super.logConfigurationSettings()
 
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
@@ -167,7 +113,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
-        log.info "grails.mime.types['html'][0] = " + getMimeTypeHtml()
         log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.entities.features.enabled = " + isEntitySearchFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
@@ -175,6 +120,8 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
         log.info "ddb.mainMenu = " + getMainMenu()
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
+        log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
+        log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
 
         log.info "-------------------------------------------------------"
     }
