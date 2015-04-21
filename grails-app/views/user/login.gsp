@@ -17,6 +17,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SupportedOauthProvider"%>
 <%@page import="de.ddb.common.constants.SupportedOpenIdProviders"%>
 <%@page import="de.ddb.common.constants.LoginStatus"%>
+<g:set var="config" bean="configurationService"/>
 <html>
   <head>
     <title><g:message encodeAs="html" code="ddbcommon.Login_Button" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -117,12 +118,16 @@ limitations under the License.
                 </div>
                 <div class="row spacer-vertical">
                   <div class="span9">
-                    <g:link controller="user" action="requestOauthLogin"
-                            params="${["provider": SupportedOauthProvider.GOOGLE.name, "referrer": referrer]}">
-                      <div class="openid-google"></div>
-                    </g:link>
+                    <g:each in="${config.getSupportedOAuthProviders()}" var="provider">
+                      <g:link controller="user" action="requestOauthLogin"
+                              params="${["provider": provider.name, "referrer": referrer]}"
+                              title="${g.message(code: "ddbcommon.OAuth_Tooltip_" + provider.name.capitalize())}">
+                        <div class="${"openid-" + provider.name}"></div>
+                      </g:link>
+                    </g:each>
                     <g:link controller="user" action="requestOpenIdLogin"
-                            params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}">
+                            params="${["provider": SupportedOpenIdProviders.YAHOO, "referrer": referrer]}"
+                            title="${g.message(code: "ddbcommon.OAuth_Tooltip_Yahoo")}">
                       <div class="openid-yahoo"></div>
                     </g:link>
                   </div>

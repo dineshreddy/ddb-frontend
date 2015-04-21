@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import grails.util.Holders
 
 class RefererFilters {
-   // referer must match serverURL, optionally https
-   static validRefererPrefix = "^${Holders.config.grails.serverURL}".replace("http", "https?")
-   def filters = {
-     checkReferer(controller: '*', action: '*') {
-       before = {
-         if (request.method.toUpperCase() == "POST") {
-           def referer = request.getHeader('Referer')
+    def configurationService
 
-           return referer && referer =~ validRefererPrefix
-         }
-       }
-     }
-   }
+    def filters = {
+        checkReferer(controller: '*', action: '*') {
+            before = {
+                if (request.method.toUpperCase() == "POST") {
+                    def referer = request.getHeader('Referer')
+                    // referer must match serverURL, optionally https
+                    def validRefererPrefix = "^${configurationService.getContextUrl()}".replace("http", "https?")
+
+                    return !referer || referer =~ validRefererPrefix
+                }
+            }
+        }
+    }
 }

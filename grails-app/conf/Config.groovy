@@ -158,6 +158,7 @@ ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.reportMailTo=""
 ddb.culturegraph.features.enabled=false
 ddb.exhibitions.features.enabled=true
+ddb.institutions.grouping.features.enabled=false
 ddb.rights.facet.features.enabled=true
 ddb.search.entities.features.enabled=true
 ddb.search.fulltext.features.enabled=false
@@ -178,6 +179,7 @@ ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur"
 ddb.supportedLocales=["de_DE", "en_US"]
 ddb.defaultLanguage="de"
+ddb.supportedOAuthProviders=["facebook", "google", "twitter"]
 
 def appName = "${appName}"
 

@@ -274,44 +274,46 @@ class InstitutionService extends CommonInstitutionService {
     private String fixNominatimIssues(String locationDisplayName) {
         def result
 
-        if (locationDisplayName) {
-            // check if it is already fixed
-            if (locationDisplayName.startsWith(EUROPE)) {
-                result = locationDisplayName.split(",")
+        if (grailsApplication.config.ddb.institutions.grouping.features.enabled) {
+            if (locationDisplayName) {
+                // check if it is already fixed
+                if (locationDisplayName.startsWith(EUROPE)) {
+                    result = locationDisplayName.split(",")
+                }
+                else {
+                    result = locationDisplayName.split(", ")*.trim().reverse()
+                    if (result[0] != EUROPE) {
+                        if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
+                            result[0] = EUROPE
+                        }
+                        else {
+                            result.add(0, EUROPE)
+                        }
+                    }
+
+                    if (result.size() > 2) {
+                        // remove zip code
+                        result.remove(2)
+
+                        // remove too detailed values like street name
+                        result = result.take(result.size() - 2)
+                    }
+                }
             }
             else {
-                result = locationDisplayName.split(", ")*.trim().reverse()
-                if (result[0] != EUROPE) {
-                    if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
-                        result[0] = EUROPE
-                    }
-                    else {
-                        result.add(0, EUROPE)
-                    }
-                }
-
-                if (result.size() > 2) {
-                    // remove zip code
-                    result.remove(2)
-
-                    // remove too detailed values like street name
-                    result = result.take(result.size() - 2)
-                }
+                result = [
+                    EUROPE,
+                    GERMANY
+                ]
             }
-        }
-        else {
-            result = [
-                EUROPE,
-                GERMANY
-            ]
-        }
 
-        // enlarge the list to 7 elements
-        for (int index = result.size(); index < 7; index++) {
-            result += ""
+            // enlarge the list to 7 elements
+            for (int index = result.size(); index < 7; index++) {
+                result += ""
+            }
+            result = result.join(",")
         }
-
-        return result.join(",")
+        return result
     }
 
     private getTotal(rootList) {

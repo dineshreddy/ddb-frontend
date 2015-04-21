@@ -25,19 +25,17 @@ import org.springframework.web.servlet.support.RequestContextUtils
  * Tell JAWR plugin the current locale.
  */
 class DdbLocaleResolver implements LocaleResolver {
-
-    def languageService
-
     /**
      * Ensure that there is always a locale value != null returned.
      */
     public String resolveLocaleCode(HttpServletRequest request) {
-        Locale result = null
+        String result = null
+
         if (request) {
             result = RequestContextUtils.getLocale(request)
         }
         if (!result) {
-            result = languageService.getDefaultLocale()
+            result = Locale.getDefault().getLanguage()
         }
         return result
     }

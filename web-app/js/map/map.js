@@ -445,15 +445,17 @@ $(document).ready(function() {
       _getLocationName : function(institution, locationIndex) {
         var result;
 
-        if (institution.isInCluster) {
-          result = institution.locationDisplayName[locationIndex];
-        }
-        else {
-          $.each(institution.childInstitutions, function(index, childInstitution) {
-            if (childInstitution.isInCluster) {
-              result = childInstitution.locationDisplayName[locationIndex];
-            }
-          });
+        if (institution.locationDisplayName) {
+          if (institution.isInCluster) {
+            result = institution.locationDisplayName[locationIndex];
+          }
+          else {
+            $.each(institution.childInstitutions, function(index, childInstitution) {
+              if (childInstitution.isInCluster) {
+                result = childInstitution.locationDisplayName[locationIndex];
+              }
+            });
+          }
         }
         return result ? result : "";
       },
