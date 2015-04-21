@@ -47,7 +47,7 @@ limitations under the License.
               <![endif]-->
             </button>
             <div class="link-stats">
-              <g:link class="fl" controller="content" action="faq" fragment="A110"
+              <g:link class="fl" controller="content" action="faq" fragment="189"
                       title="${g.message(code: "ddbnext.Homepage_Statistics_Whats_Offered")}">
                 <g:message args='["${String.format(RequestContextUtils.getLocale(request),'%,d', stats.total)}"]'
                            code="ddbnext.Homepage_Statistics_Total"/>
