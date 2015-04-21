@@ -18,6 +18,8 @@
 beans = {
     localeResolver(org.springframework.web.servlet.i18n.CookieLocaleResolver) {
         cookieMaxAge = 31536000 //1y
+
+        // set default locale for JAWR plugin
         defaultLocale = new Locale("de","DE")
         java.util.Locale.setDefault(defaultLocale)
     }
