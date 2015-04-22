@@ -24,9 +24,12 @@ class MainMenuServiceIntegrationTests {
     def mainMenuService
 
     @Test
-    void loadMenu() {
-        def mainMenu = mainMenuService.mainMenu
+    void loadFooterMenu() {
+        assert mainMenuService.footerMenu.size > 0
+    }
 
-        assert mainMenu.size > 0
+    @Test
+    void loadHeaderMenu() {
+        assert mainMenuService.headerMenu.size > 0
     }
 }
