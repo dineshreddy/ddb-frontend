@@ -44,6 +44,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.domain.canonic")
     }
 
+    List getFacetsFilter() {
+        return getConfigValue("ddb.backend.facets.filter", List)
+    }
+
     String getFooterMenu() {
         return getConfigValue("ddb.footerMenu")
     }
@@ -114,6 +118,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.domain.canonic = " + getDomainCanonic()
+        log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
