@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package de.ddb.next
+
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.common.ApiConsumer
@@ -22,63 +23,44 @@ class IndexController {
 
     def configurationService
     def itemService
+    def languageService
 
     def index() {
-        def path
-
-        def staticUrl = configurationService.getStaticUrl()
-        def locale = RCU.getLocale(request)
-
         // fetch the DDB news from static server.
-        if(locale.toString().substring(0, 2)== "de") {
-            path = "de/homepage.xml"
-        } else {
-            path = "en/homepage.xml"
-        }
+        def staticUrl = configurationService.getStaticUrl()
+        def locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
+        def path = locale + "/ddb-services/teaser.xml"
 
-        def query = [ client: "DDB-NEXT" ]
         // Submit a request via GET
-        def apiResponse = ApiConsumer.getText(staticUrl, path, false, query)
+        def apiResponse = ApiConsumer.getXml(staticUrl, path)
         if(!apiResponse.isOk()){
             log.error "text: Text file was not found"
             apiResponse.throwException(request)
         }
-        def response = apiResponse.getResponse()
-
-        def articles = retrieveArguments(response)
-        render(view: "index", model: [articles: articles, stats: itemService.getNumberOfItems()])
+        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children()),
+                                      stats: itemService.getNumberOfItems()])
     }
 
-    private def retrieveArguments(def content){
-        def title = fetchTitle(content)
-        def uri = fetchUri(content)
-        def src = fetchSrc(content)
-        def articles = new ArrayList()
-        def article
-        if (title != null) {
-            for(def i=0; i<title.size() ; i++) {
-                article = [title:title[i][1], uri:uri[i][1], src:src[i][1]]
-                articles.add(article)
+    /**
+     * Rewrite CMS server URLs so they suit our needs.
+     *
+     * @param articles articles with CMS URLs
+     * @return articles with modified URLs
+     */
+    private def rewriteUrls(def articles) {
+        articles.each { article ->
+            // image URLs from CMS are absolute URLs
+            String imageUri = article.imageUri.text()
+            String pattern = "/sites/default"
+            int index = imageUri.indexOf(pattern)
+            if (index >= 0) {
+                article.imageUri = configurationService.getContextPath() + "/static/" +
+                        imageUri.substring(index + pattern.length() + 1)
             }
+
+            // URLs need our context path in front
+            article.uri = configurationService.getContextPath() + article.uri.text()
         }
         return articles
-    }
-
-    private def fetchTitle(content) {
-        def titleMatch = content =~ /(?s)<caption>(.*?)<\/caption>/
-        if (titleMatch)
-            return titleMatch
-    }
-
-    private def fetchUri(content) {
-        def uriMatch = content =~ /(?s)<uri>(.*?)<\/uri>/
-        if (uriMatch)
-            return uriMatch
-    }
-
-    private def fetchSrc(content) {
-        def imageUriMatch = content =~ /(?s)<imageUri>(.*?)<\/imageUri>/
-        if (imageUriMatch)
-            return imageUriMatch
     }
 }

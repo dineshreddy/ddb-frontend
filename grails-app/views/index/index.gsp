@@ -47,7 +47,7 @@ limitations under the License.
               <![endif]-->
             </button>
             <div class="link-stats">
-              <g:link class="fl" controller="content" action="faq" fragment="A110"
+              <g:link class="fl" controller="content" action="faq" fragment="189"
                       title="${g.message(code: "ddbnext.Homepage_Statistics_Whats_Offered")}">
                 <g:message args='["${String.format(RequestContextUtils.getLocale(request),'%,d', stats.total)}"]'
                            code="ddbnext.Homepage_Statistics_Total"/>
@@ -69,11 +69,11 @@ limitations under the License.
         <g:if test="${articles}">
           <g:each in="${articles}">
             <div class="span3">
-              <a href="${request.contextPath}${it.uri}" title="${it.title}">
-                <img class="article" src="${request.contextPath}${it.src}" alt="${it.title}"/>
+              <a href="${it.uri}" title="${it.caption}">
+                <img class="article" src="${it.imageUri}" alt="${it.caption}"/>
               </a>
               <div class="caption">
-                <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
+                <a href="${it.uri}" title="${it.caption}">${it.caption}</a>
               </div>
             </div>
           </g:each>
@@ -84,11 +84,11 @@ limitations under the License.
           <g:if test="${articles}">
             <g:each in="${articles}">
               <div class="article">
-                <a href="${request.contextPath}${it.uri}" title="${it.title}" target="_self">
-                  <img src="${request.contextPath}${it.src}" alt="${it.title}" />
+                <a href="${it.uri}" title="${it.caption}" target="_self">
+                  <img src="${it.imageUri}" alt="${it.caption}" />
                 </a>
                 <div class="caption">
-                  <a href="${request.contextPath}${it.uri}" title="${it.title}">${it.title}</a>
+                  <a href="${it.uri}" title="${it.caption}">${it.caption}</a>
                 </div>
               </div>
             </g:each>

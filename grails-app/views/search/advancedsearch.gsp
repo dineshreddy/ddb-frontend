@@ -26,7 +26,7 @@ limitations under the License.
       <div class="span12">
           <div class="row heading">
             <div class="fl"><h1><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></h1></div>
-            <ddbcommon:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoId="search-advanced" infoDir="help" />
+            <ddbcommon:renderInfoTooltip messageCode="ddbnext.AdvancedSearch_Hint" infoDir="hilfe/erweiterte-suche"/>
           </div>
           <div class="row">
               <div class="span12">

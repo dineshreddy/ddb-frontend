@@ -32,6 +32,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.apikey.terms.url")
     }
 
+    String getCmsUrl() {
+        return getConfigValue("ddb.cms.url")
+    }
+
     String getCulturegraphUrl() {
         return getConfigValue("ddb.culturegraph.url")
     }
@@ -111,6 +115,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
         log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
+        log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.domain.canonic = " + getDomainCanonic()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()

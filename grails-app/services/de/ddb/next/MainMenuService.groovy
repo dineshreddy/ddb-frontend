@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import groovy.json.JsonSlurper
+import de.ddb.common.ApiConsumer
 import de.ddb.next.beans.MenuItem
 
 /**
@@ -24,6 +25,8 @@ import de.ddb.next.beans.MenuItem
  * @author sche
  */
 class MainMenuService {
+    private static final String PATH = "de/ddb-services/menu"
+
     def configurationService
     def transactional = false
 
@@ -39,13 +42,37 @@ class MainMenuService {
 
     public MenuItem[] getHeaderMenu() {
         if (!headerMenu) {
-            headerMenu = loadMainMenu(configurationService.getMainMenu())
+            headerMenu = loadMainMenu()
         }
         return headerMenu
     }
 
     /**
      * Load the menu JSON file from CMS.
+     *
+     * @return list of menu items
+     */
+    private MenuItem[] loadMainMenu() {
+        def result
+        def apiResponse = ApiConsumer.getJson(configurationService.cmsUrl, PATH)
+
+        if (apiResponse.isOk()) {
+            def mainMenu = apiResponse.getResponse().mainmenu
+
+            result = [mainMenu.size()]
+            mainMenu.each {menuItem ->
+                result[menuItem.position - 1] =
+                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
+            }
+        }
+        else {
+            log.error "faild to load main menu file from " + configurationService.cmsUrl + PATH
+        }
+        return result
+    }
+
+    /**
+     * Load the menu JSON from a file.
      *
      * @param url JSON file to load
      *
@@ -63,7 +90,7 @@ class MainMenuService {
             result = [mainMenu.size()]
             mainMenu.each {menuItem ->
                 result[menuItem.position - 1] =
-                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.etValue, menuItem.ruValue, menuItem.ref, menuItem.submenu)
+                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
             }
         }
         else {

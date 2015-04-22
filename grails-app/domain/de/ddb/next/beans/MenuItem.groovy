@@ -28,17 +28,15 @@ class MenuItem {
     final MenuItem[] subMenuItems
     final String uri
 
-    MenuItem(String deLabel, String enLabel, String etLabel, String ruLabel, String uri, Object subMenu) {
-        this.label["de"] = deLabel
-        this.label["en"] = enLabel
-        this.label["et"] = etLabel
-        this.label["ru"] = ruLabel
+    MenuItem(String deLabel, String enLabel, String uri, Object subMenu) {
+        this.label[Locale.GERMANY.language] = deLabel
+        this.label[Locale.ENGLISH.language] = enLabel
         this.uri = uri
         if (subMenu) {
             subMenuItems = new MenuItem[subMenu.size()]
             subMenu.each {menuItem ->
                 subMenuItems[menuItem.position - 1] =
-                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.etValue, menuItem.ruValue, menuItem.ref, menuItem.submenu)
+                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
             }
         }
     }
