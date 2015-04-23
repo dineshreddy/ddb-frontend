@@ -25,11 +25,11 @@ class MainMenuServiceIntegrationTests {
 
     @Test
     void loadFooterMenu() {
-        assert mainMenuService.footerMenu.size > 0
+        assert mainMenuService.footerMenu.length > 0
     }
 
     @Test
     void loadHeaderMenu() {
-        assert mainMenuService.headerMenu.size > 0
+        assert mainMenuService.headerMenu.length > 0
     }
 }
