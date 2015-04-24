@@ -60,13 +60,15 @@
   background:url("../images/icons/ddbIkonographie.png") no-repeat;
 }
 .advanced-search .add-group-button {
-  width:160px;
+  width:300px;
   font-size:0.938em;
   font-weight:normal;
   text-shadow:none;
   color:#000000;
   background-position: 0 0;
   line-height: 0;
+  margin-right:10px;
+  text-align:right;
 }
 .advanced-search .add-group-button:hover {
   color: #990000;
