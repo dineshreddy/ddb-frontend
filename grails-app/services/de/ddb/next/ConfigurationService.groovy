@@ -68,10 +68,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.loadbalancer.header.value")
     }
 
-    String getMainMenu() {
-        return getConfigValue("ddb.mainMenu")
-    }
-
     String getSocialIconsFacebookUrl() {
         return getConfigValue("ddb.socialIcons.url.facebook")
     }
@@ -128,7 +124,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.footerMenu = " + getFooterMenu()
         log.info "ddb.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
-        log.info "ddb.mainMenu = " + getMainMenu()
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
         log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
         log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
