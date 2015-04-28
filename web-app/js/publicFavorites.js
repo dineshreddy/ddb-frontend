@@ -37,9 +37,7 @@ $(function() {
 
     $("#favorites-list-send").click(function(event) {
       event.preventDefault();
-      $('#sendFavoriteListModal').modal({
-        remote : $(this).attr("href")
-      });
+      $('#sendFavoriteListModal').modal('show');
     });
   }
 });
