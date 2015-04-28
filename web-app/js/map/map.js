@@ -192,10 +192,12 @@ $(document).ready(function() {
           if (jsPageName === "institutionList") {
             $('input').prop('checked', false);
             self.applyFilters();
+            self.osmMap.setCenter(position, zoom);
           }
-
-          self.osmMap.setCenter(position, zoom);
-          self._addMultiPolygonLayer();
+          else {
+            self.osmMap.setCenter(position, zoom);
+            self._addMultiPolygonLayer();
+          }
         });
 
         return tiles;
