@@ -24,7 +24,8 @@ import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.JsonUtil
 import de.ddb.common.ApiResponse.HttpStatus
-
+import de.ddb.common.exception.BackendErrorException
+import de.ddb.common.exception.ItemNotFoundException
 
 class ApisController {
 
@@ -197,23 +198,29 @@ class ApisController {
      * @return OutPutStream
      */
     synchronized def binary() {
-        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
+        try {
+            def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
 
-        if (!apiResponse.isOk()) {
-            if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
-                log.error "fetching binary content failed"
+            if (!apiResponse.isOk()) {
+                if (apiResponse.status != ApiResponse.HttpStatus.HTTP_404) {
+                    log.error "fetching binary content failed"
+                }
+                apiResponse.throwException(request)
             }
-            apiResponse.throwException(request)
+
+            def responseObject = apiResponse.getResponse()
+
+            def cacheExpiryInDays = 1
+            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
+            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+            response.setContentType(responseObject.get("Content-Type"))
+            response.setContentLength(responseObject.get("Content-Length").toInteger())
         }
-
-        def responseObject = apiResponse.getResponse()
-
-        def cacheExpiryInDays = 1
-        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
-        response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-        response.setContentType(responseObject.get("Content-Type"))
-        response.setContentLength(responseObject.get("Content-Length").toInteger())
+        catch (BackendErrorException e) {
+            log.error "fetching binary content failed", e
+            throw new ItemNotFoundException()
+        }
     }
 
     def staticFiles() {
