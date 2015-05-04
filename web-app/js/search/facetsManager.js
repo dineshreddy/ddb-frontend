@@ -209,7 +209,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     this.currentPage = 1;
     this.currentOffset = 0;
     var currObjInstance = this;
-    if (Math.round((this.currentFacetValuesNotSelected.length) / 10) > 1) {
+    if (this.currentFacetValuesNotSelected.length > 10) {
       this.connectedflyoutWidget.paginationLiPrev.click(function(e) {
         e.preventDefault();
         currObjInstance.goPrevPage();

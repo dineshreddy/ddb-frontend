@@ -184,20 +184,12 @@ $(document).ready(function() {
         $("#OpenLayers_Control_DDBPanZoomBar_28_zoomin").attr("title", messages.ddbnext.InstitutionPage_MapZoomIn);
         $("#OpenLayers_Control_DDBPanZoomBar_28_zoomout").attr("title", messages.ddbnext.InstitutionPage_MapZoomOut);
         $(".olControlDDBHome").attr("title", messages.ddbnext.InstitutionPage_MapHome);
-
-        //Reset institution map via the home button
         $(".olControlDDBHome").click(function(){
-
-          //Reset institution map filters only on the institutionList page
-          if (jsPageName === "institutionList") {
-            $('input').prop('checked', false);
-            self.applyFilters();
-          }
-
           self.osmMap.setCenter(position, zoom);
-          self._addMultiPolygonLayer();
+          if (jsPageName !== "institutionList") {
+            self._addMultiPolygonLayer();
+          }
         });
-
         return tiles;
       },
 

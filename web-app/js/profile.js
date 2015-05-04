@@ -52,8 +52,6 @@ $(document).ready(function() {
   });
 
   $('#delete-account-confirm').click(function() {
-    $.get(jsContextPath + "/user/delete", function(data) {
-      $("body").html(data);
-    });
+    window.location.replace(jsContextPath + "/user/delete");
   });
 });

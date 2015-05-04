@@ -190,7 +190,7 @@ $(window).on('load', function () {
       var cookie = de.ddb.common.search.readCookie("cb_cookie_notice");
 
       window.setTimeout(function(){
-        if(cookie!==1){
+        if(cookie!=="1"){
           cookieBar.fadeIn('fast');
           document.cookie = 'cb_cookie_notice=1';
         }

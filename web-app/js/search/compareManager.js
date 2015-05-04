@@ -216,7 +216,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     de.ddb.next.search.hideError();
 
     //It's not possible to change to !==
-    if ((1 !== index) && (2 !== index)) {
+    if ((1 != index) && (2 != index)) {
       return;
     }
 

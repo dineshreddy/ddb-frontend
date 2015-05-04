@@ -49,6 +49,8 @@ limitations under the License.
     </div>
   </g:if>
   <g:else>
-    <g:message encodeAs="html" code="${errorMessage}" />
+    <div class="errors-container">
+      <g:message encodeAs="html" code="${errorMessage}" />
+    </div>
   </g:else>
 </div>
