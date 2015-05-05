@@ -29,11 +29,12 @@ def environment = Environment.getCurrent()
 def localDdbCommonFound = false
 if (environment == Environment.DEVELOPMENT) {
 
-    if (!new File("../ddb-common").exists()){
-        println "-> Local version of ddb-common not found under path ../ddb-common\n\r A "
-    }else{
+    if (new File("../ddb-common").exists()) {
         println "| Using local version of common plugin"
-        localDdbCommonFound=true
+        localDdbCommonFound = true
+    }
+    else {
+        println "-> Local version of ddb-common not found under path ../ddb-common\n\r A "
     }
 
     grails.plugin.location.'ddb-common' = "../ddb-common"

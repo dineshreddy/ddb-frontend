@@ -195,14 +195,15 @@ class EntityController implements InitializingBean {
         def listRandomSeeds = []
         //
         def random_seed = rand.nextInt(MAX_SEED_RANGE)+1
-        if (!session?.data) {
-            // first request
-            listRandomSeeds.add(random_seed)
-            session.data = listRandomSeeds
-        } else {
+        if (session?.data) {
             // retrieve data from session
             listRandomSeeds = session.data
             addRandomToSession(listRandomSeeds,rand)
+            session.data = listRandomSeeds
+        }
+        else {
+            // first request
+            listRandomSeeds.add(random_seed)
             session.data = listRandomSeeds
         }
         return listRandomSeeds.pop()

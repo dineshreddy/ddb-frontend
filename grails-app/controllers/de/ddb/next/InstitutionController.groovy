@@ -75,12 +75,12 @@ class InstitutionController {
 
             // logo
             def organisationLogo
-            if (!selectedOrgXML?.logo.toString().isEmpty()) {
-                organisationLogo = g.resource("dir": "binary", "file": id + "/list/1.jpg")
-            }
-            else {
+            if (selectedOrgXML?.logo.toString().isEmpty()) {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
+            }
+            else {
+                organisationLogo = g.resource("dir": "binary", "file": id + "/list/1.jpg")
             }
 
             render(
