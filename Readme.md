@@ -17,8 +17,8 @@ More information about current development issues can be found in the [DDB Jira]
 
 ###Software requirements
 The DDB Next project depends on the following software
-* JDK 1.6
-* Grails 2.2.3
+* JDK 1.7
+* Grails 2.3.7
 
 ### IDE support 
 DDB Next is developed with [Groovy/Grails Tool Suite](http://www.grails.org/products/ggts) ([download tool link](http://www.springsource.org/groovy-grails-tool-suite-download)). 
@@ -198,6 +198,16 @@ The Content Management System is used to display the main menu (except "My DDB")
 
 Configuration parameter:
 * 'ddb.cms.url' defines the url where to retrieve the data
+
+
+####OAuth
+3 different OAuth providers are currently supported: Facebook, Google and Twitter.
+For everey provider 2 properties are needed:
+
+* 'auth.<provider>.key' defines the provider specific OAuth key
+* 'auth.<provider>.secret' defines the provider specific OAuth secret
+
+<provider> can be "facebook", "google" or "twitter".
 
 
 ## Dependencies
