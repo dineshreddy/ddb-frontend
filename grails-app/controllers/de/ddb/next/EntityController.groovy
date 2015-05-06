@@ -111,18 +111,18 @@ class EntityController implements InitializingBean {
         def surname = jsonGraph.person.surname
         def queryName = forename+" "+surname
 
-        def searchPreview = entityService.doItemSearch(queryName, offset, rows, jsonGraph)
+        def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
 
         //------------------------- Involved Search -------------------------------
-        def searchInvolved = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_INVOLVED, forename, surname, entityId)
+        def searchInvolved = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_INVOLVED, entityId)
 
         //------------------------- Subject Search -------------------------------
-        def searchSubject = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_SUBJECT, forename, surname, entityId)
+        def searchSubject = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_SUBJECT, entityId)
 
         //------------------------- Search preview media type count -------------------------------
-        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType(title, "mediatype_002", offset, rows, jsonGraph)
-        searchPreview["videoCount"] = entityService.getResultCountsForFacetType(title, "mediatype_005", offset, rows, jsonGraph)
-        searchPreview["audioCount"] = entityService.getResultCountsForFacetType(title, "mediatype_001", offset, rows, jsonGraph)
+        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType("mediatype_002", offset, rows, jsonGraph)
+        searchPreview["videoCount"] = entityService.getResultCountsForFacetType("mediatype_005", offset, rows, jsonGraph)
+        searchPreview["audioCount"] = entityService.getResultCountsForFacetType("mediatype_001", offset, rows, jsonGraph)
 
         searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
 
@@ -356,7 +356,7 @@ class EntityController implements InitializingBean {
 
             def entity = [:]
 
-            def searchPreview = entityService.doItemSearch(query, offset, rows, jsonGraph)
+            def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
 
             entity["searchPreview"] = searchPreview
 

@@ -270,7 +270,7 @@ class UserController {
         log.info "signup()"
         List<String> errors = []
         List<String> messages = []
-        errors = Validations.validatorRegistration(params.username, params.fname, params.lname, params.email, params.passwd, params.conpasswd)
+        errors = Validations.validatorRegistration(params.username, params.email, params.passwd, params.conpasswd)
         if (errors == null || errors.isEmpty()) {
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
             def template = messageSource.getMessage("ddbnext.User.Create_Account_Mailtext", null, locale)
