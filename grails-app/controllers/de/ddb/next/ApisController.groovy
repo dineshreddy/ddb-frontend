@@ -197,7 +197,7 @@ class ApisController {
      * Wrapper to support streaming of files from the backend
      * @return OutPutStream
      */
-    synchronized def binary() {
+    def binary() {
         try {
             def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
 
