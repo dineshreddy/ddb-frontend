@@ -35,7 +35,7 @@ class IsItemHierarchyAvailableTagLib {
         // Check if the item has parents
         def parentList = ddbItemService.getParent(itemId)
 
-        if(Item.doesParentListContainHierarchy(itemId, parentList)){
+        if(Item.doesParentListContainHierarchy(parentList)){
             out << body()
         }else{
             out << ""

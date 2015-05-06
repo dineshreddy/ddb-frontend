@@ -34,7 +34,7 @@ class CompareController {
         def modelItem1 = ddbItemService.getFullItemModel(firstId)+[position: "first"]
         def modelItem2 = ddbItemService.getFullItemModel(secondId)+[position: "second"]
 
-        def searchResultParameters = handleSearchResultParameters(params, request)
+        def searchResultParameters = handleSearchResultParameters(params)
 
         def itemUri = request.forwardURI
 
@@ -57,7 +57,7 @@ class CompareController {
      * @return Map with searchResult to build back + next links
      *  and searchResultUri for Link "Back to Search Result"
      */
-    def handleSearchResultParameters(reqParameters, httpRequest) {
+    private def handleSearchResultParameters(reqParameters) {
         def searchResultParameters = [:]
         searchResultParameters["searchParametersMap"] = [:]
         def searchResultUri

@@ -212,7 +212,7 @@ class Clustering {
     }
 
 
-    def mergeVertices(e, resolution) {
+    private def mergeVertices(e) {
         this.collapses = this.collapses + 1
         def s0 = e.v0.size
         def s1 = e.v1.size
@@ -374,7 +374,7 @@ class Clustering {
             def e = this.deleteEdges.pop()
             if (e.legal) {
                 def l = this.edges.size()
-                def newVertex = this.mergeVertices(e, resolution)
+                def newVertex = this.mergeVertices(e)
                 newVertex.calculateRadius(resolution)
                 for (def k = l; k < this.edges.size(); k++) {
                     def eNew = this.edges[k]

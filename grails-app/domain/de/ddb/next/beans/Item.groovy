@@ -102,7 +102,7 @@ class Item {
         }
     }
 
-    static boolean doesParentListContainHierarchy(String id, List allItemsJson){
+    static boolean doesParentListContainHierarchy(List allItemsJson){
         if(allItemsJson == null){
             return false
         }

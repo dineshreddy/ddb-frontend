@@ -223,7 +223,7 @@ class Binning {
         return resolutionMap[""+zoom]
     }
 
-    def genericClustering(objects, id = null) {
+    private def genericClustering(objects) {
         def binSets = []
         def circleSets = []
         def hashMaps = []
@@ -377,7 +377,7 @@ class Binning {
             def hashMaps = []
             def selectionHashs = []
             for (def i = 0; i < this.objects.size(); i++) {
-                def sets = this.genericClustering([this.objects[i]], i)
+                def sets = this.genericClustering([this.objects[i]])
                 if (i == 0) {
                     circleSets = sets.circleSets
                     hashMaps = sets.hashMaps

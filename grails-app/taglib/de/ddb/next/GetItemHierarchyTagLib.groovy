@@ -38,7 +38,7 @@ class GetItemHierarchyTagLib {
         def parentList = ddbItemService.getParent(itemId)
 
         // No parentList -> No hierarchy
-        if(!Item.doesParentListContainHierarchy(itemId, parentList)) {
+        if(!Item.doesParentListContainHierarchy(parentList)) {
             out << ""
             return
         }
