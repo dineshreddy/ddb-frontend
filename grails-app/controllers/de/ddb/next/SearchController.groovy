@@ -117,7 +117,7 @@ class SearchController {
             searchService.checkAndReplaceMediaTypeImages(resultsItems)
 
             //create cookie with search parameters
-            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.CULTURAL_ITEM))
+            response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.CULTURAL_ITEM))
 
             //Calculating results details info (number of results in page, total results number)
             def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
@@ -255,7 +255,7 @@ class SearchController {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, additionalParams,cookieParametersMap, Type.INSTITUTION))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.INSTITUTION))
 
         def model = [
             title: title,

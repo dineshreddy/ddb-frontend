@@ -270,7 +270,7 @@ class EntityController implements InitializingBean {
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
-        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, cookieParametersMap, Type.ENTITY))
+        response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.ENTITY))
 
         if(params.reqType=="ajax"){
             def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
