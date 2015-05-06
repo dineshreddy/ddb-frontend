@@ -64,7 +64,7 @@ class SavedSearchesService {
         def savedSearches = savedSearchService.findSavedSearchByUserId(userId)
         savedSearches.each { savedSearch ->
             result.add(new SavedSearch(savedSearch.id,
-                    savedSearch.title.class != JSONNull ? savedSearch.title : "",
+                    savedSearch.title.class == JSONNull ? "" : savedSearch.title,
                     savedSearch.queryString,
                     Type.valueOfName(savedSearch.type),
                     new Date(savedSearch.createdAt)))
