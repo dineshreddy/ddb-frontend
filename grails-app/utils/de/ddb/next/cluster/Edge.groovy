@@ -73,6 +73,10 @@ class Edge {
         return false
     }
 
+    int hashCode() {
+        return Arrays.hashCode([v0.x, v0.y, v1.x, v1.y])
+    }
+
     String toString(){
         return "Edge[v0: "+v0+", v1: "+v1+", leftFace: "+leftFace+", rightFace: "+rightFace+", legal: "+legal+", pLength: "+pLength+", weight: "+weight+"]"
     }
