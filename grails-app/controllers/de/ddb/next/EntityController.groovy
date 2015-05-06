@@ -100,7 +100,6 @@ class EntityController implements InitializingBean {
         }
 
         def entityUri = request.forwardURI
-        def title = jsonGraph.person.preferredName
 
         //------------------------- Object Search -------------------------------
 
