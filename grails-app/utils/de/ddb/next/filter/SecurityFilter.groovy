@@ -61,7 +61,7 @@ class SecurityFilter implements Filter {
                 return
             }
 
-            ddbCommonSecurityHelper.performSecurityTasks(requestWrapper, httpResponse)
+            ddbCommonSecurityHelper.performSecurityTasks(httpResponse)
             chain.doFilter(requestWrapper, response)
             return
         }catch(InvalidUrlException i){
