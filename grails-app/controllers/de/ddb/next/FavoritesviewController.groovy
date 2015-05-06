@@ -99,7 +99,7 @@ class FavoritesviewController {
             return
         }else{
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-            def allRes = favoritesService.retrieveItemMD(items,locale)
+            def allRes = favoritesService.retrieveItemMD(items)
             def resultsItems
 
             def urlQuery = searchService.convertQueryParametersToSearchParameters(params)
