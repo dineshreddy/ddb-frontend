@@ -215,8 +215,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     var cookieVal = currObjInstance.getComparisonCookieVal();
     de.ddb.next.search.hideError();
 
-    //It's not possible to change to !==
-    if ((1 != index) && (2 != index)) {
+    if (index !== "1" && index !== "2") {
       return;
     }
 
