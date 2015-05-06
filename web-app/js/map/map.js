@@ -973,8 +973,10 @@ $(document).ready(function() {
           // our blocks array
           var firstPosition = null;
           for(var key in this.positionBlocks) {
-              firstPosition = key;
-              break;
+              if (this.positionBlocks.hasOwnProperty(key)) {
+                  firstPosition = key;
+                  break;
+              }
           }
 
           var position = this.positionBlocks[firstPosition];
