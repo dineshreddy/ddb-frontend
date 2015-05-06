@@ -35,7 +35,7 @@ class ContentController {
 
             //This particular redirect is in the scenario where an incorrect trailing slash is present. I.e a trailing slash is present in url but no /index.html at that location.
             //If we just manipulate the url and the slash and use retrieveFile API without using a redirect, the relative paths inside the static content get affected wrongly.
-            if(checkIfRedirectNeeded(browserUrl, location, locale)) {
+            if(checkIfRedirectNeeded(location, locale)) {
                 browserUrl = browserUrl.substring(0, browserUrl.length() - 1)
                 redirect uri: browserUrl
             }
@@ -102,8 +102,7 @@ class ContentController {
         ]
     }
 
-    private def checkIfRedirectNeeded(String browserUrl, String location, String locale) {
-
+    private def checkIfRedirectNeeded(String location, String locale) {
         if (location.endsWith("/")) {
             def path
             def url = configurationService.getStaticUrl()
