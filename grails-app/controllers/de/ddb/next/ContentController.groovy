@@ -38,6 +38,7 @@ class ContentController {
             if(checkIfRedirectNeeded(location, locale)) {
                 browserUrl = browserUrl.substring(0, browserUrl.length() - 1)
                 redirect uri: browserUrl
+                return
             }
 
             while (location.endsWith("/")) {
