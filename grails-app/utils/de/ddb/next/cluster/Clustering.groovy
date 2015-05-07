@@ -434,7 +434,7 @@ class Clustering {
 
         //console.info("Test 2: Edges Facets (null) ...");
         for (def i=0; i<this.edges.size();i++ ) {
-            def e = this.edges[i]
+            // def e = this.edges[i]
             // if (e.leftFace == null || e.rightFace == null) {
             //     console.info(e)
             //     alert()

@@ -108,7 +108,6 @@ class EntityController implements InitializingBean {
             forename += " "+jsonGraph.person.prefix
         }
         def surname = jsonGraph.person.surname
-        def queryName = forename+" "+surname
 
         def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
 

@@ -523,7 +523,6 @@ class Binning {
     def squareBinning() {
 
         def l = 20037508.34
-        def area0 = l * l * 4
         def binCount = this.binCount
 
         def bins = []
