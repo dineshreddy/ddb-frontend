@@ -754,7 +754,6 @@ class Binning {
                 def binX = Math.floor(bin.binX / 3)
                 def x, y
                 def a = bin.a
-                def h = bin.h
                 if (bin.binX % 6 < 3) {
                     if (hexaBins[i]['' + binY] == null) {
                         hexaBins[i]['' + binY] = []

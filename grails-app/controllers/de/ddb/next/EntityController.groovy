@@ -107,7 +107,6 @@ class EntityController implements InitializingBean {
         if(jsonGraph.person.prefix != null && !jsonGraph.person.prefix.trim().isEmpty()){
             forename += " "+jsonGraph.person.prefix
         }
-        def surname = jsonGraph.person.surname
 
         def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
 
@@ -327,8 +326,6 @@ class EntityController implements InitializingBean {
      * @return the content of the backend search
      */
     public def getAjaxSearchResultsAsJson() {
-
-        def query = params[SearchParamEnum.QUERY.getName()]
         def entityid = params[SearchParamEnum.ENTITY_ID.getName()]
         def offset = params.long(SearchParamEnum.OFFSET.getName())
         def rows = params.long(SearchParamEnum.ROWS.getName())
