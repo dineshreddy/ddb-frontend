@@ -147,7 +147,8 @@ class ApisController {
         def institutions = apiResponse.getResponse()
 
         // get the clustered institutions
-        def clusteredInstitutions = institutionService.getClusteredInstitutions(institutions, sectors, cacheValidInDays,onlyInstitutionsWithData)
+        def clusteredInstitutions =
+                institutionService.getClusteredInstitutions(institutions, sectors, onlyInstitutionsWithData)
 
         // set cache headers for caching the ajax request
         SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")

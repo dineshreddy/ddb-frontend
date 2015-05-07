@@ -337,22 +337,11 @@ grails.cache.config = {
     cache {
        name 'institutionCache'
        eternal false
-       overflowToDisk true
-       maxElementsInMemory 10000
-       maxElementsOnDisk 10000000
+       overflowToDisk false
+       timeToLiveSeconds 600
+       timeToIdleSeconds 600
+       maxElementsInMemory 100000
     }
-
-    defaultCache {
-        maxElementsInMemory 10000
-        eternal false
-        timeToIdleSeconds 120
-        timeToLiveSeconds 120
-        overflowToDisk true
-        maxElementsOnDisk 10000000
-        diskPersistent false
-        diskExpiryThreadIntervalSeconds 120
-        memoryStoreEvictionPolicy 'LRU'
-   }
 }
 
 grails.plugin.springsecurity.rejectIfNoRule = false
