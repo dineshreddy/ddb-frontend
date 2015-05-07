@@ -31,7 +31,6 @@ import de.ddb.next.cluster.InstitutionMapModel
 class InstitutionService extends CommonInstitutionService {
 
     private static final def LETTERS='A'..'Z'
-
     private static final def NUMBER_KEY = '0-9'
 
     // values from Nominatim service
@@ -40,9 +39,13 @@ class InstitutionService extends CommonInstitutionService {
     private static final String EUROPE_GERMAN = "Europäische Union"
     private static final String EUROPE_SHORT = "Europe"
 
+    // ehcache name
+    private static final String CACHE_NAME = "institutionCache"
+
     def transactional = false
 
     def grailsApplication
+    def grailsCacheManager
     def grailsLinkGenerator
     def servletContext
     def bookmarksService
@@ -55,14 +58,13 @@ class InstitutionService extends CommonInstitutionService {
      *
      * @return all institutions from the backend
      */
-    @Cacheable(value="institutionCache", key="'findAll'")
+    @Cacheable(value=InstitutionService.CACHE_NAME, key="'findAll'")
     def findAll() {
         log.info("findAll()")
         ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
         if(!responseWrapper.isOk()){
             responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
         }
-
         return responseWrapper.getResponse()
     }
 
@@ -117,8 +119,8 @@ class InstitutionService extends CommonInstitutionService {
         return result
     }
 
-    def getClusteredInstitutions(def institutions, List selectedSectorList, int cacheValidInDays, boolean onlyInstitutionWithData){
-        log.info "getClusteredInstitutions(): sectorList="+selectedSectorList
+    def getClusteredInstitutions(def institutions, List selectedSectorList, boolean onlyInstitutionWithData) {
+        log.info "getClusteredInstitutions(): sectorList=" + selectedSectorList
 
         // Get the ClusterCache Object from the application context
         if(servletContext.getAttribute(ClusterCache.CONTEXT_ATTRIBUTE_NAME) == null){
@@ -247,14 +249,15 @@ class InstitutionService extends CommonInstitutionService {
                     clusterContainer["clusters"][zoom].push(cluster)
                 }
             }
-
-            cache.addCluster(selectedSectorList, clusterContainer, cacheValidInDays*24*60*60*1000, onlyInstitutionWithData)
-        }else{
+            cache.addCluster(
+                    selectedSectorList,
+                    clusterContainer,
+                    grailsCacheManager.getCache(CACHE_NAME).nativeCache.cacheConfiguration.timeToLiveSeconds * 1000,
+                    onlyInstitutionWithData)
+        } else {
             log.info "getClusteredInstitutions(): cache found. Answering with cached result."
         }
-
-        def result = ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
-        return result
+        return ["data": cache.getCluster(selectedSectorList, onlyInstitutionWithData)]
     }
 
     /**
