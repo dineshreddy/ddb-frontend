@@ -33,11 +33,10 @@ class ContentController {
             def location = params.dir ? params.dir : browserUrl.substring("/content".length())
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
 
-            //This particular redirect is in the scenario where an incorrect trailing slash is present. I.e a trailing slash is present in url but no /index.html at that location.
-            //If we just manipulate the url and the slash and use retrieveFile API without using a redirect, the relative paths inside the static content get affected wrongly.
-            if(checkIfRedirectNeeded(browserUrl, location, locale)) {
-                browserUrl = browserUrl.substring(0, browserUrl.length() - 1)
-                redirect uri: browserUrl
+            try {
+                checkIfRedirectNeeded(location, locale)
+            } catch (RedirectException e) {
+                redirect uri: e.uri
                 return
             }
 
@@ -103,19 +102,29 @@ class ContentController {
         ]
     }
 
-    private def checkIfRedirectNeeded(String browserUrl, String location, String locale) {
-
+    /**
+     * Check if a directory "location/" exists. If not, then check if "location.html" exists.
+     * If that is true then redirect to "location" (remove the trailing slash).
+     *
+     * This is a workaround for a Drupal issue (see DDBNEXT-2052).
+     *
+     * @param location location string from URL
+     * @param locale current locale
+     */
+    private void checkIfRedirectNeeded(String location, String locale) {
         if (location.endsWith("/")) {
-            def path
-            def url = configurationService.getStaticUrl()
-            def apiResponse = ApiConsumer.getText(url, path, false)
-            path = locale + "/" + location + "/index.html"
-            apiResponse = ApiConsumer.getText(url, path, false)
+            String url = configurationService.getStaticUrl()
+            def apiResponse = ApiConsumer.getText(url, locale + "/" + location, false)
+
             if (!apiResponse.isOk()) {
-                return true
+                String newLocation = location.substring(0, location.length() - 1)
+
+                apiResponse = ApiConsumer.getText(url, locale + "/" + newLocation + ".html", false)
+                if (apiResponse.isOk()) {
+                    throw new RedirectException("/" + params.controller + "/" + newLocation)
+                }
             }
         }
-        return false
     }
 
     /**
