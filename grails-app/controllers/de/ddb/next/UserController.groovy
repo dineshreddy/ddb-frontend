@@ -32,7 +32,6 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.AasService
 import de.ddb.common.ProxyUtil
 import de.ddb.common.Validations
 import de.ddb.common.beans.Folder
@@ -42,6 +41,7 @@ import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedOauthProvider
 import de.ddb.common.constants.SupportedOpenIdProviders
 import de.ddb.common.constants.UserStatus
+import de.ddb.common.constants.aas.AasPersonSearchQueryParameter
 import de.ddb.common.exception.AuthorizationException
 import de.ddb.common.exception.BackendErrorException
 import de.ddb.common.exception.ConflictException
@@ -441,9 +441,9 @@ class UserController {
                 if (profileDifference) {
                     //update user in aas
                     JSONObject aasUser = aasService.getPerson(user.getId())
-                    aasUser.put(AasService.NICKNAME_FIELD, params.username)
-                    aasUser.put(AasService.FIRSTNAME_FIELD, params.fname)
-                    aasUser.put(AasService.LASTNAME_FIELD, params.lname)
+                    aasUser.put(AasPersonSearchQueryParameter.NICKNAME, params.username)
+                    aasUser.put(AasPersonSearchQueryParameter.FORENAME, params.fname)
+                    aasUser.put(AasPersonSearchQueryParameter.SURNAME, params.lname)
                     try {
                         user.setUsername(params.username)
                         user.setFirstname(params.fname)
@@ -655,12 +655,13 @@ class UserController {
             // set changed attributes in user-object in session
             if (userService.isUserLoggedIn()) {
                 User user = userService.getUserFromSession().clone()
-                if (!user.isConsistent() || StringUtils.isBlank(jsonuser.getString(AasService.EMAIL_FIELD))) {
+                if (!user.isConsistent()
+                || StringUtils.isBlank(jsonuser.getString(AasPersonSearchQueryParameter.EMAIL))) {
                     throw new BackendErrorException("user-attributes are not consistent")
                 }
-                user.setEmail(jsonuser.getString(AasService.EMAIL_FIELD))
-                if (jsonuser.containsKey(AasService.PASSWORD_FIELD)) {
-                    user.setPassword(jsonuser.getString(AasService.PASSWORD_FIELD))
+                user.setEmail(jsonuser.getString(AasPersonSearchQueryParameter.EMAIL))
+                if (jsonuser.containsKey(AasPersonSearchQueryParameter.PSWD)) {
+                    user.setPassword(jsonuser.getString(AasPersonSearchQueryParameter.PSWD))
                 }
                 sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
             }
@@ -919,7 +920,7 @@ class UserController {
                 String newApiKey = aasService.createApiKey()
 
                 JSONObject aasUser = aasService.getPerson(user.getId())
-                aasUser.put(AasService.APIKEY_FIELD, newApiKey)
+                aasUser.put(AasPersonSearchQueryParameter.APIKEY, newApiKey)
                 aasService.updatePerson(user.getId(), aasUser)
                 user.setApiKey(newApiKey)
 
@@ -939,7 +940,7 @@ class UserController {
             User user = userService.getUserFromSession()
 
             JSONObject aasUser = aasService.getPerson(user.getId())
-            aasUser.put(AasService.APIKEY_FIELD, null)
+            aasUser.put(AasPersonSearchQueryParameter.APIKEY, null)
             aasService.updatePerson(user.getId(), aasUser)
             user.setApiKey(null)
 
