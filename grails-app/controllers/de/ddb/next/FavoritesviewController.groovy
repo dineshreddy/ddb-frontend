@@ -3,6 +3,7 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.beans.Folder
+import de.ddb.common.beans.aas.AasCredential
 import de.ddb.common.exception.FavoritelistNotFoundException
 
 
@@ -12,7 +13,7 @@ import de.ddb.common.exception.FavoritelistNotFoundException
  * @author boz
  */
 class FavoritesviewController {
-    def aasService
+    def aasPersonService
     def bookmarksService
     def favoritesService
     def configurationService
@@ -27,7 +28,9 @@ class FavoritesviewController {
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
-        def user = aasService.getPersonAsAdmin(params.userId)
+        def user = aasPersonService.getPerson(params.userId, new AasCredential(
+                configurationService.getAasAdminUserId(),
+                configurationService.getAasAdminPassword()))
         def folderId = params.folderId
 
         // A user want to report this list to DDB
@@ -67,7 +70,7 @@ class FavoritesviewController {
             if(params.showLinkAllList) {
                 showLinkAllList = params.showLinkAllList.toBoolean()
             }else {
-             showLinkAllList = true
+                showLinkAllList = true
             }
 
             if(showLinkAllList) {
@@ -425,13 +428,13 @@ class FavoritesviewController {
                     replyTo configurationService.getFavoritesSendMailFrom()
                     subject g.message(code:"ddbnext.Report_Public_List", encodeAs: "none")
                     body( view:"_favoritesReportEmailBody", model:[
-                                            userId: userId,
-                                            folderId: folderId,
-                                            publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
-                                            blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
-                                            unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
-                                            selfBaseUrl: configurationService.getSelfBaseUrl()
-                                        ])
+                        userId: userId,
+                        folderId: folderId,
+                        publicLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId]),
+                        blockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, blockingToken: folder.getBlockingToken()]),
+                        unblockingLink: g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId, unblockingToken: folder.getBlockingToken()]),
+                        selfBaseUrl: configurationService.getSelfBaseUrl()
+                    ])
                 }
                 flash.message = "ddbnext.favorites_list_reported"
             } catch (e) {
