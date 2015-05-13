@@ -29,6 +29,18 @@ class RequestFilters {
     def languageService
 
     def filters = {
+        checkReferer(controller: '*', action: '*') {
+            before = {
+                if (request.method.toUpperCase() == "POST") {
+                    def referer = request.getHeader('Referer')
+                    // referer must match serverURL, optionally https
+                    def validRefererPrefix = "^${configurationService.getContextUrl()}".replace("http", "https?")
+
+                    return !referer || referer =~ validRefererPrefix
+                }
+            }
+        }
+
         /**
          * Ensure that the default locale is used if the locale from the user's browser isn't available.
          */
