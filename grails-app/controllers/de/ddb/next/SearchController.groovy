@@ -163,11 +163,6 @@ class SearchController {
                     }
                 }
 
-                def keepFiltersChecked = ""
-                if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                    keepFiltersChecked = "checked=\"checked\""
-                }
-
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
@@ -190,8 +185,7 @@ class SearchController {
                     totalPages: totalPages,
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString),
                     numberOfResultsFormatted: numberOfResultsFormatted,
-                    offset: params[SearchParamEnum.OFFSET.getName()],
-                    keepFiltersChecked: keepFiltersChecked
+                    offset: params[SearchParamEnum.OFFSET.getName()]
                 ])
             }
         } catch (BadRequestException e) {
@@ -299,10 +293,6 @@ class SearchController {
                 }
             }
 
-            def keepFiltersChecked = ""
-            if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                keepFiltersChecked = "checked=\"checked\""
-            }
             def subFacetsUrl = [:]
             def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
             if(urlQuery[SearchParamEnum.FACET.getName()]){
@@ -310,7 +300,6 @@ class SearchController {
             }
 
             model["facets"] = [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl]
-            model["keepFiltersChecked"] = keepFiltersChecked
 
             render(view: "searchInstitution", model: model)
         }

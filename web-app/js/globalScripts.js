@@ -207,6 +207,10 @@ $(window).on('load', function () {
       });
 
   });
+
+  if (typeof historySupport !== 'undefined' && de.ddb.common.search.getFacetValuesFromUrl()) {
+    $('.keep-filters').removeClass('off');
+  }
 });
 
 var h = ($('.modal').height())/2;

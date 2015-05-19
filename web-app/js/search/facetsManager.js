@@ -460,9 +460,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var paramsFacetValues = de.ddb.common.search.getFacetValuesFromUrl();
 
     if (paramsFacetValues) {
-
       $('.clear-filters').removeClass('off');
-      $('.keep-filters').removeClass('off');
 
       var selectedFacets = {};
       $.each(paramsFacetValues, function(key, value) {

@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@ page import="de.ddb.common.constants.SearchParamEnum" %>
 <div class="print-logo off">
   <r:img dir="images" file="logoHeaderSmall.png" alt="" />
 </div>
@@ -288,9 +289,12 @@ limitations under the License.
                       <![endif]-->
                 </button>
                 <div class="search-small-bottom">
+                  <g:set var="keepFiltersChecked"
+                         value="${ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.KEEPFILTERS.getName())}"/>
                   <div class="keep-filters off">
                     <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters" <g:if test="${keepFiltersChecked}">checked="checked"</g:if> />
+                      <input id="keep-filters" type="checkbox" name="keepFilters"
+                             <g:if test="${keepFiltersChecked == "true"}">checked="checked"</g:if> />
                       <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
                     </label>
                   </div>

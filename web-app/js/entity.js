@@ -159,6 +159,8 @@ $(document).ready(
           var query = $("#entity-title").html();
           var entityid = $("#entity-id").attr("data-entityid");
 
+          de.ddb.common.search.initHistorySupport(null);
+
           // Initialize Search results
           getNewSearchResults(query, 0, defaultRowCount, entityid);
         };

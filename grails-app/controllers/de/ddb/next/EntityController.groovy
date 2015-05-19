@@ -294,10 +294,6 @@ class EntityController implements InitializingBean {
                 }
             }
 
-            def keepFiltersChecked = false
-            if (cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] && cookieParametersMap[SearchParamEnum.KEEPFILTERS.getName()] == "true") {
-                keepFiltersChecked = true
-            }
             def subFacetsUrl = [:]
             def selectedFacets = entityService.buildSubFacets(urlQuery, nonJsFacetsList)
             if(urlQuery[SearchParamEnum.FACET.getName()]){
@@ -314,8 +310,7 @@ class EntityController implements InitializingBean {
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
-                keepFiltersChecked: keepFiltersChecked]
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))]
             render(view: "searchPerson", model: model)
         }
     }
