@@ -229,7 +229,12 @@ class DdbItemService {
             def urlQuery = searchService.convertQueryParametersToSearchParameters(reqParameters)
 
             //Search and return 3 Hits: previous, current and last
-            reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
+            try {
+                reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
+            }
+            catch (NumberFormatException e) {
+                reqParameters["hitNumber"] = 1
+            }
             urlQuery[SearchParamEnum.ROWS.getName()] = 3
             if (reqParameters["hitNumber"] > 1) {
                 urlQuery[SearchParamEnum.OFFSET.getName()] = reqParameters["hitNumber"] - 2
