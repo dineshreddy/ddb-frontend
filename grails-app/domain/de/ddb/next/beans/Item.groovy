@@ -27,7 +27,7 @@ class Item {
     String position
     String leaf
     String aggregationEntity
-    List<Item> children = []
+    def children = []
     Item parentItem
 
     Item(){
@@ -55,7 +55,7 @@ class Item {
         }
     }
 
-    public List<Item> getChildren(){
+    public def getChildren(){
         return children;
     }
 
@@ -142,7 +142,7 @@ class Item {
         return null
     }
 
-    private static List<Item> appendChildren(List<Item> parents, List possibleChildList){
+    private static def appendChildren(List<Item> parents, List possibleChildList){
         List<Item> addedChilds = []
         for(int i=0; i<parents.size(); i++){
             Item currentParent = parents.get(i)
