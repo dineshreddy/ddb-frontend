@@ -54,7 +54,6 @@ grails.project.fork = [
     console: false,
 ]
 
-grails.project.dependency.resolver = "maven"
 grails.project.dependency.resolution = {
     // inherit Grails' default dependencies
     inherits("global") {
