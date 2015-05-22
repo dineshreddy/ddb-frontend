@@ -253,6 +253,10 @@ jawr {
         // Specific mapping to disable resource handling by plugin.
         mapping = '/jawr/'
         bundle {
+            factory {
+                // https://java.net/jira/si/jira.issueviews:issue-html/JAWR-306/JAWR-306.html
+                bundlepostprocessors = 'license'
+            }
             lib {
                 // Bundle id is used in views.
                 id = '/i18n/messages.js'
@@ -263,7 +267,8 @@ jawr {
         }
     }
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'de.ddb.next.DdbLocaleResolver' }
+        resolver = 'de.ddb.next.DdbLocaleResolver'
+    }
 }
 
 development {

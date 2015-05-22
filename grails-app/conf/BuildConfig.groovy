@@ -103,7 +103,6 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.8'
         compile ':cache-ehcache:1.0.5'
         compile ':hibernate:3.6.10.12'
-        compile ":html-cleaner:0.3"
         compile ":jawr:3.6"
         compile ":rendering:1.0.0"
         compile ":cache-headers:1.1.7"
