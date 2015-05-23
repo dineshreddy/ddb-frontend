@@ -8,7 +8,7 @@ import org.junit.*
 
 import de.ddb.common.constants.Type
 
-
+@TestMixin(ControllerUnitTestMixin)
 @TestMixin(IntegrationTestMixin)
 class SavedSearchServiceIntegrationTests {
 
