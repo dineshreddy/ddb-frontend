@@ -83,7 +83,9 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
 
-        mavenRepo "https://www.escidoc.org/artifactory/repo/"
+        mavenRepo ("https://www.escidoc.org/artifactory/repo/") {
+          updatePolicy 'always'
+        }
     }
 
     dependencies {
