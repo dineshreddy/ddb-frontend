@@ -2,7 +2,7 @@ package de.ddb.next
 
 import static org.junit.Assert.*
 import grails.test.mixin.TestMixin
-import grails.test.mixin.integration.IntegrationTestMixin
+import grails.test.mixin.web.ControllerUnitTestMixin
 
 import org.junit.*
 
