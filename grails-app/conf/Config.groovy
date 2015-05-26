@@ -271,6 +271,13 @@ jawr {
     }
 }
 
+//Add this lines to fix problem on production environment. See https://java.net/jira/browse/JAWR-312
+environments {
+    production {
+        jawr.custom.generators='net.jawr.web.resource.bundle.locale.GrailsResourceBundleMessagesGenerator'
+    }
+}
+
 development {
     //To disable bundling for testing, comment in this line
     //grails.resources.debug=true
