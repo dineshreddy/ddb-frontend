@@ -94,7 +94,7 @@ modules = {
         resource url:'/js/header.js'
         resource url:'/js/tooltip.js', plugin:'ddb-common'
         resource url:'/js/vendor/json2-2010.11.17/json2.js'
-        resource url:'/js/commonGlobalVariables.js', plugin:'ddb-common'
+        resource url:'js/commonGlobalVariables.js', plugin:'ddb-common'
         resource url:'/js/globalVariables.js'
         resource url:'/js/globalScripts.js'
         resource url:'/js/paginationWidget.js'
