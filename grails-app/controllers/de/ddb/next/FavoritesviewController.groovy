@@ -3,7 +3,9 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.beans.Folder
+import de.ddb.common.beans.User
 import de.ddb.common.beans.aas.AasCredential
+import de.ddb.common.beans.aas.Person
 import de.ddb.common.exception.FavoritelistNotFoundException
 
 
@@ -28,9 +30,9 @@ class FavoritesviewController {
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
-        def user = aasPersonService.getPerson(params.userId, new AasCredential(
+        def user = createUser(aasPersonService.getPerson(params.userId, new AasCredential(
                 configurationService.getAasAdminUserId(),
-                configurationService.getAasAdminPassword()))
+                configurationService.getAasAdminPassword())))
         def folderId = params.folderId
 
         // A user want to report this list to DDB
@@ -368,6 +370,16 @@ class FavoritesviewController {
      */
     private def createPublicLink(String userId, String folderId) {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
+    }
+
+    private User createUser(Person person) {
+        User result = new User()
+
+        result.setId(person.id)
+        result.setFirstname(person.foreName)
+        result.setLastname(person.surName)
+        result.setUsername(person.getNickname())
+        return result
     }
 
     private sendBookmarksPerMail(String paramEmails, List allResultsOrdered, Folder selectedFolder) {
