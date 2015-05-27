@@ -30,7 +30,7 @@ class FavoritesviewController {
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
-        def user = createUser(aasPersonService.getPerson(params.userId, new AasCredential(
+        def user = createUser(params.userId, aasPersonService.getPerson(params.userId, new AasCredential(
                 configurationService.getAasAdminUserId(),
                 configurationService.getAasAdminPassword())))
         def folderId = params.folderId
@@ -372,13 +372,13 @@ class FavoritesviewController {
         return g.createLink(action: "publicFavorites", params: [userId: userId, folderId: folderId])
     }
 
-    private User createUser(Person person) {
+    private User createUser(String userId, Person person) {
         User result = new User()
 
-        result.setId(person?.id)
+        result.setId(userId)
         result.setFirstname(person?.foreName)
         result.setLastname(person?.surName)
-        result.setUsername(person?.getNickname())
+        result.setUsername(person?.nickname)
         return result
     }
 
