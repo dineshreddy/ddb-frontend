@@ -110,7 +110,8 @@ modules = {
         resource url:'/js/changeFavorite.js'
         resource url:'/js/profile.js'
         resource url:'/js/passwordChange.js'
-        resource url:'/js/vendor/history-1.7.1/scripts/bundled/html4+html5/jquery.history.js'
+        resource url:["plugin": "ddb-common", "dir": "js/vendor/history-1.7.1/scripts/bundled/html4html5",
+            "file": "jquery.history.js"]
         resource url:'/js/entity.js'
         resource url:'/js/item.js'
         resource url:'/js/institution.js'
