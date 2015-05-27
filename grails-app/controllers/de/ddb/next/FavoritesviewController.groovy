@@ -375,10 +375,10 @@ class FavoritesviewController {
     private User createUser(Person person) {
         User result = new User()
 
-        result.setId(person.id)
-        result.setFirstname(person.foreName)
-        result.setLastname(person.surName)
-        result.setUsername(person.getNickname())
+        result.setId(person?.id)
+        result.setFirstname(person?.foreName)
+        result.setLastname(person?.surName)
+        result.setUsername(person?.getNickname())
         return result
     }
 
