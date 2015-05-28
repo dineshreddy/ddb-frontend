@@ -21,7 +21,10 @@ limitations under the License.
 <head>
 <title>${selectedOrgXML.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <%-- Used for Canonical URL --%>
-<link rel="canonical" href="${createLink(controller:'institution',action:'showInstitutionsTreeByItemId',params: [id: itemId], base:domainCanonic)}" />
+<link rel="canonical" href="${createLink(controller: 'institution',
+                                         action: 'showInstitutionsTreeByItemId',
+                                         params: [id: itemId],
+                                         base: domainCanonic)}"/>
 <meta name="page" content="institution" />
 <meta name="layout" content="main" />
 
@@ -43,7 +46,13 @@ limitations under the License.
                  <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
                     <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
-                    <g:link class="count" controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()): '', (SearchParamEnum.OFFSET.getName()): '0', (SearchParamEnum.ROWS.getName()): '20', (SearchParamEnum.FACETVALUES.getName()): facetvalue]}" title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
+                    <g:link class="count" controller="search" action="results"
+                            params="${[(SearchParamEnum.QUERY.getName()): '',
+                                       (SearchParamEnum.OFFSET.getName()): '0',
+                                       (SearchParamEnum.ROWS.getName()): '20',
+                                       (SearchParamEnum.FACETVALUES.getName()): facetvalue,
+                                       (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false]}"
+                            title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
                         <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
                         <g:if test="${(countObjcs == 1)}">
                             <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
