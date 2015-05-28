@@ -36,21 +36,24 @@ class ItemController {
             def id = params.id
             def model = ddbItemService.getFullItemModel(id)
 
-            if(params.pdf){
-                // inline images via data uris
-                model = ddbItemService.prepareImagesForPdf(model)
+            if (params.pdf) {
                 try {
+                    // inline images via data uris
+                    model = ddbItemService.prepareImagesForPdf(model)
                     renderPdf(template: "itemPdfTable", model: model, filename: "Item-${id}.pdf")
                 } catch (grails.plugin.rendering.document.XmlParseException e) {
-                    log.error "findById(): PDF Generation failed due to XmlParseException: " + e.getMessage() + ". Going 404..."
+                    log.error "findById(): PDF Generation failed due to XmlParseException " + e.getMessage() +
+                            ". Going 404..."
+                    forward controller: "error", action: "pdfNotFound"
+                } catch (FileNotFoundException e) {
+                    log.error "findById(): PDF Generation failed due to missing image " + e.getMessage() +
+                            ". Going 404..."
                     forward controller: "error", action: "pdfNotFound"
                 }
-                //                render(view: "_itemPdfTable", model: model) //(Do not remove for the moment)
             } else {
                 render(view: "item", model: model)
             }
-
-        } catch(ItemNotFoundException infe) {
+        } catch (ItemNotFoundException e) {
             forward controller: "error", action: "itemNotFound"
         }
     }
@@ -68,10 +71,14 @@ class ItemController {
     }
 
     def showXml() {
-        def itemId = params.id
+        try {
+            def itemId = params.id
 
-        response.contentType = "text/xml"
-        response.outputStream << itemService.fetchXMLMetadata(itemId)
+            response.contentType = "text/xml"
+            response.outputStream << itemService.fetchXMLMetadata(itemId)
+        } catch(ItemNotFoundException infe) {
+            forward controller: "error", action: "itemNotFound"
+        }
     }
 
     def sendPdf() {

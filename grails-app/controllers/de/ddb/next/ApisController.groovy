@@ -220,7 +220,10 @@ class ApisController {
         }
         catch (BackendErrorException e) {
             log.error "fetching binary content failed", e
-            throw new ItemNotFoundException()
+            forward controller: "error", action: "itemNotFound"
+        }
+        catch (ItemNotFoundException e) {
+            forward controller: "error", action: "itemNotFound"
         }
     }
 
