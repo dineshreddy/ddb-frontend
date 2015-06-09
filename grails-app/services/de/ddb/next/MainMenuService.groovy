@@ -84,17 +84,22 @@ class MainMenuService {
         def slurper = new JsonSlurper()
         File menu = new File(url)
 
-        def jsonMenu = slurper.parse(menu.newReader())
-        if (jsonMenu) {
-            def mainMenu = jsonMenu.mainmenu
-            result = [mainMenu.size()]
-            mainMenu.each {menuItem ->
-                result[menuItem.position - 1] =
-                        new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
+        try {
+            def jsonMenu = slurper.parse(menu.newReader())
+            if (jsonMenu) {
+                def mainMenu = jsonMenu.mainmenu
+                result = [mainMenu.size()]
+                mainMenu.each {menuItem ->
+                    result[menuItem.position - 1] =
+                            new MenuItem(menuItem.deValue, menuItem.enValue, menuItem.ref, menuItem.submenu)
+                }
+            }
+            else {
+                log.error "faild to load main menu file " + menu
             }
         }
-        else {
-            log.error "faild to load main menu file " + menu
+        catch (IOException e) {
+            log.error "faild to load main menu file: " + e
         }
         return result
     }

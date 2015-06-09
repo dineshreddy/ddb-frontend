@@ -18,7 +18,7 @@ More information about current development issues can be found in the [DDB Jira]
 ###Software requirements
 The DDB Next project depends on the following software
 * JDK 1.7
-* Grails 2.3.7
+* Grails 2.4.4
 
 ### IDE support 
 DDB Next is developed with [Groovy/Grails Tool Suite](http://www.grails.org/products/ggts) ([download tool link](http://www.springsource.org/groovy-grails-tool-suite-download)). 
@@ -208,6 +208,15 @@ For everey provider 2 properties are needed:
 * 'auth.<provider>.secret' defines the provider specific OAuth secret
 
 <provider> can be "facebook", "google" or "twitter".
+
+
+####Footer menu
+The footer menu can be given as a JSON file.
+
+Configuration parameter:
+* 'ddb.footerMenu' defines the location of that file. It defaults to "${userHome}/.grails/ddb-next-footer-menu.json"
+
+The description of the JSON structure can be found here: https://jira.deutsche-digitale-bibliothek.de/browse/IAIS-8
 
 
 ## Dependencies
