@@ -131,11 +131,19 @@
 
 /* Popup start */
 
+.olMap .fancybox-toolbar-close {
+  width: 18px;
+}
+
 .olMap img {
   margin: 0px !important; 
 }
 
 .olMap #institutionPopup_GroupDiv {
+}
+
+.olMap .modal-body {
+  padding: 1em 0 0 0;
 }
 
 .olMap .olFramedDDBPopupContent {
@@ -151,7 +159,7 @@
 }
 
 .olMap .olPopupDDBContent {
-  margin: 0px 4px 4px 4px;
+  margin: 0 4px 4px 0;
 }
 
 .olMap .olPopupDDBHeader {
