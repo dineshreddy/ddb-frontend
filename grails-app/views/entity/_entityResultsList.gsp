@@ -37,14 +37,16 @@ limitations under the License.
                 <g:if test="${entityItem.professionOrOccupation}">
                   <br />
                 </g:if>
-                <g:if test="${entityItem.dateOfBirth || entityItem.placeOfBirth}">
+                <g:set var="hasBirthDate" value="${entityItem.dateOfBirth || entityItem.placeOfBirth}"/>
+                <g:if test="${hasBirthDate}">
                   <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
                   <g:message code="ddbnext.Entity_Birth"/>: 
-                    <g:if test="${entityItem.dateOfBirth}" >${entityItem.dateOfBirth}</g:if><g:if test="${entityItem.dateOfBirth && placeOfBirth}" >, </g:if>
-                    <g:if test="${placeOfBirth}" > ${placeOfBirth}</g:if> -  
+                    <g:if test="${entityItem.dateOfBirth}">${entityItem.dateOfBirth}</g:if><g:if test="${entityItem.dateOfBirth && placeOfBirth}">, </g:if>
+                    <g:if test="${placeOfBirth}"> ${placeOfBirth}</g:if>
                 </g:if>
                 <g:if test="${entityItem.dateOfDeath || entityItem.placeOfDeath}">
                   <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
+                  <g:if test="${hasBirthDate}"> - </g:if>
                   <g:message code="ddbnext.Entity_Death"/>: 
                   <g:if test="${entityItem.dateOfDeath}" >${entityItem.dateOfDeath}</g:if><g:if test="${entityItem.dateOfDeath && placeOfDeath}">,</g:if>
                   <g:if test="${placeOfDeath}">${placeOfDeath}</g:if>

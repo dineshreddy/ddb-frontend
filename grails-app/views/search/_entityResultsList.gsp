@@ -38,14 +38,16 @@ limitations under the License.
                 ${profession}<g:if test="${i != last}">, </g:if>
               </g:each>
               <br>
-                <g:if test="${entityItem.dateOfBirth}">
-                  <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
-                  <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")} -
-                </g:if>
-                <g:if test="${entityItem.dateOfDeath}">
-                  <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
-                  <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
-                </g:if>
+              <g:set var="hasBirthDate" value="${entityItem.dateOfBirth}"/>
+              <g:if test="${hasBirthDate}">
+                <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
+                <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")}
+              </g:if>
+              <g:if test="${entityItem.dateOfDeath}">
+                <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
+                <g:if test="${hasBirthDate}"> - </g:if>
+                <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+              </g:if>
             </div>
           </div>
           <div class="extra">
