@@ -167,7 +167,7 @@ $(document).ready(
 
         initPage();
 
-        if($("div.external-links ul li.external-link").length > 1) {
+        if($("div.external-links ul li.external-link").length > 0) {
           $("div.external-links").removeClass("off");
         }
 
