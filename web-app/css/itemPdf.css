@@ -96,7 +96,7 @@ li {
 }
 
 .institution-name {
-  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
+  background: url("../images/icons/listArrows.png") no-repeat 0 -1px;
   font-size: 1.214em;
   font-weight: bold;
   height: 25px;

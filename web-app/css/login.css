@@ -87,7 +87,7 @@
   padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/listArrows.png) no-repeat 0 1px;
+  background: url("../images/icons/listArrows.png") no-repeat 0 1px;
 }
 
 .login .heading {

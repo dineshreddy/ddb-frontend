@@ -70,15 +70,15 @@
 }
 
 .socialmedia .social-locked .icon-facebook {
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -240px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -210px -240px;
 }
 
 .socialmedia .social-locked .icon-twitter {
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -265px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -210px -265px;
 }
 
 .socialmedia .social-locked .icon-googleplus {
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -210px -290px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -210px -290px;
 }
 
 .socialmedia .social-open {
@@ -128,7 +128,7 @@
 
 .socialmedia .social-open .icon-lockagain {
   cursor: pointer;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -65px -478px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -65px -478px;
 }
 
 

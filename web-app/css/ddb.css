@@ -755,12 +755,12 @@ header .language-widget form,.header .language-widget form {
   position: absolute;
   right: 0;
   width : 40px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -236px -315px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -236px -315px;
   margin-right: 10px;
 }
 
 .btn-nav:hover {
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -181px -315px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -181px -315px;
   transition:none;
 }
 
@@ -1772,7 +1772,7 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
   width:20px;
   height:20px;
   margin-left: -20px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -30px -388px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -388px;
   position:absolute;
 }
 a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
@@ -1821,7 +1821,7 @@ a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not(
 #cookie-notice .close{
   width: 20px;
   height: 20px;
-  background: url(../images/icons/ddbIkonographie.png) no-repeat -27px -474px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -27px -474px;
   background-color: #e6e6e6;
   border: #ddd 1px solid;
   opacity: 1;

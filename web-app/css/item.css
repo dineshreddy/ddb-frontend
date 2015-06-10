@@ -107,7 +107,7 @@
   padding-left: 17px;
   height: 25px;
   line-height: 20px;
-  background: url(../images/icons/listArrows.png) no-repeat 0 1px;
+  background: url("../images/icons/listArrows.png") no-repeat 0 1px;
   font-weight: bold;
   font-size: 1.125em;
 }
@@ -293,7 +293,7 @@
 
 .fields .entity-link {
   padding-left: 20px;
-  background: url(../images/icons/objectViewerActions.png) no-repeat -2px -140px;
+  background: url("../images/icons/objectViewerActions.png") no-repeat -2px -140px;
 }
 
 .item-links {

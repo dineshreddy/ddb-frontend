@@ -96,13 +96,13 @@
 }
 
 .icon-institution {
-  background: url(../images/icons/listArrows.png) no-repeat 0 -1px;
+  background: url("../images/icons/listArrows.png") no-repeat 0 -1px;
   position: absolute;
   z-index: -1;
 }
 
 .icon-child-institution {
-  background: url(../images/icons/listArrows.png) no-repeat 0 -21px;
+  background: url("../images/icons/listArrows.png") no-repeat 0 -21px;
   position: absolute;
   z-index: -1;
 }
