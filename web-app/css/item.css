@@ -169,7 +169,7 @@
 
 .favorite-actions {
   padding-left: 20px;
-  background: url(../images/icons/itemActionsSprite.png) no-repeat ;
+  background: url("../images/icons/itemActionsSprite.png") no-repeat ;
   background-position: -5px 0;
 }
 
