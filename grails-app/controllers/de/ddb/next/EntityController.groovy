@@ -316,7 +316,7 @@ class EntityController implements InitializingBean {
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString?.replaceAll("&reqType=ajax","")),
                 keepFiltersChecked: keepFiltersChecked]
             render(view: "searchPerson", model: model)
         }
