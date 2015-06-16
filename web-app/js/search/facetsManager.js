@@ -158,7 +158,6 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
     var fctValues = '';
     var isThumbnailFiltered = '';
     var facetQueryParam = '';
-    var categoryParam = '';
 
     //Looking for existing facetvalues[] in the window url parameters
     if (oldParams['facetValues%5B%5D']) {
@@ -190,7 +189,7 @@ $.extend(de.ddb.next.search.FacetsManager.prototype, {
       dataType : 'json',
       async : true,
       url : jsContextPath + currObjInstance.path + '?name=' + currObjInstance.currentFacetField + searchQueryParam + facetQueryParam + fctValues + isThumbnailFiltered
-          + '&offset=' + this.currentOffset + '&rows=' + this.currentRows + categoryParam,
+          + '&offset=' + this.currentOffset + '&rows=' + this.currentRows,
       complete : function(data) {
         var parsedResponse = jQuery.parseJSON(data.responseText);
         // Initialization of currentFacetValuesSelected /
