@@ -184,7 +184,7 @@ $(document)
 $(window).on('load', function () {
   $('#cookie-notice').each(function () {
       var cookieBar = $(this),
-          p = cookieBar.find('p'),
+          cookieBar.find('p'),
           closeButton = cookieBar.find('.close');
 
       var cookie = de.ddb.common.search.readCookie("cb_cookie_notice");

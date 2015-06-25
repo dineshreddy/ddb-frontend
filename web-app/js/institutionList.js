@@ -68,12 +68,11 @@
         // when an institution has a least one child.
         _.reduce(institution.children, function(otherMemory, child) {
 
-          if (!onlyInstitutionsWithData || child.hasItems) {
-            if (selectedSector.length === 0 || _.contains(selectedSector, child.sector)) {
-              otherMemory.push(child);
-              // the institution is the parent.
-              parentList.push(institution);
-            }
+          if ((!onlyInstitutionsWithData || child.hasItems) &&
+             (selectedSector.length === 0 || _.contains(selectedSector, child.sector))) {
+            otherMemory.push(child);
+            // the institution is the parent.
+            parentList.push(institution);
           }
           ddb.filterDescendants(child, otherMemory, selectedSector, parentList, onlyInstitutionsWithData);
           return otherMemory;

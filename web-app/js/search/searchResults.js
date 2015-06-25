@@ -53,11 +53,11 @@ $(function() {
     de.ddb.next.search.searchResultsInitializer();
 
     //Operations on the grid where triggered only once clicked and ignored if the viewtype grid was coming from the URL
-    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' && de.ddb.common.search.getUrlVar('viewType').toString()==='grid'){
+    if (typeof de.ddb.common.search.getUrlVar('viewType')!=='undefined' &&
+        de.ddb.common.search.getUrlVar('viewType').toString()==='grid') &&
+        de.ddb.common.search.historySupport) {
       //In IE9<= creates an infinite loop due that doesn't support pushState.
-      if (de.ddb.common.search.historySupport){
-        $("#view-grid").trigger( "click" );
-      }
+      $("#view-grid").trigger( "click" );
     }
   }
 });
@@ -206,11 +206,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
             $(this).append(
                 '<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>');
           }
-          if (json["sort"]) {
+          if (json["sort"] === 'ALPHA_ASC' || json["sort"] === 'ALPHA_DESC') {
             //Only a_to_z and z_to_a should be considered
-            if (json["sort"] === 'ALPHA_ASC' || json["sort"] === 'ALPHA_DESC') {
-              $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>');
-            }
+            $(this).append('<input type="hidden" name="sort" value="' + json["sort"] + '"/>');
           }
         }
       });
