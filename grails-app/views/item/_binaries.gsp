@@ -38,12 +38,10 @@ limitations under the License.
             <g:if test="${it.orig.uri.video.isEmpty() && it.orig.uri.audio.isEmpty()}">
               <g:set var="counter" value="${counter + 1}" />
               <li>
-                <g:if test="${it.full.uri.isEmpty()}">
-                  <g:if test="${!originUrl.isEmpty()}">
-                    <div class="viewer-icon"> 
-                      <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
-                    </div> 
-                  </g:if>
+                <g:if test="${it.full.uri.isEmpty() && !originUrl.isEmpty()}">
+                  <div class="viewer-icon"> 
+                    <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
+                  </div> 
                   <a target="_blank" class="no-previews no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                     <img src="${viewerContent}" alt="${it.preview.title}" />
                   </a>
