@@ -285,15 +285,17 @@ class DdbItemService {
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(httpRequest))
 
         fields.each {
-            it = convertToHtmlLink(it)
-            def messageKey = 'ddbnext.' + it.'@id'
+            if (it) {
+                it = convertToHtmlLink(it)
+                def messageKey = 'ddbnext.' + it.'@id'
 
-            def translated = messageSource.getMessage(messageKey, null, messageKey, locale)
-            if(translated != messageKey) {
-                it.name = translated
-            } else {
-                it.name = it.name.toString().capitalize()
-                log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
+                def translated = messageSource.getMessage(messageKey, null, messageKey, locale)
+                if(translated != messageKey) {
+                    it.name = translated
+                } else {
+                    it.name = it.name.toString().capitalize()
+                    log.warn 'can not find message property: ' + messageKey + ' use ' + it.name + ' instead.'
+                }
             }
         }
     }
