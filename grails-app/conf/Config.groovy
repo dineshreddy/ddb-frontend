@@ -164,6 +164,7 @@ ddb.search.entities.features.enabled=true
 ddb.search.fulltext.features.enabled=false
 ddb.search.institutions.features.enabled=true
 ddb.search.timeSort.features.enabled=false
+ddb.user.registration.features.enabled=true
 ddb.apikey.doc.url="https://api.deutsche-digitale-bibliothek.de/"
 ddb.apikey.terms.url="/content/api-nutzungsbedingungen"
 ddb.registration.info.url="/content/ueber-uns/registrierung-von-kultur-und-wissenschaftseinrichtungen"

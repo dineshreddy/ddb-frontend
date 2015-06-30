@@ -263,7 +263,12 @@ class UserController {
 
     def registration() {
         log.info "registration()"
-        render(view: "registration", model: getRegistrationUrls())
+        if (configurationService.isUserRegistrationFeaturesEnabled()) {
+            render(view: "registration", model: getRegistrationUrls())
+        }
+        else {
+            render(view: "/message/message", model: [errors: ["ddbnext.Error_Registration_Disabled"]])
+        }
     }
 
     def signup() {
