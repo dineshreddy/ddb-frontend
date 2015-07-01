@@ -18,14 +18,14 @@
 // Long values are split and stored in multiple cookies
 LargeCookie = (function($, defaultCookieService) {
 
-  function PagedCookie(name, limit, cookieService) {
+  function pagedCookie(name, limit, cookieService) {
     this.prefix = name;
     this.indexCookie = name + '-n';
     this.limit = limit || 1300;
     this.cookieService = cookieService || defaultCookieService;
   }
 
-  PagedCookie.prototype.set = function(value) {
+  pagedCookie.prototype.set = function(value) {
     if (!value) {
       this.del();
       return;
@@ -56,7 +56,7 @@ LargeCookie = (function($, defaultCookieService) {
     }
   };
 
-  PagedCookie.prototype.get = function() {
+  pagedCookie.prototype.get = function() {
     var result = "";
     var currentIndex = 0;
     var total = parseInt(this.cookieService.get(this.indexCookie)) || 0;
@@ -67,7 +67,7 @@ LargeCookie = (function($, defaultCookieService) {
     return result;
   };
 
-  PagedCookie.prototype.del = function(index) {
+  pagedCookie.prototype.del = function(index) {
     if (typeof (index) !== 'undefined' && !isNaN(parseInt(index, 10))) {
       this.cookieService.del(this.prefix + index);
     } else {
@@ -81,5 +81,5 @@ LargeCookie = (function($, defaultCookieService) {
     }
   };
 
-  return PagedCookie;
+  return pagedCookie;
 })(jQuery, jQuery.cookies);
