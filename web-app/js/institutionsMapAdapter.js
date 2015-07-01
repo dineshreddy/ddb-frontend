@@ -121,5 +121,5 @@ $(document).ready(function() {
     $('.loader').addClass('off');
     InstitutionsMapAdapter.setupDom4MapDisplay();
   }
-  return
+  return;
 });
