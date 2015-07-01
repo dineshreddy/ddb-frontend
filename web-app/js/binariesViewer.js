@@ -99,6 +99,48 @@ $(document)
               }
             };
 
+            var currentTab = function(el) {
+              $("p.tab").removeClass("current-tab");
+              $(el).addClass("current-tab");
+            };
+
+            var jwPlayerSetup = function(content, poster) {
+              if ($("#binary-viewer").length === 0) {
+                return;
+              }
+              $(".viewer-icon").parent().addClass("off");
+              $("#binary-viewer").append('<div id="jwplayer-container"></div>');
+              var w = 440;
+              var h = 320;
+              var mediaQueryMatches = 1;
+              if (navigator.appName.indexOf("Internet Explorer") === -1) {
+                mediaQueryMatches = mediaQuery;
+              }
+              if (!mediaQueryMatches) {
+                w = 278;
+                h = 200;
+              }
+              $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function() {
+                if ($.browser.msie && this.getRenderingMode() === "html5") {
+                  $("#binary-viewer").find("[id*='jwplayer']").each(function() {
+                    $(this).attr("unselectable", "on");
+                  });
+                }
+              }, function() {
+                if ($("#jwplayer-container")) {
+                  $("#jwplayer-container").remove();
+                }
+                if ($("#jwplayer-container_wrapper")) {
+                  $("#jwplayer-container_wrapper").remove();
+                }
+                if ($("#jwplayer-container").attr("type") === "application/x-shockwave-flash") {
+                  $("binary-viewer-flash-upgrade").removeClass("off");
+                } else {
+                  $("div.binary-viewer-error").removeClass("off");
+                }
+              });
+            };
+
             var updatePreview = function(gallerydiv) {
               var a = gallerydiv.find("ul").children('li').eq(0).children('a');
               var previewUri = $(a).attr("href");
@@ -173,43 +215,6 @@ $(document)
               addRedBorder($(a).find(".thumbnail"));
             };
 
-            var jwPlayerSetup = function(content, poster) {
-              if ($("#binary-viewer").length === 0) {
-                return;
-              }
-              $(".viewer-icon").parent().addClass("off");
-              $("#binary-viewer").append('<div id="jwplayer-container"></div>');
-              var w = 440;
-              var h = 320;
-              var mediaQueryMatches = 1;
-              if (navigator.appName.indexOf("Internet Explorer") === -1) {
-                mediaQueryMatches = mediaQuery;
-              }
-              if (!mediaQueryMatches) {
-                w = 278;
-                h = 200;
-              }
-              $.initializeJwPlayer("jwplayer-container", content, poster, w, h, function() {
-                if ($.browser.msie && this.getRenderingMode() === "html5") {
-                  $("#binary-viewer").find("[id*='jwplayer']").each(function() {
-                    $(this).attr("unselectable", "on");
-                  });
-                }
-              }, function() {
-                if ($("#jwplayer-container")) {
-                  $("#jwplayer-container").remove();
-                }
-                if ($("#jwplayer-container_wrapper")) {
-                  $("#jwplayer-container_wrapper").remove();
-                }
-                if ($("#jwplayer-container").attr("type") === "application/x-shockwave-flash") {
-                  $("binary-viewer-flash-upgrade").removeClass("off");
-                } else {
-                  $("div.binary-viewer-error").removeClass("off");
-                }
-              });
-            };
-
             $(function() {
               var totImages = $(".gallery-images li").size();
               var totVideos = $(".gallery-videos li").size();
@@ -231,11 +236,6 @@ $(document)
               updatePreview($("div."+currentGallery));
               createGallery($(".gallery-"+currentGallery));
             });
-
-            var currentTab = function(el) {
-              $("p.tab").removeClass("current-tab");
-              $(el).addClass("current-tab");
-            };
 
             var removeRedBorder = function() {
               $(".scroller ul>li>a").find(".thumbnail").removeClass("active");
