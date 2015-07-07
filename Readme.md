@@ -18,7 +18,7 @@ More information about current development issues can be found in the [DDB Jira]
 ###Software requirements
 The DDB Next project depends on the following software
 * JDK 1.7
-* Grails 2.4.4
+* Grails 2.4.5
 
 ### IDE support 
 DDB Next is developed with [Groovy/Grails Tool Suite](http://www.grails.org/products/ggts) ([download tool link](http://www.springsource.org/groovy-grails-tool-suite-download)). 
