@@ -17,6 +17,8 @@ package de.ddb.next
 
 import grails.plugin.cache.Cacheable
 
+import java.util.regex.Pattern
+
 import org.codehaus.groovy.grails.web.util.WebUtils
 
 import de.ddb.common.ApiConsumer
@@ -36,8 +38,9 @@ class InstitutionService extends CommonInstitutionService {
     // values from Nominatim service
     private static final String GERMANY = "Deutschland"
     private static final String EUROPE = "European Union"
-    private static final String EUROPE_GERMAN = "Europäische Union"
-    private static final String EUROPE_SHORT = "Europe"
+
+    // zip code pattern
+    private static final Pattern ZIP_CODE = Pattern.compile(/\d{5}/)
 
     // ehcache name
     private static final String CACHE_NAME = "institutionCache"
@@ -285,21 +288,42 @@ class InstitutionService extends CommonInstitutionService {
                 }
                 else {
                     result = locationDisplayName.split(", ")*.trim().reverse()
-                    if (result[0] != EUROPE) {
-                        if (result[0] == EUROPE_GERMAN || result[0] == EUROPE_SHORT) {
-                            result[0] = EUROPE
-                        }
-                        else {
-                            result.add(0, EUROPE)
+
+                    // find zip code
+                    int zipCodeIndex = -1
+
+                    result.eachWithIndex { item, index ->
+                        if (item ==~ZIP_CODE) {
+                            zipCodeIndex = index
                         }
                     }
 
-                    if (result.size() > 2) {
+                    if (zipCodeIndex != -1) {
+                        if (zipCodeIndex == 0) {
+                            // insert country name
+                            result.add(0, GERMANY)
+                        }
+                        else if (zipCodeIndex > 1) {
+                            // remove unneeded data left from country name
+                            result = result.drop(zipCodeIndex - 1)
+                        }
+
+                        // add region as marker
+                        result.add(0, EUROPE)
+
                         // remove zip code
                         result.remove(2)
 
                         // remove too detailed values like street name
-                        result = result.take(result.size() - 2)
+                        if (result.size() > 7) {
+                            result = result.take(7)
+                        }
+                    }
+                    else {
+                        result = [
+                            EUROPE,
+                            GERMANY
+                        ]
                     }
                 }
             }
