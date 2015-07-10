@@ -298,6 +298,9 @@ $(document).ready(function() {
 
           $('.olPopupDDBContent').replaceWith(self._getPopupContentHtml(institutionList));
           $('#institutionsPopupDialog').modal('show');
+          $('#institutionsPopupDialog').on('shown.bs.modal', function() {
+            $('#olPopupDDBScroll').scrollTop(0);
+          });
         };
 
         function onFeatureUnselect(event) {
