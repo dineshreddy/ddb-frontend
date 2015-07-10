@@ -504,7 +504,7 @@ $(document).ready(function() {
         });
 
         // find geographical priority
-        var locationIndex = 2; // ignore region and country
+        var locationIndex = 4; // default is offset of "Bundesland" + 2
         var locationFound = false;
         var firstInsti = clusteredInstitutions[0];
 
