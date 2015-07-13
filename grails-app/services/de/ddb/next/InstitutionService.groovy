@@ -40,7 +40,7 @@ class InstitutionService extends CommonInstitutionService {
     private static final String EUROPE = "European Union"
 
     // zip code pattern
-    private static final Pattern ZIP_CODE = Pattern.compile(/\d{5}/)
+    private static final Pattern ZIP_CODE = Pattern.compile(/.*\d{5}.*/)
 
     // ehcache name
     private static final String CACHE_NAME = "institutionCache"
@@ -295,7 +295,7 @@ class InstitutionService extends CommonInstitutionService {
                     int zipCodeIndex = -1
 
                     result.eachWithIndex { item, index ->
-                        if (item ==~ZIP_CODE) {
+                        if (item ==~ ZIP_CODE) {
                             zipCodeIndex = index
                         }
                     }
