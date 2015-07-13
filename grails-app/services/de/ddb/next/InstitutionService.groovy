@@ -221,6 +221,8 @@ class InstitutionService extends CommonInstitutionService {
                                 clusterContainer["institutions"][institutionId] = [:]
                                 clusterContainer["institutions"][institutionId]["name"] = institution.name
                                 clusterContainer["institutions"][institutionId]["sector"] = institution.sector
+                                clusterContainer["institutions"][institutionId]["locationDisplayName"] =
+                                        fixNominatimIssues(institution.locationDisplayName)
                                 clusterContainer["institutions"][institutionId]["children"] = [child]
                                 clusterContainer["institutions"][institutionId]["parents"] = []
                             }else{
