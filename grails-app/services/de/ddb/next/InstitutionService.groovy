@@ -40,7 +40,7 @@ class InstitutionService extends CommonInstitutionService {
     private static final String EUROPE = "European Union"
 
     // zip code pattern
-    private static final Pattern ZIP_CODE = Pattern.compile(/.*\d{5}.*/)
+    private static final Pattern ZIP_CODE = Pattern.compile(/\d{5}/)
 
     // ehcache name
     private static final String CACHE_NAME = "institutionCache"
