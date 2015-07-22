@@ -73,7 +73,7 @@ class UserController {
         render(view: "login",
         model: ['loginStatus': LoginStatus.LOGGED_OUT,
             'referrer': params.referrer,
-            'registrationInfoUrl': configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl()
+            'registrationInfoUrl': configurationService.getRegistrationInfoUrl()
         ])
     }
 
@@ -255,7 +255,7 @@ class UserController {
 
     private def getRegistrationUrls() {
         return [
-            registrationInfoUrl: configurationService.getContextUrl() + configurationService.getRegistrationInfoUrl(),
+            registrationInfoUrl: configurationService.getRegistrationInfoUrl(),
             accountTermsUrl: configurationService.getContextUrl() + configurationService.getAccountTermsUrl(),
             accountPrivacyUrl: configurationService.getContextUrl() + configurationService.getAccountPrivacyUrl()
         ]
