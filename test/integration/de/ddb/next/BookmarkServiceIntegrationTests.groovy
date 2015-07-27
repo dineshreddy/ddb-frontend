@@ -2,7 +2,7 @@ package de.ddb.next
 
 import static org.junit.Assert.*
 import grails.test.mixin.TestMixin
-import grails.test.mixin.integration.IntegrationTestMixin
+import grails.test.mixin.web.ControllerUnitTestMixin
 
 import org.junit.*
 
@@ -13,7 +13,7 @@ import de.ddb.common.constants.FolderConstants
 import de.ddb.common.constants.Type
 
 
-@TestMixin(IntegrationTestMixin)
+@TestMixin(ControllerUnitTestMixin)
 class BookmarkServiceIntegrationTests {
 
     private static final def SIZE = 99999
