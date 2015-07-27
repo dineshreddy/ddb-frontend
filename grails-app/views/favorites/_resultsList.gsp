@@ -83,13 +83,13 @@ limitations under the License.
           </g:else>
         </div>
         <div class="span2 created-at">
-         <div>${it.bookmark.creationDateFormatted}</div>
+         <div>${it.bookmark?.creationDateFormatted}</div>
         </div>
       </div>
       <g:if test="${it.category != "orphaned" }">
         <div class="comment row">
           <div class="span9">
-            <g:render template="favoritesComment" model="${[item: it, publicView: publicView]}" />
+            <g:render template="/favoritesview/favoritesComment" model="${[item: it, publicView: publicView]}" />
           </div>
         </div>
       </g:if>

@@ -270,6 +270,40 @@ class UrlMappings {
             action="staticFiles"
         }
 
+        "/user/apikey" {
+            controller="user"
+            action="showApiKey"
+        }
+
+        "/user/apikey/delete" {
+            controller="user"
+            action="deleteApiKey"
+        }
+
+        "/user/apikey/request" {
+            controller="user"
+            action="requestApiKey"
+        }
+
+        "/user/changePassword" {
+            controller="user"
+            action="passwordChangePage"
+        }
+
+        "/user/confirm/$id/$token" {
+            controller="user"
+            action="confirm"
+        }
+
+        "/user/delete" {
+            controller="user"
+            action="delete"
+        }
+
+        "/user/profile" {
+            controller="user"
+            action="profile"
+        }
 
         "/user/registration" {
             controller="user"
@@ -281,43 +315,9 @@ class UrlMappings {
             action="passwordResetPage"
         }
 
-        "/user/profile" {
-            controller="user"
-            action="profile"
-        }
-
         "/user/savedsearches" {
             controller="user"
             action=[GET: "getSavedSearches", POST: "sendSavedSearches"]
-        }
-
-        "/user/confirm/$id/$token" {
-            controller="user"
-            action="confirm"
-        }
-
-        "/user/changePassword" {
-            controller="user"
-            action="passwordChangePage"
-        }
-        "/user/delete" {
-            controller="user"
-            action="delete"
-        }
-
-        "/user/apikey" {
-            controller="user"
-            action="showApiKey"
-        }
-
-        "/user/apikey/request" {
-            controller="user"
-            action="requestApiKey"
-        }
-
-        "/user/apikey/delete" {
-            controller="user"
-            action="deleteApiKey"
         }
 
         "/login" {

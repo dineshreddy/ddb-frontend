@@ -17,10 +17,7 @@ package de.ddb.next
 
 import grails.converters.*
 
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
-
-import org.codehaus.groovy.grails.web.util.WebUtils
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
@@ -35,11 +32,11 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.ApiConsumer
 import de.ddb.common.ProxyUtil
 import de.ddb.common.Validations
 import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
+import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedOauthProvider
@@ -64,16 +61,16 @@ class UserController {
 
     def LinkGenerator grailsLinkGenerator
     def aasService
-    def sessionService
-    def configurationService
-    def messageSource
-    def searchService
-    def newsletterService
-    def savedSearchesService
     def bookmarksService
-    def userService
+    def configurationService
     def favoritesService
     def languageService
+    def messageSource
+    def newsletterService
+    def savedSearchesService
+    def searchService
+    def sessionService
+    def userService
 
     def index() {
         log.info "index()"
@@ -705,6 +702,30 @@ class UserController {
             errors.add("ddbcommon.Error.Confirmation_Not_Found")
         }
         redirect(controller: "user",action: "confirmationPage" , params: [errors: errors, messages: messages])
+    }
+
+    def dashboard() {
+        // search for the 10 newest institutions
+        def query = [:]
+
+        searchService.setCategory(query, CategoryFacetEnum.INSTITUTION.getName())
+        query[SearchParamEnum.ROWS.getName()] = "10"
+        query[SearchParamEnum.SORT.getName()] = SearchParamEnum.SORT_TIME_DESC.getName()
+
+        def institutions = []
+
+        searchService.doInstitutionSearch(query).docs.eachWithIndex { institution, index ->
+            institution.orderNumber = index
+            if (institution.preview.thumbnail) {
+                institution.preview.thumbnail = request.getContextPath() + institution.preview.thumbnail
+            }
+            else {
+                institution.preview.thumbnail = g.resource("plugin": "ddb-common", "dir": "images",
+                "file": "/placeholder/searchResultMediaInstitution.png")
+            }
+            institutions += institution
+        }
+        render(view: "dashboard", model: [institutions: institutions])
     }
 
     def requestOauthLogin() {
