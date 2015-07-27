@@ -32,6 +32,7 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.JsonUtil
 import de.ddb.common.ProxyUtil
 import de.ddb.common.Validations
 import de.ddb.common.beans.Folder
@@ -717,12 +718,12 @@ class UserController {
         searchService.doInstitutionSearch(query).docs.eachWithIndex { institution, index ->
             institution.orderNumber = index
             println "XXX " + institution
-            if (institution.preview.thumbnail) {
-                institution.preview.thumbnail = request.getContextPath() + institution.preview.thumbnail
-            }
-            else {
+            if (JsonUtil.isAnyNull(institution.preview.thumbnail)) {
                 institution.preview.thumbnail = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
+            }
+            else {
+                institution.preview.thumbnail = request.getContextPath() + institution.preview.thumbnail
             }
             println "YYY " + institution
             institutions += institution
