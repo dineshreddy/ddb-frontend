@@ -22,19 +22,18 @@ import de.ddb.common.constants.Type
 class SavedsearchesController {
 
     def savedSearchesService
-    def sessionService
     def userService
 
     def addSavedSearch() {
         log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title + ", " + request?.JSON?.type
         def result = response.SC_BAD_REQUEST
         def User user = userService.getUserFromSession()
-        if (user != null) {
+        if (user) {
             Type type = Type.valueOfName(request?.JSON?.type)
             if (!type) {
                 type = Type.CULTURAL_ITEM
             }
-            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.title, request?.JSON?.query, type)) {
+            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.query, request?.JSON?.title, null, type)) {
                 result = response.SC_CREATED
             }
         }
@@ -49,7 +48,7 @@ class SavedsearchesController {
         log.info "deleteSavedSearches(): " + request.JSON
         def result = response.SC_NOT_FOUND
         def User user = userService.getUserFromSession()
-        if (user != null) {
+        if (user) {
             if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
                 result = response.SC_OK
             }
@@ -67,8 +66,8 @@ class SavedsearchesController {
     def getSavedSearches() {
         log.info "getSavedSearches()"
         def User user = userService.getUserFromSession()
-        if (user != null) {
-            def result = savedSearchesService.getSavedSearches(user.getId())
+        if (user) {
+            def result = savedSearchesService.findSavedSearchByUserId(user.getId())
             log.info "getSavedSearches returns " + result
             render(result as JSON)
         }
@@ -81,9 +80,9 @@ class SavedsearchesController {
     def isSavedSearch() {
         log.info "isSavedSearch()"
         def User user = userService.getUserFromSession()
-        if (user != null) {
+        if (user) {
             def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query,
-                Type.valueOfName(request.JSON.type))
+                    Type.valueOfName(request.JSON.type))
             log.info "isSavedSearch returns " + result
             if (result) {
                 render(status: response.SC_OK)
@@ -101,7 +100,7 @@ class SavedsearchesController {
     def updateSavedSearch() {
         log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
         def User user = userService.getUserFromSession()
-        if (user != null) {
+        if (user) {
             def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
             log.info "updateSavedSearch returns " + result
             if (result) {
@@ -113,6 +112,32 @@ class SavedsearchesController {
         }
         else {
             log.info "updateSavedSearch returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
+    }
+
+    def unwatchSavedSearch() {
+        log.info "unwatchSavedSearch(): " + params.id
+        def User user = userService.getUserFromSession()
+        if (user) {
+            savedSearchesService.removeWatcher(params.id, user.id)
+            render(status: response.SC_OK)
+        }
+        else {
+            log.info "unwatchSavedSearch returns " + response.SC_UNAUTHORIZED
+            render(status: response.SC_UNAUTHORIZED)
+        }
+    }
+
+    def watchSavedSearch() {
+        log.info "watchSavedSearch(): " + params.id
+        def User user = userService.getUserFromSession()
+        if (user) {
+            savedSearchesService.addWatcher(params.id, user.id)
+            render(status: response.SC_OK)
+        }
+        else {
+            log.info "watchSavedSearch returns " + response.SC_UNAUTHORIZED
             render(status: response.SC_UNAUTHORIZED)
         }
     }

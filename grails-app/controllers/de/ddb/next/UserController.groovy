@@ -17,7 +17,10 @@ package de.ddb.next
 
 import grails.converters.*
 
+import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpSession
+
+import org.codehaus.groovy.grails.web.util.WebUtils
 
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
@@ -32,6 +35,7 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ApiConsumer
 import de.ddb.common.ProxyUtil
 import de.ddb.common.Validations
 import de.ddb.common.beans.Folder
@@ -53,6 +57,10 @@ import de.ddb.common.oauth.OAuthProfile
 class UserController {
     private final static String SESSION_CONSUMER_MANAGER = "SESSION_CONSUMER_MANAGER_ATTRIBUTE"
     private final static String SESSION_OPENID_PROVIDER = "SESSION_OPENID_PROVIDER_ATTRIBUTE"
+    private final static String SESSION_SHIBBOLETH_REFERRER = "shibboleth_originalUrl"
+    private final static String SESSION_SHIBBOLETH_HASHCODE = "shibboleth_hashcode"
+    private final static String SESSION_SHIBBOLETH_ORIGINAL_HOST = "shibboleth_original_host"
+    private final static String SHIBBOLETH_IDP_ATTRIBUTE = "Shib-Identity-Provider"
 
     def LinkGenerator grailsLinkGenerator
     def aasService
@@ -62,7 +70,6 @@ class UserController {
     def searchService
     def newsletterService
     def savedSearchesService
-    def savedSearchService
     def bookmarksService
     def userService
     def favoritesService
@@ -134,10 +141,13 @@ class UserController {
     def doLogout() {
         log.info "doLogout(): logout user "
 
+        def user = userService.getUserFromSession()
         logoutUserFromSession()
-
-        redirect(controller: 'index')
-
+        if (user != null && user.isShibbolethUser()) {
+            redirect (url: configurationService.getShibbolethLogoutUrl() + "?return=" + grailsLinkGenerator.serverBaseURL)
+        } else {
+            redirect(controller: 'index')
+        }
     }
 
 
@@ -149,7 +159,7 @@ class UserController {
         log.info "getSavedSearches()"
         if (userService.isUserLoggedIn()) {
             def user = userService.getUserFromSession()
-            def savedSearches = savedSearchesService.getSavedSearches(user.getId())
+            def savedSearches = savedSearchesService.findSavedSearchByUserId(user.getId())
             def offset = params[SearchParamEnum.OFFSET.getName()] ? params[SearchParamEnum.OFFSET.getName()].toInteger() : 0
             def rows = params[SearchParamEnum.ROWS.getName()] ? params[SearchParamEnum.ROWS.getName()].toInteger() : 20
             def totalPages = (savedSearches.size() / rows).toInteger()
@@ -205,7 +215,7 @@ class UserController {
                 rows: rows,
                 totalPages: totalPages,
                 urlsForOrder: urlsForOrder,
-                userName: user.getFirstnameAndLastnameOrNickname()
+                user: user
             ])
         } else {
             redirect(controller: "user", action: "index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
@@ -234,7 +244,7 @@ class UserController {
                     body(view: "_savedSearchesEmailBody", model: [
                         contextUrl: configurationService.getContextUrl(),
                         results:
-                        savedSearchesService.getSavedSearches(user.getId()).sort { a, b ->
+                        savedSearchesService.findSavedSearchByUserId(user.getId()).sort { a, b ->
                             a.label.toLowerCase() <=> b.label.toLowerCase()
                         },
                         userName: user.getFirstnameAndLastnameOrNickname()
@@ -267,7 +277,9 @@ class UserController {
             render(view: "registration", model: getRegistrationUrls())
         }
         else {
-            render(view: "/message/message", model: [errors: ["ddbnext.Error_Registration_Disabled"]])
+            render(view: "/message/message", model: [errors: [
+                    "ddbnext.Error_Registration_Disabled"
+                ]])
         }
     }
 
@@ -380,10 +392,17 @@ class UserController {
                 }
             }
 
-            render(view: "profile", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors:errors, messages: messages])
+            render(view: "profile", model: [
+                favoritesCount: getFavoriteCount(user),
+                savedSearchesCount: savedSearchesService.getSavedSearchesCount(),
+                user: user,
+                errors:errors,
+                messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [
+                referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()
+            ])
         }
     }
 
@@ -393,10 +412,6 @@ class UserController {
         def favoritesCount = favorites.size()
 
         return favoritesCount
-    }
-
-    private getSavedSearchesCount() {
-        return savedSearchesService.getSavedSearches()?.size()
     }
 
     def saveProfile() {
@@ -539,10 +554,17 @@ class UserController {
                     messages.addAll(params.messages)
                 }
             }
-            render(view: "changepassword", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors: errors, messages: messages])
+            render(view: "changepassword", model: [
+                favoritesCount: getFavoriteCount(user),
+                savedSearchesCount: savedSearchesService.getSavedSearchesCount(),
+                user: user,
+                errors: errors,
+                messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [
+                referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()
+            ])
         }
     }
 
@@ -578,10 +600,17 @@ class UserController {
                 params.errors = errors
             }
 
-            render(view: "profile", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(), user: user, errors: errors, messages: messages])
+            render(view: "profile", model: [
+                favoritesCount: getFavoriteCount(user),
+                savedSearchesCount: savedSearchesService.getSavedSearchesCount(),
+                user: user,
+                errors: errors,
+                messages: messages])
         }
         else{
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [
+                referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()
+            ])
         }
     }
 
@@ -603,7 +632,7 @@ class UserController {
 
                 //remove all saved searches
                 log.info "delete SavedSearches"
-                savedSearchService.deleteSavedSearchesByUserId(user.id)
+                savedSearchesService.deleteSavedSearchesByUserId(user.id)
 
                 //remove all bookmark related content
                 log.info "delete bookmark content"
@@ -845,6 +874,75 @@ class UserController {
 
     }
 
+    def requestShibbolethLogin() {
+        sessionService.createNewSession()
+        sessionService.setSessionAttributeIfAvailable(SESSION_SHIBBOLETH_ORIGINAL_HOST, grailsLinkGenerator.serverBaseURL)
+        if (params.referrer) {
+            sessionService.setSessionAttributeIfAvailable(SESSION_SHIBBOLETH_REFERRER, params.referrer)
+        }
+        String hashcode = UUID.randomUUID().toString()
+        sessionService.setSessionAttributeIfAvailable(SESSION_SHIBBOLETH_HASHCODE, hashcode)
+        redirect (url: configurationService.getShibbolethLoginUrl() + "?hashcode=" + hashcode)
+        return
+    }
+
+    def doShibbolethLogin() {
+        Map shibAtts = configurationService.getShibbolethAttributes()
+        if (!shibAtts.targetedId || !request.getAttribute(shibAtts.targetedId)) {
+            println "Shibboleth PrimaryKey-Attribute not available"
+            throw new BackendErrorException("Shibboleth PrimaryKey-Attribute not available")
+        }
+        if (!shibAtts.mail || !request.getAttribute(shibAtts.mail)) {
+            println "Shibboleth Mail-Attribute not available"
+            throw new BackendErrorException("Shibboleth Mail-Attribute not available")
+        }
+        if (!request.getAttribute(SHIBBOLETH_IDP_ATTRIBUTE)) {
+            println "Shibboleth IDP-Attribute not available"
+            throw new BackendErrorException("Shibboleth IDP-Attribute not available")
+        }
+        if (!sessionService.getSessionAttributeIfAvailable(SESSION_SHIBBOLETH_ORIGINAL_HOST)) {
+            println "Shibboleth Original Host not available"
+            throw new BackendErrorException("Shibboleth Original Host not available")
+        }
+        if (!params.hashcode || !sessionService.getSessionAttributeIfAvailable(SESSION_SHIBBOLETH_HASHCODE)
+        || !params.hashcode.equals(sessionService.getSessionAttributeIfAvailable(SESSION_SHIBBOLETH_HASHCODE))) {
+            println "Shibboleth Hashcode not correct"
+            throw new BackendErrorException("Shibboleth Hashcode not correct")
+        }
+
+        User user = new User()
+        user.setId(String.format("%040x", new BigInteger(1, (request.getAttribute(SHIBBOLETH_IDP_ATTRIBUTE) + shibAtts.mail).getBytes("UTF-8"))))
+        user.setUsername(String.format("%040x", new BigInteger(1, (request.getAttribute(SHIBBOLETH_IDP_ATTRIBUTE) + shibAtts.mail).getBytes("UTF-8"))))
+        user.setEmail(request.getAttribute(shibAtts.mail))
+        if (shibAtts.cn && request.getAttribute(shibAtts.cn)) {
+            user.setFirstname(new String(request.getAttribute(shibAtts.cn).getBytes("ISO-8859-1"), "UTF-8"))
+        }
+        if (shibAtts.sn && request.getAttribute(shibAtts.sn)) {
+            user.setLastname(new String(request.getAttribute(shibAtts.sn).getBytes("ISO-8859-1"), "UTF-8"))
+        }
+        user.setShibbolethUser(true)
+        user.setNewsletterSubscribed(newsletterService.isSubscriber(user))
+
+        //save user in session
+        sessionService.setSessionAttributeIfAvailable(User.SESSION_USER, user)
+
+        favoritesService.createFavoritesFolderIfNotExisting(user)
+
+        // deactivated until we have unique id for both OpenId and AAS
+        // aasService.createOrUpdatePersonAsAdmin(user)
+
+        if (session[SESSION_SHIBBOLETH_REFERRER]) {
+            //Remove the context path from the url, otherwise it will be appear twice in the redirect
+            def contextLength = grailsLinkGenerator.contextPath.length()
+            def referrerUrl = session[SESSION_SHIBBOLETH_REFERRER]
+            referrerUrl = referrerUrl.substring(contextLength)
+            redirect (url: sessionService.getSessionAttributeIfAvailable(SESSION_SHIBBOLETH_ORIGINAL_HOST) + referrerUrl)
+        } else {
+            redirect (url: sessionService.getSessionAttributeIfAvailable(SESSION_SHIBBOLETH_ORIGINAL_HOST) + "/user/favorites/" + user.getId())
+        }
+        return
+    }
+
     private def resolveService(provider) {
         def serviceName = "${ provider as String }AuthService"
         grailsApplication.mainContext.getBean(serviceName)
@@ -894,21 +992,26 @@ class UserController {
             String apiKeyTermsUrl = configurationService.getContextUrl() + configurationService.getApiKeyTermsUrl()
 
             if(apiKey) {
-                render(view: "apiKey", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(),
+                render(view: "apiKey", model: [
+                    favoritesCount: getFavoriteCount(user),
+                    savedSearchesCount: savedSearchesService.getSavedSearchesCount(),
                     user: user,
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }else {
-                render(view: "requestApiKey", model: [favoritesCount: getFavoriteCount(user), savedSearchesCount: getSavedSearchesCount(),
+                render(view: "requestApiKey", model: [
+                    favoritesCount: getFavoriteCount(user),
+                    savedSearchesCount: savedSearchesService.getSavedSearchesCount(),
                     apiKeyDocUrl: configurationService.getApiKeyDocUrl(),
                     apiKeyTermsUrl: apiKeyTermsUrl
                 ])
             }
         }else {
-            redirect(controller:"user", action:"index", params: [referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()])
+            redirect(controller:"user", action:"index", params: [
+                referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()
+            ])
         }
-
     }
 
     def requestApiKey() {

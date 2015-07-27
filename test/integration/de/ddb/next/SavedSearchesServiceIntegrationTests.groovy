@@ -11,7 +11,7 @@ import de.ddb.common.constants.Type
 @TestMixin(ControllerUnitTestMixin)
 class SavedSearchServiceIntegrationTests {
 
-    def savedSearchService
+    def savedSearchesService
 
     /** The userId is refreshed in setUp() for every test method*/
     def userId = null
@@ -108,7 +108,7 @@ class SavedSearchServiceIntegrationTests {
         def results = savedSearchService.findSavedSearchByUserId(userId)
         assert results.size() == 2
 
-        savedSearchService.deleteSavedSearch(
+        savedSearchService.deleteSavedSearches(
                 [
                     goetheSavedSearchId,
                     mozartSavedSearchId

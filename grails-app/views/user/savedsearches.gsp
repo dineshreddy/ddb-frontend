@@ -28,7 +28,7 @@ limitations under the License.
 
 <html>
 <head>
-<title><g:message code="ddbnext.Savedsearches_Of" args="${[userName]}" default="ddbnext.Savedsearches_Of" /> - <g:message
+<title><g:message code="ddbnext.Savedsearches_Of" args="${[user.getFirstnameAndLastnameOrNickname()]}" default="ddbnext.Savedsearches_Of" /> - <g:message
     code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="savedsearches">
 <meta name="layout" content="main">
@@ -43,7 +43,7 @@ limitations under the License.
       </div>
       <div class="print-header">
         <h3>
-          <g:message code="ddbnext.Savedsearches_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Savedsearches_Of" />
+          <g:message code="ddbnext.Savedsearches_Of_Printed" args="${[user.getFirstnameAndLastnameOrNickname(), dateString]}" default="ddbnext.Savedsearches_Of" />
         </h3>
       </div>
     </div>
