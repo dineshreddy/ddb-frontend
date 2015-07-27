@@ -19,6 +19,8 @@ import grails.converters.*
 
 import javax.servlet.http.HttpSession
 
+import net.sf.json.JSONObject
+
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -32,12 +34,10 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.JsonUtil
 import de.ddb.common.ProxyUtil
 import de.ddb.common.Validations
 import de.ddb.common.beans.Folder
 import de.ddb.common.beans.User
-import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedOauthProvider
@@ -706,29 +706,7 @@ class UserController {
     }
 
     def dashboard() {
-        // search for the 10 newest institutions
-        def query = [:]
-
-        searchService.setCategory(query, CategoryFacetEnum.INSTITUTION.getName())
-        query[SearchParamEnum.ROWS.getName()] = "10"
-        query[SearchParamEnum.SORT.getName()] = SearchParamEnum.SORT_TIME_DESC.getName()
-
-        def institutions = []
-
-        searchService.doInstitutionSearch(query).docs.eachWithIndex { institution, index ->
-            institution.orderNumber = index
-            println "XXX " + institution
-            if (JsonUtil.isAnyNull(institution.preview.thumbnail)) {
-                institution.preview.thumbnail = g.resource("plugin": "ddb-common", "dir": "images",
-                "file": "/placeholder/searchResultMediaInstitution.png")
-            }
-            else {
-                institution.preview.thumbnail = request.getContextPath() + institution.preview.thumbnail
-            }
-            println "YYY " + institution
-            institutions += institution
-        }
-        render(view: "dashboard", model: [institutions: institutions])
+        render(view: "dashboard", model: [institutions: searchService.getNewestInstitutions()])
     }
 
     def requestOauthLogin() {
