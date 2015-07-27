@@ -716,6 +716,7 @@ class UserController {
 
         searchService.doInstitutionSearch(query).docs.eachWithIndex { institution, index ->
             institution.orderNumber = index
+            println "XXX " + institution
             if (institution.preview.thumbnail) {
                 institution.preview.thumbnail = request.getContextPath() + institution.preview.thumbnail
             }
@@ -723,6 +724,7 @@ class UserController {
                 institution.preview.thumbnail = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
+            println "YYY " + institution
             institutions += institution
         }
         render(view: "dashboard", model: [institutions: institutions])
