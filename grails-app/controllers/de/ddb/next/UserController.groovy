@@ -706,7 +706,14 @@ class UserController {
     }
 
     def dashboard() {
-        render(view: "dashboard", model: [institutions: searchService.getNewestInstitutions()])
+        if (userService.isUserLoggedIn()) {
+            render(view: "dashboard", model: [institutions: searchService.getNewestInstitutions()])
+        }
+        else {
+            redirect(controller:"user", action:"index", params: [
+                referrer: grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()
+            ])
+        }
     }
 
     def requestOauthLogin() {
