@@ -123,6 +123,32 @@ $(function() {
       return false;
     });
 
+    $(".add-watcher").click(function() {
+      var icon = $(this);
+
+      $("#editSavedSearchId").val($(this).attr("id"));
+      $.ajax({
+        type : "POST",
+        url : jsContextPath + "/apis/savedsearches/_watch/" + $("#editSavedSearchId").val()
+      }).done(function() {
+        icon.toggleClass("off");
+        icon.siblings(".remove-watcher").toggleClass("off");
+      });
+    });
+
+    $(".remove-watcher").click(function() {
+      var icon = $(this);
+
+      $("#editSavedSearchId").val($(this).attr("id"));
+      $.ajax({
+        type : "POST",
+        url : jsContextPath + "/apis/savedsearches/_unwatch/" + $("#editSavedSearchId").val()
+      }).done(function() {
+        icon.toggleClass("off");
+        icon.siblings(".add-watcher").toggleClass("off");
+      });
+    });
+
     $(".edit-saved-search").click(function() {
       $("#editSavedSearchId").val($(this).attr("id"));
       $("#editSavedSearchTitle").val($(this).attr("data-label"));
@@ -141,11 +167,11 @@ $(function() {
               title : title
             })
           }).done(function() {
-          var editAnchor = $("#" + $("#editSavedSearchId").val());
-          editAnchor.attr("data-label", title);
-          var anchor = editAnchor.prev("a");
-          anchor.text(title);
-          anchor.attr("title", title);
+            var editAnchor = $("#" + $("#editSavedSearchId").val());
+            editAnchor.attr("data-label", title);
+            var anchor = editAnchor.prev("a");
+            anchor.text(title);
+            anchor.attr("title", title);
           });
         } else {
           showError(messages.ddbnext.Savedsearch_Title_Required);
