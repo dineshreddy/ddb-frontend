@@ -32,7 +32,9 @@ limitations under the License.
       <div class="summary row">
         <div class="summary-main-wrapper span5">
           <g:if test="${publicView}">
-            <div class="rank">${it.orderNumber + 1}</div>
+            <g:if test="${it.orderNumber}">
+              <div class="rank">${it.orderNumber + 1}</div>
+            </g:if>
           </g:if>
           <g:else>
             <input type="checkbox" name="id[${index++}]" value="${it.id}" data-bookmark-id="${it.bookmark.bookmarkId}" class="remove-item-check">

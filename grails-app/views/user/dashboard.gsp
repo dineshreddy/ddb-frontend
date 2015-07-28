@@ -24,8 +24,16 @@ limitations under the License.
     <h1><g:message code="ddbnext.Heading_Dashboard"/></h1>
     <h2><g:message code="ddbnext.Subheading_Dashboard_Items"/></h2>
     <g:each in="${savedSearches}" var="savedSearch">
-    <h3>${savedSearch.key.label}</h3>
-    ${savedSearch.value.numberOfResults} objects
+    <h3>${savedSearch.name}</h3>
+    <g:if test="${savedSearch.numberOfResults}">
+      <ddb:renderPublicFavoritesResults results="${savedSearch.items}"/>
+      <g:if test="${savedSearch.numberOfResults > savedSearch.items.size()}">
+       XXX and more
+      </g:if>
+     </g:if>
+    <g:else>
+      <g:message code="ddbnext.Subheading_Dashboard_No_Items"/>
+    </g:else>
     </g:each>
     <h2><g:message code="ddbnext.Subheading_Dashboard_Institutions"/></h2>
     <ddb:renderPublicFavoritesResults results="${institutions}"/>

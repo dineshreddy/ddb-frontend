@@ -114,7 +114,7 @@ class SearchController {
             }
 
             //Replacing the mediatype images when not coming from backend server
-            searchService.checkAndReplaceMediaTypeImages(resultsItems)
+            searchService.checkAndReplaceMediaTypeImages(resultsItems.results.docs)
 
             //create cookie with search parameters
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.CULTURAL_ITEM))

@@ -19,6 +19,8 @@ import grails.converters.*
 
 import javax.servlet.http.HttpSession
 
+import net.sf.json.JSONObject
+
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -35,6 +37,7 @@ import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.JsonUtil
 import de.ddb.common.ProxyUtil
 import de.ddb.common.SearchService
 import de.ddb.common.Validations
@@ -683,10 +686,9 @@ class UserController {
     @IsLoggedIn
     def dashboard() {
         User user = userService.getUserFromSession()
-        def savedSearches = [:]
+        def savedSearches = []
 
         savedSearchesService.findSavedSearchesByWatcherId(user.id, user.id).each { search ->
-            def objects
             def query = [:]
             def facetValues = []
 
@@ -726,10 +728,19 @@ class UserController {
 
             def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl(), "/apis/search", false, query)
             if (apiResponse.isOk()) {
-                objects = apiResponse.getResponse()
-                if (objects?.numberOfResults > 0) {
-                    savedSearches.put(search, objects)
+                def items = searchService.checkAndReplaceMediaTypeImages(apiResponse.getResponse().results.docs.take(30))
+                String contextPath = configurationService.getContextPath()
+
+                items.each { item ->
+                    if (!item.preview.thumbnail.startsWith(contextPath)) {
+                        item.preview.thumbnail = contextPath + item.preview.thumbnail
+                    }
                 }
+                savedSearches.add([
+                    "name": search.label,
+                    "items": items,
+                    "numberOfResults": apiResponse.getResponse().numberOfResults
+                ])
             }
         }
         render(view: "dashboard", model: [
