@@ -32,6 +32,17 @@ public class SecurityInterceptor {
     private final LinkGenerator grailsLinkGenerator = ctx.getBean("grailsLinkGenerator")
     private final UserService userService = (UserService) ctx.getBean("userService")
 
+    @Around("@annotation(de.ddb.common.aop.IsAuthorized)")
+    public void IsAuthorized(JoinPoint joinPoint) {
+        if (userService.isUserLoggedIn()) {
+            joinPoint.proceed()
+        }
+        else {
+            WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(
+                    WebUtils.retrieveGrailsWebRequest().getCurrentResponse().SC_UNAUTHORIZED)
+        }
+    }
+
     @Around("@annotation(de.ddb.common.aop.IsLoggedIn)")
     public void isLoggedIn(JoinPoint joinPoint) {
         if (userService.isUserLoggedIn()) {

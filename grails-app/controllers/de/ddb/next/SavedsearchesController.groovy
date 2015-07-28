@@ -16,7 +16,7 @@
 package de.ddb.next
 
 import grails.converters.JSON
-import de.ddb.common.beans.User
+import de.ddb.common.aop.IsAuthorized
 import de.ddb.common.constants.Type
 
 class SavedsearchesController {
@@ -24,121 +24,93 @@ class SavedsearchesController {
     def savedSearchesService
     def userService
 
+    @IsAuthorized
     def addSavedSearch() {
         log.info "addSavedSearch(): " + request?.JSON?.query + ", " + request?.JSON?.title + ", " + request?.JSON?.type
         def result = response.SC_BAD_REQUEST
-        def User user = userService.getUserFromSession()
-        if (user) {
-            Type type = Type.valueOfName(request?.JSON?.type)
-            if (!type) {
-                type = Type.CULTURAL_ITEM
-            }
-            if (savedSearchesService.addSavedSearch(user.getId(), request?.JSON?.query, request?.JSON?.title, null, type)) {
-                result = response.SC_CREATED
-            }
+        Type type = Type.valueOfName(request?.JSON?.type)
+        if (!type) {
+            type = Type.CULTURAL_ITEM
         }
-        else {
-            result = response.SC_UNAUTHORIZED
+        if (savedSearchesService.addSavedSearch(userService.getUserFromSession(), request?.JSON?.query, request?.JSON?.title, null, type)) {
+            result = response.SC_CREATED
         }
         log.info "addSavedSearch returns " + result
         render(status: result)
     }
 
+    @IsAuthorized
     def deleteSavedSearches() {
         log.info "deleteSavedSearches(): " + request.JSON
         def result = response.SC_NOT_FOUND
-        def User user = userService.getUserFromSession()
-        if (user) {
-            if(request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
-                result = response.SC_OK
-            }
-            else if (savedSearchesService.deleteSavedSearches(request.JSON.ids)) {
-                result = response.SC_OK
-            }
+        if (request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
+            result = response.SC_OK
         }
-        else {
-            result = response.SC_UNAUTHORIZED
+        else if (savedSearchesService.deleteSavedSearches(request.JSON.ids)) {
+            result = response.SC_OK
         }
         log.info "deleteSavedSearches returns " + result
         render(status: result)
     }
 
+    @IsAuthorized
     def getSavedSearches() {
         log.info "getSavedSearches()"
-        def User user = userService.getUserFromSession()
-        if (user) {
-            def result = savedSearchesService.findSavedSearchByUserId(user.getId())
-            log.info "getSavedSearches returns " + result
-            render(result as JSON)
-        }
-        else {
-            log.info "getSavedSearches returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
-        }
+        def result = savedSearchesService.findSavedSearchByUserId(userService.getUserFromSession().getId())
+        log.info "getSavedSearches returns " + result
+        render(result as JSON)
     }
 
+    @IsAuthorized
     def isSavedSearch() {
         log.info "isSavedSearch()"
-        def User user = userService.getUserFromSession()
-        if (user) {
-            def result = savedSearchesService.isSavedSearch(user.getId(), request.JSON.query,
-                    Type.valueOfName(request.JSON.type))
-            log.info "isSavedSearch returns " + result
-            if (result) {
-                render(status: response.SC_OK)
-            }
-            else {
-                render(status: response.SC_NO_CONTENT)
-            }
+        def result = savedSearchesService.isSavedSearch(userService.getUserFromSession().getId(), request.JSON.query,
+                Type.valueOfName(request.JSON.type))
+        log.info "isSavedSearch returns " + result
+        if (result) {
+            render(status: response.SC_OK)
         }
         else {
-            log.info "isSavedSearch returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
+            render(status: response.SC_NO_CONTENT)
         }
     }
 
+    @IsAuthorized
     def updateSavedSearch() {
         log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
-        def User user = userService.getUserFromSession()
-        if (user) {
-            def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
-            log.info "updateSavedSearch returns " + result
-            if (result) {
-                render(status: response.SC_OK)
-            }
-            else {
-                render(status: response.SC_NOT_FOUND)
-            }
+        def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
+        log.info "updateSavedSearch returns " + result
+        if (result) {
+            render(status: response.SC_OK)
         }
         else {
-            log.info "updateSavedSearch returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
+            render(status: response.SC_NOT_FOUND)
         }
     }
 
+    @IsAuthorized
     def unwatchSavedSearch() {
         log.info "unwatchSavedSearch(): " + params.id
-        def User user = userService.getUserFromSession()
-        if (user) {
-            savedSearchesService.removeWatcher(params.id, user.id)
+        def result = savedSearchesService.removeWatcher(params.id, userService.getUserFromSession().id)
+        log.info "unwatchSavedSearch returns " + result
+        if (result) {
             render(status: response.SC_OK)
         }
         else {
-            log.info "unwatchSavedSearch returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
+            render(status: response.SC_NOT_FOUND)
         }
     }
 
+    @IsAuthorized
     def watchSavedSearch() {
         log.info "watchSavedSearch(): " + params.id
-        def User user = userService.getUserFromSession()
-        if (user) {
-            savedSearchesService.addWatcher(params.id, user.id)
+        def result = savedSearchesService.addWatcher(params.id, userService.getUserFromSession().id)
+        log.info "watchSavedSearch returns " + result
+        if (result) {
             render(status: response.SC_OK)
         }
         else {
-            log.info "watchSavedSearch returns " + response.SC_UNAUTHORIZED
-            render(status: response.SC_UNAUTHORIZED)
+            render(status: response.SC_NOT_FOUND)
         }
     }
 }
