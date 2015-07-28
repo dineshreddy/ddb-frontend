@@ -23,6 +23,9 @@ limitations under the License.
   <body>
     <h1><g:message encodeAs="html" code="ddbnext.Heading_Dashboard"/></h1>
     <h3><g:message encodeAs="html" code="ddbnext.Subheading_Dashboard_Items"/></h3>
+    <g:each in="${savedSearches}" var="savedSearch">
+    ${savedSearch.key.label}: ${savedSearch.value.numberOfResults}
+    </g:each>
     <h3><g:message encodeAs="html" code="ddbnext.Subheading_Dashboard_Institutions"/></h3>
     <ddb:renderPublicFavoritesResults results="${institutions}"/>
   </body>

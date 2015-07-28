@@ -49,7 +49,7 @@ class SavedSearchesServiceIntegrationTests {
     void tearDown() {
         println "Cleanup tests"
 
-        def results = savedSearchesService.findSavedSearchByUserId(userId)
+        def results = savedSearchesService.findSavedSearchesByUserId(userId)
         println "Saved user searches after test: " + results.size()
 
         savedSearchesService.deleteSavedSearchesByUserId(userId)
@@ -101,7 +101,7 @@ class SavedSearchesServiceIntegrationTests {
             Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
-        def results = savedSearchesService.findSavedSearchByUserId(userId)
+        def results = savedSearchesService.findSavedSearchesByUserId(userId)
         assert results.size() == 2
     }
 
@@ -120,7 +120,7 @@ class SavedSearchesServiceIntegrationTests {
         assert mozartSavedSearchId != null
 
 
-        def results = savedSearchesService.findSavedSearchByUserId(userId)
+        def results = savedSearchesService.findSavedSearchesByUserId(userId)
         assert results.size() == 2
 
         savedSearchesService.deleteSavedSearches(
@@ -129,7 +129,7 @@ class SavedSearchesServiceIntegrationTests {
                     mozartSavedSearchId
                 ])
 
-        assert savedSearchesService.findSavedSearchByUserId(userId).size() == 0
+        assert savedSearchesService.findSavedSearchesByUserId(userId).size() == 0
     }
 
     @Test
@@ -145,12 +145,12 @@ class SavedSearchesServiceIntegrationTests {
         assert mozartSavedSearchId != null
 
 
-        def results = savedSearchesService.findSavedSearchByUserId(userId)
+        def results = savedSearchesService.findSavedSearchesByUserId(userId)
         assert results.size() == 2
 
         savedSearchesService.deleteSavedSearchesByUserId(userId)
 
-        assert savedSearchesService.findSavedSearchByUserId(userId).size() == 0
+        assert savedSearchesService.findSavedSearchesByUserId(userId).size() == 0
     }
 
     // TODO: shouldUpdateSavedSearch

@@ -32,7 +32,8 @@ class SavedsearchesController {
         if (!type) {
             type = Type.CULTURAL_ITEM
         }
-        if (savedSearchesService.addSavedSearch(userService.getUserFromSession(), request?.JSON?.query, request?.JSON?.title, null, type)) {
+        if (savedSearchesService.addSavedSearch(userService.getUserFromSession().getId(), request?.JSON?.query,
+        request?.JSON?.title, null, type)) {
             result = response.SC_CREATED
         }
         log.info "addSavedSearch returns " + result
@@ -56,7 +57,7 @@ class SavedsearchesController {
     @IsAuthorized
     def getSavedSearches() {
         log.info "getSavedSearches()"
-        def result = savedSearchesService.findSavedSearchByUserId(userService.getUserFromSession().getId())
+        def result = savedSearchesService.findSavedSearchesByUserId(userService.getUserFromSession().getId())
         log.info "getSavedSearches returns " + result
         render(result as JSON)
     }
@@ -91,7 +92,7 @@ class SavedsearchesController {
     @IsAuthorized
     def unwatchSavedSearch() {
         log.info "unwatchSavedSearch(): " + params.id
-        def result = savedSearchesService.removeWatcher(params.id, userService.getUserFromSession().id)
+        def result = savedSearchesService.removeWatcher(params.id, userService.getUserFromSession().getId())
         log.info "unwatchSavedSearch returns " + result
         if (result) {
             render(status: response.SC_OK)
@@ -104,7 +105,7 @@ class SavedsearchesController {
     @IsAuthorized
     def watchSavedSearch() {
         log.info "watchSavedSearch(): " + params.id
-        def result = savedSearchesService.addWatcher(params.id, userService.getUserFromSession().id)
+        def result = savedSearchesService.addWatcher(params.id, userService.getUserFromSession().getId())
         log.info "watchSavedSearch returns " + result
         if (result) {
             render(status: response.SC_OK)
