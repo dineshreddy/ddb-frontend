@@ -28,7 +28,7 @@ limitations under the License.
     <g:if test="${savedSearch.numberOfItems}">
       <ddb:renderPublicFavoritesResults results="${savedSearch.items}"/>
       <g:if test="${savedSearch.numberOfItems > savedSearch.items.size()}">
-       XXX and more
+        <g:message code="ddbnext.Subheading_Dashboard_More_Items"/>
       </g:if>
      </g:if>
     <g:else>
