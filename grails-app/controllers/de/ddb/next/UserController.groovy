@@ -24,8 +24,6 @@ import net.sf.json.JSONObject
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.joda.time.DateTime
-import org.joda.time.format.ISODateTimeFormat
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
 import org.openid4java.discovery.DiscoveryInformation
@@ -36,22 +34,15 @@ import org.openid4java.message.ax.FetchRequest
 import org.scribe.model.Token
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.ApiConsumer
-import de.ddb.common.JsonUtil
 import de.ddb.common.ProxyUtil
-import de.ddb.common.SearchService
 import de.ddb.common.Validations
 import de.ddb.common.aop.IsLoggedIn
 import de.ddb.common.beans.Folder
-import de.ddb.common.beans.SavedSearch
-import de.ddb.common.beans.SearchQueryTerm
 import de.ddb.common.beans.User
-import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.LoginStatus
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.SupportedOauthProvider
 import de.ddb.common.constants.SupportedOpenIdProviders
-import de.ddb.common.constants.Type
 import de.ddb.common.constants.UserStatus
 import de.ddb.common.constants.aas.AasPersonSearchQueryParameter
 import de.ddb.common.exception.AuthorizationException
@@ -688,60 +679,8 @@ class UserController {
         User user = userService.getUserFromSession()
         def savedSearches = []
 
-        savedSearchesService.findSavedSearchesByWatcherId(user.id, user.id).each { search ->
-            def query = [:]
-            def facetValues = []
-
-            // define some defaults
-            if (!search.type || search.type == Type.CULTURAL_ITEM) {
-                facetValues.add(new SearchQueryTerm(SearchService.THUMBNAIL_FACET + "=true"))
-                facetValues.add(new SearchQueryTerm(SearchParamEnum.CATEGORY.getName() + "=" + CategoryFacetEnum.CULTURE.getName()))
-            }
-            else if (search.type == Type.INSTITUTION) {
-                facetValues.add(new SearchQueryTerm(SearchParamEnum.CATEGORY.getName() + "=" + CategoryFacetEnum.INSTITUTION.getName()))
-            }
-            facetValues.add(new SearchQueryTerm(SearchParamEnum.LASTUPDATE.getName() + "=[" +
-                    ISODateTimeFormat.dateHourMinuteSecond().print(new DateTime(search.creationDate)) + "* TO *]"))
-
-            // parse query
-            search.queryString.split('&').each {
-                String[] parameter = it.split('=')
-                String parameterName = URLDecoder.decode(parameter[0], "UTF-8")
-
-                if (parameter.size() > 1 && SavedSearch.SEARCH_PARAMETERS.containsKey(parameterName)) {
-                    String parameterValue = URLDecoder.decode(parameter[1], "UTF-8")
-
-                    if (parameterName == SearchParamEnum.FACETVALUES.getName()) {
-                        facetValues.add(new SearchQueryTerm(parameterValue))
-                    }
-                    else {
-                        query.put(parameterName, parameterValue)
-                    }
-                }
-            }
-            facetValues.each { term ->
-                term.values.each { value ->
-                    query.put(term.name, value)
-                }
-            }
-            query.put(SearchParamEnum.FACET.getName(), facetValues.collect {it.name})
-
-            def apiResponse = ApiConsumer.getJson(configurationService.getApisUrl(), "/apis/search", false, query)
-            if (apiResponse.isOk()) {
-                def items = searchService.checkAndReplaceMediaTypeImages(apiResponse.getResponse().results.docs.take(30))
-                String contextPath = configurationService.getContextPath()
-
-                items.each { item ->
-                    if (!item.preview.thumbnail.startsWith(contextPath)) {
-                        item.preview.thumbnail = contextPath + item.preview.thumbnail
-                    }
-                }
-                savedSearches.add([
-                    "name": search.label,
-                    "items": items,
-                    "numberOfResults": apiResponse.getResponse().numberOfResults
-                ])
-            }
+        savedSearchesService.findSavedSearchesByWatcherId(user.id, user.id).each { savedSearch ->
+            savedSearches.add(searchService.getWatchedItems(savedSearch))
         }
         render(view: "dashboard", model: [
             institutions: searchService.getNewestInstitutions(),
