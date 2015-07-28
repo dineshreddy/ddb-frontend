@@ -21,12 +21,13 @@ limitations under the License.
     <meta name="layout" content="main"/>
   </head>
   <body>
-    <h1><g:message encodeAs="html" code="ddbnext.Heading_Dashboard"/></h1>
-    <h3><g:message encodeAs="html" code="ddbnext.Subheading_Dashboard_Items"/></h3>
+    <h1><g:message code="ddbnext.Heading_Dashboard"/></h1>
+    <h2><g:message code="ddbnext.Subheading_Dashboard_Items"/></h2>
     <g:each in="${savedSearches}" var="savedSearch">
-    ${savedSearch.key.label}: ${savedSearch.value.numberOfResults}
+    <h3>${savedSearch.key.label}</h3>
+    ${savedSearch.value.numberOfResults} objects
     </g:each>
-    <h3><g:message encodeAs="html" code="ddbnext.Subheading_Dashboard_Institutions"/></h3>
+    <h2><g:message code="ddbnext.Subheading_Dashboard_Institutions"/></h2>
     <ddb:renderPublicFavoritesResults results="${institutions}"/>
   </body>
 </html>
