@@ -179,6 +179,12 @@ ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur/"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur/"
 ddb.supportedLocales=["de_DE", "en_US"]
 ddb.defaultLanguage="de"
+//Link to Shibboleth-Login. Points to an Apache with mod_shib enabled. 
+//Apache secures called endpoint with Shibboleth and redirects to UserController.doShibbolethLogin() after successfull login.
+ddb.shibboleth.login.url="https://dev.fiz-karlsruhe.de/iais/login/shibboleth"
+ddb.shibboleth.logout.url="https://dev.fiz-karlsruhe.de/Shibboleth.sso/Logout"
+//Map Attributes returned by Shibboleth to common names (expected: pk and email, supported: firstname, lastname)
+ddb.shibboleth.attributes=["targetedId":"targeted-id", "cn":"cn", "sn":"sn", "mail":"mail"]
 
 def appName = "${appName}"
 
