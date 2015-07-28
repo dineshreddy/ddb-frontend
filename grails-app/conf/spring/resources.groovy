@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-// Place your Spring DSL code here
 beans = {
     localeResolver(org.springframework.web.servlet.i18n.CookieLocaleResolver) {
         cookieMaxAge = 31536000 //1y
@@ -22,5 +21,10 @@ beans = {
         // set default locale for JAWR plugin
         defaultLocale = new Locale("de","DE")
         java.util.Locale.setDefault(defaultLocale)
+    }
+
+    xmlns aop:"http://www.springframework.org/schema/aop"
+    aspectBean(de.ddb.next.aop.SecurityInterceptor)
+    aop.config("proxy-target-class":true) {
     }
 }
