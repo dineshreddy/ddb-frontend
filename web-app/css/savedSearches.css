@@ -29,6 +29,20 @@
   vertical-align: middle;
 }
 
+.add-saved-search-watcher-icon {
+  background: url("../images/icons/ddbIkonographie.png") -30px -538px no-repeat;
+  cursor: pointer;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.remove-saved-search-watcher-icon {
+  background: url("../images/icons/ddbIkonographie.png") -30px -570px no-repeat;
+  cursor: pointer;
+  height: 20px;
+  vertical-align: middle;
+}
+
 #editSavedSearchTitle {
   width: 100%;
 }
