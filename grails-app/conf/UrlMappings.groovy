@@ -355,6 +355,16 @@ class UrlMappings {
             action="doOpenIdLogin"
         }
 
+        "/login/shibrequest" {
+            controller="user"
+            action="requestShibbolethLogin"
+        }
+
+        "/login/doShibbolethLogin" {
+            controller="user"
+            action="doShibbolethLogin"
+        }
+
         "/compare/$firstId/with/$secondId" {
             controller="compare"
             action="index"

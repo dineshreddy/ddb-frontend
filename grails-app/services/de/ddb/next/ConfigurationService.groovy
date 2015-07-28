@@ -76,16 +76,20 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.socialIcons.url.twitter")
     }
 
+    String getShibbolethLoginUrl() {
+        return getConfigValue("ddb.shibboleth.login.url")
+    }
+
+    String getShibbolethLogoutUrl() {
+        return getConfigValue("ddb.shibboleth.logout.url")
+    }
+
+    Map getShibbolethAttributes() {
+        return getConfigValue("ddb.shibboleth.attributes", Map)
+    }
+
     boolean isCulturegraphFeaturesEnabled() {
-        //FIXME dev.escidoc.org and dev.escidoc.org/current shares the same ddb-next.property file
-        //      Because we will show the entity features on dev.escidoc.org/current and not on dev.escidoc.org
-        //      we will return always true in this method of the develop branch.
-        //      Later versions of develop might reactivate the code.
-
-        //        def value = getExistingConfigValue("ddb.culturegraph.features.enabled")
-        //        return Boolean.parseBoolean(value.toString())
-
-        return true
+        return getBooleanConfigValue("ddb.culturegraph.features.enabled")
     }
 
     boolean isEntitySearchFeaturesEnabled() {
@@ -127,6 +131,9 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
         log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
         log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
+        log.info "ddb.shibboleth.login.url = " + getShibbolethLoginUrl()
+        log.info "ddb.shibboleth.logout.url = " + getShibbolethLogoutUrl()
+        log.info "ddb.shibboleth.attributes = " + getShibbolethAttributes()
 
         log.info "-------------------------------------------------------"
     }
