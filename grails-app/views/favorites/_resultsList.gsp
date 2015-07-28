@@ -32,7 +32,7 @@ limitations under the License.
       <div class="summary row">
         <div class="summary-main-wrapper span5">
           <g:if test="${publicView}">
-            <g:if test="${it.orderNumber}">
+            <g:if test="${it.orderNumber instanceof Number}">
               <div class="rank">${it.orderNumber + 1}</div>
             </g:if>
           </g:if>
