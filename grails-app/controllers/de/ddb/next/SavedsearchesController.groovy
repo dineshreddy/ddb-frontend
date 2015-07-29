@@ -47,7 +47,7 @@ class SavedsearchesController {
         if (request.JSON == null || request.JSON.ids == null || request.JSON.ids.size() == 0) {
             result = response.SC_OK
         }
-        else if (savedSearchesService.deleteSavedSearches(request.JSON.ids)) {
+        else if (savedSearchesService.deleteSavedSearches(userService.getUserFromSession().getId(), request.JSON.ids)) {
             result = response.SC_OK
         }
         log.info "deleteSavedSearches returns " + result
@@ -79,7 +79,8 @@ class SavedsearchesController {
     @IsAuthorized
     def updateSavedSearch() {
         log.info "updateSavedSearch(): " + params.id + ", " + request?.JSON?.title
-        def result = savedSearchesService.updateSavedSearch(params.id, request?.JSON?.title)
+        def result = savedSearchesService.updateSavedSearch(
+                userService.getUserFromSession().getId(), params.id, request?.JSON?.title)
         log.info "updateSavedSearch returns " + result
         if (result) {
             render(status: response.SC_OK)
