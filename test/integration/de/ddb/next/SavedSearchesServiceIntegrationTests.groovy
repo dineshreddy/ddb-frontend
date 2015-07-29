@@ -82,7 +82,7 @@ class SavedSearchesServiceIntegrationTests {
         def queryString = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
 
         def savedSearchId = savedSearchesService.addSavedSearch(userId, queryString, 'Goethe Related',
-            'All things related to Goethe', Type.CULTURAL_ITEM)
+                'All things related to Goethe', Type.CULTURAL_ITEM)
         log.info "id: ${savedSearchId}"
         assert savedSearchId  != null
     }
@@ -93,12 +93,12 @@ class SavedSearchesServiceIntegrationTests {
 
         def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForGoethe , 'Goethe Related',
-            'All things related to Goethe', Type.CULTURAL_ITEM)
+                'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForMozart , 'Mozart Related',
-            Type.CULTURAL_ITEM)
+                Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
         def results = savedSearchesService.findSavedSearchesByUserId(userId)
@@ -111,12 +111,12 @@ class SavedSearchesServiceIntegrationTests {
 
         def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForGoethe ,
-            'Goethe Related', 'All things related to Goethe', Type.CULTURAL_ITEM)
+                'Goethe Related', 'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForMozart , 'Mozart Related',
-            Type.CULTURAL_ITEM)
+                Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
 
@@ -124,6 +124,7 @@ class SavedSearchesServiceIntegrationTests {
         assert results.size() == 2
 
         savedSearchesService.deleteSavedSearches(
+                userId,
                 [
                     goetheSavedSearchId,
                     mozartSavedSearchId
@@ -136,12 +137,12 @@ class SavedSearchesServiceIntegrationTests {
     void shouldDeleteSavedSearchesByUserId() {
         def queryStringForGoethe = 'query=Goethe&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def goetheSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForGoethe , 'Goethe Related',
-            'All things related to Goethe', Type.CULTURAL_ITEM)
+                'All things related to Goethe', Type.CULTURAL_ITEM)
         assert goetheSavedSearchId != null
 
         def queryStringForMozart = 'query=mozart&facetValues[]=keywords_fct%3DFotos&facetValues[]=type_fct%3Dmediatype_002&facetValues[]=sector_fct%3Dsec_05&facetValues[]=begin_time%3D[*+TO+693961]&facetValues[]=end_time%3D[547509+TO+*]'
         def mozartSavedSearchId = savedSearchesService.addSavedSearch(userId, queryStringForMozart , 'Mozart Related',
-            Type.CULTURAL_ITEM)
+                Type.CULTURAL_ITEM)
         assert mozartSavedSearchId != null
 
 
