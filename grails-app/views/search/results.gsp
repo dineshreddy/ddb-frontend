@@ -62,10 +62,10 @@ limitations under the License.
     <div class="js facets-list bt bb off">
       <%-- TimeFacet is handle by its own template --%>
       <g:render template="timeFacet" />
-      <%-- All other facets are handled in the same way --%>          
+      <%-- All other facets are handled in the same way --%>
       <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
       <div class="facets-item bt bb bl br" id="thumbnail-filter-container">
-        <input id="thumbnail-filter" type="checkbox" <g:if test='${isThumbnailFiltered == 'true'}'>checked</g:if>>
+        <input id="thumbnail-filter" type="checkbox" <g:if test="${Boolean.valueOf(grailsApplication.config.ddb.search.OnlyWithThumbnails.features.enabled)}">checked</g:if>>
         <label for="thumbnail-filter" title="<g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" />"><g:message encodeAs="html" code="ddbnext.Show_items_with_thumbnails" /></label>
       </div>
     </div>
