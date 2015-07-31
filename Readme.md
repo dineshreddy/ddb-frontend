@@ -50,7 +50,7 @@ For accessing the DDB backend via it's REST API you'll need a API key. If you ar
 
 ####Application configuration 
 The components and the behaviour of the application can be configured via an external configuration file which is located here:
- 
+
 * In development and test mode: $USER_HOME/.grails/$appname.properties 
 * In Production Mode: /grails/app-config/$appname.properties
 
@@ -211,10 +211,10 @@ Configuration parameter:
 3 different OAuth providers are currently supported: Facebook, Google and Twitter.
 For everey provider 2 properties are needed:
 
-* 'auth.<provider\>.key' defines the provider specific OAuth key
-* 'auth.<provider\>.secret' defines the provider specific OAuth secret
+* 'auth.\<provider\>.key' defines the provider specific OAuth key
+* 'auth.\<provider\>.secret' defines the provider specific OAuth secret
 
-<provider\> can be "facebook", "google" or "twitter".
+\<provider\> can be "facebook", "google" or "twitter".
 
 
 ####Footer menu
