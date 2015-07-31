@@ -49,7 +49,8 @@ For accessing the DDB backend via it's REST API you'll need a API key. If you ar
 (https://www.deutsche-digitale-bibliothek.de/user/profile)
 
 ####Application configuration 
-The components and the behaviour of the application can be configured via an external configuration file which is located here: 
+The components and the behaviour of the application can be configured via an external configuration file which is located here:
+ 
 * In development and test mode: $USER_HOME/.grails/$appname.properties 
 * In Production Mode: /grails/app-config/$appname.properties
 
@@ -127,6 +128,7 @@ Some services needs some extra configuration, like the API key for the DDB backe
 The binary service provides the digital content (Texts, Images, Videos etc.) for the DDB items and institutions. These binary data is referenced by the items metadata provided by the backend service.
 
 Configuration parameter:
+
 * 'ddb.binary.url' defines the url for the host which stores the binary content of the DDB
 
 
@@ -134,6 +136,7 @@ Configuration parameter:
 Provides the static content of the DDB frontend. It includes the content for the help pages, the terms of use page, the contact page and many more.
 
 Configuration parameter:
+
 * 'ddb.static.url' defines the url for the host which stores the static content for DDB
 
 
@@ -142,6 +145,7 @@ This service is provided by the DDB frontend itself and used as a wrapper for al
 By default this url links to localhost to make an efficient loopback call to the frontend (without routing via firewalls etc).
 
 Configuration parameter:
+
 * 'ddb.apis.url' defines the url to reach the API service
 
 
@@ -153,6 +157,7 @@ The access to the DDB backend is limited and access is restricted via an API key
 [IAIS]:http://www.iais.fraunhofer.de/
 
 Configuration parameter:
+
 * 'ddb.backend.url' defines the url to reach the backend.
 * 'ddb.backend.apikey' defines the API key to authenticate against the backend. 
 
@@ -164,6 +169,7 @@ https://api.deutsche-digitale-bibliothek.de/doku/display/ADD/API+der+Deutschen+D
 OpenSource service for handling registration, authentication and authorization functionality for DDB users. 
  
 Configuration parameter:
+
 * 'ddb.aas.url' defines the url to reach the aas service
 * 'ddb.aas.admin.userid' defines an id for a AAS user with administrator rights
 * 'ddb.aas.admin.password' defines the password of the AAS user with administrator rights
@@ -177,6 +183,7 @@ CultureGraph is a service platform for Data Integration, Persistent Identifier a
 It's a project of the Deutsche Nationalbibliothek (http://www.dnb.de).
 
 Configuration parameter:
+
 * 'ddb.culturegraph.url' defines the url to reach the culturegraph service.
 
 More information about this service is available under:
@@ -188,15 +195,15 @@ Elastic search is used to manage personal content like bookmarks and saved searc
 The service is based on elastic search (http://www.elasticsearch.org/) and developed by the DDB-NEXT team
 
 Configuration parameter:
-* 'ddb.elasticsearch.url' defines the url where to retrieve documents of type bookmark
 
-More infos to the service can be found here (https://github.com/Deutsche-Digitale-Bibliothek/ddb-bookmark-web-api)
+* 'ddb.elasticsearch.url' defines the url where to retrieve documents of type bookmark
 
 
 ####Content Management System
 The Content Management System is used to display the main menu (except "My DDB") and the teaser.
 
 Configuration parameter:
+
 * 'ddb.cms.url' defines the url where to retrieve the data
 
 
@@ -204,23 +211,25 @@ Configuration parameter:
 3 different OAuth providers are currently supported: Facebook, Google and Twitter.
 For everey provider 2 properties are needed:
 
-* 'auth.<provider>.key' defines the provider specific OAuth key
-* 'auth.<provider>.secret' defines the provider specific OAuth secret
+* 'auth.<provider\>.key' defines the provider specific OAuth key
+* 'auth.<provider\>.secret' defines the provider specific OAuth secret
 
-<provider> can be "facebook", "google" or "twitter".
+<provider\> can be "facebook", "google" or "twitter".
 
 
 ####Footer menu
 The footer menu can be given as a JSON file.
 
 Configuration parameter:
+
 * 'ddb.footerMenu' defines the location of that file. It defaults to "${userHome}/.grails/ddb-next-footer-menu.json"
 
 The description of the JSON structure can be found here: https://jira.deutsche-digitale-bibliothek.de/browse/IAIS-8
 
 
 ## Dependencies
-The DDB Next is a Web Application use the following Grails plugins 
+The DDB Next is a Web Application use the following Grails plugins
+
 * cache:1.0.0
 * cache-headers:1.1.5
 * rendering:0.4.3
@@ -230,6 +239,7 @@ The DDB Next is a Web Application use the following Grails plugins
 
 
 Additionally the application makes use of the following Javascript frameworks
+
 * Autocomplete 1.10.2
 * Bootstrap 2.2.2
 * History 1.7.1
