@@ -1,0 +1,27 @@
+.dashboard-saved-searches .item,
+.dashboard-institution .item {
+  padding: 15px 0 15px 0;
+  position: relative;
+}
+
+.dashboard-saved-searches .results-list.grid .item {
+  width: 220px;
+}
+
+.dashboard-saved-searches .results-list.grid .title {
+  font-size: 1.063em;
+}
+
+.dashboard-saved-searches .summary .information,
+.dashboard-institution .summary .information {
+  background: url("../images/icons/ddbIkonographie.png") -24px -84px no-repeat;
+  position: relative;
+}
+
+.dashboard-message {
+  padding-left: 20px;
+}
+
+.dashboard-saved-searches {
+  margin-bottom: 20px;
+}

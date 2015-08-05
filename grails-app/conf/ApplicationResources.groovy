@@ -51,6 +51,7 @@ modules = {
         resource url:'/css/person.css', bundle: 'screen'
         resource url:'/css/persons.css', bundle: 'screen'
         resource url:'/css/searchTabulator.css', bundle: 'screen'
+        resource url:'/css/dashboard.css', bundle: 'screen'
         resource url:'/js/map/css/map.css', bundle: 'screen'
         //resource url:'/third-party/map/css/style.css', bundle: 'screen'
         //resource url:'/third-party/map/css/ddbPlacenamePopupList.css', bundle: 'screen'
