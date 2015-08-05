@@ -21,21 +21,33 @@ limitations under the License.
     <meta name="layout" content="main"/>
   </head>
   <body>
-    <h1><g:message code="ddbnext.Heading_Dashboard"/></h1>
-    <h2><g:message code="ddbnext.Subheading_Dashboard_Items"/></h2>
-    <g:each in="${savedSearches}" var="savedSearch">
-    <h3>${savedSearch.name}</h3>
-    <g:if test="${savedSearch.numberOfItems}">
-      <ddb:renderPublicFavoritesResults results="${savedSearch.items}"/>
-      <g:if test="${savedSearch.numberOfItems > savedSearch.items.size()}">
-        <g:message code="ddbnext.Subheading_Dashboard_More_Items"/>
-      </g:if>
-     </g:if>
-    <g:else>
-      <g:message code="ddbnext.Subheading_Dashboard_No_Items"/>
-    </g:else>
-    </g:each>
-    <h2><g:message code="ddbnext.Subheading_Dashboard_Institutions"/></h2>
-    <ddb:renderPublicFavoritesResults results="${institutions}"/>
+    <h1><g:message code="ddbnext.MyDDB"/></h1>
+    <div class="row">
+      <div class="span12">
+        <h3><g:message code="ddbnext.Subheading_Dashboard_Items"/></h3>
+        <div class="dashboard-saved-searches">
+          <g:each in="${savedSearches}" var="savedSearch">
+            <h3 class="dashboard-message">${savedSearch.name}</h3>
+            <g:if test="${savedSearch.numberOfItems}">
+              <ddb:renderDashboardList results="${savedSearch.items}" viewType="grid"/>
+              <g:if test="${savedSearch.numberOfItems > savedSearch.items.size()}">
+                <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_More_Items"/></div>
+              </g:if>
+            </g:if>
+            <g:else>
+              <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_No_Items"/></div>
+            </g:else>
+          </g:each>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12"><h3><g:message code="ddbnext.Subheading_Dashboard_Institutions"/></h3></div>
+      <div class="span10 offset1">
+        <div class="dashboard-institution">
+          <ddb:renderDashboardList results="${institutions}"/>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
