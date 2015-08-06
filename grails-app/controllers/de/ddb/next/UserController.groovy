@@ -15,8 +15,6 @@
  */
 package de.ddb.next
 
-import grails.converters.*
-
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
