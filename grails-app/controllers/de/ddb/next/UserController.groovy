@@ -19,8 +19,6 @@ import grails.converters.*
 
 import javax.servlet.http.HttpSession
 
-import net.sf.json.JSONObject
-
 import org.apache.commons.lang.StringUtils
 import org.codehaus.groovy.grails.web.json.*
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
