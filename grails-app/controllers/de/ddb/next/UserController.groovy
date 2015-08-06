@@ -20,7 +20,7 @@ import grails.converters.*
 import javax.servlet.http.HttpSession
 
 import org.apache.commons.lang.StringUtils
-import org.codehaus.groovy.grails.web.json.*
+import org.codehaus.groovy.grails.web.json.JSONObject
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.openid4java.consumer.ConsumerManager
 import org.openid4java.consumer.VerificationResult
