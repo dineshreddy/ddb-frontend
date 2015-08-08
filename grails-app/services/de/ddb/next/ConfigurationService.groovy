@@ -24,14 +24,6 @@ import de.ddb.common.CommonConfigurationService
  * @author hla
  */
 class ConfigurationService extends CommonConfigurationService {
-    String getApiKeyDocUrl() {
-        return getConfigValue("ddb.apikey.doc.url")
-    }
-
-    String getApiKeyTermsUrl() {
-        return getConfigValue("ddb.apikey.terms.url")
-    }
-
     String getCmsUrl() {
         return getConfigValue("ddb.cms.url")
     }
@@ -76,18 +68,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.socialIcons.url.twitter")
     }
 
-    String getShibbolethLoginUrl() {
-        return getConfigValue("ddb.shibboleth.login.url")
-    }
-
-    String getShibbolethLogoutUrl() {
-        return getConfigValue("ddb.shibboleth.logout.url")
-    }
-
-    Map getShibbolethAttributes() {
-        return getConfigValue("ddb.shibboleth.attributes", Map)
-    }
-
     boolean isCulturegraphFeaturesEnabled() {
         return getBooleanConfigValue("ddb.culturegraph.features.enabled")
     }
@@ -113,8 +93,6 @@ class ConfigurationService extends CommonConfigurationService {
         super.logConfigurationSettings()
 
         log.info "------------- ddb-next.properties ---------------------"
-        log.info "ddb.apikey.doc.url = " + getApiKeyDocUrl()
-        log.info "ddb.apikey.terms.url = " + getApiKeyTermsUrl()
         log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.domain.canonic = " + getDomainCanonic()
@@ -131,9 +109,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
         log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
         log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
-        log.info "ddb.shibboleth.login.url = " + getShibbolethLoginUrl()
-        log.info "ddb.shibboleth.logout.url = " + getShibbolethLogoutUrl()
-        log.info "ddb.shibboleth.attributes = " + getShibbolethAttributes()
 
         log.info "-------------------------------------------------------"
     }
