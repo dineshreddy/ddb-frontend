@@ -67,7 +67,7 @@ class DdbItemService {
 
         if (model.license?.img) {
             model.licenseImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                    configurationService.getContextPath() + model.license.img))
+                    grailsLinkGenerator.resource("plugin": "ddb-common", "file": model.license.img)))
         }
 
         //FONT for PDF
