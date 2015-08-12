@@ -67,7 +67,7 @@ limitations under the License.
 
             <%-- menu items from CMS --%>
             <g:each var="menuItem" in="${menu.headerMenu}">
-              <g:set var="isActive" value="${ddb.isMappingActive(context:params, testmenu:menuItem)}"/>
+              <g:set var="isActive" value="${ddbcommon.isMappingActive(context:params, testmenu:menuItem)}"/>
               <li class="highlight${isActive ? " active" : ""}">
                 <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
                 <g:if test="${menuItem.subMenuItems}">
@@ -76,7 +76,7 @@ limitations under the License.
                   </div>
                   <ul class="nav">
                     <g:each var="subMenuItem" in="${menuItem.subMenuItems}">
-                      <g:set var="isActive" value="${ddb.isMappingActive(context:params, testmenu:subMenuItem)}"/>
+                      <g:set var="isActive" value="${ddbcommon.isMappingActive(context:params, testmenu:subMenuItem)}"/>
                       <li class="${isActive ? "active" : ""}">
                         <g:link uri="${subMenuItem.uri}">${subMenuItem.label[ddb.getCurrentLocale()]}</g:link>
                       </li>
@@ -90,17 +90,17 @@ limitations under the License.
               <li>
                 <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
                 <ul class="nav">
-                  <g:set var="isActive" value="${ddb.isMappingActive(
+                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
                       context:params, testif:[[controller: "favoritesview", action: "favorites"]])}"/>
                   <li class="${isActive ? "active" : ""}">
                     <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.Favorites" /></g:link>
                   </li>
-                  <g:set var="isActive" value="${ddb.isMappingActive(
+                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
                       context:params, testif:[[controller: "user", action: "getSavedSearches"]])}"/>
                   <li class="${isActive ? "active" : ""}">
                     <g:link controller="user" action="getSavedSearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                   </li>
-                  <g:set var="isActive" value="${ddb.isMappingActive(
+                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
                       context:params, testif:[[controller: "user", action: "profile"],
                                               [controller: "user", action: "confirmationPage"],
                                               [controller: "user", action: "passwordChangePage"],
@@ -168,7 +168,7 @@ limitations under the License.
               <ul class="navigation inline">
                 <%-- menu items from CMS --%>
                 <g:each var="menuItem" in="${menu.headerMenu}">
-                  <g:set var="isActive" value="${ddb.isMappingActive(
+                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
                       context:params, testmenu:menuItem, testsubmenu:true)}"/>
                   <li class="${menuItem.subMenuItems ? "keep-in-front" : ""} ${isActive ? "active-default" : ""}">
                     <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
@@ -178,7 +178,7 @@ limitations under the License.
                       </div>
                       <ul>
                         <g:each var="subMenuItem" in="${menuItem.subMenuItems}">
-                          <g:set var="isActive" value="${ddb.isMappingActive(
+                          <g:set var="isActive" value="${ddbcommon.isMappingActive(
                               context:params, testmenu:subMenuItem, testsubmenu:true)}"/>
                           <li class="${isActive ? "active-default" : ""}">
                             <g:link uri="${subMenuItem.uri}">${subMenuItem.label[ddb.getCurrentLocale()]}</g:link>
@@ -190,7 +190,7 @@ limitations under the License.
                 </g:each>
                 <%-- static menu items --%>
                 <ddbcommon:isLoggedIn>
-                  <g:set var="isActive" value="${ddb.isMappingActive(
+                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
                       context:params, testif:[[controller: "favoritesview", action: "favorites"],
                                               [controller: "user",          action: "getSavedSearches"],
                                               [controller: "user",          action: "profile"],
@@ -203,17 +203,17 @@ limitations under the License.
                       <div class="arrow-up"></div>
                     </div>
                     <ul>
-                      <g:set var="isActive" value="${ddb.isMappingActive(
+                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
                           context:params, testif:[[controller: "favoritesview", action: "favorites"]])}"/>
                       <li class="${isActive ? "active-default" : ""}">
                         <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.Favorites" /></g:link>
                       </li>
-                      <g:set var="isActive" value="${ddb.isMappingActive(
+                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
                           context:params, testif:[[controller: "user", action: "getSavedSearches"]])}"/>
                       <li class="${isActive ? "active-default" : ""}">
                         <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
                       </li>
-                      <g:set var="isActive" value="${ddb.isMappingActive(
+                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
                           context:params, testif:[[controller: "user", action: "profile"],
                                                   [controller: "user", action: "confirmationPage"],
                                                   [controller: "user", action: "passwordChangePage"],
