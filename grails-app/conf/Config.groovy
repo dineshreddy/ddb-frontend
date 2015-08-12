@@ -175,6 +175,7 @@ ddb.default.staticPage="news"
 ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
+ddb.user.login.url="/user/favorites"
 ddb.footerMenu="${userHome}/.grails/${appName}-footer-menu.json".toString()
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur/"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur/"
