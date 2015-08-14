@@ -65,7 +65,7 @@ limitations under the License.
       </div>
       <div class="time-restriction">
         <g:message encodeAs="html" code="ddbcommon.facet_time_restrict_to"/>
-        <ddbcommon:renderInfoTooltip messageCode="ddbnext.Time_Restriction_Tooltip" infoId="search-filters" infoDir="help" hasArrow="true"/>
+        <ddbcommon:renderInfoTooltip messageCode="ddbcommon.Time_Restriction_Tooltip" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <div>
         <input type="radio" name="limitation" id="limitation-fuzzy" value="fuzzy" /> <label for="limitation-fuzzy"><g:message encodeAs="html" code="ddbcommon.facet_time_fuzzy"/></label>
