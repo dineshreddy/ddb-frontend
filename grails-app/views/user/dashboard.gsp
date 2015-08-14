@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<%@page import="de.ddb.common.constants.Type"%>
 <html>
   <head>
     <ddbcommon:doRedirectIfNotLoggedIn/>
@@ -24,7 +25,23 @@ limitations under the License.
     <h1><g:message code="ddbnext.MyDDB"/></h1>
     <div class="row">
       <div class="span12">
-        <h3><g:message code="ddbnext.Subheading_Dashboard_Items"/></h3>
+        <h3><g:message code="ddbnext.Favorites"/></h3>
+        <div class="dashboard-favorites">
+          <g:if test="${favoritesNumber}">
+            <ddb:renderDashboardList results="${favorites}" viewType="grid" limit="${maxToDisplay}"/>
+            <g:if test="${favoritesNumber > maxToDisplay}">
+              <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_More_Items"/></div>
+            </g:if>
+          </g:if>
+          <g:else>
+            <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_No_Items"/></div>
+          </g:else>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="span12">
+        <h3><g:message code="ddbnext.Searches"/></h3>
         <div class="dashboard-saved-searches">
           <g:each in="${savedSearches}" var="savedSearch">
             <h3 class="dashboard-message">${savedSearch.name}</h3>
@@ -41,6 +58,7 @@ limitations under the License.
         </div>
       </div>
     </div>
+    <%-- 
     <div class="row">
       <div class="span12"><h3><g:message code="ddbnext.Subheading_Dashboard_Institutions"/></h3></div>
       <div class="span10 offset1">
@@ -49,5 +67,6 @@ limitations under the License.
         </div>
       </div>
     </div>
+    --%>
   </body>
 </html>
