@@ -137,16 +137,18 @@ $(function() {
     });
 
     $(".remove-watcher").click(function() {
-      var icon = $(this);
+      $("#unwatchSavedSearchModal .ok-button").attr("data-id", $(this).attr("id"));
+      $("#unwatchSavedSearchModal").modal("show");
+    });
 
-      $("#editSavedSearchId").val($(this).attr("id"));
-      $.ajax({
-        type : "POST",
-        url : jsContextPath + "/apis/savedsearches/_unwatch/" + $("#editSavedSearchId").val()
-      }).done(function() {
-        icon.toggleClass("off");
-        icon.siblings(".add-watcher").toggleClass("off");
-      });
+    $("#unwatchSavedSearchModal .ok-button").click(function() {
+      var id = $(this).attr("data-id");
+
+      if (id) {
+        unwatch(id);
+      }
+      $("#unwatchSavedSearchModal").modal("hide");
+      return false;
     });
 
     $(".edit-saved-search").click(function() {
@@ -194,4 +196,13 @@ function showError(errorHtml) {
     errorContainer.prepend(errorIcon);
 
     $('.favorites-results-content').prepend(errorContainer);
+}
+
+function unwatch(id) {
+  $.ajax({
+    type : "POST",
+    url : jsContextPath + "/apis/savedsearches/_unwatch/" + id
+  }).done(function() {
+    window.setTimeout('window.location.reload()', 500);
+  });
 }

@@ -191,7 +191,8 @@ limitations under the License.
     </div>
   </g:if>
 
-  <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">
+  <div id="deleteSavedSearchesModal" class="modal hide fade" tabindex="-1" role="dialog"
+       aria-labelledby="deleteSavedSearchesLabel" aria-hidden="true">
     <div class="modal-header">
       <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="deleteSavedSearchesLabel">
@@ -208,7 +209,8 @@ limitations under the License.
     </div>
   </div>
 
-  <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog" aria-labelledby="editSavedSearchLabel" aria-hidden="true">
+  <div id="editSavedSearchModal" class="modal hide fade savesearch" tabindex="-1" role="dialog"
+       aria-labelledby="editSavedSearchLabel" aria-hidden="true">
     <div class="modal-header" id="modal-header-savesearch">
       <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
       <h3 id="editSavedSearchLabel">
@@ -225,6 +227,26 @@ limitations under the License.
     </div>
     <div class="modal-footer-savesearch">
       <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
+    </div>
+  </div>
+
+  <!-- Confirm unwatch saved search dialog -->
+  <div id="unwatchSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog"
+       aria-labelledby="unwatchSavedSearchModalLabel" aria-hidden="true">
+    <div class="modal-header">
+      <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
+      <h3 id="deleteSavedSearchesLabel">
+        <g:message code="ddbcommon.delete_confirmation" />
+      </h3>
+    </div>
+    <div class="modal-body">
+      <span id="unwatchSavedSearchModalLabel">
+        <g:message code="ddbnext.Remove_From_Watchlist_Confirmation" />
+      </span>
+    </div>
+    <div class="modal-footer-savesearch">
+      <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
+      <button class="submit ok-button"><g:message code="ddbcommon.Yes" /></button>
     </div>
   </div>
 
