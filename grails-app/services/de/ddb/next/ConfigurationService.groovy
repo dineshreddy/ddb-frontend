@@ -88,6 +88,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getBooleanConfigValue("ddb.rights.facet.features.enabled")
     }
 
+    boolean isSearchSuggestionFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.search.suggestions.features.enabled")
+    }
+
     def logConfigurationSettings() {
         //Call Common Configuration
         super.logConfigurationSettings()
@@ -105,8 +109,9 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.entities.features.enabled = " + isEntitySearchFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.footerMenu = " + getFooterMenu()
-        log.info "ddb.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
+        log.info "ddb.search.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
+        log.info "ddb.search.suggestions.features.enabled = " + isSearchSuggestionFeaturesEnabled()
         log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
         log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
 

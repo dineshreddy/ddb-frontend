@@ -164,6 +164,7 @@ ddb.rights.facet.features.enabled=true
 ddb.search.entities.features.enabled=true
 ddb.search.fulltext.features.enabled=false
 ddb.search.institutions.features.enabled=true
+ddb.search.suggestions.features.enabled=false
 ddb.search.timeSort.features.enabled=false
 ddb.search.OnlyWithThumbnails.features.enabled=true
 ddb.user.registration.features.enabled=true
