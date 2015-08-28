@@ -60,8 +60,8 @@ class EntityController implements InitializingBean {
         }
 
         def entityId = params.id
-        def rows = params[SearchParamEnum.ROWS.getName()]?.toInteger()
-        def offset = params[SearchParamEnum.OFFSET.getName()]?.toInteger()
+        def rows = searchService.getNumber(params[SearchParamEnum.ROWS.getName()])
+        def offset = searchService.getNumber(params[SearchParamEnum.OFFSET.getName()])
 
         if(!rows) {
             rows = 4
@@ -255,15 +255,18 @@ class EntityController implements InitializingBean {
         fixLocalizedDateOfBirth(results)
 
         //Calculating results pagination (previous page, next page, first page, and last page)
-        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-        def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
-        def totalPagesFormatted = String.format(locale, "%,d", totalPages.toInteger())
+        int offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
+        int rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()])
+        if (rows == 0) {
+            rows = RESULTS_DESIRED_IN_ONE_PERSONS_PAGE
+        }
+        int page = offset.intdiv(rows) + 1
+        int totalPages = (int) Math.ceil(results.totalResults / rows)
+        def totalPagesFormatted = String.format(locale, "%,d", totalPages)
 
         //Calculating results details info (number of results in page, total results number)
-        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
-                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
-                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
-        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
+        def resultsOverallIndex = (offset + 1) + ' - ' + (offset + (rows > results.totalResults ? results.totalResults : offset + rows))
+        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters

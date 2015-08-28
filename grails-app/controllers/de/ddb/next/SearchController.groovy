@@ -91,7 +91,7 @@ class SearchController {
                 }
             }
 
-            if (resultsItems != null && resultsItems["numberOfResults"] != null && (Integer)resultsItems["numberOfResults"] > 0) {
+            if (resultsItems && resultsItems["numberOfResults"] && (Integer)resultsItems["numberOfResults"] > 0) {
                 //check for lastHit and firstHit
                 //firstHit
                 firstLastQuery[SearchParamEnum.ROWS.getName()] = 1
@@ -102,7 +102,7 @@ class SearchController {
                     apiResponse.throwException(request)
                 }
                 def firstHit = apiResponse.getResponse()
-                if (firstHit != null && firstHit["numberOfResults"] != null && (Integer)firstHit["numberOfResults"] > 0) {
+                if (firstHit && firstHit["numberOfResults"] && (Integer)firstHit["numberOfResults"] > 0) {
                     params[SearchParamEnum.FIRSTHIT.getName()] = firstHit["results"]["docs"][0].id
                 }
 
@@ -120,18 +120,18 @@ class SearchController {
             response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.CULTURAL_ITEM))
 
             //Calculating results details info (number of results in page, total results number)
-            def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
-                    ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
-                    urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>resultsItems.numberOfResults)? resultsItems.numberOfResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
-
+            def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
+                    searchService.DEFAULT_ROWS_PER_PAGE)
+            def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
+            def resultsOverallIndex = (offset + 1) + ' - ' +
+                    (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
-            def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-            def totalPages = (Math.ceil(resultsItems.numberOfResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+            def page = Math.floor(offset / rows) + 1
+            def totalPages = Math.ceil(resultsItems.numberOfResults / rows).toInteger()
             def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-            def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults.toInteger())
-
+            def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults)
             def queryString = request.getQueryString()
 
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
@@ -146,7 +146,7 @@ class SearchController {
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
                     totalPages: totalPages,
-                    totalPagesFormatted: String.format(locale, "%,d", totalPages.toInteger()),
+                    totalPagesFormatted: String.format(locale, "%,d", totalPages),
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                     numberOfResults: numberOfResultsFormatted,
                     offset: params[SearchParamEnum.OFFSET.getName()]
@@ -239,13 +239,15 @@ class SearchController {
         def correctedQuery = ""
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
-        def page = ((int)Math.floor(urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()/urlQuery[SearchParamEnum.ROWS.getName()].toInteger())+1).toString()
-        def totalPages = (Math.ceil(results.totalResults/urlQuery[SearchParamEnum.ROWS.getName()].toInteger()).toInteger())
+        def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
+                searchService.DEFAULT_ROWS_PER_PAGE)
+        def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
+        def page = (int)Math.floor(offset / rows) + 1
+        def totalPages = Math.ceil(results.totalResults / rows).toInteger()
         //Calculating results details info (number of results in page, total results number)
-        def resultsOverallIndex = (urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+1)+' - ' +
-                ((urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+
-                urlQuery[SearchParamEnum.ROWS.getName()].toInteger()>results.totalResults)? results.totalResults:urlQuery[SearchParamEnum.OFFSET.getName()].toInteger()+urlQuery[SearchParamEnum.ROWS.getName()].toInteger())
-        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults.toInteger())
+        def resultsOverallIndex = (offset + 1) +' - ' +
+                (offset + rows > results.totalResults ? results.totalResults : offset + rows)
+        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
@@ -276,7 +278,7 @@ class SearchController {
                 resultsOverallIndex:resultsOverallIndex,
                 page: page,
                 totalPages: totalPages,
-                totalPagesFormatted: String.format(locale, "%,d", totalPages.toInteger()),
+                totalPagesFormatted: String.format(locale, "%,d", totalPages),
                 paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                 numberOfResults: numberOfResultsFormatted,
                 offset: params[SearchParamEnum.OFFSET.getName()]
@@ -309,9 +311,7 @@ class SearchController {
 
 
     def informationItem(){
-        def newInformationItem = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
-        def jsonSubresp = new JsonSlurper().parseText(newInformationItem.toString())
-
+        def jsonSubresp = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
         def properties = [:]
 
         if(jsonSubresp.facet){
@@ -323,7 +323,6 @@ class SearchController {
                         addFacetItems(properties, facet, facetItem)
                     }
                 }
-
             }
         }
         render (contentType:"text/json"){properties}
