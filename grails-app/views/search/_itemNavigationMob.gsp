@@ -14,18 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <g:set var="prevId" value="${navData.results.results["docs"][0]?.id}" />
-<g:set var="nextId" value="nodisplay" />
+<g:set var="nextId" value="" />
 <g:if test="${navData.hitNumber == 1}">
   <g:set var="enableLeftPagination" value="${false}" />
 </g:if>
 <g:else>
   <g:set var="enableLeftPagination" value="${true}" />
-</g:else>
-<g:if test="${navData.hitNumber == navData.results["numberOfResults"] || navData.results["numberOfResults"] == 1}">
-  <g:set var="enableRightPagination" value="${false}" />
-</g:if>
-<g:else>
-  <g:set var="enableRightPagination" value="${true}" />
 </g:else>
 
 <g:if test="${navData.hitNumber == 1 && navData.results["numberOfResults"] > 1}">
@@ -34,9 +28,11 @@ limitations under the License.
 <g:elseif test="${navData.hitNumber == navData.results["numberOfResults"]}">
 <g:set var="nextId" value="${navData.results.results["docs"][0]?.id}" />
 </g:elseif>
-<g:else>
+<g:elseif test="${navData.results.results["docs"].size() > 2}">
 <g:set var="nextId" value="${navData.results.results["docs"][2]?.id}" />
-</g:else>
+</g:elseif>
+
+<g:set var="displayRightPagination" value="${!nextId.isEmpty()}" />
 
 <ul class="inline">
   <li>
