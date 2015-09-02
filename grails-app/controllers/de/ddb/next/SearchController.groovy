@@ -121,10 +121,10 @@ class SearchController {
 
             //Calculating results details info (number of results in page, total results number)
             def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-                    searchService.DEFAULT_ROWS_PER_PAGE)
+            searchService.DEFAULT_ROWS_PER_PAGE)
             def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
             def resultsOverallIndex = (offset + 1) + ' - ' +
-                    (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
+            (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
@@ -135,7 +135,7 @@ class SearchController {
             def queryString = request.getQueryString()
 
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             if(params.reqType=="ajax"){
                 def resultsHTML = ""
@@ -240,19 +240,20 @@ class SearchController {
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-                searchService.DEFAULT_ROWS_PER_PAGE)
+        searchService.DEFAULT_ROWS_PER_PAGE)
         def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
         def page = (int)Math.floor(offset / rows) + 1
         def totalPages = Math.ceil(results.totalResults / rows).toInteger()
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (offset + 1) +' - ' +
-                (offset + rows > results.totalResults ? results.totalResults : offset + rows)
+        (offset + rows > results.totalResults ? results.totalResults : offset + rows)
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
         response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.INSTITUTION))
 
+        def getQuery = request.forwardURI + (queryString ? '?' + queryString.replaceAll("&reqType=ajax","") : "")
         def model = [
             title: title,
             facets:[],
@@ -263,11 +264,10 @@ class SearchController {
             resultsOverallIndex: resultsOverallIndex,
             numberOfResults: numberOfResultsFormatted,
             page: page,
-            resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
-            paginationURL:searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
-            cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
-            clearFilters: clearFilters,
-
+            resultsPaginatorOptions: searchService.buildPaginatorOptions(urlQuery),
+            paginationURL: searchService.buildPagination(results.totalResults, urlQuery, getQuery),
+            cultureGraphUrl: ProjectConstants.CULTURE_GRAPH_URL,
+            clearFilters: clearFilters
         ]
         if(params.reqType=="ajax"){
             def resultsHTML = ""
@@ -279,15 +279,13 @@ class SearchController {
                 page: page,
                 totalPages: totalPages,
                 totalPagesFormatted: String.format(locale, "%,d", totalPages),
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, getQuery),
                 numberOfResults: numberOfResultsFormatted,
                 offset: params[SearchParamEnum.OFFSET.getName()]
             ]
             render (contentType:"text/json"){jsonReturn}
         }else {
-
             def mainFacetsUrl = searchService.buildMainFacetsUrl(params, urlQuery, request, nonJsFacetsList)
-
             def mainFacets = []
             FacetEnum.values().each {
                 if (it.isSearchFacet()) {
