@@ -14,16 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!-- TODO: rewrite the class controls, disable back to results -->
-<g:set var="prevId" value="${results.results["docs"][0]?.id}" />
-<g:if test="${hitNumber == 1 && results["numberOfResults"] > 1}">
-  <g:set var="nextId" value="${results.results["docs"][1]?.id}" />
+<g:if test="${results}">
+  <g:set var="prevId" value="${results.results["docs"][0]?.id}" />
+  <g:if test="${hitNumber == 1 && results["numberOfResults"] > 1}">
+    <g:set var="nextId" value="${results.results["docs"][1]?.id}" />
+  </g:if>
+  <g:elseif test="${hitNumber == results["numberOfResults"]}">
+    <g:set var="nextId" value="${results.results["docs"][0]?.id}" />
+  </g:elseif>
+  <g:elseif test="${results.results["docs"].size() > 2}">
+    <g:set var="nextId" value="${results.results["docs"][2]?.id}" />
+  </g:elseif>
 </g:if>
-<g:elseif test="${hitNumber == results["numberOfResults"]}">
-  <g:set var="nextId" value="${results.results["docs"][0]?.id}" />
-</g:elseif>
-<g:elseif test="${results.results["docs"].size() > 2}">
-  <g:set var="nextId" value="${results.results["docs"][2]?.id}" />
-</g:elseif>
 
 <div class="row item-detail">
   <div class="span12 object-controls bb">
