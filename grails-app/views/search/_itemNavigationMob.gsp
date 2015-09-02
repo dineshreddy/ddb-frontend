@@ -13,26 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="prevId" value="${navData.results.results["docs"][0]?.id}" />
-<g:set var="nextId" value="" />
-<g:if test="${navData.hitNumber == 1}">
-  <g:set var="enableLeftPagination" value="${false}" />
-</g:if>
-<g:else>
-  <g:set var="enableLeftPagination" value="${true}" />
-</g:else>
-
-<g:if test="${navData.hitNumber == 1 && navData.results["numberOfResults"] > 1}">
-<g:set var="nextId" value="${navData.results.results["docs"][1]?.id}" />
-</g:if>
-<g:elseif test="${navData.hitNumber == navData.results["numberOfResults"]}">
-<g:set var="nextId" value="${navData.results.results["docs"][0]?.id}" />
-</g:elseif>
-<g:elseif test="${navData.results.results["docs"].size() > 2}">
-<g:set var="nextId" value="${navData.results.results["docs"][2]?.id}" />
-</g:elseif>
-
-<g:set var="displayRightPagination" value="${!nextId.isEmpty()}" />
+<g:set var="enableLeftPagination" value="${hitNumber == 1}"/>
+<g:set var="displayRightPagination" value="${!nextId.isEmpty()}"/>
 
 <ul class="inline">
   <li>
@@ -47,7 +29,7 @@ limitations under the License.
   </li>
   <li class="next-item bl fr">
     <g:if test="${enableRightPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: navData.hitNumber + 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: hitNumber + 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>
@@ -55,7 +37,7 @@ limitations under the License.
   </li>
   <li class="prev-item bl fr">
     <g:if test="${enableLeftPagination}">
-      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: navData.hitNumber - 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></g:link>
+      <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: hitNumber - 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></g:link>
     </g:if>
     <g:else>
       <div class="disabled-arrow"></div>

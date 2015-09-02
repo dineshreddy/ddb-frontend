@@ -14,11 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <!-- TODO: rewrite the class controls, disable back to results -->
+<g:set var="prevId" value="${results.results["docs"][0]?.id}" />
+<g:if test="${hitNumber == 1 && results["numberOfResults"] > 1}">
+  <g:set var="nextId" value="${results.results["docs"][1]?.id}" />
+</g:if>
+<g:elseif test="${hitNumber == results["numberOfResults"]}">
+  <g:set var="nextId" value="${results.results["docs"][0]?.id}" />
+</g:elseif>
+<g:elseif test="${results.results["docs"].size() > 2}">
+  <g:set var="nextId" value="${results.results["docs"][2]?.id}" />
+</g:elseif>
+
 <div class="row item-detail">
   <div class="span12 object-controls bb">
     <!-- buttons -->
     <div class="span6 item-nav-left page-nav">
-      <g:if test="${searchResultUri != null}">
+      <g:if test="${searchResultUri}">
           <a class="back-to-list" href="${searchResultUri}" title="<g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Title" />">
               <span><g:message encodeAs="html" code="ddbnext.CulturalItem_ReturnToSearchResults_Label" /></span>
           </a>
@@ -28,12 +39,12 @@ limitations under the License.
       </g:else>
     </div>
     <!-- search results navigation -->
-    <g:if test="${hitNumber != null && results != null && firstHit != null && lastHit != null}">
+    <g:if test="${prevId && nextId && firstHit && lastHit && hitNumber && results}">
       <div class="span6 item-nav page-nav fr">
-        <ddb:renderItemDetailInfoNav navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results]}" />
+        <g:render template="/search/itemNavigation"/>
       </div>
       <div class="span6 item-nav-mob fr bb">
-        <ddb:renderItemDetailInfoNavMob navData="${[firstHit: firstHit, lastHit: lastHit, hitNumber: hitNumber, results: results, searchResultUri: searchResultUri]}" />
+        <g:render template="/search/itemNavigationMob"/>
       </div> 
     </g:if>
     <g:else>
