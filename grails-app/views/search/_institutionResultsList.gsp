@@ -13,7 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@page import="de.ddb.common.constants.Type"%>
+<%@ page import="de.ddb.common.constants.Type" %>
+<%@ page import="de.ddb.common.JsonUtil" %>
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
   <g:each in="${results.docs}" var="institutionItem">
@@ -38,11 +39,11 @@ limitations under the License.
         <div class="thumbnail-wrapper span3">
           <div class="thumbnail" id="thumbnail-${institutionItem.id}">
             <g:link class="persist" controller="institution" action="showInstitutionsTreeByItemId" params="${params + [id:institutionId]}">
-              <g:if test="${institutionItem.preview.thumbnail!="null"}">
-                <img src="${request.getContextPath() + institutionItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${institutionItem.preview.title}</ddb:getWithoutTags>"/>
+              <g:if test="${JsonUtil.isAnyNull(institutionItem.preview.thumbnail)}">
+                <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
               </g:if>
               <g:else>
-                <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
+                <img src="${request.getContextPath() + institutionItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${institutionItem.preview.title}</ddb:getWithoutTags>"/>
               </g:else>
             </g:link>
           </div>
