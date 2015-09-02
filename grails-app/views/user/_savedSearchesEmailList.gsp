@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.Type"%>
 <div style="margin-top: 20px; margin-bottom: 20px">
-  <g:message encodeAs="html" code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[user.getFirstnameAndLastnameOrNickname()]}" />
+  <g:message encodeAs="html" code="ddbnext.Send_Savedsearches_Email_Body_Pre" args="${[userName]}" />
   <br />
 </div>
 <table border="1" style="width: 100%; margin-bottom: 20px; border-spacing: 0">
