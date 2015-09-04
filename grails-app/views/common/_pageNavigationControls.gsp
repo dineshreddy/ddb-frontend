@@ -15,6 +15,7 @@ limitations under the License.
 --%>
 
 <%@page import="de.ddb.common.constants.Type"%>
+<g:set var="config" bean="configurationService"/>
 <g:if test="${navData.paginationURL.firstPg == null}">
   <g:set var="displayLeftPagination" value="off"></g:set>
   <g:set var="enableLeftPagination" value="${false}"></g:set>
@@ -78,8 +79,12 @@ limitations under the License.
     <div>
       <select class="type-selection">
         <option value="${createLink(controller: 'search', action: 'results')}" <g:if test="${navData.tabulatorActive==Type.CULTURAL_ITEM.getName()}">selected</g:if>><g:message code="ddbnext.Entity_Objects" /></option>
-        <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>><g:message code="ddbnext.entity.tabulator.persons" /></option>
-        <option value="${createLink(controller: 'search', action: 'institution')}" <g:if test="${navData.tabulatorActive==Type.INSTITUTION.getName()}">selected</g:if>><g:message code="ddbnext.Institutions" /></option>
+        <g:if test="${config.isEntitySearchFeaturesEnabled()}">
+          <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>><g:message code="ddbnext.entity.tabulator.persons" /></option>
+        </g:if>
+        <g:if test="${config.isInstitutionSearchFeaturesEnabled()}">
+          <option value="${createLink(controller: 'search', action: 'institution')}" <g:if test="${navData.tabulatorActive==Type.INSTITUTION.getName()}">selected</g:if>><g:message code="ddbnext.Institutions" /></option>
+        </g:if>
       </select>
     </div>
   </g:if>
