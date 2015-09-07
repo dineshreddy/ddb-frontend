@@ -26,6 +26,13 @@ import de.ddb.common.JsonUtil
 import de.ddb.common.ApiResponse.HttpStatus
 
 class ApisController {
+    private static final int MAX_AGE = 1 * 24 * 60 * 60 // 1 day
+    private static final SimpleDateFormat RFC822DATEFORMAT =
+    new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH)
+
+    static {
+        RFC822DATEFORMAT.setTimeZone(TimeZone.getTimeZone("GMT"))
+    }
 
     def apisService
     def configurationService
@@ -124,9 +131,6 @@ class ApisController {
     }
 
     def clusteredInstitutionsmap(){
-
-        int cacheValidInDays = 1
-
         boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
 
         // parse selected sector information from request
@@ -149,12 +153,9 @@ class ApisController {
                 institutionService.getClusteredInstitutions(institutions, sectors, onlyInstitutionsWithData)
 
         // set cache headers for caching the ajax request
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz")
-        Calendar expiresDate = Calendar.getInstance()
-        response.addHeader("Last-Modified", dateFormatter.format(expiresDate.getTime()))
-        expiresDate.add(Calendar.DAY_OF_MONTH, cacheValidInDays)
-        response.addHeader("Expires", dateFormatter.format(expiresDate.getTime()))
-        response.addHeader("Cache-Control", "max-age="+(cacheValidInDays*24*60*60))
+        response.addHeader("Last-Modified", getRfc2822Date())
+        response.addHeader("Expires", getRfc2822Date(MAX_AGE))
+        response.addHeader("Cache-Control", "max-age=" + MAX_AGE)
         response.addHeader("Pragma", "cache")
 
 
@@ -201,10 +202,8 @@ class ApisController {
 
         if (apiResponse.isOk()) {
             def responseObject = apiResponse.getResponse()
-            def cacheExpiryInDays = 1
-
-            response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-            response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+            response.setHeader("Cache-Control", "max-age=" + MAX_AGE)
+            response.setHeader("Expires", getRfc2822Date(MAX_AGE))
             response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
             response.setContentType(responseObject.get("Content-Type"))
             response.setContentLength(responseObject.get("Content-Length").toInteger())
@@ -222,27 +221,25 @@ class ApisController {
         }
 
         def responseObject = apiResponse.getResponse()
-
-        def cacheExpiryInDays = 1
-        response.setHeader("Cache-Control", "max-age="+cacheExpiryInDays * 24 * 60 *60)
-        response.setHeader("Expires", formatDateForExpiresHeader(cacheExpiryInDays).toString())
+        response.setHeader("Cache-Control", "max-age=" + MAX_AGE)
+        response.setHeader("Expires", getRfc2822Date(MAX_AGE))
         response.setHeader("Content-Disposition", "inline; filename=" + ('/static/' + getFileNamePath()).tokenize('/')[-1])
         response.setContentType(responseObject.get("Content-Type"))
         response.setContentLength(responseObject.get("Content-Length").toInteger())
     }
     /**
-     *  Format RFC 2822 date
-     *  @parameters daysfromtoday, how many days from today do you want the date to be shifted
-     *  @return date
+     * Format RFC 2822 date
+     *
+     * @param seconds seconds to be added to current date
+     *
+     * @return RFC 2822 formatted date string
      */
-    private def formatDateForExpiresHeader(daysfromtoday=4){
-        def tomorrow= new Date()+daysfromtoday
-        String pattern = "EEE, dd MMM yyyy HH:mm:ss Z"
-        SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.US)
-        String tomorrowString = String.format(Locale.US, '%ta, %<te %<tb %<tY %<tT CET', tomorrow)
-        Date date = format.parse(tomorrowString)
-        return date
+    private String getRfc2822Date(int seconds = 0) {
+        Calendar date = Calendar.getInstance()
+        date.add(Calendar.SECOND, seconds)
+        return RFC822DATEFORMAT.format(date.getTime())
     }
+
     private def getFileNamePath() {
         return cleanHtml(params.filename, 'none')
     }
