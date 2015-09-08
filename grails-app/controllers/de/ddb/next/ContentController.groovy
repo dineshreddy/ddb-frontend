@@ -17,8 +17,8 @@ package de.ddb.next
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.ContentService.RedirectException
 import de.ddb.common.exception.ItemNotFoundException
-import de.ddb.next.ContentService.RedirectException
 
 class ContentController {
     static defaultAction = "staticcontent"
@@ -74,7 +74,7 @@ class ContentController {
                 return
             }
 
-            def map = contentService.retrieveArguments(response)
+            def map = contentService.retrieveArguments(response, true)
 
             // Needed for the canonicalURL
             map << ["location": location, domainCanonic:configurationService.getDomainCanonic()]
