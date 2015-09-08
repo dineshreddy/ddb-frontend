@@ -46,22 +46,7 @@ limitations under the License.
                 </g:link>
               </g:else>
             </div>
-            <div class="item-options bl-green">
-              <ul class="item-options-ul">
-                <li>
-                  <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb-green">
-                    <div class="hovercard-info-item" data-iid="${it.id}">
-                      <h4><ddbcommon:getTruncatedHovercardTitle title="${ it.preview.title }" length="${ 350 }" /></h4>
-                      <ul class="unstyled">
-                        <li>
-                          <div class="small-loader"></div>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-              </ul>
-            </div>
+            <div class="item-options br-green"></div>
           </div>
           <div class="summary-main-wrapper">
             <div class="summary-main">
