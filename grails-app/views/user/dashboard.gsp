@@ -68,5 +68,8 @@ limitations under the License.
       </div>
     </div>
     --%>
+    <div class="row">
+      ${raw(newsPage)}
+    </div>
   </body>
 </html>
