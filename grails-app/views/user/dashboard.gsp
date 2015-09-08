@@ -24,7 +24,7 @@ limitations under the License.
   <body>
     <h1><g:message code="ddbnext.MyDDB"/></h1>
     <div class="row">
-      <div class="span12">
+      <div class="span12 bb-green">
         <h3><g:message code="ddbnext.Favorites"/></h3>
         <div class="dashboard-favorites">
           <g:if test="${favoritesNumber}">
@@ -39,22 +39,51 @@ limitations under the License.
         </div>
       </div>
     </div>
-    <div class="row">
+    <div class="row mt-l">
       <div class="span12">
         <h3><g:message code="ddbnext.Searches"/></h3>
         <div class="dashboard-saved-searches">
-          <g:each in="${savedSearches}" var="savedSearch">
-            <h3 class="dashboard-message">${savedSearch.name}</h3>
-            <g:if test="${savedSearch.numberOfItems}">
-              <ddb:renderDashboardList results="${savedSearch.items}" viewType="grid"/>
-              <g:if test="${savedSearch.numberOfItems > savedSearch.items.size()}">
-                <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_More_Items"/></div>
-              </g:if>
-            </g:if>
-            <g:else>
-              <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_No_Items"/></div>
-            </g:else>
-          </g:each>
+          <ul class="results-list unstyled" id="slaves">
+            <g:each var="search" in="${savedSearches}" status="i">
+              <li class="item bt-green">
+                <div class="summary row">
+                  <div class="summary-main-wrapper span12">
+                    <div class="summary-main">
+                      <h2 class="saved-search-title">
+                        <a class="persist"
+                          <g:if test="${search.type == null || search.type == Type.CULTURAL_ITEM}">
+                            href="${request.contextPath + '/searchresults?' + search.queryString}"
+                          </g:if>
+                          <g:elseif test="${search.type == Type.ENTITY}">
+                            href="${request.contextPath + '/entity/search/person?' + search.queryString}"
+                          </g:elseif>
+                          <g:elseif test="${search.type == Type.INSTITUTION}">
+                            href="${request.contextPath + '/searchresults/institution?' + search.queryString}"
+                          </g:elseif>
+                          title="${ddbcommon.getTruncatedHovercardTitle(title: search.label, length: 350)}">
+                          <ddbcommon:getTruncatedItemTitle title="${search.label}" length="${100}" />
+                        </a>
+                      </h2>
+                      <div class="subtitle">
+                        <g:render template="savedSearchEntry"
+                          model="['search':search]" />
+                      </div>
+                      <div class="subtitle">
+                        <g:message code="ddbnext.Dashboard.Saved_search_message" args="${[savedSearchesNewItems[i].numberOfItems, search.creationDate]}"/>
+                      </div>
+                      <g:if test="${savedSearchesNewItems[i].numberOfItems}">
+                        <ddb:renderDashboardList results="${savedSearchesNewItems[i].items}" viewType="grid"/>
+                        <g:if test="${savedSearchesNewItems[i].numberOfItems > savedSearchesNewItems[i].items.size()}">
+                          <div class="dashboard-message"><g:message code="ddbnext.Subheading_Dashboard_More_Items"/></div>
+                        </g:if>
+                      </g:if>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            </g:each>
+          </ul>
+
         </div>
       </div>
     </div>
