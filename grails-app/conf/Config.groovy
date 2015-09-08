@@ -368,3 +368,9 @@ grails.cache.config = {
 
 grails.plugin.springsecurity.rejectIfNoRule = false
 grails.plugin.springsecurity.fii.rejectPublicInvocations = false
+
+/* Delete Warn on startup
+ * "org.grails.plugin.resource.module.ModuleDeclarationsFactory: 'grails.resources.modules' in config does not define any modules
+ */
+grails.resources.modules = {
+}
