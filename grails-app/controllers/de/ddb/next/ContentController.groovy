@@ -34,7 +34,7 @@ class ContentController {
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
 
             try {
-                contentService.checkIfRedirectNeeded(location, locale)
+                contentService.checkIfRedirectNeeded(params.controller, location, locale)
             } catch (RedirectException e) {
                 redirect uri: e.uri
                 return
