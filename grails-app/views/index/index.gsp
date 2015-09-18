@@ -15,6 +15,8 @@ limitations under the License.
 --%>
 <%@page import="org.springframework.web.servlet.support.RequestContextUtils"%>
 
+<g:set var="config" bean="configurationService"/>
+
 <html>
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Homepage"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
@@ -34,18 +36,6 @@ limitations under the License.
       <div class="row">
         <div class="span12">
           <g:form method="get" role="search" id="form-search" url="[controller:'search', action:'results']">
-            <label> 
-              <span><g:message encodeAs="html" code="ddbnext.Search_text_field"/></span>
-            </label>
-            <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" />
-            <button type="submit">
-              <!--[if !IE]><!-->
-                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
-              <!--<![endif]-->
-              <!--[if gt IE 8]>
-                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
-              <![endif]-->
-            </button>
             <div class="link-stats">
               <g:link class="fl" controller="content" action="faq" fragment="189"
                       title="${g.message(code: "ddbnext.Homepage_Statistics_Whats_Offered")}">
@@ -55,8 +45,27 @@ limitations under the License.
                            code="ddbnext.Homepage_Statistics_With_Digitized_Media"/>
               </g:link>
             </div>
-            <div class="link-adv-search">
-              <g:link class="fr" controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></g:link>
+            <label id="search-label">
+              <span><g:message encodeAs="html" code="ddbnext.Search_text_field"/></span>
+            </label>
+            <input type="hidden" name="isThumbnailFiltered" value="${config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
+            <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" />
+            <button type="submit">
+              <!--[if !IE]><!-->
+                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
+              <!--<![endif]-->
+              <!--[if gt IE 8]>
+                <g:message encodeAs="html" code="ddbnext.Go_Button"/>
+              <![endif]-->
+            </button>
+            <div class="fl thumbnail-filter-container">
+              <label title="${g.message(code: "ddbnext.Show_items_with_thumbnails")}">
+                <input type="checkbox" ${config.isOnlyWithThumbnailsFeaturesEnabled() ? "checked" : ""}>
+                <g:message code="ddbnext.Show_items_with_thumbnails"/>
+              </label>
+            </div>
+            <div class="link-adv-search fr">
+              <g:link controller="advancedsearch"><g:message encodeAs="html" code="ddbnext.AdvancedSearch"/></g:link>
             </div>
           </g:form>
         </div>

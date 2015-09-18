@@ -70,7 +70,7 @@ $.addParamToCurrentUrl = function(arrayParamVal, urlString) {
 };
 
 /**
- * This function will give you back the current url (if no urlParameters is setted) plus the new parameters added
+ * This function will give you back the current url (if no urlParameters are set) plus the new parameters added
  * The methods checks for the global attribute historySupport.
  *
  * IMPORTANT: remember to pass your arrayParamVal already URL decoded
@@ -159,6 +159,11 @@ $.updateLanguageSwitch = function(params) {
   });
 };
 
+// Checkbox "Only results with digitised media"
+$("#form-search .thumbnail-filter-container input").click(function() {
+  $("input[name=isThumbnailFiltered]").val($(this).is(":checked"));
+});
+
 /**
  * Toggle the element specified in the attribute data-toggle
  */
@@ -170,16 +175,10 @@ $.toggleElement = function() {
   });
 };
 
-$(document)
-    .ready(
-        function() {
-
-          // Open all external links in a new window
-          $(
-              'a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href*="deutsche-digitale-bibliothek.de"])')
-              .attr('target', '_blank');
-
-        });
+$(document).ready(function() {
+  // Open all external links in a new window
+  $('a[href^="http"]:not([href^="http://localhost"],[href^="http://dev.escidoc.org"],[href*="deutsche-digitale-bibliothek.de"])').attr('target', '_blank');
+});
 
 $(window).on('load', function () {
   $('#cookie-notice').each(function () {

@@ -84,6 +84,10 @@ class ConfigurationService extends CommonConfigurationService {
         return getBooleanConfigValue("ddb.search.institutions.features.enabled")
     }
 
+    boolean isOnlyWithThumbnailsFeaturesEnabled() {
+        return getBooleanConfigValue("ddb.search.OnlyWithThumbnails.features.enabled")
+    }
+
     boolean isRightsFacetFeaturesEnabled() {
         return getBooleanConfigValue("ddb.rights.facet.features.enabled")
     }
@@ -111,6 +115,7 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.footerMenu = " + getFooterMenu()
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
         log.info "ddb.search.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
+        log.info "ddb.search.OnlyWithThumbnails.features.enabled = " + isOnlyWithThumbnailsFeaturesEnabled()
         log.info "ddb.search.suggestions.features.enabled = " + isSearchSuggestionFeaturesEnabled()
         log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
         log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
