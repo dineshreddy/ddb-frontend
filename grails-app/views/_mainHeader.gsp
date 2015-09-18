@@ -127,12 +127,19 @@ limitations under the License.
               </li>
             </ul>
           </li>
-          <li class="highlight">
+          <g:set var="isActive" value="${ddbcommon.isMappingActive(context:params,
+                                         testif:[[controller: "user", action: "index"]])}"/>
+          <li class="${isActive ? "active" : ""}">
             <ddbcommon:isNotLoggedIn>
-              <g:link class="login-link login-link-referrer" controller="user" params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}"> ${message(code: 'ddbcommon.Login_Button').toUpperCase()}</g:link>
+              <g:link class="login-link login-link-referrer" controller="user"
+                      params="${[referrer:grailsApplication.mainContext.getBean('de.ddb.common.GetCurrentUrlTagLib').getCurrentUrl()]}">
+                ${message(code: 'ddbcommon.Login_Button').toUpperCase()}
+            </g:link>
             </ddbcommon:isNotLoggedIn>
             <ddbcommon:isLoggedIn>
-              <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /> (<ddbcommon:getUserName />)</g:link>
+              <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" />
+                (<ddbcommon:getUserName />)
+              </g:link>
             </ddbcommon:isLoggedIn>
           </li>
         </ul>
