@@ -64,7 +64,7 @@ limitations under the License.
               </h2>
               <div class="subtitle">
                 <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                  <ddbcommon:stripTags text="${it.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong"/>
+                  <ddbcommon:stripTags text="${it.preview.subtitle.toString().replaceAll('match', 'strong')}" allowedTags="strong"/>
                 </g:if>
               </div>
               <ul class="matches unstyled">
