@@ -62,7 +62,7 @@ class ListsController {
         if (params.id) {
             id = params.id
         }
-        model.selectedListId =id
+        model.selectedList = model.lists.find {it.folderListId == id }
         folders = getFoldersOfList(id, offset, rows)
 
         model.folders = folders.folders  as JSON
