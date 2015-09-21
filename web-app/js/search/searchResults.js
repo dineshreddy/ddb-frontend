@@ -183,8 +183,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
 
   $(window).trigger("searchChange");
 
-  $('#form-search-header button').click(
-      function() {
+  $('#form-search-header button').click(function() {
         var searchParameters = de.ddb.common.search.readCookie("searchParameters" + jsContextPath);
         if (searchParameters != null && searchParameters.length > 0) {
           searchParameters = searchParameters.substring(1, searchParameters.length - 1);
@@ -415,6 +414,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
         de.ddb.common.search.setSearchCookieParameter(paramsArray);
         historyedited = true;
       });
+
   $('#keep-filters').click(function() {
     var valueCheck = $(this);
     var paramsArray = [['keepFilters', 'false']];
@@ -607,3 +607,9 @@ de.ddb.next.search.searchResultsInitializer = function() {
     return result;
   }
 };
+
+$(window).on('load', function () {
+  if (de.ddb.common.search.getFacetValuesFromUrl()) {
+    $('.keep-filters').removeClass('off');
+  }
+});

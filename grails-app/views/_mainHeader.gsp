@@ -296,13 +296,17 @@ limitations under the License.
                       <![endif]-->
                 </button>
                 <div class="search-small-bottom">
-                  <g:set var="keepFiltersChecked"
-                         value="${ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.KEEPFILTERS.getName())}"/>
-                  <div class="keep-filters off">
-                    <label class="checkbox"> 
-                      <input id="keep-filters" type="checkbox" name="keepFilters"
-                             <g:if test="${keepFiltersChecked == "true"}">checked="checked"</g:if> />
-                      <g:message encodeAs="html" code="ddbnext.Keep_filters"/>
+                  <div class="thumbnail-filter-container">
+                    <label title="${g.message(code: "ddbnext.Show_items_with_thumbnails")}">
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+                                 isThumbnailFiltered :
+                                 ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.IS_THUMBNAILS_FILTERED.name)}"/>
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+                                 isThumbnailFiltered.toBoolean() : config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
+                      <input id="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
+                      <input type="hidden" name="${SearchParamEnum.IS_THUMBNAILS_FILTERED.name}"
+                             value="${isThumbnailFiltered}"/>
+                      <g:message code="ddbnext.Show_items_with_thumbnails"/>
                     </label>
                   </div>
                   <g:link class="link-adv-search"

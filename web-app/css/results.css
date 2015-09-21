@@ -216,15 +216,13 @@
 }
 
 .clear-filters {
-  background: url("../images/icons/searchActions.png") no-repeat right -39px;
+  background: url("../images/icons/searchActions.png") no-repeat 6px -40px;
   margin-bottom: 12px;
-  text-align: right;
-  font-weight: bold;
 }
 
-.clear-filters a{
+.clear-filters a {
   display: block;
-  padding-right: 20px;
+  padding-left: 28px;
 }
 
 .results-paginator-view {
@@ -764,13 +762,13 @@ input[type="checkbox"],input[type="radio"] {
   width: 100%;
 }
 
+.keep-filters input {
+  margin: 3px 0 6px 10px;
+}
+
 .compare-header .tooltip {
   left: 46%;
   margin: 10px;
-}
-
-#thumbnail-filter {
-  margin: 3px 0 6px 10px;
 }
 
 /*Facets flyout*/

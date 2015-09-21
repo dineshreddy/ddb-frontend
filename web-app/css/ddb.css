@@ -521,43 +521,35 @@ header .header-spacer,.header .header-spacer {
   margin-right: 3px;
 }
 
+.search-header .thumbnail-filter-container {
+  float: left;
+  margin-left: 3px;
+}
+
+.search-header .thumbnail-filter-container input {
+  float: none;
+  margin-top: -1px !important;
+}
+
+.search-header .thumbnail-filter-container label {
+  height: 23px;
+  margin-right: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: auto!important;
+}
+
+.thumbnail-filter-container label:hover {
+  text-decoration: underline;
+  color: #a5003b;
+}
+
 #form-search-header .link-adv-search {
   display: inline-block;
   float: right;
   text-align: left;
   height:23px;
-}
-
-.keep-filters label{
-  font-size: 1em;
-}
-
-.keep-filters {
-  float: left;
-  margin-top: 3px;
-  margin-left: 3px;
-}
-
-.keep-filters .checkbox {
-  display: block;
-}
-
-.keep-filters .checkbox:hover {
-  text-decoration: underline;
-  color: #a5003b;
-}
-
-.keep-filters .checkbox input {
-  float: none;
-  margin-top: -3px;
-}
-
-.keep-filters label{
-  width: auto!important;
-}
-
-.header .link-adv-search {
-  margin-left: 40px !important;
 }
 
 .search-header {
@@ -798,19 +790,18 @@ header .language-widget form,.header .language-widget form {
 /*@media * { -moz-box-sizing: border-box; -webkit-box-sizing: border-box; box-sizing: border-box; }*/
 
 @media (max-width: 979px) {
-  .search-header form input {
-    width: 180px!important;
+  #search-small {
+    width: 180px !important;
   }
-  .search-header .keep-filters input{
-    width: auto!important;
+
+  .search-header .thumbnail-filter-container {
+    width: 180px !important;
   }
-  .search-header .keep-filters {
-    margin-top:1px;
-    border-right: 1px solid #efebe8;
-    padding-right: 5px;
-    margin-right: 5px;
+
+  .search-header .thumbnail-filter-container label {
+    width: 150px !important;
   }
-  
+
   .search-small-bottom{
     margin-top: 5px;
   }
@@ -827,12 +818,6 @@ header .language-widget form,.header .language-widget form {
   }
   header.ie-mobile .navigation {
     margin-bottom: 30px;
-  }
-}
-
-@media (min-width: 980px) and (max-width: 1199px) {
-  #form-search-header .link-adv-search, #form-search-header .link-adv-search {
-    margin-left: 40px;
   }
 }
 

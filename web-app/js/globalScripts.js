@@ -160,7 +160,7 @@ $.updateLanguageSwitch = function(params) {
 };
 
 // Checkbox "Only results with digitised media"
-$("#form-search .thumbnail-filter-container input").click(function() {
+$(".thumbnail-filter-container input").click(function() {
   $("input[name=isThumbnailFiltered]").val($(this).is(":checked"));
 });
 
@@ -206,8 +206,10 @@ $(window).on('load', function () {
 
   });
 
-  if (typeof historySupport !== 'undefined' && de.ddb.common.search.getFacetValuesFromUrl()) {
-    $('.keep-filters').removeClass('off');
+  var isThumbnailFiltered = de.ddb.common.search.getParameterByName("isThumbnailFiltered") === "true";
+
+  if (isThumbnailFiltered) {
+    $('#thumbnail-filter').prop('checked', isThumbnailFiltered);
   }
 });
 
