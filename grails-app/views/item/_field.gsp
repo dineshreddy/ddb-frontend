@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <%@ page import="de.ddb.common.JsonUtil" %>
 <%@ page import="net.sf.json.JSONObject" %>
-<g:if test="${value instanceof JSONObject && !JsonUtil.isAnyNull(value."@entityId")}">
+<g:if test="${(value instanceof JSONObject || value instanceof Map) && !JsonUtil.isAnyNull(value."@entityId")}">
   <g:if test="${value."@isLink"}">
     <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
       ${value."\$"}
