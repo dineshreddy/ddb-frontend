@@ -53,3 +53,7 @@ ${(search.query != null ? search.query : "*")}
   </span>
   ${search.queryMap["time"][0].name}
 </g:if>
+<g:set var="isThumbnailFiltered" value="${search.queryMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]}"/>
+<g:if test="${isThumbnailFiltered && isThumbnailFiltered[0].name.toBoolean()}">
+  ; <b>${message(code: 'ddbnext.Show_items_with_thumbnails')}</b>
+</g:if>
