@@ -64,14 +64,15 @@ limitations under the License.
       <g:render template="timeFacet" />
       <%-- All other facets are handled in the same way --%>
       <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
-      <div class="facets-item bt bb bl br keep-filters off">
-        <label>
-          <g:set var="keepFiltersChecked"
-                value="${ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.KEEPFILTERS.name).toBoolean()}"/>
-          <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked ? checked="checked" : ""}/>
-          <g:message code="ddbnext.Keep_filters"/>
-        </label>
-      </div>
+    </div>
+
+    <div class="keep-filters off">
+      <label>
+        <g:set var="keepFiltersChecked"
+               value="${ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.KEEPFILTERS.name).toBoolean()}"/>
+        <input id="keep-filters" type="checkbox" name="keepFilters" ${keepFiltersChecked ? checked="checked" : ""}/>
+        <g:message code="ddbnext.Keep_filters"/>
+      </label>
     </div>
 
       <div class="clear-filters">
