@@ -16,6 +16,8 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 
 <g:set var="facetValues" value="${new HashMap()}" />
+<g:set var="isThumbnailFiltered" value="${search.queryMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.name]}"/>
+
 <g:each var="mapEntry" in="${search.queryMap}">
   <g:if test="${mapEntry.key == SearchParamEnum.FACETVALUES.getName()}">
     <g:each var="searchQueryTerm" in="${mapEntry.value}">
@@ -38,22 +40,18 @@ limitations under the License.
   </g:if>
 </g:each>
 <span><b><g:message encodeAs="html" code="ddbnext.Search_term" />:</b></span>
-${(search.query != null ? search.query : "*")}
-<g:each var="facetValue" in="${facetValues}">
+${(search.query != null ? search.query : "*")}<g:each var="facetValue" in="${facetValues}">
   ;
   <span>
     <b>${message(code: 'ddbnext.facet_' + facetValue.key)}:</b>
   </span>
   ${facetValue.value}
-</g:each>
-<g:if test="${search.queryMap["time"]}">
+</g:each><g:if test="${search.queryMap["time"]}">
   ;
   <span>
     <b>${message(code: 'ddbnext.facet_time')}:</b>
   </span>
   ${search.queryMap["time"][0].name}
-</g:if>
-<g:set var="isThumbnailFiltered" value="${search.queryMap[SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()]}"/>
-<g:if test="${isThumbnailFiltered && isThumbnailFiltered[0].name.toBoolean()}">
-  ; <b>${message(code: 'ddbnext.Show_items_with_thumbnails')}</b>
+</g:if><g:if test="${isThumbnailFiltered && isThumbnailFiltered[0].name.toBoolean()}">;
+  <b>${message(code: 'ddbnext.Show_items_with_thumbnails')}</b>
 </g:if>
