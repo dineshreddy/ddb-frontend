@@ -831,7 +831,7 @@ header .language-widget form,.header .language-widget form {
 /* index */
 .search-widget {
   padding-top: 60px;
-  padding-bottom: 85px;
+  padding-bottom: 75px;
   text-align: center;
   height: 300px;
 }
@@ -911,7 +911,7 @@ header .language-widget form,.header .language-widget form {
 
 #form-search .thumbnail-filter-container {
   height: 20px;
-  margin-top: 10px;
+  margin-top: 9px;
 }
 
 #form-search .thumbnail-filter-container input {
