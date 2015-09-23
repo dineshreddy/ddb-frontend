@@ -523,7 +523,7 @@ header .header-spacer,.header .header-spacer {
 
 .search-header .thumbnail-filter-container {
   float: left;
-  margin-left: 3px;
+  margin: 1px 0 0 3px;
 }
 
 .search-header .thumbnail-filter-container input {
