@@ -13,7 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+
 <%@page import="de.ddb.common.constants.Type"%>
+<g:set var="favoritesService" bean="favoritesService"/>
+
 <ul class="results-list unstyled" id="slaves">
   <g:set var="index" value="${0}" />
   <g:each var="search" in="${results}">
@@ -62,12 +65,7 @@ limitations under the License.
         </div>
         <div class="span2 created-at">
           <div>
-            <g:formatDate format="dd.MM.yyyy,"
-              date="${search.creationDate}" />
-          </div>
-          <div>
-            <g:formatDate format="HH:mm"
-              date="${search.creationDate}" /> Uhr
+            ${favoritesService.formatDate(search.creationDate)}
           </div>
         </div>
       </div>
