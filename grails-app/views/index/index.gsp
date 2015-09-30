@@ -20,10 +20,9 @@ limitations under the License.
 <html>
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Homepage"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-
 <meta name="page" content="index" />
 <meta name="layout" content="main" />
-
+<canonical:show/>
 <r:require module="startpage"/>
 </head>
 <body>

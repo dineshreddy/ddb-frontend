@@ -21,7 +21,8 @@ limitations under the License.
 <title><g:message encodeAs="html" code="${selectedList.title}" /> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="lists" />
 <meta name="layout" content="main" />
-
+<canonical:set uri="/lists/${selectedList.folderListId}"/>
+<canonical:show/>
 </head>
 <body>
   <div class="row lists">

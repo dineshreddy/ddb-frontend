@@ -16,12 +16,10 @@ limitations under the License.
 <html>
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Institutions" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-
 <meta name="page" content="institutionList" />
 <meta name="layout" content="main" />
-
+<canonical:show/>
 <r:require module="institutionlist"/>
-
 </head>
 <body>
   <h1><g:message encodeAs="html" code="ddbnext.Institutions" /></h1>

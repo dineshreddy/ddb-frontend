@@ -17,16 +17,14 @@ limitations under the License.
 <g:set var="navigationData" value="${[paginationURL: [firstPg: createAllFavoritesLink["firstPg"], lastPg: createAllFavoritesLink["lastPg"], prevPg: createAllFavoritesLink["prevPg"], nextPg: createAllFavoritesLink["nextPg"]], page: page, totalPages: totalPages ]}"></g:set>
 <html>
   <head>
-
     <title>
       ${selectedFolder.title} - <g:message encodeAs="html" code="ddbnext.Public_List_Of" args="${[selectedFolder.publishingName]}" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" />
     </title>
-
     <meta name="layout" content="main">
     <meta name="page" content="publicFavorites">
-
     <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
-
+    <canonical:exclude params="['offset', 'rows', 'viewType']"/>
+    <canonical:show/>
   </head>
   <body>
     <div class="favorites-results-container public-favorites">
