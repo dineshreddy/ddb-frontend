@@ -23,8 +23,10 @@ limitations under the License.
     <meta name="layout" content="main">
     <meta name="page" content="publicFavorites">
     <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
-    <canonical:exclude params="['offset', 'rows', 'viewType']"/>
-    <canonical:show/>
+    <link rel="canonical" href="${createLink(controller: 'favoritesview',
+                                             action: 'publicFavorites',
+                                             params: [folderId: selectedFolder.folderId, userId: selectedUserId],
+                                             base: domainCanonic)}"/>
   </head>
   <body>
     <div class="favorites-results-container public-favorites">

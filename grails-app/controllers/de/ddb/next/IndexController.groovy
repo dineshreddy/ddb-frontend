@@ -37,8 +37,11 @@ class IndexController {
             log.error "text: Text file was not found"
             apiResponse.throwException(request)
         }
-        render(view: "index", model: [articles: rewriteUrls(apiResponse.getResponse().articles.children()),
-                                      stats: itemService.getNumberOfItems()])
+        render(view: "index", model: [
+            articles: rewriteUrls(apiResponse.getResponse().articles.children()),
+            domainCanonic: configurationService.getDomainCanonic(),
+            stats: itemService.getNumberOfItems()
+        ])
     }
 
     /**

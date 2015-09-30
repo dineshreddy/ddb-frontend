@@ -20,8 +20,7 @@ limitations under the License.
 <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="persons" />
 <meta name="layout" content="main" />
-<canonical:exclude params="['sort']"/>
-<canonical:show/>
+<link rel="canonical" href="${createLink(controller: 'persons', base: domainCanonic)}"/>
 </head>
 <body>
   <div id="var-to-js" data-random-seed="${randomSeed}" data-pgTitle="${title}"></div>

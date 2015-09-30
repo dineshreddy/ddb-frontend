@@ -103,6 +103,7 @@ class FavoritesviewController {
 
         if (totalResults <1){
             render(view: ACTION, model: [
+                domainCanonic: configurationService.getDomainCanonic(),
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
                 selectedUserId: user.id,
@@ -167,6 +168,7 @@ class FavoritesviewController {
             }
 
             render(view: ACTION, model: [
+                domainCanonic: configurationService.getDomainCanonic(),
                 results: resultsItems,
                 selectedFolder: selectedFolder,
                 mainFavoriteFolder: null,
@@ -199,7 +201,6 @@ class FavoritesviewController {
                 updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate)
             ])
         }
-
     }
 
     def favorites(){

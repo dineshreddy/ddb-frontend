@@ -178,7 +178,12 @@ class EntityController implements InitializingBean {
         def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
         if (total>RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {total=RESULTS_DESIRED_IN_ONE_PERSONS_PAGE}
 
-        render(view: "persons", model: [title: g.message(code:"ddbnext.entities.personspage.personspageheader"), results: resultsWithThumbnails.collate(total), randomSeed:randomSeed])
+        render(view: "persons", model: [
+            domainCanonic: configurationService.getDomainCanonic(),
+            title: g.message(code:"ddbnext.entities.personspage.personspageheader"),
+            results: resultsWithThumbnails.collate(total),
+            randomSeed: randomSeed
+        ])
     }
 
     /**

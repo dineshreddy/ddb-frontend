@@ -44,7 +44,12 @@ class InstitutionController {
         def index = []
         institutionByFirstLetter.each { index.add(it) }
 
-        render (view: 'institutionList',  model: [index: index, all: all, total: allInstitution?.total])
+        render (view: 'institutionList',  model: [
+            domainCanonic: configurationService.getDomainCanonic(),
+            index: index,
+            all: all,
+            total: allInstitution?.total
+        ])
     }
 
     def getJson() {
