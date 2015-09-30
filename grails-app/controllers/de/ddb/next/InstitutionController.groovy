@@ -76,7 +76,7 @@ class InstitutionController {
                 itemId = jsonOrgParentHierarchy[jsonOrgParentHierarchy.size() - 1].id
             }
             log.debug("root itemId = ${itemId}")
-            def countObjectsForProv = institutionService.getProviderObjectCount(selectedOrgXML.name)
+            def countObjectsForProv = institutionService.getProviderObjectCount(id)
 
             // logo
             def organisationLogo
