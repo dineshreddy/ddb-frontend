@@ -23,7 +23,6 @@ limitations under the License.
     <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Footer"/></h1>
     <div class="span12 legal">
       <div class="inner">
-        <small><g:message encodeAs="html" code="ddbnext.Copyright"/></small>
         <ul>
           <g:each var="menuItem" in="${menu.footerMenu}">
             <li>
