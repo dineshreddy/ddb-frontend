@@ -371,6 +371,12 @@ input[type="checkbox"],input[type="radio"] {
   position: relative;
 }
 
+.search-results-content .search-results .entities-url {
+  font-size: 0.938em;
+  margin-right: 30px;
+  text-align: right;
+}
+
 .search-results-content .search-results .entity {
   background-color: #EFEBE8;
   padding: 10px 0 0 0;

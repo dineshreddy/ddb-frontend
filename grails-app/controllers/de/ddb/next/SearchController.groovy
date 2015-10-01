@@ -66,9 +66,16 @@ class SearchController {
             }
             def resultsItems = apiResponse.getResponse()
             def entities = ""
+            def entitiesURL
             //Return a maximum of 2 entities as search result
             if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
-                entities = resultsItems.entities.size() > 2 ? resultsItems.entities[0..1] : resultsItems.entities
+                if (resultsItems.entities.size() > 2) {
+                    entities = resultsItems.entities[0..1]
+                    entitiesURL = g.createLink(controller: "entity", action: "personsearch", params: [query: urlQuery.query])
+                }
+                else {
+                    entities = resultsItems.entities
+                }
             }
 
             def mlocale = RequestContextUtils.getLocale(request)
@@ -121,10 +128,10 @@ class SearchController {
 
             //Calculating results details info (number of results in page, total results number)
             def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-            searchService.DEFAULT_ROWS_PER_PAGE)
+                    searchService.DEFAULT_ROWS_PER_PAGE)
             def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
             def resultsOverallIndex = (offset + 1) + ' - ' +
-            (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
+                    (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
@@ -135,11 +142,17 @@ class SearchController {
             def queryString = request.getQueryString()
 
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             if(params.reqType=="ajax"){
-                def resultsHTML = ""
-                resultsHTML = g.render(template:"/search/resultsList",model:[results: resultsItems.results["docs"], entities: entities, viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],confBinary: request.getContextPath(),
+                def resultsHTML = g.render(template:"/search/resultsList",
+                model:[
+                    results: resultsItems.results["docs"],
+                    entities: entities,
+                    entitiesURL: entitiesURL,
+                    viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()
+                    ],
+                    confBinary: request.getContextPath(),
                     offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
@@ -168,12 +181,12 @@ class SearchController {
                 if(urlQuery[SearchParamEnum.FACET.getName()]){
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
                 }
-
                 render(view: "results", model: [
                     facetsList:mainFacets,
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     entities: entities,
+                    entitiesURL : entitiesURL,
                     isThumbnailFiltered: urlQuery[SearchService.THUMBNAIL_FACET],
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
@@ -240,13 +253,13 @@ class SearchController {
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-        searchService.DEFAULT_ROWS_PER_PAGE)
+                searchService.DEFAULT_ROWS_PER_PAGE)
         def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
         def page = (int)Math.floor(offset / rows) + 1
         def totalPages = Math.ceil(results.totalResults / rows).toInteger()
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (offset + 1) +' - ' +
-        (offset + rows > results.totalResults ? results.totalResults : offset + rows)
+                (offset + rows > results.totalResults ? results.totalResults : offset + rows)
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
