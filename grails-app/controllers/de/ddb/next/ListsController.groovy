@@ -31,6 +31,7 @@ class ListsController {
     private static final FolderList COLLECTIONS_LIST =
     new FolderList("DdbCollectionsList", "ddbcommon.lists.collectionsList", null, "", "")
 
+    def configurationService
     def listsService
     def searchService
 
@@ -86,6 +87,7 @@ class ListsController {
         def totalPages = (Math.ceil(folderCount/rows).toInteger())
         def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
 
+        model.domainCanonic = configurationService.getDomainCanonic()
         model.resultsPaginatorOptions = resultsPaginatorOptions
         model.resultsOverallIndex = resultsOverallIndex
         model.page = page
