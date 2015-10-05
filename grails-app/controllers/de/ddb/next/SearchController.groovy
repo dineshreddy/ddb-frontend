@@ -16,11 +16,11 @@
 package de.ddb.next
 
 import groovy.json.*
-import net.sf.json.JSONNull
 
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.JsonUtil
 import de.ddb.common.SearchService
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
@@ -68,7 +68,7 @@ class SearchController {
             def entities = ""
             def entitiesURL
             //Return a maximum of 2 entities as search result
-            if(! (resultsItems.entities instanceof JSONNull) && (params.offset == 0)) {
+            if (resultsItems.results["docs"] && !JsonUtil.isAnyNull(resultsItems.entities) && (params.offset == 0)) {
                 if (resultsItems.entities.size() > 2) {
                     entities = resultsItems.entities[0..1]
                     entitiesURL = g.createLink(controller: "entity", action: "personsearch", params: [query: urlQuery.query])
@@ -150,10 +150,10 @@ class SearchController {
                     results: resultsItems.results["docs"],
                     entities: entities,
                     entitiesURL: entitiesURL,
-                    viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()
-                    ],
+                    viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
                     confBinary: request.getContextPath(),
-                    offset: params[SearchParamEnum.OFFSET.getName()]]).replaceAll("\r\n", '')
+                    offset: params[SearchParamEnum.OFFSET.getName()]
+                ]).replaceAll("\r\n", '')
                 def jsonReturn = [results: resultsHTML,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,

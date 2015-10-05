@@ -89,7 +89,7 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
           'fast',
           function() {
             var JSONresponse = data;
-            if (JSONresponse.numberOfResults === 0) {
+            if (JSONresponse.numberOfResults === "0") {
               $('.search-noresults-content').removeClass("off");
               $('.search-results-content').addClass("off");
             } else {
