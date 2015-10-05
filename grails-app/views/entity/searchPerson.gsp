@@ -111,11 +111,7 @@ limitations under the License.
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
           </g:if>
         </g:if>
-        <div class="noresults">
-          <div>
-            <g:message encodeAs="none" code="ddbcommon.No_results_found_for_the_search" />
-          </div>
-        </div>
+        <g:render template="/search/noResults" />
       </div>
     </div>
   </div>

@@ -645,6 +645,11 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 5px;
 }
 
+.search-noresults-content .noresults .reset-selection-url {
+  color: #a5003b;
+  font-weight: bold;
+}
+
 .results-paginator-options {
   border-bottom: solid 2px #efebe8;
   padding-left: 30px;

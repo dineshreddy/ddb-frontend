@@ -15,6 +15,17 @@ limitations under the License.
 --%>
 <div class="noresults">
   <div>
-    <g:message encodeAs="none" code="ddbcommon.No_results_found_for_the_search"/>
+    <p>
+      <strong>
+        <g:message code="ddbcommon.No_results_found_for_the_search.Title"/>
+      </strong>
+      <g:if test="${resetSelectionUrl}">
+        <br/>
+        <g:link class="reset-selection-url" url="${resetSelectionUrl}">
+          <g:message code="ddbcommon.No_results_found_for_the_search.ResetSelection"/>
+        </g:link>
+      </g:if>
+    </p>
+    <g:message iencode="none" code="ddbcommon.No_results_found_for_the_search.Text"/>
   </div>
 </div>

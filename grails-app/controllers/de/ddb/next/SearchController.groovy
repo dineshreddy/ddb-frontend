@@ -176,10 +176,17 @@ class SearchController {
                     }
                 }
 
+                def resetSelectionUrl
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
-                if(urlQuery[SearchParamEnum.FACET.getName()]){
-                    subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery, request)
+
+                if (urlQuery[SearchParamEnum.FACET.getName()]) {
+                    subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery,
+                            request)
+                    resetSelectionUrl = g.createLink(controller: "search", action: "results", params: [
+                        (SearchParamEnum.QUERY.getName()): urlQuery.query,
+                        (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
+                    ])
                 }
                 render(view: "results", model: [
                     facetsList:mainFacets,
@@ -192,6 +199,7 @@ class SearchController {
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
                     facets: [selectedFacets: selectedFacets, mainFacetsUrl: mainFacetsUrl, subFacetsUrl: subFacetsUrl],
+                    resetSelectionUrl: resetSelectionUrl,
                     resultsPaginatorOptions: resultsPaginatorOptions,
                     resultsOverallIndex:resultsOverallIndex,
                     page: page,
