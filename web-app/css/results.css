@@ -373,7 +373,7 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results-content .search-results .entities-url {
   font-size: 0.938em;
-  margin-right: 30px;
+  margin: -5px 30px 5px 0;
   text-align: right;
 }
 
