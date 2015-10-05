@@ -61,10 +61,11 @@ $(function() {
   //The AJAX endpoint depends on page
   var ajaxCall = null;
 
-  if (jsPageName === "index" || jsPageName === "results") {
-    ajaxCall = getAjaxSuggest(jsContextPath + "/apis/autocomplete/");
-  } else if (jsPageName === "searchperson") {
+  if (jsPageName === "searchperson") {
     ajaxCall = getAjaxSuggest(jsContextPath + "/apis/entitiesAutocomplete/");
+  }
+  else {
+    ajaxCall = getAjaxSuggest(jsContextPath + "/apis/autocomplete/");
   }
 
   if (ajaxCall) {

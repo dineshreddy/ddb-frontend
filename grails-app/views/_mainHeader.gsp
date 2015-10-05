@@ -281,12 +281,9 @@ limitations under the License.
                 <label for="search-small"> <span><g:message encodeAs="html"
                       code="ddbnext.Search_text_field" /></span>
                 </label>
-                <input type="hidden" id="querycache"
-                  value="<ddbcommon:getCookieFieldValue fieldname="query" />" />
-                <input type="search" id="search-small" class="query"
-                  name="query"
-                  value="<ddbcommon:getCookieFieldValue fieldname="query" />"
-                  autocomplete="off" />
+                <input type="hidden" id="querycache" value="${ddbcommon.getCookieFieldValue(fieldname: "query")}" />
+                <input type="search" id="search-small" class="query" name="query"
+                       value="${ddbcommon.getCookieFieldValue(fieldname: "query")}" autocomplete="off" />
                 <button type="submit">
                   <!--[if !IE]><!-->
                   <g:message encodeAs="html" code="ddbnext.Go_Button" />
