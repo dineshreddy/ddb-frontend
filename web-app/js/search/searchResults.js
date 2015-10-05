@@ -336,13 +336,15 @@ de.ddb.next.search.searchResultsInitializer = function() {
       }
   );
 
-  $('#thumbnail-filter').click(function() {
-    var valueCheck = $(this);
+  $('input[name=thumbnail-filter]').click(function() {
     var paramsArray = [['isThumbnailFiltered', 'false']];
+    var isChecked = $(this).is(':checked');
 
-    if (valueCheck.is(':checked')) {
+    if (isChecked) {
       paramsArray = [['isThumbnailFiltered', 'true']];
     }
+    // We have two checkboxes with this name, so keep them in sync.
+    $('input[name=thumbnail-filter]').prop("checked", isChecked);
     paramsArray.push(['offset', 0]);
     var newUrl = $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.fetchResultsList(newUrl);

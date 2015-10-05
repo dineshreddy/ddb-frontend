@@ -14,7 +14,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.common.constants.Type"%>
+<%@ page import="de.ddb.common.constants.SearchParamEnum" %>
+<%@ page import="de.ddb.common.constants.Type" %>
 <g:set var="config" bean="configurationService"/>
 <g:if test="${navData.paginationURL.firstPg == null}">
   <g:set var="displayLeftPagination" value="off"></g:set>
@@ -63,8 +64,8 @@ limitations under the License.
               <span>
                   <g:message encodeAs="html" code="ddbnext.Go_To_Page" /> 
                   <input type="text" class="page-input off" maxlength="10" value="${navData.page}"/>
-                  <span class="page-nonjs">${navData.page}</span> 
-                  <g:message encodeAs="html" code="ddbnext.Of" /> 
+                  <span class="page-nonjs">${navData.page}</span>
+                  <g:message encodeAs="html" code="ddbnext.Of" />
                   <span class="total-pages"><ddb:getLocalizedNumber>${navData.totalPages}</ddb:getLocalizedNumber></span>
                   <span class="go-to-page"></span>
               </span>
@@ -74,24 +75,44 @@ limitations under the License.
     </li>
   </ul>
 </div>
+
 <div class="page-nav-mob">
   <g:if test="${navData.tabulatorActive!=null}">
     <div>
       <select class="type-selection">
-        <option value="${createLink(controller: 'search', action: 'results')}" <g:if test="${navData.tabulatorActive==Type.CULTURAL_ITEM.getName()}">selected</g:if>><g:message code="ddbnext.Entity_Objects" /></option>
+        <option value="${createLink(controller: 'search', action: 'results')}" <g:if test="${navData.tabulatorActive==Type.CULTURAL_ITEM.getName()}">selected</g:if>>
+          <g:message code="ddbnext.Entity_Objects" />
+        </option>
         <g:if test="${config.isEntitySearchFeaturesEnabled()}">
-          <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>><g:message code="ddbnext.entity.tabulator.persons" /></option>
+          <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>>
+            <g:message code="ddbnext.entity.tabulator.persons" />
+          </option>
         </g:if>
         <g:if test="${config.isInstitutionSearchFeaturesEnabled()}">
-          <option value="${createLink(controller: 'search', action: 'institution')}" <g:if test="${navData.tabulatorActive==Type.INSTITUTION.getName()}">selected</g:if>><g:message code="ddbnext.Institutions" /></option>
+          <option value="${createLink(controller: 'search', action: 'institution')}" <g:if test="${navData.tabulatorActive==Type.INSTITUTION.getName()}">selected</g:if>>
+            <g:message code="ddbnext.Institutions" />
+          </option>
         </g:if>
       </select>
     </div>
   </g:if>
+
+  <div class="thumbnail-filter-container">
+    <label title="${g.message(code: "ddbnext.Show_items_with_thumbnails")}">
+      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+        isThumbnailFiltered: ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.IS_THUMBNAILS_FILTERED.name)}"/>
+      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+        isThumbnailFiltered.toBoolean() : config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
+      <input name="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
+      <input type="hidden" name="${SearchParamEnum.IS_THUMBNAILS_FILTERED.name}" value="${isThumbnailFiltered}"/>
+      <g:message code="ddbnext.Show_items_with_thumbnails"/>
+    </label>
+  </div>
+
   <div class="page-info">
     <span class="results-overall-index">${navData.resultsOverallIndex}</span> 
     <span> / </span> 
-    <span><strong><span class="results-total"><ddb:getLocalizedNumber>${navData.numberOfResults}</ddb:getLocalizedNumber></span></strong> </span> 
+    <span><strong><span class="total-results"><ddb:getLocalizedNumber>${navData.numberOfResults}</ddb:getLocalizedNumber></span></strong> </span> 
   </div>
   <ul class="inline">
     <li class="prev-page bl">

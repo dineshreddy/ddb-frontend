@@ -118,7 +118,6 @@ limitations under the License.
         </div>
       </div>
     </div>
-    
 
     <div class="span9">
       <div class="off result-pages-count"><ddb:getLocalizedNumber>${totalPages}</ddb:getLocalizedNumber></div>

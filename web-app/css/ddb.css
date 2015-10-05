@@ -820,6 +820,14 @@ header .language-widget form,.header .language-widget form {
   header.ie-mobile .navigation {
     margin-bottom: 30px;
   }
+
+  .search-results-content .thumbnail-filter-container input[type="checkbox"] {
+    margin-top: -3px;
+  }
+
+  .search-results-content .thumbnail-filter-container label {
+    line-height: 2em;
+  }
 }
 
 @media (min-width: 1200px) {

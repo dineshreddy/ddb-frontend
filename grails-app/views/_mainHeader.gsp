@@ -303,7 +303,7 @@ limitations under the License.
                                  ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.IS_THUMBNAILS_FILTERED.name)}"/>
                       <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
                                  isThumbnailFiltered.toBoolean() : config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
-                      <input id="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
+                      <input name="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
                       <input type="hidden" name="${SearchParamEnum.IS_THUMBNAILS_FILTERED.name}"
                              value="${isThumbnailFiltered}"/>
                       <g:message code="ddbnext.Show_items_with_thumbnails"/>
