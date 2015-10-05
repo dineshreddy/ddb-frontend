@@ -66,12 +66,12 @@ class SearchController {
             }
             def resultsItems = apiResponse.getResponse()
             def entities = ""
-            def entitiesURL
+            def entitiesUrl
             //Return a maximum of 2 entities as search result
             if (resultsItems.results["docs"] && !JsonUtil.isAnyNull(resultsItems.entities) && (params.offset == 0)) {
                 if (resultsItems.entities.size() > 2) {
                     entities = resultsItems.entities[0..1]
-                    entitiesURL = g.createLink(controller: "entity", action: "personsearch", params: [query: urlQuery.query])
+                    entitiesUrl = g.createLink(controller: "entity", action: "personsearch", params: [query: urlQuery.query])
                 }
                 else {
                     entities = resultsItems.entities
@@ -149,7 +149,7 @@ class SearchController {
                 model:[
                     results: resultsItems.results["docs"],
                     entities: entities,
-                    entitiesURL: entitiesURL,
+                    entitiesUrl: entitiesUrl,
                     viewType: urlQuery[SearchParamEnum.VIEWTYPE.getName()],
                     confBinary: request.getContextPath(),
                     offset: params[SearchParamEnum.OFFSET.getName()]
@@ -193,7 +193,7 @@ class SearchController {
                     title: urlQuery[SearchParamEnum.QUERY.getName()],
                     results: resultsItems,
                     entities: entities,
-                    entitiesURL : entitiesURL,
+                    entitiesUrl : entitiesUrl,
                     isThumbnailFiltered: urlQuery[SearchService.THUMBNAIL_FACET],
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],

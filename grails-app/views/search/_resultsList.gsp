@@ -17,9 +17,9 @@ limitations under the License.
 <g:if test="${entities}">
   <g:render template="entityResultsList" model="${[entities: entities]}" />
 </g:if>
-<g:if test="${entitiesURL}">
+<g:if test="${entitiesUrl}">
   <div class="entities-url">
-  <g:link url="${entitiesURL}">
+  <g:link url="${entitiesUrl}">
     <g:message code="ddbnext.SearchResultsMoreEntitiesLink"/>
   </g:link>
   </div>
