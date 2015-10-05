@@ -1326,6 +1326,7 @@ color: #a5003b;
 }
 
 .search-results .results-list.grid {
+  margin-top: -15px;
   text-align: left;
 }
 
