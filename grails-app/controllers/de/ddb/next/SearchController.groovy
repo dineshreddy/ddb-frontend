@@ -144,6 +144,16 @@ class SearchController {
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
                 queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
+            def resetSelectionUrl
+
+            if (isFacetSearch(urlQuery)) {
+                resetSelectionUrl = g.createLink(action: "results", params: [
+                    (SearchParamEnum.CLEARFILTER.getName()): true,
+                    (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false,
+                    (SearchParamEnum.QUERY.getName()): urlQuery.query
+                ])
+            }
+
             if(params.reqType=="ajax"){
                 def resultsHTML = g.render(template:"/search/resultsList",
                 model:[
@@ -161,6 +171,7 @@ class SearchController {
                     totalPages: totalPages,
                     totalPagesFormatted: String.format(locale, "%,d", totalPages),
                     paginationURL: searchService.buildPagination(resultsItems.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                    resetSelectionUrl: resetSelectionUrl,
                     numberOfResults: numberOfResultsFormatted,
                     offset: params[SearchParamEnum.OFFSET.getName()]
                 ]
@@ -176,17 +187,12 @@ class SearchController {
                     }
                 }
 
-                def resetSelectionUrl
                 def subFacetsUrl = [:]
                 def selectedFacets = searchService.buildSubFacets(urlQuery, nonJsFacetsList)
 
                 if (urlQuery[SearchParamEnum.FACET.getName()]) {
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery,
                             request)
-                    resetSelectionUrl = g.createLink(controller: "search", action: "results", params: [
-                        (SearchParamEnum.QUERY.getName()): urlQuery.query,
-                        (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
-                    ])
                 }
                 render(view: "results", model: [
                     facetsList:mainFacets,
@@ -347,7 +353,6 @@ class SearchController {
         render (contentType:"text/json"){properties}
     }
 
-
     /**
      * Adds the value(s) of a facet-type to a Map
      *
@@ -376,6 +381,38 @@ class SearchController {
         }
     }
 
+    /**
+     * Check if the given query contains a search criteria other than a query string.
+     */
+    private boolean isFacetSearch(def query) {
+        boolean result = false
+        def facetValue = query[SearchParamEnum.FACET.getName()]
 
+        if (facetValue instanceof String) {
+            result = isFacetValue(query, FacetEnum.valueOfName(facetValue))
+        }
+        else {
+            facetValue.each {
+                result |= isFacetValue(query, FacetEnum.valueOfName(it))
+            }
+        }
+        return result
+    }
 
+    /**
+     * Check if the given facet value enforces a facet search.
+     */
+    private boolean isFacetValue(def query, FacetEnum facetValue) {
+        boolean result = false
+
+        if (facetValue != FacetEnum.CATEGORY) {
+            if (facetValue == FacetEnum.DIGITALISAT) {
+                result = query[FacetEnum.DIGITALISAT.getName()] as boolean
+            }
+            else {
+                result = true
+            }
+        }
+        return result
+    }
 }

@@ -645,6 +645,10 @@ input[type="checkbox"],input[type="radio"] {
   margin-bottom: 5px;
 }
 
+.search-noresults-content .noresults .reset-selection {
+  margin-top: -10px;
+}
+
 .search-noresults-content .noresults .reset-selection-url {
   color: #a5003b;
   font-weight: bold;

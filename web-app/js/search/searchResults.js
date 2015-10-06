@@ -100,6 +100,12 @@ de.ddb.next.search.fetchResultsList = function(url, errorCallback) {
             $('.results-overall-index').html(JSONresponse.resultsOverallIndex);
             $('.page-input').attr('value', JSONresponse.page);
             $('.page-nonjs').html(JSONresponse.page);
+            if (JSONresponse.resetSelectionUrl) {
+              $('.reset-selection-url').attr('href', JSONresponse.resetSelectionUrl);
+              $('.reset-selection').removeClass("off");
+            } else {
+              $('.reset-selection').addClass("off");
+            }
 
             de.ddb.next.search.paginationWidget.resetNavigationElements(JSONresponse);
 
