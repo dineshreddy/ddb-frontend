@@ -821,6 +821,10 @@ header .language-widget form,.header .language-widget form {
     margin-bottom: 30px;
   }
 
+  .search-results-content .thumbnail-filter-container {
+    margin-top: 10px;
+  }
+
   .search-results-content .thumbnail-filter-container input[type="checkbox"] {
     margin-top: -3px;
   }
