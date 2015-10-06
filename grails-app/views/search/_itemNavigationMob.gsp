@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<g:set var="enableLeftPagination" value="${hitNumber == 1}"/>
+<g:set var="displayLeftPagination" value="${hitNumber > 1}"/>
 <g:set var="displayRightPagination" value="${!nextId.isEmpty()}"/>
 
 <ul class="inline">
@@ -28,7 +28,7 @@ limitations under the License.
     </g:else>
   </li>
   <li class="next-item bl fr">
-    <g:if test="${enableRightPagination}">
+    <g:if test="${displayRightPagination}">
       <g:link controller="item" action="findById" params="${params + [id: nextId, hitNumber: hitNumber + 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Next_Label" /></span></div></g:link>
     </g:if>
     <g:else>
@@ -36,7 +36,7 @@ limitations under the License.
     </g:else>
   </li>
   <li class="prev-item bl fr">
-    <g:if test="${enableLeftPagination}">
+    <g:if test="${displayLeftPagination}">
       <g:link controller="item" action="findById" params="${params + [id: prevId, hitNumber: hitNumber - 1]}" ><div><span><g:message encodeAs="html" code="ddbnext.Previous_Label" /></span></div></g:link>
     </g:if>
     <g:else>

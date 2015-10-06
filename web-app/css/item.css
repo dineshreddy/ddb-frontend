@@ -365,6 +365,9 @@
   .similar-objects .information .hovercard-info-item {
     left: 100px;
   }
+  .back-to-list:before {
+    margin-top: 0;
+  }
 }
 
 @media (min-width: 481px) {
