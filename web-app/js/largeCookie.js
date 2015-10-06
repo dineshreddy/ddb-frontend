@@ -68,7 +68,7 @@ LargeCookie = (function($, defaultCookieService) {
   };
 
   pagedCookie.prototype.del = function(index) {
-    if (typeof (index) !== 'undefined' && !isNaN(parseInt(index, 10))) {
+    if (typeof (index) !== typeof undefined && !isNaN(parseInt(index, 10))) {
       this.cookieService.del(this.prefix + index);
     } else {
       var prevLastIndex = parseInt(this.cookieService.get(this.indexCookie), 10) || 0;
