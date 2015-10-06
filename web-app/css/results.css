@@ -1068,6 +1068,10 @@ input[type="checkbox"],input[type="radio"] {
   .search-results .entity-list .entity .thumbnail img {
     margin-right: 15px;
   }
+
+  .search-results-content .search-results .entities-url {
+    margin-right: 0;
+  }
 }
 
 @media (min-width: 481px) {
