@@ -28,8 +28,6 @@ class ListsController {
     // predefined lists
     private static final FolderList ALL_LIST =
     new FolderList("DdbAllList", "ddbcommon.lists.allList", null, "", "")
-    private static final FolderList COLLECTIONS_LIST =
-    new FolderList("DdbCollectionsList", "ddbcommon.lists.collectionsList", null, "", "")
 
     def configurationService
     def listsService
@@ -59,10 +57,8 @@ class ListsController {
         def folders = null
 
         // load Daily List per default
-        String id =  "dailyList"
-        if (params.id) {
-            id = params.id
-        }
+        String id = params.id ? params.id : "dailyList"
+
         model.selectedList = model.lists.find {it.folderListId == id }
         folders = getFoldersOfList(id, offset, rows)
 
@@ -110,7 +106,6 @@ class ListsController {
         lists?.each { menu.add(it) }
 
         // predefined lists
-        menu.add(COLLECTIONS_LIST)
         menu.add(ALL_LIST)
 
         return menu
@@ -127,9 +122,6 @@ class ListsController {
 
         if (listId == ALL_LIST.folderListId) {
             folders = listsService.getDdbAllPublicFolders(offset, size)
-        }
-        else if (listId == COLLECTIONS_LIST.folderListId) {
-            folders = listsService.getCollections(offset, size)
         }
         else {
             folders = listsService.getPublicFoldersForList(listId, offset, size)
