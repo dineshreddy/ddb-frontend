@@ -99,7 +99,7 @@ limitations under the License.
           </p>
           <br />
           <br />
-          <g:if test="${publicFolders != null && publicFolders.size() > 1}">
+          <g:if test="${publicFolders}">
             <strong>
               <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
             </strong>
