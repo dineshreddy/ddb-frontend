@@ -45,27 +45,28 @@ class FavoritesviewController {
         int offset = params.offset ? params.offset.toInteger() : 0
         String order = params.order ? params.order : favoritesService.ORDER_ASC
         String by = params.by ? params.by : favoritesService.ORDER_BY_NUMBER
-        def user = createUser(params.userId, aasPersonService.getPerson(params.userId, new AasCredential(
+        String userId = params.userId
+        def user = createUser(userId, aasPersonService.getPerson(userId, new AasCredential(
                 configurationService.getAasAdminUserId(),
                 configurationService.getAasAdminPassword())))
         def folderId = params.folderId
 
         // A user want to report this list to DDB
         if(params.report){
-            reportFavoritesList(user.id, folderId)
-            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
+            reportFavoritesList(userId, folderId)
+            redirect(action: ACTION, params: [userId: userId, folderId: folderId])
             return
         }
 
         if(params.blockingToken) {
-            blockFavoritesList(user.id, folderId, params.blockingToken)
-            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
+            blockFavoritesList(userId, folderId, params.blockingToken)
+            redirect(action: ACTION, params: [userId: userId, folderId: folderId])
             return
         }
 
         if(params.unblockingToken) {
-            unblockFavoritesList(user.id, folderId, params.unblockingToken)
-            redirect(action: ACTION, params: [userId: user.id, folderId: folderId])
+            unblockFavoritesList(userId, folderId, params.unblockingToken)
+            redirect(action: ACTION, params: [userId: userId, folderId: folderId])
             return
         }
 
@@ -76,7 +77,7 @@ class FavoritesviewController {
             throw new FavoritelistNotFoundException("publicFavorites(): favorites list or user do not exist")
         }
 
-        List publicFolders = bookmarksService.findAllPublicFolders(user.getId())
+        List publicFolders = bookmarksService.findAllPublicFolders(userId)
 
         publicFolders = sortPublicFoldersAndRemoveSelected(publicFolders, selectedFolder.folderId)
 
@@ -106,13 +107,13 @@ class FavoritesviewController {
                 domainCanonic: configurationService.getDomainCanonic(),
                 selectedFolder: selectedFolder,
                 resultsNumber: totalResults,
-                selectedUserId: user.id,
+                selectedUserId: userId,
                 selectedUserUserName: user.username,
                 publicFolders: publicFolders,
                 showLinkAllList: showLinkAllList,
                 dateString: g.formatDate(date: new Date(), format: 'dd.MM.yyyy'),
-                createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, user.id, selectedFolder.folderId),
-                fullPublicLink: createPublicLink(user.getId(), folderId),
+                createAllFavoritesLink:favoritesService.createAllPublicFavoritesLink(0,0,favoritesService.ORDER_DESC,"title",0, userId, selectedFolder.folderId),
+                fullPublicLink: createPublicLink(userId, folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl()
             ])
@@ -148,7 +149,7 @@ class FavoritesviewController {
 
             def orderLinks = createOrderLinks([
                 action : ACTION,
-                userId : user.id,
+                userId : userId,
                 folderId : selectedFolder.folderId,
                 rows : rows,
                 offset : offset
@@ -177,14 +178,14 @@ class FavoritesviewController {
                 paginationURL: searchService.buildPagination(allRes.size(), urlQuery, request.forwardURI+'?'+queryString),
                 page: page,
                 resultsNumber: totalResults,
-                createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, user.id, selectedFolder.folderId),
+                createAllFavoritesLink: favoritesService.createAllPublicFavoritesLink(offset, rows, order, by, lastPgOffset, userId, selectedFolder.folderId),
                 totalPages: totalPages,
                 numberOfResultsFormatted: numberOfResultsFormatted,
                 offset: offset,
                 rows: rows,
                 order: order,
                 by: by,
-                selectedUserId: user.id,
+                selectedUserId: userId,
                 selectedUserUserName: user.username,
                 showLinkAllList: showLinkAllList,
                 publicFolders: publicFolders,
@@ -192,7 +193,7 @@ class FavoritesviewController {
                 urlsForOrderDate: orderLinks.urlsForOrderDate,
                 urlsForOrderNumber: orderLinks.urlsForOrderNumber,
                 urlsForOrderTitle: orderLinks.urlsForOrderTitle,
-                fullPublicLink: createPublicLink(user.getId(), folderId),
+                fullPublicLink: createPublicLink(userId, folderId),
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl(),
                 createdDateString: favoritesService.formatDate(selectedFolder.creationDate),
