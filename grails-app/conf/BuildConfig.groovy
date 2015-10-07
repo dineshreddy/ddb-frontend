@@ -87,6 +87,8 @@ grails.project.dependency.resolution = {
     }
 
     dependencies {
+        build ('org.owasp:dependency-check-ant:1.2.11')
+        
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
         compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
