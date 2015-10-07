@@ -40,9 +40,9 @@ limitations under the License.
               <li>
                 <g:if test="${it.full.uri.isEmpty() && !originUrl.isEmpty()}">
                   <div class="viewer-icon">
-                    <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
+                    <a target="_blank" class="show-origin" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
                   </div>
-                  <a target="_blank" class="no-previews no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+                  <a target="_blank" class="no-previews no-external-link-icon" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                     <img src="${viewerContent}" alt="${it.preview.title}" />
                   </a>
                 </g:if>
@@ -75,12 +75,12 @@ limitations under the License.
               <g:set var="mediaImage" value=""/>
             </g:else>
             <div class="viewer-icon">
-              <a target="_blank" class="show-origin" href="${ddb.doHtmlEncode(url: originUrl)}"
+              <a target="_blank" class="show-origin" href="${originUrl}"
                  title="${g.message(code: "ddbnext.stat_008")}">
               </a>
             </div>
             <g:if test="${mediaImage}">
-              <a target="_blank" class="no-external-link-icon" href="${ddb.doHtmlEncode(url: originUrl)}"
+              <a target="_blank" class="no-external-link-icon" href="${originUrl}"
                  title="${g.message(code: "ddbnext.stat_008")}">
                 <img src="${mediaImage}" alt="${itemTitle}" class="viewer-placeholder"/>
               </a>

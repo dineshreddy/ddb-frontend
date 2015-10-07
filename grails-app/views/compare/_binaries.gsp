@@ -42,10 +42,10 @@ limitations under the License.
                   <g:if test="${it.full.uri.isEmpty()}">
                     <g:if test="${!originUrl.isEmpty()}">
                       <div class="viewer-icon"> 
-                        <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
+                        <a target="_blank" class="show-origin" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
                       </div> 
                     </g:if>
-                    <a target="_blank" class="no-previews no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+                    <a target="_blank" class="no-previews no-external-link-icon" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                       <img src="${viewerContent}" alt="${it.preview.title}" />
                     </a>
                   </g:if>
@@ -70,9 +70,9 @@ limitations under the License.
                 <g:set var="mediatype" value="image"/>
               </g:else>
               <div class="viewer-icon">
-                <a target="_blank" class="show-origin" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
+                <a target="_blank" class="show-origin" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />"></a>
               </div>
-              <a target="_blank" class="no-external-link-icon" href="<ddb:doHtmlEncode url="${originUrl}" />" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
+              <a target="_blank" class="no-external-link-icon" href="${originUrl}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                 <img src="${request.getContextPath() + '/images/placeholder/' + mediatype + '.png'}" alt="${itemTitle}" class="viewer-placeholder"/>
               </a>
             </li>
