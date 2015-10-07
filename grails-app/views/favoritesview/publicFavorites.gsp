@@ -22,7 +22,7 @@ limitations under the License.
     </title>
     <meta name="layout" content="main">
     <meta name="page" content="publicFavorites">
-    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedUserFirstnameAndLastnameOrNickname]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
+    <ddb:getSocialmediaMeta likeTitle="${selectedFolder.title + " - " + g.message(code:"ddbnext.Public_List_Of", args:[selectedFolder.publishingName]) + " - " + g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" likeUrl="${baseUrl + fullPublicLink}" />
     <link rel="canonical" href="${createLink(controller: 'favoritesview',
                                              action: 'publicFavorites',
                                              params: [folderId: selectedFolder.folderId, userId: selectedUserId],
@@ -101,7 +101,7 @@ limitations under the License.
           <br />
           <g:if test="${publicFolders}">
             <strong>
-              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
+              <g:message encodeAs="html" code="ddbnext.Other_Lists_Of"/> ${selectedFolder.publishingName}
             </strong>
             <ul id="public-folders" class="other-folder-list">
               <g:render template="favoritesAllFolders" ></g:render>
