@@ -982,6 +982,13 @@ input[type="checkbox"],input[type="radio"] {
   }
 }
 
+@media (max-width: 480px) {
+    #favorite-confirmation {
+      left: 10px !important;
+      margin-left: 0 !important;
+  }
+}
+
 @media (max-width: 767px) {
   .summary .extra,
   .results-paginator-options, 
