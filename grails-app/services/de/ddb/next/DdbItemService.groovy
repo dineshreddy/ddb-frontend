@@ -181,7 +181,7 @@ class DdbItemService {
         def similarItems = itemService.getSimilarItems(itemId)
         def itemSource = itemService.getItemXmlSource(itemId)
         def collection = new XmlSlurper().parseText(itemSource)
-        def geometry //= collection.monument.georeference.geometry.text()
+        def geometry = collection.monument.georeference.geometry.text()
 
         return [
             itemUri: itemUri,
