@@ -433,8 +433,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
     $.addParamToCurrentUrl(paramsArray);
     de.ddb.common.search.setSearchCookieParameter(paramsArray);
   });
+
   $('.clear-filters').click(function() {
     de.ddb.common.search.removeSearchCookieParameter('facetValues[]');
+    de.ddb.common.search.removeSearchCookieParameter('keepFilters');
   });
 
   $('.type-selection').change(function(){
