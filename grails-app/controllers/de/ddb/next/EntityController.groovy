@@ -146,7 +146,8 @@ class EntityController implements InitializingBean {
             "searchInvolved": searchInvolved,
             "searchSubject": searchSubject,
             domainCanonic:configurationService.getDomainCanonic(),
-            "entityImageUrl": entityImageUrl
+            "entityImageUrl": entityImageUrl,
+            itemUri: request.forwardURI
         ]
 
         render(view: 'entity', model: model)
