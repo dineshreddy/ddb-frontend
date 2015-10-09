@@ -32,7 +32,7 @@ header, .header,
 footer, .footer,
 .cookie-notice,
 .facets-container, .results-paginator-options, .page-info-nav .page-nav, .page-info-nav .page-nav-mob, .page-info-nav .script,
-.results-paginator-view, .information, #print-nav, .item-options, .paginator-options-button,
+.results-paginator-view, .information, #print-nav, .item-options, .paginator-options-button, .entities-url,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count, .similar-objects-header,
 .group-operator, .add-group-button,
 #first-letter-index li,
@@ -143,6 +143,16 @@ footer, .footer,
   top: 0;
   position: absolute !important;
   margin-left: 490px !important;
+}
+
+.entity-list .entity .thumbnail-wrapper {
+  margin-left: 530px !important;
+}
+
+@-moz-document url-prefix() { 
+  .entity-list .entity .thumbnail-wrapper {
+    margin-left: 130px !important;
+  }
 }
 
 .search-results-list .grid .thumbnail-wrapper {
