@@ -21,7 +21,12 @@ limitations under the License.
     <g:if test="${!metaDescription}">
       <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
     </g:if>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <g:if test="${pageName == "institutionList"}">
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+    </g:if>
+    <g:else>
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    </g:else>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
 
@@ -36,8 +41,8 @@ limitations under the License.
     <r:require module="ddbnext" />
     <r:layoutResources />
     <g:layoutHead />
-
   </head>
+
   <body>
     <noscript>
       <div class="container">

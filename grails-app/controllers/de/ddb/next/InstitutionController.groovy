@@ -19,6 +19,7 @@ import de.ddb.common.beans.User
 import de.ddb.common.constants.SearchParamEnum
 
 class InstitutionController {
+    private static final String PAGENAME = "institutionList"
 
     def institutionService
     def configurationService
@@ -44,9 +45,10 @@ class InstitutionController {
         def index = []
         institutionByFirstLetter.each { index.add(it) }
 
-        render (view: 'institutionList',  model: [
+        render (view: PAGENAME,  model: [
             domainCanonic: configurationService.getDomainCanonic(),
             index: index,
+            pageName: PAGENAME,
             all: all,
             total: allInstitution?.total
         ])
