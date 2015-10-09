@@ -127,8 +127,8 @@
 }
 
 .entity-page .caption {
-  left:0px;
-  bottom:0px;
+  left:0;
+  bottom:0;
   font-size: 0.875em;
   height: 36px;
   line-height: 18px;
