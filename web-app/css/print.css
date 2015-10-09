@@ -627,4 +627,9 @@ footer, .footer,
 .compare ul.previews-list {
   list-style: none;
 }
+
+.compare .item-detail .institution {
+  height: auto;
+  max-height: 120px;
+}
 /* Compare page - end */
