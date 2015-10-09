@@ -52,5 +52,9 @@ limitations under the License.
       </div>
     </div>
   </div>
+  <div class="row item-detail linkurl off">
+    <div><strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink" />: </strong></div>
+    <div class="value">https://${request.serverName}${itemUri}</div>
+  </div>
 </body>
 </html>

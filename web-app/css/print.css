@@ -48,7 +48,7 @@ footer, .footer,
 #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
 #editSavedSearchModal,
 .item-links, .share,
-.entity-page .entity-controls {
+.entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr {
   display: none;
 }
 
@@ -470,15 +470,23 @@ footer, .footer,
 .favorites-results .comment-container {
   margin-top: 45px;
 }
+
 /* Favorites list page - end */
 
 /* Person page */
-.entity-page .preview-item {
-  float: left;
-}
 .caroufredsel_wrapper {
   width: 800px !important;
 }
+
+.entity-page .preview-item {
+  float: left;
+  width: 160px;
+}
+
+.entity-page .preview-item-image {
+  text-align: center;
+}
+
 .entity-page .caption {
   left:0px;
   bottom:0px;
@@ -489,5 +497,9 @@ footer, .footer,
   text-align: center;
   max-width: 160px;
   padding: 0.5px 0.5px 0.5px 0.5px;
+}
+
+.entity-page .carousel {
+  margin-bottom: 20px;
 }
 /* Person page - end */
