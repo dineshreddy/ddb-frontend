@@ -54,7 +54,7 @@ footer, .footer,
 .static_content .field-item.even p:last-child, .static_content .field-item .asset-image strong,
 .item-links, .share,
 .entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr,
-.compare .row .compare-links {
+.compare .row .compare-links, .compare .compare-body .institution .institution-link:before {
   display: none !important;
 }
 
@@ -616,5 +616,15 @@ footer, .footer,
 /* Person page - end */
 
 /* Compare page */
+.compare .compare-header {
+  border-color: #efebe8;
+  border-style: solid;
+  border-width: 0 0 2px 0;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+}
 
+.compare ul.previews-list {
+  list-style: none;
+}
 /* Compare page - end */
