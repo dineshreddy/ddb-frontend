@@ -16,7 +16,6 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
 
 <div class="search">
-#######################
   <h3><g:message encodeAs="html" code="ddbnext.Search" />:</h3>
   <div class="">
     <i class="icon-search-entity"></i>
