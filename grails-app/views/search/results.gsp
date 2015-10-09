@@ -128,7 +128,7 @@ limitations under the License.
       <div style="clear:both;"> 
       
       <%--   Search has results   --%>
-      <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
+      <div class="search-results-content<g:if test="${results.numberOfResults == 0}"> off</g:if>">
         <ddb:renderPageInfoNav navData="${[resultsOverallIndex: resultsOverallIndex,
                                            numberOfResults: numberOfResultsFormatted,
                                            page: page,
