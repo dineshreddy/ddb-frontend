@@ -48,7 +48,8 @@ footer, .footer,
 #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
 #editSavedSearchModal,
 .item-links, .share,
-.entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr {
+.entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr,
+.compare .row .compare-links {
   display: none;
 }
 
@@ -488,8 +489,8 @@ footer, .footer,
 }
 
 .entity-page .caption {
-  left:0px;
-  bottom:0px;
+  left:0;
+  bottom:0;
   font-size: 0.875em;
   height: 36px;
   line-height: 18px;
@@ -503,3 +504,7 @@ footer, .footer,
   margin-bottom: 20px;
 }
 /* Person page - end */
+
+/* Compare page */
+
+/* Compare page - end */
