@@ -197,7 +197,8 @@ class FavoritesviewController {
                 baseUrl: configurationService.getSelfBaseUrl(),
                 contextUrl: configurationService.getContextUrl(),
                 createdDateString: favoritesService.formatDate(selectedFolder.creationDate),
-                updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate)
+                updatedDateString: favoritesService.formatDate(selectedFolder.updatedDate),
+                itemUri: request.forwardURI
             ])
         }
     }
@@ -319,7 +320,8 @@ class FavoritesviewController {
                     urlsForOrderNumber:orderLinks.urlsForOrderNumber,
                     urlsForOrderTitle:orderLinks.urlsForOrderTitle,
                     baseUrl: configurationService.getSelfBaseUrl(),
-                    contextUrl: configurationService.getContextUrl()
+                    contextUrl: configurationService.getContextUrl(),
+                    itemUri: request.forwardURI
                 ])
             }
         } else{

@@ -56,7 +56,8 @@ footer, .footer,
 .entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr,
 .compare .row .compare-links, .compare .compare-body .institution .institution-link:before,
 .public-favorites .favorites-results-head, .public-favorites .folder-information-container #public-folders, .public-favorites .folder-information-container strong,
-.public-favorites .folder-information-container br, .public-favorites .favorites-results-content .favorites-results .results-list .rank, #sendFavoriteListModal{
+.public-favorites .folder-information-container br, .public-favorites .favorites-results-content .favorites-results .results-list .rank, #sendFavoriteListModal,
+.favorites-results-container .favorites-results-content .favorites-results .rank-wrapper{
   display: none !important;
 }
 
@@ -654,7 +655,7 @@ footer, .footer,
 .public-favorites .folder-information-container p.date-info {
   margin-top: 0;
 }
-.public-favorites .favorites-results .results-list .thumbnail img {
+.favorites-results .results-list .thumbnail img {
     max-width: 140px;
     max-height: 105px;
     display: block;
@@ -663,7 +664,11 @@ footer, .footer,
     margin: auto;
 }
 
-.public-favorites .favorites-results .results-list .item {
+.favorites-results .results-list .item {
   padding-top: 20px;
+}
+
+.favorites-results .results-list .item .comment .comment-text {
+  overflow: hidden;
 }
 /* Public Favorite page - end */
