@@ -654,12 +654,12 @@ footer, .footer,
 /* Person page - end */
 
 /* Compare page */
-.compare .compare-header {
+.compare .compare-body {
   border-color: #efebe8;
   border-style: solid;
-  border-width: 0 0 2px 0;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
+  border-width: 2px 0 0 0;
+  margin-top: 15px;
+  padding-top: 10px;
 }
 
 .compare ul.previews-list {
@@ -669,6 +669,7 @@ footer, .footer,
 .compare .item-detail .institution {
   height: auto;
   max-height: 120px;
+  border: none;
 }
 /* Compare page - end */
 
