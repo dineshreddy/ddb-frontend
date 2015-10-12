@@ -7,9 +7,6 @@
    "description": {
     "type": "string"
    },
-   "found": {
-    "type": "boolean"
-   },
    "queryString": {
     "index": "not_analyzed",
     "type": "string"
