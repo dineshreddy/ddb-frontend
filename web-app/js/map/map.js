@@ -238,8 +238,8 @@ $(document).ready(function() {
         var cortexPointList = cortexInput.split(",");
         for(var i=0;i<cortexPointList.length;i++){
           var cortexCoords = cortexPointList[i].split(" ");
-          var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
-          points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
+          //var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
+          points.push(new OpenLayers.Geometry.Point(cortexCoords[0], cortexCoords[1]));
         }
 
         var linearRing = new OpenLayers.Geometry.LinearRing(points);
