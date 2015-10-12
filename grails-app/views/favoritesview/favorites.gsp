@@ -263,6 +263,9 @@ limitations under the License.
         <button class="submit" id="edit-confirm"><g:message encodeAs="html" code="ddbcommon.Save" /> </button> 
       </div>
     </div>
-
+    <div class="row item-detail linkurl off">
+      <div><strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink" />: </strong></div>
+      <div class="value">http<g:if test="${request.isSecure()}">s</g:if>://${request.serverName}${itemUri}</div>
+    </div>
   </body>
 </html>
