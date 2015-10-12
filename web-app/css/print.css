@@ -526,7 +526,7 @@ footer, .footer,
 }
 
 .lists .lists-header {
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 }
 
 .list-items ul.unstyled,
@@ -536,12 +536,12 @@ footer, .footer,
   padding-left: 0;
 }
 
-.list-items .item h2 a {
-  font-weight: normal;
-}
-
 .list-items .item {
-  padding-bottom: 20px;
+  padding-bottom: 15px;
+  display: block;
+  min-height: 120px;
+  width: 650px !important;
+  page-break-inside: avoid;
 }
 
 .list-items .summary {
@@ -562,6 +562,28 @@ footer, .footer,
 
 .list-items .thumbnail-wrapper img {
   margin: 15px 15px 15px 70px;
+}
+
+.list-items .title {
+  padding: 0 35px 0 0;
+  margin: 0;
+  line-height: 20px;
+  overflow: hidden;
+  font-size: 1em;
+  max-height: 6.2em;
+}
+
+.list-items .item-details {
+  font-family: Calibri,Arial,sans-serif;
+  line-height: 1em;
+  margin: 7px 0 0;
+  color: #3e3a37;
+  margin-top: 3px;
+  word-wrap: break-word;
+}
+
+.list-items h2 {
+  font-size: 1em;
 }
 /* Favorites list page - end */
 

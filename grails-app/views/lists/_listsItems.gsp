@@ -32,7 +32,7 @@ limitations under the License.
                 <div class="item-details"><g:message encodeAs="html" code="ddbnext.lists.itemDetails" args="${[folder?.publishingName, folder?.count, folder?.creationDateFormatted, folder?.updatedDateFormatted]}"/></div>
                 <div class="item-description">${folder?.description}</div>
               </div>
-              <div class="span2">
+              <div class="thumbnail-wrapper span2">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
                     <g:if test="${folder?.thumbnailItemMetaData?.preview?.thumbnail}">
                       <img src="${folder?.thumbnailItemMetaData?.preview?.thumbnail}" alt="<ddb:getWithoutTags>${folder?.thumbnailItemMetaData?.preview?.title}</ddb:getWithoutTags>" />
