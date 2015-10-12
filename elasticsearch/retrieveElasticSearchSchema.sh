@@ -39,7 +39,7 @@ echo
 ##################################
 
 retrieveSchemaFile() {
-  export http_proxy="" && curl --output $1.json --silent $elasticSearchServer/$index/$1/_mapping
+  export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon -e $index -e mappings -S > $1.json
 }
 
 echo Retrieving schema from elasticsearch

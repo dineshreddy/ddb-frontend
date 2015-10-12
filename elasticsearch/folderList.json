@@ -1,1 +1,20 @@
-{"folderList":{"properties":{"createdAt":{"type":"long"},"folders":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"title":{"type":"string"},"users":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"}}}}
+{
+ "folderList": {
+  "properties": {
+   "createdAt": {
+    "type": "long"
+   },
+   "folders": {
+    "index": "not_analyzed",
+    "type": "string"
+   },
+   "title": {
+    "type": "string"
+   },
+   "users": {
+    "index": "not_analyzed",
+    "type": "string"
+   }
+  }
+ }
+}
