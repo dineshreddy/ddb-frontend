@@ -31,7 +31,7 @@
 header, .header, 
 footer, .footer,
 .cookie-notice,
-.facets-container, .results-paginator-options, .page-info-nav .page-nav, .page-info-nav .page-nav-mob, .page-info-nav .script,
+.facets-container, .results-paginator-options, .page-info-nav, .page-info-nav, .page-info-nav,
 .results-paginator-view, .information, #print-nav, .item-options, .paginator-options-button, .entities-url,
 .object-controls, .origin, .slide-viewer .tabs, .sibling-count, .similar-objects-header,
 .group-operator, .add-group-button,
@@ -80,7 +80,6 @@ footer, .footer,
   width: 650px !important;
   background-color: #fff !important;
   margin-left: -40px;
-  border-width: 0 0 2px 0 !important;
 }
 
 .entity-list .entity .summary-main-wrapper {
@@ -147,12 +146,6 @@ footer, .footer,
 
 .entity-list .entity .thumbnail-wrapper {
   margin-left: 530px !important;
-}
-
-@-moz-document url-prefix() { 
-  .entity-list .entity .thumbnail-wrapper {
-    margin-left: 130px !important;
-  }
 }
 
 .search-results-list .grid .thumbnail-wrapper {
