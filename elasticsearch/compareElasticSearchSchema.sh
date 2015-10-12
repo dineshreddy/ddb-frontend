@@ -43,7 +43,7 @@ readSchemaFile() {
     echo "ERROR: no content in mandatory file $1. Exiting script. ElasticSearch schema was not updated"
     exit 1 #exit script
   fi
-  cat $1 | jshon
+  cat $1
 }
 
 echo
@@ -73,11 +73,11 @@ echo
 
 compareSchemaFile() {
   echo "$1:"
-  response=`export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon`
+  response=`export http_proxy="" && curl --silent $elasticSearchServer/$index/$1/_mapping | jshon -e $index -e mappings -S`
   diff --brief <(echo "$2") <(echo "$response")
   if [ $? -ne 0 ]; then
     if [ -n "$debug" ]; then
-      diff --side-by-side <(echo "$2") <(echo "$response") | less
+      diff --ignore-space-change --side-by-side <(echo "$2") <(echo "$response") | less
     fi
   else
     echo "no difference found"
