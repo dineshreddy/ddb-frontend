@@ -31,7 +31,7 @@ limitations under the License.
           </g:each>
         </ul>
         <div class="build"><ddbcommon:getFrontendVersion /> / <ddbcommon:getBackendVersion/></div>
-        <ddb:getSocialIconsUrl />
+        <ddbcommon:getSocialIconsUrl />
       </div>
     </div>
   </div>
