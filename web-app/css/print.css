@@ -51,7 +51,8 @@ footer, .footer,
 #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
 #editSavedSearchModal,
 .lists-header .right-container, .lists-main .lists-menu, .lists-main .lists-content .lists-paginator-options
-.static_content .field-item.even p:last-child, .static_content .field-item .asset-image strong,
+.static_content .field-item.even p:last-child,
+.static_content .field-item .asset-image strong,
 .item-links, .share,
 .entity-page .entity-controls, .entity-page .external-icon, .entity-page .search, .entity-page > hr, .entity-page .row .span3 > hr,
 .compare .row .compare-links, .compare .compare-body .institution .institution-link:before {
@@ -565,6 +566,10 @@ footer, .footer,
 /* Favorites list page - end */
 
 /* Static pages */
+.static_content h2 {
+  color: #3e3a37;
+}
+
 .static_content .views-field-created {
   margin-top: 10px;
 }
@@ -572,6 +577,11 @@ footer, .footer,
 .static_content a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
 .static_content .external-link-icon {
   padding-left: 0;
+}
+
+.static_content a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before,
+.static_content .external-link-icon:before {
+  background:none;
 }
 
 .static_content .field-item img {
@@ -583,7 +593,7 @@ footer, .footer,
 }
 
 .static_content .field-name-field-asset-image-description {
-  font-family: italic;
+  font-family: italic !important;
 }
 /* Static pages - end */
 
