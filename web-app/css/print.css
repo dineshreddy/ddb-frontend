@@ -81,10 +81,12 @@ footer, .footer,
 }
 
 .entity-list .entity {
+  display: block;
   width: 650px !important;
   background-color: #fff !important;
   margin-left: -40px;
   min-height: 120px;
+  page-break-inside: avoid;
 }
 
 .entity-list .entity .summary-main-wrapper {
@@ -549,7 +551,7 @@ footer, .footer,
 }
 
 .list-items .item {
-  padding-bottom: 15px;
+  padding: 15px 0;
   display: block;
   min-height: 120px;
   width: 650px !important;
@@ -574,6 +576,8 @@ footer, .footer,
 
 .list-items .thumbnail-wrapper img {
   margin: 15px 15px 15px 70px;
+  max-width: 140px;
+  max-height: 105px;
 }
 
 .list-items .title {
@@ -691,12 +695,12 @@ footer, .footer,
   margin-top: 0;
 }
 .favorites-results .results-list .thumbnail img {
-    max-width: 140px;
-    max-height: 105px;
-    display: block;
-    float: none;
-    border: 0;
-    margin: auto;
+  max-width: 140px;
+  max-height: 105px;
+  display: block;
+  float: none;
+  border: 0;
+  margin: auto;
 }
 
 .favorites-results .results-list .item {
