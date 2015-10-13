@@ -380,7 +380,7 @@ class UrlMappings {
             action="index"
         }
 
-        "/lists/$id" {
+        "/lists/$id?" {
             controller="lists"
             action="index"
         }
