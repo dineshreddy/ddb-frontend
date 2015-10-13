@@ -50,7 +50,7 @@ footer, .footer,
 .favorites-results-head hr, #favorite-confirmation, .item-detail .favorite, #favoritesModal, #msDeleteFavorites,
 #favoritesDeleteConfirmDialog, .favorites-results-controls, #sendSavedSearchesModal, #deleteSavedSearchesModal,
 #editSavedSearchModal,
-.lists-header .right-container, .lists-main .lists-menu, .lists-main .lists-content .lists-paginator-options
+.lists-header .right-container, .lists-main .lists-menu, .lists-main .lists-content .lists-paginator-options,
 .static_content .field-item.even p:last-child,
 .static_content .field-item .asset-image strong,
 .item-links, .share,
@@ -556,6 +556,10 @@ footer, .footer,
   min-height: 120px;
   width: 650px !important;
   page-break-inside: avoid;
+}
+
+.list-items .item.bb:first-child {
+  border-top: solid 1px #efebe8;
 }
 
 .list-items .summary {
