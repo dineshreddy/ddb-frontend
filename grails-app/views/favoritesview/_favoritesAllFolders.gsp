@@ -11,7 +11,7 @@
 </g:each>
 <g:if test="${showLinkAllList}" >
     <br />
-    <g:link uri="/user/${selectedUserId}/favorites/allpublicfolders/${selectedFolder.folderId}" elementId="alle-listen"
+    <g:link relativeUri="#" elementId="alle-listen"
             data-userId="${selectedUserId}" data-selectedFolderId="${selectedFolder.folderId}" class="underlined">
       <g:message encodeAs="html" code="ddbnext.ALL_List_Of"/> ${selectedUserFirstnameAndLastnameOrNickname}
     </g:link>
