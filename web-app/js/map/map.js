@@ -232,8 +232,8 @@ $(document).ready(function() {
         var points = [];
         //var cortexInput = "MULTIPOLYGON(((3464660.65 5602254.22,3464663.15 5602250.81,3464668.53 5602253.7,3464668.83 5602253.11,3464672.73 5602254.1,3464678.05 5602256.13,3464676.66 5602259.44,3464671.93 5602257.05,3464671.18 5602259.43,3464660.65 5602254.22)))";
         //var cortexInput = "MULTIPOLYGON(((8.60846820621224 50.22991461456,8.60847423314036 50.2299146708413,8.60850912744332 50.2299149862658,8.60857611358845 50.2299155896562,8.60857119363317 50.2299911438275,8.60846320015568 50.2299886772759,8.60846820621224 50.22991461456)))";
-        var cortexInput = "MULTIPOLYGON(((50.22991461456 8.60846820621224,50.2299146708413 8.60847423314036,50.2299149862658 8.60850912744332,50.2299155896562 8.60857611358845,50.2299911438275 8.60857119363317,50.2299886772759 8.60846320015568,50.22991461456 8.60846820621224)))";
-        //var cortexInput = $('#ddb-map').attr("data-geometry");
+        //var cortexInput = "MULTIPOLYGON(((50.22991461456 8.60846820621224,50.2299146708413 8.60847423314036,50.2299149862658 8.60850912744332,50.2299155896562 8.60857611358845,50.2299911438275 8.60857119363317,50.2299886772759 8.60846320015568,50.22991461456 8.60846820621224)))";
+        var cortexInput = $('#ddb-map').attr("data-geometry");
 
         cortexInput = cortexInput.replace("MULTIPOLYGON(((", "");
         cortexInput = cortexInput.replace(")))", "");
@@ -241,13 +241,13 @@ $(document).ready(function() {
         for(var i=0;i<cortexPointList.length;i++){
           var cortexCoords = cortexPointList[i].split(" ");
           //console.log(cortexCoords[0]+" "+cortexCoords[1]);
-          
+
           //var point = self._getLonLatFromGaussKrueger(cortexCoords[0], cortexCoords[1]);
-          
+          var point = self._getLonLat(cortexCoords[0], cortexCoords[1]);
           //console.log(point.lon+" "+point.lat);
-          
-          //points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
-          points.push(new OpenLayers.Geometry.Point(cortexCoords[0], cortexCoords[1]));
+
+          points.push(new OpenLayers.Geometry.Point(point.lon, point.lat));
+          //points.push(new OpenLayers.Geometry.Point(cortexCoords[0], cortexCoords[1]));
         }
 
         var linearRing = new OpenLayers.Geometry.LinearRing(points);
