@@ -579,9 +579,13 @@ footer, .footer,
 }
 
 .list-items .thumbnail-wrapper img {
-  margin: 15px 15px 15px 70px;
   max-width: 140px;
   max-height: 105px;
+  display: block;
+  float: none;
+  border: 0;
+  margin: auto;
+  padding-top: 15px;
 }
 
 .list-items .title {
