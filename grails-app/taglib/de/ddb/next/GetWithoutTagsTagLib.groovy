@@ -26,7 +26,7 @@ class GetWithoutTagsTagLib {
      * ensure there is no html code contained.
      */
     def getWithoutTags = { attrs, body ->
-        def inputString = body()
+        def inputString = attrs.text
         def outputString = ""
         if(inputString){
             outputString = inputString.replaceAll(/<!--.*?-->/, '').replaceAll(/<.*?>/, '')

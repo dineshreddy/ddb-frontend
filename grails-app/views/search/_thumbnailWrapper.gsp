@@ -19,7 +19,8 @@ limitations under the License.
 <div class="thumbnail-wrapper <g:if test="${viewType != SearchParamEnum.VIEWTYPE_GRID.getName()}">span3</g:if>">
   <div class="thumbnail" id="thumbnail-${item.id}">
     <g:link controller="${ controller }" action="${ action }" params="${params + [id: item.id, hitNumber: hitNumber]}">
-      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}" alt="<ddb:getWithoutTags>${item.preview.title}</ddb:getWithoutTags>" />
+      <img src="<g:if test="${item.preview.thumbnail.contains('binary')}">${confBinary}</g:if>${item.preview.thumbnail}"
+           alt="${ddb.getWithoutTags(text: item.preview.title)}" />
     </g:link>
   </div>
   <div class="item-options bl">

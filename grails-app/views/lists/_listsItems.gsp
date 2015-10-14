@@ -35,7 +35,8 @@ limitations under the License.
               <div class="thumbnail-wrapper span2">
                   <a href="<g:createLink controller="favoritesview" action="publicFavorites" params="${[userId: folder?.userId, folderId: folder?.folderId]}" />" title="${folder?.description}" data-title="${folder?.title}" >
                     <g:if test="${folder?.thumbnailItemMetaData?.preview?.thumbnail}">
-                      <img src="${folder?.thumbnailItemMetaData?.preview?.thumbnail}" alt="<ddb:getWithoutTags>${folder?.thumbnailItemMetaData?.preview?.title}</ddb:getWithoutTags>" />
+                      <img src="${folder?.thumbnailItemMetaData?.preview?.thumbnail}"
+                           alt="${ddb.getWithoutTags(text: folder?.thumbnailItemMetaData?.preview?.title)}" />
                     </g:if>
                   </a>
               </div>

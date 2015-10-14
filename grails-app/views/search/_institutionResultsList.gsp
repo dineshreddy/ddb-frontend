@@ -43,7 +43,8 @@ limitations under the License.
                 <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaInstitution.png" width="140" height="90" />
               </g:if>
               <g:else>
-                <img src="${request.getContextPath() + institutionItem.preview.thumbnail}" alt="<ddb:getWithoutTags>${institutionItem.preview.title}</ddb:getWithoutTags>"/>
+                <img src="${request.getContextPath() + institutionItem.preview.thumbnail}"
+                     alt="${ddb.getWithoutTags(text: institutionItem.preview.title)}"/>
               </g:else>
             </g:link>
           </div>

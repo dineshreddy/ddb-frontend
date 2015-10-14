@@ -31,7 +31,7 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${it.id}">
               <g:if test="${it.category == "orphaned"}">
                 <a>
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </a>
               </g:if>
               <g:else>
@@ -42,7 +42,7 @@ limitations under the License.
                   <g:set var="entityLink" value="persist" />
                 </g:else>
                 <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </g:link>
               </g:else>
             </div>
@@ -124,7 +124,7 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${it.id}">
               <g:if test="${it.category == "orphaned"}">
                 <a>
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </a>
               </g:if>
               <g:else>
@@ -135,7 +135,7 @@ limitations under the License.
                   <g:set var="entityLink" value="persist" />
                 </g:else>
                 <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </g:link>
               </g:else>
             </div>
