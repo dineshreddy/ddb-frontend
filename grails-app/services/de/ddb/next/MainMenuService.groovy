@@ -28,7 +28,6 @@ class MainMenuService {
     private static final String PATH = "de/ddb-services/menu"
 
     def configurationService
-    def transactional = false
 
     private MenuItem[] footerMenu
     private MenuItem[] headerMenu
