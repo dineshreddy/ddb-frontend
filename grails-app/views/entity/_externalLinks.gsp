@@ -13,20 +13,18 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@ page import="net.sf.json.JSONArray" %>
-
 <div class="external-links off">
   <hr>
   <h3><g:message encodeAs="html" code="ddbnext.External_Links"/>:</h3>
   <ul class="unstyled">
-    <g:each var="link" in="${entity.sameAs}">
-      <g:if test="${link instanceof JSONArray}">
-        <g:each in="${link}">
-          <g:render template="externalLink" model="[link: it]"/>
+    <g:each var="link" status="index" in="${entity.sameAs}">
+      <g:if test="${[Collection, Object[]].any {it.isAssignableFrom(link.'@id'.getClass())}}">
+        <g:each in="${link.'@id'}">
+          <g:render template="externalLink" model="[publisher: link.publisher[index], url: it]"/>
         </g:each>
       </g:if>
       <g:else>
-        <g:render template="externalLink" model="[link: link]"/>
+        <g:render template="externalLink" model="[publisher: link.publisher, url: link.'@id']"/>
       </g:else>
     </g:each>
   </ul>

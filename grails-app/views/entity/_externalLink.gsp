@@ -15,16 +15,16 @@ limitations under the License.
 --%>
 <%@ page import="de.ddb.common.JsonUtil" %>
 
-<ddb:isValidUrl url="${link.'@id'}">
+<ddb:isValidUrl url="${url}">
   <li class="external-link">
-    <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
-      <g:if test="${JsonUtil.isAnyNull(link.publisher.icon)}">
+    <a href="${url}" rel="external" class="no-external-link-icon">
+      <g:if test="${JsonUtil.isAnyNull(publisher.icon)}">
         <div class="external-dummy-icon"></div>
       </g:if>
       <g:else>
-        <i class="external-icon"><img src="${link.publisher.icon}" alt=""/></i>
+        <i class="external-icon"><img src="${publisher.icon}" alt=""/></i>
       </g:else>
-      <span>${link.publisher.name}</span>
+      <span>${publisher.name}</span>
 	  </a>
 	</li>
 </ddb:isValidUrl>
