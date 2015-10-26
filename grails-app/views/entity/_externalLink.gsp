@@ -1,6 +1,6 @@
 <%--
 Copyright (C) 2014 FIZ Karlsruhe
- 
+
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
@@ -22,7 +22,7 @@ limitations under the License.
         <div class="external-dummy-icon"></div>
       </g:if>
       <g:else>
-        <i class="external-icon"><img src="${publisher.icon}" alt=""/></i>
+        <i class="external-icon"><img src="${publisher.icon}" alt="${publisher.abbr}"/></i>
       </g:else>
       <span>${publisher.name}</span>
 	  </a>
