@@ -38,6 +38,7 @@ class DdbItemService {
     def transactional = false
     def grailsApplication
     def configurationService
+    def grailsLinkGenerator
     def searchService
     def messageSource
     def sessionService
@@ -45,8 +46,6 @@ class DdbItemService {
     def bookmarksService
     def itemService
     def languageService
-
-    LinkGenerator grailsLinkGenerator
 
     /**
      * Used in the preparation of images for PDF
