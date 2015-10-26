@@ -19,12 +19,14 @@ limitations under the License.
       <strong>
         <g:message code="ddbcommon.No_results_found_for_the_search.Title"/>
       </strong>
-      <div class="reset-selection ${resetSelectionUrl ? "" : "off"}">
+    </p>
+    <div class="reset-selection ${resetSelectionUrl ? "" : "off"}">
         <g:link class="reset-selection-url" url="${resetSelectionUrl}">
           <g:message code="ddbcommon.No_results_found_for_the_search.ResetSelection"/>
         </g:link>
-      </div>
+    </div>
+    <p>
+      <g:message iencode="none" code="ddbcommon.No_results_found_for_the_search.Text"/>
     </p>
-    <g:message iencode="none" code="ddbcommon.No_results_found_for_the_search.Text"/>
   </div>
 </div>
