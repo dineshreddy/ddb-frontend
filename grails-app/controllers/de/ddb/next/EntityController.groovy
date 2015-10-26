@@ -397,14 +397,12 @@ class EntityController implements InitializingBean {
     private void removeDdbUrls(def sameAs) {
         String ddbHost = ddbUrl.getHost()
 
-        sameAs?.removeAll { links ->
-            if (links instanceof JSONArray) {
-                links.each { link ->
-                    new URL(link.'@id').getHost().equals(ddbHost)
-                }
+        sameAs?.removeAll { link ->
+            if (link.'@id' instanceof JSONArray) {
+                link.'@id'.each { new URL(it).getHost().equals(ddbHost) }
             }
             else {
-                new URL(links.'@id').getHost().equals(ddbHost)
+                new URL(link.'@id').getHost().equals(ddbHost)
             }
         }
     }
