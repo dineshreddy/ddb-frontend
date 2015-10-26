@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package de.ddb.next
+import grails.converters.JSON
 import net.sf.json.JSONArray
 
 import org.springframework.beans.factory.InitializingBean
@@ -98,7 +99,8 @@ class EntityController implements InitializingBean {
                 ]])
             return
         }
-
+        log.info "getCultureGraph returned " + (jsonGraph as JSON)
+        
         def entityUri = request.forwardURI
 
         //------------------------- Object Search -------------------------------
