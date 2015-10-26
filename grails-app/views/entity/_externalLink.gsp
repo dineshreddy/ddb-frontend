@@ -13,21 +13,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@ page import="net.sf.json.JSONArray" %>
-
-<div class="external-links off">
-  <hr>
-  <h3><g:message encodeAs="html" code="ddbnext.External_Links"/>:</h3>
-  <ul class="unstyled">
-    <g:each var="link" in="${entity.sameAs}">
-      <g:if test="${link instanceof JSONArray}">
-        <g:each in="${link}">
-          <g:render template="externalLink" model="[link: it]"/>
-        </g:each>
+<ddb:isValidUrl url="${link.'@id'}">
+  <li class="external-link">
+    <a href="${link.'@id'}" rel="external" class="no-external-link-icon">
+      <g:if test="${link.publisher.icon && !(link.publisher.icon instanceof net.sf.json.JSONNull)}">
+        <i class="external-icon"><img src="${link.publisher.icon}" alt=""/></i>
+        <span>${link.publisher.name}</span>
       </g:if>
       <g:else>
-        <g:render template="externalLink" model="[link: link]"/>
+        <div class="external-dummy-icon"></div>
+        <span>${link.publisher.name}</span>
       </g:else>
-    </g:each>
-  </ul>
-</div>
+	  </a>
+	</li>
+</ddb:isValidUrl>
