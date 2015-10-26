@@ -25,7 +25,7 @@ class IsValidUrlTagLib {
 
     def isValidUrl = { attrs, body ->
         UrlValidator urlValidator = new UrlValidator(schemes);
-        if (urlValidator.isValid(attrs.url)) {
+        if (urlValidator.isValid(attrs.url.toString())) {
             out << body()
         } else {
             out << ""
