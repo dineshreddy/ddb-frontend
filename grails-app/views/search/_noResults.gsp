@@ -21,12 +21,11 @@ limitations under the License.
       </strong>
     </p>
     <div class="reset-selection ${resetSelectionUrl ? "" : "off"}">
-        <g:link class="reset-selection-url" url="${resetSelectionUrl}">
-          <g:message code="ddbcommon.No_results_found_for_the_search.ResetSelection"/>
-        </g:link>
+      <g:link class="reset-selection-url" url="${resetSelectionUrl}">
+        <g:message code="ddbcommon.No_results_found_for_the_search.ResetSelection"/>
+      </g:link>
     </div>
-    <p>
-      <g:message iencode="none" code="ddbcommon.No_results_found_for_the_search.Text"/>
-    </p>
+    <p></p>
+    <g:message encode="none" code="ddbcommon.No_results_found_for_the_search.Text"/>
   </div>
 </div>
