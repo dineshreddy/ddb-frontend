@@ -17,10 +17,10 @@ limitations under the License.
   <hr>
   <h3><g:message encodeAs="html" code="ddbnext.External_Links"/>:</h3>
   <ul class="unstyled">
-    <g:each var="link" status="index" in="${entity.sameAs}">
+    <g:each var="link" in="${entity.sameAs}">
       <g:if test="${[Collection, Object[]].any {it.isAssignableFrom(link.'@id'.getClass())}}">
         <g:each in="${link.'@id'}">
-          <g:render template="externalLink" model="[publisher: link.publisher[index], url: it]"/>
+          <g:render template="externalLink" model="[publisher: link.publisher, url: it]"/>
         </g:each>
       </g:if>
       <g:else>
