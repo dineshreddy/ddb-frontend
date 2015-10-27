@@ -1,1 +1,29 @@
-{"savedSearch":{"properties":{"createdAt":{"type":"long"},"description":{"type":"string"},"queryString":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"},"title":{"type":"string"},"type":{"type":"string"},"user":{"type":"string"},"watchers":{"type":"string","index":"not_analyzed","omit_norms":true,"index_options":"docs"}}}}
+{
+ "savedSearch": {
+  "properties": {
+   "createdAt": {
+    "type": "long"
+   },
+   "description": {
+    "type": "string"
+   },
+   "queryString": {
+    "index": "not_analyzed",
+    "type": "string"
+   },
+   "title": {
+    "type": "string"
+   },
+   "type": {
+    "type": "string"
+   },
+   "user": {
+    "type": "string"
+   },
+   "watchers": {
+    "index": "not_analyzed",
+    "type": "string"
+   }
+  }
+ }
+}
