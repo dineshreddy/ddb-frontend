@@ -61,7 +61,7 @@ limitations under the License.
             </h2>
             <div class="subtitle">
               <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                <ddbcommon:stripTags text="${it.preview.subtitle.toString().replaceAll('match', 'strong')}" allowedTags="strong"/>
+                <ddbcommon:stripTags text="${it.preview.subtitle}" replaceTags="match,strong"/>
               </g:if>
             </div>
           </div>
@@ -69,7 +69,7 @@ limitations under the License.
         <div class="span2 thumbnail">
           <g:if test="${it.category == "orphaned"}">
             <a>
-              <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
             </a>
           </g:if>
           <g:else>
@@ -80,7 +80,7 @@ limitations under the License.
               <g:set var="entityLink" value="persist" />
             </g:else>
             <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-              <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+              <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
             </g:link>
           </g:else>
         </div>

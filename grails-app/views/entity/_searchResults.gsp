@@ -19,7 +19,9 @@ limitations under the License.
       <div class="preview-item-image">
         <g:link controller="item" action="findById" params="${["id": item?.id]}">
           <g:if test="${ (item?.preview?.thumbnail.toString().contains('binary'))}">
-            <img src="${request.getContextPath() + item?.preview?.thumbnail}" title="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" alt="<ddb:getWithoutTags>${item?.preview?.title}</ddb:getWithoutTags>" />
+            <img src="${request.getContextPath() + item?.preview?.thumbnail}"
+                 title="${ddb.getWithoutTags(text: item?.preview?.title)}"
+                 alt="${ddb.getWithoutTags(text: item?.preview?.title)}" />
           </g:if>
           <g:else>
             <g:img plugin="ddb-common" dir="images/placeholder" file="searchResultMediaText.png"  />

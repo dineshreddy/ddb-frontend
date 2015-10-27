@@ -26,31 +26,60 @@ limitations under the License.
             <div class="summary-main">
               <h2 class="title">
                 <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}">
-                  <ddbcommon:getTruncatedItemTitle title="${entityItem.preferredName}" length="${ 100 }" />
+                  <ddbcommon:getTruncatedItemTitle title="${entityItem.preferredName}" length="${100}"/>
+                  <g:set var="matchFound" value="${entityItem.preferredName ==~ /.*<match>.*/}"/>
                 </g:link>
               </h2>
               <div class="persons-font">
                 <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
+                <g:set var="needBreak" value="${false}"/>
                 <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
-                  ${profession}<g:if test="${i != last}">, </g:if>
+                  <ddbcommon:stripTags text="${profession}" replaceTags="match,strong"/><g:if test="${i != last}">, </g:if>
+                  <g:set var="needBreak" value="${true}"/>
                 </g:each>
-                <g:if test="${entityItem.professionOrOccupation}">
-                  <br />
+
+                <g:if test="${needBreak}">
+                  <br/>
+                  <g:set var="needBreak" value="${false}"/>
                 </g:if>
+
                 <g:set var="hasBirthDate" value="${entityItem.dateOfBirth || entityItem.placeOfBirth}"/>
                 <g:if test="${hasBirthDate}">
                   <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
                   <g:message code="ddbnext.Entity_Birth"/>: 
-                    <g:if test="${entityItem.dateOfBirth}">${entityItem.dateOfBirth}</g:if><g:if test="${entityItem.dateOfBirth && placeOfBirth}">, </g:if>
-                    <g:if test="${placeOfBirth}"> ${placeOfBirth}</g:if>
+                  <g:if test="${entityItem.dateOfBirth}">
+                    <ddbcommon:stripTags text="${entityItem.dateOfBirth}" replaceTags="match,strong"/>
+                  </g:if><g:if test="${entityItem.dateOfBirth && placeOfBirth}">, </g:if>
+                  <g:if test="${placeOfBirth}">
+                    <ddbcommon:stripTags text="${placeOfBirth}" replaceTags="match,strong"/>
+                  </g:if>
+                  <g:set var="needBreak" value="${true}"/>
                 </g:if>
+
                 <g:if test="${entityItem.dateOfDeath || entityItem.placeOfDeath}">
                   <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
                   <g:if test="${hasBirthDate}"> - </g:if>
                   <g:message code="ddbnext.Entity_Death"/>: 
-                  <g:if test="${entityItem.dateOfDeath}" >${entityItem.dateOfDeath}</g:if><g:if test="${entityItem.dateOfDeath && placeOfDeath}">,</g:if>
-                  <g:if test="${placeOfDeath}">${placeOfDeath}</g:if>
+                  <g:if test="${entityItem.dateOfDeath}">
+                    <ddbcommon:stripTags text="${entityItem.dateOfDeath}" replaceTags="match,strong"/>
+                  </g:if><g:if test="${entityItem.dateOfDeath && placeOfDeath}">,</g:if>
+                  <g:if test="${placeOfDeath}">
+                    <ddbcommon:stripTags text="${placeOfDeath}" replaceTags="match,strong"/>
+                  </g:if>
+                  <g:set var="needBreak" value="${true}"/>
                 </g:if>
+
+                <g:each in="${entityItem.variantName}" var="variantName">
+                  <g:if test="${!matchFound && variantName ==~ /.*<match>.*/}">
+                    <g:if test="${needBreak}">
+                      <br/>
+                    </g:if>
+                    <g:message code="ddbnext.Entity_OtherNames"/>:
+                    <ddbcommon:stripTags text="${variantName}" replaceTags="match,strong"/>
+                    <g:set var="matchFound" value="${true}"/>
+                  </g:if>
+                </g:each>
+
               </div>
             </div>
           </div>

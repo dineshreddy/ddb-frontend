@@ -16,7 +16,7 @@ limitations under the License.
 <html>
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Institutions" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-<meta name="page" content="institutionList" />
+<meta name="page" content="${pageName}" />
 <meta name="layout" content="main" />
 <link rel="canonical" href="${createLink(controller: 'institution', action: 'show', base: domainCanonic)}"/>
 <r:require module="institutionlist"/>
