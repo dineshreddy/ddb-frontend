@@ -75,12 +75,14 @@ $(document).ready(function() {
           });
 
           //Register a load tiles finished event listener
-          var onTilesLoaded = function() { //on load finished
+          var onTilesLoaded = function() {
+            //on load finished
 
             //Show the waiting layer
             self._showWaitingLayer();
 
-            self._loadClusteredInstitutionList(function() { //on clusters loaded
+            self._loadClusteredInstitutionList(function() {
+              //on clusters loaded
 
               //Draws the institutions on the vector layer
               self._drawClustersOnMap();
@@ -91,17 +93,16 @@ $(document).ready(function() {
               //Remove the tiles load listener again. We only want it on initialization.
               tiles.events.unregister("loadend", tiles, onTilesLoaded);
             });
-
           };
 
-          if(jQuery.browser.msie && jQuery.browser.version < 9) {
-            onTilesLoaded(); // just call immediatelly
-          }else{
-            tiles.events.register("loadend", tiles, onTilesLoaded); // current browser can use tile loaded event
+          if (jQuery.browser.msie && jQuery.browser.version < 9) {
+            // just call immediately
+            onTilesLoaded();
+          } else {
+            // current browser can use tile loaded event
+            tiles.events.register("loadend", tiles, onTilesLoaded);
           }
-
         }
-
       },
 
       displayMultipolygone : function(config) {
@@ -507,7 +508,9 @@ $(document).ready(function() {
         });
 
         // find geographical priority
-        var locationIndex = 4; // default is offset of "Bundesland" + 2
+
+        // default is offset of "Bundesland" + 2
+        var locationIndex = 4;
         var locationFound = false;
         var firstInsti = clusteredInstitutions[0];
 
