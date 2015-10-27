@@ -277,7 +277,7 @@ jawr {
         }
     }
     locale { // Define resolver so ?lang= Grails functionality works with controllers.
-        resolver = 'de.ddb.next.DdbLocaleResolver'
+        resolver = 'de.ddb.common.DdbLocaleResolver'
     }
 }
 
