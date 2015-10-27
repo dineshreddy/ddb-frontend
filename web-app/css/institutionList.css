@@ -121,6 +121,8 @@
   position: relative;
   border: solid 1px #efebe8;
   background-color: #efebe8;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 div.sector-facet>label:hover, div.institution-with-data>label:hover {
