@@ -15,6 +15,7 @@
  */
 package de.ddb.next
 
+import grails.converters.JSON
 import de.ddb.common.exception.ItemNotFoundException
 
 
@@ -61,13 +62,13 @@ class ItemController {
     def parents() {
         def jsonResp = ddbItemService.getParent(params.id)
 
-        render(contentType:"application/json", text: jsonResp)
+        render(contentType:"application/json", text: jsonResp as JSON)
     }
 
     def children() {
         def jsonResp = itemService.getChildren( params.id)
 
-        render(contentType:"application/json", text: jsonResp)
+        render(contentType:"application/json", text: jsonResp as JSON)
     }
 
     def showXml() {
@@ -103,8 +104,6 @@ class ItemController {
             log.error "Failed Sending PDF per Email! Reason!? Cannot retrieve PDF file "+ e.getLocalizedMessage()
             message = g.message(code: 'ddbnext.item.sendPdfFailsToSendMailPDF')
         }
-
-
-        render(contentType:"application/json", text: message)
+        render(contentType:"application/json", text: message as JSON)
     }
 }

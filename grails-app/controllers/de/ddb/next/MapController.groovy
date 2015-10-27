@@ -29,7 +29,7 @@ class MapController {
         def id = params.id
         def itemSource = itemService.getItemXmlSource(id)
         def collection = new XmlSlurper().parseText(itemSource)
-        def geometry = collection.monument.georeference.geometry.text()
+        def geometry = collection.monument.geoReference.geometry.text()
 
         return geometry
     }

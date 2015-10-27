@@ -60,12 +60,8 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.loadbalancer.header.value")
     }
 
-    String getSocialIconsFacebookUrl() {
-        return getConfigValue("ddb.socialIcons.url.facebook")
-    }
-
-    String getSocialIconsTwitterUrl() {
-        return getConfigValue("ddb.socialIcons.url.twitter")
+    String getMainMenu() {
+        return getConfigValue("ddb.mainMenu")
     }
 
     boolean isCulturegraphFeaturesEnabled() {
@@ -113,12 +109,11 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.entities.features.enabled = " + isEntitySearchFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.footerMenu = " + getFooterMenu()
+        log.info "ddb.mainMenu = " + getMainMenu()
         log.info "ddb.rights.facet.features.enabled = " + isRightsFacetFeaturesEnabled()
         log.info "ddb.search.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
         log.info "ddb.search.OnlyWithThumbnails.features.enabled = " + isOnlyWithThumbnailsFeaturesEnabled()
         log.info "ddb.search.suggestions.features.enabled = " + isSearchSuggestionFeaturesEnabled()
-        log.info "ddb.socialIcons.url.facebook = " + getSocialIconsFacebookUrl()
-        log.info "ddb.socialIcons.url.twitter = " + getSocialIconsTwitterUrl()
 
         log.info "-------------------------------------------------------"
     }
