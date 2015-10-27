@@ -178,6 +178,7 @@ ddb.public.url="https://www.deutsche-digitale-bibliothek.de/"
 ddb.domain.canonic="https://www.deutsche-digitale-bibliothek.de"
 ddb.user.confirmationbase="/user/confirm/|id|/|confirmationToken|/"
 ddb.footerMenu="${userHome}/.grails/${appName}-footer-menu.json".toString()
+ddb.mainMenu=" "
 ddb.socialIcons.url.facebook="https://facebook.com/ddbkultur/"
 ddb.socialIcons.url.twitter="https://twitter.com/ddbkultur/"
 ddb.supportedLocales=["de_DE", "en_US"]
@@ -363,6 +364,14 @@ grails.cache.config = {
        timeToLiveSeconds 600
        timeToIdleSeconds 600
        maxElementsInMemory 100000
+    }
+    cache {
+       name 'itemCache'
+       eternal false
+       overflowToDisk false
+       timeToLiveSeconds 4 * 60 * 60
+       timeToIdleSeconds 4 * 60 * 60
+       maxElementsInMemory 1
     }
 }
 
