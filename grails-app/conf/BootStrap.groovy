@@ -18,15 +18,10 @@ import groovy.util.slurpersupport.NodeChild
 import groovy.xml.StreamingMarkupBuilder
 
 class BootStrap {
-
     def configurationService
 
     def init = { servletContext ->
-        try {
-            configurationService.logConfigurationSettings()
-        }
-        catch (UnsupportedOperationException e) {
-        }
+        configurationService.logConfigurationSettings()
 
         NodeChild.metaClass.toXmlString = {
             def self = delegate
