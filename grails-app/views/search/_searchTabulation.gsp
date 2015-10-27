@@ -15,6 +15,15 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.Type"%>
 <g:set var="config" bean="configurationService"/>
+<div class="print-tabulator off">
+  <span class="total-results"><ddb:getLocalizedNumber>${totalResults}</ddb:getLocalizedNumber></span> 
+  <g:if test="${totalResults == 1 || totalResults == "1"}">
+    <span class="total-results-label"><g:message code="ddbnext.Multi_Page_Result" /></span>
+  </g:if>
+  <g:else>
+    <span class="total-results-label"><g:message code="ddbnext.Multi_Page_Results" /></span>
+  </g:else>
+</div>
 <div class="results-paginator-options">
   <div class="row">
     <div class="span6 tabulator">
