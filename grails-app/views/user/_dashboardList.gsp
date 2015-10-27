@@ -31,7 +31,7 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${it.id}">
               <g:if test="${it.category == "orphaned"}">
                 <a>
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </a>
               </g:if>
               <g:else>
@@ -42,7 +42,7 @@ limitations under the License.
                   <g:set var="entityLink" value="persist" />
                 </g:else>
                 <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </g:link>
               </g:else>
             </div>
@@ -64,7 +64,7 @@ limitations under the License.
               </h2>
               <div class="subtitle">
                 <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                  <ddbcommon:stripTags text="${it.preview.subtitle.toString().replaceAll('match', 'strong')}" allowedTags="strong"/>
+                  <ddbcommon:stripTags text="${it.preview.subtitle}" replaceTags="match,strong"/>
                 </g:if>
               </div>
               <ul class="matches unstyled">
@@ -72,7 +72,7 @@ limitations under the License.
                   <span>
                     <g:each var="match" in="${it.view}">
                       <g:if test="${match instanceof String}">
-                        ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+                        ...<ddbcommon:stripTags text="${match}" replaceTags="match,strong"/>...
                       </g:if>
                       <g:else>
                         ...${match}...
@@ -101,7 +101,7 @@ limitations under the License.
               </h2>
               <div class="subtitle">
                 <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                  <ddbcommon:stripTags text="${it.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong"/>
+                  <ddbcommon:stripTags text="${it.preview.subtitle}" replaceTags="match,strong"/>
                 </g:if>
               </div>
               <ul class="matches unstyled">
@@ -109,7 +109,7 @@ limitations under the License.
                   <span>
                     <g:each var="match" in="${it.view}">
                       <g:if test="${match instanceof String}">
-                        ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+                        ...<ddbcommon:stripTags text="${match}" replaceTags="match,strong"/>...
                       </g:if>
                       <g:else>
                         ...${match}...
@@ -124,7 +124,7 @@ limitations under the License.
             <div class="thumbnail" id="thumbnail-${it.id}">
               <g:if test="${it.category == "orphaned"}">
                 <a>
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </a>
               </g:if>
               <g:else>
@@ -135,7 +135,7 @@ limitations under the License.
                   <g:set var="entityLink" value="persist" />
                 </g:else>
                 <g:link class="${entityLink}" controller="${ controller }" action="${ action }" params="[id: it.id]">
-                  <img src="${it.preview.thumbnail}" alt="<ddb:getWithoutTags>${it.preview.title}</ddb:getWithoutTags>" />
+                  <img src="${it.preview.thumbnail}" alt="${ddb.getWithoutTags(text: it.preview.title)}" />
                 </g:link>
               </g:else>
             </div>
