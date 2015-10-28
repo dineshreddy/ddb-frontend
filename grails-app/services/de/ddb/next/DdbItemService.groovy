@@ -25,11 +25,9 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.ApiResponse
 import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
-import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
