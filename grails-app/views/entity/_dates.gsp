@@ -14,14 +14,22 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 
-<%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<%@page import="de.ddb.common.constants.SearchParamEnum" %>
 
-<g:set var="hasProfessions" value="${entity.person.professionOrOccupation != null && entity.person.professionOrOccupation.size() > 0}"/>
-<g:set var="hasBirthContent" value="${entity.person.dateOfBirth != null || entity.person.placeOfBirth != null}"/>
-<g:set var="hasDeathContent" value="${entity.person.dateOfDeath != null || entity.person.placeOfDeath != null}"/>
+<g:set var="hasProfessions" value="${entity.person.professionOrOccupation}"/>
+<g:set var="hasBirthContent" value="${entity.person.dateOfBirth || entity.person.placeOfBirth}"/>
+<g:set var="hasDeathContent" value="${entity.person.dateOfDeath || entity.person.placeOfDeath}"/>
+<g:set var="variantName" value=""/>
 
+<g:if test="${entity.person.preferredName !=~ /.*(?i)$params.query.*/}">
+  <g:each in="${entity.person.variantName}">
+    <g:if test="${!variantName && it ==~ /.*(?i)$params.query.*/}">
+      <g:set var="variantName" value="${it}"/>
+    </g:if>
+  </g:each>
+</g:if>
 
-<g:if test="${hasProfessions || hasBirthContent || hasDeathContent}">
+<g:if test="${hasProfessions || hasBirthContent || hasDeathContent || variantName}">
   <div class="profession-dates">
     <g:if test="${hasProfessions}">
       <div class="profession">
@@ -30,8 +38,8 @@ limitations under the License.
         </g:each>
       </div>
     </g:if>
-    
-    <g:if test="${hasBirthContent || hasDeathContent}">
+
+    <g:if test="${hasBirthContent || hasDeathContent || variantName}">
       <div class="dates fields">  
         <g:if test="${hasBirthContent}">
           <div>
@@ -52,6 +60,10 @@ limitations under the License.
               </g:link>
             </g:if>
           </div>
+        </g:if>
+
+        <g:if test="${variantName}">
+          <g:message code="ddbnext.Entity_OtherNames"/>: ... ${variantName} ...
         </g:if>
       </div>
     </g:if>

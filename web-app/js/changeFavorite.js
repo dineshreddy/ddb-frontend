@@ -31,9 +31,9 @@ function changeFavoriteState(jElemFavorite) {
   disableFavorite(jElemFavorite.parent());
   var vActn = jElemFavorite.attr("data-actn");
   var objectType=jElemFavorite.attr("data-objecttype");
-  if (vActn === "POST") { // Currently only allow to add favorites, not to delete them
-    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid")
-        + '/?reqType=ajax';
+  if (vActn === "POST") {
+    // Currently only allow to add favorites, not to delete them
+    var url = jsContextPath + "/apis/favorites/" + jElemFavorite.attr("data-itemid") + '?reqType=ajax';
     $.ajax({
       type : vActn,
       dataType : 'json',

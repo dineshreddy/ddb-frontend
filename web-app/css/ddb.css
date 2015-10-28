@@ -311,7 +311,7 @@ header, .header {
   margin-bottom:20px;
 }
 
-header .navigation-header-logo,.header .navigation-header-logo {
+header .navigation-header-logo, .header .navigation-header-logo {
   float: left;
   height: 85px;
   border: 0;
@@ -353,6 +353,7 @@ header .navigation li.keep-in-front{
   background: url("../images/icons/arrows.png") no-repeat;
   background-position: 100.6% -127px;
   margin-right: 15px;
+  cursor: pointer;
 }
 
 header .navigation li.active ul,.header .navigation li.active ul, header .navigation li:hover ul, .header .navigation li:hover ul {
@@ -541,7 +542,11 @@ header .header-spacer,.header .header-spacer {
   width: auto!important;
 }
 
-.thumbnail-filter-container label:hover {
+.thumbnail-filter-container label span {
+  display: inline !important;
+}
+
+.thumbnail-filter-container label span:hover {
   text-decoration: underline;
   color: #a5003b;
 }
@@ -1590,16 +1595,16 @@ select {
   background-color: #6F6B68;
 }
 
-.savesearch{
+.savesearch {
   width: 400px;
   height: 155px;
   padding: 1em;
-  border-radius: 0px;
-  padding-bottom: 0px;
+  border-radius: 0;
+  padding-bottom: 0;
 }
 
 .searchsend-form {
-  margin: 0 0 0px;
+  margin: 0 0 0;
 }
 
 .savesearch-edit-input {

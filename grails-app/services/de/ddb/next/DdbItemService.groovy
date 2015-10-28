@@ -17,17 +17,19 @@ package de.ddb.next
 
 import static groovyx.net.http.ContentType.*
 import static groovyx.net.http.Method.*
+import grails.plugin.cache.Cacheable
 import grails.util.Holders
 
 import org.apache.commons.logging.LogFactory
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
+import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
@@ -35,9 +37,13 @@ import de.ddb.common.exception.ItemNotFoundException
 class DdbItemService {
     private static final log = LogFactory.getLog(this)
 
+    // ehcache name
+    private static final String CACHE_NAME = "itemCache"
+
     def transactional = false
     def grailsApplication
     def configurationService
+    def grailsLinkGenerator
     def searchService
     def messageSource
     def sessionService
@@ -45,8 +51,6 @@ class DdbItemService {
     def bookmarksService
     def itemService
     def languageService
-
-    LinkGenerator grailsLinkGenerator
 
     /**
      * Used in the preparation of images for PDF
@@ -209,6 +213,16 @@ class DdbItemService {
             similarItems : similarItems,
             geometryInput: geometry
         ]
+    }
+
+    /**
+     * Determines the total number of items and the number of items with digitalisat=true.
+     *
+     * @return item numbers
+     */
+    @Cacheable(value=DdbItemService.CACHE_NAME, key="'getNumberOfItems'")
+    def getNumberOfItems() {
+        return itemService.getNumberOfItems()
     }
 
     /**

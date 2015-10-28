@@ -28,26 +28,49 @@ limitations under the License.
               <g:message encodeAs="html" code="ddbnext.Entity_Page_Person"/>
             </div>
             <h2 class="title">
-              <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}" >
-                <strong><ddbcommon:getTruncatedItemTitle title="${ entityItem.preferredName}" length="${ 100 }" /></strong>
+              <g:link class="persist" controller="entity" action="index" params="${params + [id:entityId]}">
+                <ddbcommon:getTruncatedItemTitle title="${entityItem.preferredName}" length="${100}"/>
+                <g:set var="matchFound" value="${entityItem.preferredName ==~ /.*<match>.*/}"/>
               </g:link>
             </h2>
             <div class="subtitle hidden-phone">
               <g:set var="last" value="${entityItem.professionOrOccupation.size() - 1}" />
+              <g:set var="needBreak" value="${false}"/>
               <g:each in="${entityItem.professionOrOccupation}" var="profession" status="i">
-                ${profession}<g:if test="${i != last}">, </g:if>
+                <ddbcommon:stripTags text="${profession}" replaceTags="match,strong"/><g:if test="${i != last}">, </g:if>
+                <g:set var="needBreak" value="${true}"/>
               </g:each>
-              <br>
+
+              <g:if test="${needBreak}">
+                <br/>
+                <g:set var="needBreak" value="${false}"/>
+              </g:if>
+
               <g:set var="hasBirthDate" value="${entityItem.dateOfBirth}"/>
               <g:if test="${hasBirthDate}">
                 <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
-                <g:message code="ddbnext.Entity_Birth"/>: ${entityItem.dateOfBirth + (placeOfBirth ? ", " + placeOfBirth : "")}
+                <g:message code="ddbnext.Entity_Birth"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfBirth, replaceTags: "match,strong") + (placeOfBirth ? ", " + ddbcommon.stripTags(text: placeOfBirth, replaceTags: "match,strong") : ""))}
+                <g:set var="needBreak" value="${true}"/>
               </g:if>
+
               <g:if test="${entityItem.dateOfDeath}">
                 <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
                 <g:if test="${hasBirthDate}"> - </g:if>
-                <g:message code="ddbnext.Entity_Death"/>: ${entityItem.dateOfDeath + (placeOfDeath ? ", " + placeOfDeath : "")}
+                <g:message code="ddbnext.Entity_Death"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfDeath, replaceTags: "match,strong") + (placeOfDeath ? ", " + ddbcommon.stripTags(text: placeOfDeath, replaceTags: "match,strong") : ""))}
+                <g:set var="needBreak" value="${true}"/>
               </g:if>
+
+              <g:each in="${entityItem.variantName}" var="variantName">
+                <g:if test="${!matchFound && variantName ==~ /.*<match>.*/}">
+                  <g:if test="${needBreak}">
+                    <br/>
+                  </g:if>
+                  <g:message code="ddbnext.Entity_OtherNames"/>:
+                  <ddbcommon:stripTags text="${variantName}" replaceTags="match,strong"/>
+                  <g:set var="matchFound" value="${true}"/>
+                </g:if>
+              </g:each>
+
             </div>
           </div>
           <div class="extra">

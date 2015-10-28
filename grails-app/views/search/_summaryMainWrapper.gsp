@@ -28,7 +28,7 @@ limitations under the License.
     </h2>
     <div class="subtitle">
       <g:if test="${(item.preview?.subtitle != null) && (item.preview?.subtitle?.toString() != "null")}">
-        <ddbcommon:stripTags text="${item.preview.subtitle.toString().replaceAll('match', 'strong')}" allowedTags="strong" />
+        <ddbcommon:stripTags text="${item.preview.subtitle}" replaceTags="match,strong"/>
       </g:if>
     </div>
     <ul class="matches unstyled">
@@ -36,7 +36,7 @@ limitations under the License.
         <span>
           <g:each var="match" in="${item.view}">
             <g:if test="${match instanceof String}">
-              ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+              ...<ddbcommon:stripTags text="${match}" replaceTags="match,strong"/>...
             </g:if>
             <g:else>
               ...${match}...
