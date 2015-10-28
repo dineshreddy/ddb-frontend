@@ -202,11 +202,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
             $(this).append(
                 '<input type="hidden" name="clustered" value="' + json["clustered"] + '"/>');
           }
-          if (json["isThumbnailFiltered"]) {
-            $(this).append(
-                '<input type="hidden" name="isThumbnailFiltered" value="'
-                    + json["isThumbnailFiltered"] + '"/>');
-          }
           if (json["viewType"]) {
             $(this).append(
                 '<input type="hidden" name="viewType" value="' + json["viewType"] + '"/>');

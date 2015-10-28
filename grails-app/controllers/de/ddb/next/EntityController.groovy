@@ -136,7 +136,7 @@ class EntityController implements InitializingBean {
         }
 
         // filter out external links which point to DDB
-        jsonGraph.sameAs?.removeAll { link -> new URL(link.'@id').getHost().equals(ddbUrl.getHost())}
+        jsonGraph.sameAs = removeDdbUrls(jsonGraph.sameAs)
 
         def model = ["entity": jsonGraph,
             "entityUri": entityUri,
@@ -389,5 +389,32 @@ class EntityController implements InitializingBean {
                 entity.dateOfDeath = entity.dateOfDeath_de
             }
         }
+    }
+
+    /**
+     * Filter out external links which point to DDB.
+     */
+    private def removeDdbUrls(def list) {
+        def result = []
+        String ddbHost = ddbUrl.getHost()
+
+        list?.each { listElement ->
+            boolean isDdbUrl = false
+
+            if (listElement.'@id' instanceof JSONArray) {
+                listElement.'@id'.each {
+                    if (new URL(it).getHost().equals(ddbHost)) {
+                        isDdbUrl = true
+                    }
+                }
+            }
+            else {
+                isDdbUrl = new URL(listElement.'@id').getHost().equals(ddbHost)
+            }
+            if (! isDdbUrl) {
+                result += listElement
+            }
+        }
+        return result
     }
 }

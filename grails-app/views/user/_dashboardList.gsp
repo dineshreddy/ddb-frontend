@@ -64,7 +64,7 @@ limitations under the License.
               </h2>
               <div class="subtitle">
                 <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                  <ddbcommon:stripTags text="${it.preview.subtitle.toString().replaceAll('match', 'strong')}" allowedTags="strong"/>
+                  <ddbcommon:stripTags text="${it.preview.subtitle}" replaceTags="match,strong"/>
                 </g:if>
               </div>
               <ul class="matches unstyled">
@@ -72,7 +72,7 @@ limitations under the License.
                   <span>
                     <g:each var="match" in="${it.view}">
                       <g:if test="${match instanceof String}">
-                        ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+                        ...<ddbcommon:stripTags text="${match}" replaceTags="match,strong"/>...
                       </g:if>
                       <g:else>
                         ...${match}...
@@ -101,7 +101,7 @@ limitations under the License.
               </h2>
               <div class="subtitle">
                 <g:if test="${(it.preview?.subtitle != null) && (it.preview?.subtitle?.toString() != "null")}">
-                  <ddbcommon:stripTags text="${it.preview.subtitle.replaceAll('match', 'strong')}" allowedTags="strong"/>
+                  <ddbcommon:stripTags text="${it.preview.subtitle}" replaceTags="match,strong"/>
                 </g:if>
               </div>
               <ul class="matches unstyled">
@@ -109,7 +109,7 @@ limitations under the License.
                   <span>
                     <g:each var="match" in="${it.view}">
                       <g:if test="${match instanceof String}">
-                        ...<ddbcommon:stripTags text="${match.replaceAll('match', 'strong')}" allowedTags="strong" />...
+                        ...<ddbcommon:stripTags text="${match}" replaceTags="match,strong"/>...
                       </g:if>
                       <g:else>
                         ...${match}...

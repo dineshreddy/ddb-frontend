@@ -22,7 +22,7 @@ import de.ddb.common.ApiConsumer
 class IndexController {
 
     def configurationService
-    def itemService
+    def ddbItemService
     def languageService
 
     def index() {
@@ -40,7 +40,7 @@ class IndexController {
         render(view: "index", model: [
             articles: rewriteUrls(apiResponse.getResponse().articles.children()),
             domainCanonic: configurationService.getDomainCanonic(),
-            stats: itemService.getNumberOfItems()
+            stats: ddbItemService.getNumberOfItems()
         ])
     }
 

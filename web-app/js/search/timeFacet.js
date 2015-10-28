@@ -716,4 +716,5 @@ $.extend(de.ddb.next.search.TimeFacet.prototype, {
     });
   }
 
-});// End extend TimeFacet prototype
+});
+// End extend TimeFacet prototype
