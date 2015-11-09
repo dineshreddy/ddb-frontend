@@ -46,26 +46,14 @@ limitations under the License.
                 <g:set var="hasBirthDate" value="${entityItem.dateOfBirth || entityItem.placeOfBirth}"/>
                 <g:if test="${hasBirthDate}">
                   <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
-                  <g:message code="ddbnext.Entity_Birth"/>: 
-                  <g:if test="${entityItem.dateOfBirth}">
-                    <ddbcommon:stripTags text="${entityItem.dateOfBirth}" replaceTags="match,strong"/>
-                  </g:if><g:if test="${entityItem.dateOfBirth && placeOfBirth}">, </g:if>
-                  <g:if test="${placeOfBirth}">
-                    <ddbcommon:stripTags text="${placeOfBirth}" replaceTags="match,strong"/>
-                  </g:if>
+                  <g:message code="ddbnext.Entity_Birth"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfBirth, replaceTags: "match,strong") + (placeOfBirth ? ", " + ddbcommon.stripTags(text: placeOfBirth, replaceTags: "match,strong") : ""))}
                   <g:set var="needBreak" value="${true}"/>
                 </g:if>
 
                 <g:if test="${entityItem.dateOfDeath || entityItem.placeOfDeath}">
                   <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
                   <g:if test="${hasBirthDate}"> - </g:if>
-                  <g:message code="ddbnext.Entity_Death"/>: 
-                  <g:if test="${entityItem.dateOfDeath}">
-                    <ddbcommon:stripTags text="${entityItem.dateOfDeath}" replaceTags="match,strong"/>
-                  </g:if><g:if test="${entityItem.dateOfDeath && placeOfDeath}">,</g:if>
-                  <g:if test="${placeOfDeath}">
-                    <ddbcommon:stripTags text="${placeOfDeath}" replaceTags="match,strong"/>
-                  </g:if>
+                  <g:message code="ddbnext.Entity_Death"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfDeath, replaceTags: "match,strong") + (placeOfDeath ? ", " + ddbcommon.stripTags(text: placeOfDeath, replaceTags: "match,strong") : ""))}
                   <g:set var="needBreak" value="${true}"/>
                 </g:if>
 
