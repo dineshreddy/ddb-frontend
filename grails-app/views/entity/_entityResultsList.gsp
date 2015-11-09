@@ -57,14 +57,21 @@ limitations under the License.
                   <g:set var="needBreak" value="${true}"/>
                 </g:if>
 
+                <g:set var="variantNameIndex" value="${0}"/>
                 <g:each in="${entityItem.variantName}" var="variantName">
                   <g:if test="${!matchFound && variantName ==~ /.*<match>.*/}">
                     <g:if test="${needBreak}">
                       <br/>
+                      <g:set var="needBreak" value="${false}"/>
                     </g:if>
-                    <g:message code="ddbnext.Entity_OtherNames"/>:
+                    <g:if test="${variantNameIndex == 0}">
+                      <g:message code="ddbnext.Entity_OtherNames"/>:
+                    </g:if>
+                    <g:else>
+                      ...
+                    </g:else>
                     <ddbcommon:stripTags text="${variantName}" replaceTags="match,strong"/>
-                    <g:set var="matchFound" value="${true}"/>
+                    <g:set var="variantNameIndex" value="${variantNameIndex + 1}"/>
                   </g:if>
                 </g:each>
 
