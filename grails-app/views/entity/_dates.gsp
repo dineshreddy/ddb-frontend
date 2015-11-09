@@ -19,17 +19,17 @@ limitations under the License.
 <g:set var="hasProfessions" value="${entity.person.professionOrOccupation}"/>
 <g:set var="hasBirthContent" value="${entity.person.dateOfBirth || entity.person.placeOfBirth}"/>
 <g:set var="hasDeathContent" value="${entity.person.dateOfDeath || entity.person.placeOfDeath}"/>
-<g:set var="variantName" value=""/>
+<g:set var="hasVariantName" value="${false}"/>
 
-<g:if test="${entity.person.preferredName !=~ /.*(?i)$params.query.*/}">
+<g:if test="${entity.person.preferredName !=~ /.*<match>.*/}">
   <g:each in="${entity.person.variantName}">
-    <g:if test="${!variantName && it ==~ /.*(?i)$params.query.*/}">
-      <g:set var="variantName" value="${it}"/>
+    <g:if test="${it ==~ /.*<match>.*/}">
+      <g:set var="hasVariantName" value="${true}"/>
     </g:if>
   </g:each>
 </g:if>
 
-<g:if test="${hasProfessions || hasBirthContent || hasDeathContent || variantName}">
+<g:if test="${hasProfessions || hasBirthContent || hasDeathContent || hasVariantName}">
   <div class="profession-dates">
     <g:if test="${hasProfessions}">
       <div class="profession">
@@ -39,7 +39,7 @@ limitations under the License.
       </div>
     </g:if>
 
-    <g:if test="${hasBirthContent || hasDeathContent || variantName}">
+    <g:if test="${hasBirthContent || hasDeathContent || hasVariantName}">
       <div class="dates fields">  
         <g:if test="${hasBirthContent}">
           <div>
@@ -62,8 +62,18 @@ limitations under the License.
           </div>
         </g:if>
 
-        <g:if test="${variantName}">
-          <g:message code="ddbnext.Entity_OtherNames"/>: ... ${variantName} ...
+        <g:if test="${hasVariantName}">
+          <g:set var="variantNameIndex" value="${0}"/>
+          <g:message code="ddbnext.Entity_OtherNames"/>:
+          <g:each in="${entity.person.variantName}" var="variantName">
+            <g:if test="${variantName ==~ /.*<match>.*/}">
+              <g:if test="${variantNameIndex > 0}">
+                ...
+              </g:if>
+              ${variantName}
+              <g:set var="variantNameIndex" value="${variantNameIndex + 1}"/>
+            </g:if>
+          </g:each>
         </g:if>
       </div>
     </g:if>
