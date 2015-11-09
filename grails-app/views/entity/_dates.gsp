@@ -21,6 +21,9 @@ limitations under the License.
 <g:set var="hasDeathContent" value="${entity.person.dateOfDeath || entity.person.placeOfDeath}"/>
 <g:set var="hasVariantName" value="${false}"/>
 
+<%--
+commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-2239
+
 <g:if test="${entity.person.preferredName !=~ /.*<match>.*/}">
   <g:each in="${entity.person.variantName}">
     <g:if test="${it ==~ /.*<match>.*/}">
@@ -28,6 +31,7 @@ limitations under the License.
     </g:if>
   </g:each>
 </g:if>
+--%>
 
 <g:if test="${hasProfessions || hasBirthContent || hasDeathContent || hasVariantName}">
   <div class="profession-dates">
