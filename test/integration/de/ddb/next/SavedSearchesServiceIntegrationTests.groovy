@@ -61,7 +61,7 @@ class SavedSearchesServiceIntegrationTests {
 
     def logStats() {
         println "userId " + userId
-        println "Index has " + savedSearchesService.getSavedSearchesCount() + " searches"
+        println "Index has " + savedSearchesService.getSavedSearchesCount(userId) + " searches"
     }
 
     @Test
