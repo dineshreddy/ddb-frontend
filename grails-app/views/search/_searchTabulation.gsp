@@ -61,7 +61,7 @@ limitations under the License.
       <div class="span3"> 
         <div id="addToSavedSearches" data-type="${active}">
           <div class="add-to-saved-searches"></div>
-          <a id="addToSavedSearchesAnchor"> <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" /></a>
+          <a id="addToSavedSearchesAnchor"><g:message encodeAs="html" code="ddbnext.Save_Savedsearch" /></a>
           <span id="addToSavedSearchesSpan" class="off">
             <g:message encodeAs="html" code="ddbnext.Saved_Savedsearch" />
           </span>
