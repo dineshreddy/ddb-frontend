@@ -295,10 +295,11 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="thumbnail-filter-container">
                     <label title="${g.message(code: "ddbnext.Show_items_with_thumbnails")}">
-                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
-                                 isThumbnailFiltered :
+                      <%-- "isThumbnailFiltered" is a String value. --%>
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered ? isThumbnailFiltered :
                                  ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.IS_THUMBNAILS_FILTERED.name)}"/>
-                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+                      <%-- "isThumbnailFiltered" is now a boolean value. --%>
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered ?
                                  isThumbnailFiltered.toBoolean() : config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
                       <input name="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
                       <input type="hidden" name="${SearchParamEnum.IS_THUMBNAILS_FILTERED.name}"
