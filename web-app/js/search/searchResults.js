@@ -351,6 +351,10 @@ de.ddb.next.search.searchResultsInitializer = function() {
     de.ddb.next.search.fetchResultsList(newUrl);
   });
 
+  $("#addToSavedSearches").click(function() {
+    addToSavedSearches();
+  });
+
   $("#addToSavedSearchesConfirm").click(function() {
     $("#addToSavedSearchesModal").modal("hide");
     var title = $("#addToSavedSearchesTitle").val();
