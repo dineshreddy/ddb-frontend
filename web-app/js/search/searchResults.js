@@ -350,6 +350,31 @@ de.ddb.next.search.searchResultsInitializer = function() {
     var newUrl = $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.fetchResultsList(newUrl);
   });
+
+  $("#addToSavedSearchesConfirm").click(function() {
+    $("#addToSavedSearchesModal").modal("hide");
+    var title = $("#addToSavedSearchesTitle").val();
+
+    if (title.length > 0) {
+      de.ddb.next.search.hideError();
+      $.ajax({
+        type : "PUT",
+        contentType : "application/json",
+        dataType : "json",
+        url : jsContextPath + "/apis/savedsearches",
+        data : JSON.stringify({
+          query : window.location.search.substring(1),
+          title : title,
+          type : $("#addToSavedSearches").attr("data-type")
+        })
+      }).done(function() {
+        disableSavedSearch($(".add-to-saved-searches"));
+      });
+    } else {
+      de.ddb.next.search.showError(messages.ddbnext.Savedsearch_Without_Title);
+    }
+  });
+
   $('#view-grid').click(
       function() {
         $('.summary-main .title a').each(
@@ -472,29 +497,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
     // take only the first 3 words as title
     $("#addToSavedSearchesTitle").val($.truncateTitle(queryString));
     $("#addToSavedSearchesModal").modal("show");
-    $("#addToSavedSearchesConfirm").unbind("click");
-    $("#addToSavedSearchesConfirm").click(function() {
-      $("#addToSavedSearchesModal").modal("hide");
-      var title = $("#addToSavedSearchesTitle").val();
-      if (title.length > 0) {
-        de.ddb.next.search.hideError();
-        $.ajax({
-          type : "PUT",
-          contentType : "application/json",
-          dataType : "json",
-          url : jsContextPath + "/apis/savedsearches",
-          data : JSON.stringify({
-            query : window.location.search.substring(1),
-            title : title,
-            type : $("#addToSavedSearches").attr("data-type")
-          })
-        }).done(function() {
-          disableSavedSearch($(".add-to-saved-searches"));
-        });
-      } else {
-        de.ddb.next.search.showError(messages.ddbnext.Savedsearch_Without_Title);
-      }
-    });
   }
 
   /**
