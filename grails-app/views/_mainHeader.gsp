@@ -115,12 +115,12 @@ limitations under the License.
               ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
-              <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
+              <li<ddbcommon:isCurrentLanguage locale="de"> class="selected-language"</ddbcommon:isCurrentLanguage>>
                 <ddb:getLanguageLink params="${params}" locale="de" islocaleclass="nopointer">
                   <g:message encodeAs="html" code="ddbnext.language_de" />
                 </ddb:getLanguageLink>
               </li>
-              <li<ddb:isCurrentLanguage locale="en"> class="selected-language"</ddb:isCurrentLanguage>>
+              <li<ddbcommon:isCurrentLanguage locale="en"> class="selected-language"</ddbcommon:isCurrentLanguage>>
                 <ddb:getLanguageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message encodeAs="html" code="ddbnext.language_en" />
                 </ddb:getLanguageLink>
