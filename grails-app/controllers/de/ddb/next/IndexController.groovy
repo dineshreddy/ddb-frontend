@@ -18,6 +18,7 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 
 class IndexController {
 
@@ -26,19 +27,15 @@ class IndexController {
     def languageService
 
     def index() {
-        // fetch the DDB news from static server.
-        def staticUrl = configurationService.getStaticUrl()
-        def locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/teaser.xml"
+        // Fetch the DDB teaser from static server.
+        String staticUrl = configurationService.getStaticUrl()
+        String locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
+        String path = locale + "/ddb-services/teaser.xml"
+        ApiResponse apiResponse = ApiConsumer.getXml(staticUrl, path)
         def articles
 
-        // Submit a request via GET
-        def apiResponse = ApiConsumer.getXml(staticUrl, path)
         if (apiResponse.isOk()) {
             articles = apiResponse.getResponse().articles.children()
-        }
-        else {
-            log.error "text: Text file was not found"
         }
         render(view: "index", model: [
             articles: rewriteUrls(articles),
