@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import grails.converters.JSON
-import groovy.json.JsonOutput
 import de.ddb.common.exception.ItemNotFoundException
 
 class ItemController {
@@ -60,8 +59,6 @@ class ItemController {
     }
 
     def parents() {
-        log.info "XXX " + ddbItemService.getParent(params.id)
-        log.info "YYY " + JsonOutput.toJson(ddbItemService.getParent(params.id))
         render(ddbItemService.getParent(params.id) as JSON)
     }
 
