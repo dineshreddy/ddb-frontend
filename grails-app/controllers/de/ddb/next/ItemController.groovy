@@ -18,13 +18,12 @@ package de.ddb.next
 import grails.converters.JSON
 import de.ddb.common.exception.ItemNotFoundException
 
-
-
 class ItemController {
     static defaultAction = "findById"
-    def fileService
-    def ddbItemService
+
     def configurationService
+    def ddbItemService
+    def fileService
     def itemService
 
     /**
@@ -60,15 +59,11 @@ class ItemController {
     }
 
     def parents() {
-        def jsonResp = ddbItemService.getParent(params.id)
-
-        render(contentType:"application/json", text: jsonResp as JSON)
+        render(ddbItemService.getParent(params.id) as JSON)
     }
 
     def children() {
-        def jsonResp = itemService.getChildren( params.id)
-
-        render(contentType:"application/json", text: jsonResp as JSON)
+        render(itemService.getChildren( params.id) as JSON)
     }
 
     def showXml() {
@@ -77,7 +72,8 @@ class ItemController {
 
             response.contentType = "text/xml"
             response.outputStream << itemService.fetchXMLMetadata(itemId)
-        } catch(ItemNotFoundException infe) {
+        }
+        catch (ItemNotFoundException e) {
             forward controller: "error", action: "itemNotFound"
         }
     }
