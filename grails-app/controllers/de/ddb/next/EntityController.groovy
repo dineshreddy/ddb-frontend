@@ -19,7 +19,6 @@ import net.sf.json.JSONArray
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
-import de.ddb.common.ApiResponse
 import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
@@ -83,13 +82,8 @@ class EntityController implements InitializingBean {
             return
         }
 
-        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityId)
-        if (!apiResponse.isOk()) {
-            return
-        }
-
-        def jsonGraph = apiResponse.getResponse()
-        if (jsonGraph == null) {
+        def jsonGraph = cultureGraphService.getCultureGraph(entityId)
+        if (!jsonGraph) {
             return
         }
         else if (!jsonGraph.person) {
@@ -350,13 +344,9 @@ class EntityController implements InitializingBean {
             offset = 0
         }
 
-        ApiResponse apiResponse = cultureGraphService.getCultureGraph(entityid)
-        def jsonGraph = null
-        if(apiResponse.isOk()){
-            jsonGraph = apiResponse.getResponse()
-
+        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+        if (jsonGraph) {
             def entity = [:]
-
             def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
 
             entity["searchPreview"] = searchPreview
