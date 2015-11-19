@@ -83,12 +83,12 @@ grails.project.dependency.resolution = {
         mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
 
-        mavenRepo ("https://www.escidoc.org/artifactory/repo/") { updatePolicy 'always' }
+        mavenRepo ("https://dev.fiz-karlsruhe.de/artifactory/repo/") { updatePolicy 'always' }
     }
 
     dependencies {
         build ('org.owasp:dependency-check-ant:1.2.11')
-
+        
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
         compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
