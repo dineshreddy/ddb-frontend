@@ -351,10 +351,6 @@ de.ddb.next.search.searchResultsInitializer = function() {
     de.ddb.next.search.fetchResultsList(newUrl);
   });
 
-  $("#addToSavedSearches").click(function() {
-    addToSavedSearches();
-  });
-
   $("#addToSavedSearchesConfirm").click(function() {
     $("#addToSavedSearchesModal").modal("hide");
     var title = $("#addToSavedSearchesTitle").val();
@@ -562,7 +558,7 @@ de.ddb.next.search.searchResultsInitializer = function() {
           disableSavedSearch($(".add-to-saved-searches"));
         },
         204: function() { //SC_NO_CONTENT
-          enableSavedSearch($(".added-to-saved-searches"));
+          enableSavedSearch($(".add-to-saved-searches"));
         }
       });
     }
@@ -579,6 +575,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
     div.addClass("added-to-saved-searches");
     $("#addToSavedSearchesAnchor").addClass("off");
     $("#addToSavedSearchesSpan").removeClass("off");
+    // for synchronization with Selenium
+    div.removeClass("initializing");
   }
 
   /**
@@ -595,6 +593,8 @@ de.ddb.next.search.searchResultsInitializer = function() {
     div.addClass("add-to-saved-searches");
     $("#addToSavedSearchesSpan").addClass("off");
     $("#addToSavedSearchesAnchor").removeClass("off");
+    // for synchronization with Selenium
+    div.removeClass("initializing");
   }
 
   /**

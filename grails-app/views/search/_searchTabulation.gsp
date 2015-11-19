@@ -60,7 +60,7 @@ limitations under the License.
     <ddbcommon:isLoggedIn>
       <div class="span3"> 
         <div id="addToSavedSearches" data-type="${active}">
-          <div class="add-to-saved-searches"></div>
+          <div class="add-to-saved-searches initializing"></div>
           <a id="addToSavedSearchesAnchor"><g:message encodeAs="html" code="ddbnext.Save_Savedsearch" /></a>
           <span id="addToSavedSearchesSpan" class="off">
             <g:message encodeAs="html" code="ddbnext.Saved_Savedsearch" />
