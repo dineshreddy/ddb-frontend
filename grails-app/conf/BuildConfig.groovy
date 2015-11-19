@@ -93,7 +93,6 @@ grails.project.dependency.resolution = {
         runtime 'org.openid4java:openid4java:0.9.8'
         compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.springframework:spring-test:4.1.6.RELEASE' //Needed as dependency for rendering-plugin when used in WAR
-        runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
 
         // This are the geotools dependencies required for coordinate transformation
         runtime 'org.geotools:gt-referencing:10.2'
