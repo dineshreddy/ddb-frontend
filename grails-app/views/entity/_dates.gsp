@@ -16,16 +16,16 @@ limitations under the License.
 
 <%@page import="de.ddb.common.constants.SearchParamEnum" %>
 
-<g:set var="hasProfessions" value="${entity.person.professionOrOccupation}"/>
-<g:set var="hasBirthContent" value="${entity.person.dateOfBirth || entity.person.placeOfBirth}"/>
-<g:set var="hasDeathContent" value="${entity.person.dateOfDeath || entity.person.placeOfDeath}"/>
+<g:set var="hasProfessions" value="${entity.professionOrOccupation}"/>
+<g:set var="hasBirthContent" value="${entity.dateOfBirth || entity.placeOfBirth}"/>
+<g:set var="hasDeathContent" value="${entity.dateOfDeath || entity.placeOfDeath}"/>
 <g:set var="hasVariantName" value="${false}"/>
 
 <%--
 commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-2239
 
-<g:if test="${entity.person.preferredName !=~ /.*<match>.*/}">
-  <g:each in="${entity.person.variantName}">
+<g:if test="${entity.preferredName !=~ /.*<match>.*/}">
+  <g:each in="${entity.variantName}">
     <g:if test="${it ==~ /.*<match>.*/}">
       <g:set var="hasVariantName" value="${true}"/>
     </g:if>
@@ -37,8 +37,8 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
   <div class="profession-dates">
     <g:if test="${hasProfessions}">
       <div class="profession">
-        <g:each var="link" status="i" in="${entity.person.professionOrOccupation}">
-          <span>${link["@value"]}<g:if test="${i < (entity.person.professionOrOccupation.size()-1)}">, </g:if></span>
+        <g:each var="link" status="i" in="${entity.professionOrOccupation}">
+          <span>${link.value}<g:if test="${i < (entity.professionOrOccupation.size() - 1)}">, </g:if></span>
         </g:each>
       </div>
     </g:if>
@@ -48,9 +48,9 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
         <g:if test="${hasBirthContent}">
           <div>
             <g:message encodeAs="html" code="ddbnext.Entity_Birth" />: 
-            ${entity.person.dateOfBirth}<g:if test="${entity.person.placeOfBirth}"><g:if test="${entity.person.dateOfBirth}">,</g:if>
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfBirth.'@value']}" class="search_link">
-                <span>${entity.person.placeOfBirth.'@value'}</span>
+            ${entity.dateOfBirth}<g:if test="${entity.placeOfBirth}"><g:if test="${entity.dateOfBirth}">,</g:if>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfBirth.value]}" class="search_link">
+                <span>${entity.placeOfBirth.value}</span>
               </g:link>
             </g:if>
           </div>
@@ -58,9 +58,9 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
         <g:if test="${hasDeathContent}">
           <div>
             <g:message encodeAs="html" code="ddbnext.Entity_Death" />: 
-            ${entity.person.dateOfDeath}<g:if test="${entity.person.placeOfDeath}"><g:if test="${entity.person.dateOfDeath}">,</g:if>
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.person.placeOfDeath.'@value']}" class="search_link">
-                <span>${entity.person.placeOfDeath.'@value'}</span>
+            ${entity.dateOfDeath}<g:if test="${entity.placeOfDeath}"><g:if test="${entity.dateOfDeath}">,</g:if>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfDeath.value]}" class="search_link">
+                <span>${entity.placeOfDeath.value}</span>
               </g:link>
             </g:if>
           </div>
@@ -69,7 +69,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
         <g:if test="${hasVariantName}">
           <g:set var="variantNameIndex" value="${0}"/>
           <g:message code="ddbnext.Entity_OtherNames"/>:
-          <g:each in="${entity.person.variantName}" var="variantName">
+          <g:each in="${entity.variantName}" var="variantName">
             <g:if test="${variantName ==~ /.*<match>.*/}">
               <g:if test="${variantNameIndex > 0}">
                 ...

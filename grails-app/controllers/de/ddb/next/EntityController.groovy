@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 package de.ddb.next
-import net.sf.json.JSONArray
-
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.beans.entityfacts.Entity
+import de.ddb.common.beans.entityfacts.SameAs
 import de.ddb.common.constants.EntityFacetEnum
 import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
@@ -82,11 +82,11 @@ class EntityController implements InitializingBean {
             return
         }
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityId)
-        if (!jsonGraph) {
+        Entity entity = cultureGraphService.getCultureGraph(entityId)
+        if (!entity) {
             return
         }
-        else if (!jsonGraph.person) {
+        else if (!entity.preferredName) {
             render(view: "/message/message", model: [errors: [
                     "ddbnext.Error_Entity_No_Elements"
                 ]])
@@ -97,12 +97,12 @@ class EntityController implements InitializingBean {
 
         //------------------------- Object Search -------------------------------
 
-        def forename = jsonGraph.person.forename
-        if(jsonGraph.person.prefix != null && !jsonGraph.person.prefix.trim().isEmpty()){
-            forename += " "+jsonGraph.person.prefix
+        def forename = entity.forename
+        if(entity.prefix && !entity.prefix.trim().isEmpty()) {
+            forename += " " + entity.prefix
         }
 
-        def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
+        def searchPreview = entityService.doItemSearch(offset, rows, entity)
 
         //------------------------- Involved Search -------------------------------
         def searchInvolved = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_INVOLVED, entityId)
@@ -111,36 +111,32 @@ class EntityController implements InitializingBean {
         def searchSubject = entityService.doFacetSearch(0, 4, RoleFacetEnum.AFFILIATE_SUBJECT, entityId)
 
         //------------------------- Search preview media type count -------------------------------
-        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType("mediatype_002", offset, rows, jsonGraph)
-        searchPreview["videoCount"] = entityService.getResultCountsForFacetType("mediatype_005", offset, rows, jsonGraph)
-        searchPreview["audioCount"] = entityService.getResultCountsForFacetType("mediatype_001", offset, rows, jsonGraph)
+        searchPreview["pictureCount"] = entityService.getResultCountsForFacetType("mediatype_002", offset, rows, entity)
+        searchPreview["videoCount"] = entityService.getResultCountsForFacetType("mediatype_005", offset, rows, entity)
+        searchPreview["audioCount"] = entityService.getResultCountsForFacetType("mediatype_001", offset, rows, entity)
 
-        searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, jsonGraph)
+        searchPreview["linkQuery"] = entityService.getResultLinkQuery(offset, rows, entity)
 
         //------------------------- Check for entity picture -------------------------------
-        def entityImageUrl = null
-        def thumbnailUrl = (jsonGraph?.person?.depiction?.thumbnail instanceof JSONArray) ? jsonGraph?.person?.depiction?.thumbnail[0] : jsonGraph?.person?.depiction?.thumbnail
-        def imageUrl =  (jsonGraph?.person?.depiction?.image instanceof JSONArray) ? jsonGraph?.person?.depiction?.image[0] : jsonGraph?.person?.depiction?.image
+        def thumbnailUrl = entity.depiction?.thumbnail
+        def imageUrl = entity.depiction?.image
 
         //Check first for depiction.thumbnail (normalized 270px width), than for depiction.image (can have another value than 270 px width)
-        if (thumbnailUrl){
-            entityImageUrl = thumbnailUrl
-        } else if (imageUrl) {
-            entityImageUrl = imageUrl
-        }
+        def entityImageUrl = thumbnailUrl ? thumbnailUrl : imageUrl
 
         // filter out external links which point to DDB
-        jsonGraph.sameAs = removeDdbUrls(jsonGraph.sameAs)
+        entity.sameAs = removeDdbUrls(entity.sameAs)
 
-        def model = ["entity": jsonGraph,
-            "entityUri": entityUri,
-            "entityId": entityId,
-            "isFavorite": ddbItemService.isFavorite(entityId),
-            "searchPreview": searchPreview,
-            "searchInvolved": searchInvolved,
-            "searchSubject": searchSubject,
-            domainCanonic:configurationService.getDomainCanonic(),
-            "entityImageUrl": entityImageUrl,
+        def model = [
+            entity: entity,
+            entityUri: entityUri,
+            entityId: entityId,
+            isFavorite: ddbItemService.isFavorite(entityId),
+            searchPreview: searchPreview,
+            searchInvolved: searchInvolved,
+            searchSubject: searchSubject,
+            domainCanonic: configurationService.getDomainCanonic(),
+            entityImageUrl: entityImageUrl,
             itemUri: request.forwardURI
         ]
 
@@ -344,7 +340,7 @@ class EntityController implements InitializingBean {
             offset = 0
         }
 
-        def jsonGraph = cultureGraphService.getCultureGraph(entityid)
+        Entity jsonGraph = cultureGraphService.getCultureGraph(entityid)
         if (jsonGraph) {
             def entity = [:]
             def searchPreview = entityService.doItemSearch(offset, rows, jsonGraph)
@@ -384,26 +380,13 @@ class EntityController implements InitializingBean {
     /**
      * Filter out external links which point to DDB.
      */
-    private def removeDdbUrls(def list) {
-        def result = []
-        String ddbHost = ddbUrl.getHost()
+    private SameAs[] removeDdbUrls(SameAs[] sameAs) {
+        SameAs[] result
 
-        list?.each { listElement ->
-            boolean isDdbUrl = false
+        if (sameAs) {
+            String ddbHost = ddbUrl.getHost()
 
-            if (listElement.'@id' instanceof JSONArray) {
-                listElement.'@id'.each {
-                    if (new URL(it).getHost().equals(ddbHost)) {
-                        isDdbUrl = true
-                    }
-                }
-            }
-            else {
-                isDdbUrl = new URL(listElement.'@id').getHost().equals(ddbHost)
-            }
-            if (! isDdbUrl) {
-                result += listElement
-            }
+            result = sameAs.findAll { !new URL(it.id).getHost().equals(ddbHost) }
         }
         return result
     }
