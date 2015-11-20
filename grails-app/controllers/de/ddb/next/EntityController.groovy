@@ -34,12 +34,13 @@ class EntityController implements InitializingBean {
     private final static int NR_COLUMNS_DESIRED = 5
     private final static int RESULTS_DESIRED_IN_ONE_PERSONS_PAGE = 50
     private final static int MAX_SEED_RANGE=999999999 // Backend accept as high as 2^64 -1
-    def cultureGraphService
+
     def configurationService
-    def entityService
+    def cultureGraphService
     def ddbItemService
-    def searchService
+    def entityService
     def languageService
+    def searchService
 
     URL ddbUrl
 
@@ -83,7 +84,7 @@ class EntityController implements InitializingBean {
         }
 
         Entity entity = cultureGraphService.getCultureGraph(entityId)
-        if (!entity) {
+        if (entity?.type != "person") {
             return
         }
         else if (!entity.preferredName) {
