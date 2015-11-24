@@ -112,7 +112,7 @@ grails.project.dependency.resolution = {
         compile ":mail:1.0.7"
         compile (":rest:0.8") { excludes "commons-codec"}
         compile ":message-digest:1.1"
-        compile ":spring-security-core:2.0-RC4"
+        compile ":spring-security-core:2.0-RC5"
 
         build ":tomcat:7.0.55.3"
         runtime ":resources:1.2.14"
