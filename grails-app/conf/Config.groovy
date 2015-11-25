@@ -144,7 +144,7 @@ ddb.aas.admin.userid="userid"
 ddb.aas.admin.password=" "
 ddb.aas.url="http://localhost/aas:8081/aas/"
 ddb.cms.url="http://localhost/cms/"
-ddb.culturegraph.url="http://hbzdnb:superCulture@devel.dnb.de/culturegraph/"
+ddb.culturegraph.url="http://hub.culturegraph.org/"
 ddb.elasticsearch.url="http://localhost:9200/"
 ddb.logging.folder="target/logs"
 ddb.tracking.piwikfile="${userHome}/.grails/tracking.txt"
@@ -197,9 +197,9 @@ log4j = {
 
     // The appenders define the output method of the loggings
     appenders {
-        console name: "console", threshold: org.apache.log4j.Level.DEBUG,
+        console name: "console", threshold: org.apache.log4j.Level.INFO,
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
-        file name: "${appName}-info", threshold: org.apache.log4j.Level.DEBUG,
+        file name: "${appName}-info", threshold: org.apache.log4j.Level.INFO,
             file: config.ddb.logging.folder + "/${appName}-info.log",
             layout: pattern(conversionPattern: "%-5p: %d{dd:MM:yyyy HH:mm:ss,SSS} %c: %m%n")
         file name: "${appName}-warn", threshold: org.apache.log4j.Level.WARN,
@@ -216,13 +216,13 @@ log4j = {
     // The root logger defines the basic log level and to which appenders the logging is going
     environments {
         development {
-            root { debug "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
+            root { info "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
         production {
-            root { debug "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
+            root { info "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
         test {
-            root { debug "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
+            root { info "console", "${appName}-info", "${appName}-warn", "${appName}-error", "stacktrace" }
         }
     }
 
@@ -239,11 +239,9 @@ log4j = {
                     "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
 
             error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
-            debug   "org.apache.http.headers", "and org.apache.http.wire"
-       }
+        }
         production {
             //Don't filter messages in production
-            debug   "org.apache.http.headers", "and org.apache.http.wire"
         }
         test {
             warn    "org.codehaus.groovy.grails",               // only warnings or errors from grails
@@ -256,7 +254,6 @@ log4j = {
                     "org.apache.catalina.startup.ContextConfig" // only warnings or errors from ContextConfig
 
             error   "grails.util.GrailsUtil"                    // hide deprecated warnings on startup
-            debug   "org.apache.http.headers", "and org.apache.http.wire"
         }
     }
 
