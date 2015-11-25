@@ -60,38 +60,40 @@ class ListsController {
         String id = params.id ? params.id : "dailyList"
 
         model.selectedList = model.lists.find {it.folderListId == id }
-        folders = getFoldersOfList(id, offset, rows)
+        if (model.selectedList) {
+            folders = getFoldersOfList(id, offset, rows)
 
-        model.folders = folders.folders  as JSON
-        model.folderCount = folders.count
+            model.folders = folders.folders  as JSON
+            model.folderCount = folders.count
 
-        //If a list has no folder, show an error message
-        if (model.folders?.size() == 0) {
-            model.errorMessage = "ddbnext.lists.listHasNoItems"
+            //If a list has no folder, show an error message
+            if (model.folders?.size() == 0) {
+                model.errorMessage = "ddbnext.lists.listHasNoItems"
+            }
+
+            //Pagination stuff
+            //*********************************************************************
+            def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
+            def folderCount = model.folderCount
+
+            //Calculating results details info (number of results in page, total results number)
+            def resultsOverallIndex = (offset+1)+' - ' + ((offset + rows>folderCount)? folderCount:offset + rows)
+
+            //Calculating results pagination (previous page, next page, first page, and last page)
+            def page = ((int)Math.floor(offset/rows)+1).toString()
+            def totalPages = (Math.ceil(folderCount/rows).toInteger())
+            def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
+
+            model.domainCanonic = configurationService.getDomainCanonic()
+            model.resultsPaginatorOptions = resultsPaginatorOptions
+            model.resultsOverallIndex = resultsOverallIndex
+            model.page = page
+            model.totalPages = totalPages
+            model.paginationURL = paginationURL
+            model.linkUri = request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")
+
+            render(view: "lists", model: model)
         }
-
-        //Pagination stuff
-        //*********************************************************************
-        def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
-        def folderCount = model.folderCount
-
-        //Calculating results details info (number of results in page, total results number)
-        def resultsOverallIndex = (offset+1)+' - ' + ((offset + rows>folderCount)? folderCount:offset + rows)
-
-        //Calculating results pagination (previous page, next page, first page, and last page)
-        def page = ((int)Math.floor(offset/rows)+1).toString()
-        def totalPages = (Math.ceil(folderCount/rows).toInteger())
-        def paginationURL = searchService.buildPagination(folderCount, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax",""))
-
-        model.domainCanonic = configurationService.getDomainCanonic()
-        model.resultsPaginatorOptions = resultsPaginatorOptions
-        model.resultsOverallIndex = resultsOverallIndex
-        model.page = page
-        model.totalPages = totalPages
-        model.paginationURL = paginationURL
-        model.linkUri = request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")
-
-        render(view: "lists", model: model)
     }
 
     /**
