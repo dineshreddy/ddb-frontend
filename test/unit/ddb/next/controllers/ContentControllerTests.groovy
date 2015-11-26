@@ -1,6 +1,6 @@
 package ddb.next.controllers
 
-import de.ddb.next.ContentController;
+import de.ddb.common.ContentController;
 import grails.test.mixin.TestFor;
 
 /**
