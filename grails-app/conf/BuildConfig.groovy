@@ -106,7 +106,6 @@ grails.project.dependency.resolution = {
         compile ":cache-ehcache:1.0.5"
         compile ":html-cleaner:0.3"
         compile ":jawr:3.6"
-        compile ":joda-time:1.5"
         compile ":rendering:1.0.0"
         compile ":cache-headers:1.1.7"
         compile ":mail:1.0.7"
