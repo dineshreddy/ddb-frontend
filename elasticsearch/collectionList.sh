@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# https://jira.deutsche-digitale-bibliothek.de/browse/DDBNEXT-2156
+# add a list of userId to the folder list "Aus den Sammlungen" to ElasticSearch
+
 PROGRAM_NAME=`basename $0`
 USAGE="*** usage: $PROGRAM_NAME <ElasticSearch server URL>"
 
