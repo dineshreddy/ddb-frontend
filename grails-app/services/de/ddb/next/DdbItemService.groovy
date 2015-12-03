@@ -25,11 +25,9 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.beans.Bookmark
 import de.ddb.common.beans.User
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
-import de.ddb.common.constants.Type
 import de.ddb.common.exception.ItemNotFoundException
 
 class DdbItemService {
@@ -150,16 +148,6 @@ class DdbItemService {
         }
 
         def isFavorite = isFavorite(itemId)
-        log.info("params.reqActn = ${params.reqActn} --> " + params.reqActn)
-        if (params.reqActn) {
-            if (params.reqActn.equalsIgnoreCase("add") && (isFavorite == response.SC_NOT_FOUND) && addFavorite(itemId)) {
-                isFavorite = response.SC_FOUND
-            }
-            else if (params.reqActn.equalsIgnoreCase("del") && (isFavorite == response.SC_FOUND) && delFavorite(itemId)) {
-                isFavorite = response.SC_NOT_FOUND
-            }
-        }
-
         def binaryList = itemService.findBinariesById(itemId)
         def binariesCounter = itemService.binariesCounter(binaryList)
 
@@ -314,62 +302,10 @@ class DdbItemService {
 
     def boolean isFavorite(itemId) {
         def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if(user != null) {
+        if(user) {
             return bookmarksService.isBookmarkOfUser(itemId, user.getId())
         }else{
             return false
         }
     }
-
-    def delFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: delFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            // Bug: DDBNEXT-626: if (bookmarksService.deleteBookmarksByBookmarkIds(user.getId(), [pId])) {
-            bookmarksService.deleteBookmarksByItemIds(user.getId(), [itemId])
-            def isFavorite = isFavorite(itemId)
-            if (isFavorite == response.SC_NOT_FOUND) {
-                log.info "non-JavaScript: delFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: delFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
-    }
-
-    def addFavorite(itemId) {
-        boolean vResult = false
-        log.info "non-JavaScript: addFavorite " + itemId
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if (user != null) {
-            Bookmark newBookmark = new Bookmark(
-                    null,
-                    user.getId(),
-                    itemId,
-                    new Date().getTime(),
-                    Type.CULTURAL_ITEM,
-                    null,
-                    "",
-                    new Date().getTime())
-            String newBookmarkId = bookmarksService.createBookmark(newBookmark)
-            if (newBookmarkId) {
-                log.info "non-JavaScript: addFavorite " + itemId + " - success!"
-                vResult = true
-            }
-            else {
-                log.info "non-JavaScript: addFavorite " + itemId + " - failed..."
-            }
-        }
-        else {
-            log.info "non-JavaScript: addFavorite " + itemId + " - failed (unauthorized)"
-        }
-        return vResult
-    }
-
 }
