@@ -34,6 +34,7 @@ class SearchController {
     static defaultAction = "results"
 
     def entityService
+    def itemService
     def searchService
     def configurationService
     def cultureGraphService
@@ -330,22 +331,19 @@ class SearchController {
 
             render(view: "searchInstitution", model: model)
         }
-
-
     }
 
-
     def informationItem(){
-        def jsonSubresp = ApiConsumer.getJson(configurationService.getBackendUrl() ,'/items/'+params.id+'/indexing-profile').getResponse()
         def properties = [:]
+        def newInformationItem = itemService.getItemIndexingProfile(params.id)
 
-        if(jsonSubresp.facet){
+        if(newInformationItem.facet){
             //iterate over all facets
-            jsonSubresp.facet.each(){ facet ->
+            newInformationItem.facet.each(){ facet ->
                 //iterate over all values of the FacetEnum and add matching names to the information
                 for (FacetEnum facetItem : FacetEnum.values()) {
                     if (facet['@name'] == facetItem.getName()) {
-                        addFacetItems(properties, facet, facetItem)
+                       addFacetItems(properties, facet, facetItem)
                     }
                 }
             }
