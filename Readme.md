@@ -71,7 +71,6 @@ A list of some predefined variables is set below:
     # Favorites configuration
     ddb.favorites.sendmailfrom=noreply@deutsche-digitale-bibliothek.de
     ddb.favorites.reportMailTo=geschaeftsstelle@deutsche-digitale-bibliothek.de
-    ddb.favorites.reportMailTo=noreply@deutsche-digitale-bibliothek.de
 
     # Filter configuration
     ddb.backend.facets.filter="[[facetName:language_fct, filter:term:unknown], [facetName:language_fct, filter:term:term:unknown], [facetName:keywords_fct, filter:null], [facetName:provider_fct, filter:null], [facetName:affiliate_fct, filter:null], [facetName:type_fct, filter:null], [facetName:sector_fct, filter:null], [facetName:place_fct, filter:null]]"
@@ -89,6 +88,10 @@ A list of some predefined variables is set below:
     ddb.advancedSearch.defaultOffset=0
     ddb.advancedSearch.defaultRows=20  
     ddbcommon.session.timeout=3600
+
+    # AAS user with admin rights
+    ddb.aas.admin.userid="adminuser"
+    ddb.aas.admin.password="adminpassword"
 
     # Logging configuration
     ddb.logging.folder=/opt/ddb/logs
@@ -175,7 +178,7 @@ Configuration parameter:
 * 'ddb.aas.admin.password' defines the password of the AAS user with administrator rights
  
 More info's about this service can be found here:
-https://github.com/Deutsche-Digitale-Bibliothek/aas-AASWebServices
+https://dev.fiz-karlsruhe.de/stash/projects/AAS/repos/aas-aaswebservices/
 
 
 ####CultureGraph service

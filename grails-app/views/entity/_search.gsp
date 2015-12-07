@@ -20,10 +20,10 @@ limitations under the License.
   <div class="">
     <i class="icon-search-entity"></i>
     <g:link controller="search" action="results" params="${[
-              (SearchParamEnum.QUERY.getName()): entity.person.preferredName,
+              (SearchParamEnum.QUERY.getName()): entity.preferredName,
               (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
             ]}">
-      <g:message encodeAs="html" code="ddbnext.Entity_Search_DDB" args="${[entity.person.preferredName]}"/>
+      <g:message encodeAs="html" code="ddbnext.Entity_Search_DDB" args="${[entity.preferredName]}"/>
     </g:link>
   </div>
 </div>

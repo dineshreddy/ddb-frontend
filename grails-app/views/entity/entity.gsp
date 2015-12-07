@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
 <head>
-  <title>${entity.person.preferredName} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <title>${entity.preferredName} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <%-- Used for Canonical URL --%>
 <link rel="canonical" href="${createLink(controller:'entity',action:'index',params: [id: entityId], base:domainCanonic)}" />
   <meta name="page" content="entity" />
@@ -24,7 +24,7 @@ limitations under the License.
 </head> 
 <body>
   <div class="entity-page main">
-    <div id="entity-title" class="off">${entity.person.preferredName}</div>
+    <div id="entity-title" class="off">${entity.preferredName}</div>
     <a href="#" id="entity-id" data-entityid="${entityId}"></a>
     <g:render template="controls" />
     <hr>

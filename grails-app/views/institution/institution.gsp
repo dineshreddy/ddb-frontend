@@ -45,7 +45,7 @@ limitations under the License.
              <div>
                  <h2>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
-                    <g:set var="facetvalue" value="provider_fct=${selectedOrgXML.name}"/>
+                    <g:set var="facetvalue" value="provider_id=${selectedItemId}"/>
                     <g:link class="count" controller="search" action="results"
                             params="${[(SearchParamEnum.QUERY.getName()): '',
                                        (SearchParamEnum.OFFSET.getName()): '0',

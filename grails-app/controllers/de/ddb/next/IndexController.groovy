@@ -18,6 +18,7 @@ package de.ddb.next
 import org.springframework.web.servlet.support.RequestContextUtils as RCU
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 
 class IndexController {
 
@@ -26,19 +27,18 @@ class IndexController {
     def languageService
 
     def index() {
-        // fetch the DDB news from static server.
-        def staticUrl = configurationService.getStaticUrl()
-        def locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
-        def path = locale + "/ddb-services/teaser.xml"
+        // Fetch the DDB teaser from static server.
+        String staticUrl = configurationService.getStaticUrl()
+        String locale = languageService.getBestMatchingLocale(RCU.getLocale(request)).getLanguage()
+        String path = locale + "/ddb-services/teaser.xml"
+        ApiResponse apiResponse = ApiConsumer.getXml(staticUrl, path)
+        def articles
 
-        // Submit a request via GET
-        def apiResponse = ApiConsumer.getXml(staticUrl, path)
-        if(!apiResponse.isOk()){
-            log.error "text: Text file was not found"
-            apiResponse.throwException(request)
+        if (apiResponse.isOk()) {
+            articles = apiResponse.getResponse().articles.children()
         }
         render(view: "index", model: [
-            articles: rewriteUrls(apiResponse.getResponse().articles.children()),
+            articles: rewriteUrls(articles),
             domainCanonic: configurationService.getDomainCanonic(),
             stats: ddbItemService.getNumberOfItems()
         ])
@@ -51,18 +51,20 @@ class IndexController {
      * @return articles with modified URLs
      */
     private def rewriteUrls(def articles) {
-        articles.each { article ->
-            // image URLs from CMS are absolute URLs
-            String imageUri = article.imageUri.text()
-            String pattern = "/sites/default"
-            int index = imageUri.indexOf(pattern)
-            if (index >= 0) {
-                article.imageUri = configurationService.getContextPath() + "/static/" +
-                        imageUri.substring(index + pattern.length() + 1)
-            }
+        if (articles) {
+            articles.each { article ->
+                // image URLs from CMS are absolute URLs
+                String imageUri = article.imageUri.text()
+                String pattern = "/sites/default"
+                int index = imageUri.indexOf(pattern)
+                if (index >= 0) {
+                    article.imageUri = configurationService.getContextPath() + "/static/" +
+                            imageUri.substring(index + pattern.length() + 1)
+                }
 
-            // URLs need our context path in front
-            article.uri = configurationService.getContextPath() + article.uri.text()
+                // URLs need our context path in front
+                article.uri = configurationService.getContextPath() + article.uri.text()
+            }
         }
         return articles
     }

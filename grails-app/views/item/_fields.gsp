@@ -21,7 +21,7 @@ limitations under the License.
         <strong>${field.name}: </strong>
       </div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
-        <g:if test="${field.value instanceof JSONArray}">
+        <g:if test="${[Collection, Object[]].any {it.isAssignableFrom(field.value.getClass())}}">
           <g:each var="value" in="${field.value}">
             <g:render template="field" model="['value':value]"/>
             <br />

@@ -93,7 +93,6 @@ grails.project.dependency.resolution = {
         runtime 'org.openid4java:openid4java:0.9.8'
         compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.springframework:spring-test:4.1.6.RELEASE' //Needed as dependency for rendering-plugin when used in WAR
-        runtime ('org.codehaus.groovy.modules.http-builder:http-builder:0.5.2') { excludes "groovy" }
 
         // This are the geotools dependencies required for coordinate transformation
         runtime 'org.geotools:gt-referencing:10.2'
@@ -107,13 +106,12 @@ grails.project.dependency.resolution = {
         compile ":cache-ehcache:1.0.5"
         compile ":html-cleaner:0.3"
         compile ":jawr:3.6"
-        compile ":joda-time:1.5"
         compile ":rendering:1.0.0"
         compile ":cache-headers:1.1.7"
         compile ":mail:1.0.7"
         compile (":rest:0.8") { excludes "commons-codec"}
         compile ":message-digest:1.1"
-        compile ":spring-security-core:2.0-RC4"
+        compile ":spring-security-core:2.0-RC5"
 
         build ":tomcat:7.0.55.3"
         runtime ":resources:1.2.14"
@@ -123,7 +121,7 @@ grails.project.dependency.resolution = {
 
         if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
-            compile "de.ddb:ddb-common:0.20-SNAPSHOT"
+            compile "de.ddb:ddb-common:0.22-SNAPSHOT"
         }
     }
 

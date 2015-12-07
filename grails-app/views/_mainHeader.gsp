@@ -115,12 +115,12 @@ limitations under the License.
               ${message(code: 'ddbnext.ChangeLanguage').toUpperCase()}
             </a>
             <ul class="nav">
-              <li<ddb:isCurrentLanguage locale="de"> class="selected-language"</ddb:isCurrentLanguage>>
+              <li<ddbcommon:isCurrentLanguage locale="de"> class="selected-language"</ddbcommon:isCurrentLanguage>>
                 <ddb:getLanguageLink params="${params}" locale="de" islocaleclass="nopointer">
                   <g:message encodeAs="html" code="ddbnext.language_de" />
                 </ddb:getLanguageLink>
               </li>
-              <li<ddb:isCurrentLanguage locale="en"> class="selected-language"</ddb:isCurrentLanguage>>
+              <li<ddbcommon:isCurrentLanguage locale="en"> class="selected-language"</ddbcommon:isCurrentLanguage>>
                 <ddb:getLanguageLink params="${params}" locale="en" islocaleclass="nopointer">
                   <g:message encodeAs="html" code="ddbnext.language_en" />
                 </ddb:getLanguageLink>
@@ -295,10 +295,11 @@ limitations under the License.
                 <div class="search-small-bottom">
                   <div class="thumbnail-filter-container">
                     <label title="${g.message(code: "ddbnext.Show_items_with_thumbnails")}">
-                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
-                                 isThumbnailFiltered :
+                      <%-- "isThumbnailFiltered" is a String value. --%>
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered ? isThumbnailFiltered :
                                  ddbcommon.getCookieFieldValue(fieldname: SearchParamEnum.IS_THUMBNAILS_FILTERED.name)}"/>
-                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered != null ?
+                      <%-- "isThumbnailFiltered" is now a boolean value. --%>
+                      <g:set var="isThumbnailFiltered" value="${isThumbnailFiltered ?
                                  isThumbnailFiltered.toBoolean() : config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
                       <input name="thumbnail-filter" type="checkbox" ${isThumbnailFiltered ? checked="checked" : ""}>
                       <input type="hidden" name="${SearchParamEnum.IS_THUMBNAILS_FILTERED.name}"

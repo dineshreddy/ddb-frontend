@@ -32,10 +32,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.culturegraph.url")
     }
 
-    String getDomainCanonic() {
-        return getConfigValue("ddb.domain.canonic")
-    }
-
     List getFacetsFilter() {
         return getConfigValue("ddb.backend.facets.filter", List)
     }
@@ -99,7 +95,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.cms.url = " + getCmsUrl()
         log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
-        log.info "ddb.domain.canonic = " + getDomainCanonic()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
@@ -114,7 +109,6 @@ class ConfigurationService extends CommonConfigurationService {
         log.info "ddb.search.institutions.features.enabled = " + isInstitutionSearchFeaturesEnabled()
         log.info "ddb.search.OnlyWithThumbnails.features.enabled = " + isOnlyWithThumbnailsFeaturesEnabled()
         log.info "ddb.search.suggestions.features.enabled = " + isSearchSuggestionFeaturesEnabled()
-
         log.info "-------------------------------------------------------"
     }
 }
