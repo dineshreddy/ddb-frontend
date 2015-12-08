@@ -97,15 +97,19 @@ class DdbItemService {
      * @return List
      */
     def getHierarchyItem(String id) {
+        def result = []
         def bottomUpHierarchy = getParent(id)
-        if (bottomUpHierarchy.size()<=1) {
-            return []
+
+        if (bottomUpHierarchy.size() > 1) {
+            def directParent = [:]
+
+            bottomUpHierarchy[1].properties.each { k,v -> directParent[k] = v }
+            directParent.id = bottomUpHierarchy[1].id
+            result = bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
+            directParent.children = itemService.getChildren(directParent.id)
+            result.add(directParent)
         }
-        def directParent=bottomUpHierarchy[1]
-        def flatHierarchy=bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
-        directParent["children"]= itemService.getChildren(directParent.id)
-        flatHierarchy.add(directParent)
-        return flatHierarchy
+        return result
     }
 
     /**
@@ -287,7 +291,7 @@ class DdbItemService {
         fields.each {
             if (it) {
                 it = convertToHtmlLink(it)
-                def messageKey = 'ddbnext.' + it.'@id'
+                def messageKey = 'ddbnext.' + it.id
 
                 def translated = messageSource.getMessage(messageKey, null, messageKey, locale)
                 if(translated != messageKey) {

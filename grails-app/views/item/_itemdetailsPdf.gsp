@@ -18,35 +18,25 @@ limitations under the License.
 <%@ page defaultCodec="none" %>
 <g:set var="config" bean="configurationService"/>
 <table border="0" cellpadding="2" cellspacing="3" width="100%" class="fields-table">
-  <g:each in="${fields}">
+  <g:each var="field" in="${fields}">
     <tr>
       <td style="width: 35%" class="valign-top">
         <strong>
-          <ddbcommon:wellFormedDocFromString text="${it.name}"/>:
+          <ddbcommon:wellFormedDocFromString text="${field.name}"/>:
         </strong>
       </td>
       <td class="valign-top value">
-        <g:if test="${it.value instanceof JSONArray}">
-          <g:each var="value" in="${it.value }">
-            <g:if test="${value instanceof JSONObject && !JsonUtil.isAnyNull(value."@entityId")}">
-              <g:link controller="entity" action="index" params="${["id": value."@entityId"]}" class="entity-link">
-                <ddbcommon:wellFormedDocFromString text="${value."\$"}"/>
-              </g:link>
-            </g:if>
-            <g:else>
-              <ddbcommon:wellFormedDocFromString text="${value}"/>
-            </g:else>
-            <br />
-          </g:each>
-        </g:if>
-        <g:else>
-          <g:if test="${it.value instanceof JSONObject}">
-            <ddbcommon:wellFormedDocFromString text="${it.value."\$"}"/>
+        <g:each var="value" in="${field.value}">
+          <g:if test="${value.entityId}">
+            <g:link controller="entity" action="index" params="${[id: value.entityId]}" class="entity-link">
+              <ddbcommon:wellFormedDocFromString text="${value.text}"/>
+            </g:link>
           </g:if>
           <g:else>
-            <ddbcommon:wellFormedDocFromString text="${it.value}"/>
+            <ddbcommon:wellFormedDocFromString text="${value.text}"/>
           </g:else>
-        </g:else>
+          <br />
+        </g:each>
       </td>
     </tr>
   </g:each>

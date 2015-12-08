@@ -13,23 +13,15 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<%@ page import="net.sf.json.JSONArray" %>
 <div class="fields">
   <g:each var="field" in="${fields}">
     <div class="row">
-      <div class="span2">
-        <strong>${field.name}: </strong>
-      </div>
+      <div class="span2"><strong>${field.name}: </strong></div>
       <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
-        <g:if test="${[Collection, Object[]].any {it.isAssignableFrom(field.value.getClass())}}">
-          <g:each var="value" in="${field.value}">
-            <g:render template="field" model="['value':value]"/>
-            <br />
-          </g:each>
-        </g:if>
-        <g:else>
-          <g:render template="field" model="['value':field.value]"/>
-        </g:else>
+        <g:each var="value" in="${field.value}">
+          <g:render template="field" model="[value: value]"/>
+          <br />
+        </g:each>
       </div>
     </div>
   </g:each>
