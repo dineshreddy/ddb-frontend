@@ -17,10 +17,10 @@ limitations under the License.
 <div class="fields">
   <g:each var="field" in="${fields}">
     <div class="row">
-      <div class="span2">
+      <div class="span2<g:if test="${field.'@id' == 'flex_mus_neu_110' || field.'@id' == 'flex_mus_neu_120' || field.'@id' == 'flex_mus_neu_130'}"> modified-margins</g:if>">
         <strong>${field.name}: </strong>
       </div>
-      <div class="value <g:if test="${display}">span4</g:if><g:else>span10</g:else>">
+      <div class="value<g:if test="${field.'@id' == 'flex_mus_neu_110' || field.'@id' == 'flex_mus_neu_120' || field.'@id' == 'flex_mus_neu_130'}"> modified-margins</g:if><g:if test="${display}"> span4</g:if><g:else> span10</g:else>">
         <g:if test="${[Collection, Object[]].any {it.isAssignableFrom(field.value.getClass())}}">
           <g:each var="value" in="${field.value}">
             <g:render template="field" model="['value':value]"/>
