@@ -1,4 +1,4 @@
-<%@page import="de.ddb.next.ErrorController.Type404"%>
+<%@page import="de.ddb.common.ErrorController.Type404"%>
 <html>
   <head>
     <title><g:message encodeAs="html" code="error.notfound.title"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
