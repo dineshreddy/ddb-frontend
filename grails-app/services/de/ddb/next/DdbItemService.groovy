@@ -164,7 +164,7 @@ class DdbItemService {
             item.pageLabel = item.title
         }
 
-        def licenseInformation = itemService.buildLicenseInformation(item, request)
+        def licenseInformation = itemService.buildLicenseInformation(item.item, request)
 
         def fields = translate(item.fields, itemService.convertToHtmlLink, request)
 
