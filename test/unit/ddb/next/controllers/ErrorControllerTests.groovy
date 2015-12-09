@@ -1,10 +1,7 @@
 package ddb.next.controllers
 
-import grails.test.mixin.web.GroovyPageUnitTestMixin
-import grails.util.Environment
-
-import de.ddb.next.ErrorController
 import grails.test.mixin.TestFor
+import de.ddb.common.ErrorController
 
 /**
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
