@@ -102,6 +102,23 @@
   .item-detail .institution .span3 img {
     float: right;
   }
+  .fields .modified-margins {
+    margin-left: 2.2em;
+    margin-top: -0.5em;
+  }
+  .fields .value.modified-margins {
+    margin-left: 0.375em;
+  }
+}
+
+@media (min-width: 1200px) {
+  .fields .modified-margins {
+    margin-left: 2.8em;
+    margin-top: -0.5em;
+  }
+  .fields .value.modified-margins {
+    margin-left: 1.170em;
+  }
 }
 
 .institution-name {
