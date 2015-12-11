@@ -65,7 +65,17 @@ limitations under the License.
                  </h2>
              </div>
              <div>
-               <a href="${selectedOrgXML.uri}">${String.valueOf(selectedOrgXML.uri).trim()}</a>
+               <a class="external-dummy-icon" href="${selectedOrgXML.uri}">${String.valueOf(selectedOrgXML.uri).trim()}</a>
+             </div>
+             <div>
+               <g:if test="${selectedOrgXML.facebook}">
+                 <a class="facebook-icon" href="${selectedOrgXML.facebook}" target="_blank"> ${String.valueOf(selectedOrgXML.facebook).trim()} </a>
+               </g:if>
+             </div>
+             <div>
+               <g:if test="${selectedOrgXML.twitter}">
+                 <a class="twitter-icon" href="${selectedOrgXML.twitter}" target="_blank"> ${String.valueOf(selectedOrgXML.twitter).trim()} </a>
+               </g:if>
              </div>
            </div>
            <div class="span3">

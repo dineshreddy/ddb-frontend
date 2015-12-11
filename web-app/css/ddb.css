@@ -1782,7 +1782,8 @@ input[type="text"].error {
 
 /* external links */
 
-a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]):before, .external-link-icon:before{
+a[href^="http"]:not(.no-external-link-icon):not(.external-dummy-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not(.facebook-icon):not(.twitter-icon):not([href*="deutsche-digitale-bibliothek.de"]):before,
+.external-link-icon:before{
   content: '';
   width:20px;
   height:20px;
