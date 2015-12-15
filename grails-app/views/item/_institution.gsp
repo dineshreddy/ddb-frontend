@@ -22,7 +22,7 @@ limitations under the License.
             <g:link class="institution-name" controller="institution" action="showInstitutionsTreeByItemId" params="[id: institution.id]">
             ${institution.name}
             </g:link>
-            <a class="institution-link" href="${institution.url}">${institution.url}</a>
+            <a class="institution-link" href="${institution.url}"><ddb:removeUrlProtocol url="${institution.url}"/></a>
             <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
                   <g:if test="${!originUrl?.toString()?.isEmpty()}">
