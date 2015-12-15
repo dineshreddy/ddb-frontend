@@ -76,21 +76,22 @@
 }
 
 .institution .external-dummy-icon {
-  background: url("../images/icons/entity.png") no-repeat 0 0;
-  width: 16px;
-  height: 16px;
+  background: url("../images/icons/entity.png") no-repeat 0 4px;
 }
 
 .institution .facebook-icon {
-  background: transparent url("../images/icons/openId.png") no-repeat -55px 0;
-  width: 150px;
-  height: 100px;
-  padding-left: 20px;
+  background: url("../images/icons/FBLogoBlue.png") no-repeat transparent 0 2px;
 }
 
 .institution .twitter-icon {
-  background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent !important;
-  padding-left: 20px;
+  background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent 0 4px;
+}
+
+.institution .external-dummy-icon,
+.institution .facebook-icon,
+.institution .twitter-icon {
+  background-size: 15px;
+  font-size: 1.067em;
 }
 
 .institution-item-page .institution {
