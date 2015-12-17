@@ -28,7 +28,6 @@ limitations under the License.
 <body>
   <div class="row">
     <div class="span12 search-widget">
-      <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Search_Widget"/></h1>
       <div class="row">
         <img src="${resource(dir: 'images', file: 'logoBig.png')}" class="bigLogo" alt="${g.message(code:"ddbnext.Logo_Description")}"/>
       </div>
@@ -48,7 +47,7 @@ limitations under the License.
               <span><g:message encodeAs="html" code="ddbnext.Search_text_field"/></span>
             </label>
             <input type="hidden" name="isThumbnailFiltered" value="${config.isOnlyWithThumbnailsFeaturesEnabled()}"/>
-            <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" />
+            <input type="search" class="query" name="query" <%-- autocomplete="off" --%> value="" aria-label="Search"/>
             <button type="submit">
               <!--[if !IE]><!-->
                 <g:message encodeAs="html" code="ddbnext.Go_Button"/>
@@ -103,8 +102,8 @@ limitations under the License.
           </g:if>
         </div>
         <div class="clearfix"></div>
-        <a class="previous" id="articles-prev" href=""><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Previous"/></span></a>
-        <a class="next" id="articles-next" href=""><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Next"/></span></a>
+        <a class="previous" id="articles-prev" href="" role="button"><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Previous"/></span></a>
+        <a class="next" id="articles-next" href="" role="button"><span><g:message encodeAs="html" code="ddbnext.Homepage_Carousel_Next"/></span></a>
       </div>
     </div>
   </div>

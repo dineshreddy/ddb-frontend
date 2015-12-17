@@ -18,9 +18,8 @@ limitations under the License.
 <![endif]-->
 <g:set var="menu" bean="mainMenuService"/>
 
-<footer class="container">
+<footer class="container" role="contentinfo">
   <div class="row">
-    <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Heading_Footer"/></h1>
     <div class="span12 legal">
       <div class="inner">
         <ul>
