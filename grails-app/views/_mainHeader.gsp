@@ -59,7 +59,7 @@ limitations under the License.
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
                 placeholder="Suche"
-                value="<ddbcommon:getCookieFieldValue fieldname="query" />">
+                value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}">
               <button type="submit">
                 <g:message encodeAs="html" code="ddbnext.Go_Button" />
               </button>
@@ -281,9 +281,9 @@ limitations under the License.
                 <label for="search-small"> <span><g:message encodeAs="html"
                       code="ddbnext.Search_text_field" /></span>
                 </label>
-                <input type="hidden" id="querycache" value="${ddbcommon.getCookieFieldValue(fieldname: "query")}" />
+                <input type="hidden" id="querycache" value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}" />
                 <input type="search" id="search-small" class="query" name="query"
-                       value="${ddbcommon.getCookieFieldValue(fieldname: "query")}" autocomplete="off" />
+                       value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}" autocomplete="off" />
                 <button type="submit">
                   <!--[if !IE]><!-->
                   <g:message encodeAs="html" code="ddbnext.Go_Button" />
