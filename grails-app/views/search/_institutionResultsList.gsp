@@ -59,9 +59,9 @@ limitations under the License.
             </ul>
             <div class="information<ddbcommon:isLoggedIn> show-favorites</ddbcommon:isLoggedIn> bb">
               <div class="hovercard-info-item" data-iid="${institutionItem.id}">
-                <h4>
+                <div class="hovercard-header">
                   <ddbcommon:getTruncatedHovercardTitle title="${institutionItem.preview.title }" length="${ 350 }" />
-                </h4>
+                </div>
                 <ul class="unstyled">
                   <li>
                     <div class="small-loader"></div>

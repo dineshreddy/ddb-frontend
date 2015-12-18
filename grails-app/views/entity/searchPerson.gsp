@@ -31,12 +31,15 @@ limitations under the License.
 <meta name="layout" content="main" />
 </head>
 <body>
+  <h1 class="invisible-but-readable">
+    <g:message encodeAs="html" code="ddbnext.Search_results_persons" />
+  </h1>
   <div class="row search-results-container entities">
     <div class="span3 facets-container hidden-phone">
       <div class="facets-head">
-        <h3>
+        <div class="facet-head-text">
           <g:message encodeAs="html" code="ddbnext.SearchResultsFacetHeading_Filter_Results" />
-        </h3>
+        </div>
         <ddbcommon:renderInfoTooltip messageCode="ddbnext.SearchPersonsFacetHeading_TooltipContent" infoId="search-filters" infoDir="help" hasArrow="true"/>
       </div>
       <%-- Shows the facets supported in the NON JS version--%>
