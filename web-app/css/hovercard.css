@@ -31,12 +31,14 @@
   z-index: 10;
 }
 
-.information .hovercard-info-item h4 {
+.information .hovercard-info-item .hovercard-header {
   background-color: #efebe8;
   margin: 0;
   padding: 6px 5px 5px 20px;
   font-size: 1em;
   font-weight: bold;
+  font-family: KarbidWeb, Calibri, Arial, sans-serif;
+  line-height: 1.5em;
 }
 
 .information .hovercard-info-item .fieldName {

@@ -30,7 +30,9 @@ limitations under the License.
                   <ddbcommon:getTruncatedItemTitle title="${ doc.title }" length="${ 100 }" />
                 </g:link>
                 <div class="hovercard-info-item" data-iid="${doc.id}">
-                  <h4><ddbcommon:getTruncatedHovercardTitle title="${ doc.title }" length="${ 350 }" /></h4>
+                  <div class="hovercard-header">
+                    <ddbcommon:getTruncatedHovercardTitle title="${ doc.title }" length="${ 350 }" />
+                  </div>
                   <ul class="unstyled">
                     <li>
                       <div class="small-loader"></div>

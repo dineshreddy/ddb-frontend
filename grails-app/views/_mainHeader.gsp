@@ -19,7 +19,7 @@ limitations under the License.
 </div>
 
 <!--[if lt IE 9]>
-  <div class="header" role="contentinfo">
+  <div class="header" role="banner">
 <![endif]-->
 
 <!--[if !IE]><!-->
@@ -37,15 +37,10 @@ limitations under the License.
     </div>
   </div>
 </div>
-<header class="navbar navbar-fixed-top visible-phone">
+<header class="navbar navbar-fixed-top visible-phone" role="banner">
   <div class="navbar-inner">
     <div class="container">
-      <button type="button" class="btn btn-nav" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar hidden"></span>
-      </button>
+      <button type="button" class="btn btn-nav" data-toggle="collapse" data-target=".nav-collapse"></button>
       <g:link uri="/" class="brand"
         title="${message(code: 'ddbnext.Logo_Title')}"
         tabindex="-1">
@@ -53,13 +48,14 @@ limitations under the License.
           alt="${message(code: 'ddbnext.Logo_Description')}" />
       </g:link>
       <div class="nav-collapse collapse">
-        <ul class="nav nav-list">
+        <ul class="nav nav-list" role="navigation" aria-label="Main menu">
           <li><g:form class="navbar-search pull-left"
               method="get" role="search" id="form-search-header-mobile"
               url="[controller:'search', action:'results']">
               <input type="search" class="query" name="query"
                 placeholder="Suche"
-                value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}">
+                value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}"
+                aria-label="Search"/>
               <button type="submit">
                 <g:message encodeAs="html" code="ddbnext.Go_Button" />
               </button>
@@ -147,16 +143,13 @@ limitations under the License.
     </div>
   </div>
 </header>
-<header class="hidden-phone">
+<header class="hidden-phone" role="banner">
 <!--<![endif]-->
 
 <!--[if IE]>
-<header class="ie-mobile">
+<header class="ie-mobile" role="banner">
 <![endif]-->
 
-  <h1 class="invisible-but-readable">
-    <g:message encodeAs="html" code="ddbnext.Heading_Header" />
-  </h1>
   <div class="container">
     <div class="row">
       <!--[if lt IE 9]>
@@ -171,71 +164,69 @@ limitations under the License.
               <r:img dir="images" file="logoHeaderSmall.png"
                 alt="${message(code: 'ddbnext.Logo_Description')}" />
             </g:link>
-            <div role="navigation">
-              <ul class="navigation inline">
-                <%-- menu items from CMS --%>
-                <g:each var="menuItem" in="${menu.headerMenu}">
-                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                      context:params, testmenu:menuItem, testsubmenu:true)}"/>
-                  <li class="${menuItem.subMenuItems ? "keep-in-front" : ""} ${isActive ? "active-default" : ""}">
-                    <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
-                    <g:if test="${menuItem.subMenuItems}">
-                      <div class="arrow-container">
-                        <div class="arrow-up"></div>
-                      </div>
-                      <ul>
-                        <g:each var="subMenuItem" in="${menuItem.subMenuItems}">
-                          <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                              context:params, testmenu:subMenuItem, testsubmenu:true)}"/>
-                          <li class="${isActive ? "active-default" : ""}">
-                            <g:link uri="${subMenuItem.uri}">${subMenuItem.label[ddb.getCurrentLocale()]}</g:link>
-                          </li>
-                        </g:each>
-                      </ul>
-                    </g:if>
-                  </li>
-                </g:each>
-                <%-- static menu items --%>
-                <ddbcommon:isLoggedIn>
-                  <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                      context:params, testif:[[controller: "favoritesview", action: "favorites"],
-                                              [controller: "user",          action: "getSavedSearches"],
-                                              [controller: "user",          action: "profile"],
-                                              [controller: "user",          action: "confirmationPage"],
-                                              [controller: "user",          action: "passwordChangePage"],
-                                              [controller: "user",          action: "showApiKey"]])}"/>
-                  <li class="keep-in-front ${isActive ? "active-default" : ""}">
-                    <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
+            <ul class="navigation inline" role="navigation" aria-label="Main menu">
+              <%-- menu items from CMS --%>
+              <g:each var="menuItem" in="${menu.headerMenu}">
+                <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                    context:params, testmenu:menuItem, testsubmenu:true)}"/>
+                <li class="${menuItem.subMenuItems ? "keep-in-front" : ""} ${isActive ? "active-default" : ""}">
+                  <g:link uri="${menuItem.uri}">${menuItem.label[ddb.getCurrentLocale()]}</g:link>
+                  <g:if test="${menuItem.subMenuItems}">
                     <div class="arrow-container">
                       <div class="arrow-up"></div>
                     </div>
                     <ul>
-                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                          context:params, testif:[[controller: "favoritesview", action: "favorites"]])}"/>
-                      <li class="${isActive ? "active-default" : ""}">
-                        <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.Favorites" /></g:link>
-                      </li>
-                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                          context:params, testif:[[controller: "user", action: "getSavedSearches"]])}"/>
-                      <li class="${isActive ? "active-default" : ""}">
-                        <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
-                      </li>
-                      <g:set var="isActive" value="${ddbcommon.isMappingActive(
-                          context:params, testif:[[controller: "user", action: "profile"],
-                                                  [controller: "user", action: "confirmationPage"],
-                                                  [controller: "user", action: "passwordChangePage"],
-                                                  [controller: "user", action: "showApiKey"]])}"/>
-                      <li class="${isActive ? "active-default" : ""}">
-                        <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbcommon.Profile" /></g:link>
-                      </li>
-                      <li>
-                        <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link>
-                      </li>
+                      <g:each var="subMenuItem" in="${menuItem.subMenuItems}">
+                        <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                            context:params, testmenu:subMenuItem, testsubmenu:true)}"/>
+                        <li class="${isActive ? "active-default" : ""}">
+                          <g:link uri="${subMenuItem.uri}">${subMenuItem.label[ddb.getCurrentLocale()]}</g:link>
+                        </li>
+                      </g:each>
                     </ul>
-                  </li>
-                </ddbcommon:isLoggedIn>
-              </ul>
-            </div>
+                  </g:if>
+                </li>
+              </g:each>
+              <%-- static menu items --%>
+              <ddbcommon:isLoggedIn>
+                <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                    context:params, testif:[[controller: "favoritesview", action: "favorites"],
+                                            [controller: "user",          action: "getSavedSearches"],
+                                            [controller: "user",          action: "profile"],
+                                            [controller: "user",          action: "confirmationPage"],
+                                            [controller: "user",          action: "passwordChangePage"],
+                                            [controller: "user",          action: "showApiKey"]])}"/>
+                <li class="keep-in-front ${isActive ? "active-default" : ""}">
+                  <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.MyDDB" /></g:link>
+                  <div class="arrow-container">
+                    <div class="arrow-up"></div>
+                  </div>
+                  <ul>
+                    <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                        context:params, testif:[[controller: "favoritesview", action: "favorites"]])}"/>
+                    <li class="${isActive ? "active-default" : ""}">
+                      <g:link controller="favoritesview" action="favorites"><g:message encodeAs="html" code="ddbnext.Favorites" /></g:link>
+                    </li>
+                    <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                        context:params, testif:[[controller: "user", action: "getSavedSearches"]])}"/>
+                    <li class="${isActive ? "active-default" : ""}">
+                      <g:link controller="user" action="savedsearches"><g:message encodeAs="html" code="ddbnext.Searches" /></g:link>
+                    </li>
+                    <g:set var="isActive" value="${ddbcommon.isMappingActive(
+                        context:params, testif:[[controller: "user", action: "profile"],
+                                                [controller: "user", action: "confirmationPage"],
+                                                [controller: "user", action: "passwordChangePage"],
+                                                [controller: "user", action: "showApiKey"]])}"/>
+                    <li class="${isActive ? "active-default" : ""}">
+                      <g:link controller="user" action="profile"><g:message encodeAs="html" code="ddbcommon.Profile" /></g:link>
+                    </li>
+                    <li>
+                      <g:link controller="user" action="doLogout"><g:message encodeAs="html" code="ddbcommon.Logout" /></g:link>
+                    </li>
+                  </ul>
+                </li>
+              </ddbcommon:isLoggedIn>
+            </ul>
           </div>
           <div class="span5 toolbar">
             <div class="status-bar">
@@ -283,7 +274,8 @@ limitations under the License.
                 </label>
                 <input type="hidden" id="querycache" value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}" />
                 <input type="search" id="search-small" class="query" name="query"
-                       value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}" autocomplete="off" />
+                       value="${ddbcommon.getCookieFieldValue(fieldname: "query", encode: false)}" autocomplete="off"
+                       aria-label="Search"/>
                 <button type="submit">
                   <!--[if !IE]><!-->
                   <g:message encodeAs="html" code="ddbnext.Go_Button" />
