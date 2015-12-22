@@ -23,6 +23,12 @@
   display: inline-block;
 }
 
+.entity-page .name.fields h1 {
+  font-weight: bold;
+  font-size: 1.375em;
+  color: #a5003b;
+}
+
 .entity-page .objects .tooltip {
   margin-left:56px;
   font-size: 0.813em;

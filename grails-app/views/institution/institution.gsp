@@ -43,26 +43,26 @@ limitations under the License.
                <g:message encodeAs="html" code="ddbnext.${selectedOrgXML.sector}"/>
              </div>
              <div>
-                 <h2>${selectedOrgXML.name} 
+               <h1>${selectedOrgXML.name} 
                  <g:if test="${(countObjcs > 0)}">
-                    <g:set var="facetvalue" value="provider_id=${selectedItemId}"/>
-                    <g:link class="count" controller="search" action="results"
-                            params="${[(SearchParamEnum.QUERY.getName()): '',
-                                       (SearchParamEnum.OFFSET.getName()): '0',
-                                       (SearchParamEnum.ROWS.getName()): '20',
-                                       (SearchParamEnum.FACETVALUES.getName()): facetvalue,
-                                       (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false]}"
-                            title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
-                        <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
-                        <g:if test="${(countObjcs == 1)}">
-                            <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
-                        </g:if>
-                        <g:if test="${(countObjcs > 1)}">
-                            <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
-                        </g:if>
-                     </g:link>
+                   <g:set var="facetvalue" value="provider_id=${selectedItemId}"/>
+                   <g:link class="count" controller="search" action="results"
+                           params="${[(SearchParamEnum.QUERY.getName()): '',
+                                      (SearchParamEnum.OFFSET.getName()): '0',
+                                      (SearchParamEnum.ROWS.getName()): '20',
+                                      (SearchParamEnum.FACETVALUES.getName()): facetvalue,
+                                      (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false]}"
+                           title="${message(code: 'ddbnext.InstitutionItem_IngestedObjectCountTitleText')}">
+                     <g:set var="flashArgs" value='["${String.format(RequestContextUtils.getLocale(request),'%,d', countObjcs)}"]' />
+                     <g:if test="${(countObjcs == 1)}">
+                       <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat" />
+                     </g:if>
+                     <g:if test="${(countObjcs > 1)}">
+                       <g:message encodeAs="html" args="${flashArgs}" code="ddbnext.InstitutionItem_IngestedObjectCountFormat_Plural" />
+                     </g:if>
+                   </g:link>
                  </g:if>
-                 </h2>
+               </h1>
              </div>
              <div>
                <a class="external-dummy-icon" href="${selectedOrgXML.uri}"><ddb:removeUrlProtocol url="${String.valueOf(selectedOrgXML.uri).trim()}"/></a>

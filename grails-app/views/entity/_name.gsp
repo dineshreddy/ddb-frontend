@@ -14,8 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div class="name fields">
-  <h2>
-
-  <ddbcommon:getTruncatedItemTitle title="${ entity.preferredName}" length="${ 200 }" />
-  </h2>
+  <h1>
+    <ddbcommon:getTruncatedItemTitle title="${entity.preferredName}" length="${200}"/>
+  </h1>
 </div>

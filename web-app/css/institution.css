@@ -140,10 +140,12 @@
   color: #A5003B;
 }
 
-.institution h2 {
+.institution-item-page .institution h1 {
   margin-top: 0;
   margin-bottom: 0;
   font-size: 1.467em;
+  font-weight: bold;
+  color: #a5003b;
 }
 
 #header {
