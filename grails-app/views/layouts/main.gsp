@@ -16,7 +16,7 @@ limitations under the License.
 <!DOCTYPE html>
 <html lang="${ddb.getCurrentLocale()}">
   <head>
-    <title><g:layoutTitle default="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}" /></title>
+    <title><g:layoutTitle default="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek_Title")}" /></title>
     <meta charset="utf-8" />
     <g:if test="${!metaDescription}">
       <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
@@ -56,6 +56,7 @@ limitations under the License.
     <ddb:doHideIfEmbedded>
       <g:render template="/mainHeader" />
     </ddb:doHideIfEmbedded>
+    <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek_Title"/></h1>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>

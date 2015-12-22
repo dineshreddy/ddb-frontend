@@ -19,7 +19,7 @@ limitations under the License.
 
 <html>
 <head>
-<title><g:message encodeAs="html" code="ddbnext.Homepage"/> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title><g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek_Title"/></title>
 <meta name="page" content="index" />
 <meta name="layout" content="main" />
 <link rel="canonical" href="${createLink(controller: 'index', base: domainCanonic)}"/>
