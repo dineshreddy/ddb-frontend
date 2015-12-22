@@ -43,9 +43,9 @@ limitations under the License.
       <g:set var="display" value="${true}"/>
     </g:if>
     <div class="<g:if test="${display}">span6</g:if><g:else>span12</g:else> item-description">
-      <h2>
+      <h1>
         ${itemTitle.encodeAsHTML()}
-      </h2>
+      </h1>
       <g:render template="fields" />
       <g:if test="${config.isRightsFacetFeaturesEnabled()}">
         <g:render template="rights" />

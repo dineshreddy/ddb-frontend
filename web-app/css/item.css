@@ -98,6 +98,12 @@
   margin: 0 15px 0 0;
 }
 
+.item-detail .item-description h1 {
+  font-weight: bold;
+  font-size: 1.375em;
+  color: #a5003b;
+}
+
 @media (max-width: 767px) {
   .fields .modified-margins {
     margin-left: 1.1em;

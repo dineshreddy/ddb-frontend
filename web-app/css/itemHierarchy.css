@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-.field-header {
+.field-header h3 {
   clear: both;
   line-height: 30px;
   height: 32px;
