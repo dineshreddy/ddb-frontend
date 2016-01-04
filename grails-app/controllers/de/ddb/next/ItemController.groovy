@@ -16,7 +16,6 @@
 package de.ddb.next
 
 import grails.converters.JSON
-import de.ddb.common.exception.ItemNotFoundException
 
 class ItemController {
     static defaultAction = "findById"
@@ -32,29 +31,25 @@ class ItemController {
      * Errors and validation are handled in the ItemService. If an error an ItemNotFoundException will be thrown
      */
     def findById() {
-        try {
-            def id = params.id
-            def model = ddbItemService.getFullItemModel(id)
+        def id = params.id
+        def model = ddbItemService.getFullItemModel(id)
 
-            if (params.pdf) {
-                try {
-                    // inline images via data uris
-                    model = ddbItemService.prepareImagesForPdf(model)
-                    renderPdf(template: "itemPdfTable", model: model, filename: "Item-${id}.pdf")
-                } catch (grails.plugin.rendering.document.XmlParseException e) {
-                    log.error "findById(): PDF Generation failed due to XmlParseException " + e.getMessage() +
-                            ". Going 404..."
-                    forward controller: "error", action: "pdfNotFound"
-                } catch (FileNotFoundException e) {
-                    log.error "findById(): PDF Generation failed due to missing image " + e.getMessage() +
-                            ". Going 404..."
-                    forward controller: "error", action: "pdfNotFound"
-                }
-            } else {
-                render(view: "item", model: model)
+        if (params.pdf) {
+            try {
+                // inline images via data uris
+                model = ddbItemService.prepareImagesForPdf(model)
+                renderPdf(template: "itemPdfTable", model: model, filename: "Item-${id}.pdf")
+            } catch (grails.plugin.rendering.document.XmlParseException e) {
+                log.error "findById(): PDF Generation failed due to XmlParseException " + e.getMessage() +
+                        ". Going 404..."
+                forward controller: "error", action: "pdfNotFound"
+            } catch (FileNotFoundException e) {
+                log.error "findById(): PDF Generation failed due to missing image " + e.getMessage() +
+                        ". Going 404..."
+                forward controller: "error", action: "pdfNotFound"
             }
-        } catch (ItemNotFoundException e) {
-            forward controller: "error", action: "itemNotFound"
+        } else {
+            render(view: "item", model: model)
         }
     }
 
@@ -67,15 +62,10 @@ class ItemController {
     }
 
     def showXml() {
-        try {
-            def itemId = params.id
+        def itemXml = itemService.fetchXMLMetadata(params.id)
 
-            response.contentType = "text/xml"
-            response.outputStream << itemService.fetchXMLMetadata(itemId)
-        }
-        catch (ItemNotFoundException e) {
-            forward controller: "error", action: "itemNotFound"
-        }
+        response.contentType = "text/xml"
+        response.outputStream << itemXml
     }
 
     def sendPdf() {
