@@ -201,7 +201,7 @@ class SearchController {
                     results: resultsItems,
                     entities: entities,
                     entitiesUrl : entitiesUrl,
-                    isThumbnailFiltered: urlQuery[SearchService.THUMBNAIL_FACET],
+                    isThumbnailFiltered: urlQuery[FacetEnum.DIGITALISAT.getName()],
                     clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                     correctedQuery:resultsItems["correctedQuery"],
                     viewType:  urlQuery[SearchParamEnum.VIEWTYPE.getName()],
