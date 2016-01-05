@@ -180,6 +180,12 @@ class UrlMappings {
             controller="favoritesview"
             action="allpublicfolders"
         }
+
+        "/user/newsletter" {
+            controller="newsletter"
+            action="index"
+        }
+
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]

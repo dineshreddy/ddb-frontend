@@ -43,6 +43,7 @@ modules = {
         resource url:'/css/userProfile.css', bundle: 'screen'
         resource url:'/css/login.css', bundle: 'screen'
         resource url:'/css/confirmation.css', bundle: 'screen'
+        resource url:'/css/newsletter.css', bundle: 'screen'
         resource url:'/css/savedSearches.css', bundle: 'screen'
         resource url:'/css/socialMedia.css', bundle: 'screen'
         resource url:'/css/apiKey.css', bundle: 'screen'
