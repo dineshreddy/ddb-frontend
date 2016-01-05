@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-<h3 class="filter-title"><g:message encodeAs="html" code="ddbnext.InstitutionPage_FilterBySector" /></h3>
+<div class="filter-title"><g:message encodeAs="html" code="ddbnext.InstitutionPage_FilterBySector" /></div>
 <!-- TODO collect the sector from the data-->
 <div class="sector-facet">
   <label class="checkbox"> <input data-sector="sec_01" value="sec_01" type="checkbox"><g:message encodeAs="html" code="ddbnext.sec_01" /></label>
