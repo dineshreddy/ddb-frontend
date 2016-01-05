@@ -67,6 +67,18 @@
 #sendFavoriteListModal form {
   margin: 0;
 }
+
+#sendFavoriteListLabel {
+  font-size: 16px;
+  text-transform: uppercase;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+  margin: 0;
+  line-height: 30px;
+  font-weight: bold;
+  text-rendering: optimizelegibility;
+}
+
 /* responsive design */
 
 @media (max-width: 1199px) {
