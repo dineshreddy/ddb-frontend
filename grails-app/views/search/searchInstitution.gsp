@@ -67,7 +67,8 @@ limitations under the License.
       </div>
       <div class="institution-with-data">
         <label class="checkbox">
-          <input type="checkbox"><g:message code="ddbnext.InstitutionPage_OnlyInstitutionsWithData"/>
+          <input type="checkbox" ${onlyWithData ? checked="checked" : ""}/>
+          <g:message code="ddbnext.InstitutionPage_OnlyInstitutionsWithData"/>
         </label>
       </div>
       <div class="clear-filters">

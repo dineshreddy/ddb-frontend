@@ -129,10 +129,10 @@ class SearchController {
 
             //Calculating results details info (number of results in page, total results number)
             def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-                    searchService.DEFAULT_ROWS_PER_PAGE)
+            searchService.DEFAULT_ROWS_PER_PAGE)
             def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
             def resultsOverallIndex = (offset + 1) + ' - ' +
-                    (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
+            (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
@@ -143,7 +143,7 @@ class SearchController {
             def queryString = request.getQueryString()
 
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             def resetSelectionUrl
 
@@ -193,7 +193,7 @@ class SearchController {
 
                 if (urlQuery[SearchParamEnum.FACET.getName()]) {
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery,
-                            request)
+                    request)
                 }
                 render(view: "results", model: [
                     facetsList:mainFacets,
@@ -249,10 +249,9 @@ class SearchController {
         urlParams.isThumbnailFiltered=false
 
         def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
-
+        def onlyWithData = urlQuery[FacetEnum.HAS_ITEMS.getName()]
         def clearFilters = searchService.buildClearFilter(urlQuery, request.forwardURI)
         def title = urlQuery[SearchParamEnum.QUERY.getName()]
-
         def queryString = request.getQueryString()
 
         //Only select institutions, no documents!
@@ -268,13 +267,13 @@ class SearchController {
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-                searchService.DEFAULT_ROWS_PER_PAGE)
+        searchService.DEFAULT_ROWS_PER_PAGE)
         def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
         def page = (int)Math.floor(offset / rows) + 1
         def totalPages = Math.ceil(results.totalResults / rows).toInteger()
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (offset + 1) +' - ' +
-                (offset + rows > results.totalResults ? results.totalResults : offset + rows)
+        (offset + rows > results.totalResults ? results.totalResults : offset + rows)
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
@@ -291,6 +290,7 @@ class SearchController {
             totalPages: totalPages,
             resultsOverallIndex: resultsOverallIndex,
             numberOfResults: numberOfResultsFormatted,
+            onlyWithData: onlyWithData,
             page: page,
             resultsPaginatorOptions: searchService.buildPaginatorOptions(urlQuery),
             paginationURL: searchService.buildPagination(results.totalResults, urlQuery, getQuery),
@@ -343,7 +343,7 @@ class SearchController {
                 //iterate over all values of the FacetEnum and add matching names to the information
                 for (FacetEnum facetItem : FacetEnum.values()) {
                     if (facet['@name'] == facetItem.getName()) {
-                       addFacetItems(properties, facet, facetItem)
+                        addFacetItems(properties, facet, facetItem)
                     }
                 }
             }
