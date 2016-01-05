@@ -49,6 +49,12 @@ limitations under the License.
           <g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />
         </a>
       </li>
+      <li>
+        <a class="profile-link" id="newsletter" title="${g.message(code: 'ddbnext.Newsletter')}" class="persist"
+           href="${createLink(controller: 'newsletter', action: 'index')}">
+          <g:message code="ddbnext.Newsletter"/>
+        </a>
+      </li>
     </ul>
   </div>
   
