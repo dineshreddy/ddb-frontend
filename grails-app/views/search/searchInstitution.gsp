@@ -65,6 +65,12 @@ limitations under the License.
       <div class="js facets-list bt off">
         <ddb:renderFacets jsFacetsList="${jsFacetsList}"></ddb:renderFacets>
       </div>
+      <div class="institution-with-data">
+        <label class="checkbox">
+          <input type="checkbox" ${onlyWithData ? checked="checked" : ""}/>
+          <g:message code="ddbnext.InstitutionPage_OnlyInstitutionsWithData"/>
+        </label>
+      </div>
       <div class="clear-filters">
         <a href="${clearFilters.encodeAsHTML()}"><g:message encodeAs="html" code="ddbnext.Clear_filters" /></a>
       </div>

@@ -468,6 +468,11 @@ input[type="checkbox"],input[type="radio"] {
   padding-top: 15px;
 }
 
+.institutions .institution-with-data {
+  background-color: transparent;
+  border: none;
+}
+
 .search-results .results-list .thumbnail .persist {
   position: relative;
   text-align: center;
