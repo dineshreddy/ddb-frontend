@@ -338,14 +338,19 @@ de.ddb.next.search.searchResultsInitializer = function() {
   );
 
   $('input[name=thumbnail-filter]').click(function() {
-    var paramsArray = [['isThumbnailFiltered', 'false']];
     var isChecked = $(this).is(':checked');
+    var paramsArray = [['isThumbnailFiltered', isChecked.toString()]];
 
-    if (isChecked) {
-      paramsArray = [['isThumbnailFiltered', 'true']];
-    }
     // We have two checkboxes with this name, so keep them in sync.
     $('input[name=thumbnail-filter]').prop("checked", isChecked);
+    paramsArray.push(['offset', 0]);
+    var newUrl = $.addParamToCurrentUrl(paramsArray);
+    de.ddb.next.search.fetchResultsList(newUrl);
+  });
+
+  $('.institution-with-data input:checkbox').click(function() {
+    var paramsArray = [['onlyWithData', $(this).is(':checked').toString()]];
+
     paramsArray.push(['offset', 0]);
     var newUrl = $.addParamToCurrentUrl(paramsArray);
     de.ddb.next.search.fetchResultsList(newUrl);
