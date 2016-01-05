@@ -33,9 +33,7 @@ limitations under the License.
       <div class="row favorites-results-head">
         <div class="span12 public-favorites-header">
           <div class="print-header">
-            <h3>
-              <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
-            </h3>
+            <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[selectedUserUserName, dateString]}" default="ddbnext.Favorites_List_Of" />
           </div>
           <div class="right-container">
             <div class="reportfav">
@@ -236,9 +234,9 @@ limitations under the License.
     <div id="sendFavoriteListModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="sendFavoriteListLabel" aria-hidden="true">
       <div class="modal-header">
         <span title="<g:message code="ddbcommon.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-        <h3 id="sendFavoriteListLabel">
+        <div id="sendFavoriteListLabel">
           <g:message code="ddbnext.send_favorites" />
-        </h3>
+        </div>
       </div>
       <form method="POST">
         <div class="modal-body">

@@ -37,9 +37,7 @@ limitations under the License.
           </h1>
         </div>
         <div class="print-header">
-          <h3>
-            <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Favorites_List_Of" />
-          </h3>
+          <g:message encodeAs="html" code="ddbnext.Favorites_List_Of_Printed" args="${[userName, dateString]}" default="ddbnext.Favorites_List_Of" />
         </div>
       </div>
       <div class="row favorites-results-container">
