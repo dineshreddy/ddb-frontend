@@ -18,9 +18,6 @@ limitations under the License.
   <head>
     <title><g:layoutTitle default="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek_Title")}" /></title>
     <meta charset="utf-8" />
-    <g:if test="${!metaDescription}">
-      <meta name="description" content="${g.message(code:"ddbnext.Meta_Description") }" />
-    </g:if>
     <g:if test="${pageName == "institutionList"}">
       <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
     </g:if>

@@ -21,6 +21,7 @@ limitations under the License.
 <head>
 <title><g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek_Title"/></title>
 <meta name="page" content="index" />
+<meta name="description" content="${g.message(code: "ddbnext.Meta_Description")}"/>
 <meta name="layout" content="main" />
 <link rel="canonical" href="${createLink(controller: 'index', base: domainCanonic)}"/>
 <r:require module="startpage"/>
