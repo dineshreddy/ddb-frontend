@@ -81,6 +81,13 @@ limitations under the License.
         </div>
 
         <div class="control-group">
+          <input type="checkbox" id="newsletter" name="newsletter">
+          <label class="reg-checkbox-label">
+            <g:message encodeAs="none" code="ddbnext.Newsletter_Subscription"/>
+          </label>
+        </div>
+
+        <div class="control-group">
           <button type="submit" class="btn-padding"><g:message encodeAs="html" code="ddbcommon.Register" /></button>
         </div>
         <ul id="error-messages" class="off">
