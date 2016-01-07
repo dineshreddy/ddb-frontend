@@ -3,7 +3,7 @@
     <ul class="unstyled">
     <g:each in="${ errors }">
       <li>
-        <span><g:message encodeAs="html" code="${it}" /></span>
+        <span><g:message code="${it}" /></span>
       </li>
     </g:each>
     </ul>
