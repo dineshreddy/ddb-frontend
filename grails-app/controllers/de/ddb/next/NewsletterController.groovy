@@ -15,6 +15,8 @@
  */
 package de.ddb.next
 
+import de.ddb.common.exception.ConflictException
+
 class NewsletterController {
     def newsletterService
 
@@ -23,10 +25,33 @@ class NewsletterController {
     }
 
     def subscribe() {
-        newsletterService.addSubscriber(params.email)
+        String confirmationToken
+        def errors = []
+        def messages = []
+
+        try {
+            confirmationToken = newsletterService.addSubscriber(params.email)
+            messages += "ddbcommon.User.Newsletter_Subscribe_Success"
+        }
+        catch (ConflictException e) {
+            errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
+        }
+        catch (Exception e) {
+            // no error message defined yet
+        }
+        redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
     }
 
     def unsubscribe() {
-        newsletterService.removeSubscriber(params.email)
+        def errors = []
+        def messages = []
+
+        if (newsletterService.removeSubscriber(params.email)) {
+            messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
+        }
+        else {
+            errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
+        }
+        redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
     }
 }
