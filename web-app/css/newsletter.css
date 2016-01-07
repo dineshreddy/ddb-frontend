@@ -13,6 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+.newsletter-container {
+  width: 75%;
+}
+
+.newsletter-container a {
+  text-decoration: underline;
+}
+
+.newsletter-container .newsletter-header {
+  border-bottom: solid 2px #efebe8;
+}
+
 .newsletter-container #subscribe-form {
   padding-bottom: 10px;
 }
