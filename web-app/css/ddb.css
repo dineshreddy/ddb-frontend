@@ -1656,7 +1656,8 @@ select {
   font-family: Calibri, Arial, sans-serif;
 }
 
-#sendSavedSearchesLabel {
+#sendSavedSearchesLabel,
+#addToSavedSearchesLabel {
   font-size: 16px;
   font-weight: bold;
   text-transform: uppercase;
