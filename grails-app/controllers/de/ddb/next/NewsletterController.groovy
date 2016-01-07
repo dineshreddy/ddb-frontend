@@ -18,6 +18,7 @@ package de.ddb.next
 import de.ddb.common.exception.ConflictException
 
 class NewsletterController {
+    def configurationService
     def newsletterService
 
     def index() {
@@ -29,15 +30,25 @@ class NewsletterController {
         def errors = []
         def messages = []
 
-        try {
-            confirmationToken = newsletterService.addSubscriber(params.email)
-            messages += "ddbcommon.User.Newsletter_Subscribe_Success"
+        if (params.email) {
+            try {
+                confirmationToken = newsletterService.addSubscriber(params.email)
+                messages += "ddbcommon.User.Newsletter_Subscribe_Success"
+
+                String confirmationLink = configurationService.getNewsletterConfirmationLink()
+
+                confirmationLink = confirmationLink.replace("|confirmationToken|", confirmationToken)
+                confirmationLink = confirmationLink.replace("|id|", "id") // id is not used here
+            }
+            catch (ConflictException e) {
+                errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
+            }
+            catch (Exception e) {
+                // no error message defined yet
+            }
         }
-        catch (ConflictException e) {
-            errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
-        }
-        catch (Exception e) {
-            // no error message defined yet
+        else {
+            errors += "ddbcommon.User.Newsletter_Email_Required"
         }
         redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
     }
@@ -46,11 +57,16 @@ class NewsletterController {
         def errors = []
         def messages = []
 
-        if (newsletterService.removeSubscriber(params.email)) {
-            messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
+        if (params.email) {
+            if (newsletterService.removeSubscriber(params.email)) {
+                messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
+            }
+            else {
+                errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
+            }
         }
         else {
-            errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
+            errors += "ddbcommon.User.Newsletter_Email_Required"
         }
         redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
     }

@@ -56,7 +56,7 @@ limitations under the License.
         <div class="control-group">
           <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
           <div>
-            <input type="text" class="profile-input" id="email" name="email"/>
+            <input type="text" class="profile-input" name="email"/>
           </div>
         </div>
 
@@ -75,7 +75,7 @@ limitations under the License.
         <div class="control-group">
           <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
           <div>
-            <input type="text" class="profile-input" id="email" name="email"/>
+            <input type="text" class="profile-input" name="email"/>
           </div>
         </div>
 
@@ -88,6 +88,11 @@ limitations under the License.
       <div class="control-group">
         <p><g:message code="ddbnext.Newsletter_Text"/></p>
       </div>
+
+      <ul id="error-messages" class="off">
+        <li><a><g:message code="ddbcommon.User.Newsletter_Email_Required"/></a></li>
+        <li><a><g:message code="ddbcommon.Enter_A_Valid_Email"/></a></li>
+      </ul>
     </div>
   </body>
 </html>

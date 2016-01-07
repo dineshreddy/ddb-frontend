@@ -108,6 +108,7 @@ modules = {
         resource url:'/js/advancedSearchPage.js'
         resource url:'/js/search/searchResults.js'
         resource url:'/js/favorites.js'
+        resource url:'/js/newsletter.js'
         resource url:'/js/registration.js'
         resource url:'/js/changeFavorite.js'
         resource url:'/js/profile.js'
