@@ -72,9 +72,9 @@ limitations under the License.
           <div class="modal-header modal-header-savesearch">
             <span title="<g:message encodeAs="html" code="ddbcommon.Close"/>" data-dismiss="modal"
               class="fancybox-toolbar-close"></span>
-            <h3 id="addToSavedSearchesLabel">
+            <div id="addToSavedSearchesLabel">
               <g:message encodeAs="html" code="ddbnext.Save_Savedsearch" />
-            </h3>
+            </div>
           </div>
           <div class="modal-body-savesearch">
             <div class="savesearch-edit-title">
