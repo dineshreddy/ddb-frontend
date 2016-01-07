@@ -28,6 +28,47 @@ limitations under the License.
           </div>
           <ddbcommon:renderErrors errors="${errors}"/>
           <ddbcommon:renderMessages messages="${messages}"/>
+
+          <%-- subscribe form --%>
+          <g:form method="post" id="subscribe-form" name="subscribe-form" class="form-horizontal bb"
+                  url="[controller: 'newsletter', action: 'subscribe']">
+            <div class="control-group">
+              <p><g:message code="ddbnext.Newsletter_Subscribe_Text1"/></p>
+              <p><g:message code="ddbnext.Newsletter_Subscribe_Text2"/></p>
+              <p><g:message code="ddbnext.Newsletter_Subscribe_Text3"/></p>
+            </div>
+
+            <div class="control-group">
+              <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
+              <div><input type="text" class="profile-input" name="email"/></div>
+            </div>
+
+            <div class="control-group">
+              <button type="submit" class="btn-padding"><g:message code="ddbnext.Newsletter_Subscribe"/></button>
+            </div>
+          </g:form>
+
+          <%-- unsubscribe form --%>
+          <g:form method="post" id="unsubscribe-form" name="unsubscribe-form" class="form-horizontal bb"
+                  url="[controller: 'newsletter', action: 'unsubscribe']">
+            <div class="control-group">
+              <p><g:message code="ddbnext.Newsletter_Unsubscribe_Text1"/></p>
+            </div>
+
+            <div class="control-group">
+              <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
+              <div><input type="text" class="profile-input" name="email"/></div>
+            </div>
+
+            <div class="control-group">
+              <button type="submit" class="btn-padding"><g:message code="ddbnext.Newsletter_Unsubscribe"/></button>
+            </div>
+          </g:form>
+
+          <%-- comment --%>
+          <div class="control-group">
+            <p><g:message code="ddbnext.Newsletter_Text"/></p>
+          </div>
         </div>
 
         <%-- menu --%>
@@ -43,56 +84,11 @@ limitations under the License.
           </ul>
         </div>
       </div>
-
-      <%-- subscribe form --%>
-      <g:form method="post" id="subscribe-form" name="subscribe-form" class="form-horizontal bb"
-              url="[controller: 'newsletter', action: 'subscribe']">
-        <div class="control-group">
-          <p><g:message code="ddbnext.Newsletter_Subscribe_Text1"/></p>
-          <p><g:message code="ddbnext.Newsletter_Subscribe_Text2"/></p>
-          <p><g:message code="ddbnext.Newsletter_Subscribe_Text3"/></p>
-        </div>
-
-        <div class="control-group">
-          <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
-          <div>
-            <input type="text" class="profile-input" name="email"/>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <button type="submit" class="btn-padding"><g:message code="ddbnext.Newsletter_Subscribe"/></button>
-        </div>
-      </g:form>
-
-      <%-- unsubscribe form --%>
-      <g:form method="post" id="unsubscribe-form" name="unsubscribe-form" class="form-horizontal bb"
-              url="[controller: 'newsletter', action: 'unsubscribe']">
-        <div class="control-group">
-          <p><g:message code="ddbnext.Newsletter_Unsubscribe_Text1"/></p>
-        </div>
-
-        <div class="control-group">
-          <label class="reg-label"><g:message code="ddbcommon.Email"/></label>
-          <div>
-            <input type="text" class="profile-input" name="email"/>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <button type="submit" class="btn-padding"><g:message code="ddbnext.Newsletter_Unsubscribe"/></button>
-        </div>
-      </g:form>
-
-      <%-- comment --%>
-      <div class="control-group">
-        <p><g:message code="ddbnext.Newsletter_Text"/></p>
-      </div>
-
-      <ul id="error-messages" class="off">
-        <li><a><g:message code="ddbcommon.User.Newsletter_Email_Required"/></a></li>
-        <li><a><g:message code="ddbcommon.Enter_A_Valid_Email"/></a></li>
-      </ul>
     </div>
+
+    <ul id="error-messages" class="off">
+      <li><a><g:message code="ddbcommon.User.Newsletter_Email_Required"/></a></li>
+      <li><a><g:message code="ddbcommon.Enter_A_Valid_Email"/></a></li>
+    </ul>
   </body>
 </html>
