@@ -1656,6 +1656,14 @@ select {
   font-family: Calibri, Arial, sans-serif;
 }
 
+#sendSavedSearchesLabel {
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #3e3a37;
+  font-family: Calibri, Arial, sans-serif;
+}
+
 #modal-header-savesearch {
   padding: 0 0.7em 0.7em 0;
 }

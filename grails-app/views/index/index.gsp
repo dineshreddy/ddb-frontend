@@ -27,6 +27,7 @@ limitations under the License.
 <r:require module="startpage"/>
 </head>
 <body>
+  <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek_Title"/></h1>
   <div class="row">
     <div class="span12 search-widget">
       <div class="row">

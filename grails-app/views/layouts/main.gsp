@@ -53,7 +53,6 @@ limitations under the License.
     <ddb:doHideIfEmbedded>
       <g:render template="/mainHeader" />
     </ddb:doHideIfEmbedded>
-    <h1 class="invisible-but-readable"><g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek_Title"/></h1>
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>
