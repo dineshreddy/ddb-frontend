@@ -29,20 +29,12 @@ limitations under the License.
     <g:form method="post" id="user-profile-form" name="user-profile-form" class="form-horizontal" url="[controller:'user', action:'saveProfile']" >
         <g:set var="disableForOpenId"></g:set>
         <g:set var="offForOpenId"></g:set>
-        <g:set var="newsletterCheck"></g:set>
         <g:if test="${user.openIdUser == true}">
             <g:set var="disableForOpenId">disabled</g:set>
             <g:set var="offForOpenId">off</g:set>
         </g:if>
-        <g:if test="${user.newsletterSubscribed == true}">
-            <g:set var="newsletterCheck">checked="checked"</g:set>
-        </g:if>
-        <g:if test="${errors != null && errors.size()>0}">
-          <ddbcommon:renderErrors errors="${errors}" />
-        </g:if>
-        <g:if test="${messages != null && messages.size()>0}">
-          <ddbcommon:renderMessages messages="${messages}" />
-        </g:if>
+        <ddbcommon:renderErrors errors="${errors}"/>
+        <ddbcommon:renderMessages messages="${messages}"/>
         <input type="hidden" name="id" value="${ user.id }"/>
         <div>
             <div>
