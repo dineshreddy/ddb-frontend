@@ -22,6 +22,10 @@
   width: 75%;
 }
 
+#registration-form input[type="checkbox"] {
+  margin-top: 0;
+}
+
 #registration-form label.error {
   vertical-align: middle;
 }
@@ -69,6 +73,10 @@
 
 .form-horizontal .control-group {
   margin-bottom: 15px;
+}
+
+.form-horizontal .control-group.checkbox {
+  margin-bottom: 10px;
 }
 
 /* responsive design */

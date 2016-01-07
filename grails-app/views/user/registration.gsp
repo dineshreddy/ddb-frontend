@@ -14,17 +14,13 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <html>
-<head>
-<title><g:message encodeAs="html" code="ddbcommon.Registration" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
-
-<meta name="page" content="registration" />
-<meta name="layout" content="main" />
-
-</head>
-<body>
-    <g:if test="${errors != null && errors.size()>0}">
-      <ddbcommon:renderErrors errors="${errors}" />
-    </g:if>
+  <head>
+    <title><g:message code="ddbcommon.Registration"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <meta name="page" content="registration"/>
+    <meta name="layout" content="main"/>
+  </head>
+  <body>
+    <ddbcommon:renderErrors errors="${errors}"/>
     <div class="registration-container">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
@@ -73,14 +69,14 @@ limitations under the License.
           </div>
         </div>
 
-        <div class="control-group">
+        <div class="control-group checkbox">
           <input type="checkbox" id="termOfUse" name="termOfUse">
           <label class="reg-checkbox-label">
             <g:message encodeAs="none" code="ddbcommon.I_Have_Read" args="${[accountTermsUrl, accountPrivacyUrl]}"/>*
           </label>
         </div>
 
-        <div class="control-group">
+        <div class="control-group checkbox">
           <input type="checkbox" id="newsletter" name="newsletter">
           <label class="reg-checkbox-label">
             <g:message encodeAs="none" code="ddbnext.Newsletter_Subscription"/>
@@ -99,5 +95,5 @@ limitations under the License.
         </ul>
       </g:form>
     </div>
-</body>
+  </body>
 </html>

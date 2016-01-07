@@ -16,15 +16,17 @@
 package de.ddb.next
 
 class NewsletterController {
+    def newsletterService
+
     def index() {
         render(view: "newsletter")
     }
 
     def subscribe() {
-        log.info "subscribe " + params
+        newsletterService.addSubscriber(params.email)
     }
 
     def unsubscribe() {
-        log.info "unsubscribe " + params
+        newsletterService.removeSubscriber(params.email)
     }
 }

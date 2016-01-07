@@ -23,7 +23,7 @@ limitations under the License.
     <div class="newsletter-container">
       <div class="container confirmation">
         <div class="static_content">
-          <div class="profile-nav bb">
+          <div class="profile-nav newsletter-header">
             <div><h1><g:message code="ddbnext.Newsletter"/></h1></div>
           </div>
           <ddbcommon:renderErrors errors="${errors}"/>

@@ -2,47 +2,38 @@ package de.ddb.next
 
 import static org.junit.Assert.*
 import grails.test.mixin.TestMixin
-import grails.test.mixin.integration.IntegrationTestMixin
+import grails.test.mixin.web.ControllerUnitTestMixin
 
-import org.junit.*
+import org.junit.Test
 
-import de.ddb.common.beans.User
-
-
-@TestMixin(IntegrationTestMixin)
+@TestMixin(ControllerUnitTestMixin)
 class NewsletterServiceIntegrationTests {
+    private static String EMAIL = 'john.doe@example.com'
 
     def newsletterService
 
-    @Ignore("Newsletter feature is disabled temporary.")
+    void tearDown() {
+        newsletterService.removeSubscriber(EMAIL)
+    }
+
     @Test
     void shouldAddUserAsSubscriber() {
-        User user = new User(email: 'john.doe@example.com')
-        def userId = UUID.randomUUID() as String
-        user.setId(userId)
-        newsletterService.addSubscriber(user)
-        assert newsletterService.isSubscriber(user) == true
+        newsletterService.addSubscriber(EMAIL)
+        assert newsletterService.isSubscriber(EMAIL)
     }
 
-    @Ignore("Newsletter feature is disabled temporary.")
     @Test
     void shouldRemoveUserAsSubscriber() {
-        User user = new User(email: 'john.doe@example.com')
-        def userId = UUID.randomUUID() as String
-        user.setId(userId)
-        newsletterService.addSubscriber(user)
-        assert newsletterService.isSubscriber(user) == true
+        newsletterService.addSubscriber(EMAIL)
+        assert newsletterService.isSubscriber(EMAIL)
 
-        newsletterService.removeSubscriber(user)
-        assert newsletterService.isSubscriber(user) == false
+        newsletterService.removeSubscriber(EMAIL)
+        assert !newsletterService.isSubscriber(EMAIL)
     }
 
-    @Ignore("Newsletter feature is disabled temporary.")
     @Test
     void shouldReturnFalseIfUserIsNotSubscriber() {
-        User user = new User(email: 'john.doe@example.com')
-        def userId = UUID.randomUUID() as String
-        user.setId(userId)
-        assert newsletterService.isSubscriber(user) == false
+        newsletterService.removeSubscriber(EMAIL)
+        assert !newsletterService.isSubscriber(EMAIL)
     }
 }
