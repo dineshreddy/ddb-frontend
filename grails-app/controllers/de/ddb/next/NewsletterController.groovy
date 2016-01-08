@@ -19,7 +19,6 @@ import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 
 class NewsletterController {
-    def configurationService
     def newsletterService
 
     def index() {
@@ -32,11 +31,9 @@ class NewsletterController {
 
         if (params.email) {
             try {
-                String confirmationToken = newsletterService.subscribe(params.email)
-                String confirmationLink = configurationService.getNewsletterConfirmationLink()
+                String confirmationLink = newsletterService.subscribe(params.email)
 
-                confirmationLink = confirmationLink.replace("|confirmationToken|", confirmationToken)
-                confirmationLink = confirmationLink.replace("|id|", "id") // id is not used here
+                newsletterService.sendConfirmationMail(params.email, confirmationLink)
                 messages += "ddbcommon.User.Newsletter_Subscribe_Success"
             }
             catch (ConflictException e) {
