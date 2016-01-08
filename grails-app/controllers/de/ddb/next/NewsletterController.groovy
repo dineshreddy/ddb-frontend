@@ -26,19 +26,17 @@ class NewsletterController {
     }
 
     def subscribe() {
-        String confirmationToken
         def errors = []
         def messages = []
 
         if (params.email) {
             try {
-                confirmationToken = newsletterService.addSubscriber(params.email)
-                messages += "ddbcommon.User.Newsletter_Subscribe_Success"
-
+                String confirmationToken = newsletterService.subscribe(params.email)
                 String confirmationLink = configurationService.getNewsletterConfirmationLink()
 
                 confirmationLink = confirmationLink.replace("|confirmationToken|", confirmationToken)
                 confirmationLink = confirmationLink.replace("|id|", "id") // id is not used here
+                messages += "ddbcommon.User.Newsletter_Subscribe_Success"
             }
             catch (ConflictException e) {
                 errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
@@ -58,7 +56,7 @@ class NewsletterController {
         def messages = []
 
         if (params.email) {
-            if (newsletterService.removeSubscriber(params.email)) {
+            if (newsletterService.unsubscribe(params.email)) {
                 messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
             }
             else {
