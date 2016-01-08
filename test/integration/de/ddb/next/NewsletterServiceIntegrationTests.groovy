@@ -13,27 +13,30 @@ class NewsletterServiceIntegrationTests {
     def newsletterService
 
     void tearDown() {
-        newsletterService.removeSubscriber(EMAIL)
+        newsletterService.unsubscribe(EMAIL)
     }
 
     @Test
     void shouldAddUserAsSubscriber() {
-        newsletterService.addSubscriber(EMAIL)
-        assert newsletterService.isSubscriber(EMAIL)
+        newsletterService.subscribe(EMAIL)
+        assert newsletterService.isSubscribed(EMAIL)
     }
 
     @Test
     void shouldRemoveUserAsSubscriber() {
-        newsletterService.addSubscriber(EMAIL)
-        assert newsletterService.isSubscriber(EMAIL)
+        newsletterService.subscribe(EMAIL)
+        assert newsletterService.isSubscribed(EMAIL)
 
-        newsletterService.removeSubscriber(EMAIL)
-        assert !newsletterService.isSubscriber(EMAIL)
+        newsletterService.unsubscribe(EMAIL)
+        assert !newsletterService.isSubscribed(EMAIL)
     }
 
     @Test
     void shouldReturnFalseIfUserIsNotSubscriber() {
-        newsletterService.removeSubscriber(EMAIL)
-        assert !newsletterService.isSubscriber(EMAIL)
+        newsletterService.unsubscribe(EMAIL)
+        assert !newsletterService.isSubscribed(EMAIL)
+
+        newsletterService.unsubscribe(EMAIL)
+        assert !newsletterService.isSubscribed(EMAIL)
     }
 }

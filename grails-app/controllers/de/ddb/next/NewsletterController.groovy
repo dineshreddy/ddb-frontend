@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import de.ddb.common.exception.ConflictException
+import de.ddb.common.exception.ItemNotFoundException
 
 class NewsletterController {
     def configurationService
@@ -43,6 +44,7 @@ class NewsletterController {
             }
             catch (Exception e) {
                 // no error message defined yet
+                log.error "subscribe failed", e
             }
         }
         else {
@@ -56,11 +58,16 @@ class NewsletterController {
         def messages = []
 
         if (params.email) {
-            if (newsletterService.unsubscribe(params.email)) {
+            try {
+                newsletterService.unsubscribe(params.email)
                 messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
             }
-            else {
+            catch (ItemNotFoundException e) {
                 errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
+            }
+            catch (Exception e) {
+                // no error message defined yet
+                log.error "unsubscribe failed", e
             }
         }
         else {
