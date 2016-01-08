@@ -76,7 +76,7 @@
 }
 
 .institution .external-dummy-icon {
-  background: url("../images/icons/entity.png") no-repeat 0 4px;
+  background: url("../images/icons/entity.png") no-repeat 0 2px;
 }
 
 .institution .facebook-icon {
@@ -87,7 +87,10 @@
   background: url('../images/icons/twitterLogoBlue.png') no-repeat transparent 0 4px;
 }
 
-.institution .external-dummy-icon,
+.institution .external-dummy-icon {
+  background-size: 19px;
+}
+
 .institution .facebook-icon,
 .institution .twitter-icon {
   background-size: 15px;

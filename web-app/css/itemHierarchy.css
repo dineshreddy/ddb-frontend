@@ -25,6 +25,8 @@
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
+  background-size: 15px;
+  display: inline-block;
 }
 
 /* highlight the current node */
@@ -248,5 +250,9 @@
 }
 
 .item-hierarchy .tooltip {
-  margin-top: 10px;
+  margin-top: -10px;
+}
+
+.item-hierarchy .tooltip .arrow {
+  background-position:-12px -12px;
 }
