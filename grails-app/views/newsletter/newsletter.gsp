@@ -87,8 +87,9 @@ limitations under the License.
     </div>
 
     <ul id="error-messages" class="off">
-      <li><a><g:message code="ddbcommon.User.Newsletter_Email_Required"/></a></li>
       <li><a><g:message code="ddbcommon.Enter_A_Valid_Email"/></a></li>
+      <li><a><g:message code="ddbcommon.User.Newsletter_Subscribe_Email_Required"/></a></li>
+      <li><a><g:message code="ddbcommon.User.Newsletter_Unsubscribe_Email_Required"/></a></li>
     </ul>
   </body>
 </html>

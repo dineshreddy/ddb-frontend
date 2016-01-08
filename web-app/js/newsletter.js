@@ -24,8 +24,8 @@ $(document).ready(function() {
     },
     messages : {
       email : {
-        required : $("#error-messages").children('li').eq(0).children('a').text(),
-        email : $("#error-messages").children('li').eq(1).children('a').text()
+        required : $("#error-messages").children('li').eq(1).children('a').text(),
+        email : $("#error-messages").children('li').eq(0).children('a').text()
       }
     },
     errorPlacement: function(error, element) {
@@ -44,8 +44,8 @@ $(document).ready(function() {
     },
     messages : {
       email : {
-        required : $("#error-messages").children('li').eq(0).children('a').text(),
-        email : $("#error-messages").children('li').eq(1).children('a').text()
+        required : $("#error-messages").children('li').eq(2).children('a').text(),
+        email : $("#error-messages").children('li').eq(0).children('a').text()
       }
     },
     errorPlacement: function(error, element) {
