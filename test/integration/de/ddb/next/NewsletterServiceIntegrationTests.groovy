@@ -6,6 +6,8 @@ import grails.test.mixin.web.ControllerUnitTestMixin
 
 import org.junit.Test
 
+import de.ddb.common.exception.ItemNotFoundException
+
 @TestMixin(ControllerUnitTestMixin)
 class NewsletterServiceIntegrationTests {
     private static String EMAIL = 'john.doe@example.com'
@@ -13,7 +15,11 @@ class NewsletterServiceIntegrationTests {
     def newsletterService
 
     void tearDown() {
-        newsletterService.unsubscribe(EMAIL)
+        try {
+            newsletterService.unsubscribe(EMAIL)
+        }
+        catch (ItemNotFoundException e) {
+        }
     }
 
     @Test
@@ -31,12 +37,8 @@ class NewsletterServiceIntegrationTests {
         assert !newsletterService.isSubscribed(EMAIL)
     }
 
-    @Test
+    @Test(expected= ItemNotFoundException.class)
     void shouldReturnFalseIfUserIsNotSubscriber() {
         newsletterService.unsubscribe(EMAIL)
-        assert !newsletterService.isSubscribed(EMAIL)
-
-        newsletterService.unsubscribe(EMAIL)
-        assert !newsletterService.isSubscribed(EMAIL)
     }
 }
