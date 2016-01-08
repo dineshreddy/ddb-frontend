@@ -32,7 +32,7 @@ limitations under the License.
         <g:form method="post" name="user-api-form" class="form-horizontal" controller="user" action="requestApiKey" >
           <div>
             <div class="profile-nav bb">
-              <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+              <div><h1><g:message encodeAs="html" code="ddbcommon.User_Profile"/></h1></div>
               <div><h3><g:message encodeAs="html" code="ddbnext.Api_Access"/></h3></div>
             </div>
             

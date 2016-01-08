@@ -15,21 +15,21 @@ limitations under the License.
 --%>
 <html>
   <head>
-    <title><g:message encodeAs="html" code="ddbnext.Confirm" /> - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-    <meta name="page" content="confirm" />
-    <meta name="layout" content="main" />
+    <title><g:message code="${title}"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <meta name="page" content="confirm"/>
+    <meta name="layout" content="main"/>
   </head>
   <body>
     <div class="container confirmation">
       <div class="static_content">
         <div class="profile-nav bb">
-          <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+          <div><h1><g:message code="${headline}"/></h1></div>
         </div>
         <ddbcommon:renderErrors errors="${errors}"/>
         <ddbcommon:renderMessages messages="${messages}"/>
       </div>
       <%-- Account menu --%>
-      <g:render template="accountMenu" />
+      <g:render template="../user/accountMenu"/>
     </div>
   </body>
 </html>

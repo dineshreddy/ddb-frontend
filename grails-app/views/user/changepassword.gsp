@@ -37,7 +37,7 @@ limitations under the License.
       <input type="hidden" name="id" value="${ user.id }" />
       <div>
         <div class="profile-nav bb">
-          <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+          <div><h1><g:message encodeAs="html" code="ddbcommon.User_Profile"/></h1></div>
           <div><h3><g:message encodeAs="html" code="ddbcommon.Change_Password_Link"/></h3></div>
         </div>
 

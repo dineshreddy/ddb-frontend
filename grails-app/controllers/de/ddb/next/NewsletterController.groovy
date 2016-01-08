@@ -26,8 +26,8 @@ class NewsletterController {
     }
 
     def subscribe() {
-        def errors = []
-        def messages = []
+        List<String> errors = []
+        List<String> messages = []
 
         if (params.email) {
             try {
@@ -47,20 +47,31 @@ class NewsletterController {
         else {
             errors += "ddbcommon.User.Newsletter_Email_Required"
         }
-        redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
+        render(view: "../user/confirm", model: [
+            errors: errors,
+            headline: "ddbnext.Newsletter_Subscribe_Title",
+            messages: messages,
+            title: "ddbnext.Newsletter_Subscribe_Title"
+        ])
     }
 
     def unsubscribe() {
-        def errors = []
-        def messages = []
+        List<String> errors = []
+        String headline
+        List<String> messages = []
+        String title
 
         if (params.email) {
             try {
                 newsletterService.unsubscribe(params.email)
                 messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
+                headline = "ddbnext.Newsletter_Unsubscribe_Title"
+                title = "ddbnext.Newsletter_Unsubscribe_Title"
             }
             catch (ItemNotFoundException e) {
                 errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
+                headline = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
+                title = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
             }
             catch (Exception e) {
                 // no error message defined yet
@@ -70,6 +81,11 @@ class NewsletterController {
         else {
             errors += "ddbcommon.User.Newsletter_Email_Required"
         }
-        redirect(controller: "user", action: "confirmationPage", params: [errors: errors, messages: messages])
+        render(view: "../user/confirm", model: [
+            errors: errors,
+            headline: headline,
+            messages: messages,
+            title: title
+        ])
     }
 }

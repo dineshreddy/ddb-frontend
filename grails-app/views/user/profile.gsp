@@ -40,7 +40,7 @@ limitations under the License.
             <div>
               <div class="static_content control-groups">
                 <div class="profile-nav bb">
-                  <div><h1><g:message encodeAs="html" code="ddbnext.User_Profile"/></h1></div>
+                  <div><h1><g:message encodeAs="html" code="ddbcommon.User_Profile"/></h1></div>
                   <div><h3><g:message encodeAs="html" code="ddbcommon.User.Data"/></h3></div>
                 </div>
                 <div class="control-group">
