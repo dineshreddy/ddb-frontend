@@ -250,5 +250,9 @@
 }
 
 .item-hierarchy .tooltip {
-  margin-top: 10px;
+  margin-top: -10px;
+}
+
+.item-hierarchy .tooltip .arrow {
+  background-position:-12px -12px;
 }
