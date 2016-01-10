@@ -24,12 +24,17 @@ import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.context.ApplicationContext
 
+import de.ddb.common.AasPersonService
 import de.ddb.common.UserService
+import de.ddb.common.beans.User
+import de.ddb.common.beans.aas.AasCredential
+import de.ddb.common.beans.aas.Privilege
 
 @Aspect
 public class SecurityInterceptor {
     private final ApplicationContext ctx = Holders.grailsApplication.mainContext
     private final LinkGenerator grailsLinkGenerator = ctx.getBean("grailsLinkGenerator")
+    private final AasPersonService aasPersonService = (AasPersonService) ctx.getBean("aasPersonService")
     private final UserService userService = (UserService) ctx.getBean("userService")
 
     @Around("@annotation(de.ddb.common.aop.IsAuthorized)")
@@ -40,6 +45,37 @@ public class SecurityInterceptor {
         else {
             WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(
                     WebUtils.retrieveGrailsWebRequest().getCurrentResponse().SC_UNAUTHORIZED)
+        }
+    }
+
+    @Around("@annotation(de.ddb.common.aop.IsNewsletterEditor)")
+    public void isNewsletterEditor(JoinPoint joinPoint) {
+        boolean isNewsletterEditor = false
+        User user = userService.getUserFromSession()
+
+        if (user) {
+            List<Privilege> privileges = aasPersonService.getPersonPrivileges(
+                    user.id, new AasCredential(user.id, user.password))
+
+            privileges.each { privilege ->
+                // TODO (sche): replace with NEWSLETTER if that role exists.
+                if (privilege.privilege == "ADMIN") {
+                    isNewsletterEditor = true
+                }
+            }
+            if (isNewsletterEditor) {
+                joinPoint.proceed()
+            }
+            else {
+                WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendError(
+                        WebUtils.retrieveGrailsWebRequest().getCurrentResponse().SC_FORBIDDEN)
+            }
+        }
+        else {
+            WebUtils.retrieveGrailsWebRequest().getCurrentResponse().sendRedirect(
+                    grailsLinkGenerator.link(controller: "user", action: "index", params: [
+                        referrer: Holders.grailsApplication.mainContext.getBean("de.ddb.common.GetCurrentUrlTagLib").getCurrentUrl()
+                    ]))
         }
     }
 

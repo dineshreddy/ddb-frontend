@@ -15,11 +15,24 @@
  */
 package de.ddb.next
 
+import de.ddb.common.aop.IsNewsletterEditor
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 
 class NewsletterController {
     def newsletterService
+
+    @IsNewsletterEditor
+    def getNewsletters() {
+        String result = ""
+        def newsletters = newsletterService.getNewsletters(params.size, params.offset)
+
+        newsletters.each {newsletter ->
+            result += newsletter.source.email + "\n"
+        }
+        response.setHeader("Content-disposition", "attachment; filename=Newsletters.csv")
+        render(contentType: "text/csv", text: result)
+    }
 
     def index() {
         render(view: "newsletter")

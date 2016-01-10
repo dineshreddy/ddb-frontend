@@ -186,6 +186,11 @@ class UrlMappings {
             action="index"
         }
 
+        "/newsletter-recipients" {
+            controller="newsletter"
+            action=[GET: "getNewsletters"]
+        }
+
         "/apis/savedsearches" {
             controller="savedsearches"
             action=[GET: "getSavedSearches", PUT: "addSavedSearch"]
