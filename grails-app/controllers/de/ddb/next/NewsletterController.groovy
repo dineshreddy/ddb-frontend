@@ -26,18 +26,18 @@ class NewsletterController {
     }
 
     def subscribe() {
-        List<String> errors = []
-        List<String> messages = []
+        flash.errors = []
+        flash.messages = []
 
         if (params.email) {
             try {
                 String confirmationLink = newsletterService.subscribe(params.email)
 
                 newsletterService.sendConfirmationMail(params.email, confirmationLink)
-                messages += "ddbcommon.User.Newsletter_Subscribe_Success"
+                flash.messages += "ddbcommon.User.Newsletter_Subscribe_Success"
             }
             catch (ConflictException e) {
-                errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
+                flash.errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
             }
             catch (Exception e) {
                 // no error message defined yet
@@ -45,33 +45,29 @@ class NewsletterController {
             }
         }
         else {
-            errors += "ddbcommon.User.Newsletter_Email_Required"
+            flash.errors += "ddbcommon.User.Newsletter_Email_Required"
         }
-        render(view: "../user/confirm", model: [
-            errors: errors,
-            headline: "ddbnext.Newsletter_Subscribe_Title",
-            messages: messages,
-            title: "ddbnext.Newsletter_Subscribe_Title"
-        ])
+        flash.headline = "ddbnext.Newsletter_Subscribe_Title"
+        flash.title = "ddbnext.Newsletter_Subscribe_Title"
+        redirect(controller: "user", action: "confirmationPage")
     }
 
     def unsubscribe() {
-        List<String> errors = []
-        String headline
-        List<String> messages = []
-        String title
-
         if (params.email) {
             try {
                 newsletterService.unsubscribe(params.email)
-                messages += "ddbcommon.User.Newsletter_Unsubscribe_Success"
-                headline = "ddbnext.Newsletter_Unsubscribe_Title"
-                title = "ddbnext.Newsletter_Unsubscribe_Title"
+                flash.headline = "ddbnext.Newsletter_Unsubscribe_Title"
+                flash.messages = [
+                    "ddbcommon.User.Newsletter_Unsubscribe_Success"
+                ]
+                flash.title = "ddbnext.Newsletter_Unsubscribe_Title"
             }
             catch (ItemNotFoundException e) {
-                errors += "ddbcommon.User.Newsletter_Unsubscribe_Error"
-                headline = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
-                title = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
+                flash.errors = [
+                    "ddbcommon.User.Newsletter_Unsubscribe_Error"
+                ]
+                flash.headline = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
+                flash.title = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
             }
             catch (Exception e) {
                 // no error message defined yet
@@ -79,13 +75,10 @@ class NewsletterController {
             }
         }
         else {
-            errors += "ddbcommon.User.Newsletter_Email_Required"
+            flash.errors = [
+                "ddbcommon.User.Newsletter_Email_Required"
+            ]
         }
-        render(view: "../user/confirm", model: [
-            errors: errors,
-            headline: headline,
-            messages: messages,
-            title: title
-        ])
+        redirect(controller: "user", action: "confirmationPage")
     }
 }
