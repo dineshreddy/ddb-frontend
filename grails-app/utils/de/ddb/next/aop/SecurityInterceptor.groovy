@@ -29,6 +29,7 @@ import de.ddb.common.UserService
 import de.ddb.common.beans.User
 import de.ddb.common.beans.aas.AasCredential
 import de.ddb.common.beans.aas.Privilege
+import de.ddb.common.beans.aas.PrivilegeEnum
 
 @Aspect
 public class SecurityInterceptor {
@@ -59,7 +60,7 @@ public class SecurityInterceptor {
 
             privileges.each { privilege ->
                 // TODO (sche): replace with NEWSLETTER if that role exists.
-                if (privilege.privilege == "ADMIN") {
+                if (privilege.privilege == PrivilegeEnum.ADMIN) {
                     isNewsletterEditor = true
                 }
             }
