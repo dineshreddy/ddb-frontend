@@ -16,6 +16,7 @@
 package de.ddb.next
 import grails.converters.JSON
 import de.ddb.common.beans.User
+import de.ddb.common.beans.item.CortexInstitution
 import de.ddb.common.constants.SearchParamEnum
 
 class InstitutionController {
@@ -62,10 +63,9 @@ class InstitutionController {
         def id = params.id
         def itemId = id
         log.debug("read insitution by item id: ${id}")
-        def selectedOrgXML = institutionService.getInstitutionViewByItemId(id)
+        CortexInstitution institution = institutionService.getInstitutionViewByItemId(id)
         def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
-        if (selectedOrgXML) {
-            selectedOrgXML = selectedOrgXML["cortex-institution"] // fix for the changed xml-format in the new backend api
+        if (institution) {
             def jsonOrgParentHierarchy = institutionService.getParentsOfInstitutionByItemId(id)
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
             if (jsonOrgParentHierarchy.size() == 1) {
@@ -82,7 +82,7 @@ class InstitutionController {
 
             // logo
             def organisationLogo
-            if (selectedOrgXML?.logo.toString().isEmpty()) {
+            if (institution.logo.isEmpty()) {
                 organisationLogo = g.resource("plugin": "ddb-common", "dir": "images",
                 "file": "/placeholder/searchResultMediaInstitution.png")
             }
@@ -96,7 +96,7 @@ class InstitutionController {
                         itemId: itemId,
                         itemUri: request.forwardURI,
                         selectedItemId: id,
-                        selectedOrgXML: selectedOrgXML,
+                        institution: institution,
                         organisationLogo: organisationLogo,
                         subinstitutions: institutionService.getChildren(itemId),
                         parentOrg: jsonOrgParentHierarchy,

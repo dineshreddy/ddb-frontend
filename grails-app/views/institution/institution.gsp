@@ -19,7 +19,7 @@ limitations under the License.
 
 <html>
 <head>
-<title>${selectedOrgXML.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+<title>${institution.name} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
 <%-- Used for Canonical URL --%>
 <link rel="canonical" href="${createLink(controller: 'institution',
                                          action: 'showInstitutionsTreeByItemId',
@@ -40,10 +40,10 @@ limitations under the License.
          <div class="row">
            <div class="span9">
              <div class="sector">
-               <g:message encodeAs="html" code="ddbnext.${selectedOrgXML.sector}"/>
+               <g:message encodeAs="html" code="ddbnext.${institution.sector}"/>
              </div>
              <div>
-               <h1>${selectedOrgXML.name} 
+               <h1>${institution.name}
                  <g:if test="${(countObjcs > 0)}">
                    <g:set var="facetvalue" value="provider_id=${selectedItemId}"/>
                    <g:link class="count" controller="search" action="results"
@@ -65,21 +65,21 @@ limitations under the License.
                </h1>
              </div>
              <div>
-               <a class="external-dummy-icon" href="${selectedOrgXML.uri}"><ddb:removeUrlProtocol url="${String.valueOf(selectedOrgXML.uri).trim()}"/></a>
+               <a class="external-dummy-icon" href="${institution.uri}"><ddb:removeUrlProtocol url="${institution.uri.trim()}"/></a>
              </div>
              <div>
-               <g:if test="${selectedOrgXML.facebook}">
-                 <a class="facebook-icon" href="${selectedOrgXML.facebook}" target="_blank"> <ddb:removeUrlProtocol url="${String.valueOf(selectedOrgXML.facebook).trim()}"/> </a>
+               <g:if test="${institution.facebook}">
+                 <a class="facebook-icon" href="${institution.facebook}" target="_blank"><ddb:removeUrlProtocol url="${institution.facebook.trim()}"/></a>
                </g:if>
              </div>
              <div>
-               <g:if test="${selectedOrgXML.twitter}">
-                 <a class="twitter-icon" href="${selectedOrgXML.twitter}" target="_blank"> <ddb:removeUrlProtocol url="${String.valueOf(selectedOrgXML.twitter).trim()} "/> </a>
+               <g:if test="${institution.twitter}">
+                 <a class="twitter-icon" href="${institution.twitter}" target="_blank"><ddb:removeUrlProtocol url="${institution.twitter.trim()} "/></a>
                </g:if>
              </div>
            </div>
            <div class="span3">
-             <img class="logo" alt="${selectedOrgXML.name}" src="${organisationLogo}">
+             <img class="logo" alt="${institution.name}" src="${organisationLogo}">
            </div>
          </div>
        </div>
@@ -91,17 +91,19 @@ limitations under the License.
        <div class="span12 locations">
 
             <div class="location-container span5">
-
-              <div class="location" data-lat="${selectedOrgXML.locations.location.geocode.latitude }" data-lon="${selectedOrgXML.locations.location.geocode.longitude }">
-                <p class="address">
-                  <b>${selectedOrgXML.name}</b><br>
-                  <span class="space">${selectedOrgXML.locations.location.address.street }</span>${selectedOrgXML.locations.location.address.houseIdentifier }<br>
-                  <g:if test="${(selectedOrgXML.locations.location.address.addressSupplement)&&(selectedOrgXML.locations.location.address.addressSupplement.length() > 0)}">
-                    ${selectedOrgXML.locations.location.address.addressSupplement}<br>
-                  </g:if>
-                  <span class="space">${selectedOrgXML.locations.location.address.postalCode }</span>${selectedOrgXML.locations.location.address.city }
-                </p>
-              </div>
+              <g:if test="${institution.locations.location}">
+                <g:set var="location" value="${institution.locations.location[0]}"/>
+                <div class="location" data-lat="${location.geocode.latitude}" data-lon="${location.geocode.longitude}">
+                  <p class="address">
+                    <b>${institution.name}</b><br>
+                    <span class="space">${location.address.street}</span>${location.address.houseIdentifier}<br>
+                    <g:if test="${location.address.addressSupplement}">
+                      ${location.address.addressSupplement}<br>
+                    </g:if>
+                    <span class="space">${location.address.postalCode}</span>${location.address.city}
+                  </p>
+                </div>
+              </g:if>
 
               <g:if test="${subinstitutions.size() > 0 && !parentOrg[parentOrg.size() - 1].aggregationEntity}">
                 <div class="hierarchy">
