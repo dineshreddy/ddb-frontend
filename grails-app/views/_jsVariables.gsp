@@ -16,7 +16,7 @@ limitations under the License.
 <div id="globalJsVariables" class="off" 
     data-js-context-path="${request.contextPath}"
     data-js-language="<g:message encodeAs="html" code="ddbnext.language"/>"
-    data-js-longitude="${institution?.locations?.location?.geocode?.longitude}"
-    data-js-latitude="${institution?.locations?.location?.geocode?.latitude}"
+    data-js-longitude="${institution?.locations?.location[0]?.geocode?.longitude}"
+    data-js-latitude="${institution?.locations?.location[0]?.geocode?.latitude}"
     data-js-loggedin="<ddbcommon:isLoggedIn>true</ddbcommon:isLoggedIn><ddbcommon:isNotLoggedIn>false</ddbcommon:isNotLoggedIn>">
 </div>
