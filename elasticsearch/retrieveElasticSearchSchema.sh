@@ -46,16 +46,19 @@ echo Retrieving schema from elasticsearch
 echo ------------------------------------
                 
 
-retrieveSchemaFile "folder"
-echo
-
 retrieveSchemaFile "bookmark"
 echo
 
-retrieveSchemaFile "savedSearch"
+retrieveSchemaFile "folder"
 echo
 
 retrieveSchemaFile "folderList"
+echo
+
+retrieveSchemaFile "newsletter"
+echo
+
+retrieveSchemaFile "savedSearch"
 echo
 
 echo Script finished. Exit.

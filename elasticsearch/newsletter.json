@@ -1,0 +1,14 @@
+{
+ "newsletter": {
+  "properties": {
+   "confirmationToken": {
+    "index": "not_analyzed",
+    "type": "string"
+   },
+   "email": {
+    "index": "not_analyzed",
+    "type": "string"
+   }
+  }
+ }
+}

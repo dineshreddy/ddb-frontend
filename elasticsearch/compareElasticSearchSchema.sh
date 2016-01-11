@@ -50,16 +50,19 @@ echo
 echo Reading schema files
 echo --------------------
 
-contentFolderList=`readSchemaFile folderList.json`
-contentFolder=`readSchemaFile folder.json`
 contentBookmark=`readSchemaFile bookmark.json`
+contentFolder=`readSchemaFile folder.json`
+contentFolderList=`readSchemaFile folderList.json`
+contentNewsletter=`readSchemaFile newsletter.json`
 contentSavedSearch=`readSchemaFile savedSearch.json`
 
-echo "folderList: " $contentFolderList
+echo "bookmark: " $contentBookmark
 echo
 echo "folder: " $contentFolder
 echo
-echo "bookmark: " $contentBookmark
+echo "folderList: " $contentFolderList
+echo
+echo "newsletter: " $contentNewsletter
 echo
 echo "savedSearch: " $contentSavedSearch
 echo

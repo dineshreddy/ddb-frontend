@@ -49,18 +49,21 @@ echo
 echo Reading schema files
 echo --------------------
 
-contentFolder=`readSchemaFile folder.json`
 contentBookmark=`readSchemaFile bookmark.json`
-contentSavedSearch=`readSchemaFile savedSearch.json`
+contentFolder=`readSchemaFile folder.json`
 contentFolderList=`readSchemaFile folderList.json`
+contentNewsletter=`readSchemaFile newsletter.json`
+contentSavedSearch=`readSchemaFile savedSearch.json`
 
-echo "folder: " $contentFolder
-echo
 echo "bookmark: " $contentBookmark
 echo
-echo "savedSearch: " $contentSavedSearch
+echo "folder: " $contentFolder
 echo
 echo "FolderList: " $contentFolderList
+echo
+echo "newsletter: " $contentNewsletter
+echo
+echo "savedSearch: " $contentSavedSearch
 echo
 
 echo "Schema files ok"
@@ -84,18 +87,20 @@ postSchemaFile() {
 echo Curling new schema to elasticsearch
 echo -----------------------------------
 
-postSchemaFile "folderList" "$contentFolderList"
-echo
-
 postSchemaFile "bookmark" "$contentBookmark"
-echo
-
-postSchemaFile "savedSearch" "$contentSavedSearch"
 echo
 
 postSchemaFile "folder" "$contentFolder"
 echo
 
+postSchemaFile "folderList" "$contentFolderList"
+echo
+
+postSchemaFile "newsletter" "$contentNewsletter"
+echo
+
+postSchemaFile "savedSearch" "$contentSavedSearch"
+echo
 
 echo Script finished. Exit.
 echo ----------------------

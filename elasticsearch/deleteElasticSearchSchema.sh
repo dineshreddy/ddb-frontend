@@ -52,19 +52,20 @@ deleteSchemaFile() {
 echo Deleting schema from elasticsearch
 echo ----------------------------------
                 
-
-deleteSchemaFile "folder"
-echo
-
 deleteSchemaFile "bookmark"
 echo
 
-deleteSchemaFile "savedSearch"
+deleteSchemaFile "folder"
 echo
 
 deleteSchemaFile "folderList"
 echo
 
+deleteSchemaFile "newsletter"
+echo
+
+deleteSchemaFile "savedSearch"
+echo
 
 echo Script finished. Exit.
 echo ----------------------
