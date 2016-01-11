@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <g:set var="location" value="${null}"/>
-<g:if test="${institution?.locations?.location}">
+<g:if test="${institution instanceof de.ddb.common.beans.item.CortexInstitution && institution?.locations?.location}">
   <g:set var="location" value="${institution.locations.location[0]}"/>
 </g:if>
 <div id="globalJsVariables" class="off" 
