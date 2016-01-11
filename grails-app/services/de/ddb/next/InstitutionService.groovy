@@ -16,16 +16,19 @@
 package de.ddb.next
 
 import grails.plugin.cache.Cacheable
+import groovy.json.JsonOutput
 
 import java.util.regex.Pattern
 
 import org.codehaus.groovy.grails.web.util.WebUtils
+import org.codehaus.jackson.map.ObjectMapper
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ApiResponse
 import de.ddb.common.CommonInstitutionService
 import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
+import de.ddb.common.beans.institution.Institution
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.InstitutionMapModel
@@ -62,13 +65,19 @@ class InstitutionService extends CommonInstitutionService {
      * @return all institutions from the backend
      */
     @Cacheable(value=InstitutionService.CACHE_NAME, key="'findAll'")
-    def findAll() {
+    Institution[] findAll() {
         log.info("findAll()")
-        ApiResponse responseWrapper = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
-        if(!responseWrapper.isOk()){
-            responseWrapper.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        Institution[] result
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
+
+        if (apiResponse.isOk()) {
+            result = new ObjectMapper().readValue(JsonOutput.toJson(apiResponse.getResponse()), Institution[].class)
         }
-        return responseWrapper.getResponse()
+        else {
+            log.error "findAll: Json file was not found"
+            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
+        }
+        return result
     }
 
     /**
