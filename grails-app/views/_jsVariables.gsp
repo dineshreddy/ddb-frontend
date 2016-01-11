@@ -13,10 +13,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:set var="location" value="${null}"/>
+<g:if test="${institution?.locations?.location}">
+  <g:set var="location" value="${institution.locations.location[0]}"/>
+</g:if>
 <div id="globalJsVariables" class="off" 
     data-js-context-path="${request.contextPath}"
     data-js-language="<g:message encodeAs="html" code="ddbnext.language"/>"
-    data-js-longitude="${institution?.locations?.location[0]?.geocode?.longitude}"
-    data-js-latitude="${institution?.locations?.location[0]?.geocode?.latitude}"
+    data-js-longitude="${location?.geocode?.longitude}"
+    data-js-latitude="${location?.geocode?.latitude}"
     data-js-loggedin="<ddbcommon:isLoggedIn>true</ddbcommon:isLoggedIn><ddbcommon:isNotLoggedIn>false</ddbcommon:isNotLoggedIn>">
 </div>
