@@ -67,17 +67,7 @@ class InstitutionService extends CommonInstitutionService {
     @Cacheable(value=InstitutionService.CACHE_NAME, key="'findAll'")
     Institution[] findAll() {
         log.info("findAll()")
-        Institution[] result
-        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(), "/institutions", false, [:])
-
-        if (apiResponse.isOk()) {
-            result = new ObjectMapper().readValue(JsonOutput.toJson(apiResponse.getResponse()), Institution[].class)
-        }
-        else {
-            log.error "findAll: Json file was not found"
-            apiResponse.throwException(WebUtils.retrieveGrailsWebRequest().getCurrentRequest())
-        }
-        return result
+        return getInstitutions()
     }
 
     /**
