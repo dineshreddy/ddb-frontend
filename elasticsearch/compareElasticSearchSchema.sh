@@ -90,13 +90,16 @@ compareSchemaFile() {
 echo Comparing current schema with elasticsearch
 echo -------------------------------------------
                 
-compareSchemaFile "folderList" "$contentFolderList"
+compareSchemaFile "bookmark" "$contentBookmark"
 echo
 
 compareSchemaFile "folder" "$contentFolder"
 echo
 
-compareSchemaFile "bookmark" "$contentBookmark"
+compareSchemaFile "folderList" "$contentFolderList"
+echo
+
+compareSchemaFile "newsletter" "$contentNewsletter"
 echo
 
 compareSchemaFile "savedSearch" "$contentSavedSearch"
