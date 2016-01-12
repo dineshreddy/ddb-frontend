@@ -27,8 +27,11 @@ class NewsletterController {
         String result = ""
         def newsletters = newsletterService.getNewsletters(params.size, params.offset)
 
-        newsletters.each {newsletter ->
-            result += newsletter.source.email + "\n"
+        newsletters.eachWithIndex {newsletter, index ->
+            if (index > 0) {
+                result += ","
+            }
+            result += newsletter.source.email
         }
         response.setHeader("Content-disposition", "attachment; filename=Newsletters.csv")
         render(contentType: "text/csv", text: result)
