@@ -59,8 +59,7 @@ public class SecurityInterceptor {
                     user.id, new AasCredential(user.id, user.password))
 
             privileges.each { privilege ->
-                // TODO (sche): replace with NEWSLETTER if that role exists.
-                if (privilege.privilege == PrivilegeEnum.ADMIN) {
+                if (privilege.privilege == PrivilegeEnum.NEWSLETTER_EDITOR) {
                     isNewsletterEditor = true
                 }
             }
