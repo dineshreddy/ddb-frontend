@@ -21,7 +21,8 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.JsonUtil
-import de.ddb.common.SearchService
+import de.ddb.common.beans.item.Facet
+import de.ddb.common.beans.item.IndexingProfile
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.ProjectConstants
@@ -129,10 +130,10 @@ class SearchController {
 
             //Calculating results details info (number of results in page, total results number)
             def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-            searchService.DEFAULT_ROWS_PER_PAGE)
+                    searchService.DEFAULT_ROWS_PER_PAGE)
             def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
             def resultsOverallIndex = (offset + 1) + ' - ' +
-            (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
+                    (offset + rows > resultsItems.numberOfResults ? resultsItems.numberOfResults : offset + rows)
             def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
             //Calculating results pagination (previous page, next page, first page, and last page)
@@ -143,7 +144,7 @@ class SearchController {
             def queryString = request.getQueryString()
 
             if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-            queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
 
             def resetSelectionUrl
 
@@ -193,7 +194,7 @@ class SearchController {
 
                 if (urlQuery[SearchParamEnum.FACET.getName()]) {
                     subFacetsUrl = searchService.buildSubFacetsUrl(params, selectedFacets, mainFacetsUrl, urlQuery,
-                    request)
+                            request)
                 }
                 render(view: "results", model: [
                     facetsList:mainFacets,
@@ -267,13 +268,13 @@ class SearchController {
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
         //Calculating results pagination (previous page, next page, first page, and last page)
         def rows = searchService.getNumber(urlQuery[SearchParamEnum.ROWS.getName()],
-        searchService.DEFAULT_ROWS_PER_PAGE)
+                searchService.DEFAULT_ROWS_PER_PAGE)
         def offset = searchService.getNumber(urlQuery[SearchParamEnum.OFFSET.getName()])
         def page = (int)Math.floor(offset / rows) + 1
         def totalPages = Math.ceil(results.totalResults / rows).toInteger()
         //Calculating results details info (number of results in page, total results number)
         def resultsOverallIndex = (offset + 1) +' - ' +
-        (offset + rows > results.totalResults ? results.totalResults : offset + rows)
+                (offset + rows > results.totalResults ? results.totalResults : offset + rows)
         def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
@@ -335,14 +336,14 @@ class SearchController {
 
     def informationItem(){
         def properties = [:]
-        def newInformationItem = itemService.getItemIndexingProfile(params.id)
+        IndexingProfile newInformationItem = itemService.getItemIndexingProfile(params.id)
 
         if(newInformationItem.facet){
             //iterate over all facets
             newInformationItem.facet.each(){ facet ->
                 //iterate over all values of the FacetEnum and add matching names to the information
                 for (FacetEnum facetItem : FacetEnum.values()) {
-                    if (facet['@name'] == facetItem.getName()) {
+                    if (facet.name == facetItem.getName()) {
                         addFacetItems(properties, facet, facetItem)
                     }
                 }
@@ -355,26 +356,18 @@ class SearchController {
      * Adds the value(s) of a facet-type to a Map
      *
      * @param properties a map that holds all facet items (for rendering)
-     * @param facetMap the facet map containing a key and a value element for one facet type. The value can be a single String or a List of Strings
-     * @param facet the facet to add
-     *
+     * @param facet the facet
+     * @param facetEnum the facet type to add
      */
-    private addFacetItems(Map properties, Map facetMap, FacetEnum facet) {
-        properties[facet.getName()]=[]
+    private addFacetItems(Map properties, Facet facet, FacetEnum facetEnum) {
+        properties[facetEnum.getName()]=[]
 
-        if(facetMap['value'] instanceof String) {
-            if (facet.getI18nPrefix() != null) {
-                properties[facet.getName()].add(message(code:facet.getI18nPrefix()+facetMap['value']))
-            } else {
-                properties[facet.getName()].add(facetMap['value'])
+        facet.value.each() { value ->
+            if (facetEnum.getI18nPrefix()) {
+                properties[facetEnum.getName()].add(message(code: facetEnum.getI18nPrefix() + value))
             }
-        } else if(facetMap['value'] instanceof List) {
-            facetMap['value'].each() { value ->
-                if (facet.getI18nPrefix() != null) {
-                    properties[facet.getName()].add(message(code:facet.getI18nPrefix()+value))
-                } else {
-                    properties[facet.getName()].add(value)
-                }
+            else {
+                properties[facetEnum.getName()].add(value)
             }
         }
     }
