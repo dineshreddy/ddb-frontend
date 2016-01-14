@@ -85,59 +85,13 @@ limitations under the License.
        </div>
      </div>
 
-     <g:render template="highlights" />
+     <g:render template="highlights"/>
+     <g:render template="locations"/>
      
-     <div class="row">
-       <div class="span12 locations">
-
-            <div class="location-container span5">
-              <g:if test="${institution.locations.location}">
-                <g:set var="location" value="${institution.locations.location[0]}"/>
-                <div class="location" data-lat="${location.geocode.latitude}" data-lon="${location.geocode.longitude}">
-                  <p class="address">
-                    <b>${institution.name}</b><br>
-                    <span class="space">${location.address.street}</span>${location.address.houseIdentifier}<br>
-                    <g:if test="${location.address.addressSupplement}">
-                      ${location.address.addressSupplement}<br>
-                    </g:if>
-                    <span class="space">${location.address.postalCode}</span>${location.address.city}
-                  </p>
-                </div>
-              </g:if>
-
-              <g:if test="${subinstitutions.size() > 0 && !parentOrg[parentOrg.size() - 1].aggregationEntity}">
-                <div class="hierarchy">
-                  <span class="title"><g:message encodeAs="html" code="ddbnext.InstitutionItem_OtherLocations" /></span>
-                  <ol class="institution-list">
-                    <li class="institution-listitem">
-                      <g:if test="${(selectedItemId == itemId)}">
-                        <i class="icon-institution"></i>
-                        <div>
-                          <b>${parentOrg[parentOrg.size() - 1].label}</b>
-                        </div>
-                      </g:if>
-                      <g:else>
-                        <i class="icon-child-institution"></i>
-                        <div>
-                          <a href="${request.contextPath}/about-us/institutions/item/${parentOrg[parentOrg.size() - 1].id}">${parentOrg[parentOrg.size() - 1].label}</a>
-                        </div>
-                      </g:else>
-                      <g:render template="subinstitutions" model="[subinstitutions: subinstitutions]"/>
-                    </li>
-                  </ol>
-                </div>
-              </g:if>
-            </div>
-            <div id="divOSM" class="span5 script">
-              <div id="ddb-map"></div>
-            </div>
-        </div>
-      </div>
-  </div> 
-  <div class="printViewUrl off">
-    <strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink"/></strong>: 
-    <div>${url}</div>
-  </div> 
-</body>
+    <div class="printViewUrl off">
+      <strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+      <div>${url}</div>
+    </div> 
+  </body>
 </html>
 
