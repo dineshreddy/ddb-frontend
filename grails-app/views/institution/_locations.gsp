@@ -31,6 +31,9 @@ limitations under the License.
         </div>
       </g:if>
 
+      <g:render template="descriptionDesktop"/>
+      <g:render template="descriptionPhone"/>
+
       <g:if test="${subinstitutions.size() > 0 && !parentOrg[parentOrg.size() - 1].aggregationEntity}">
         <div class="hierarchy">
           <span class="title"><g:message encodeAs="html" code="ddbnext.InstitutionItem_OtherLocations" /></span>
@@ -54,8 +57,10 @@ limitations under the License.
         </div>
       </g:if>
     </div>
+
     <div id="divOSM" class="span5 script">
       <div id="ddb-map"></div>
     </div>
+
   </div>
 </div>

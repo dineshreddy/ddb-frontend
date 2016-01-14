@@ -29,6 +29,12 @@
   border: 1px solid black;
 }
 
+@media (min-width: 1200px) {
+  .location-container .description { 
+    width: 650px;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 979px) {
   .locations #divOSM { 
     margin-left: 0;
@@ -54,8 +60,21 @@
   margin-left: 0;
 }
 
-.location-container .location {
+.location-container .location, .location-container .description, .location-container .full-description {
   margin-bottom: 30px;
+}
+
+.location-container .show-full-description {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.location-container .show-full-description button {
+  background: none;
+  color: #3e3a37;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: none;
 }
 
 .location-container .location .count {

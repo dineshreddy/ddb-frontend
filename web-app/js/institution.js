@@ -14,29 +14,17 @@
  * limitations under the License.
  */
 $(document).ready(function() {
-
   if (jsPageName === "institution") {
-
     var defaultRowCount = 10;
-
     var allRowCount = 0;
-
     var windowWidth = 0;
-
     var carouselWidth = 1080;
-
     var carouselHeight = 175;
-
     var windowLarge = 1185;
-
     var windowMediumMax = 965;
-
     var windowMediumMin = 753;
-
     var windowSmallMax = 661;
-
     var windowSmallMin = 451;
-
     var disableCarouselArrows = function() {
       $(".btn-prev").addClass("disabled");
       $(".btn-prev").off('click');
@@ -76,10 +64,8 @@ $(document).ready(function() {
              ) {
             disableCarouselArrows();
           }
-
         }
       });
-
     };
 
     var initCarousel = function() {
@@ -158,6 +144,12 @@ $(document).ready(function() {
       // Initialize Search results
       getNewSearchResults(0, defaultRowCount, institutionid);
 
+      // description button in mobile view
+      $(".show-full-description").click(function() {
+        $(".description").addClass("off");
+        $(".full-description").removeClass("off");
+      });
+
       var socialMediaManager = new SocialMediaManager();
       de.ddb.common.search.initHistorySupport(null);
       de.ddb.next.search.paginationWidget = new de.ddb.next.PaginationWidget();
@@ -166,5 +158,4 @@ $(document).ready(function() {
 
     initPage();
   };
-
 });
