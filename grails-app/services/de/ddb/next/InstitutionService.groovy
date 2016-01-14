@@ -16,15 +16,9 @@
 package de.ddb.next
 
 import grails.plugin.cache.Cacheable
-import groovy.json.JsonOutput
 
 import java.util.regex.Pattern
 
-import org.codehaus.groovy.grails.web.util.WebUtils
-import org.codehaus.jackson.map.ObjectMapper
-
-import de.ddb.common.ApiConsumer
-import de.ddb.common.ApiResponse
 import de.ddb.common.CommonInstitutionService
 import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
