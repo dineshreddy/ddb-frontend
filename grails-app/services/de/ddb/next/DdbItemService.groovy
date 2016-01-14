@@ -132,7 +132,6 @@ class DdbItemService {
     def getFullItemModel(id) {
         def utils = WebUtils.retrieveGrailsWebRequest()
         def request = utils.getCurrentRequest()
-        def response = utils.getCurrentResponse()
         def params = utils.getParameterMap()
         def itemId = id
         def itemUri = null
