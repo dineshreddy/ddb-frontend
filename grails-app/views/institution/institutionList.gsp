@@ -34,7 +34,7 @@ limitations under the License.
   <div class="row institutionlist">
     <div class="script">
     <div class="span3">
-      <g:render template="filterNotPhone" />
+      <g:render template="filterDesktop"/>
     </div>
     <div class="span9 institution-right-header">
       <div class="row">

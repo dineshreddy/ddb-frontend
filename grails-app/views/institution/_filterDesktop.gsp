@@ -14,5 +14,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <div id="sector-facet-phone" class="filter hidden-phone">
-  <g:render template="sectorFacet" />
+  <g:render template="sectorFacetDesktop"/>
 </div>
