@@ -19,9 +19,10 @@ limitations under the License.
 <g:set var="config" bean="configurationService"/>
 <table border="0" cellpadding="2" cellspacing="3" width="100%" class="fields-table">
   <g:each var="field" in="${fields}">
+    <g:set var="isEvent" value="${field.id == 'flex_mus_neu_110' || field.id == 'flex_mus_neu_120' || field.id == 'flex_mus_neu_130'}"/>
     <tr>
       <td style="width: 35%" class="valign-top">
-        <strong>
+        <strong style="${isEvent ? 'margin-left: 20px' : ''}">
           <ddbcommon:wellFormedDocFromString text="${field.name}"/>:
         </strong>
       </td>
@@ -33,7 +34,7 @@ limitations under the License.
             </g:link>
           </g:if>
           <g:else>
-            <ddbcommon:wellFormedDocFromString text="${value.text}"/>
+            <ddbcommon:wellFormedDocFromString text="${ddbcommon.stripTags(text: value.text)}"/>
           </g:else>
           <br />
         </g:each>

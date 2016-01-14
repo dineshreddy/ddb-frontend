@@ -15,11 +15,12 @@ limitations under the License.
 --%>
 <div class="fields">
   <g:each var="field" in="${fields}">
+    <g:set var="isEvent" value="${field.id == 'flex_mus_neu_110' || field.id == 'flex_mus_neu_120' || field.id == 'flex_mus_neu_130'}"/>
     <div class="row">
-      <div class="span2<g:if test="${field.'id' == 'flex_mus_neu_110' || field.'id' == 'flex_mus_neu_120' || field.'id' == 'flex_mus_neu_130'}"> modified-margins</g:if>">
+      <div class="span2<g:if test="${isEvent}"> modified-margins</g:if>">
         <strong>${field.name}: </strong>
       </div>
-      <div class="value<g:if test="${field.'id' == 'flex_mus_neu_110' || field.'id' == 'flex_mus_neu_120' || field.'id' == 'flex_mus_neu_130'}"> modified-margins</g:if><g:if test="${display}"> span4</g:if><g:else> span10</g:else>">
+      <div class="value<g:if test="${isEvent}"> modified-margins</g:if><g:if test="${display}"> span4</g:if><g:else> span10</g:else>">
         <g:each var="value" in="${field.value}">
           <g:render template="field" model="['value':value]"/>
           <br />

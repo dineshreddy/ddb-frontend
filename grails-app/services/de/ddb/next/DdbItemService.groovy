@@ -62,11 +62,11 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+        model.institutionImage = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                 model.institutionImage))
 
         if (model.license?.img) {
-            model.licenseImage = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+            model.licenseImage = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                     grailsLinkGenerator.resource("plugin": "ddb-common", "file": model.license.img)))
         }
 
@@ -75,17 +75,19 @@ class DdbItemService {
         model.fontCalibri=grailsApplication.mainContext.getResourceByPath('/css/fonts/Calibri.ttf').file.bytes
 
         def viewerContent
-        if (model.binaryList.size() > 0) {
+        if (model.binaryList) {
             if (model.binaryList.first().preview.uri) {
-                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().preview.uri))
             }
             else if (model.binaryList.first().thumbnail.uri) {
-                viewerContent = itemService.getContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                viewerContent = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                         model.binaryList.first().thumbnail.uri))
             }
         }
-        model.put("binariesListViewerContent", viewerContent)
+        if (viewerContent) {
+            model.put("binariesListViewerContent", viewerContent)
+        }
         return model
     }
 
