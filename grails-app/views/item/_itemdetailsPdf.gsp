@@ -34,7 +34,7 @@ limitations under the License.
             </g:link>
           </g:if>
           <g:else>
-            <ddbcommon:wellFormedDocFromString text="${ddbcommon.stripTags(text: value.text)}"/>
+            <ddbcommon:stripTags text="${value.text}"/>
           </g:else>
           <br />
         </g:each>
