@@ -145,7 +145,7 @@ $(document).ready(function() {
       getNewSearchResults(0, defaultRowCount, institutionid);
 
       // description button in mobile view
-      $(".show-full-description").click(function() {
+      $(".show-full-description button").click(function() {
         $(".description").addClass("off");
         $(".full-description").removeClass("off");
       });
