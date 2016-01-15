@@ -17,6 +17,8 @@ package de.ddb.next
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.beans.entities.Doc
+import de.ddb.common.beans.entities.Entities
 import de.ddb.common.beans.entityfacts.Entity
 import de.ddb.common.beans.entityfacts.SameAs
 import de.ddb.common.constants.EntityFacetEnum
@@ -150,25 +152,27 @@ class EntityController implements InitializingBean {
      */
     def persons() {
         def randomSeed
-        if (params.sort){
-            randomSeed=params.sort
+        if (params.sort) {
+            randomSeed = params.sort
         }else {
             randomSeed = getRandomSeed()
         }
         def entitiesOnPage = 50
-        def results = entityService.doEntitySearch([
+        Entities entities = entityService.doEntitySearch([
             rows : entitiesOnPage,
             query : "thumbnail:*",
             sort : "random_" + randomSeed
         ])
 
         //There are entities with no thumbnail. We leave them out...
-        def resultsWithThumbnails = results.entity.docs[0].findAll { it.thumbnail!=null }
+        Collection<Doc> resultsWithThumbnails = entities.results[0].docs.findAll { it.thumbnail != null }
 
         //Since the result after removing items with no thumnbails is is different from entitiesOnPage (ex: 38)
         //let's make sure we have a list which will have full columns when nrColumnsDesired = x
-        def total= resultsWithThumbnails.size() -resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
-        if (total>RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {total=RESULTS_DESIRED_IN_ONE_PERSONS_PAGE}
+        def total = resultsWithThumbnails.size() - resultsWithThumbnails.size().mod(NR_COLUMNS_DESIRED)
+        if (total > RESULTS_DESIRED_IN_ONE_PERSONS_PAGE) {
+            total = RESULTS_DESIRED_IN_ONE_PERSONS_PAGE
+        }
 
         render(view: "persons", model: [
             domainCanonic: configurationService.getDomainCanonic(),
@@ -244,7 +248,7 @@ class EntityController implements InitializingBean {
 
         def queryString = request.getQueryString()
         def urlQuery = searchService.convertQueryParametersToSearchParameters(urlParams, cookieParametersMap)
-        def results = entityService.doEntitySearch(urlQuery)
+        Entities results = entityService.doEntitySearch(urlQuery)
         def correctedQuery = ""
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
@@ -258,12 +262,12 @@ class EntityController implements InitializingBean {
             rows = RESULTS_DESIRED_IN_ONE_PERSONS_PAGE
         }
         int page = offset.intdiv(rows) + 1
-        int totalPages = (int) Math.ceil(results.totalResults / rows)
+        int totalPages = (int) Math.ceil(results.numberOfResults / rows)
         def totalPagesFormatted = String.format(locale, "%,d", totalPages)
 
         //Calculating results details info (number of results in page, total results number)
-        def resultsOverallIndex = (offset + 1) + ' - ' + (offset + (rows > results.totalResults ? results.totalResults : offset + rows))
-        def numberOfResultsFormatted = String.format(locale, "%,d", results.totalResults)
+        def resultsOverallIndex = (offset + 1) + ' - ' + (offset + (rows > results.numberOfResults ? results.numberOfResults : offset + rows))
+        def numberOfResultsFormatted = String.format(locale, "%,d", results.numberOfResults)
         def resultsPaginatorOptions = searchService.buildPaginatorOptions(urlQuery)
 
         //create cookie with search parameters
@@ -278,7 +282,7 @@ class EntityController implements InitializingBean {
                 resultsOverallIndex:resultsOverallIndex,
                 page: page,
                 totalPages: totalPagesFormatted,
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
+                paginationURL: searchService.buildPagination(results.numberOfResults, urlQuery, request.forwardURI+'?'+queryString.replaceAll("&reqType=ajax","")),
                 numberOfResults: numberOfResultsFormatted,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 offset: params[SearchParamEnum.OFFSET.getName()]
@@ -310,7 +314,7 @@ class EntityController implements InitializingBean {
                 cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
-                paginationURL: searchService.buildPagination(results.totalResults, urlQuery,
+                paginationURL: searchService.buildPagination(results.numberOfResults, urlQuery,
                 request.forwardURI + '?' + queryString?.replaceAll("&reqType=ajax", ""))
             ]
             render(view: "searchPerson", model: model)
@@ -365,15 +369,15 @@ class EntityController implements InitializingBean {
      * @param results
      * @return results
      */
-    private fixLocalizedDateOfBirth(results) {
+    private fixLocalizedDateOfBirth(Entities entities) {
         def mlocale = RequestContextUtils.getLocale(request)
-        for (entity in results.entity[0].docs) {
-            if (mlocale.toString() == "en"){
-                entity.dateOfBirth = entity.dateOfBirth_en
-                entity.dateOfDeath = entity.dateOfDeath_en
+        for (entity in entities.results[0].docs) {
+            if (mlocale.toString() == "en") {
+                entity.dateOfBirth = entity.dateOfBirthEn
+                entity.dateOfDeath = entity.dateOfDeathEn
             } else {
-                entity.dateOfBirth = entity.dateOfBirth_de
-                entity.dateOfDeath = entity.dateOfDeath_de
+                entity.dateOfBirth = entity.dateOfBirthDe
+                entity.dateOfDeath = entity.dateOfDeathDe
             }
         }
     }

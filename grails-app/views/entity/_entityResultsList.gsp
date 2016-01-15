@@ -16,7 +16,7 @@ limitations under the License.
 <%@page import="de.ddb.common.constants.Type"%>
 <g:set var="pageHitCounter" value="0" />
 <ul class="results-list unstyled">
-  <g:each in="${entities.entity.docs}" var="entityItems">
+  <g:each in="${entities.results.docs}" var="entityItems">
     <g:each in="${entityItems}" var="entityItem">
       <g:set var="entityId" value="${entityItem.id.substring(cultureGraphUrl.length())}" />
       <g:set var="pageHitCounter" value="${pageHitCounter + 1}" />

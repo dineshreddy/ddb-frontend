@@ -73,18 +73,18 @@ limitations under the License.
       <div class="off result-pages-count">
         ${totalPages}
       </div>
-      <ddb:renderSearchTabulation totalResults="${results.totalResults}"
+      <ddb:renderSearchTabulation totalResults="${results.numberOfResults}"
                                   query="${title}"
                                   active="${Type.ENTITY.getName()}"
                                   rows="${resultsPaginatorOptions.pageFilterSelected}"/>
 
       <%--   Search has results   --%>
-      <div class="search-results-content <g:if test="${results.totalResults == 0}">off</g:if>">
+      <div class="search-results-content <g:if test="${results.numberOfResults == 0}">off</g:if>">
 
         <ddb:renderResultsPaginatorOptions paginatorData="${resultsPaginatorOptions}" />
 
         <ddb:renderPageInfoNav
-          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.totalResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.ENTITY.getName()]}" />
+          navData="${[resultsOverallIndex: resultsOverallIndex, numberOfResults: results.numberOfResults, page: page, totalPages: totalPages, paginationURL: paginationURL, tabulatorActive: Type.ENTITY.getName()]}" />
 
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
@@ -108,7 +108,7 @@ limitations under the License.
       </div>
 
       <%--   Search has NO results   --%>
-      <div class="search-noresults-content <g:if test="${results.totalResults != 0}">off</g:if>">
+      <div class="search-noresults-content <g:if test="${results.numberOfResults != 0}">off</g:if>">
         <g:if test="${correctedQuery!='null'}">
           <g:if test="${correctedQuery}">
             <ddb:renderSearchSuggestion correctedQuery="${correctedQuery}" />
