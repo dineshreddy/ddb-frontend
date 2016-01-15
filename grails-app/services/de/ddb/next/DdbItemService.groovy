@@ -66,6 +66,9 @@ class DdbItemService {
                 model.institutionImage))
 
         if (model.license?.img) {
+            log.info "XXX contextUrl " + configurationService.getContextUrl()
+            log.info "XXX selfBaseUrl " + configurationService.getSelfBaseUrl()
+            log.info "XXX resource " + grailsLinkGenerator.resource("plugin": "ddb-common", "file": model.license.img)
             model.licenseImage = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                     grailsLinkGenerator.resource("plugin": "ddb-common", "file": model.license.img)))
         }
