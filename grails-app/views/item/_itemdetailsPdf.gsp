@@ -22,7 +22,7 @@ limitations under the License.
     <g:set var="isEvent" value="${field.id == 'flex_mus_neu_110' || field.id == 'flex_mus_neu_120' || field.id == 'flex_mus_neu_130'}"/>
     <tr>
       <td style="width: 35%" class="valign-top">
-        <strong style="${isEvent ? 'margin-left: 20px' : ''}">
+        <strong style="${isEvent ? 'margin-left: 1.1em' : ''}">
           <ddbcommon:wellFormedDocFromString text="${field.name}"/>:
         </strong>
       </td>

@@ -342,6 +342,14 @@ footer, .footer,
   font-weight: bold;
 }
 
+.item-detail .modified-margins {
+  margin-left: 1.1em;
+}
+
+.item-detail .value.modified-margins {
+  margin-left: -1.1em;
+}
+
 .item-detail .item-hierarchy-result ul {
   margin-left: -20px;
   list-style: square;
