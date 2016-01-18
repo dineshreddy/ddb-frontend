@@ -301,6 +301,11 @@ class UrlMappings {
             action="passwordChangePage"
         }
 
+        "/user/confirm/$type" {
+            controller="user"
+            action="confirmationPage"
+        }
+
         "/user/confirm/$id/$token" {
             controller="user"
             action="confirm"

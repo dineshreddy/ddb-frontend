@@ -16,6 +16,7 @@
 package de.ddb.next
 
 import de.ddb.common.aop.IsNewsletterEditor
+import de.ddb.common.constants.ConfirmType
 import de.ddb.common.exception.ConflictException
 import de.ddb.common.exception.ItemNotFoundException
 
@@ -42,18 +43,17 @@ class NewsletterController {
     }
 
     def subscribe() {
-        flash.errors = []
-        flash.messages = []
+        ConfirmType confirmType = ConfirmType.NEWSLETTER_SUBSCRIBE_ERROR
 
         if (params.email) {
             try {
                 String confirmationLink = newsletterService.subscribe(params.email)
 
                 newsletterService.sendConfirmationMail(params.email, confirmationLink)
-                flash.messages += "ddbcommon.User.Newsletter_Subscribe_Success"
+                confirmType = ConfirmType.NEWSLETTER_SUBSCRIBE_SUCCESS
             }
             catch (ConflictException e) {
-                flash.errors += "ddbcommon.User.Newsletter_Subscribe_Conflict"
+                confirmType = ConfirmType.NEWSLETTER_SUBSCRIBE_CONFLICT
             }
             catch (Exception e) {
                 // no error message defined yet
@@ -61,29 +61,21 @@ class NewsletterController {
             }
         }
         else {
-            flash.errors += "ddbcommon.User.Newsletter_Email_Required"
+            confirmType = ConfirmType.NEWSLETTER_SUBSCRIBE_EMAIL_REQUIRED
         }
-        flash.headline = "ddbnext.Newsletter_Subscribe_Title"
-        flash.title = "ddbnext.Newsletter_Subscribe_Title"
-        redirect(controller: "user", action: "confirmationPage")
+        redirect(controller: "user", action: "confirmationPage", id: confirmType.name)
     }
 
     def unsubscribe() {
+        ConfirmType confirmType = ConfirmType.NEWSLETTER_UNSUBSCRIBE_ERROR
+
         if (params.email) {
             try {
                 newsletterService.unsubscribe(params.email)
-                flash.headline = "ddbnext.Newsletter_Unsubscribe_Title"
-                flash.messages = [
-                    "ddbcommon.User.Newsletter_Unsubscribe_Success"
-                ]
-                flash.title = "ddbnext.Newsletter_Unsubscribe_Title"
+                confirmType = ConfirmType.NEWSLETTER_UNSUBSCRIBE_SUCCESS
             }
             catch (ItemNotFoundException e) {
-                flash.errors = [
-                    "ddbcommon.User.Newsletter_Unsubscribe_Error"
-                ]
-                flash.headline = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
-                flash.title = "ddbnext.Newsletter_Unsubscribe_Email_Not_Found"
+                confirmType = ConfirmType.NEWSLETTER_UNSUBSCRIBE_EMAIL_NOT_FOUND
             }
             catch (Exception e) {
                 // no error message defined yet
@@ -91,10 +83,8 @@ class NewsletterController {
             }
         }
         else {
-            flash.errors = [
-                "ddbcommon.User.Newsletter_Email_Required"
-            ]
+            confirmType = ConfirmType.NEWSLETTER_UNSUBSCRIBE_EMAIL_REQUIRED
         }
-        redirect(controller: "user", action: "confirmationPage")
+        redirect(controller: "user", action: "confirmationPage", id: confirmType.name)
     }
 }
