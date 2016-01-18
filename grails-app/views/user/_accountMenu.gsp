@@ -32,23 +32,23 @@ limitations under the License.
           <g:message encodeAs="html" code="ddbcommon.User.Data" />
         </a>
       </li>    
-      <li>
-        <g:if test="${user?.openIdUser != true}">
-          <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
-            <g:message encodeAs="html" code="ddbnext.Api_Access" /> 
+      <ddbcommon:isNotOpenIdUser>
+        <li>
+            <a class="profile-link" title="<g:message encodeAs="html" code="ddbnext.Api_Access" />" class="persist" href="${createLink(controller="user", action: 'showApiKey', params:[:])}">
+              <g:message encodeAs="html" code="ddbnext.Api_Access" /> 
+            </a>
+        </li>
+        <li>
+          <a class="profile-link" title="<g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
+            <g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />
           </a>
-        </g:if>
-      </li>
-      <li>
-        <a class="profile-link ${offForOpenId}" title="<g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />" class="persist" href="${createLink(controller="user",action: 'passwordChangePage', params:[:])}">
-          <g:message encodeAs="html" code="ddbcommon.Change_Password_Link" />
-        </a>
-      </li>
-      <li>
-        <a class="profile-link ${offForOpenId}" id="delete-account" title="<g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />" class="persist" href="#">
-          <g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />
-        </a>
-      </li>
+        </li>
+        <li>
+          <a class="profile-link" id="delete-account" title="<g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />" class="persist" href="#">
+            <g:message encodeAs="html" code="ddbcommon.User.Delete_Account" />
+          </a>
+        </li>
+      </ddbcommon:isNotOpenIdUser>
       <li>
         <a class="profile-link" id="newsletter" title="${g.message(code: 'ddbnext.Newsletter')}" class="persist"
            href="${createLink(controller: 'newsletter', action: 'index')}">

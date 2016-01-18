@@ -28,11 +28,9 @@ limitations under the License.
 <body>
     <g:form method="post" id="user-profile-form" name="user-profile-form" class="form-horizontal" url="[controller:'user', action:'saveProfile']" >
         <g:set var="disableForOpenId"></g:set>
-        <g:set var="offForOpenId"></g:set>
-        <g:if test="${user.openIdUser == true}">
+        <ddbcommon:isOpenIdUser>
             <g:set var="disableForOpenId">disabled</g:set>
-            <g:set var="offForOpenId">off</g:set>
-        </g:if>
+        </ddbcommon:isOpenIdUser>
         <ddbcommon:renderErrors errors="${errors}"/>
         <ddbcommon:renderMessages messages="${messages}"/>
         <input type="hidden" name="id" value="${ user.id }"/>
