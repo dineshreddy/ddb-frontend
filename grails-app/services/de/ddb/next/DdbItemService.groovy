@@ -235,7 +235,7 @@ class DdbItemService {
 
             //Search and return 3 Hits: previous, current and last
             try {
-                reqParameters["hitNumber"] = reqParameters["hitNumber"].toInteger()
+                reqParameters["hitNumber"] = searchService.getNumber(reqParameters["hitNumber"])
             }
             catch (NumberFormatException e) {
                 reqParameters["hitNumber"] = 1
