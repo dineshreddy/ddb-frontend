@@ -107,7 +107,7 @@ class InstitutionService extends CommonInstitutionService {
     def getChildren(String institutionId) {
         def result = []
         def institutions = grailsApplication.mainContext.institutionService.findAll()
-        def institution = institutions.find {it.id == institutionId}
+        def institution = institutions?.find {it.id == institutionId}
 
         if (institution) {
             result = institution.children
