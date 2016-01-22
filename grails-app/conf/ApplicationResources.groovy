@@ -33,6 +33,7 @@ modules = {
         resource url:'/css/results.css', bundle: 'screen'
         resource url:'/css/favorites.css', bundle: 'screen'
         resource url:'/css/staticContent.css', bundle: 'screen'
+        resource url:'/css/newsletterFrontend.css', bundle: 'screen'
         resource url:'/css/error.css', bundle: 'screen'
         resource url:'/css/viewer.css', bundle: 'screen'
         resource url:'/css/itemHierarchy.css', bundle: 'screen'
