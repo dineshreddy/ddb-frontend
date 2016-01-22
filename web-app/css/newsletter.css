@@ -243,3 +243,7 @@
 .twitter-logo, .fb-logo {
     line-height: 72px;
 }
+
+span.hidde-html {
+    display: none;
+}
