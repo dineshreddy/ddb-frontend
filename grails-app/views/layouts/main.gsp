@@ -50,17 +50,25 @@ limitations under the License.
         </div>
       </div>
     </noscript>
+
     <ddb:doHideIfEmbedded>
-      <g:render template="/mainHeader" />
+      <g:if test="${!(location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv')}">
+        <g:render template="/mainHeader" />
+      </g:if>
     </ddb:doHideIfEmbedded>
+
     <div id="main-container" class="container" role="main">
       <g:layoutBody/>
     </div>
-    <g:render template="/footer" />
+
+    <g:if test="${!(location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv')}">
+        <g:render template="/footer" />
+    </g:if>
+
     <g:render template="/jsVariables" />
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
-    
+
     <%-- 
     <script>
         $('#header-menu-btn').click(function(event) {
