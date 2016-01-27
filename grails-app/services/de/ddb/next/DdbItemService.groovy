@@ -211,7 +211,7 @@ class DdbItemService extends ItemService {
      */
     @Cacheable(value=DdbItemService.CACHE_NAME, key="'getNumberOfItems'")
     def getNumberOfItems() {
-        return getNumberOfItems()
+        return super.getNumberOfItems()
     }
 
     /**
