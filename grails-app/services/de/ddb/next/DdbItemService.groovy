@@ -27,6 +27,7 @@ import org.springframework.web.servlet.support.RequestContextUtils
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ItemService
 import de.ddb.common.beans.User
+import de.ddb.common.beans.item.HierarchyNode
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.exception.ItemNotFoundException
@@ -119,8 +120,8 @@ class DdbItemService extends ItemService {
      *
      * @return list of all parents
      */
-    def getParent(String itemId) {
-        def parents = getParent(itemId)
+    Collection<HierarchyNode> getParent(String itemId) {
+        def parents = super.getParent(itemId)
 
         // filter out institutions
         return parents.findAll { parent -> parent.type != "institution" }
@@ -208,7 +209,7 @@ class DdbItemService extends ItemService {
      *
      * @return item numbers
      */
-    @Cacheable(value=DdbCACHE_NAME, key="'getNumberOfItems'")
+    @Cacheable(value=DdbItemService.CACHE_NAME, key="'getNumberOfItems'")
     def getNumberOfItems() {
         return getNumberOfItems()
     }
