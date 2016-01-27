@@ -15,10 +15,15 @@
  */
 package de.ddb.next
 
+import groovy.json.JsonOutput
+
+import org.codehaus.jackson.map.ObjectMapper
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.ApiResponse
 import de.ddb.common.TimeFacetHelper
+import de.ddb.common.beans.entities.Facet
 import de.ddb.common.constants.CortexConstants
 import de.ddb.common.constants.FacetEnum
 import de.ddb.common.constants.SearchParamEnum
@@ -75,7 +80,7 @@ class FacetsController {
         }
 
         //All other facets uses the new "Autocomplete facets" endpoint of the backend
-        else{
+        else {
             def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
 
             urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
@@ -84,16 +89,18 @@ class FacetsController {
             //Use query filter if roles were selected
             def filteredQuery = apisService.filterForRoleFacets(urlQuery)
 
-            def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, filteredQuery)
+            ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                    "/search/facets/" + facetName, false, filteredQuery)
 
             if (apiResponse.isOk()) {
-                def resultsItems = apiResponse.getResponse()
-                def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+                Facet facets = new ObjectMapper().readValue(JsonOutput.toJson(apiResponse.getResponse()), Facet.class)
+                Locale locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
 
                 //Filter the role values for mixed facets like affiliate_facet_role!
-                facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery,
+                facetValues = searchService.getSelectedFacetValues(facets, facetName, maxResults, facetQuery,
                         locale, facetName.endsWith("role"))
-            } else {
+            }
+            else {
                 //Thrown an exception is useless for the frontend in an Ajax response.
                 //We give back instead an empty set of results.
                 //apiResponse.throwException(request)
@@ -111,11 +118,8 @@ class FacetsController {
     def entityFacetsList() {
         def facetName = params.name
         def facetQuery = params[SearchParamEnum.QUERY.getName()]
-
         def facetValues
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
-
-
         def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
 
         urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
@@ -124,19 +128,21 @@ class FacetsController {
         //Use query filter if roles were selected
         def filteredQuery = apisService.filterForRoleFacets(urlQuery)
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/entities/facets/'+facetName, false, filteredQuery)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                "/entities/facets/" + facetName, false, filteredQuery)
 
-        if(!apiResponse.isOk()){
+        if (apiResponse.isOk()) {
+            Facet facets = new ObjectMapper().readValue(JsonOutput.toJson(apiResponse.getResponse()), Facet.class)
+            Locale locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+            facetValues =
+                    searchService.getSelectedFacetValues(facets, facetName, maxResults, facetQuery, locale, false)
+        }
+        else {
+            log.error "entityFacetsList: Json file was not found"
             apiResponse.throwException(request)
         }
-
-        def resultsItems = apiResponse.getResponse()
-
-        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        facetValues = searchService.getSelectedFacetValues(resultsItems, facetName, maxResults, facetQuery, locale, false)
-
-        render (contentType:"text/json"){facetValues}
+        render (contentType:"text/json") {facetValues}
     }
 
     /**
@@ -147,26 +153,26 @@ class FacetsController {
     def getRolesForFacetValue() {
         def facetName = params.name
         def facetQuery = params[SearchParamEnum.QUERY.getName()]
-
         def roleValues = null
         def maxResults = CortexConstants.MAX_FACET_SEARCH_RESULTS
-
         def urlQuery = searchService.convertQueryParametersToSearchFacetsParameters(params)
+
         urlQuery[SearchParamEnum.QUERY.getName()] = (facetQuery)?facetQuery:""
         urlQuery[SearchParamEnum.SORT.getName()] = "count_desc"
 
-        def apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),'/search/facets/'+facetName, false, urlQuery)
+        ApiResponse apiResponse = ApiConsumer.getJson(configurationService.getBackendUrl(),
+                "/search/facets/" + facetName, false, urlQuery)
 
-        if(!apiResponse.isOk()){
+        if (apiResponse.isOk()) {
+            Facet facets = new ObjectMapper().readValue(JsonOutput.toJson(apiResponse.getResponse()), Facet.class)
+            Locale locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
+
+            roleValues = searchService.getRolesForFacetValue(facets, facetName, maxResults, locale)
+        }
+        else {
+            log.error "getRolesForFacetValue: Json file was not found"
             apiResponse.throwException(request)
         }
-
-        def resultsItems = apiResponse.getResponse()
-
-        def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request))
-
-        roleValues = searchService.getRolesForFacetValue(resultsItems, facetName, maxResults, locale)
-
         render (contentType:"text/json"){roleValues}
     }
 
