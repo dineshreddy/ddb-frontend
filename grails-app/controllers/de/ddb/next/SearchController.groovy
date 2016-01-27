@@ -34,12 +34,10 @@ class SearchController {
 
     static defaultAction = "results"
 
-    def entityService
-    def itemService
-    def searchService
     def configurationService
-    def cultureGraphService
+    def ddbItemService
     def languageService
+    def searchService
 
     def results() {
         try {
@@ -336,7 +334,7 @@ class SearchController {
 
     def informationItem(){
         def properties = [:]
-        IndexingProfile newInformationItem = itemService.getItemIndexingProfile(params.id)
+        IndexingProfile newInformationItem = ddbItemService.getItemIndexingProfile(params.id)
 
         if(newInformationItem.facet){
             //iterate over all facets

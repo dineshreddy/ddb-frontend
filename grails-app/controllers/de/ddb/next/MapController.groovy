@@ -16,7 +16,7 @@
 package de.ddb.next
 
 class MapController {
-    def itemService
+    def ddbItemService
 
     def multipolygone() {
         def input = findGeometryById()
@@ -27,7 +27,7 @@ class MapController {
     def findGeometryById() {
 
         def id = params.id
-        def itemSource = itemService.getItemXmlSource(id)
+        def itemSource = ddbItemService.getItemXmlSource(id)
         def collection = new XmlSlurper().parseText(itemSource)
         def geometry = collection.monument.geoReference.geometry.text()
 
