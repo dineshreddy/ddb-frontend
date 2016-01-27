@@ -22,10 +22,11 @@ import de.ddb.common.constants.SearchParamEnum
 class InstitutionController {
     private static final String PAGENAME = "institutionList"
 
-    def institutionService
-    def configurationService
-    def sessionService
     def bookmarksService
+    def configurationService
+    def institutionService
+    def itemService
+    def sessionService
 
     def show() {
         def allInstitution = institutionService.findAllByAlphabet()
@@ -66,7 +67,7 @@ class InstitutionController {
         CortexInstitution institution = institutionService.getInstitutionViewByItemId(id)
         def pageUrl = configurationService.getSelfBaseUrl() + request.forwardURI
         if (institution) {
-            def jsonOrgParentHierarchy = institutionService.getParentsOfInstitutionByItemId(id)
+            def jsonOrgParentHierarchy = institutionService.getParentsOfInstitution(itemService.getParent(id))
             log.debug("jsonOrgParentHierarchy: ${jsonOrgParentHierarchy}")
             if (jsonOrgParentHierarchy.size() == 1) {
                 if (jsonOrgParentHierarchy[0].id != id) {
