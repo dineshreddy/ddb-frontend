@@ -103,6 +103,12 @@ eventWebXmlEnd = {String tmpfile ->
         }
     }
         
+    root.'session-config'.'session-timeout'[0].replaceNode {
+        'session-timeout'(config.ddb.session.timeout / 60)
+    }
+
+    log.info "Setting session timeout to ${config.ddb.session.timeout / 60} min in web.xml"
+
     webXmlFile.text = new StreamingMarkupBuilder().bind {
         mkp.declareNamespace("": "http://java.sun.com/xml/ns/javaee")
         mkp.yield(root)
