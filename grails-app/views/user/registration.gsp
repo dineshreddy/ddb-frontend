@@ -77,7 +77,7 @@ limitations under the License.
         </div>
 
         <div class="control-group checkbox">
-          <input type="checkbox" id="newsletter" name="newsletter">
+          <input type="checkbox" id="subscribeNewsletter" name="subscribeNewsletter">
           <label class="reg-checkbox-label">
             <g:message encodeAs="none" code="ddbnext.Newsletter_Subscription"/>
           </label>
