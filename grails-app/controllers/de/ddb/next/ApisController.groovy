@@ -199,7 +199,7 @@ class ApisController {
      */
     def binary() {
         if (request.method == "HEAD") {
-            render SC_OK
+            render response.SC_OK
         }
         else {
             ApiResponse apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl(),
