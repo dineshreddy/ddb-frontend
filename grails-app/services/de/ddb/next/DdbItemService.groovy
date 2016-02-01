@@ -92,8 +92,7 @@ class DdbItemService extends ItemService {
                 }
             }
             catch (FileNotFoundException e) {
-                // In development environment this exception will be thrown because the HEAD request to check the
-                // existance of the image will not be answered from ApisController.binary().
+                log.error "binary " + e.getMessage() " does not exist"
             }
         }
         if (viewerContent) {
