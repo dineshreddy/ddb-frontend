@@ -81,13 +81,19 @@ class DdbItemService extends ItemService {
 
         def viewerContent
         if (model.binaryList) {
-            if (model.binaryList.first().preview.uri) {
-                viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().preview.uri))
+            try {
+                if (model.binaryList.first().preview.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().preview.uri))
+                }
+                else if (model.binaryList.first().thumbnail.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().thumbnail.uri))
+                }
             }
-            else if (model.binaryList.first().thumbnail.uri) {
-                viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri))
+            catch (FileNotFoundException e) {
+                // In development environment this exception will be thrown because the HEAD request to check the
+                // existance of the image will not be answered from ApisController.binary().
             }
         }
         if (viewerContent) {
