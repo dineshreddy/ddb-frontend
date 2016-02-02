@@ -277,3 +277,62 @@ a:hover, a:active, a:focus {
 .footer .social-logos img {
   margin: 0;
 }
+
+@media (max-width: 600px) {
+  #title-header {
+    width: 100%;
+    padding-left: 0;
+    background-size: 100% 89px;
+  }
+  #title-header span {
+    bottom: 26px;
+    margin-left: 10px;
+  }
+  #title-header .date-header {
+    right: initial;
+    margin-left: 10px;
+  }
+  .headline h1 {
+    margin-bottom: 10px;
+  }
+  .image-big-newsletter img {
+    max-width: none;
+    width: 100%; 
+  }
+  .field-items, .caption, .pre-headline, .headline, .text, .link {
+    padding: 0;
+  }
+  .section-article {
+    padding: 0 10px 0 0;
+  }
+  .section-footer .field-items {
+    padding: 0 0 0 10px;
+  }
+  .two-columns-text {
+    -webkit-column-count: 1;
+    -moz-column-count: 1;
+    column-count: 1;
+  }
+  .anteprima-element {
+    padding: 0;
+    background: none;
+    max-height: none;
+  }
+  .anteprima-element .anteprima-summary-main {
+    width: 76%;
+  }
+  .footer .field-items {
+    padding: 10px 10px 30px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .anteprima-element .anteprima-summary-main {
+    width: 100%;
+    max-height: none;
+    float: none;
+  }
+  .footer ul li {
+    float: none;
+  }
+}
