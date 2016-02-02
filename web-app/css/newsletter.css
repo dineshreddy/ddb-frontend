@@ -76,13 +76,13 @@ a:hover, a:active, a:focus {
 .caption {
   font: 14px Calibri;
   color: rgb(62, 58, 55);
-  margin-top: 3px;
+  margin: 3px 0 20px 0;
 }
 
 .pre-headline {
   font: bold 16px Calibri;
   color: rgb(62, 58, 55);
-  margin: 30px 0 -2px 0;
+  margin: 0 0 -2px 0;
 }
 
 .headline h1 {
@@ -192,8 +192,10 @@ a:hover, a:active, a:focus {
   display: inline-block;
   float: right;
   width: 418px;
-  height: 100px;
+  max-height: 90px;
   position: relative;
+  overflow: hidden;
+  padding: 5px 0;
 }
 
 .anteprima-element .anteprima-summary-main .headline, .anteprima-element .anteprima-summary-main .text,
@@ -203,7 +205,7 @@ a:hover, a:active, a:focus {
 }
 
 .anteprima-element .anteprima-summary-main .headline h2 {
-  margin: 0 0 10px 0 !important;
+  margin: 0 0 5px 0 !important;
   line-height: 1 !important;
   font: 22px KarbidWeb !important;
   color: rgb(165, 0, 59);
@@ -221,8 +223,8 @@ a:hover, a:active, a:focus {
   color: #ffffff;
   line-height: 23px;
   background: rgb(225, 224, 223);
-  background-image:
-    url(https://www-t1.deutsche-digitale-bibliothek.de/static/files/newsletter/static_images/impressum_bar.png);
+  background-image: url(https://www-t1.deutsche-digitale-bibliothek.de/static/files/newsletter/static_images/impressum_bar.png);
+  font-family: KarbidWeb, Calibri, Arial, sans-serif;
 }
 
 .footer {
