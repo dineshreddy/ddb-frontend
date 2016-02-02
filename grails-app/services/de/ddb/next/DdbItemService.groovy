@@ -60,8 +60,15 @@ class DdbItemService extends ItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                model.institutionImage))
+        try {
+            model.institutionImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    model.institutionImage))
+        }
+        catch (FileNotFoundException e) {
+            model.institutionImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+                    "file": "/placeholder/searchResultMediaInstitution.png")))
+        }
 
         if (model.license?.img) {
             model.licenseImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
@@ -74,13 +81,18 @@ class DdbItemService extends ItemService {
 
         def viewerContent
         if (model.binaryList) {
-            if (model.binaryList.first().preview.uri) {
-                viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().preview.uri))
+            try {
+                if (model.binaryList.first().preview.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().preview.uri))
+                }
+                else if (model.binaryList.first().thumbnail.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().thumbnail.uri))
+                }
             }
-            else if (model.binaryList.first().thumbnail.uri) {
-                viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri))
+            catch (FileNotFoundException e) {
+                log.error "binary " + e.getMessage() " does not exist"
             }
         }
         if (viewerContent) {
