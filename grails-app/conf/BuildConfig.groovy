@@ -98,10 +98,10 @@ grails.project.dependency.resolution = {
         build ":tomcat:7.0.55.3"
 
         compile ":cache:1.1.8"
-        compile ":cache-headers:1.1.7"
         compile ":cache-ehcache:1.0.5"
+        compile ":cache-headers:1.1.7"
         compile ":html-cleaner:0.3"
-        compile ":jawr:3.6"
+        compile (':jawr:3.8') { excludes "slf4j-log4j12" }
         compile ":mail:1.0.7"
         compile ":message-digest:1.1"
         compile ":rendering:1.0.0"
@@ -122,4 +122,5 @@ grails.project.dependency.resolution = {
     grails.war.resources = {stagingDir, args ->
         delete(dir: "${stagingDir}/selenium")
     }
+
 }

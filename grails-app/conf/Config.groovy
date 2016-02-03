@@ -281,6 +281,7 @@ jawr {
         resolver = 'de.ddb.common.DdbLocaleResolver'
     }
 }
+jawr.factory.use.orphans.mapper = false
 
 //Add this lines to fix problem on production environment. See https://java.net/jira/browse/JAWR-312
 environments {
