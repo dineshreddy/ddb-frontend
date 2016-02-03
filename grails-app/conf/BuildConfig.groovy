@@ -73,12 +73,6 @@ grails.project.dependency.resolution = {
         mavenLocal()
         mavenCentral()
 
-        // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
-        // mavenRepo "http://snapshots.repository.codehaus.org"
-        // mavenRepo "http://repository.codehaus.org"
-        // mavenRepo "http://download.java.net/maven/2/"
-        // mavenRepo "http://repository.jboss.com/maven2/"
-
         // This are the geotools repositories required for coordinate transformation
         mavenRepo "http://repo.boundlessgeo.com/main/"
         mavenRepo "http://download.osgeo.org/webdav/geotools/"
@@ -128,5 +122,4 @@ grails.project.dependency.resolution = {
     grails.war.resources = {stagingDir, args ->
         delete(dir: "${stagingDir}/selenium")
     }
-
 }
