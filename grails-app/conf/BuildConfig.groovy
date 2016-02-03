@@ -88,10 +88,9 @@ grails.project.dependency.resolution = {
 
     dependencies {
         build ('org.owasp:dependency-check-ant:1.2.11')
-        
+        compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
-        compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.springframework:spring-test:4.1.6.RELEASE' //Needed as dependency for rendering-plugin when used in WAR
 
         // This are the geotools dependencies required for coordinate transformation
@@ -102,22 +101,22 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
+        build ":tomcat:7.0.55.3"
+
         compile ":cache:1.1.8"
+        compile ":cache-headers:1.1.7"
         compile ":cache-ehcache:1.0.5"
         compile ":html-cleaner:0.3"
         compile ":jawr:3.6"
-        compile ":rendering:1.0.0"
-        compile ":cache-headers:1.1.7"
         compile ":mail:1.0.7"
-        compile (":rest:0.8") { excludes "commons-codec"}
         compile ":message-digest:1.1"
-        compile ":spring-security-core:2.0.0"
+        compile ":rendering:1.0.0"
+        compile ":rest:0.8"
 
-        build ":tomcat:7.0.55.3"
-        runtime ":resources:1.2.14"
-        runtime ":zipped-resources:1.0"
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
+        runtime ":resources:1.2.14"
+        runtime ":zipped-resources:1.0"
 
         if ((environment != Environment.DEVELOPMENT)|| (!localDdbCommonFound))  {
             println "Using maven repo for common plugin"
