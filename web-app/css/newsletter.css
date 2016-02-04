@@ -280,9 +280,11 @@ a:hover, a:active, a:focus {
 
 @media (max-width: 600px) {
   #title-header {
+    position: absolute;
+    left: 0;
     width: 100%;
     padding-left: 0;
-    background-size: 100% 89px;
+    background-position: right;
   }
   #title-header span {
     bottom: 26px;
@@ -292,47 +294,59 @@ a:hover, a:active, a:focus {
     right: initial;
     margin-left: 10px;
   }
-  .headline h1 {
+  #newsletter .header {
+    margin: 120px 0 25px 0;
+  }
+  #newsletter .headline h1 {
     margin-bottom: 10px;
   }
-  .image-big-newsletter img {
+  #newsletter .image-big-newsletter img {
     max-width: none;
     width: 100%; 
   }
-  .field-items, .caption, .pre-headline, .headline, .text, .link {
+  #newsletter .field-items,
+  #newsletter .caption,
+  #newsletter .pre-headline,
+  #newsletter .headline,
+  #newsletter .text,
+  #newsletter .link {
     padding: 0;
   }
-  .section-article {
+  #newsletter .section-article {
     padding: 0 10px 0 0;
   }
-  .section-footer .field-items {
+  #newsletter .section-footer .field-items {
     padding: 0 0 0 10px;
   }
-  .two-columns-text {
+  #newsletter .two-columns-text {
     -webkit-column-count: 1;
     -moz-column-count: 1;
     column-count: 1;
   }
-  .anteprima-element {
+  #newsletter .anteprima-element {
     padding: 0;
     background: none;
     max-height: none;
   }
-  .anteprima-element .anteprima-summary-main {
-    width: 76%;
+  #newsletter .anteprima-element .image-prima-newsletter {
+    float: left;
+    margin-right: 10px;
   }
-  .footer .field-items {
+  #newsletter .anteprima-element .anteprima-summary-main {
+    display: block;
+    float: none;
+    width: 100%;
+    max-height: none;
+    overflow: visible;
+    padding: 5px 0 15px 0px;
+  }
+  #newsletter .footer .field-items {
     padding: 10px 10px 30px 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .anteprima-element .anteprima-summary-main {
-    width: 100%;
-    max-height: none;
-    float: none;
-  }
-  .footer ul li {
+  #newsletter .footer ul li {
     float: none;
   }
 }
