@@ -20,12 +20,12 @@ import groovy.json.*
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.CultureGraphService
 import de.ddb.common.JsonUtil
 import de.ddb.common.beans.item.Facet
 import de.ddb.common.beans.item.IndexingProfile
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
-import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.BadRequestException
@@ -293,7 +293,7 @@ class SearchController {
             page: page,
             resultsPaginatorOptions: searchService.buildPaginatorOptions(urlQuery),
             paginationURL: searchService.buildPagination(results.totalResults, urlQuery, getQuery),
-            cultureGraphUrl: ProjectConstants.CULTURE_GRAPH_URL,
+            cultureGraphUrl: CultureGraphService.GND_URI_PREFIX,
             clearFilters: clearFilters
         ]
         if(params.reqType=="ajax"){

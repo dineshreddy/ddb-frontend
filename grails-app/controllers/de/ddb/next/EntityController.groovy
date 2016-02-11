@@ -17,12 +17,12 @@ package de.ddb.next
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.web.servlet.support.RequestContextUtils
 
+import de.ddb.common.CultureGraphService
 import de.ddb.common.beans.entities.Doc
 import de.ddb.common.beans.entities.Entities
 import de.ddb.common.beans.entityfacts.Entity
 import de.ddb.common.beans.entityfacts.SameAs
 import de.ddb.common.constants.EntityFacetEnum
-import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.RoleFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
@@ -274,7 +274,13 @@ class EntityController implements InitializingBean {
         response.addCookie(searchService.createSearchCookie(request, params, additionalParams, Type.ENTITY))
 
         if(params.reqType=="ajax"){
-            def model = [title: urlQuery[SearchParamEnum.QUERY.getName()], entities: results, correctedQuery: correctedQuery, totalPages: totalPagesFormatted, cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL]
+            def model = [
+                title: urlQuery[SearchParamEnum.QUERY.getName()],
+                entities: results,
+                correctedQuery: correctedQuery,
+                totalPages: totalPagesFormatted,
+                cultureGraphUrl: CultureGraphService.GND_URI_PREFIX
+            ]
             def resultsHTML = ""
             resultsHTML = g.render(template:"/entity/entityResultsList",model:model)
             def jsonReturn = [results: resultsHTML,
@@ -311,7 +317,7 @@ class EntityController implements InitializingBean {
                 page: page,
                 resultsOverallIndex:resultsOverallIndex,
                 totalPages: totalPages,
-                cultureGraphUrl:ProjectConstants.CULTURE_GRAPH_URL,
+                cultureGraphUrl: CultureGraphService.GND_URI_PREFIX,
                 resultsPaginatorOptions:searchService.buildPaginatorOptions(urlQuery),
                 clearFilters: searchService.buildClearFilter(urlQuery, request.forwardURI),
                 paginationURL: searchService.buildPagination(results.numberOfResults, urlQuery,
