@@ -37,9 +37,14 @@ a:hover, a:active, a:focus {
   line-height: 1.2em;
 }
 
+.static_newsletter {
+  background: #b7b7b7;
+}
+
 #newsletter {
   max-width: 600px;
   margin: auto;
+  background: #fff;
 }
 
 .field-items, .caption, .pre-headline, .headline, .text, .link, .section-article {
@@ -86,7 +91,7 @@ a:hover, a:active, a:focus {
 }
 
 .headline h1 {
-  font: 28px KarbidWeb;
+  font: 22px KarbidWeb;
   color: rgb(165, 0, 59);
 }
 
