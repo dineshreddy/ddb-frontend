@@ -15,7 +15,8 @@ limitations under the License.
 --%>
 <ol class="institution-list">
   <g:each var="subinstitution" in="${subinstitutions}">
-    <li class="institution-listitem" data-sector="${subinstitution.sector}" data-institution-id="${subinstitution.id}">
+    <li class="institution-listitem" data-sector="${subinstitution.sector.getName()}"
+        data-institution-id="${subinstitution.id}">
       <g:if test="${(selectedItemId == subinstitution.id)}">
         <i class="icon-institution"></i>
         <div>

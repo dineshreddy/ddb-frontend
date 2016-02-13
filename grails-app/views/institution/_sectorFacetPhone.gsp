@@ -13,14 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
-
+<%@ page import="de.ddb.common.beans.institution.Sector" %>
 <select class="multiselect" multiple>
-  <option value="sec_01"><g:message encodeAs="html" code="ddbnext.sec_01" /></option>
-  <option value="sec_02"><g:message encodeAs="html" code="ddbnext.sec_02" /></option>
-  <option value="sec_03"><g:message encodeAs="html" code="ddbnext.sec_03" /></option>
-  <option value="sec_04"><g:message encodeAs="html" code="ddbnext.sec_04" /></option>
-  <option value="sec_05"><g:message encodeAs="html" code="ddbnext.sec_05" /></option>
-  <option value="sec_06"><g:message encodeAs="html" code="ddbnext.sec_06" /></option>
-  <option value="sec_07"><g:message encodeAs="html" code="ddbnext.sec_07" /></option>
+  <g:each in="${Sector.values()}" var="sector">
+    <option value="${sector.getName()}"><g:message code="ddbnext.${sector.getName()}"/></option>
+  </g:each>
   <option value="onlyInstitutionsWithData"><g:message encodeAs="html" code="ddbnext.InstitutionPage_OnlyInstitutionsWithData" /></option>
 </select>

@@ -23,6 +23,7 @@ import de.ddb.common.CommonInstitutionService
 import de.ddb.common.FavoritesService
 import de.ddb.common.beans.User
 import de.ddb.common.beans.institution.Institution
+import de.ddb.common.beans.institution.Sector
 import de.ddb.next.cluster.Binning
 import de.ddb.next.cluster.ClusterCache
 import de.ddb.next.cluster.InstitutionMapModel
@@ -93,7 +94,7 @@ class InstitutionService extends CommonInstitutionService {
                 it.isFirst = true
             }
 
-            it.sectorLabelKey = 'ddbnext.' + it.sector
+            it.sectorLabelKey = 'ddbnext.' + it.sector.getName()
             buildChildren(it, totalInstitution)
             institutionByFirstChar = putToIndex(institutionByFirstChar, addUri(it), firstChar)
         }
@@ -134,15 +135,7 @@ class InstitutionService extends CommonInstitutionService {
 
             // Transform sector data to the required format
             def sectors = ["selected":[], "deselected":[]]
-            def allSectors = [
-                "sec_01",
-                "sec_02",
-                "sec_03",
-                "sec_04",
-                "sec_05",
-                "sec_06",
-                "sec_07"
-            ]
+            def allSectors = Sector.values()*.getName()
             selectedSectorList.each {
                 def entry = ["sector": it, "name": it]
                 sectors["selected"].push(entry)
@@ -384,7 +377,7 @@ class InstitutionService extends CommonInstitutionService {
         if(institution.children?.size() > 0 ) {
             institution.children.each { child ->
                 child.uri = buildUri(child.id)
-                child.sectorLabelKey = 'ddbnext.' + child.sector
+                child.sectorLabelKey = 'ddbnext.' + child.sector.getName()
                 child.parentId = institution.id
                 child.firstChar = child?.name[0]?.toUpperCase()
                 buildChildren(child, counter)
