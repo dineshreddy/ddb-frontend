@@ -17,6 +17,7 @@ limitations under the License.
 
 <html>
 <head>
+<g:set var="title" value="${g.message(code: "ddbnext.entities.personspage.personspageheader")}"/>
 <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="persons" />
 <meta name="layout" content="main" />

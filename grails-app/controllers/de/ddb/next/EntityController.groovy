@@ -176,7 +176,6 @@ class EntityController implements InitializingBean {
 
         render(view: "persons", model: [
             domainCanonic: configurationService.getDomainCanonic(),
-            title: g.message(code:"ddbnext.entities.personspage.personspageheader"),
             results: resultsWithThumbnails.collate(total),
             randomSeed: randomSeed
         ])
