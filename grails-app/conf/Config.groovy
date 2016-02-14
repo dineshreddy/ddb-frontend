@@ -157,7 +157,6 @@ ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.reportMailTo=""
-ddb.culturegraph.features.enabled=true
 ddb.exhibitions.features.enabled=true
 ddb.institutions.grouping.features.enabled=true
 ddb.rights.facet.features.enabled=true
