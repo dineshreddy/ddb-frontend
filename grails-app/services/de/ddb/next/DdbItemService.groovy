@@ -26,7 +26,6 @@ import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
 import de.ddb.common.ItemService
-import de.ddb.common.beans.User
 import de.ddb.common.beans.item.HierarchyNode
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
@@ -38,11 +37,9 @@ class DdbItemService extends ItemService {
     // ehcache name
     private static final String CACHE_NAME = "itemCache"
 
-    def bookmarksService
     def cultureGraphService
     def grailsApplication
     def searchService
-    def sessionService
 
     def transactional = false
 
@@ -313,15 +310,6 @@ class DdbItemService extends ItemService {
                     log.warn 'can not find message property: ' + messageKey + ' use ' + field.name + ' instead.'
                 }
             }
-        }
-    }
-
-    def boolean isFavorite(itemId) {
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if(user) {
-            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
-        }else{
-            return false
         }
     }
 }
