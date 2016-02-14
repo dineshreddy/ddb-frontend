@@ -44,10 +44,10 @@ class EntityController implements InitializingBean {
     def languageService
     def searchService
 
-    URL ddbUrl
+    String ddbHost
 
     public void afterPropertiesSet() throws Exception {
-        ddbUrl = new URL(configurationService.getDomainCanonic())
+        ddbHost = new URL(configurationService.getDomainCanonic()).getHost()
     }
 
     /**
@@ -394,8 +394,6 @@ class EntityController implements InitializingBean {
         SameAs[] result
 
         if (sameAs) {
-            String ddbHost = ddbUrl.getHost()
-
             result = sameAs.findAll { !new URL(it.id).getHost().equals(ddbHost) }
         }
         return result

@@ -68,14 +68,14 @@ limitations under the License.
             <div class="pin">
               <g:set var="preferredName" value="${ddbcommon.stripTags(text: person.preferredName)}"/>
               <a href="${g.createLink(controller: 'entity', action: 'index', id: ddb.getGndIdFromGndUri(id: person.id))}"
-                 title="${preferredName}">
+                 title="${raw(preferredName)}">
                 <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
-                     alt="${preferredName}"/>
+                     alt="${raw(preferredName)}"/>
               </a>
               <p>
                 <a href="${g.createLink(controller: 'entity', action: 'index', id: ddb.getGndIdFromGndUri(id: person.id))}"
-                   title="${preferredName}">
-                  ${preferredName}
+                   title="${raw(preferredName)}">
+                  ${raw(preferredName)}
                 </a>
               </p>
             </div>
