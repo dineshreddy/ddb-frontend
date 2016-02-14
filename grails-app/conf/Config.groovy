@@ -144,6 +144,7 @@ ddb.aas.admin.userid="userid"
 ddb.aas.admin.password=" "
 ddb.aas.url="http://localhost/aas:8081/aas/"
 ddb.cms.url="http://localhost/cms/"
+ddb.culturegraph.features.enabled=true
 ddb.culturegraph.url="http://hub.culturegraph.org/"
 ddb.elasticsearch.url="http://localhost:9200/"
 ddb.logging.folder="target/logs"
