@@ -16,7 +16,7 @@ limitations under the License.
 <div class="works rolefacet">
   <div class="row">
     <div class="span5">
-      <h3><g:message encodeAs="html" code="ddbnext.Entity_Involved_In"/></h3>
+      <h3><g:message code="ddbcommon.Entity_Involved_In"/></h3>
     </div>
   </div>
   <div id="search-involved-normdata">

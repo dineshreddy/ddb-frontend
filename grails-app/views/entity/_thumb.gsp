@@ -25,10 +25,10 @@ limitations under the License.
       <div class="thumbcaption">
         ${entity.preferredName}
         <br>
-        <g:message encodeAs="html" code="ddbnext.Entity_Source" />: <a href="${entity.depiction.url}" class="wiki-link no-external-link-icon">Wikimedia Commons</a>
+        <g:message code="ddbcommon.Entity_Source"/>: <a href="${entity.depiction.url}" class="wiki-link no-external-link-icon">Wikimedia Commons</a>
       </div>
       <div class="thumblicense">
-        <g:message encodeAs="html" code="ddbnext.Entity_MediaLicence" />
+        <g:message code="ddbcommon.Entity_MediaLicence"/>
       </div>
     </div>
   </div>

@@ -29,7 +29,7 @@ limitations under the License.
         <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.HierarchyHelp_Leaf" /></th>
       </g:if>
       <g:else>
-        <th style="width: 70%; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Entity_Objects" /></th>
+        <th style="width: 70%; margin-top:20px"><g:message code="ddbcommon.Entity_Objects"/></th>
       </g:else>
       <th style="width: 170px; margin-top:20px"><g:message encodeAs="html" code="ddbnext.Added_On" /></th>
     </tr>

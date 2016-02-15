@@ -40,7 +40,7 @@ limitations under the License.
         <li>
           <g:link controller="search" action="results" params="[query:query]"
             class="${(active==Type.CULTURAL_ITEM.getName()) ? 'active-link' : '' }">
-            <g:message code="ddbnext.Entity_Objects" />
+            <g:message code="ddbcommon.Entity_Objects"/>
           </g:link>
         </li>
         <li class="${config.isEntitySearchFeaturesEnabled() ? "" : "off"}">
