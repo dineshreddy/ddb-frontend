@@ -15,7 +15,6 @@
  */
 package de.ddb.next
 import grails.converters.JSON
-import de.ddb.common.beans.User
 import de.ddb.common.beans.item.CortexInstitution
 import de.ddb.common.constants.SearchParamEnum
 
@@ -24,9 +23,9 @@ class InstitutionController {
 
     def bookmarksService
     def configurationService
+    def favoritesService
     def institutionService
     def itemService
-    def sessionService
 
     def show() {
         def allInstitution = institutionService.findAllByAlphabet()
@@ -104,7 +103,7 @@ class InstitutionController {
                         countObjcs: countObjectsForProv,
                         url: pageUrl,
                         domainCanonic:configurationService.getDomainCanonic(),
-                        isFavorite: isFavorite(id),
+                        isFavorite: favoritesService.isFavorite(id),
                         folder: bookmarksService.findFolderByInstitutionId(itemId)]
                     )
         } else {
@@ -148,14 +147,5 @@ class InstitutionController {
         def result = ["html": resultsHTML, "resultCount" : highLights?.resultCount]
 
         render (contentType:"text/json"){result}
-    }
-
-    private def isFavorite(itemId) {
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if(user != null){
-            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
-        }else{
-            return false
-        }
     }
 }

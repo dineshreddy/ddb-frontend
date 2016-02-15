@@ -38,6 +38,7 @@ class DdbItemService extends ItemService {
     private static final String CACHE_NAME = "itemCache"
 
     def cultureGraphService
+    def favoritesService
     def grailsApplication
     def searchService
 
@@ -159,11 +160,10 @@ class DdbItemService extends ItemService {
             throw new ItemNotFoundException()
         }
 
-        def isFavorite = isFavorite(itemId)
         def binaryList = findBinariesById(itemId)
         def binariesCounter = binariesCounter(binaryList)
-
         def flashInformation = [:]
+
         flashInformation.images = [binariesCounter.images]
         flashInformation.audios = [binariesCounter.audios]
         flashInformation.videos = [binariesCounter.videos]
@@ -204,7 +204,7 @@ class DdbItemService extends ItemService {
             searchResultUri: searchResultParameters["searchResultUri"],
             flashInformation: flashInformation,
             license: licenseInformation,
-            isFavorite: isFavorite,
+            isFavorite: favoritesService.isFavorite(itemId),
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
             domainCanonic:configurationService.getDomainCanonic(),
