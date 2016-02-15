@@ -65,7 +65,7 @@ limitations under the License.
                       <g:set var="needBreak" value="${false}"/>
                     </g:if>
                     <g:if test="${variantNameIndex == 0}">
-                      <g:message code="ddbnext.Entity_OtherNames"/>:
+                      <g:message code="ddbcommon.Entity_OtherNames"/>:
                     </g:if>
                     <g:else>
                       ...

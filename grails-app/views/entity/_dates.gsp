@@ -68,7 +68,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
 
         <g:if test="${hasVariantName}">
           <g:set var="variantNameIndex" value="${0}"/>
-          <g:message code="ddbnext.Entity_OtherNames"/>:
+          <g:message code="ddbcommon.Entity_OtherNames"/>:
           <g:each in="${entity.variantName}" var="variantName">
             <g:if test="${variantName ==~ /.*<match>.*/}">
               <g:if test="${variantNameIndex > 0}">
