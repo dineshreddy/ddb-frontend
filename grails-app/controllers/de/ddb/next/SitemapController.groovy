@@ -29,7 +29,7 @@ class SitemapController {
         def staticUrl = configurationService.getStaticUrl()
         def locale = languageService.getBestMatchingLocale(RequestContextUtils.getLocale(request)).getLanguage()
         def path = locale + "/ddb-services/sitemap.xml"
-        def apiResponse = ApiConsumer.getXml(staticUrl, path)
+        def apiResponse = ApiConsumer.getAny(staticUrl, path)
 
         if (!apiResponse.isOk()) {
             log.error "sitemap file was not found"
