@@ -89,7 +89,7 @@ limitations under the License.
      <g:render template="locations"/>
      
     <div class="printViewUrl off">
-      <strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+      <strong><g:message code="ddbcommon.CulturalItem_Deeplink"/></strong>: 
       <div>${url}</div>
     </div> 
   </body>
