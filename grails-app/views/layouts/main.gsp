@@ -40,7 +40,7 @@ limitations under the License.
     <g:layoutHead />
   </head>
 
-  <body>
+  <body<g:if test="${location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv'}"> class="static_newsletter"</g:if>>
     <noscript>
       <div class="container">
         <div class="row">
@@ -62,7 +62,7 @@ limitations under the License.
     </div>
 
     <g:if test="${!(location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv')}">
-        <g:render template="/footer" />
+      <g:render template="/footer" />
     </g:if>
 
     <g:render template="/jsVariables" />
