@@ -103,6 +103,10 @@
   margin-left: 20px;
 }
 
+.institution .social-icons a > * {
+  margin-left: 20px;
+}
+
 .institution .facebook-icon {
   background: url("../images/icons/FBLogoBlue.png") no-repeat transparent 0 2px;
 }

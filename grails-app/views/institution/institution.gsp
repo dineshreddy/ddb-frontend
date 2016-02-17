@@ -71,15 +71,25 @@ limitations under the License.
                  </span>
                 </a>
              </div>
-             <div>
-               <g:if test="${institution.facebook}">
-                 <a class="facebook-icon" href="${institution.facebook}" target="_blank"><ddb:removeUrlProtocol url="${institution.facebook.trim()}"/></a>
-               </g:if>
-             </div>
-             <div>
-               <g:if test="${institution.twitter}">
-                 <a class="twitter-icon" href="${institution.twitter}" target="_blank"><ddb:removeUrlProtocol url="${institution.twitter.trim()} "/></a>
-               </g:if>
+             <div class="social-icons">
+               <div>
+                 <g:if test="${institution.facebook}">
+                   <a class="facebook-icon" href="${institution.facebook}" target="_blank">
+                     <span>
+                       <ddb:removeUrlProtocol url="${institution.facebook.trim()}"/>
+                     </span>
+                   </a>
+                 </g:if>
+               </div>
+               <div>
+                 <g:if test="${institution.twitter}">
+                   <a class="twitter-icon" href="${institution.twitter}" target="_blank">
+                     <span>
+                       <ddb:removeUrlProtocol url="${institution.twitter.trim()} "/>
+                     </span>
+                   </a>
+                 </g:if>
+               </div>
              </div>
            </div>
            <div class="span3">
