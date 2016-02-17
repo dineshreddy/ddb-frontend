@@ -65,7 +65,11 @@ limitations under the License.
                </h1>
              </div>
              <div>
-               <a class="external-dummy-icon" href="${institution.uri}"><ddb:removeUrlProtocol url="${institution.uri.trim()}"/></a>
+               <a class="external-dummy-icon" href="${institution.uri}">
+                 <span>
+                   <ddb:removeUrlProtocol url="${institution.uri.trim()}"/>
+                 </span>
+                </a>
              </div>
              <div>
                <g:if test="${institution.facebook}">

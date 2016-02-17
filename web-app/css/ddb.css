@@ -1181,9 +1181,13 @@ footer .facebook-icon {
   height: 100px;
 }
 
-footer .social-icons a:before{
+footer .social-icons a:before {
   background:none!important;
   width:0!important;
+}
+
+footer .social-icons a > * {
+  margin-left: 20px;
 }
 
 .build {
