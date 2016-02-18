@@ -290,6 +290,9 @@ a:hover, a:active, a:focus {
 }
 
 @media (max-width: 600px) {
+  .static_newsletter {
+    background: #fff;
+  }
   #title-header {
     position: absolute;
     left: 0;
