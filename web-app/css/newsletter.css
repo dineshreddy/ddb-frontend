@@ -138,34 +138,11 @@ a:hover, a:active, a:focus {
 }
 
 #title-header {
-  background: rgb(165, 0, 59);
-  background:
-    url(https://www-t1.deutsche-digitale-bibliothek.de/static/files/newsletter/static_images/header_pusteblume.png);
-  color: #ffffff;
-  height: 89px;
-  padding-left: 36px;
-  vertical-align: bottom;
-  width: 564px;
-  position: relative;
+  width: 100%;
 }
 
-#title-header span {
-  position: absolute;
-  bottom: 4px;
-  font-family: KarbidWeb, Calibri, Arial, sans-serif;
-  font-size: 22px;
-  line-height: 24px;
-}
-
-#title-header .date-header {
-  position: absolute;
-  bottom: 4px;
-  right: 35px;
-}
-
-#title-header .date-header p {
-  margin: 0;
-  font-size: 13px;
+#title-header .field-items {
+  padding: 0 !important;
 }
 
 #image-border {
@@ -292,21 +269,6 @@ a:hover, a:active, a:focus {
 @media (max-width: 600px) {
   .static_newsletter {
     background: #fff;
-  }
-  #title-header {
-    position: absolute;
-    left: 0;
-    width: 100%;
-    padding-left: 0;
-    background-position: right;
-  }
-  #title-header span {
-    bottom: 26px;
-    margin-left: 10px;
-  }
-  #title-header .date-header {
-    right: initial;
-    margin-left: 10px;
   }
   #newsletter .header {
     margin: 120px 0 25px 0;
