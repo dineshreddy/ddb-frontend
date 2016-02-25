@@ -106,6 +106,7 @@ grails.project.dependency.resolution = {
         compile ":message-digest:1.1"
         compile ":rendering:1.0.0"
         compile ":rest:0.8"
+        compile ":spring-security-core:2.0.0"
 
         runtime ":cached-resources:1.0"
         runtime ":compress:0.4"
