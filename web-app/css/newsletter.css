@@ -278,9 +278,6 @@ a:hover, a:active, a:focus {
   .static_newsletter {
     background: #fff;
   }
-  #newsletter .header {
-    margin: 120px 0 25px 0;
-  }
   #newsletter .headline h1 {
     margin-bottom: 10px;
   }
