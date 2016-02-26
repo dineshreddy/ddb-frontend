@@ -1157,6 +1157,15 @@ color: #a5003b;
   width: 100%;
 }
 
+.compare-main .comparison-cancel-button {
+  position: absolute;
+  right: 0;
+  cursor: pointer !important;
+  width: 15px;
+  height: 15px;
+  background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -477px;
+}
+
 .compare-objects {
   margin-top: 15px;
   padding: 15px 10px;
@@ -1205,19 +1214,19 @@ color: #a5003b;
   font-weight: bold;
 }
 
-.compare-objects .compare-footer a{
+.compare-objects .compare-footer a {
   cursor: pointer;
 }
 
-.compare-objects .compare-footer .button{
+.compare-objects .compare-footer .button {
   padding:0;
 }
 
-.compare-objects #compare-button, .compare-objects #compare-button:hover{
+.compare-objects #compare-button, .compare-objects #compare-button:hover {
   text-decoration:none;
 }
 
-.compare-objects .compare-footer .compare-disabled:hover{
+.compare-objects .compare-footer .compare-disabled:hover {
   text-decoration: none;
 }
 
@@ -1255,9 +1264,33 @@ color: #a5003b;
   margin-top: 4px;
 }
 
-@media (min-width: 1200px) {
+@media (max-width: 979px) {
+  .compare-object {
+    height: 140px;
+    width: 140px;
+    max-height: 140px;
+    max-width: 140px;
+  }
+  .compare-objects .compare-img {
+    max-height: 105px;
+    max-width: 140px;
+  }
+}
+
+@media (min-width: 980px) {
   .compare-objects .compare-object {
     display: inline-block !important;
+  }
+}
+
+@media (min-width: 980px) and (max-width: 1199px) {
+  .compare-objects .compare-object {
+    height: 95px;
+    width: 95px;
+  }
+  .compare-objects .compare-img {
+    max-height: 68px;
+    max-width: 95px;
   }
 }
 

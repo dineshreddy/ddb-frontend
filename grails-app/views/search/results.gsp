@@ -99,7 +99,7 @@ limitations under the License.
                 <span class="compare-text"></span>
                 <img class="compare-img" alt="" src="${request.contextPath}/images/bg/compare_icon.png"/>
               </a>
-              <span data-index="1" class="fancybox-toolbar-close"></span>
+              <span data-index="1" class="comparison-cancel-button"></span>
             </div>
           </div>
           <div id="compare-object2" class="compare-object bt br bb bl">
@@ -110,7 +110,7 @@ limitations under the License.
                 <span class="compare-text"></span>
                 <img class="compare-img" alt="" src="${request.contextPath}/images/bg/compare_icon.png"/>
               </a>
-              <span data-index="2" class="fancybox-toolbar-close"></span>
+              <span data-index="2" class="comparison-cancel-button"></span>
             </div>
           </div>
         </div>
