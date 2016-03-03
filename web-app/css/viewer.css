@@ -297,6 +297,16 @@ noscript .scroller, .pdf-scroller {
   background-color: #efebe8;
   display: none;
 }
+.fancybox-toolbar-bottom .fancybox-toolbar-title {
+  max-height: 40px;
+  overflow: hidden;
+}
+.fancybox-toolbar-bottom .fancybox-toolbar-author,
+.fancybox-toolbar-bottom .fancybox-toolbar-rights {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .fancybox-toolbar-bottom span {
   display: block;
 }
@@ -333,7 +343,7 @@ noscript .scroller, .pdf-scroller {
   font-size: 0.938em;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
 }
 #binary-viewer {
   width: 440px;
