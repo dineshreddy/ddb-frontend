@@ -134,10 +134,14 @@ class ApisController {
         boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
 
         // parse selected sector information from request
+        def sectors
         def selectedSectors = params.selectedSectors
-        def sectors = selectedSectors.tokenize(',[]')
-        for(int i=0; i<sectors.size(); i++){
-            sectors[i] = sectors[i].replaceAll("\"", "")
+
+        if (selectedSectors) {
+            sectors = selectedSectors.tokenize(',[]')
+            for(int i=0; i<sectors.size(); i++){
+                sectors[i] = sectors[i].replaceAll("\"", "")
+            }
         }
 
         // get all available institutions from cortex
