@@ -242,6 +242,7 @@ noscript .scroller, .pdf-scroller {
 .fancybox-toolbar {
   background-color: #efebe8;
   padding: 5px;
+  min-height: 20px;
 }
 .fancybox-toolbar .fancybox-toolbar-title {
   height: 23px;
