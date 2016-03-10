@@ -39,8 +39,8 @@ limitations under the License.
     <r:layoutResources />
     <g:layoutHead />
   </head>
-
-  <body<g:if test="${location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv'}"> class="static_newsletter"</g:if>>
+<g:set var="isNewsletter" value="${location && location ==~ /newsletter\/.*/ && location != 'newsletter/newsletter-archiv'}" />
+  <body<g:if test="${isNewsletter}"> class="static_newsletter"</g:if>>
     <noscript>
       <div class="container">
         <div class="row">
@@ -52,7 +52,7 @@ limitations under the License.
     </noscript>
 
     <ddb:doHideIfEmbedded>
-      <g:if test="${!(location && location ==~ /newsletter\/.*/ && location != 'newsletter/newsletter-archiv')}">
+      <g:if test="${!(isNewsletter)}">
         <g:render template="/mainHeader" />
       </g:if>
     </ddb:doHideIfEmbedded>
@@ -61,7 +61,7 @@ limitations under the License.
       <g:layoutBody/>
     </div>
 
-    <g:if test="${!(location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv')}">
+    <g:if test="${!(isNewsletter)}">
       <g:render template="/footer" />
     </g:if>
 
@@ -76,7 +76,7 @@ limitations under the License.
         });
     </script>
     --%>
-    
+
     <ddbcommon:getPiwikTracking />
   </body>
 </html>
