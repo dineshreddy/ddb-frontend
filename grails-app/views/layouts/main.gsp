@@ -52,7 +52,7 @@ limitations under the License.
     </noscript>
 
     <ddb:doHideIfEmbedded>
-      <g:if test="${!(location && location ==~ /newsletter.*/ && location != 'newsletter/newsletter-archiv')}">
+      <g:if test="${!(location && location ==~ /newsletter\/.*/ && location != 'newsletter/newsletter-archiv')}">
         <g:render template="/mainHeader" />
       </g:if>
     </ddb:doHideIfEmbedded>
