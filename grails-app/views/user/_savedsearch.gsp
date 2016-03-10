@@ -48,7 +48,7 @@ limitations under the License.
             </h2>
             <div class="subtitle">
               <g:if test="${search.type == null || search.type == Type.CULTURAL_ITEM}">
-                <g:message code="ddbnext.Entity_Objects" />
+                <g:message code="ddbcommon.Entity_Objects"/>
               </g:if>
               <g:elseif test="${search.type == Type.ENTITY}">
                 <g:message code="ddbnext.entity.tabulator.persons" />

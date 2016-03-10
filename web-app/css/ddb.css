@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
 
 @font-face {
   font-family: KarbidWeb;
@@ -1182,7 +1181,7 @@ footer .facebook-icon {
   height: 100px;
 }
 
-footer .social-icons a:before{
+footer .social-icons a:before {
   background:none!important;
   width:0!important;
 }
@@ -1791,7 +1790,7 @@ input[type="text"].error {
 
 /* external links */
 
-a[href^="http"]:not(.no-external-link-icon):not(.external-dummy-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not(.facebook-icon):not(.twitter-icon):not([href*="deutsche-digitale-bibliothek.de"]):before,
+a[href^="http"]:not(.no-external-link-icon):not(.external-dummy-icon):not(.twitter-logo):not(.fb-logo):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not(.facebook-icon):not(.twitter-icon):not([href*="deutsche-digitale-bibliothek.de"]):before,
 .external-link-icon:before{
   content: '';
   width:20px;
@@ -1800,7 +1799,7 @@ a[href^="http"]:not(.no-external-link-icon):not(.external-dummy-icon):not([href^
   background: url("../images/icons/ddbIkonographie.png") no-repeat -30px -388px;
   position:absolute;
 }
-a[href^="http"]:not(.no-external-link-icon):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
+a[href^="http"]:not(.no-external-link-icon):not(.twitter-logo):not(.fb-logo):not([href^="http://localhost"]):not([href^="http://dev.escidoc.org"]):not([href*="deutsche-digitale-bibliothek.de"]),
 .external-link-icon {
   padding-left: 20px;
 }

@@ -144,6 +144,7 @@ ddb.aas.admin.userid="userid"
 ddb.aas.admin.password=" "
 ddb.aas.url="http://localhost/aas:8081/aas/"
 ddb.cms.url="http://localhost/cms/"
+ddb.culturegraph.features.enabled=true
 ddb.culturegraph.url="http://hub.culturegraph.org/"
 ddb.elasticsearch.url="http://localhost:9200/"
 ddb.logging.folder="target/logs"
@@ -157,7 +158,6 @@ ddb.loadbalancer.header.name="nid"
 ddb.loadbalancer.header.value="-1"
 ddb.favorites.sendmailfrom="noreply@deutsche-digitale-bibliothek.de"
 ddb.favorites.reportMailTo=""
-ddb.culturegraph.features.enabled=true
 ddb.exhibitions.features.enabled=true
 ddb.institutions.grouping.features.enabled=true
 ddb.rights.facet.features.enabled=true
@@ -281,6 +281,7 @@ jawr {
         resolver = 'de.ddb.common.DdbLocaleResolver'
     }
 }
+jawr.factory.use.orphans.mapper = false
 
 //Add this lines to fix problem on production environment. See https://java.net/jira/browse/JAWR-312
 environments {

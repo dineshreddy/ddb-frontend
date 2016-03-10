@@ -19,7 +19,7 @@ limitations under the License.
     <td>
       <div class="container item-detail bt linkurl">
         <div>
-          <strong><g:message code="ddbnext.CulturalItem_Deeplink" />: </strong>
+          <strong><g:message code="ddbcommon.CulturalItem_Deeplink" />: </strong>
         </div>
         <div class="value">
           ${new URL(new URL(publicUrl), itemUri)}

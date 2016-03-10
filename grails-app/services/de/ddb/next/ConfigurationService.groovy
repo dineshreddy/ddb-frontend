@@ -28,10 +28,6 @@ class ConfigurationService extends CommonConfigurationService {
         return getConfigValue("ddb.cms.url")
     }
 
-    String getCulturegraphUrl() {
-        return getConfigValue("ddb.culturegraph.url")
-    }
-
     List getFacetsFilter() {
         return getConfigValue("ddb.backend.facets.filter", List)
     }
@@ -58,10 +54,6 @@ class ConfigurationService extends CommonConfigurationService {
 
     String getMainMenu() {
         return getConfigValue("ddb.mainMenu")
-    }
-
-    boolean isCulturegraphFeaturesEnabled() {
-        return getBooleanConfigValue("ddb.culturegraph.features.enabled")
     }
 
     boolean isEntitySearchFeaturesEnabled() {
@@ -94,13 +86,11 @@ class ConfigurationService extends CommonConfigurationService {
 
         log.info "------------- ddb-next.properties ---------------------"
         log.info "ddb.cms.url = " + getCmsUrl()
-        log.info "ddb.culturegraph.url = " + getCulturegraphUrl()
         log.info "ddb.backend.facets.filter = " + getFacetsFilter()
         log.info "grails.mail.host = " + getGrailsMailHost()
         log.info "grails.mail.port = " + getGrailsMailPort()
         log.info "ddb.loadbalancer.header.name = " + getLoadbalancerHeaderName()
         log.info "ddb.loadbalancer.header.value = " + getLoadbalancerHeaderValue()
-        log.info "ddb.culturegraph.features.enabled = " + isCulturegraphFeaturesEnabled()
         log.info "ddb.entities.features.enabled = " + isEntitySearchFeaturesEnabled()
         log.info "ddb.exhibitions.features.enabled = " + isExhibitionsFeaturesEnabled()
         log.info "ddb.footerMenu = " + getFooterMenu()

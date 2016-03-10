@@ -25,28 +25,24 @@ import org.codehaus.groovy.grails.web.util.WebUtils
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
-import de.ddb.common.beans.User
+import de.ddb.common.ItemService
+import de.ddb.common.beans.item.HierarchyNode
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.exception.ItemNotFoundException
 
-class DdbItemService {
+class DdbItemService extends ItemService {
     private static final log = LogFactory.getLog(this)
 
     // ehcache name
     private static final String CACHE_NAME = "itemCache"
 
-    def transactional = false
-    def grailsApplication
-    def configurationService
-    def grailsLinkGenerator
-    def searchService
-    def messageSource
-    def sessionService
     def cultureGraphService
-    def bookmarksService
-    def itemService
-    def languageService
+    def favoritesService
+    def grailsApplication
+    def searchService
+
+    def transactional = false
 
     /**
      * Used in the preparation of images for PDF
@@ -62,11 +58,18 @@ class DdbItemService {
         def logoHeader = new File(baseFolder + logoHeaderFile)
         model.logo=logoHeader.bytes
 
-        model.institutionImage = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                model.institutionImage))
+        try {
+            model.institutionImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    model.institutionImage))
+        }
+        catch (FileNotFoundException e) {
+            model.institutionImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                    grailsLinkGenerator.resource("plugin": "ddb-common", "dir": "images",
+                    "file": "/placeholder/searchResultMediaInstitution.png")))
+        }
 
         if (model.license?.img) {
-            model.licenseImage = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+            model.licenseImage = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
                     grailsLinkGenerator.resource("plugin": "ddb-common", "file": model.license.img)))
         }
 
@@ -76,13 +79,18 @@ class DdbItemService {
 
         def viewerContent
         if (model.binaryList) {
-            if (model.binaryList.first().preview.uri) {
-                viewerContent = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().preview.uri))
+            try {
+                if (model.binaryList.first().preview.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().preview.uri))
+                }
+                else if (model.binaryList.first().thumbnail.uri) {
+                    viewerContent = getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
+                            model.binaryList.first().thumbnail.uri))
+                }
             }
-            else if (model.binaryList.first().thumbnail.uri) {
-                viewerContent = itemService.getImageContent(new URL(new URL(configurationService.getSelfBaseUrl()),
-                        model.binaryList.first().thumbnail.uri))
+            catch (FileNotFoundException e) {
+                log.error "binary " + e.getMessage() " does not exist"
             }
         }
         if (viewerContent) {
@@ -108,7 +116,7 @@ class DdbItemService {
             bottomUpHierarchy[1].properties.each { k,v -> directParent[k] = v }
             directParent.id = bottomUpHierarchy[1].id
             result = bottomUpHierarchy.subList(2, bottomUpHierarchy.size()).reverse()
-            directParent.children = itemService.getChildren(directParent.id)
+            directParent.children = getChildren(directParent.id)
             result.add(directParent)
         }
         return result
@@ -122,8 +130,8 @@ class DdbItemService {
      *
      * @return list of all parents
      */
-    def getParent(String itemId) {
-        def parents = itemService.getParent(itemId)
+    Collection<HierarchyNode> getParent(String itemId) {
+        def parents = super.getParent(itemId)
 
         // filter out institutions
         return parents.findAll { parent -> parent.type != "institution" }
@@ -146,17 +154,16 @@ class DdbItemService {
         } else {
             itemUri = request.forwardURI
         }
-        def item = itemService.findItemById(itemId)
+        def item = findItemById(itemId)
 
         if("404".equals(item)){
             throw new ItemNotFoundException()
         }
 
-        def isFavorite = isFavorite(itemId)
-        def binaryList = itemService.findBinariesById(itemId)
-        def binariesCounter = itemService.binariesCounter(binaryList)
-
+        def binaryList = findBinariesById(itemId)
+        def binariesCounter = binariesCounter(binaryList)
         def flashInformation = [:]
+
         flashInformation.images = [binariesCounter.images]
         flashInformation.audios = [binariesCounter.audios]
         flashInformation.videos = [binariesCounter.videos]
@@ -165,16 +172,16 @@ class DdbItemService {
             item.pageLabel = item.title
         }
 
-        def licenseInformation = itemService.buildLicenseInformation(item.item, request)
+        def licenseInformation = buildLicenseInformation(item.item, request)
 
-        def fields = translate(item.fields, itemService.convertToHtmlLink, request)
+        def fields = translate(item.fields, convertToHtmlLink, request)
 
         if(configurationService.isCulturegraphFeaturesEnabled()){
-            itemService.createEntityLinks(fields, configurationService.getContextUrl())
+            createEntityLinks(fields, configurationService.getContextUrl())
         }
 
-        def similarItems = itemService.getSimilarItems(itemId)
-        def itemSource = itemService.getItemXmlSource(itemId)
+        def similarItems = getSimilarItems(itemId)
+        def itemSource = getItemXmlSource(itemId)
         def collection = new XmlSlurper().parseText(itemSource)
         def geometry = collection.monument.geoReference.geometry.text()
 
@@ -197,7 +204,7 @@ class DdbItemService {
             searchResultUri: searchResultParameters["searchResultUri"],
             flashInformation: flashInformation,
             license: licenseInformation,
-            isFavorite: isFavorite,
+            isFavorite: favoritesService.isFavorite(itemId),
             baseUrl: configurationService.getSelfBaseUrl(),
             publicUrl: configurationService.getPublicUrl(),
             domainCanonic:configurationService.getDomainCanonic(),
@@ -213,7 +220,7 @@ class DdbItemService {
      */
     @Cacheable(value=DdbItemService.CACHE_NAME, key="'getNumberOfItems'")
     def getNumberOfItems() {
-        return itemService.getNumberOfItems()
+        return super.getNumberOfItems()
     }
 
     /**
@@ -303,15 +310,6 @@ class DdbItemService {
                     log.warn 'can not find message property: ' + messageKey + ' use ' + field.name + ' instead.'
                 }
             }
-        }
-    }
-
-    def boolean isFavorite(itemId) {
-        def User user = sessionService.getSessionAttributeIfAvailable(User.SESSION_USER)
-        if(user) {
-            return bookmarksService.isBookmarkOfUser(itemId, user.getId())
-        }else{
-            return false
         }
     }
 }

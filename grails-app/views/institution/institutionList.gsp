@@ -80,7 +80,7 @@ limitations under the License.
       </div>
       <ol id="institution-list">
         <g:each in="${ all }">
-          <li class="institution-listitem" data-sector="${ it?.sector }" 
+          <li class="institution-listitem" data-sector="${it?.sector.getName()}"
             data-institution-id="${ it?.id }" data-first-char="${ it?.firstChar }">
             <i class="icon-institution"></i>
             <g:render template="listItem" model="['item': it]"/>

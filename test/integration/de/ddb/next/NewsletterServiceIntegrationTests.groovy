@@ -10,7 +10,7 @@ import de.ddb.common.exception.ItemNotFoundException
 
 @TestMixin(ControllerUnitTestMixin)
 class NewsletterServiceIntegrationTests {
-    private static String EMAIL = 'john.doe@example.com'
+    private static String EMAIL = new Date().getTime() + "@example.com"
 
     def newsletterService
 

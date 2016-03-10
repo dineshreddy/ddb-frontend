@@ -47,7 +47,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
       <div class="dates fields">  
         <g:if test="${hasBirthContent}">
           <div>
-            <g:message encodeAs="html" code="ddbnext.Entity_Birth" />: 
+            <g:message code="ddbcommon.Entity_Birth" />: 
             ${entity.dateOfBirth}<g:if test="${entity.placeOfBirth}"><g:if test="${entity.dateOfBirth}">,</g:if>
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfBirth.value]}" class="search_link">
                 <span>${entity.placeOfBirth.value}</span>
@@ -57,7 +57,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
         </g:if>
         <g:if test="${hasDeathContent}">
           <div>
-            <g:message encodeAs="html" code="ddbnext.Entity_Death" />: 
+            <g:message code="ddbcommon.Entity_Death" />: 
             ${entity.dateOfDeath}<g:if test="${entity.placeOfDeath}"><g:if test="${entity.dateOfDeath}">,</g:if>
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfDeath.value]}" class="search_link">
                 <span>${entity.placeOfDeath.value}</span>
@@ -68,7 +68,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
 
         <g:if test="${hasVariantName}">
           <g:set var="variantNameIndex" value="${0}"/>
-          <g:message code="ddbnext.Entity_OtherNames"/>:
+          <g:message code="ddbcommon.Entity_OtherNames"/>:
           <g:each in="${entity.variantName}" var="variantName">
             <g:if test="${variantName ==~ /.*<match>.*/}">
               <g:if test="${variantNameIndex > 0}">

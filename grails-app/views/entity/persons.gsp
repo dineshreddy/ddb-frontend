@@ -17,6 +17,7 @@ limitations under the License.
 
 <html>
 <head>
+<g:set var="title" value="${g.message(code: "ddbnext.entities.personspage.personspageheader")}"/>
 <title>${title} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek" /></title>
 <meta name="page" content="persons" />
 <meta name="layout" content="main" />
@@ -67,14 +68,14 @@ limitations under the License.
             <div class="pin">
               <g:set var="preferredName" value="${ddbcommon.stripTags(text: person.preferredName)}"/>
               <a href="${g.createLink(controller: 'entity', action: 'index', id: ddb.getGndIdFromGndUri(id: person.id))}"
-                 title="${preferredName}">
+                 title="${raw(preferredName)}">
                 <img src="${ddb.fixWikimediaImageWidth(thumbnail: person.thumbnail, desiredWidth: '150px')}"
-                     alt="${preferredName}"/>
+                     alt="${raw(preferredName)}"/>
               </a>
               <p>
                 <a href="${g.createLink(controller: 'entity', action: 'index', id: ddb.getGndIdFromGndUri(id: person.id))}"
-                   title="${preferredName}">
-                  ${preferredName}
+                   title="${raw(preferredName)}">
+                  ${raw(preferredName)}
                 </a>
               </p>
             </div>

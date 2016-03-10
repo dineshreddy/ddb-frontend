@@ -49,14 +49,14 @@ limitations under the License.
               <g:set var="hasBirthDate" value="${entityItem.dateOfBirth}"/>
               <g:if test="${hasBirthDate}">
                 <g:set var="placeOfBirth" value="${entityItem.placeOfBirth?.getAt(0)}"/>
-                <g:message code="ddbnext.Entity_Birth"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfBirth, replaceTags: "match,strong") + (placeOfBirth ? ", " + ddbcommon.stripTags(text: placeOfBirth, replaceTags: "match,strong") : ""))}
+                <g:message code="ddbcommon.Entity_Birth"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfBirth, replaceTags: "match,strong") + (placeOfBirth ? ", " + ddbcommon.stripTags(text: placeOfBirth, replaceTags: "match,strong") : ""))}
                 <g:set var="needBreak" value="${true}"/>
               </g:if>
 
               <g:if test="${entityItem.dateOfDeath}">
                 <g:set var="placeOfDeath" value="${entityItem.placeOfDeath?.getAt(0)}"/>
                 <g:if test="${hasBirthDate}"> - </g:if>
-                <g:message code="ddbnext.Entity_Death"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfDeath, replaceTags: "match,strong") + (placeOfDeath ? ", " + ddbcommon.stripTags(text: placeOfDeath, replaceTags: "match,strong") : ""))}
+                <g:message code="ddbcommon.Entity_Death"/>: ${raw(ddbcommon.stripTags(text: entityItem.dateOfDeath, replaceTags: "match,strong") + (placeOfDeath ? ", " + ddbcommon.stripTags(text: placeOfDeath, replaceTags: "match,strong") : ""))}
                 <g:set var="needBreak" value="${true}"/>
               </g:if>
 
@@ -68,7 +68,7 @@ limitations under the License.
                     <g:set var="needBreak" value="${false}"/>
                   </g:if>
                   <g:if test="${variantNameIndex == 0}">
-                    <g:message code="ddbnext.Entity_OtherNames"/>:
+                    <g:message code="ddbcommon.Entity_OtherNames"/>:
                   </g:if>
                   <g:else>
                     ...

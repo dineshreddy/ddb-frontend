@@ -242,6 +242,7 @@ noscript .scroller, .pdf-scroller {
 .fancybox-toolbar {
   background-color: #efebe8;
   padding: 5px;
+  min-height: 20px;
 }
 .fancybox-toolbar .fancybox-toolbar-title {
   height: 23px;
@@ -286,8 +287,29 @@ noscript .scroller, .pdf-scroller {
 .fancybox-click-nav.right {
   right: 0;
 }
-.fancybox-click-nav:hover .fancybox-nav {
+.fancybox-click-nav:hover .fancybox-nav,
+.fancybox-wrap:hover .fancybox-toolbar-bottom {
   display: block !important;
+}
+.fancybox-toolbar-bottom {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #efebe8;
+  display: none;
+}
+.fancybox-toolbar-bottom .fancybox-toolbar-title {
+  max-height: 40px;
+  overflow: hidden;
+}
+.fancybox-toolbar-bottom .fancybox-toolbar-author,
+.fancybox-toolbar-bottom .fancybox-toolbar-rights {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fancybox-toolbar-bottom span {
+  display: block;
 }
 .binary-viewer-error, .binary-viewer-flash-upgrade {
   position:relative;
@@ -322,7 +344,7 @@ noscript .scroller, .pdf-scroller {
   font-size: 0.938em;
   white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
 }
 #binary-viewer {
   width: 440px;

@@ -34,9 +34,9 @@ limitations under the License.
   </g:if>
 
   <h3>
-    <g:message encodeAs="html" code="ddbnext.Entity_Objects" />: 
+    <g:message code="ddbcommon.Entity_Objects"/>: 
   </h3>
-  <ddbcommon:renderInfoTooltip messageCode="ddbnext.Entity_Objects_Tooltip" hasArrow="true"/>
+  <ddbcommon:renderInfoTooltip messageCode="ddbcommon.Entity_Objects_Tooltip" hasArrow="true"/>
 
   <div class="carousel">
     <div id="items">
@@ -67,7 +67,7 @@ limitations under the License.
                 (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE_FCT.getName() + "=mediatype_002"],
                 (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
               ]}">
-        <g:message encodeAs="html" code="ddbnext.Entity_All_Pictures" /> (${searchPreview.pictureCount})
+        <g:message code="ddbcommon.Entity_All_Pictures" /> (${searchPreview.pictureCount})
       </g:link>
     </g:if>
     <g:if test="${(showPictures && showVideos) || (showPictures && showAudios)}">
@@ -79,7 +79,7 @@ limitations under the License.
                 (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE_FCT.getName() + "=mediatype_005"],
                 (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
               ]}">
-        <g:message encodeAs="html" code="ddbnext.Entity_All_Videos" /> (${searchPreview.videoCount})
+        <g:message code="ddbcommon.Entity_All_Videos" /> (${searchPreview.videoCount})
       </g:link>
     </g:if>
     <g:if test="${(showVideos && showAudios)}">
@@ -91,7 +91,7 @@ limitations under the License.
                 (SearchParamEnum.FACETVALUES.getName()): [FacetEnum.TYPE_FCT.getName() + "=mediatype_001"],
                 (SearchParamEnum.IS_THUMBNAILS_FILTERED.getName()): false
               ]}">
-        <g:message encodeAs="html" code="ddbnext.Entity_All_Audios" /> (${searchPreview.audioCount})
+        <g:message code="ddbcommon.Entity_All_Audios" /> (${searchPreview.audioCount})
       </g:link>
     </g:if>
   </div>

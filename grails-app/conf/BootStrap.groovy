@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import grails.converters.JSON
 import groovy.util.slurpersupport.NodeChild
 import groovy.xml.StreamingMarkupBuilder
 
@@ -29,6 +30,11 @@ class BootStrap {
                 delegate.mkp.xmlDeclaration() // Use this if you want an XML declaration
                 delegate.out << self
             }.toString()
+        }
+
+        // use "name" attribute for JSON serialization of enums
+        JSON.registerObjectMarshaller(Enum) { Enum someEnum ->
+            someEnum.getName()
         }
     }
 

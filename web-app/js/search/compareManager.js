@@ -37,7 +37,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     $('.compare').removeClass("off");
     $('.compare-objects').removeClass("off");
 
-    $('.compare-objects .fancybox-toolbar-close').click(function(event) {
+    $('.compare-objects .comparison-cancel-button').click(function(event) {
       event.preventDefault();
       // Get the index of the compare-object.
       var index = $(event.target).attr("data-index");
@@ -103,7 +103,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
           var compareImage = $(compareObjectId + ' .compare-img');
           var compareText = $(compareObjectId + ' .compare-text');
           var compareDefault = $(compareObjectId + ' .compare-default');
-          var compareRemove = $(compareObjectId + ' .fancybox-toolbar-close');
+          var compareRemove = $(compareObjectId + ' .comparison-cancel-button');
           var compareBgImage = $(compareObjectId + ' .compare-default-pic');
 
           // Get the associated item id from the cookie

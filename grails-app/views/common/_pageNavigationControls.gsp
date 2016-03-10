@@ -81,7 +81,7 @@ limitations under the License.
     <div>
       <select class="type-selection">
         <option value="${createLink(controller: 'search', action: 'results')}" <g:if test="${navData.tabulatorActive==Type.CULTURAL_ITEM.getName()}">selected</g:if>>
-          <g:message code="ddbnext.Entity_Objects" />
+          <g:message code="ddbcommon.Entity_Objects" />
         </option>
         <g:if test="${config.isEntitySearchFeaturesEnabled()}">
           <option value="${createLink(controller: 'entity', action: 'personsearch')}" <g:if test="${navData.tabulatorActive==Type.ENTITY.getName()}">selected</g:if>>

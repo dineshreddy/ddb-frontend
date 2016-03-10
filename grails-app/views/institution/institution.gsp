@@ -65,17 +65,31 @@ limitations under the License.
                </h1>
              </div>
              <div>
-               <a class="external-dummy-icon" href="${institution.uri}"><ddb:removeUrlProtocol url="${institution.uri.trim()}"/></a>
+               <a class="external-dummy-icon" href="${institution.uri}">
+                 <span>
+                   <ddb:removeUrlProtocol url="${institution.uri.trim()}"/>
+                 </span>
+                </a>
              </div>
-             <div>
-               <g:if test="${institution.facebook}">
-                 <a class="facebook-icon" href="${institution.facebook}" target="_blank"><ddb:removeUrlProtocol url="${institution.facebook.trim()}"/></a>
-               </g:if>
-             </div>
-             <div>
-               <g:if test="${institution.twitter}">
-                 <a class="twitter-icon" href="${institution.twitter}" target="_blank"><ddb:removeUrlProtocol url="${institution.twitter.trim()} "/></a>
-               </g:if>
+             <div class="social-icons">
+               <div>
+                 <g:if test="${institution.facebook}">
+                   <a class="facebook-icon" href="${institution.facebook}" target="_blank">
+                     <span>
+                       <ddb:removeUrlProtocol url="${institution.facebook.trim()}"/>
+                     </span>
+                   </a>
+                 </g:if>
+               </div>
+               <div>
+                 <g:if test="${institution.twitter}">
+                   <a class="twitter-icon" href="${institution.twitter}" target="_blank">
+                     <span>
+                       <ddb:removeUrlProtocol url="${institution.twitter.trim()} "/>
+                     </span>
+                   </a>
+                 </g:if>
+               </div>
              </div>
            </div>
            <div class="span3">
@@ -89,7 +103,7 @@ limitations under the License.
      <g:render template="locations"/>
      
     <div class="printViewUrl off">
-      <strong><g:message encodeAs="html" code="ddbnext.CulturalItem_Deeplink"/></strong>: 
+      <strong><g:message code="ddbcommon.CulturalItem_Deeplink"/></strong>: 
       <div>${url}</div>
     </div> 
   </body>

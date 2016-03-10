@@ -20,12 +20,12 @@ import groovy.json.*
 import org.springframework.web.servlet.support.RequestContextUtils
 
 import de.ddb.common.ApiConsumer
+import de.ddb.common.CultureGraphService
 import de.ddb.common.JsonUtil
 import de.ddb.common.beans.item.Facet
 import de.ddb.common.beans.item.IndexingProfile
 import de.ddb.common.constants.CategoryFacetEnum
 import de.ddb.common.constants.FacetEnum
-import de.ddb.common.constants.ProjectConstants
 import de.ddb.common.constants.SearchParamEnum
 import de.ddb.common.constants.Type
 import de.ddb.common.exception.BadRequestException
@@ -34,12 +34,10 @@ class SearchController {
 
     static defaultAction = "results"
 
-    def entityService
-    def itemService
-    def searchService
     def configurationService
-    def cultureGraphService
+    def ddbItemService
     def languageService
+    def searchService
 
     def results() {
         try {
@@ -295,7 +293,7 @@ class SearchController {
             page: page,
             resultsPaginatorOptions: searchService.buildPaginatorOptions(urlQuery),
             paginationURL: searchService.buildPagination(results.totalResults, urlQuery, getQuery),
-            cultureGraphUrl: ProjectConstants.CULTURE_GRAPH_URL,
+            cultureGraphUrl: CultureGraphService.GND_URI_PREFIX,
             clearFilters: clearFilters
         ]
         if(params.reqType=="ajax"){
@@ -336,7 +334,7 @@ class SearchController {
 
     def informationItem(){
         def properties = [:]
-        IndexingProfile newInformationItem = itemService.getItemIndexingProfile(params.id)
+        IndexingProfile newInformationItem = ddbItemService.getItemIndexingProfile(params.id)
 
         if(newInformationItem.facet){
             //iterate over all facets

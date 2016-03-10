@@ -14,8 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
 --%>
 <ol class="institution-list">
-  <g:each var="subinstitution" in="${subinstitutions}" >
-    <li class="institution-listitem" data-sector="${subinstitution.sector}" data-institution-id="${subinstitution.id}">
+  <g:each var="subinstitution" in="${subinstitutions}">
+    <li class="institution-listitem" data-sector="${subinstitution.sector.getName()}"
+        data-institution-id="${subinstitution.id}">
       <g:if test="${(selectedItemId == subinstitution.id)}">
         <i class="icon-institution"></i>
         <div>
@@ -30,7 +31,7 @@ limitations under the License.
           </g:link>
         </div>
       </g:else>
-      <g:if test="${subinstitution.children.size() > 0}">
+      <g:if test="${subinstitution.children}">
         <g:render template="subinstitutions" model="[subinstitutions: subinstitution.children]"/>
       </g:if>
     </li>

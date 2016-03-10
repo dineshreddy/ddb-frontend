@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <div class="external-links off">
   <hr>
-  <h3><g:message encodeAs="html" code="ddbnext.External_Links"/>:</h3>
+  <h3><g:message code="ddbcommon.Entity_External_Links"/>:</h3>
   <ul class="unstyled">
     <g:each var="link" in="${entity.sameAs}">
       <g:render template="externalLink" model="[publisher: link.publisher, url: link.id]"/>

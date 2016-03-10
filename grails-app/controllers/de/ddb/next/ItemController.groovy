@@ -23,7 +23,6 @@ class ItemController {
     def configurationService
     def ddbItemService
     def fileService
-    def itemService
 
     /**
      * Handle the default show Item logic
@@ -58,11 +57,11 @@ class ItemController {
     }
 
     def children() {
-        render(itemService.getChildren( params.id) as JSON)
+        render(ddbItemService.getChildren( params.id) as JSON)
     }
 
     def showXml() {
-        def itemXml = itemService.fetchXMLMetadata(params.id)
+        def itemXml = ddbItemService.fetchXMLMetadata(params.id)
 
         response.contentType = "text/xml"
         response.outputStream << itemXml

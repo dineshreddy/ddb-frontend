@@ -18,10 +18,18 @@ limitations under the License.
   <div class="social-icons">
     <g:message code="ddbnext.follow" />:
     <g:if test="${facebookUrl}">
-      <a class="facebook-icon" href="${facebookUrl}" target="_blank"> Facebook </a>
+      <a class="facebook-icon" href="${facebookUrl}" target="_blank">
+        <span>
+          <g:message code="ddbcommon.OAuth_Tooltip_Facebook"/>
+        </span>
+      </a>
     </g:if>
     <g:if test="${twitterUrl}">
-      <a class="twitter-icon" href="${twitterUrl}" target="_blank"> Twitter </a>
+      <a class="twitter-icon" href="${twitterUrl}" target="_blank">
+        <span>
+          <g:message code="ddbcommon.OAuth_Tooltip_Twitter"/>
+        </span>
+      </a>
     </g:if>
   </div>
 </g:if>

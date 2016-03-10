@@ -134,10 +134,14 @@ class ApisController {
         boolean onlyInstitutionsWithData = Boolean.parseBoolean(params.onlyInstitutionsWithData)
 
         // parse selected sector information from request
+        def sectors
         def selectedSectors = params.selectedSectors
-        def sectors = selectedSectors.tokenize(',[]')
-        for(int i=0; i<sectors.size(); i++){
-            sectors[i] = sectors[i].replaceAll("\"", "")
+
+        if (selectedSectors) {
+            sectors = selectedSectors.tokenize(',[]')
+            for(int i=0; i<sectors.size(); i++){
+                sectors[i] = sectors[i].replaceAll("\"", "")
+            }
         }
 
         // get all available institutions from cortex
@@ -198,15 +202,21 @@ class ApisController {
      * @return OutPutStream
      */
     def binary() {
-        def apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl() + "/binary/", getFileNamePath(), response.outputStream)
+        if (request.method == "HEAD") {
+            render response.SC_OK
+        }
+        else {
+            ApiResponse apiResponse = ApiConsumer.getBinaryStreaming(configurationService.getBackendUrl(),
+                    "/binary/" + getFileNamePath(), response.outputStream)
 
-        if (apiResponse.isOk()) {
-            def responseObject = apiResponse.getResponse()
-            response.setHeader("Cache-Control", "max-age=" + MAX_AGE)
-            response.setHeader("Expires", getRfc2822Date(MAX_AGE))
-            response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
-            response.setContentType(responseObject.get("Content-Type"))
-            response.setContentLength(responseObject.get("Content-Length").toInteger())
+            if (apiResponse.isOk()) {
+                def responseObject = apiResponse.getResponse()
+                response.setHeader("Cache-Control", "max-age=" + MAX_AGE)
+                response.setHeader("Expires", getRfc2822Date(MAX_AGE))
+                response.setHeader("Content-Disposition", "inline; filename=" + getFileNamePath().tokenize('/')[-1])
+                response.setContentType(responseObject.get("Content-Type"))
+                response.setContentLength(responseObject.get("Content-Length").toInteger())
+            }
         }
     }
 
