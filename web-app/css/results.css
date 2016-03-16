@@ -615,7 +615,6 @@ input[type="checkbox"],input[type="radio"] {
 
 .search-results .results-list .summary .compare.disabled {
   background-position: -30px -122px;
-  cursor: default;
 }
 
 .search-results .results-list .summary .add-to-favorites {

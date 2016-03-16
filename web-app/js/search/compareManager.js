@@ -40,7 +40,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     $('.compare-objects .comparison-cancel-button').click(function(event) {
       event.preventDefault();
       // Get the index of the compare-object.
-      var index = $(event.target).attr("data-index");
+      var index = parseInt($(event.target).attr("data-index"));
       currObjInstance.removeCompareCookieParameter(index);
       currObjInstance.renderCompareObjects();
     });
@@ -215,7 +215,7 @@ $.extend(de.ddb.next.search.CompareManager.prototype, {
     var cookieVal = currObjInstance.getComparisonCookieVal();
     de.ddb.next.search.hideError();
 
-    if (index !== "1" && index !== "2") {
+    if (index !== 1 && index !== 2) {
       return;
     }
 
