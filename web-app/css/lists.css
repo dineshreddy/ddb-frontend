@@ -115,3 +115,18 @@
 .lists .popup-dialog-wrapper {
   margin-top: -48px !important;
 }
+
+@media (max-width: 480px) {
+  .lists .right-container {
+    width: 200px;
+  }
+
+  .lists .right-container a {
+    float: right;
+    margin-right: 0;
+  }
+
+  .lists .socialmedia {
+    padding-top: 0;
+  }
+}
