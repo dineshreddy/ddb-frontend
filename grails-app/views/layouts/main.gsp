@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 --%>
+<g:set var="config" bean="configurationService"/>
 <!DOCTYPE html>
 <html lang="${ddb.getCurrentLocale()}">
   <head>
@@ -33,7 +34,7 @@ limitations under the License.
                                                                       "file": "apple-touch-icon-" + size + ".png")}"/>
     </g:each>
 
-    <link rel="search" title="${g.message(code:"ddbnext.Deutsche_Digitale_Bibliothek")}"
+    <link rel="search" title="${g.message(code: "ddbnext.Deutsche_Digitale_Bibliothek")}"
           href="${request.contextPath}/opensearch_${ddb.getCurrentLocale()}.osdx" type="application/opensearchdescription+xml" />
     <r:require module="ddbnext" />
     <r:layoutResources />
@@ -69,13 +70,11 @@ limitations under the License.
     <jawr:script src="/i18n/messages.js"/>
     <r:layoutResources />
 
-    <%-- 
-    <script>
-        $('#header-menu-btn').click(function(event) {
-            console.log('menu btn clicked');
-        });
-    </script>
-    --%>
+    <g:if test="${config.getJwplayerKey()}">
+      <script>
+        jwplayer.key="${config.getJwplayerKey()}";
+      </script>
+    </g:if>
 
     <ddbcommon:getPiwikTracking />
   </body>

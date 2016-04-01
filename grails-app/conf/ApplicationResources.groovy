@@ -92,7 +92,6 @@ modules = {
         resource url:'/js/stringBuilder.js'
         resource url:'/js/vendor/underscore-1.3.1/underscore-min.js'
         resource url:'/js/vendor/jwplayer-6.2.3115/jwplayer.js'
-        resource url:'/js/jwplayerKey.js'
         resource url:["plugin": "ddb-common", "dir": "js", "file": "largeCookie.js"]
         resource url:'/js/header.js'
         resource url:["plugin": "ddb-common", "dir": "js", "file": "tooltip.js"]
