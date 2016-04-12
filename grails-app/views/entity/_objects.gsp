@@ -15,15 +15,16 @@ limitations under the License.
 --%>
 <%@page import="de.ddb.common.constants.FacetEnum"%>
 <%@page import="de.ddb.common.constants.SearchParamEnum"%>
+<g:set var="searchService" bean="searchService"/>
 <div class="objects">
   <g:set var="showPictures" value="${true}" />
   <g:set var="showVideos" value="${true}" />
   <g:set var="showAudios" value="${true}" />
-  <g:set var="offset" value="${params[SearchParamEnum.OFFSET.getName()]?.toInteger()}" />
+  <g:set var="offset" value="${searchService.getNumber(params[SearchParamEnum.OFFSET.getName()])}" />
   <g:if test="${!offset}" >
     <g:set var="offset" value="${0}" />
   </g:if>
-  <g:set var="rows" value="${params[SearchParamEnum.ROWS.getName()]?.toInteger()}" />
+  <g:set var="rows" value="${searchService.getNumber(params[SearchParamEnum.ROWS.getName()])}" />
   <g:if test="${!rows}" >
     <g:set var="rows" value="${4}" />
   </g:if>
