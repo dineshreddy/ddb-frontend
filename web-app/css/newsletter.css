@@ -51,7 +51,8 @@ a:hover, a:active, a:focus {
   background: #fff;
 }
 
-.field-items, .caption, .pre-headline, .headline, .text, .link, .section-article {
+#newsletter .field-items, #newsletter .caption, #newsletter .pre-headline,
+#newsletter .headline, #newsletter .text, #newsletter .link, #newsletter .section-article {
   padding: 0 36px;
 }
 
