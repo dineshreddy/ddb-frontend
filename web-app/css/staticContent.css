@@ -29,7 +29,7 @@
   clear: right;
 }
 .static_content a, .static_marginal a {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .static_marginal img {
   margin: 0;
