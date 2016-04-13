@@ -46,22 +46,22 @@
 .static_content h2 a, .static_marginal h2 a, h2 a {
   font-weight:normal;
   font-size: 1em;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 .plum-arrow li a:hover, .grey-arrow li a:hover, .lightgrey-arrow li a:hover, .plum-arrow li a:active, 
 .grey-arrow li a:active, .lightgrey-arrow li a:active, .plum-arrow li a:focus, .grey-arrow li a:focus, 
 .lightgrey-arrow li a:focus,
 ul.menu li a:hover, ul.menu li a:active, ul.menu li a:focus,
 .faq-category-node li a:hover, .faq-category-node li a:active, .faq-category-node li a:focus {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 .static_content h2 a:hover, .static_marginal h2 a:hover, h2 a:hover,
 .static_content h2 a:active, .static_marginal h2 a:active, h2 a:active,
 .static_content h2 a:focus, .static_marginal h2 a:focus, h2 a:focus {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }  
 .plum-arrow li a, .grey-arrow li a, .lightgrey-arrow li a, ul.menu li a, .faq-category-node li a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 .plum-arrow li, .grey-arrow li, .lightgrey-arrow li, ul.menu li, .faq-category-node li {
   list-style: none outside none;
@@ -102,7 +102,7 @@ img.floatRight, .inlineBox.floatRight {
 
 a.help-link:link, a.help-bc-link:link {
   color: #3E3A37;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .link_up, .views-field-nothing a {
@@ -118,12 +118,12 @@ a.help-link:link, a.help-bc-link:link {
 }
 
 a.help-kw-link:link, a.help-kw-link-first:link {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 a.help-kw-link:hover, a.help-kw-link-first:hover, a.help-link:hover, a.help-bc-link:hover {
   color: #A5003B;
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 a.help-kw-link-first {
@@ -274,11 +274,11 @@ a.help-kw-link {
 .faq-category h3 a {
   font-size: 16px;
   font-weight: normal;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .faq-category h3 a:hover {
-  text-decoration: underline;
+  text-decoration: underline !important;
 }
 
 .faq-category-node li {
@@ -303,11 +303,11 @@ a.help-kw-link {
   color: #3e3a37;
   font-family: KarbidWeb, Calibri, Arial, sans-serif;
   font-weight: normal;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .views-field-nothing a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .rtecenter {
