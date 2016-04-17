@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <div class="row item-detail">
   <div class="span6 origin">
-    <g:if test="${!originUrl?.toString()?.isEmpty()}">
+    <g:if test="${originUrl}">
       <a target="_blank" class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
         <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
       </a>

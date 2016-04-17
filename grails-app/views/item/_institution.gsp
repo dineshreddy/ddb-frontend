@@ -25,7 +25,7 @@ limitations under the License.
             <a class="institution-link" href="${institution.url}"><ddb:removeUrlProtocol url="${institution.url}"/></a>
             <g:if test="${!originUrl?.toString()?.isEmpty() || !viewerUri?.isEmpty()}">
               <div class="origin">
-                  <g:if test="${!originUrl?.toString()?.isEmpty()}">
+                  <g:if test="${originUrl}">
                           <a target="_blank" class="show-origin" href="${originUrl.encodeAsHTML()}" title="<g:message encodeAs="html" code="ddbnext.stat_008" />">
                           <span class="has-origin"><g:message encodeAs="html" code="ddbnext.CulturalItem_LinkToOriginalItem_Label" /></span>
                           </a>
