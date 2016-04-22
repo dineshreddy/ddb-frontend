@@ -18,13 +18,13 @@ limitations under the License.
 <ddb:isValidUrl url="${url}">
   <li class="external-link">
     <a href="${url}" rel="external" class="no-external-link-icon">
-      <g:if test="${JsonUtil.isAnyNull(publisher.icon)}">
+      <g:if test="${JsonUtil.isAnyNull(collection.icon)}">
         <div class="external-dummy-icon"></div>
       </g:if>
       <g:else>
-        <i class="external-icon"><img src="${publisher.icon}" alt="${publisher.abbr}"/></i>
+        <i class="external-icon"><img src="${collection.icon}" alt="${collection.abbr}"/></i>
       </g:else>
-      <span>${publisher.name}</span>
+      <span>${collection.publisher}</span>
 	  </a>
 	</li>
 </ddb:isValidUrl>

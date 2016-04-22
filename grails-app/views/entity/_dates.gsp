@@ -38,7 +38,7 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
     <g:if test="${hasProfessions}">
       <div class="profession">
         <g:each var="link" status="i" in="${entity.professionOrOccupation}">
-          <span>${link.value}<g:if test="${i < (entity.professionOrOccupation.size() - 1)}">, </g:if></span>
+          <span>${link.preferredName}<g:if test="${i < (entity.professionOrOccupation.size() - 1)}">, </g:if></span>
         </g:each>
       </div>
     </g:if>
@@ -49,8 +49,8 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
           <div>
             <g:message code="ddbcommon.Entity_Birth" />: 
             ${entity.dateOfBirth}<g:if test="${entity.placeOfBirth}"><g:if test="${entity.dateOfBirth}">,</g:if>
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfBirth.value]}" class="search_link">
-                <span>${entity.placeOfBirth.value}</span>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfBirth.preferredName]}" class="search_link">
+                <span>${entity.placeOfBirth.preferredName}</span>
               </g:link>
             </g:if>
           </div>
@@ -59,8 +59,8 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
           <div>
             <g:message code="ddbcommon.Entity_Death" />: 
             ${entity.dateOfDeath}<g:if test="${entity.placeOfDeath}"><g:if test="${entity.dateOfDeath}">,</g:if>
-              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfDeath.value]}" class="search_link">
-                <span>${entity.placeOfDeath.value}</span>
+              <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfDeath.preferredName]}" class="search_link">
+                <span>${entity.placeOfDeath.preferredName}</span>
               </g:link>
             </g:if>
           </div>
