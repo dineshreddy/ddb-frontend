@@ -24,7 +24,7 @@ limitations under the License.
       <g:else>
         <i class="external-icon"><img src="${collection.icon}" alt="${collection.abbr}"/></i>
       </g:else>
-      <span>${collection.publisher}</span>
+      <span>${collection.name ? collection.name : collection.publisher}</span>
 	  </a>
 	</li>
 </ddb:isValidUrl>
