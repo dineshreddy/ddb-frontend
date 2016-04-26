@@ -50,7 +50,9 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
             <g:message code="ddbcommon.Entity_Birth" />: 
             ${entity.dateOfBirth}<g:if test="${entity.placeOfBirth}"><g:if test="${entity.dateOfBirth}">,</g:if>
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfBirth.preferredName]}" class="search_link">
-                <span>${entity.placeOfBirth.preferredName}</span>
+                <g:each var="placeOfBirth" status="i" in="${entity.placeOfBirth}">
+                  <span>${placeOfBirth.preferredName}<g:if test="${i < (entity.placeOfBirth.size() - 1)}">, </g:if></span>
+                </g:each>
               </g:link>
             </g:if>
           </div>
@@ -60,7 +62,9 @@ commented out because of https://jira.deutsche-digitale-bibliothek.de/browse/DDB
             <g:message code="ddbcommon.Entity_Death" />: 
             ${entity.dateOfDeath}<g:if test="${entity.placeOfDeath}"><g:if test="${entity.dateOfDeath}">,</g:if>
               <g:link controller="search" action="results" params="${[(SearchParamEnum.QUERY.getName()):entity.placeOfDeath.preferredName]}" class="search_link">
-                <span>${entity.placeOfDeath.preferredName}</span>
+                <g:each var="placeOfDeath" status="i" in="${entity.placeOfDeath}">
+                  <span>${placeOfDeath.preferredName}<g:if test="${i < (entity.placeOfDeath.size() - 1)}">, </g:if></span>
+                </g:each>
               </g:link>
             </g:if>
           </div>
