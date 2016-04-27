@@ -15,11 +15,11 @@ limitations under the License.
 --%>
 <html>
 <head>
-  <title>${entity.preferredName} - <g:message encodeAs="html" code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
-<%-- Used for Canonical URL --%>
-<link rel="canonical" href="${createLink(controller:'entity',action:'index',params: [id: entityId], base:domainCanonic)}" />
-  <meta name="page" content="entity" />
-  <meta name="layout" content="main" />
+  <title>${entity.preferredName} - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+  <%-- Used for Canonical URL --%>
+  <link rel="canonical" href="${createLink(controller:'entity',action:'index',params: [id: entityId], base:domainCanonic)}"/>
+  <meta name="page" content="entity"/>
+  <meta name="layout" content="main"/>
 
 </head> 
 <body>
@@ -32,7 +32,7 @@ limitations under the License.
       <div class="span9">
         <g:render template="name" />
         <g:render template="dates" />
-        <g:if test="${searchPreview.items.size()}">
+        <g:if test="${searchPreview.resultCount > 0}">
           <hr>
           <g:render template="objects" />
         </g:if>
@@ -40,7 +40,7 @@ limitations under the License.
           <hr>
             <g:render template="affiliateInvolvedObjects" />
         </g:if>        
-        <g:if test="${searchSubject.resultCount > 0 }">
+        <g:if test="${searchSubject.resultCount > 0}">
           <hr>
             <g:render template="affiliateSubjectObjects" />
         </g:if>
