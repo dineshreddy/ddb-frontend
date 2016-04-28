@@ -391,11 +391,6 @@ class UrlMappings {
             action="multipolygone"
         }
 
-        "/items3d/$id" {
-            controller="items3d"
-            action="index"
-        }
-
         "/lists/$id?" {
             controller="lists"
             action="index"
