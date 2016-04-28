@@ -229,26 +229,5 @@ limitations under the License.
       <button class="btn-padding" type="submit" id="editSavedSearchConfirm"><g:message code="ddbcommon.Save" /></button>
     </div>
   </div>
-
-  <!-- Confirm unwatch saved search dialog -->
-  <div id="unwatchSavedSearchModal" class="modal hide fade" tabindex="-1" role="dialog"
-       aria-labelledby="unwatchSavedSearchModalLabel" aria-hidden="true">
-    <div class="modal-header">
-      <span title="<g:message code="ddbnext.Close"/>" data-dismiss="modal" class="fancybox-toolbar-close"></span>
-      <h3 id="deleteSavedSearchesLabel">
-        <g:message code="ddbcommon.delete_confirmation" />
-      </h3>
-    </div>
-    <div class="modal-body">
-      <span id="unwatchSavedSearchModalLabel">
-        <g:message code="ddbnext.Remove_From_Watchlist_Confirmation" />
-      </span>
-    </div>
-    <div class="modal-footer-savesearch">
-      <button class="submit grey" data-dismiss="modal"><g:message code="ddbcommon.No" /></button>
-      <button class="submit ok-button"><g:message code="ddbcommon.Yes" /></button>
-    </div>
-  </div>
-
 </body>
 </html>

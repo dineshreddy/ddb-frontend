@@ -211,16 +211,6 @@ class UrlMappings {
             action=[POST: "isSavedSearch"]
         }
 
-        "/apis/savedsearches/_unwatch/$id" {
-            controller="savedsearches"
-            action=[POST: "unwatchSavedSearch"]
-        }
-
-        "/apis/savedsearches/_watch/$id" {
-            controller="savedsearches"
-            action=[POST: "watchSavedSearch"]
-        }
-
         "/apis/clusteredInstitutionsmap" {
             controller="apis"
             action=[GET:"clusteredInstitutionsmap"]

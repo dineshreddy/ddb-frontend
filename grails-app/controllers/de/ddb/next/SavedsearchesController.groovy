@@ -89,30 +89,4 @@ class SavedsearchesController {
             render(status: response.SC_NOT_FOUND)
         }
     }
-
-    @IsAuthorized
-    def unwatchSavedSearch() {
-        log.info "unwatchSavedSearch(): " + params.id
-        def result = savedSearchesService.removeWatcher(params.id, userService.getUserFromSession().getId())
-        log.info "unwatchSavedSearch returns " + result
-        if (result) {
-            render(status: response.SC_OK)
-        }
-        else {
-            render(status: response.SC_NOT_FOUND)
-        }
-    }
-
-    @IsAuthorized
-    def watchSavedSearch() {
-        log.info "watchSavedSearch(): " + params.id
-        def result = savedSearchesService.addWatcher(params.id, userService.getUserFromSession().getId())
-        log.info "watchSavedSearch returns " + result
-        if (result) {
-            render(status: response.SC_OK)
-        }
-        else {
-            render(status: response.SC_NOT_FOUND)
-        }
-    }
 }
