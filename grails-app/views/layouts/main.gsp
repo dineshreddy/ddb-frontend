@@ -27,6 +27,7 @@ limitations under the License.
     </g:else>
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="referrer" content="origin-when-cross-origin" />
 
     <g:each var="size" in="${["57x57", "72x72", "76x76", "114x114", "120x120", "144x144", "152x152"]}">
       <link rel="apple-touch-icon" sizes="${size}" href="${g.resource("plugin": "ddb-common",
