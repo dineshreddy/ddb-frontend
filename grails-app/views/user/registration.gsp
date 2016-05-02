@@ -15,7 +15,7 @@ limitations under the License.
 --%>
 <html>
   <head>
-    <title><g:message code="ddbcommon.Registration"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
+    <title><g:message code="ddbnext.CreateAccount"/> - <g:message code="ddbnext.Deutsche_Digitale_Bibliothek"/></title>
     <meta name="page" content="registration"/>
     <meta name="layout" content="main"/>
   </head>
@@ -84,7 +84,7 @@ limitations under the License.
         </div>
 
         <div class="control-group">
-          <button type="submit" class="btn-padding"><g:message encodeAs="html" code="ddbnext.CreateAccount" /></button>
+          <button type="submit" class="btn-padding"><g:message code="ddbnext.CreateAccount" /></button>
         </div>
         <ul id="error-messages" class="off">
           <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>
