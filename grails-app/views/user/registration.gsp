@@ -24,7 +24,7 @@ limitations under the License.
     <div class="registration-container">
       <g:form method="post" id="registration-form" name="registration-form" class="form-horizontal" url="[controller:'user', action:'signup']" >
 
-        <div><h1><g:message encodeAs="html" code="ddbcommon.Registration" /></h1></div>
+        <div><h1><g:message encodeAs="html" code="ddbnext.CreateAccount" /></h1></div>
         <div id="enduser" class="reg-subtitle"><span><g:message encodeAs="none" code="ddbcommon.register_enduser" args="${[registrationInfoUrl]}"/></span></div>
 
         <div class="control-group">
@@ -84,7 +84,7 @@ limitations under the License.
         </div>
 
         <div class="control-group">
-          <button type="submit" class="btn-padding"><g:message encodeAs="html" code="ddbcommon.Register" /></button>
+          <button type="submit" class="btn-padding"><g:message encodeAs="html" code="ddbnext.CreateAccount" /></button>
         </div>
         <ul id="error-messages" class="off">
           <li><a><g:message encodeAs="html" code="ddbcommon.Field_Required" /></a></li>

@@ -31,8 +31,6 @@ limitations under the License.
       <div class="span9">
         <div class="heading">
           <h1><g:message encodeAs="html" code="ddbcommon.Login_Button"/></h1>
-          <br />
-          <span><g:message encodeAs="none" code="ddbnext.Login_description" args="${[registrationInfoUrl]}"/></span>
         </div>
         <div class="row">
           <div class="span9">
@@ -99,7 +97,7 @@ limitations under the License.
                   </div>
                   <div class="row spacer-vertical">
                     <div class="span9">
-                      <g:link controller="user" action="registration" class="login-link"><g:message encodeAs="html" code="ddbcommon.Register" /></g:link>
+                      <g:link controller="user" action="registration" class="login-link"><g:message code="ddbnext.CreateAccount" /></g:link>
                     </div>
                   </div>
                   <div class="row">
