@@ -82,6 +82,7 @@ grails.project.dependency.resolution = {
 
     dependencies {
         build ('org.owasp:dependency-check-ant:1.2.11')
+        compile 'com.twelvemonkeys.imageio:imageio-jpeg:3.1.1' // read CMYK JPEG files
         compile ('org.scribe:scribe:1.3.0-patched') { excludes "commons-codec" }
         runtime 'org.ccil.cowan.tagsoup:tagsoup:1.2.1'
         runtime 'org.openid4java:openid4java:0.9.8'
