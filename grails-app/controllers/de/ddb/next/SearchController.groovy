@@ -141,8 +141,9 @@ class SearchController {
             def numberOfResultsFormatted = String.format(locale, "%,d", resultsItems.numberOfResults)
             def queryString = request.getQueryString()
 
-            if(!queryString?.contains(SearchParamEnum.SORT.getName()+"="+SearchParamEnum.SORT_RANDOM.getName()) && urlQuery["randomSeed"])
-                queryString = queryString+"&"+SearchParamEnum.SORT.getName()+"="+urlQuery["randomSeed"]
+            if (!queryString?.contains(SearchParamEnum.SORT.getName() + "=") && urlQuery["randomSeed"]) {
+                queryString += "&" + SearchParamEnum.SORT.getName() + "=" + urlQuery["randomSeed"]
+            }
 
             def resetSelectionUrl
 
