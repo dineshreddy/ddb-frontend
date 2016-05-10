@@ -25,7 +25,7 @@ limitations under the License.
             ${selectedFolder.title.capitalize()}
           </g:else>
         </span>
-          (${selectedFolder.bookmarks.size()})
+          (${results.size()})
       </div>
       <div class="controls-container">
         <g:if test="${selectedFolder.isPublic && !folderEmpty}">
