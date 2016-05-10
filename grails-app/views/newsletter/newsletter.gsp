@@ -77,7 +77,7 @@ limitations under the License.
           <ul class="plum-arrow">
             <li>
               <a class="profile-link" title="${g.message(code: 'ddbnext.Newsletter_Archive')}" class="persist"
-                 href="../../content/newsletter/newsletter-archiv">
+                 href="${request.contextPath}/content/newsletter/newsletter-archiv">
                 <g:message code="ddbnext.Newsletter_Archive"/>
               </a>
             </li>
