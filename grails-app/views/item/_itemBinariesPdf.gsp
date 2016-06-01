@@ -10,17 +10,23 @@
   <tr>
     <td>
       <!--  This section should contain info on the first viewed Item -->
-      <div class="binary-title">
-        <span>
-          <g:if test="${!binaryList.first().preview.title.isEmpty()}">${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.title)}</g:if>
-        </span>
-      </div>
-      <div class="binary-author">
-        <span>${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.author)}</span>
-      </div>
-      <div class="binary-rights">
-        <span> ${ddbcommon.wellFormedDocFromString(text:binaryList.first().preview.rights)}</span>
-      </div>
+      <g:if test="${binaryList.first().preview.title}">
+        <div class="binary-title">
+          <span>
+            ${ddbcommon.wellFormedDocFromString(text: binaryList.first().preview.title)}
+          </span>
+        </div>
+      </g:if>
+      <g:if test="${binaryList.first().preview.author}">
+        <div class="binary-author">
+          <span>${ddbcommon.wellFormedDocFromString(text: binaryList.first().preview.author)}</span>
+        </div>
+      </g:if>
+      <g:if test="${binaryList.first().preview.rights}">
+        <div class="binary-rights">
+          <span> ${ddbcommon.wellFormedDocFromString(text: binaryList.first().preview.rights)}</span>
+        </div>
+      </g:if>
     </td>
   </tr>
 </table>
